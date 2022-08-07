@@ -1,5 +1,9 @@
 package;
 
+import base.ui.Overlay;
+import dependency.Discord;
+import dependency.FNFTransition;
+import dependency.FNFUIState;
 import flixel.FlxBasic;
 import flixel.FlxG;
 import flixel.FlxGame;
@@ -7,15 +11,11 @@ import flixel.FlxSprite;
 import flixel.FlxState;
 import flixel.addons.transition.FlxTransitionableState;
 import flixel.util.FlxColor;
+import funkin.PlayerSettings;
 import haxe.CallStack.StackItem;
 import haxe.CallStack;
 import haxe.io.Path;
 import lime.app.Application;
-import meta.*;
-import meta.data.PlayerSettings;
-import meta.data.dependency.Discord;
-import meta.data.dependency.FNFTransition;
-import meta.data.dependency.FNFUIState;
 import openfl.Assets;
 import openfl.Lib;
 import openfl.display.FPS;
@@ -25,6 +25,21 @@ import openfl.events.UncaughtErrorEvent;
 import sys.FileSystem;
 import sys.io.File;
 import sys.io.Process;
+
+
+/**
+* mod week stuffs that will be added later!
+* gonna try to make it as compatible with psych as possible
+**/
+typedef WeekDataDef =
+{
+	var weekSongs:Array<Dynamic>; // array of songs, song colors, song character icons, and week name [refer to the gameWeeks variable];
+	var weekCharacters:Array<String>; // characters that will show up on the story menu (e.g: dad, bf, gf);
+	var difficulties:String; // week difficulties (e.g "EASY, NORMAL, HARD");
+	var weekName:String; // image graphic for the week (e.g: "week1");
+	var weekBefore:String; // week before this one;
+	var startUnlocked:Bool; // whether the week starts off unlocked or not;
+}
 
 // Here we actually import the states and metadata, and just the metadata.
 // It's nice to have modularity so that we don't have ALL elements loaded at the same time.
@@ -38,11 +53,11 @@ class Main extends Sprite
 	public static var mainClassState:Class<FlxState> = Init; // Determine the main class state of the game
 	public static var framerate:Int = 120; // How many frames per second the game should run at.
 
-	public static var gameVersion:String = '0.3.1';
+	public static var underscoreVersion:String = '0.2';
 
 	var zoom:Float = -1; // If -1, zoom is automatically calculated to fit the window dimensions.
 	var skipSplash:Bool = true; // Whether to skip the flixel splash screen that appears in release mode.
-	var infoCounter:Overlay; // initialize the heads up display that shows information before creating it.
+	static var infoCounter:Overlay; // initialize the heads up display that shows information before creating it.
 
 	// heres gameweeks set up!
 
@@ -54,7 +69,12 @@ class Main extends Sprite
 		[ [songs to use], [characters in songs], [color of week], name of week ]
 	**/
 	public static var gameWeeks:Array<Dynamic> = [
-		[['Tutorial'], ['gf'], [FlxColor.fromRGB(129, 100, 223)], 'Funky Beginnings'],
+		[
+			['Tutorial'],
+			['gf'],
+			[FlxColor.fromRGB(129, 100, 223)],
+			'Funky Beginnings'
+		],
 		[
 			['Bopeebo', 'Fresh', 'Dadbattle'],
 			['dad', 'dad', 'dad'],
@@ -90,6 +110,12 @@ class Main extends Sprite
 			['senpai', 'senpai', 'spirit'],
 			[FlxColor.fromRGB(206, 106, 169)],
 			"hating simulator ft. moawling"
+		],
+		[
+			['Ugh', 'Guns', 'Stress'],
+			['tankman', 'tankman', 'tankman'],
+			[FlxColor.fromRGB(246, 182, 4)],
+			"Tankman"
 		],
 	];
 
@@ -157,6 +183,7 @@ class Main extends Sprite
 		PlayerSettings.init();
 
 		infoCounter = new Overlay(0, 0);
+		changeInfoAlpha(1);
 		addChild(infoCounter);
 	}
 
@@ -181,7 +208,7 @@ class Main extends Sprite
 			{
 				FlxG.switchState(target);
 			};
-			return trace('changed state');
+			return #if DEBUG_TRACES trace('changed state') #end;
 		}
 		FlxTransitionableState.skipNextTransIn = false;
 		// load the state
@@ -215,21 +242,24 @@ class Main extends Sprite
 
 		path = "crash/" + "FE_" + dateNow + ".txt";
 
+		errMsg = "Forever Version: " + Lib.application.meta["version"] + "\n";
+		errMsg += "Underscore Version: " + Main.underscoreVersion + "\n";
+
 		for (stackItem in callStack)
 		{
 			switch (stackItem)
 			{
 				case FilePos(s, file, line, column):
-					errMsg += file + " (line " + line + ")\n";
+					errMsg += "\n" + file + " (line " + line + ")\n";
 				default:
 					Sys.println(stackItem);
 			}
 		}
 
-		errMsg += "\nUncaught Error: " + e.error + "\nPlease report this error to the GitHub page: https://github.com/Yoshubs/Forever-Engine";
+		errMsg += "\nUncaught Error: " + e.error + "\nPlease report this error to the GitHub page: https://github.com/BeastlyGhost/Forever-Engine-Underscore\non the \"master\" branch\n\n>Crash Handler written by: sqirra-rng\n\n";
 
-		if (!FileSystem.exists("crash/"))
-			FileSystem.createDirectory("crash/");
+		if (!FileSystem.exists(";/crash/"))
+			FileSystem.createDirectory("./crash/");
 
 		File.saveContent(path, errMsg + "\n");
 
@@ -240,6 +270,8 @@ class Main extends Sprite
 
 		#if windows
 		crashDialoguePath += ".exe";
+		#elseif (linux || mac)
+		crashDialoguePath = "./FE-CrashDialog";
 		#end
 
 		if (FileSystem.exists(crashDialoguePath))
@@ -254,5 +286,10 @@ class Main extends Sprite
 		}
 
 		Sys.exit(1);
+	}
+
+	public static function changeInfoAlpha(value:Float)
+	{
+		infoCounter.alpha = value;
 	}
 }

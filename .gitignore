@@ -1,5 +1,10 @@
 export/
+crash-dialog/
+build-crash-dialog.bat
+build-crash-dialog-linux.sh
+build-crash-dialog-mac.sh
 .vscode/
+source/states/menus/AchievementsMenuState.hx
 APIStuff.hx
-mods/
 docs/_build
+**/.DS_Store

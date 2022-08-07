@@ -56,7 +56,7 @@ import lime.math.RGBA;
 #end
 @:final class ColorMatrixFilter extends BitmapFilter
 {
-	@:noCompletion private static var __colorMatrixShader:ColorMatrixShader = new ColorMatrixShader();
+	@:noCompletion static var __colorMatrixShader:ColorMatrixShader = new ColorMatrixShader();
 
 	/**
 		An array of 20 items for 4 x 5 color transform. The `matrix` property
@@ -114,10 +114,10 @@ import lime.math.RGBA;
 	**/
 	public var matrix(get, set):Array<Float>;
 
-	@:noCompletion private var __matrix:Array<Float>;
+	@:noCompletion var __matrix:Array<Float>;
 
 	#if openfljs
-	@:noCompletion private static function __init__()
+	@:noCompletion static function __init__()
 	{
 		untyped Object.defineProperties(ColorMatrixFilter.prototype, {
 			"matrix": {
@@ -224,12 +224,12 @@ import lime.math.RGBA;
 	}
 
 	// Get & Set Methods
-	@:noCompletion private function get_matrix():Array<Float>
+	@:noCompletion function get_matrix():Array<Float>
 	{
 		return __matrix;
 	}
 
-	@:noCompletion private function set_matrix(value:Array<Float>):Array<Float>
+	@:noCompletion function set_matrix(value:Array<Float>):Array<Float>
 	{
 		if (value == null)
 		{

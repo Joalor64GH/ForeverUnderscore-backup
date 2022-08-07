@@ -1,0 +1,94 @@
+function onCreate()
+{
+    /**
+    * hello, just wanna make it clear that you need to add your stage images to the
+    * assets/backgrounds/<stageName> folder for it to appear on the chart editor
+    * then while adding a new graphic, the image path must be
+    * `'backgrounds/' + curStage + '/file'`
+    **/
+    
+    configStage('exampleStage', 0.9); // set the stage name and default zoom (ZOOM IS OPTIONAL)
+    resetKey(false); // makes it so F5 restarts the song, useful for debugging (OPTIONAL)
+    spawnGirlfriend(true); // whether to spawn girlfriend, usually true (OPTIONAL)
+
+    /**
+        Stage Scale Modes
+                = AVAILABLE SCALE MODES =
+                    "fill"
+                    "fixed"
+                    "fixed-adjust"
+                    "pixel-perfect"
+                    "relative"
+                    "stage"
+                    "ratio"
+    **/
+
+    /**
+        Blend Modes, for all your image effect needs
+                = AVAILABLE BLENDS =
+                    "normal"
+                    "darken"
+                    "multiply"
+                    "lighten"
+                    "screen"
+                    "overlay"
+                    "hardlight"
+                    "difference"
+                    "add"
+                    "subtract"
+                    "invert"
+    **/
+
+    // create graphics for the stage
+
+    //
+    createGraphic(
+        'bg', // graphic id
+        -600, -200, 1, // position x and position y and size
+        0.9, 0.9, // scroll factor x and scroll factor y
+        1, 1, 1, // graphic scale x, scale y, and graphic opacity
+        'backgrounds/stage/stageback', // image path
+        false, // spawn on foreground
+        "normal" // graphic blend effect, usually "normal" (OPTIONAL)
+    );
+
+    //
+    createGraphic(
+        'stagefront',
+        -650, 600, 1.1,
+        0.9, 0.9,
+        1, 1, 1,
+        'backgrounds/stage/stagefront',
+        false
+    );
+
+    //
+    createGraphic(
+        'stagecurtains',
+        -500, -300, 0.9,
+        1.3, 1.3,
+        1, 1, 1,
+        'backgrounds/stage/stagecurtains',
+        false
+    );
+}
+
+function repositionPlayers() // function used to reposition characters
+{
+    //boyfriend.x += 0;
+    //boyfriend.y += 0;
+    //gf.x += 0;
+    //gf.y += 0;
+    //dad.x += 0;
+    //dad.y += 0;
+}
+
+function onUpdate(curBeat:Int) // stage updates
+{
+    //
+}
+
+function onUpdateConst(elapsed:Float) // stage constant updates
+{
+    //
+}

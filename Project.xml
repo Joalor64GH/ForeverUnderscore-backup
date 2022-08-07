@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<project>
+<project
+	xmlns="http://lime.software/project/1.0.2"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://lime.software/project/1.0.2 http://lime.software/xsd/project-1.0.2.xsd">
 
 	<!-- _________________________ Application Settings _________________________ -->
 
-	<app title="Friday Night Funkin' Forever Engine" file="Forever-Engine" packageName="com.yoshubs.foreverengine" package="com.yoshubs.foreverengine" main="Main" version="0.2.7.1" company="Yoshubs" />
+	<app title="Friday Night Funkin' Forever Engine" file="Forever-Engine" packageName="com.yoshubs.foreverengine" package="com.yoshubs.foreverengine" main="Main" version="0.3.1" company="Yoshubs"/>
 
 	<!--The flixel preloader is not accurate in Chrome. You can use it regularly if you embed the swf into a html file
 		or you can set the actual size of your file manually at "FlxPreloaderBase-onUpdate-bytesTotal"-->
@@ -15,7 +18,7 @@
 	<!-- ____________________________ Window Settings ___________________________ -->
 
 	<!--These window settings apply to all targets-->
-	<window width="1280" height="720" fps="" background="#000000" hardware="true" vsync="false" />
+	<window width="1280" height="720" background="#000000" hardware="true" vsync="false" />
 
 	<!--HTML5-specific-->
 	<window if="html5" resizable="true" />
@@ -26,9 +29,14 @@
 	<!--Mobile-specific-->
 	<window if="mobile" orientation="landscape" fullscreen="true" resizable="false" />
 
-	<!-- _____________________________ Custom Defines ____________________________ -->
-	
+	<!-- _____________________________ Underscore Custom Defines ____________________________ -->
+
 	<define name="DISCORD_RPC" if="desktop" unless="web || neko" />
+	<define name="VIDEO_PLUGIN" if="desktop" unless="32bits || neko" />
+	<define name="LUA_EXTENSION" unless="web || neko" />
+	<define name="HAXE_EXTENSION" unless="web" />
+	<define name="MODS_ALLOWED" unless="web" />
+	<define name="DEBUG_TRACES" if="debug" />
 
 	<!-- _____________________________ Path Settings ____________________________ -->
 
@@ -36,45 +44,40 @@
 	<set name="BUILD_DIR" value="export/debug" if="debug" />
 	<set name="BUILD_DIR" value="export/release" unless="debug" />
 
-	<!--
-		if you ever want to preload specific asset folders, add them here
-		keep in mind that if you don't want said asset folders to be cleared by the game's paths system
-		simply add the files to Paths.hx, on the dumpExclusions array
-	-->
-
 	<source path="source" />
-	<assets path="assets" />
-	<assets path="assets/songs"/>
-	<assets path="assets/music" preload="true"/>
-	<assets path="FE-CrashDialog.exe" type="template" if="windows release" />
 
-	<!--<assets path="mods" />-->
+	<assets path="assets" />
+	<assets path="mods" if="MODS_ALLOWED" />
+
+	<assets path="art/dependencies/FE-CrashDialog.exe" rename="FE-CrashDialog.exe" type="template" if="windows release" />
+	<!-- <assets path="art/dependencies/FE-CrashDialog-Linux" rename="FE-CrashDialog" type="template" if="linux release" /> -->
+	<!-- <assets path="art/dependencies/FE-CrashDialog-Mac" rename="FE-CrashDialog" type="template" if="mac release" /> -->
 
 	<!-- _______________________________ Libraries ______________________________ -->
 
-	<haxedev set='webgl' if="html5" />
-
 	<haxelib name="flixel" />
 	<haxelib name="flixel-addons" />
+	<haxelib name="flixel-tools" />
 	<haxelib name="flixel-ui" />
+
 	<haxelib name="discord_rpc" if="DISCORD_RPC"/>
-	<haxelib name="polymod"/>
+	<haxelib name="hxCodec" if="VIDEO_PLUGIN" />
+
+	<haxelib name="linc_luajit" if='LUA_EXTENSION' />
+	<haxelib name="SScript" if="HAXE_EXTENSION" />
+	<haxelib name="hscript" if="HAXE_EXTENSION" /> <!-- if i ever need it -gabi -->
+
+	<haxedef name="HXC_DEBUG_TRACE" if="debug" />
+	<haxelib name="hxcpp-debug-server" if="desktop"/>
 
 	<!-- ______________________________ Haxedefines _____________________________ -->
 
-	<!--Optimise inputs, be careful you will get null errors if you don't use conditionals in your game-->
 	<haxedef name="FLX_NO_TOUCH" if="desktop" />
+	<haxedef name="FLX_NO_MOUSE" if="mobile" />
+	<haxedef name="FLX_NO_KEYBOARD" if="mobile" />
 
-	<!--Disable the Flixel core focus lost screen-->
 	<haxedef name="FLX_NO_FOCUS_LOST_SCREEN" />
-
-	<!--Disable the Flixel core debugger. Automatically gets set whenever you compile in release mode!-->
 	<haxedef name="FLX_NO_DEBUG" unless="debug" />
-
-	<!-- Make's the game use less ram -->
-	<haxedef name="HXCPP_GC_BIG_BLOCKS"/>
-
-	<!--Enable this for Nape release builds for a serious peformance improvement-->
 	<haxedef name="NAPE_RELEASE_BUILD" unless="debug" />
 
 	<!-- Always enable Null Object Reference check for crash dialog -->
@@ -90,5 +93,4 @@
 	<icon path="art/icon256.png" size='256'/>
 	<icon path="art/icon512.png" size='512'/>
 	<icon path="art/iconOG.png" />
-
 </project>

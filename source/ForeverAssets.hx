@@ -1,17 +1,20 @@
 package;
 
+import base.Conductor;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.util.FlxColor;
-import gameObjects.userInterface.*;
-import gameObjects.userInterface.menu.*;
-import gameObjects.userInterface.notes.*;
-import gameObjects.userInterface.notes.Strumline.UIStaticArrow;
-import meta.data.Conductor;
-import meta.data.Section.SwagSection;
-import meta.data.Timings;
-import meta.state.PlayState;
+import funkin.*;
+import funkin.ColorSwap.ColorSwapShader;
+import funkin.ColorSwap;
+import funkin.Note.NoteType;
+import funkin.Note.SustainType;
+import funkin.Section.SwagSection;
+import funkin.Strumline.UIStaticArrow;
+import funkin.Timings;
+import funkin.ui.menu.*;
+import states.PlayState;
 
 using StringTools;
 
@@ -235,15 +238,15 @@ class ForeverAssets
 	/**
 		Notes!
 	**/
-	public static function generateArrow(assetModifier, strumTime, noteData, noteType, noteAlt, ?isSustainNote:Bool = false, ?prevNote:Note = null):Note
+	public static function generateArrow(assetModifier, strumTime, noteData, noteAlt, ?isSustainNote:Bool = false, ?prevNote:Note = null, noteType:NoteType = NORMAL, susType:SustainType = NORMAL):Note
 	{
 		var newNote:Note;
 		var changeableSkin:String = Init.trueSettings.get("Note Skin");
 		// gonna improve the system eventually
 		if (changeableSkin.startsWith('quant'))
-			newNote = Note.returnQuantNote(assetModifier, strumTime, noteData, noteType, noteAlt, isSustainNote, prevNote);
+			newNote = Note.returnQuantNote(assetModifier, strumTime, noteData, noteAlt, isSustainNote, prevNote, noteType, susType);
 		else
-			newNote = Note.returnDefaultNote(assetModifier, strumTime, noteData, noteType, noteAlt, isSustainNote, prevNote);
+			newNote = Note.returnDefaultNote(assetModifier, strumTime, noteData, noteAlt, isSustainNote, prevNote, noteType, susType);
 
 		// hold note shit
 		if (isSustainNote && prevNote != null)
@@ -254,6 +257,12 @@ class ForeverAssets
 			else // calculate a new visual offset based on that note's width and newnote's width
 				newNote.noteVisualOffset = ((prevNote.width / 2) - (newNote.width / 2));
 		}
+
+		/*var colorSwap:ColorSwap = new ColorSwap();
+		colorSwap.hue = Note.arrowColors[noteData][0] / 360;
+		colorSwap.saturation = Note.arrowColors[noteData][1] / 100;
+		colorSwap.brightness = Note.arrowColors[noteData][2] / 100;
+		newNote.shader = colorSwap.shader;*/
 
 		return newNote;
 	}

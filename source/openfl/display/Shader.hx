@@ -210,30 +210,30 @@ class Shader
 	**/
 	public var program:Program3D;
 
-	@:noCompletion private var __alpha:ShaderParameter<Float>;
-	@:noCompletion private var __bitmap:ShaderInput<BitmapData>;
-	@:noCompletion private var __colorMultiplier:ShaderParameter<Float>;
-	@:noCompletion private var __colorOffset:ShaderParameter<Float>;
-	@:noCompletion private var __context:Context3D;
-	@:noCompletion private var __data:ShaderData;
-	@:noCompletion private var __glFragmentSource:String;
-	@:noCompletion private var __glSourceDirty:Bool;
-	@:noCompletion private var __glVertexSource:String;
-	@:noCompletion private var __hasColorTransform:ShaderParameter<Bool>;
-	@:noCompletion private var __inputBitmapData:Array<ShaderInput<BitmapData>>;
-	@:noCompletion private var __isGenerated:Bool;
-	@:noCompletion private var __matrix:ShaderParameter<Float>;
-	@:noCompletion private var __numPasses:Int;
-	@:noCompletion private var __paramBool:Array<ShaderParameter<Bool>>;
-	@:noCompletion private var __paramFloat:Array<ShaderParameter<Float>>;
-	@:noCompletion private var __paramInt:Array<ShaderParameter<Int>>;
-	@:noCompletion private var __position:ShaderParameter<Float>;
-	@:noCompletion private var __textureCoord:ShaderParameter<Float>;
-	@:noCompletion private var __texture:ShaderInput<BitmapData>;
-	@:noCompletion private var __textureSize:ShaderParameter<Float>;
+	@:noCompletion var __alpha:ShaderParameter<Float>;
+	@:noCompletion var __bitmap:ShaderInput<BitmapData>;
+	@:noCompletion var __colorMultiplier:ShaderParameter<Float>;
+	@:noCompletion var __colorOffset:ShaderParameter<Float>;
+	@:noCompletion var __context:Context3D;
+	@:noCompletion var __data:ShaderData;
+	@:noCompletion var __glFragmentSource:String;
+	@:noCompletion var __glSourceDirty:Bool;
+	@:noCompletion var __glVertexSource:String;
+	@:noCompletion var __hasColorTransform:ShaderParameter<Bool>;
+	@:noCompletion var __inputBitmapData:Array<ShaderInput<BitmapData>>;
+	@:noCompletion var __isGenerated:Bool;
+	@:noCompletion var __matrix:ShaderParameter<Float>;
+	@:noCompletion var __numPasses:Int;
+	@:noCompletion var __paramBool:Array<ShaderParameter<Bool>>;
+	@:noCompletion var __paramFloat:Array<ShaderParameter<Float>>;
+	@:noCompletion var __paramInt:Array<ShaderParameter<Int>>;
+	@:noCompletion var __position:ShaderParameter<Float>;
+	@:noCompletion var __textureCoord:ShaderParameter<Float>;
+	@:noCompletion var __texture:ShaderInput<BitmapData>;
+	@:noCompletion var __textureSize:ShaderParameter<Float>;
 
 	#if openfljs
-	@:noCompletion private static function __init__()
+	@:noCompletion static function __init__()
 	{
 		untyped Object.defineProperties(Shader.prototype, {
 			"data": {
@@ -267,7 +267,7 @@ class Shader
 		__data = new ShaderData(code);
 	}
 
-	@:noCompletion private function __clearUseArray():Void
+	@:noCompletion function __clearUseArray():Void
 	{
 		for (parameter in __paramBool)
 		{
@@ -285,7 +285,7 @@ class Shader
 		}
 	}
 
-	// private function __clone ():Shader {
+	// function __clone ():Shader {
 	// var classType = Type.getClass (this);
 	// var shader = Type.createInstance (classType, []);
 	// for (input in __inputBitmapData) {
@@ -315,7 +315,7 @@ class Shader
 	// }
 	// return shader;
 	// }
-	@:noCompletion private function __createGLShader(source:String, type:Int):GLShader
+	@:noCompletion function __createGLShader(source:String, type:Int):GLShader
 	{
 		var gl = __context.gl;
 
@@ -334,7 +334,7 @@ class Shader
 		return shader;
 	}
 
-	@:noCompletion private function __createGLProgram(vertexSource:String, fragmentSource:String):GLProgram
+	@:noCompletion function __createGLProgram(vertexSource:String, fragmentSource:String):GLProgram
 	{
 		var gl = __context.gl;
 
@@ -367,7 +367,7 @@ class Shader
 		return program;
 	}
 
-	@:noCompletion private function __disable():Void
+	@:noCompletion function __disable():Void
 	{
 		if (program != null)
 		{
@@ -375,7 +375,7 @@ class Shader
 		}
 	}
 
-	@:noCompletion private function __disableGL():Void
+	@:noCompletion function __disableGL():Void
 	{
 		var gl = __context.gl;
 
@@ -412,7 +412,7 @@ class Shader
 		#end
 	}
 
-	@:noCompletion private function __enable():Void
+	@:noCompletion function __enable():Void
 	{
 		__init();
 
@@ -422,7 +422,7 @@ class Shader
 		}
 	}
 
-	@:noCompletion private function __enableGL():Void
+	@:noCompletion function __enableGL():Void
 	{
 		var textureCount = 0;
 
@@ -442,7 +442,7 @@ class Shader
 		#end
 	}
 
-	@:noCompletion private function __init():Void
+	@:noCompletion function __init():Void
 	{
 		if (__data == null)
 		{
@@ -455,7 +455,7 @@ class Shader
 		}
 	}
 
-	@:noCompletion private function __initGL():Void
+	@:noCompletion function __initGL():Void
 	{
 		if (__glSourceDirty || __paramBool == null)
 		{
@@ -562,7 +562,7 @@ class Shader
 		}
 	}
 
-	@:noCompletion private function __processGLData(source:String, storageType:String):Void
+	@:noCompletion function __processGLData(source:String, storageType:String):Void
 	{
 		var lastMatch = 0, position, regex, name, type;
 
@@ -723,7 +723,7 @@ class Shader
 		}
 	}
 
-	@:noCompletion private function __update():Void
+	@:noCompletion function __update():Void
 	{
 		if (program != null)
 		{
@@ -731,7 +731,7 @@ class Shader
 		}
 	}
 
-	@:noCompletion private function __updateFromBuffer(shaderBuffer:ShaderBuffer, bufferOffset:Int):Void
+	@:noCompletion function __updateFromBuffer(shaderBuffer:ShaderBuffer, bufferOffset:Int):Void
 	{
 		if (program != null)
 		{
@@ -739,7 +739,7 @@ class Shader
 		}
 	}
 
-	@:noCompletion private function __updateGL():Void
+	@:noCompletion function __updateGL():Void
 	{
 		var textureCount = 0;
 
@@ -765,7 +765,7 @@ class Shader
 		}
 	}
 
-	@:noCompletion private function __updateGLFromBuffer(shaderBuffer:ShaderBuffer, bufferOffset:Int):Void
+	@:noCompletion function __updateGLFromBuffer(shaderBuffer:ShaderBuffer, bufferOffset:Int):Void
 	{
 		var textureCount = 0;
 		var input, inputData, inputFilter, inputMipFilter, inputWrap;
@@ -902,7 +902,7 @@ class Shader
 	}
 
 	// Get & Set Methods
-	@:noCompletion private function get_data():ShaderData
+	@:noCompletion function get_data():ShaderData
 	{
 		if (__glSourceDirty || __data == null)
 		{
@@ -912,17 +912,17 @@ class Shader
 		return __data;
 	}
 
-	@:noCompletion private function set_data(value:ShaderData):ShaderData
+	@:noCompletion function set_data(value:ShaderData):ShaderData
 	{
 		return __data = cast value;
 	}
 
-	@:noCompletion private function get_glFragmentSource():String
+	@:noCompletion function get_glFragmentSource():String
 	{
 		return __glFragmentSource;
 	}
 
-	@:noCompletion private function set_glFragmentSource(value:String):String
+	@:noCompletion function set_glFragmentSource(value:String):String
 	{
 		if (value != __glFragmentSource)
 		{
@@ -932,12 +932,12 @@ class Shader
 		return __glFragmentSource = value;
 	}
 
-	@:noCompletion private function get_glVertexSource():String
+	@:noCompletion function get_glVertexSource():String
 	{
 		return __glVertexSource;
 	}
 
-	@:noCompletion private function set_glVertexSource(value:String):String
+	@:noCompletion function set_glVertexSource(value:String):String
 	{
 		if (value != __glVertexSource)
 		{

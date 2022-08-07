@@ -1,16 +1,13 @@
+import base.CoolUtil;
+import base.ui.Overlay;
 import flixel.FlxG;
 import flixel.FlxState;
-import flixel.addons.transition.FlxTransitionableState;
 import flixel.graphics.FlxGraphic;
 import flixel.input.keyboard.FlxKey;
-import meta.CoolUtil;
-import meta.Overlay;
-import meta.data.Highscore;
-import meta.data.dependency.Discord;
-import meta.state.*;
-import meta.state.charting.*;
+import funkin.Highscore;
 import openfl.filters.BitmapFilter;
 import openfl.filters.ColorMatrixFilter;
+import states.*;
 
 using StringTools;
 
@@ -62,7 +59,18 @@ class Init extends FlxState
 			'Whether to pause the game automatically if the window is unfocused.',
 			NOT_FORCED
 		],
-		'FPS Counter' => [true, Checkmark, 'Whether to display the FPS counter.', NOT_FORCED],
+		'Hardware Caching' => [
+			false,
+			Checkmark,
+			"Whether the game should upload images to the GPU, takes effect after restart.",
+			NOT_FORCED
+		],
+		'FPS Counter' => [
+			true,
+			Checkmark,
+			'Whether to display the FPS counter.',
+			NOT_FORCED
+		],
 		'Memory Counter' => [
 			true,
 			Checkmark,
@@ -101,7 +109,12 @@ class Init extends FlxState
 			NOT_FORCED,
 			['None', 'Left', 'Right']
 		],
-		'Display Accuracy' => [true, Checkmark, 'Whether to display your accuracy on screen.', NOT_FORCED],
+		'Display Accuracy' => [
+			true,
+			Checkmark,
+			'Whether to display your accuracy on screen.',
+			NOT_FORCED
+		],
 		'Disable Antialiasing' => [
 			false,
 			Checkmark,
@@ -143,22 +156,44 @@ class Init extends FlxState
 			NOT_FORCED,
 			''
 		],
-		"Note Skin" => ['default', Selector, 'Choose a note skin.', NOT_FORCED, ''],
-		"Framerate Cap" => [120, Selector, 'Define your maximum FPS.', NOT_FORCED, ['']],
+		"Note Skin" => [
+			'default',
+			Selector,
+			'Choose a note skin.',
+			NOT_FORCED,
+			''
+		],
+		"Framerate Cap" => [
+			120,
+			Selector,
+			'Define your maximum FPS.',
+			NOT_FORCED,
+			['']
+		],
 		"Opaque Arrows" => [
 			false,
 			Checkmark,
 			"Makes the arrows at the top of the screen opaque again.",
 			NOT_FORCED
 		],
-		"Opaque Holds" => [false, Checkmark, "Huh, why isnt the trail cut off?", NOT_FORCED],
+		"Opaque Holds" => [
+			false,
+			Checkmark,
+			"Huh, why isnt the trail cut off?",
+			NOT_FORCED
+		],
 		'Ghost Tapping' => [
 			false,
 			Checkmark,
 			"Enables Ghost Tapping, allowing you to press inputs without missing.",
 			NOT_FORCED
 		],
-		'Centered Notefield' => [false, Checkmark, "Center the notes, disables the enemy's notes."],
+		'Centered Notefield' => [
+			false,
+			Checkmark,
+			"Center the notes, disables the enemy's notes.",
+			NOT_FORCED
+		],
 		"Custom Titlescreen" => [
 			false,
 			Checkmark,
@@ -184,24 +219,63 @@ class Init extends FlxState
 			"Simplifies the judgement animations, displaying only one judgement / rating sprite at a time.",
 			NOT_FORCED
 		],
+		"Hitsound Type" => [
+			'default',
+			Selector,
+			'Choose the Note Hitsound you prefer.',
+			NOT_FORCED,
+			''
+		],
+		'Hitsound Volume' => [
+			Checkmark,
+			Selector,
+			'The volume for your Note Hitsounds.',
+			NOT_FORCED
+		],
+		'Colored Health Bar' => [
+			false,
+			Checkmark,
+			"Whether the Health Bar should follow the Character Icon colors.",
+			NOT_FORCED
+		],
+		'Disable Flashing Lights' => [
+			false,
+			Checkmark,
+			"Whether flashing elements on the menus should be disabled.",
+			NOT_FORCED
+		],
+		'Check for Updates' => [
+			true,
+			Checkmark,
+			"Whether to check for updates when opening the game.",
+			NOT_FORCED
+		],
+		'Score Bar Size' => [
+			18,
+			Selector,
+			'Set the text size for the Score Bar.',
+			NOT_FORCED
+		],
 	];
 
 	public static var trueSettings:Map<String, Dynamic> = [];
 	public static var settingsDescriptions:Map<String, String> = [];
 
 	public static var gameControls:Map<String, Dynamic> = [
-		'UP' => [[FlxKey.UP, W], 2],
-		'DOWN' => [[FlxKey.DOWN, S], 1],
 		'LEFT' => [[FlxKey.LEFT, A], 0],
+		'DOWN' => [[FlxKey.DOWN, S], 1],
+		'UP' => [[FlxKey.UP, W], 2],
 		'RIGHT' => [[FlxKey.RIGHT, D], 3],
-		'ACCEPT' => [[FlxKey.SPACE, Z, FlxKey.ENTER], 4],
-		'BACK' => [[FlxKey.BACKSPACE, X, FlxKey.ESCAPE], 5],
-		'PAUSE' => [[FlxKey.ENTER, P], 6],
-		'RESET' => [[R, null], 13],
-		'UI_UP' => [[FlxKey.UP, W], 8],
-		'UI_DOWN' => [[FlxKey.DOWN, S], 9],
-		'UI_LEFT' => [[FlxKey.LEFT, A], 10],
-		'UI_RIGHT' => [[FlxKey.RIGHT, D], 11],
+
+		'ACCEPT' => [[FlxKey.SPACE, Z, FlxKey.ENTER], 6],
+		'BACK' => [[FlxKey.BACKSPACE, X, FlxKey.ESCAPE], 7],
+		'PAUSE' => [[FlxKey.ENTER, P], 8],
+		'RESET' => [[R, null], 9],
+
+		'UI_UP' => [[FlxKey.UP, W], 12],
+		'UI_DOWN' => [[FlxKey.DOWN, S], 13],
+		'UI_LEFT' => [[FlxKey.LEFT, A], 14],
+		'UI_RIGHT' => [[FlxKey.RIGHT, D], 15],
 	];
 
 	public static var filters:Array<BitmapFilter> = []; // the filters the game has active
@@ -238,9 +312,7 @@ class Init extends FlxState
 
 	override public function create():Void
 	{
-		FlxG.save.bind('foreverengine-options');
 		Highscore.load();
-
 		loadSettings();
 		loadControls();
 
@@ -257,19 +329,13 @@ class Init extends FlxState
 		FlxG.mouse.visible = false; // Hide mouse on start
 		FlxGraphic.defaultPersist = true; // make sure we control all of the memory
 
-		gotoTitleScreen();
-	}
-
-	private function gotoTitleScreen()
-	{
-		if (trueSettings.get("Custom Titlescreen"))
-			Main.switchState(this, new CustomTitlescreen());
-		else
-			Main.switchState(this, new TitleState());
+		goToInitialDestination();
 	}
 
 	public static function loadSettings():Void
 	{
+		FlxG.save.bind('forever-settings', 'BeastlyGhost');
+
 		// set the true settings array
 		// only the first variable will be saved! the rest are for the menu stuffs
 
@@ -298,16 +364,25 @@ class Init extends FlxState
 			|| trueSettings.get("Stage Opacity") > 100)
 			trueSettings.set("Stage Opacity", 100);
 
+		if (!Std.isOfType(trueSettings.get("Hitsound Volume"), Int)
+			|| trueSettings.get("Hitsound Volume") < 0
+			|| trueSettings.get("Hitsound Volume") > 100)
+			trueSettings.set("Hitsound Volume", 0);
+
 		// 'hardcoded' ui skins
 		gameSettings.get("UI Skin")[4] = CoolUtil.returnAssetsLibrary('UI');
 		if (!gameSettings.get("UI Skin")[4].contains(trueSettings.get("UI Skin")))
 			trueSettings.set("UI Skin", 'default');
+
 		gameSettings.get("Note Skin")[4] = CoolUtil.returnAssetsLibrary('noteskins/notes');
 		if (!gameSettings.get("Note Skin")[4].contains(trueSettings.get("Note Skin")))
 			trueSettings.set("Note Skin", 'default');
 
-		saveSettings();
+		gameSettings.get("Hitsound Type")[4] = CoolUtil.returnAssetsLibrary('hitsounds', 'assets/sounds');
+		if (!gameSettings.get("Hitsound Type")[4].contains(trueSettings.get("Hitsound Type")))
+			trueSettings.set("Hitsound Type", 'default');
 
+		saveSettings();
 		updateAll();
 
 		if(FlxG.save.data.volume != null)
@@ -316,27 +391,53 @@ class Init extends FlxState
 			FlxG.sound.muted = FlxG.save.data.mute;
 	}
 
-	public static function loadControls():Void
+	function goToInitialDestination()
 	{
-		if ((FlxG.save.data.gameControls != null) && (Lambda.count(FlxG.save.data.gameControls) == Lambda.count(gameControls)))
-			gameControls = FlxG.save.data.gameControls;
+		// binding save to secrets so we can check your flashing lights state
+		FlxG.save.bind('forever-secrets', 'BeastlyGhost');
 
-		saveControls();
+		if (!FlxG.save.data.leftFlashing)
+		{
+			Main.switchState(this, new FlashingState());
+		}
+		else
+		{
+			// bind save back to settings
+			FlxG.save.bind('forever-settings', 'BeastlyGhost');
+			Main.switchState(this, (trueSettings.get("Custom Titlescreen") ? new CustomTitlescreen() : new TitleState()));
+		}
 	}
 
 	public static function saveSettings():Void
 	{
 		// ez save lol
+		FlxG.save.bind('forever-settings', 'BeastlyGhost');
 		FlxG.save.data.settings = trueSettings;
 		FlxG.save.flush();
 
+		#if DEBUG_TRACES trace('Settings Saved!'); #end
 		updateAll();
 	}
 
 	public static function saveControls():Void
 	{
-		FlxG.save.data.gameControls = gameControls;
+		FlxG.save.bind('forever-controls', 'BeastlyGhost');
+		FlxG.save.data.controls = gameControls;
 		FlxG.save.flush();
+		
+		#if DEBUG_TRACES trace('Controls Saved!'); #end
+	}
+
+	public static function loadControls():Void
+	{
+		FlxG.save.bind('forever-controls', 'BeastlyGhost');
+		if (FlxG.save != null && FlxG.save.data.controls != null)
+		{
+			if ((FlxG.save.data.controls != null) && (Lambda.count(FlxG.save.data.controls) == Lambda.count(gameControls)))
+				gameControls = FlxG.save.data.controls;
+		}
+
+		saveControls();
 	}
 
 	public static function updateAll()
