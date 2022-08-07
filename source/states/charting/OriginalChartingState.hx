@@ -82,8 +82,6 @@ class OriginalChartingState extends MusicBeatState
 	var gridBG:FlxSprite;
 	var gridBlackLine:FlxSprite;
 
-	var chartBG:FlxSprite;
-
 	var _song:SwagSong;
 
 	var typingShit:FlxInputText;
@@ -130,13 +128,6 @@ class OriginalChartingState extends MusicBeatState
 		}
 
 		curSection = lastSection;
-
-		chartBG = new FlxSprite().loadGraphic(Paths.image('menus/base/menuDesat'));
-		chartBG.scrollFactor.set();
-		chartBG.antialiasing = !Init.trueSettings.get('Disable Antialiasing');
-		chartBG.alpha = 0.4;
-		chartBG.color = FlxColor.GRAY;
-		add(chartBG);
 
 		gridBG = FlxGridOverlay.create(GRID_SIZE, GRID_SIZE, GRID_SIZE * 8, GRID_SIZE * 16);
 		add(gridBG);
@@ -1094,27 +1085,11 @@ class OriginalChartingState extends MusicBeatState
 		{
 			leftIcon.setPosition(gridBG.width / 2, -100);
 			rightIcon.setPosition(0, -100);
-			//colorFlash(false);
 		}
 		else
 		{
 			leftIcon.setPosition(0, -100);
 			rightIcon.setPosition(gridBG.width / 2, -100);
-			//colorFlash(true);
-		}
-	}
-
-	function colorFlash(mustHit:Bool)
-	{
-		var color = (mustHit ? 0xFF66FF33 : 0xFFFF0000);
-
-		var disableFlashing = Init.trueSettings.get('Disable Flashing Lights');
-		if (!disableFlashing)
-		{
-			if (_song.notes[curSection].gfSection)
-				FlxTween.color(chartBG, 1, FlxColor.fromRGB(165,0,77), FlxColor.GRAY);
-			else
-				FlxTween.color(chartBG, 1, color, FlxColor.GRAY);
 		}
 	}
 

@@ -124,7 +124,9 @@ class ForeverAssets
 		switch (assetModifier)
 		{
 			case 'pixel':
-				tempSplash.loadGraphic(Paths.image(ForeverTools.returnSkinAsset('splash-pixel', assetModifier, changeableSkin, baseLibrary)), true, 34, 34);
+				asset = 'splash-pixel';
+
+				tempSplash.loadGraphic(Paths.image(ForeverTools.returnSkinAsset(asset, assetModifier, changeableSkin, baseLibrary)), true, 34, 34);
 				tempSplash.animation.add('anim1', [noteData, 4 + noteData, 8 + noteData, 12 + noteData], 24, false);
 				tempSplash.animation.add('anim2', [16 + noteData, 20 + noteData, 24 + noteData, 28 + noteData], 24, false);
 				tempSplash.animation.play('anim1');
@@ -133,8 +135,9 @@ class ForeverAssets
 				tempSplash.setGraphicSize(Std.int(tempSplash.width * PlayState.daPixelZoom));
 
 			default:
-				// 'UI/$assetModifier/notes/noteSplashes'
-				tempSplash.loadGraphic(Paths.image(ForeverTools.returnSkinAsset('noteSplashes', assetModifier, changeableSkin, baseLibrary)), true, 210, 210);
+				asset = 'noteSplashes';
+				
+				tempSplash.loadGraphic(Paths.image(ForeverTools.returnSkinAsset(asset, assetModifier, changeableSkin, baseLibrary)), true, 210, 210);
 				tempSplash.animation.add('anim1', [
 					(noteData * 2 + 1),
 					8 + (noteData * 2 + 1),

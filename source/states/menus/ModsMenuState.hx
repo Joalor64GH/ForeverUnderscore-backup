@@ -17,7 +17,6 @@ typedef ModData =
 	description:String,
 	tags:Array<String>,
 	authors:Array<String>,
-	hasLoadingScreen:Bool,
 	loadingImage:String,
 	loadingBarColor:Array<FlxColor>,
 }
@@ -28,6 +27,7 @@ typedef ModData =
 	* but here it is, I will need a lot of help, but here it is!
 
 	* quick reminder, i'm not a very good programmer, but I will try my very best -gabi
+	* no, I have NO ideas for this.
 **/
 class ModsMenuState extends MusicBeatState
 {
@@ -55,10 +55,11 @@ class ModsMenuState extends MusicBeatState
 
 		FlxTween.tween(fg, {alpha: 0.6}, 0.4, {ease: FlxEase.quartInOut});
 
-		var text:FlxText = new FlxText(0, 0, 0, '- MODS MENU -\nWIP\n');
+		var text:FlxText = new FlxText(0, 0, 0, '- MODS MENU -');
 		text.setFormat(Paths.font('vcr.ttf'), 36, FlxColor.WHITE);
 		text.setBorderStyle(OUTLINE, FlxColor.BLACK, 1.5);
 		text.antialiasing = true;
+		text.screenCenter(X);
 		add(text);
 	}
 

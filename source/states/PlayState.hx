@@ -1153,8 +1153,7 @@ class PlayState extends MusicBeatState
 			if (coolNote.noteType == MINE)
 			{
 				decreaseCombo(true);
-				// will add a notesplash for mines later
-				createSplash(coolNote, characterStrums);
+				createSplash(coolNote, characterStrums, 'noteSplashDanger');
 				health -= coolNote.healthLoss;
 			}
 
@@ -1501,9 +1500,11 @@ class PlayState extends MusicBeatState
 		popUpCombo();
 	}
 
-	public function createSplash(coolNote:Note, strumline:Strumline)
+	public function createSplash(coolNote:Note, strumline:Strumline, skin:String = 'noteSplashes')
 	{
 		// play animation in existing notesplashes
+		strumline.splashSkin = skin;
+		
 		var noteSplashRandom:String = (Std.string((FlxG.random.int(0, 1) + 1)));
 		if (strumline.splashNotes != null)
 			strumline.splashNotes.members[coolNote.noteData].playAnim('anim' + noteSplashRandom, true);

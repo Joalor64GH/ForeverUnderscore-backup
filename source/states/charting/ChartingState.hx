@@ -1002,7 +1002,8 @@ class ChartingState extends MusicBeatState
 	function updateText()
 	{
 		bpmTxt.text = bpmTxt.text = Std.string('BEAT: '
-			+ FlxMath.roundDecimal(decBeat, 2) // + '  STEP: ' + curStep
+			+ FlxMath.roundDecimal(decBeat, 2)
+			// + '  STEP: ' + curStep
 			+ '  MEASURE: '
 			+ currentSection
 			+ '  TIME: '
