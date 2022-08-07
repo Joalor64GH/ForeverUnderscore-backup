@@ -9,32 +9,32 @@ import flixel.text.FlxText;
  */
 class AbsoluteText extends FlxText
 {
-    public var parent:FlxSprite;
-    public var offsetX:Null<Float> = null;
-    public var offsetY:Null<Float> = null;
-    public var trackAlpha:Bool = true;
+	public var parent:FlxSprite;
+	public var offsetX:Null<Float> = null;
+	public var offsetY:Null<Float> = null;
+	public var trackAlpha:Bool = true;
 
-    public function new(text:String, size:Int, ?parent:FlxSprite, ?offsetX:Float, ?offsetY:Float)
-    {
-        super(0, 0, 400, text, size);
+	public function new(text:String, size:Int, ?parent:FlxSprite, ?offsetX:Float, ?offsetY:Float)
+	{
+		super(0, 0, 400, text, size);
 
-        setFormat(Paths.font('vcr.ttf'), size);
+		setFormat(Paths.font('vcr.ttf'), size);
 
-        this.parent = parent;
-        this.offsetX = offsetX;
-        this.offsetY = offsetY;
-    }
+		this.parent = parent;
+		this.offsetX = offsetX;
+		this.offsetY = offsetY;
+	}
 
-    override function update(elapsed:Float)
-    {
-        super.update(elapsed);
+	override function update(elapsed:Float)
+	{
+		super.update(elapsed);
 
-        if (parent != null)
-        {
-            setPosition(parent.x + offsetX, parent.y + offsetY);
+		if (parent != null)
+		{
+			setPosition(parent.x + offsetX, parent.y + offsetY);
 
-            if (trackAlpha)
-                alpha = parent.alpha;
-        }
-    }
+			if (trackAlpha)
+				alpha = parent.alpha;
+		}
+	}
 }

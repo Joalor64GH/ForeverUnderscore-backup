@@ -8,14 +8,14 @@ import flixel.util.*;
 
 class ScriptHandler extends SScript
 {
-    public function new(file:String, ?preset:Bool = true)
-    {
-        super(file, preset);
-    }
+	public function new(file:String, ?preset:Bool = true)
+	{
+		super(file, preset);
+	}
 
-    override public function preset():Void
-    {
-        super.preset();
+	override public function preset():Void
+	{
+		super.preset();
 
 		interp.variables.set('FlxG', FlxG);
 		interp.variables.set('FlxBasic', FlxBasic);
@@ -27,5 +27,5 @@ class ScriptHandler extends SScript
 		interp.variables.set('FlxEase', FlxEase);
 		interp.variables.set('FlxMath', FlxMath);
 		interp.variables.set('FlxSound', FlxSound);
-    }
+	}
 }

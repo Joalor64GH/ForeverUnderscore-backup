@@ -518,7 +518,7 @@ class Character extends FNFSprite
 			flipX = !flipX;
 		}
 
-		//icon = json.healthicon;
+		// icon = json.healthicon;
 		barColor = json.healthbar_colors;
 		singDuration = json.sing_duration;
 		scale.set(json.scale, json.scale);

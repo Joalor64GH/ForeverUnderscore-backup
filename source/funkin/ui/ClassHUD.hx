@@ -71,25 +71,22 @@ class ClassHUD extends FlxTypedGroup<FlxBasic>
 			barY = 64;
 
 		healthBarBG = new FlxSprite(0, barY);
-		healthBarBG.loadGraphic(Paths.image(ForeverTools.returnSkinAsset(
-			'healthBar', PlayState.assetModifier, PlayState.changeableSkin, 'UI')));
+		healthBarBG.loadGraphic(Paths.image(ForeverTools.returnSkinAsset('healthBar', PlayState.assetModifier, PlayState.changeableSkin, 'UI')));
 
 		healthBarBG.screenCenter(X);
 		healthBarBG.scrollFactor.set();
 		add(healthBarBG);
 
-		healthBar = new FlxBar(healthBarBG.x + 4, healthBarBG.y + 4,
-			fillDirection, Std.int(healthBarBG.width - 8), Std.int(healthBarBG.height - 8));
+		healthBar = new FlxBar(healthBarBG.x + 4, healthBarBG.y + 4, fillDirection, Std.int(healthBarBG.width - 8), Std.int(healthBarBG.height - 8));
 
 		healthBar.scrollFactor.set();
-		if (Init.trueSettings.get('Colored Health Bar')) 
+		if (Init.trueSettings.get('Colored Health Bar'))
 		{
-			healthBar.createFilledBar(
-				FlxColor.fromRGB(PlayState.dadOpponent.barColor[0], PlayState.dadOpponent.barColor[1], PlayState.dadOpponent.barColor[2]), 
-				FlxColor.fromRGB(PlayState.boyfriend.barColor[0], PlayState.boyfriend.barColor[1], PlayState.boyfriend.barColor[2])
-			);
+			healthBar.createFilledBar(FlxColor.fromRGB(PlayState.dadOpponent.barColor[0], PlayState.dadOpponent.barColor[1],
+				PlayState.dadOpponent.barColor[2]),
+				FlxColor.fromRGB(PlayState.boyfriend.barColor[0], PlayState.boyfriend.barColor[1], PlayState.boyfriend.barColor[2]));
 		}
-		else 
+		else
 			healthBar.createFilledBar(0xFFFF0000, 0xFF66FF33);
 
 		// healthBar
@@ -126,7 +123,7 @@ class ClassHUD extends FlxTypedGroup<FlxBasic>
 			centerMark.y = (FlxG.height / 24) - 10;
 		centerMark.screenCenter(X);
 		centerMark.antialiasing = true;
-		//centerMark.alpha = 0;
+		// centerMark.alpha = 0;
 
 		// counter
 		if (Init.trueSettings.get('Counter') != 'None')
@@ -240,13 +237,12 @@ class ClassHUD extends FlxTypedGroup<FlxBasic>
 
 	public function updateBar()
 	{
-		if (Init.trueSettings.get('Colored Health Bar')) 
+		if (Init.trueSettings.get('Colored Health Bar'))
 		{
-			healthBar.createFilledBar(
-				FlxColor.fromRGB(PlayState.dadOpponent.barColor[0], PlayState.dadOpponent.barColor[1], PlayState.dadOpponent.barColor[2]), 
-				FlxColor.fromRGB(PlayState.boyfriend.barColor[0], PlayState.boyfriend.barColor[1], PlayState.boyfriend.barColor[2])
-			);
-		} 
+			healthBar.createFilledBar(FlxColor.fromRGB(PlayState.dadOpponent.barColor[0], PlayState.dadOpponent.barColor[1],
+				PlayState.dadOpponent.barColor[2]),
+				FlxColor.fromRGB(PlayState.boyfriend.barColor[0], PlayState.boyfriend.barColor[1], PlayState.boyfriend.barColor[2]));
+		}
 		else
 			healthBar.createFilledBar(0xFFFF0000, 0xFF66FF33);
 		healthBar.scrollFactor.set();

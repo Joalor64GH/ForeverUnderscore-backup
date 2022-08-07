@@ -48,7 +48,8 @@ class ChartParser
 						var daNoteAlt:Float = 0;
 
 						// very stupid but I'm lazy
-						if (songNotes.length > 2) {
+						if (songNotes.length > 2)
+						{
 							daNoteAlt = songNotes[3];
 						}
 						/*
@@ -119,7 +120,7 @@ class ChartParser
 					I don't exactly know how chart parsing works, so I'm leaving it like this for the time being
 					- BeastlyGhost
 				**/
-				
+
 				var daBeats:Int = 0;
 
 				for (section in noteData)
@@ -128,7 +129,7 @@ class ChartParser
 
 					for (songNotes in section.sectionNotes)
 					{
-						var daStrumTime:Float = songNotes[0] #if !neko - Init.trueSettings['Offset'] #end; // - | late, + | early
+						var daStrumTime:Float = songNotes[0]#if !neko - Init.trueSettings['Offset'] #end; // - | late, + | early
 						var daNoteData:Int = Std.int(songNotes[1] % 4);
 						// define the note's type
 						var daNoteAlt:Float = 0;
@@ -169,7 +170,8 @@ class ChartParser
 						{
 							oldNote = unspawnNotes[Std.int(unspawnNotes.length - 1)];
 							var sustainNote:Note = ForeverAssets.generateArrow(PlayState.assetModifier,
-								daStrumTime + (Conductor.stepCrochet * susNote) + Conductor.stepCrochet, daNoteData, daNoteAlt, true, oldNote, daNoteType, daSusType);
+								daStrumTime + (Conductor.stepCrochet * susNote) + Conductor.stepCrochet, daNoteData, daNoteAlt, true, oldNote, daNoteType,
+								daSusType);
 							sustainNote.scrollFactor.set();
 
 							unspawnNotes.push(sustainNote);
@@ -207,7 +209,7 @@ class ChartParser
 				unspawnEvents.push(eventNote);
 			}
 		}
-		
+
 		return unspawnEvents;
 	}
 }

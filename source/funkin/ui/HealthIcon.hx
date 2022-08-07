@@ -51,9 +51,10 @@ class HealthIcon extends FlxSprite
 		}
 
 		antialiasing = true;
-		var iconGraphic:FlxGraphic = path;
 
+		var iconGraphic:FlxGraphic = path;
 		var iconWidth = 1;
+
 		switch (iconGraphic.width)
 		{
 			case 450: iconWidth = 3;

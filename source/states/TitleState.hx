@@ -29,9 +29,9 @@ import flixel.util.FlxTimer;
 import funkin.Alphabet;
 import lime.app.Application;
 import openfl.Assets;
+import states.menus.*;
 import sys.FileSystem;
 import sys.io.File;
-import states.menus.*;
 
 using StringTools;
 
