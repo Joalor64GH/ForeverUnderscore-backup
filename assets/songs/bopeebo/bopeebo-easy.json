@@ -759,12 +759,10 @@
 		"gfVersion": "gf",
 		"player2": "dad",
 		"song": "Bopeebo",
-		"author":"Kawai Sprite",
 		"validScore": true,
 		"needsVoices": true,
 		"stage": "stage",
 		"speed": 1,
-		"bpm": 100,
-		"assetModifier": "base"
+		"bpm": 100
 	}
 }

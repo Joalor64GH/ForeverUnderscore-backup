@@ -1504,7 +1504,7 @@ class PlayState extends MusicBeatState
 	{
 		// play animation in existing notesplashes
 		strumline.splashSkin = skin;
-		
+
 		var noteSplashRandom:String = (Std.string((FlxG.random.int(0, 1) + 1)));
 		if (strumline.splashNotes != null)
 			strumline.splashNotes.members[coolNote.noteData].playAnim('anim' + noteSplashRandom, true);
@@ -1730,7 +1730,11 @@ class PlayState extends MusicBeatState
 			SONG.author = '???';
 
 		// String that contains the mode defined here so it isn't necessary to call changePresence for each mode
-		songDetails = CoolUtil.dashToSpace(SONG.song) + ' [' + CoolUtil.difficultyFromNumber(storyDifficulty) + '] - by ' + SONG.author;
+		songDetails = CoolUtil.dashToSpace(SONG.song)
+			+ ' ['
+			+ CoolUtil.difficultyFromNumber(storyDifficulty)
+			+ '] - by '
+			+ SONG.author;
 
 		// String for when the game is paused
 		detailsPausedText = "Paused - " + songDetails;
@@ -1752,13 +1756,9 @@ class PlayState extends MusicBeatState
 		FlxG.sound.list.add(songMusic);
 		FlxG.sound.list.add(vocals);
 
-		// generate the chart
+		// generate the chart and sort through notes
 		unspawnNotes = ChartParser.loadChart(SONG, ChartParser.songType);
-		// sometime my brain farts dont ask me why these functions were separated before
-
-		// sort through them
 		unspawnNotes.sort(sortByShit);
-		// give the game the heads up to be able to start
 
 		unspawnEvents = ChartParser.loadEvents(SONG, ChartParser.songType);
 		unspawnEvents.sort(sortByEvent);

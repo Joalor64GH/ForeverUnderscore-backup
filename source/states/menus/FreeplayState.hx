@@ -230,7 +230,8 @@ class FreeplayState extends MusicBeatState
 		var upP = controls.UI_UP_P;
 		var downP = controls.UI_DOWN_P;
 		var accepted = FlxG.keys.justPressed.ENTER;
-		var alt = FlxG.keys.justPressed.ALT;
+		var six = FlxG.keys.justPressed.SIX;
+		var seven = FlxG.keys.justPressed.SEVEN;
 		var shiftP = FlxG.keys.pressed.SHIFT;
 
 		var shiftMult:Int = 1;
@@ -301,12 +302,19 @@ class FreeplayState extends MusicBeatState
 
 		if (accepted || FlxG.mouse.justPressed)
 			loadSong(true, true);
-		else if (alt)
+		else if (six)
 		{
 			loadSong(false, true);
 			PlayState.chartingMode = true;
-			if (shiftP) PlayState.prevCharter == 1 else PlayState.prevCharter == 0;
-			Main.switchState(this, shiftP ? new ChartingState() : new OriginalChartingState());
+			PlayState.prevCharter == 1;
+			Main.switchState(this, new ChartingState());
+		}
+		else if (seven)
+		{
+			loadSong(false, true);
+			PlayState.chartingMode = true;
+			PlayState.prevCharter == 0;
+			Main.switchState(this, new OriginalChartingState());
 		}
 		else if (controls.RESET && presses < 3)
 		{

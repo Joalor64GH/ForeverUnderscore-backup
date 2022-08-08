@@ -4,6 +4,7 @@ import funkin.Section.SwagSection;
 import haxe.Json;
 import haxe.format.JsonParser;
 import lime.utils.Assets;
+import sys.FileSystem;
 import sys.io.File;
 
 using StringTools;
@@ -20,13 +21,21 @@ typedef SwagSong =
 	var player1:String;
 	var player2:String;
 	var gfVersion:String;
-	var assetModifier:String;
 	var stage:String;
 	var noteSkin:String;
 	var splashSkin:String;
 	var author:String;
+	var assetModifier:String;
 	var validScore:Bool;
+	var offset:Int;
 	var mania:Int;
+}
+
+typedef SwagMeta =
+{
+	var author:String;
+	var assetModifier:String;
+	var offset:Int;
 }
 
 class Song
@@ -50,17 +59,43 @@ class Song
 	public static function loadFromJson(jsonInput:String, ?folder:String):SwagSong
 	{
 		var rawJson = File.getContent(Paths.songJson(folder.toLowerCase(), jsonInput.toLowerCase())).trim();
+		var rawMeta = File.getContent(Paths.songJson(folder.toLowerCase(), 'meta')).trim();
 
 		while (!rawJson.endsWith("}"))
 			rawJson = rawJson.substr(0, rawJson.length - 1);
+		
+		while (!rawMeta.endsWith("}"))
+			rawMeta = rawMeta.substr(0, rawMeta.length - 1);
 
-		return parseJSONshit(rawJson);
+		return parseJSONshit(rawJson, rawMeta);
 	}
 
-	public static function parseJSONshit(rawJson:String):SwagSong
+	public static function parseJSONshit(rawJson:String, rawMeta:String = 'meta'):SwagSong
 	{
 		var swagShit:SwagSong = cast Json.parse(rawJson).song;
 		swagShit.validScore = true;
+
+		var swagMeta:SwagMeta = cast Json.parse(rawMeta);
+
+		// injecting info from the meta file if it's valid data, else get from the song data
+		// please spare me I know it looks weird.
+		if (swagMeta.assetModifier != null)
+			swagShit.assetModifier = swagMeta.assetModifier;
+		else if (swagShit.assetModifier != null)
+			swagShit.assetModifier = swagShit.assetModifier;
+		else
+			swagShit.assetModifier == 'base';
+
+		if (swagMeta.author != null)
+			swagShit.author = swagMeta.author;
+		else if (swagShit.author != null)
+			swagShit.author = swagShit.author;
+		else
+			swagShit.author = '???';
+
+		// fuck you haxe I can't use null on static platforms if it's an int :(
+		swagShit.offset = swagMeta.offset;
+
 		return swagShit;
 	}
 }
