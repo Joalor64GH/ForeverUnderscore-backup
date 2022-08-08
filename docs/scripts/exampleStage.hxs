@@ -73,7 +73,7 @@ function onCreate()
     );
 }
 
-function repositionPlayers() // function used to reposition characters
+function repositionPlayers(boyfriend, dad, gf) // function used to reposition characters
 {
     //boyfriend.x += 0;
     //boyfriend.y += 0;

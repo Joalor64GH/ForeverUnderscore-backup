@@ -351,6 +351,11 @@ class Character extends FNFSprite
 				positionArray = [x, y];
 		});
 
+		set('setSingDuration', function(amount:Int)
+		{
+			singDuration = amount;
+		});
+
 		set('set', function(name:String, value:Dynamic)
 		{
 			Reflect.setProperty(this, name, value);

@@ -651,11 +651,7 @@ class Stage extends FlxTypedGroup<FlxBasic>
 		}
 
 		if (stageScript.exists('repositionPlayers'))
-			stageScript.get('repositionPlayers')();
-
-		stageScript.set('boyfriend', boyfriend);
-		stageScript.set('gf', gf);
-		stageScript.set('dad', dad);
+			stageScript.get('repositionPlayers')(boyfriend, dad, gf);
 	}
 
 	var curLight:Int = 0;

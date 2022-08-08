@@ -529,7 +529,7 @@ class FreeplayState extends MusicBeatState
 				"- ALT **(+SHIFT)** = Open **(NEW)** Charting State. - RESET = Reset Score and Ranking. -",
 				[new FlxTextFormatMarkerPair(cyanMarkup, '**')]);*/
 			presses = 0;
-			iconArray[curSelected].animation.play('idle');
+			iconArray[curSelected].animation.play('static');
 			FlxG.sound.music.fadeIn(1.0, 0.3, 1.0);
 		});
 

@@ -3,6 +3,7 @@ package funkin.ui;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.graphics.FlxGraphic;
+import flixel.graphics.frames.FlxAtlasFrames;
 import sys.FileSystem;
 
 using StringTools;
@@ -28,14 +29,14 @@ class HealthIcon extends FlxSprite
 		else if (health > 85)
 			animation.play('winning');
 		else
-			animation.play('idle');
+			animation.play('static');
 	}
 
 	public function updateIcon(char:String = 'bf', isPlayer:Bool = false)
 	{
-		var icon = char;
-		var path = Paths.image('$icon/icon', 'assets', 'characters');
-		var iconExists = FileSystem.exists(Paths.getPath('characters/$icon/icon.png', IMAGE));
+		var iconPath = char;
+		var path = Paths.image('$iconPath/icon', 'assets', 'characters');
+		var iconExists = FileSystem.exists(Paths.getPath('characters/$iconPath/icon.png', IMAGE));
 
 		var trimmedCharacter:String = char;
 		if (trimmedCharacter.contains('-'))
@@ -43,14 +44,14 @@ class HealthIcon extends FlxSprite
 
 		if (!iconExists)
 		{
-			if (icon != trimmedCharacter)
+			if (iconPath != trimmedCharacter)
 				path = Paths.image('$trimmedCharacter/icon', 'assets', 'characters');
 			else
 				path = Paths.image('credits/face');
 			trace('$char icon is invalid, trying $trimmedCharacter instead you fuck');
 		}
 
-		antialiasing = true;
+		antialiasing = (!char.endsWith('-pixel'));
 
 		var iconGraphic:FlxGraphic = path;
 		var iconWidth = 1;
@@ -61,21 +62,35 @@ class HealthIcon extends FlxSprite
 			case 300: iconWidth = 2;
 			case 150: iconWidth = 1;
 		}
-		
+
 		loadGraphic(iconGraphic);
 		loadGraphic(iconGraphic, true, Std.int(iconGraphic.width / iconWidth), iconGraphic.height);
 
-		animation.add('idle', [0], 0, false, isPlayer);
+		animation.add('static', [0], 0, false, isPlayer);
 		animation.add('losing', [1], 0, false, isPlayer);
 
 		// ternary to avoid frame 1 playing where it shouldn't
 		animation.add('winning', (iconWidth == 3 ? [2] : [0]), 0, false, isPlayer);
-		
+
+		/**
+		* ANIMATED ICONS, HARDCODED
+		* FOR TESTING PURPOSES AS OF NOW, I DON'T KNOW IF I'M ACTUALLY ADDING THEM FR!!!
+		**/
+		if (char == 'hypno2plus')
+		{
+			frames = Paths.getSparrowAtlas('icon', 'assets', 'characters/$iconPath');
+
+			animation.addByPrefix('static', '$iconPath-static', 24, true);
+			animation.addByPrefix('losing', '$iconPath-losing', 24, true);
+			animation.addByPrefix('winning', '$iconPath-winning', 24, true);
+		}
+
 		initialWidth = width;
 		initialHeight = height;
 
-		animation.play('idle');
+		animation.play('static');
 		scrollFactor.set();
+		updateHitbox();
 	}
 
 	override function update(elapsed:Float)
