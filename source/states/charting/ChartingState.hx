@@ -197,8 +197,8 @@ class ChartingState extends MusicBeatState
 		add(arrowGroup);
 		arrowGroup.x -= 1;
 
-		bfIcon = new HealthIcon(_song.player1);
-		dadIcon = new HealthIcon(_song.player2);
+		bfIcon = new HealthIcon(PlayState.boyfriend.icon);
+		dadIcon = new HealthIcon(PlayState.dadOpponent.icon);
 		bfIcon.scrollFactor.set(1, 1);
 		dadIcon.scrollFactor.set(1, 1);
 

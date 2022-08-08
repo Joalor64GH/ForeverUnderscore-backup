@@ -60,13 +60,10 @@ class HealthIcon extends FlxSprite
 			trace('$char icon is invalid, trying $trimmedCharacter instead you fuck');
 		}
 
-		switch (char)
+		switch (char) /*switch (iconType)*/
 		{
+			/*case 'sparrow*/
 			case 'hypno2plus':
-				/**
-				 * ANIMATED ICONS, HARDCODED
-				 * FOR TESTING PURPOSES AS OF NOW, I DON'T KNOW IF I'M ACTUALLY ADDING THEM FR!!!
-				**/
 				frames = Paths.getSparrowAtlas('icon', 'assets', 'characters/$char');
 
 				animation.addByPrefix('static', '$char-static', 24, true, isPlayer);

@@ -296,7 +296,7 @@ class Character extends FNFSprite
 
 	function generateBaseChar()
 	{
-		var path:String = Paths.getPreloadPath('characters/${curCharacter.toLowerCase()}/config.hxs');
+		var path:String = Paths.getPreloadPath('characters/$curCharacter/config.hxs');
 
 		/* gonna try and fix psych chars first
 			#if MODS_ALLOWED
@@ -311,7 +311,7 @@ class Character extends FNFSprite
 		var scripts:Array<String> = [path];
 
 		#if MODS_ALLOWED
-		scripts.insert(0, Paths.getModPath('characters/${curCharacter.toLowerCase()}', 'config', 'hxs'));
+		scripts.insert(0, Paths.getModPath('characters/$curCharacter', 'config', 'hxs'));
 		#end
 
 		var pushedScripts:Array<String> = [];
@@ -388,12 +388,13 @@ class Character extends FNFSprite
 			return true;
 		});
 
-		set('setDeathChar', function(char:String = 'bf-dead', lossSfx:String = 'fnf_loss_sfx', song:String = 'gameOver', confirmSound:String = 'gameOverEnd')
+		set('setDeathChar', function(char:String = 'bf-dead', lossSfx:String = 'fnf_loss_sfx', song:String = 'gameOver', confirmSound:String = 'gameOverEnd', bpm:Int)
 		{
 			GameOverSubState.character = char;
 			GameOverSubState.deathSound = lossSfx;
 			GameOverSubState.deathMusic = song;
 			GameOverSubState.deathConfirm = confirmSound;
+			GameOverSubState.deathBPM = bpm;
 		});
 
 		set('get', function(variable:String)

@@ -1,13 +1,10 @@
 package states.subStates;
 
-import base.Conductor.BPMChangeEvent;
 import base.Conductor;
 import base.MusicBeat.MusicBeatSubState;
 import flixel.FlxG;
 import flixel.FlxObject;
-import flixel.FlxSubState;
-import flixel.math.FlxMath;
-import flixel.system.scaleModes.RatioScaleMode;
+import flixel.math.FlxPoint;
 import flixel.util.FlxColor;
 import flixel.util.FlxTimer;
 import funkin.Boyfriend;
@@ -19,15 +16,13 @@ class GameOverSubState extends MusicBeatSubState
 	//
 	var bf:Boyfriend;
 	var camFollow:FlxObject;
-	var camFollowPos:FlxObject;
-	var updateCamera:Bool = false;
-
 	var volume:Float = 1;
 
 	public static var character:String = 'bf-dead';
 	public static var deathSound:String = 'fnf_loss_sfx';
 	public static var deathMusic:String = 'gameOver';
 	public static var deathConfirm:String = 'gameOverEnd';
+	public static var deathBPM:Int = 100;
 
 	public static function resetGameOver()
 	{
@@ -35,9 +30,10 @@ class GameOverSubState extends MusicBeatSubState
 		deathSound = 'fnf_loss_sfx';
 		deathMusic = 'gameOver';
 		deathConfirm = 'gameOverEnd';
+		deathBPM = 100;
 	}
 
-	public function new(x:Float, y:Float, camX:Float, camY:Float)
+	public function new(x:Float, y:Float)
 	{
 		super();
 
@@ -53,28 +49,21 @@ class GameOverSubState extends MusicBeatSubState
 		camFollow = new FlxObject(bf.getGraphicMidpoint().x + 20, bf.getGraphicMidpoint().y - 40, 1, 1);
 		add(camFollow);
 
-		Conductor.changeBPM(100);
-
-		// FlxG.camera.followLerp = 1;
-		// FlxG.camera.focusOn(FlxPoint.get(FlxG.width / 2, FlxG.height / 2));
+		FlxG.camera.followLerp = 1;
+		FlxG.camera.focusOn(FlxPoint.get(FlxG.width / 2, FlxG.height / 2));
 		FlxG.camera.scroll.set();
 		FlxG.camera.target = null;
 
-		camFollowPos = new FlxObject(0, 0, 1, 1);
-		camFollowPos.setPosition(FlxG.camera.scroll.x + (FlxG.camera.width / 2), FlxG.camera.scroll.y + (FlxG.camera.height / 2));
-		add(camFollowPos);
-
+		Conductor.changeBPM(deathBPM);
 		bf.playAnim('firstDeath');
 	}
 
 	override function update(elapsed:Float)
 	{
+		if (FlxG.sound.music.playing)
+			Conductor.songPosition = FlxG.sound.music.time;
+		
 		super.update(elapsed);
-
-		if(updateCamera) {
-			var lerpVal:Float = CoolUtil.boundTo(elapsed * 0.6, 0, 1);
-			camFollowPos.setPosition(FlxMath.lerp(camFollowPos.x, camFollow.x, lerpVal), FlxMath.lerp(camFollowPos.y, camFollow.y, lerpVal));
-		}
 
 		if (controls.ACCEPT)
 			endBullshit();
@@ -95,10 +84,8 @@ class GameOverSubState extends MusicBeatSubState
 				Main.switchState(this, new FreeplayState());
 		}
 
-		if (bf.animation.curAnim.name == 'firstDeath' && bf.animation.curAnim.curFrame == 12) {
+		if (bf.animation.curAnim.name == 'firstDeath' && bf.animation.curAnim.curFrame == 12)
 			FlxG.camera.follow(camFollow, LOCKON, 0.01);
-			updateCamera = true;
-		}
 
 		if (bf.animation.curAnim.name == 'firstDeath' && bf.animation.curAnim.finished)
 			FlxG.sound.playMusic(Paths.music(deathMusic), volume);
@@ -115,9 +102,6 @@ class GameOverSubState extends MusicBeatSubState
 				});
 			}
 		}
-
-		if (FlxG.sound.music.playing)
-			Conductor.songPosition = FlxG.sound.music.time;
 	}
 
 	override function beatHit()

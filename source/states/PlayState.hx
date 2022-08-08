@@ -1846,7 +1846,7 @@ class PlayState extends MusicBeatState
 
 			deaths += 1;
 
-			openSubState(new GameOverSubState(boyfriend.getScreenPosition().x, boyfriend.getScreenPosition().y, camFollowPos.x, camFollowPos.y));
+			openSubState(new GameOverSubState(boyfriend.getScreenPosition().x, boyfriend.getScreenPosition().y));
 
 			FlxG.sound.play(Paths.sound(GameOverSubState.deathSound));
 
