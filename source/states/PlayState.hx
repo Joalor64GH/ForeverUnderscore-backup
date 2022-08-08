@@ -456,6 +456,7 @@ class PlayState extends MusicBeatState
 		#end
 
 		callFunc('onCreatePost', null);
+		callFunc('postCreate', null);
 	}
 
 	public static function copyKey(arrayToCopy:Array<FlxKey>):Array<FlxKey>
@@ -586,6 +587,7 @@ class PlayState extends MusicBeatState
 		#end
 
 		callFunc('onDestroy', null);
+		callFunc('destroy', null);
 
 		if (!Init.trueSettings.get('Controller Mode'))
 		{
@@ -608,6 +610,7 @@ class PlayState extends MusicBeatState
 		super.update(elapsed);
 
 		callFunc('onUpdate', elapsed);
+		callFunc('update', elapsed);
 
 		if (Init.trueSettings.get('Stage Opacity') > 0)
 			stageBuild.stageUpdateConstant(elapsed, boyfriend, gf, dadOpponent);
@@ -864,6 +867,7 @@ class PlayState extends MusicBeatState
 		}
 
 		callFunc('onUpdatePost', null);
+		callFunc('postUpdate', null);
 	}
 
 	// maybe theres a better place to put this, idk -saw
@@ -1415,6 +1419,7 @@ class PlayState extends MusicBeatState
 		#end
 
 		callFunc('onPause', null);
+		callFunc('pauseGame', null);
 
 		// pause discord rpc
 		updateRPC(true);
@@ -1693,6 +1698,8 @@ class PlayState extends MusicBeatState
 		#end
 
 		callFunc('onSongStart', null);
+		callFunc('onStartSong', null);
+		callFunc('startSong', null);
 
 		startingSong = false;
 
@@ -1779,6 +1786,7 @@ class PlayState extends MusicBeatState
 		#end
 
 		callFunc('onResyncVocals', null);
+		callFunc('resyncVocals', null);
 
 		#if DEBUG_TRACES trace('resyncing vocal time ${vocals.time}'); #end
 		songMusic.pause();
@@ -1804,6 +1812,7 @@ class PlayState extends MusicBeatState
 		#end
 
 		callFunc('onStepHit', curStep);
+		callFunc('stepHit', curStep);
 	}
 
 	function charactersDance(curBeat:Int)
@@ -1834,6 +1843,7 @@ class PlayState extends MusicBeatState
 		#end
 
 		callFunc('onGameOver', null);
+		callFunc('doGameOverCheck', null);
 
 		if (!practiceMode && health <= 0 && !isDead)
 		{
@@ -1930,6 +1940,7 @@ class PlayState extends MusicBeatState
 		#end
 
 		callFunc('onBeatHit', curBeat);
+		callFunc('beatHit', curBeat);
 	}
 
 	//
@@ -2001,6 +2012,7 @@ class PlayState extends MusicBeatState
 		#end
 
 		callFunc('onCloseSubState', null);
+		callFunc('closeSubState', null);
 
 		super.closeSubState();
 	}
@@ -2018,6 +2030,8 @@ class PlayState extends MusicBeatState
 		#end
 
 		callFunc('onEndSong', null);
+		callFunc('onSongEnd', null);
+		callFunc('endSong', null);
 
 		// set ranking
 		rank = Timings.returnScoreRating().toUpperCase();
@@ -2330,6 +2344,7 @@ class PlayState extends MusicBeatState
 		#end
 
 		callFunc('onStartCountdown', null);
+		callFunc('startCountdown', null);
 
 		startTimer = new FlxTimer().start(Conductor.crochet / 1000, function(tmr:FlxTimer)
 		{
@@ -2375,12 +2390,6 @@ class PlayState extends MusicBeatState
 					});
 					FlxG.sound.play(Paths.sound('intro2-' + assetModifier), 0.6);
 					Conductor.songPosition = -(Conductor.crochet * 3);
-
-					#if LUA_EXTENSION
-					callLLua('onCountdownTick', [1]);
-					#end
-
-					callFunc('onCountdownTick', 1);
 				case 2:
 					var set:FlxSprite = new FlxSprite().loadGraphic(Paths.image(introAlts[1]));
 					set.scrollFactor.set();
@@ -2537,6 +2546,7 @@ class PlayState extends MusicBeatState
 		}
 
 		callFunc('onCreate', null);
+		callFunc('create', null);
 
 		#if LUA_EXTENSION
 		var luas:Array<Array<String>> = [
