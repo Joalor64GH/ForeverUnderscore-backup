@@ -114,24 +114,10 @@ class ChartingState extends MusicBeatState
 	var eventTxt:FlxText;
 	var currentSelectedEvent:String;
 
-	var sustainColors:Array<Int> =
-	[
-		0xFFc24b99, // default note purple
-		0xFF00ffff, // default note blue
-		0xFF12fa05, // default note green
-		0xFFf9393f, // default note red
-		
-		0xFFff3535, // quant red
-		0xFF536bef, // quant blue
-		0xFFc24b99, // quant purple
-		0xFF00e550, // quant green(mint??)
-		0xFF606789, // quant gray(iron, coal??, give me color names!!!)
-		0xFFff7ad7, // quant pink
-		0xFFffe83d, // quant yellow
-		0xFFae36e6, // quant strong purple (strong purple, what???)
-		0xFF0febff, // quant cyan
-		0xFF606789 // quant gray(AGAIN)
-	];
+	// is this how it's supposed to work? idk.
+	public var speedList:Array<Int> = [4, 8, 12, 16, 20, 24, 32, 48, 64, 96, 192];
+	public var speedVal:Int = 16;
+	public var curSpeed = 3; // uh
 
 	override public function create()
 	{
@@ -436,10 +422,17 @@ class ChartingState extends MusicBeatState
 			openSubState(new PreferenceSubState(camHUD, 'help'));
 		}
 
-		if (FlxG.keys.justPressed.ENTER) {
+		if (FlxG.keys.justPressed.ENTER)
+		{
 			pauseMusic();
 			openSubState(new PreferenceSubState(camHUD, 'prefs'));
 		}
+
+		if(FlxG.keys.justPressed.RIGHT)
+			changeQuant(1);
+
+		if(FlxG.keys.justPressed.LEFT)
+			changeQuant(-1);
 
 		if (FlxG.keys.anyPressed([W, S]))
 		{
@@ -449,12 +442,7 @@ class ChartingState extends MusicBeatState
 			songMusic.pause();
 			vocals.pause();
 
-			var speed:Float = 1;
-
-			if (FlxG.keys.pressed.SHIFT)
-				speed = 3;
-
-			var daTime:Float = 700 * FlxG.elapsed * speed;
+			var daTime:Float = 700 * FlxG.elapsed * curSpeed;
 
 			if (FlxG.keys.pressed.W)
 				songMusic.time -= daTime;
@@ -463,6 +451,20 @@ class ChartingState extends MusicBeatState
 
 			vocals.time = songMusic.time;
 		}
+	}
+
+	function changeQuant(newSpd:Int)
+	{
+		curSpeed += newSpd;
+
+		if(curSpeed > speedList.length - 1)
+			curSpeed = 0;
+		if(curSpeed < 0)
+			curSpeed = speedList.length - 1;
+
+		speedVal = speedList[curSpeed];
+
+		//quantSprite.animation.play('${speedVal}th');
 	}
 
 	function saveAndClose(State:String)
@@ -1003,7 +1005,7 @@ class ChartingState extends MusicBeatState
 	{
 		bpmTxt.text = bpmTxt.text = Std.string('BEAT: '
 			+ FlxMath.roundDecimal(decBeat, 2)
-			// + '  STEP: ' + curStep
+			+ '  QUANT: ' + speedVal
 			+ '  MEASURE: '
 			+ currentSection
 			+ '  TIME: '
