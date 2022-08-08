@@ -259,7 +259,7 @@ class PlayState extends MusicBeatState
 		if (SONG.stage != null)
 			curStage = SONG.stage;
 		else
-			curStage = 'stage';
+			curStage = 'unknown';
 
 		if (Init.trueSettings.get('Stage Opacity') > 0)
 		{

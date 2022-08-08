@@ -12,10 +12,6 @@ import flixel.FlxObject;
 import flixel.FlxSprite;
 import flixel.addons.display.FlxBackdrop;
 import flixel.addons.display.FlxGridOverlay;
-import flixel.addons.ui.FlxUI;
-import flixel.addons.ui.FlxUICheckBox;
-import flixel.addons.ui.FlxUIDropDownMenu;
-import flixel.addons.ui.FlxUITabMenu;
 import flixel.graphics.FlxGraphic;
 import flixel.group.FlxGroup;
 import flixel.group.FlxSpriteGroup;
@@ -85,39 +81,25 @@ class ChartingState extends MusicBeatState
 	var dadIcon:HealthIcon;
 
 	// UI/default/forever/chart editor/quant
-	var noteQuant:FNFSprite;
+	var quantIndicator:FlxSprite;
 
-	var events:Array<Array<String>> = [
-		//event name - desc
+	// event name - desciption
+	var events:Array<Array<String>> =
+	[
 		["", ""],
-		[
-			"Hey!",
-			"Plays the \"Hey!\" animation from Bopeebo,\nValue 1: BF = Only Boyfriend, GF = Only Girlfriend,\nSomething else = Both.\nValue 2: Custom animation duration,\nleave it blank for 0.6s"
-		],
-		[
-			"Set GF Speed",
-			"Sets GF head bopping speed,\nValue 1: 1 = Normal speed,\n2 = 1/2 speed, 4 = 1/4 speed etc.\nUsed on Fresh during the beatbox parts.\n\nWarning: Value must be integer!"
-		],
-		[
-			"Change Character",
-			"Sets the current Character to a new one\nValue 1: Character to change (dad, bf, gf)\nValue 2: New character's name"
-		],
-		[
-			"Change Scroll Speed", 
-			"Value 1: Scroll Speed Multiplier (1 is default)\nValue 2: Time it takes to change fully in seconds."
-		],
-		[
-			"Play Animation",
-			"Plays an animation on a Character,\nonce the animation is completed,\nthe animation changes to Idle\n\nValue 1: Animation to play.\nValue 2: Character (Dad, BF, GF)"
-		]
+		["Hey!", "Plays the \"Hey!\" animation from Bopeebo,\nValue 1: BF = Only Boyfriend, GF = Only Girlfriend,\nSomething else = Both.\nValue 2: Custom animation duration,\nleave it blank for 0.6s"],
+		["Set GF Speed", "Sets GF head bopping speed,\nValue 1: 1 = Normal speed,\n2 = 1/2 speed, 4 = 1/4 speed etc.\nUsed on Fresh during the beatbox parts.\n\nWarning: Value must be integer!"],
+		["Change Character", "Sets the current Character to a new one\nValue 1: Character to change (dad, bf, gf)\nValue 2: New character's name"],
+		["Change Scroll Speed", "Value 1: Scroll Speed Multiplier (1 is default)\nValue 2: Time it takes to change fully in seconds."],
+		["Play Animation", "Plays an animation on a Character,\nonce the animation is completed,\nthe animation changes to Idle\n\nValue 1: Animation to play.\nValue 2: Character (Dad, BF, GF)"]
 	];
 	var eventTxt:FlxText;
 	var currentSelectedEvent:String;
 
 	// is this how it's supposed to work? idk.
 	public var speedList:Array<Int> = [4, 8, 12, 16, 20, 24, 32, 48, 64, 96, 192];
-	public var speedVal:Int = 16;
-	public var curSpeed = 3; // uh
+	public var speedVal:Int = 8;
+	public var curSpeed = 1; // uh
 
 	override public function create()
 	{
@@ -464,7 +446,7 @@ class ChartingState extends MusicBeatState
 
 		speedVal = speedList[curSpeed];
 
-		//quantSprite.animation.play('${speedVal}th');
+		// quantIndicator.animation.play('${speedVal}th');
 	}
 
 	function saveAndClose(State:String)

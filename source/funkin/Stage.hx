@@ -102,6 +102,8 @@ class Stage extends FlxTypedGroup<FlxBasic>
 				// this is because I want to avoid editing the fnf chart type
 				switch (CoolUtil.spaceToDash(PlayState.SONG.song.toLowerCase()))
 				{
+					case 'bopeebo' | 'fresh' | 'dadbattle':
+						curStage = 'stage';
 					case 'spookeez' | 'south' | 'monster':
 						curStage = 'spooky';
 					case 'pico' | 'blammed' | 'philly-nice':
@@ -119,7 +121,7 @@ class Stage extends FlxTypedGroup<FlxBasic>
 					case 'ugh' | 'guns' | 'stress':
 						curStage = 'military';
 					default:
-						curStage = 'stage';
+						curStage = 'unknown';
 				}
 				PlayState.curStage = curStage;
 
@@ -128,6 +130,8 @@ class Stage extends FlxTypedGroup<FlxBasic>
 				{
 					switch (CoolUtil.spaceToDash(PlayState.SONG.song.toLowerCase()))
 					{
+						case 'bopeebo' | 'fresh' | 'dadbattle':
+							curStage = 'stage';
 						case 'spookeez' | 'south' | 'monster':
 							curStage = 'spooky';
 						case 'pico' | 'blammed' | 'philly-nice':
@@ -145,7 +149,7 @@ class Stage extends FlxTypedGroup<FlxBasic>
 						case 'ugh' | 'guns' | 'stress':
 							curStage = 'military';
 						default:
-							curStage = 'stage';
+							curStage = 'unknown';
 					}
 				}
 				PlayState.curStage = PlayState.SONG.stage;
@@ -157,6 +161,37 @@ class Stage extends FlxTypedGroup<FlxBasic>
 		//
 		switch (curStage)
 		{
+			case 'stage':
+				PlayState.defaultCamZoom = 0.9;
+				curStage = 'stage';
+				var bg:FNFSprite = new FNFSprite(-600, -200).loadGraphic(Paths.image('backgrounds/' + curStage + '/stageback'));
+				bg.antialiasing = true;
+				bg.scrollFactor.set(0.9, 0.9);
+				bg.active = false;
+
+				// add to the final array
+				add(bg);
+
+				var stageFront:FNFSprite = new FNFSprite(-650, 600).loadGraphic(Paths.image('backgrounds/' + curStage + '/stagefront'));
+				stageFront.setGraphicSize(Std.int(stageFront.width * 1.1));
+				stageFront.updateHitbox();
+				stageFront.antialiasing = true;
+				stageFront.scrollFactor.set(0.9, 0.9);
+				stageFront.active = false;
+
+				// add to the final array
+				add(stageFront);
+
+				var stageCurtains:FNFSprite = new FNFSprite(-500, -300).loadGraphic(Paths.image('backgrounds/' + curStage + '/stagecurtains'));
+				stageCurtains.setGraphicSize(Std.int(stageCurtains.width * 0.9));
+				stageCurtains.updateHitbox();
+				stageCurtains.antialiasing = true;
+				stageCurtains.scrollFactor.set(1.3, 1.3);
+				stageCurtains.active = false;
+
+				// add to the final array
+				add(stageCurtains);
+
 			case 'spooky':
 				curStage = 'spooky';
 				// halloweenLevel = true;
@@ -212,6 +247,7 @@ class Stage extends FlxTypedGroup<FlxBasic>
 
 				var street:FNFSprite = new FNFSprite(-40, streetBehind.y).loadGraphic(Paths.image('backgrounds/' + curStage + '/street'));
 				add(street);
+
 			case 'highway':
 				curStage = 'highway';
 				PlayState.defaultCamZoom = 0.90;
@@ -257,6 +293,7 @@ class Stage extends FlxTypedGroup<FlxBasic>
 
 				fastCar = new FNFSprite(-300, 160).loadGraphic(Paths.image('backgrounds/' + curStage + '/fastCarLol'));
 			// loadArray.add(limo);
+
 			case 'mall':
 				curStage = 'mall';
 				PlayState.defaultCamZoom = 0.80;
@@ -310,6 +347,7 @@ class Stage extends FlxTypedGroup<FlxBasic>
 				santa.animation.addByPrefix('idle', 'santa idle in fear', 24, false);
 				santa.antialiasing = true;
 				add(santa);
+
 			case 'mallEvil':
 				curStage = 'mallEvil';
 				var bg:FNFSprite = new FNFSprite(-400, -500).loadGraphic(Paths.image('backgrounds/mall/evilBG'));
@@ -391,6 +429,7 @@ class Stage extends FlxTypedGroup<FlxBasic>
 				bgGirls.setGraphicSize(Std.int(bgGirls.width * daPixelZoom));
 				bgGirls.updateHitbox();
 				add(bgGirls);
+				
 			case 'schoolEvil':
 				var posX = 400;
 				var posY = 200;
@@ -520,35 +559,8 @@ class Stage extends FlxTypedGroup<FlxBasic>
 				foreground.add(tankdude3);
 
 			default:
+				curStage = 'unknown';
 				PlayState.defaultCamZoom = 0.9;
-				curStage = 'stage';
-				var bg:FNFSprite = new FNFSprite(-600, -200).loadGraphic(Paths.image('backgrounds/' + curStage + '/stageback'));
-				bg.antialiasing = true;
-				bg.scrollFactor.set(0.9, 0.9);
-				bg.active = false;
-
-				// add to the final array
-				add(bg);
-
-				var stageFront:FNFSprite = new FNFSprite(-650, 600).loadGraphic(Paths.image('backgrounds/' + curStage + '/stagefront'));
-				stageFront.setGraphicSize(Std.int(stageFront.width * 1.1));
-				stageFront.updateHitbox();
-				stageFront.antialiasing = true;
-				stageFront.scrollFactor.set(0.9, 0.9);
-				stageFront.active = false;
-
-				// add to the final array
-				add(stageFront);
-
-				var stageCurtains:FNFSprite = new FNFSprite(-500, -300).loadGraphic(Paths.image('backgrounds/' + curStage + '/stagecurtains'));
-				stageCurtains.setGraphicSize(Std.int(stageCurtains.width * 0.9));
-				stageCurtains.updateHitbox();
-				stageCurtains.antialiasing = true;
-				stageCurtains.scrollFactor.set(1.3, 1.3);
-				stageCurtains.active = false;
-
-				// add to the final array
-				add(stageCurtains);
 		}
 
 		callStageScript();
