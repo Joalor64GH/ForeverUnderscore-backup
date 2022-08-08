@@ -138,8 +138,12 @@ class OriginalChartingState extends MusicBeatState
 		curRenderedNotes = new FlxTypedGroup<Note>();
 		curRenderedSustains = new FlxTypedGroup<FlxSprite>();
 
-		leftIcon = new HealthIcon(PlayState.boyfriend.icon);
-		rightIcon = new HealthIcon(PlayState.dadOpponent.icon);
+		// stupid.
+		var bf:Character = new Character(0, 0, _song.player1);
+		var dad:Character = new Character(0, 0, _song.player2);
+
+		leftIcon = new HealthIcon(bf.icon);
+		rightIcon = new HealthIcon(dad.icon);
 		leftIcon.scrollFactor.set(1, 1);
 		rightIcon.scrollFactor.set(1, 1);
 
@@ -681,7 +685,7 @@ class OriginalChartingState extends MusicBeatState
                 {
 					if ((playTicksBf.checked) && (note.mustPress) || (playTicksDad.checked) && (!note.mustPress))
 					{
-						FlxG.sound.play(Paths.sound('hitsounds/${PlayState.changeableSound}/hit'));
+						FlxG.sound.play(Paths.sound('hitsounds/${Init.trueSettings.get('Hitsound Type').toLowerCase()}/hit'));
 						playedSound[data] = true;
 					}
                 }

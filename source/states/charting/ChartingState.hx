@@ -12,6 +12,7 @@ import flixel.FlxObject;
 import flixel.FlxSprite;
 import flixel.addons.display.FlxBackdrop;
 import flixel.addons.display.FlxGridOverlay;
+import flixel.addons.display.FlxTiledSprite;
 import flixel.graphics.FlxGraphic;
 import flixel.group.FlxGroup;
 import flixel.group.FlxSpriteGroup;
@@ -26,6 +27,7 @@ import funkin.Note.NoteType;
 import funkin.Song.SwagSong;
 import funkin.Strumline.UIStaticArrow;
 import funkin.ui.*;
+import lime.app.Application;
 import openfl.events.Event;
 import openfl.geom.ColorTransform;
 import states.charting.data.*;
@@ -41,7 +43,7 @@ using StringTools;
 **/
 class ChartingState extends MusicBeatState
 {
-	var _song:SwagSong;
+	public var _song:SwagSong;
 
 	var songMusic:FlxSound;
 	var vocals:FlxSound;
@@ -53,14 +55,14 @@ class ChartingState extends MusicBeatState
 	var camGame:FlxCamera;
 	var strumLineCam:FlxObject;
 
-	var currentSection:Null<Int> = 0;
+	public var currentSection:Null<Int> = 0;
 
 	var curSelectedNote:Note;
 
 	public static var songPosition:Float = 0;
 	public static var curSong:SwagSong;
 
-	var gridBG:FlxSprite;
+	var baseGrid:FlxSprite;
 	public static var gridSize:Int = 50;
 
 	var dummyArrow:FlxSprite;
@@ -81,7 +83,8 @@ class ChartingState extends MusicBeatState
 	var dadIcon:HealthIcon;
 
 	// UI/default/forever/chart editor/quant
-	var quantIndicator:FlxSprite;
+	var quantIndicatorLeft:FlxSprite;
+	var quantIndicatorRight:FlxSprite;
 
 	// event name - desciption
 	var events:Array<Array<String>> =
@@ -197,24 +200,7 @@ class ChartingState extends MusicBeatState
 		add(arrowGroup);
 		arrowGroup.x -= 1;
 
-		bfIcon = new HealthIcon(PlayState.boyfriend.icon);
-		dadIcon = new HealthIcon(PlayState.dadOpponent.icon);
-		bfIcon.scrollFactor.set(1, 1);
-		dadIcon.scrollFactor.set(1, 1);
-
-		bfIcon.setGraphicSize(gridSize, gridSize);
-		dadIcon.setGraphicSize(gridSize, gridSize);
-
-		bfIcon.flipX = true;
-
-		add(bfIcon);
-		add(dadIcon);
-
-		bfIcon.screenCenter(X);
-		dadIcon.screenCenter(X);
-
-		dadIcon.setPosition(strumLine.width / 2, -500);
-		bfIcon.setPosition(830, dadIcon.y);
+		generateIcons();
 
 		strumLineCam = new FlxObject(0, 0);
 		strumLineCam.screenCenter(X);
@@ -293,11 +279,16 @@ class ChartingState extends MusicBeatState
 		strumLineCam.y = strumLine.y + (FlxG.height / 3);
 		arrowGroup.y = strumLine.y;
 
-		coolGradient.y = strumLineCam.y - (FlxG.height / 2);
-		coolGrid.y = strumLineCam.y - (FlxG.height / 2);
+		var strumCamY = strumLineCam.y - (FlxG.height / 2);
 
-		bfIcon.y = strumLineCam.y - (FlxG.height / 2);
-		dadIcon.y = strumLineCam.y - (FlxG.height / 2);
+		coolGradient.y = strumCamY;
+		coolGrid.y = strumCamY;
+
+		bfIcon.y = strumCamY;
+		dadIcon.y = strumCamY;
+
+		quantIndicatorLeft.y = dadIcon.y + 110;
+		quantIndicatorRight.y = dadIcon.y + 110;
 
 		if (curBeat % 4 == 0 && curStep >= 16 * (currentSection + 1))
 			changeSection(currentSection + 1, false);
@@ -336,17 +327,23 @@ class ChartingState extends MusicBeatState
 					}
 				});
 			}
+
+			// would be cool maybe
+			if (FlxG.mouse.overlaps(quantIndicatorLeft) || FlxG.mouse.overlaps(quantIndicatorRight))
+			{
+				changeQuant(1);
+			}
 		}
 
 		///*
-		if (FlxG.mouse.x > (gridBG.x)
-			&& FlxG.mouse.x < (gridBG.x + gridBG.width)
+		if (FlxG.mouse.x > (baseGrid.x)
+			&& FlxG.mouse.x < (baseGrid.x + baseGrid.width)
 			&& FlxG.mouse.y > 0
-			&& FlxG.mouse.y < gridBG.y + (gridSize * _song.notes[currentSection].lengthInSteps))
+			&& FlxG.mouse.y < baseGrid.y + (gridSize * _song.notes[currentSection].lengthInSteps))
 		{
-			var fakeMouseX:Float = FlxG.mouse.x - gridBG.x;
+			var fakeMouseX:Float = FlxG.mouse.x - baseGrid.x;
 
-			dummyArrow.x = (Math.floor((fakeMouseX) / gridSize) * gridSize) + gridBG.x;
+			dummyArrow.x = (Math.floor((fakeMouseX) / gridSize) * gridSize) + baseGrid.x;
 
 			if (FlxG.keys.pressed.SHIFT)
 				dummyArrow.y = FlxG.mouse.y;
@@ -362,7 +359,7 @@ class ChartingState extends MusicBeatState
 					var noteStrum = getStrumTime(dummyArrow.y);
 
 					var notesSection = Math.floor(noteStrum / (Conductor.stepCrochet * 16));
-					var noteData = adjustSide(Math.floor((dummyArrow.x - gridBG.x) / gridSize), _song.notes[notesSection].mustHitSection);
+					var noteData = adjustSide(Math.floor((dummyArrow.x - baseGrid.x) / gridSize), _song.notes[notesSection].mustHitSection);
 					var noteSus = 0; // ninja you will NOT get away with this
 
 					noteData--;
@@ -446,7 +443,8 @@ class ChartingState extends MusicBeatState
 
 		speedVal = speedList[curSpeed];
 
-		// quantIndicator.animation.play('${speedVal}th');
+		quantIndicatorLeft.animation.play('${speedVal}th');
+		quantIndicatorRight.animation.play('${speedVal}th');
 	}
 
 	function saveAndClose(State:String)
@@ -458,6 +456,8 @@ class ChartingState extends MusicBeatState
 		ForeverTools.killMusic([songMusic, vocals]);
 
 		Main.changeInfoAlpha(1);
+
+		Paths.clearUnusedMemory();
 
 		if (State == 'PlayState')
 			Main.switchState(this, new PlayState());
@@ -532,7 +532,7 @@ class ChartingState extends MusicBeatState
 					if (!hitSoundsPlayed.contains(epicNote))
 					{
 						hitSoundsPlayed.push(epicNote);
-						FlxG.sound.play(Paths.sound('hitsounds/${PlayState.changeableSound}/hit'));
+						FlxG.sound.play(Paths.sound('hitsounds/${Init.trueSettings.get('Hitsound Type').toLowerCase()}/hit'));
 					}
 				}
 			}
@@ -581,12 +581,12 @@ class ChartingState extends MusicBeatState
 
 	function getStrumTime(yPos:Float):Float
 	{
-		return FlxMath.remapToRange(yPos, gridBG.y, gridBG.y + gridBG.height, 0, 16 * Conductor.stepCrochet);
+		return FlxMath.remapToRange(yPos, baseGrid.y, baseGrid.y + baseGrid.height, 0, 16 * Conductor.stepCrochet);
 	}
 
 	function getYfromStrum(strumTime:Float):Float
 	{
-		return FlxMath.remapToRange(strumTime, 0, 16 * Conductor.stepCrochet, gridBG.y, gridBG.y + gridBG.height);
+		return FlxMath.remapToRange(strumTime, 0, 16 * Conductor.stepCrochet, baseGrid.y, baseGrid.y + baseGrid.height);
 	}
 
 	function updateGrid(creating:Bool):Void
@@ -627,16 +627,24 @@ class ChartingState extends MusicBeatState
 		}
 	}
 
+	var fullGrid:FlxTiledSprite;
 	function recreateGrid():Void
 	{
 		gridGroup.clear();
+		var newAlpha = (26 / 255);
 
-		gridBG = FlxGridOverlay.create(gridSize, gridSize, gridSize * 9, gridSize * 32);
-		gridBG.graphic.bitmap.colorTransform(gridBG.graphic.bitmap.rect, new ColorTransform(1, 1, 1, (32 / 255)));
-		gridBG.screenCenter(X);
-		gridGroup.add(gridBG);
+		baseGrid = FlxGridOverlay.create(gridSize, gridSize, gridSize * 9, gridSize * 32, true, FlxColor.WHITE, FlxColor.BLACK);
+		baseGrid.graphic.bitmap.colorTransform(baseGrid.graphic.bitmap.rect, new ColorTransform(1, 1, 1, newAlpha));
+		baseGrid.screenCenter(X);
+		//gridGroup.add(baseGrid);
 
-		var gridBlackLine:FlxSprite = new FlxSprite(gridBG.x + gridSize).makeGraphic(2, Std.int(gridBG.height), FlxColor.BLACK);
+		fullGrid = new FlxTiledSprite(null, gridSize * keysTotal, gridSize);
+		fullGrid.loadGraphic(baseGrid.graphic);
+		fullGrid.screenCenter(X);
+		fullGrid.height = (songMusic.length / Conductor.stepCrochet) * gridSize;
+		gridGroup.add(fullGrid);
+
+		var gridBlackLine:FlxSprite = new FlxSprite(baseGrid.x + gridSize).makeGraphic(2, Std.int(baseGrid.height), FlxColor.BLACK);
 		gridGroup.add(gridBlackLine);
 
 		updateGrid(false);
@@ -955,13 +963,11 @@ class ChartingState extends MusicBeatState
 		add(songTxt);
 
 		editorTxt.text = 'CHART EDITOR\n';
-		songTxt.text = _song.song.toUpperCase()
-			+ ' <${CoolUtil.difficultyFromNumber(PlayState.storyDifficulty)}> '
-			+ 'BY '
-			+ _song.author.toUpperCase()
-			+ '\n';
+		songTxt.text = _song.song.toUpperCase() + ' <${CoolUtil.difficultyFromNumber(PlayState.storyDifficulty)}> '
+			+ 'BY ' + _song.author.toUpperCase() + '\n';
 
-		bpmTxt = new FlxText(5, FlxG.height - 30, 0, "", 16);
+		// fallback text in case the game explodes idk
+		bpmTxt = new FlxText(5, FlxG.height - 30, 0, "FOREVER ENGINE v" + Application.current.meta.get('version'), 16);
 		bpmTxt.setFormat(Paths.font("vcr.ttf"), 20, FlxColor.WHITE, LEFT);
 		bpmTxt.scrollFactor.set();
 		add(bpmTxt);
@@ -988,10 +994,97 @@ class ChartingState extends MusicBeatState
 		bpmTxt.text = bpmTxt.text = Std.string('BEAT: '
 			+ FlxMath.roundDecimal(decBeat, 2)
 			+ '  QUANT: ' + speedVal
-			+ '  MEASURE: '
-			+ currentSection
-			+ '  TIME: '
-			+ FlxMath.roundDecimal(Conductor.songPosition / 1000, 2)) + '  BPM: ' + _song.bpm;
+			+ '  MEASURE: ' + currentSection
+			+ '  TIME: ' + FlxMath.roundDecimal(Conductor.songPosition / 1000, 2))
+			+ '  BPM: ' + _song.bpm;
+	}
+
+	function generateIcons()
+	{
+		// stupid.
+		var bf:Character = new Character(0, 0, _song.player1);
+		var dad:Character = new Character(0, 0, _song.player2);
+
+		bfIcon = new HealthIcon(bf.icon);
+		dadIcon = new HealthIcon(dad.icon);
+		bfIcon.scrollFactor.set(1, 1);
+		dadIcon.scrollFactor.set(1, 1);
+
+		bfIcon.setGraphicSize(gridSize, gridSize);
+		dadIcon.setGraphicSize(gridSize, gridSize);
+
+		bfIcon.flipX = true;
+
+		add(bfIcon);
+		add(dadIcon);
+
+		bfIcon.screenCenter(X);
+		dadIcon.screenCenter(X);
+
+		var consistentPosition:Array<Float> = [strumLine.width / 2, 0];
+
+		dadIcon.setPosition(consistentPosition[0], consistentPosition[1]);
+		bfIcon.setPosition(consistentPosition[0] + 500, consistentPosition[1]);
+
+		quantIndicatorLeft = new FlxSprite();
+		quantIndicatorRight = new FlxSprite();
+
+		// load animations
+		quantIndicatorLeft.loadGraphic(Paths.image('UI/forever/base/chart editor/quants'), true, 25, 25);
+
+		quantIndicatorLeft.animation.add('4th', [0]);
+		quantIndicatorLeft.animation.add('8th', [1]);
+		quantIndicatorLeft.animation.add('12th', [2]);
+		quantIndicatorLeft.animation.add('16th', [3]);
+		quantIndicatorLeft.animation.add('20th', [4]);
+		quantIndicatorLeft.animation.add('24th', [5]);
+		quantIndicatorLeft.animation.add('32th', [6]);
+		quantIndicatorLeft.animation.add('48th', [7]);
+		quantIndicatorLeft.animation.add('64th', [8]);
+		quantIndicatorLeft.animation.add('96th', [9]);
+		quantIndicatorLeft.animation.add('192th', [10]);
+		
+		quantIndicatorLeft.updateHitbox();
+		quantIndicatorLeft.antialiasing = true;
+
+		// RIGHT
+
+		quantIndicatorRight.loadGraphic(Paths.image('UI/forever/base/chart editor/quants'), true, 25, 25);
+
+		quantIndicatorRight.animation.add('4th', [0]);
+		quantIndicatorRight.animation.add('8th', [1]);
+		quantIndicatorRight.animation.add('12th', [2]);
+		quantIndicatorRight.animation.add('16th', [3]);
+		quantIndicatorRight.animation.add('20th', [4]);
+		quantIndicatorRight.animation.add('24th', [5]);
+		quantIndicatorRight.animation.add('32th', [6]);
+		quantIndicatorRight.animation.add('48th', [7]);
+		quantIndicatorRight.animation.add('64th', [8]);
+		quantIndicatorRight.animation.add('96th', [9]);
+		quantIndicatorRight.animation.add('192th', [10]);
+		
+		quantIndicatorRight.updateHitbox();
+		quantIndicatorRight.antialiasing = true;
+
+		//
+
+		quantIndicatorLeft.scrollFactor.set(1, 1);
+		quantIndicatorRight.scrollFactor.set(1, 1);
+
+		quantIndicatorLeft.setGraphicSize(gridSize, gridSize);
+		quantIndicatorRight.setGraphicSize(gridSize, gridSize);
+
+		add(quantIndicatorLeft);
+		add(quantIndicatorRight);
+
+		quantIndicatorLeft.screenCenter(X);
+		quantIndicatorRight.screenCenter(X);
+
+		quantIndicatorRight.setPosition(bfIcon.x + 70, 30);
+		quantIndicatorLeft.setPosition(dadIcon.x + 61, quantIndicatorRight.y);
+
+		quantIndicatorLeft.animation.play('${speedVal}th');
+		quantIndicatorRight.animation.play('${speedVal}th');
 	}
 
 	function adjustSide(noteData:Int, sectionTemp:Bool):Int
