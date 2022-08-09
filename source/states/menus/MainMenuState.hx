@@ -126,6 +126,7 @@ class MainMenuState extends MusicBeatState
 			Main.switchState(this, new TitleState());
 		}
 
+		/*
 		#if MODS_ALLOWED
 		if (controls.RESET)
 		{
@@ -133,6 +134,7 @@ class MainMenuState extends MusicBeatState
 			Main.switchState(this, new ModsMenuState());
 		}
 		#end
+		*/
 		
 		var controlArray:Array<Bool> = [
 			controls.UI_UP,

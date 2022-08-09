@@ -27,7 +27,7 @@ typedef SwagSong =
 	var author:String;
 	var assetModifier:String;
 	var validScore:Bool;
-	var offset:Int;
+	var ?offset:Int;
 	var mania:Int;
 }
 
@@ -35,7 +35,7 @@ typedef SwagMeta =
 {
 	var author:String;
 	var assetModifier:String;
-	var offset:Int;
+	var ?offset:Int;
 }
 
 class Song
@@ -58,14 +58,47 @@ class Song
 
 	public static function loadFromJson(jsonInput:String, ?folder:String):SwagSong
 	{
-		var rawJson = File.getContent(Paths.songJson(folder.toLowerCase(), jsonInput.toLowerCase())).trim();
-		var rawMeta = File.getContent(Paths.songJson(folder.toLowerCase(), 'meta')).trim();
+		var rawJson = '';
+		var rawMeta = '';
 
-		while (!rawJson.endsWith("}"))
-			rawJson = rawJson.substr(0, rawJson.length - 1);
-		
-		while (!rawMeta.endsWith("}"))
-			rawMeta = rawMeta.substr(0, rawMeta.length - 1);
+		try
+		{
+			rawJson = File.getContent(Paths.songJson(folder.toLowerCase(), jsonInput.toLowerCase())).trim();
+		}
+		catch (e)
+		{
+			rawJson = null;
+		}
+
+		if (rawJson != null)
+		{
+			while (!rawJson.endsWith("}"))
+				rawJson = rawJson.substr(0, rawJson.length - 1);
+		}
+
+		try
+		{
+			rawMeta = File.getContent(Paths.songJson(folder.toLowerCase(), 'meta')).trim();
+		}
+		catch (e)
+		{
+			rawMeta = null;
+		}
+
+		if (rawMeta != null)
+		{
+			while (!rawMeta.endsWith("}"))
+				rawMeta = rawMeta.substr(0, rawMeta.length - 1);
+		}
+
+		if (rawMeta == null)
+		{
+			rawMeta = '{
+				"author": "???",
+				"assetModifier": "base",
+				"offset": 0
+			}';
+		}
 
 		return parseJSONshit(rawJson, rawMeta);
 	}
@@ -81,20 +114,24 @@ class Song
 		// please spare me I know it looks weird.
 		if (swagMeta.assetModifier != null)
 			swagShit.assetModifier = swagMeta.assetModifier;
-		else if (swagShit.assetModifier != null)
+		else if (swagMeta.assetModifier == null)
 			swagShit.assetModifier = swagShit.assetModifier;
 		else
 			swagShit.assetModifier == 'base';
 
 		if (swagMeta.author != null)
 			swagShit.author = swagMeta.author;
-		else if (swagShit.author != null)
+		else if (swagMeta.author == null)
 			swagShit.author = swagShit.author;
 		else
 			swagShit.author = '???';
 
-		// fuck you haxe I can't use null on static platforms if it's an int :(
-		swagShit.offset = swagMeta.offset;
+		if (swagMeta.offset != null)
+			swagShit.offset = swagMeta.offset;
+		else if (swagMeta.offset == null)
+			swagShit.offset = swagShit.offset;
+		else
+			swagShit.offset = 0;
 
 		return swagShit;
 	}

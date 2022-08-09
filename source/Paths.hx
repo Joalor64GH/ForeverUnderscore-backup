@@ -7,6 +7,7 @@ import base.CoolUtil;
 import flixel.FlxG;
 import flixel.graphics.FlxGraphic;
 import flixel.graphics.frames.FlxAtlasFrames;
+import haxe.Json;
 import lime.utils.Assets;
 import openfl.display.BitmapData;
 import openfl.display3D.textures.Texture;
@@ -16,6 +17,8 @@ import openfl.utils.AssetType;
 import openfl.utils.Assets as OpenFlAssets;
 import sys.FileSystem;
 import sys.io.File;
+
+using StringTools;
 
 /**
 	future chart types support (unfinished!)

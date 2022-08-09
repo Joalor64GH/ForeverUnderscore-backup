@@ -2707,6 +2707,11 @@ class PlayState extends MusicBeatState
 			});
 		});
 
+		setVar('playSound', function(sound:String)
+		{
+			FlxG.sound.play(Paths.sound(sound));
+		});
+
 		// functions
 		setVar('setProperty', function(key:String, value:Dynamic)
 		{

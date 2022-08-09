@@ -83,8 +83,8 @@ class ChartingState extends MusicBeatState
 	var dadIcon:HealthIcon;
 
 	// UI/default/forever/chart editor/quant
-	var quantIndicatorLeft:FlxSprite;
-	var quantIndicatorRight:FlxSprite;
+	var quantL:FlxSprite;
+	var quantR:FlxSprite;
 
 	// event name - desciption
 	var events:Array<Array<String>> =
@@ -287,8 +287,8 @@ class ChartingState extends MusicBeatState
 		bfIcon.y = strumCamY;
 		dadIcon.y = strumCamY;
 
-		quantIndicatorLeft.y = dadIcon.y + 110;
-		quantIndicatorRight.y = dadIcon.y + 110;
+		quantL.y = dadIcon.y + 110;
+		quantR.y = dadIcon.y + 110;
 
 		if (curBeat % 4 == 0 && curStep >= 16 * (currentSection + 1))
 			changeSection(currentSection + 1, false);
@@ -329,7 +329,7 @@ class ChartingState extends MusicBeatState
 			}
 
 			// would be cool maybe
-			if (FlxG.mouse.overlaps(quantIndicatorLeft) || FlxG.mouse.overlaps(quantIndicatorRight))
+			if (FlxG.mouse.overlaps(quantL) || FlxG.mouse.overlaps(quantR))
 			{
 				changeQuant(1);
 			}
@@ -443,8 +443,8 @@ class ChartingState extends MusicBeatState
 
 		speedVal = speedList[curSpeed];
 
-		quantIndicatorLeft.animation.play('${speedVal}th');
-		quantIndicatorRight.animation.play('${speedVal}th');
+		quantL.animation.play('${speedVal}th');
+		quantR.animation.play('${speedVal}th');
 	}
 
 	function saveAndClose(State:String)
@@ -522,7 +522,7 @@ class ChartingState extends MusicBeatState
 				// do epic note calls for strum stuffs
 				if (pain == Math.floor(epicNote.strumTime / Conductor.stepCrochet))
 				{
-					var data:Int = epicNote.noteData % 4;
+					var data:Null<Int> = epicNote.noteData;
 					if (data > -1 && epicNote.mustPress != _song.notes[currentSection].mustHitSection)
 						data += 4;
 
@@ -531,8 +531,8 @@ class ChartingState extends MusicBeatState
 
 					if (!hitSoundsPlayed.contains(epicNote))
 					{
-						hitSoundsPlayed.push(epicNote);
 						FlxG.sound.play(Paths.sound('hitsounds/${Init.trueSettings.get('Hitsound Type').toLowerCase()}/hit'));
+						hitSoundsPlayed.push(epicNote);
 					}
 				}
 			}
@@ -1026,65 +1026,65 @@ class ChartingState extends MusicBeatState
 		dadIcon.setPosition(consistentPosition[0], consistentPosition[1]);
 		bfIcon.setPosition(consistentPosition[0] + 500, consistentPosition[1]);
 
-		quantIndicatorLeft = new FlxSprite();
-		quantIndicatorRight = new FlxSprite();
+		quantL = new FlxSprite();
+		quantR = new FlxSprite();
 
 		// load animations
-		quantIndicatorLeft.loadGraphic(Paths.image('UI/forever/base/chart editor/quants'), true, 25, 25);
+		quantL.loadGraphic(Paths.image('UI/forever/base/chart editor/quants'), true, 25, 25);
 
-		quantIndicatorLeft.animation.add('4th', [0]);
-		quantIndicatorLeft.animation.add('8th', [1]);
-		quantIndicatorLeft.animation.add('12th', [2]);
-		quantIndicatorLeft.animation.add('16th', [3]);
-		quantIndicatorLeft.animation.add('20th', [4]);
-		quantIndicatorLeft.animation.add('24th', [5]);
-		quantIndicatorLeft.animation.add('32th', [6]);
-		quantIndicatorLeft.animation.add('48th', [7]);
-		quantIndicatorLeft.animation.add('64th', [8]);
-		quantIndicatorLeft.animation.add('96th', [9]);
-		quantIndicatorLeft.animation.add('192th', [10]);
+		quantL.animation.add('4th', [0]);
+		quantL.animation.add('8th', [1]);
+		quantL.animation.add('12th', [2]);
+		quantL.animation.add('16th', [3]);
+		quantL.animation.add('20th', [4]);
+		quantL.animation.add('24th', [5]);
+		quantL.animation.add('32th', [6]);
+		quantL.animation.add('48th', [7]);
+		quantL.animation.add('64th', [8]);
+		quantL.animation.add('96th', [9]);
+		quantL.animation.add('192th', [10]);
 		
-		quantIndicatorLeft.updateHitbox();
-		quantIndicatorLeft.antialiasing = true;
+		quantL.updateHitbox();
+		quantL.antialiasing = true;
 
 		// RIGHT
 
-		quantIndicatorRight.loadGraphic(Paths.image('UI/forever/base/chart editor/quants'), true, 25, 25);
+		quantR.loadGraphic(Paths.image('UI/forever/base/chart editor/quants'), true, 25, 25);
 
-		quantIndicatorRight.animation.add('4th', [0]);
-		quantIndicatorRight.animation.add('8th', [1]);
-		quantIndicatorRight.animation.add('12th', [2]);
-		quantIndicatorRight.animation.add('16th', [3]);
-		quantIndicatorRight.animation.add('20th', [4]);
-		quantIndicatorRight.animation.add('24th', [5]);
-		quantIndicatorRight.animation.add('32th', [6]);
-		quantIndicatorRight.animation.add('48th', [7]);
-		quantIndicatorRight.animation.add('64th', [8]);
-		quantIndicatorRight.animation.add('96th', [9]);
-		quantIndicatorRight.animation.add('192th', [10]);
+		quantR.animation.add('4th', [0]);
+		quantR.animation.add('8th', [1]);
+		quantR.animation.add('12th', [2]);
+		quantR.animation.add('16th', [3]);
+		quantR.animation.add('20th', [4]);
+		quantR.animation.add('24th', [5]);
+		quantR.animation.add('32th', [6]);
+		quantR.animation.add('48th', [7]);
+		quantR.animation.add('64th', [8]);
+		quantR.animation.add('96th', [9]);
+		quantR.animation.add('192th', [10]);
 		
-		quantIndicatorRight.updateHitbox();
-		quantIndicatorRight.antialiasing = true;
+		quantR.updateHitbox();
+		quantR.antialiasing = true;
 
 		//
 
-		quantIndicatorLeft.scrollFactor.set(1, 1);
-		quantIndicatorRight.scrollFactor.set(1, 1);
+		quantL.scrollFactor.set(1, 1);
+		quantR.scrollFactor.set(1, 1);
 
-		quantIndicatorLeft.setGraphicSize(gridSize, gridSize);
-		quantIndicatorRight.setGraphicSize(gridSize, gridSize);
+		quantL.setGraphicSize(gridSize, gridSize);
+		quantR.setGraphicSize(gridSize, gridSize);
 
-		add(quantIndicatorLeft);
-		add(quantIndicatorRight);
+		add(quantL);
+		add(quantR);
 
-		quantIndicatorLeft.screenCenter(X);
-		quantIndicatorRight.screenCenter(X);
+		quantL.screenCenter(X);
+		quantR.screenCenter(X);
 
-		quantIndicatorRight.setPosition(bfIcon.x + 70, 30);
-		quantIndicatorLeft.setPosition(dadIcon.x + 61, quantIndicatorRight.y);
+		quantR.setPosition(bfIcon.x + 70, 30);
+		quantL.setPosition(dadIcon.x + 61, quantR.y);
 
-		quantIndicatorLeft.animation.play('${speedVal}th');
-		quantIndicatorRight.animation.play('${speedVal}th');
+		quantL.animation.play('${speedVal}th');
+		quantR.animation.play('${speedVal}th');
 	}
 
 	function adjustSide(noteData:Int, sectionTemp:Bool):Int
