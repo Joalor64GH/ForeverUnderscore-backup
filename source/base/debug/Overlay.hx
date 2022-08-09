@@ -1,4 +1,4 @@
-package base.ui;
+package base.debug;
 
 import haxe.Timer;
 import openfl.events.Event;
