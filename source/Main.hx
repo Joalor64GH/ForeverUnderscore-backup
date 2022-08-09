@@ -1,6 +1,6 @@
 package;
 
-import base.ui.Overlay;
+import base.debug.Overlay;
 import dependency.Discord;
 import dependency.FNFTransition;
 import dependency.FNFUIState;
