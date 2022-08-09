@@ -724,6 +724,8 @@ class PlayState extends MusicBeatState
 					FlxG.sound.play(Paths.sound('scrollMenu'));
 					bfStrums.autoplay = !bfStrums.autoplay;
 					uiHUD.autoplayMark.visible = bfStrums.autoplay;
+					uiHUD.autoplayMark.alpha = 1;
+					uiHUD.autoplaySine = 0;
 				}
 			}
 

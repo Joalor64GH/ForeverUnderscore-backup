@@ -54,6 +54,7 @@ class ClassHUD extends FlxTypedGroup<FlxBasic>
 	public var engineDisplay:String = "FOREVER ENGINE v" + Application.current.meta.get('version') + '_' + Main.underscoreVersion.replace(".", "");
 
 	public var autoplayMark:FlxText;
+	public var autoplaySine:Float = 0;
 
 	var timingsMap:Map<String, FlxText> = [];
 
@@ -123,7 +124,25 @@ class ClassHUD extends FlxTypedGroup<FlxBasic>
 			centerMark.y = (FlxG.height / 24) - 10;
 		centerMark.screenCenter(X);
 		centerMark.antialiasing = true;
-		// centerMark.alpha = 0;
+
+		autoplayMark = new FlxText(0, centerMark.y + 60, FlxG.width - 800, "AUTOPLAY\n", 32);
+		autoplayMark.screenCenter(X);
+		autoplayMark.setFormat(Paths.font("vcr.ttf"), 32, FlxColor.WHITE, CENTER);
+		autoplayMark.setBorderStyle(OUTLINE, FlxColor.BLACK, 1.25);
+		autoplayMark.scrollFactor.set();
+		autoplayMark.visible = PlayState.contents.bfStrums.autoplay;
+		autoplayMark.x -= 10;
+		add(autoplayMark);
+
+		if (Init.trueSettings.get('Downscroll'))
+			autoplayMark.y = centerMark.y - 60;
+
+		traceBar = new FlxText(10, 20, 0, '', 16);
+		traceBar.setFormat(Paths.font('vcr.ttf'), 24, FlxColor.WHITE);
+		traceBar.setBorderStyle(OUTLINE, FlxColor.BLACK, 2);
+		traceBar.scrollFactor.set();
+		traceBar.alpha = 0;
+		add(traceBar);
 
 		// counter
 		if (Init.trueSettings.get('Counter') != 'None')
@@ -147,26 +166,6 @@ class ClassHUD extends FlxTypedGroup<FlxBasic>
 				add(textAsset);
 			}
 		}
-
-		autoplayMark = new FlxText(0, 0, 0, "AUTOPLAY", 32);
-		autoplayMark.screenCenter(X);
-		autoplayMark.setFormat(Paths.font("vcr.ttf"), 32, FlxColor.WHITE);
-		autoplayMark.setBorderStyle(OUTLINE, FlxColor.BLACK, 2);
-		autoplayMark.scrollFactor.set();
-		autoplayMark.borderSize = 2;
-		if (!Init.trueSettings.get('Downscroll'))
-			autoplayMark.y = (FlxG.height - autoplayMark.height / 2) - 30;
-		else
-			autoplayMark.y = (FlxG.height / 24) - 10;
-		autoplayMark.visible = PlayState.contents.bfStrums.autoplay;
-		add(autoplayMark);
-
-		traceBar = new FlxText(10, 20, 0, '', 16);
-		traceBar.setFormat(Paths.font('vcr.ttf'), 24, FlxColor.WHITE);
-		traceBar.setBorderStyle(OUTLINE, FlxColor.BLACK, 2);
-		traceBar.scrollFactor.set();
-		traceBar.alpha = 0;
-		add(traceBar);
 
 		updateScoreText();
 		updateBar();
@@ -198,6 +197,12 @@ class ClassHUD extends FlxTypedGroup<FlxBasic>
 
 		iconP1.updateAnim(healthBar.percent);
 		iconP2.updateAnim(100 - healthBar.percent);
+
+		if(autoplayMark.visible)
+		{
+			autoplaySine += 30 * elapsed;
+			autoplayMark.alpha = 1 - Math.sin((Math.PI * autoplaySine) / 80);
+		}
 	}
 
 	private final divider:String = " • ";
@@ -259,6 +264,5 @@ class ClassHUD extends FlxTypedGroup<FlxBasic>
 			iconP1.updateHitbox();
 			iconP2.updateHitbox();
 		}
-		//
 	}
 }
