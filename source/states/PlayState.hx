@@ -247,6 +247,13 @@ class PlayState extends MusicBeatState
 		// NOTE: scripts need to be moved over to a separate class for setting up and such
 		setupScripts();
 
+		callFunc('onCreate', null);
+		callFunc('create', null);
+
+		#if LUA_EXTENSION
+		callLLua('onCreate', []);
+		#end
+
 		// cache shit
 		displayRating('sick', 'early', true);
 		popUpCombo(true);
@@ -2545,9 +2552,6 @@ class PlayState extends MusicBeatState
 			}
 		}
 
-		callFunc('onCreate', null);
-		callFunc('create', null);
-
 		#if LUA_EXTENSION
 		var luas:Array<Array<String>> = [
 			FileSystem.readDirectory(FileSystem.absolutePath(Paths.getPreloadPath('scripts/')))
@@ -2577,8 +2581,6 @@ class PlayState extends MusicBeatState
 
 		if (FileSystem.exists(luaPath))
 			luaArray.push(new LLua(luaPath));
-
-		callLLua('onCreate', []);
 		#end
 	}
 
