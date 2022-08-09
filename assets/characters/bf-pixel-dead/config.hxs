@@ -1,7 +1,5 @@
 function loadAnimations()
 {
-    setTex('characters/base/bfPixelsDEAD');
-
     addByPrefix('firstDeath', "BF Dies pixel", 24, false);
     addByPrefix('deathLoop', "Retry Loop", 24, true);
     addByPrefix('deathConfirm', "RETRY CONFIRM", 24, false);

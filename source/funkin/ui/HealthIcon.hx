@@ -15,12 +15,12 @@ class HealthIcon extends FlxSprite
 	public var initialWidth:Float = 0;
 	public var initialHeight:Float = 0;
 
-	public var char = 'bf';
+	public var icon = 'bf';
 
-	public function new(char:String = 'bf', isPlayer:Bool = false)
+	public function new(icon:String = 'bf', isPlayer:Bool = false)
 	{
 		super();
-		updateIcon(char, isPlayer);
+		updateIcon(icon, isPlayer);
 	}
 
 	override function update(elapsed:Float)
@@ -42,33 +42,32 @@ class HealthIcon extends FlxSprite
 			animation.play('static');
 	}
 
-	public function updateIcon(char:String = 'bf', isPlayer:Bool = false)
+	public function updateIcon(icon:String = 'bf', isPlayer:Bool = false)
 	{
-		var path = Paths.image('$char/icon', 'assets', 'characters');
-		var iconExists = FileSystem.exists(Paths.getPath('characters/$char/icon.png', IMAGE));
+		var path = Paths.image('$icon/icon', 'assets', 'characters');
+		var iconExists = FileSystem.exists(Paths.getPath('characters/$icon/icon.png', IMAGE));
 
-		var trimmedCharacter:String = char;
-		if (trimmedCharacter.contains('-'))
-			trimmedCharacter = trimmedCharacter.substring(0, trimmedCharacter.indexOf('-'));
+		var trimmedIcon:String = icon;
+		if (trimmedIcon.contains('-'))
+			trimmedIcon = trimmedIcon.substring(0, trimmedIcon.indexOf('-'));
 
 		if (!iconExists)
 		{
-			if (char != trimmedCharacter)
-				path = Paths.image('$trimmedCharacter/icon', 'assets', 'characters');
+			if (icon != trimmedIcon)
+				path = Paths.image('$trimmedIcon/icon', 'assets', 'characters');
 			else
 				path = Paths.image('credits/face');
-			trace('$char icon is invalid, trying $trimmedCharacter instead you fuck');
+			trace('$icon icon is invalid, trying $trimmedIcon instead you fuck');
 		}
 
-		switch (char) /*switch (iconType)*/
+		switch (icon)
 		{
-			/*case 'sparrow*/
 			case 'hypno2plus':
-				frames = Paths.getSparrowAtlas('icon', 'assets', 'characters/$char');
+				frames = Paths.getSparrowAtlas('icon', 'assets', 'characters/$icon');
 
-				animation.addByPrefix('static', '$char-static', 24, true, isPlayer);
-				animation.addByPrefix('losing', '$char-losing', 24, true, isPlayer);
-				animation.addByPrefix('winning', '$char-winning', 24, true, isPlayer);
+				animation.addByPrefix('static', '$icon-static', 24, true, isPlayer);
+				animation.addByPrefix('losing', '$icon-losing', 24, true, isPlayer);
+				animation.addByPrefix('winning', '$icon-winning', 24, true, isPlayer);
 			default:
 				var iconGraphic:FlxGraphic = path;
 				var iconWidth = 1;
@@ -88,14 +87,14 @@ class HealthIcon extends FlxSprite
 
 				// ternary to avoid frame 1 playing where it shouldn't
 				animation.add('winning', (iconWidth == 3 ? [2] : [0]), 0, false, isPlayer);
-				scrollFactor.set();
 		}
 		animation.play('static');
+		scrollFactor.set();
 		updateHitbox();
 
 		initialWidth = width;
 		initialHeight = height;
 
-		antialiasing = (!char.endsWith('-pixel'));
+		antialiasing = (!icon.endsWith('-pixel'));
 	}
 }

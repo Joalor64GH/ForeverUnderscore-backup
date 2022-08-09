@@ -1,7 +1,5 @@
 function loadAnimations()
 {
-    setTex('characters/base/bfPixel');
-
     addByPrefix('idle', 'BF IDLE', 24, false);
     addByPrefix('singUP', 'BF UP NOTE', 24, false);
     addByPrefix('singDOWN', 'BF DOWN NOTE', 24, false);

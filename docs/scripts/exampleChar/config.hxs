@@ -1,12 +1,12 @@
-function loadAnimations() // calling this loadAnimations for more compatiblity with Forever 1.0
+function loadAnimations()
 {
     /**
     * hi hi hello gabi here
-    * just saying, this mod system doesn't actually work just yet
-    * but this is basically my idea of how characters will be handled once i'm done with it!
+    * this is a example file to show how characters work on the engine
     ==========================================================================================
     * first off, as long as your sparrow/packer atlas file and image file is in the folder containing this script
-    * you should be good to go, furthermore, they need to be named `character.png` and `character.(ext)` (ext being either xml or txt)
+    * you should be good to go, furthermore, they need to be named with your character's internal name
+    * for example, if the character folder name is `bf`, then his internal name is `bf`, and so, files need to be named `bf.png` and `bf.(ext)` (ext being either xml, json or txt);
     * along with this script, which should be named `config.hxs`, and of course the character icon, which should be named `icon.png`
     **/
 
@@ -45,11 +45,11 @@ function loadAnimations() // calling this loadAnimations for more compatiblity w
     quickDancer(false);
 
      /**
-        *   NOTICE: icons always search for the character FOLDER name, rather than the character NAME
-        *   so make sure to create a dedicated folder for your custom ones!
+        *   NOTICE: icons always search for the character's internal name
+        *   so make sure to create a dedicated folder for your custom icons!
         *   example: `characters/customIcons/beta-bf/icon.png` - it will get the `icon.png` file inside this folder.
     **/
-    setIcon('bf'); // optional, but if you ever wanna set a custom icon, there you have it!
+    setIcon('exampleChar/customIcons/bf'); // optional, but if you ever wanna set a custom icon, there you have it!
 
     // game over screen set up
     // from left to right, character that has the death animations, sound effect that plays when dying, game over song, jingle that plays on retry, and song bpm!

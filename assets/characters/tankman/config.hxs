@@ -1,7 +1,5 @@
 function loadAnimations()
 {
-    setTex('characters/base/tankmanCaptain');
-
     /* ===== ANIMATION PREFIXES ===== */
 
     addByPrefix('idle', 'Tankman Idle Dance', 24, false);

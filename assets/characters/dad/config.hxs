@@ -1,7 +1,5 @@
 function loadAnimations()
 {
-    setTex('characters/base/DADDY_DEAREST');
-
     addByPrefix('idle', 'Dad idle dance', 24, false);
     addByPrefix('singUP', 'Dad Sing Note UP', 24);
     addByPrefix('singRIGHT', 'Dad Sing Note RIGHT', 24);

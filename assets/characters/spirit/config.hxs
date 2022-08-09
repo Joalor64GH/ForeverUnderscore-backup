@@ -1,6 +1,6 @@
 function loadAnimations()
 {
-    setPacker('characters/base/spirit');
+    setPacker('spirit', 'assets', 'characters/spirit');
 
     addByPrefix('idle', "idle spirit_", 24, false);
     addByPrefix('singUP', "up_", 24, false);

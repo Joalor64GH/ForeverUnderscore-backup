@@ -1,7 +1,5 @@
 function loadAnimations()
 {
-    setTex('characters/base/Mom_Assets');
-
     addByPrefix('idle', "Mom Idle", 24, false);
     addByPrefix('singUP', "Mom Up Pose", 24, false);
     addByPrefix('singDOWN', "MOM DOWN POSE", 24, false);

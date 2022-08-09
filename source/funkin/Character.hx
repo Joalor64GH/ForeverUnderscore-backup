@@ -129,8 +129,8 @@ class Character extends FNFSprite
 			 */
 			default:
 				if (psychChar)
-					generatePsychChar();
-				generateBaseChar();
+					generatePsychChar(character);
+				generateBaseChar(character);
 		}
 
 		dance();
@@ -233,7 +233,7 @@ class Character extends FNFSprite
 					}
 				default:
 					// Left/right dancing, think Skid & Pump
-					if (animation.getByName('danceLeft') != null && animation.getByName('danceRight') != null)
+					if (animation.getByName('danceLeft') != null && animation.getByName('danceRight') != null || danceIdle)
 					{
 						danced = !danced;
 						if (danced)
@@ -242,7 +242,7 @@ class Character extends FNFSprite
 							playAnim('danceLeft', forced);
 					}
 					else
-						playAnim('idle', forced);
+						playAnim('idle$idleSuffix', forced);
 			}
 		}
 	}
@@ -294,24 +294,45 @@ class Character extends FNFSprite
 		return FlxSort.byValues(FlxSort.ASCENDING, Obj1[0], Obj2[0]);
 	}
 
-	function generateBaseChar()
+	function generateBaseChar(char:String = 'bf')
 	{
-		var path:String = Paths.getPreloadPath('characters/$curCharacter/config.hxs');
+		var path:String = Paths.getPreloadPath('characters/$char/config.hxs');
+		var charExists = FileSystem.exists(Paths.getPreloadPath('characters/$char/$char.xml'));
 
-		/* gonna try and fix psych chars first
-			#if MODS_ALLOWED
-			if (!FileSystem.exists(path))
-			#else
-			if (!Assets.exists(path))
-			#end
-			{
-				path = Paths.getPreloadPath('characters/bf/config.hxs');
-		}*/
+		var baseFrames = null;
+		var fallbackFrames = Paths.getSparrowAtlas('bf', 'assets', 'characters/bf');
+		var spriteType = "sparrow";
+
+		#if MODS_ALLOWED
+		var modTxtToFind:String = Paths.getModPath('characters/$char', char, 'txt');
+		var txtToFind:String = Paths.getPath('characters/$char/$char.txt', TEXT);
+
+		if (FileSystem.exists(modTxtToFind) || FileSystem.exists(txtToFind) || Assets.exists(txtToFind))
+		#else
+		if (Assets.exists(Paths.getPath('characters/$char/$char.txt', TEXT)))
+		#end
+		{
+			spriteType = "packer";
+		}
+		switch (spriteType)
+		{
+			case "packer":
+				baseFrames = Paths.getPackerAtlas('$char', 'assets', 'characters/$char');
+			case "sparrow":
+				baseFrames = Paths.getSparrowAtlas('$char', 'assets', 'characters/$char');
+			case "sparrow-hash":
+				baseFrames = Paths.getSparrowHashAtlas('$char', 'assets', 'characters/$char');
+		}
+
+		if (charExists)
+			frames = baseFrames;
+		else
+			frames = fallbackFrames;
 
 		var scripts:Array<String> = [path];
 
 		#if MODS_ALLOWED
-		scripts.insert(0, Paths.getModPath('characters/$curCharacter', 'config', 'hxs'));
+		scripts.insert(0, Paths.getModPath('characters/$char', 'config', 'hxs'));
 		#end
 
 		var pushedScripts:Array<String> = [];
@@ -334,52 +355,52 @@ class Character extends FNFSprite
 		}
 
 		// trace(interp, script);
-		set('addByPrefix', function(name:String, prefix:String, ?frames:Int = 24, ?loop:Bool = false)
+		setVar('addByPrefix', function(name:String, prefix:String, ?frames:Int = 24, ?loop:Bool = false)
 		{
 			animation.addByPrefix(name, prefix, frames, loop);
 		});
 
-		set('addByIndices', function(name:String, prefix:String, indices:Array<Int>, ?frames:Int = 24, ?loop:Bool = false)
+		setVar('addByIndices', function(name:String, prefix:String, indices:Array<Int>, ?frames:Int = 24, ?loop:Bool = false)
 		{
 			animation.addByIndices(name, prefix, indices, "", frames, loop);
 		});
 
-		set('addOffset', function(?name:String = "idle", ?x:Float = 0, ?y:Float = 0)
+		setVar('addOffset', function(?name:String = "idle", ?x:Float = 0, ?y:Float = 0)
 		{
 			addOffset(name, x, y);
 			if (name == 'idle')
 				positionArray = [x, y];
 		});
 
-		set('setSingDuration', function(amount:Int)
+		setVar('setSingDuration', function(amount:Int)
 		{
 			singDuration = amount;
 		});
 
-		set('set', function(name:String, value:Dynamic)
+		setVar('set', function(name:String, value:Dynamic)
 		{
 			Reflect.setProperty(this, name, value);
 		});
 
-		set('setCameraOffsets', function(?x:Float = 0, ?y:Float = 0)
+		setVar('setCameraOffsets', function(?x:Float = 0, ?y:Float = 0)
 		{
 			characterCamOffsets = [x, y];
 		});
 
-		set('setScale', function(?x:Float = 1, ?y:Float = 1)
+		setVar('setScale', function(?x:Float = 1, ?y:Float = 1)
 		{
 			characterScales = [x, y];
 			scale.set(characterScales[0], characterScales[1]);
 		});
 
-		set('setIcon', function(swag:String = 'face') icon = swag);
+		setVar('setIcon', function(swag:String = 'face') icon = swag);
 
-		set('quickDancer', function(quick:Bool = false)
+		setVar('quickDancer', function(quick:Bool = false)
 		{
 			quickDancer = quick;
 		});
 
-		set('setBarColor', function(rgb:Array<Float>)
+		setVar('setBarColor', function(rgb:Array<Float>)
 		{
 			if (barColor != null)
 				barColor = rgb;
@@ -388,7 +409,7 @@ class Character extends FNFSprite
 			return true;
 		});
 
-		set('setDeathChar', function(char:String = 'bf-dead', lossSfx:String = 'fnf_loss_sfx', song:String = 'gameOver', confirmSound:String = 'gameOverEnd', bpm:Int)
+		setVar('setDeathChar', function(char:String = 'bf-dead', lossSfx:String = 'fnf_loss_sfx', song:String = 'gameOver', confirmSound:String = 'gameOverEnd', bpm:Int)
 		{
 			GameOverSubState.character = char;
 			GameOverSubState.deathSound = lossSfx;
@@ -397,36 +418,40 @@ class Character extends FNFSprite
 			GameOverSubState.deathBPM = bpm;
 		});
 
-		set('get', function(variable:String)
+		setVar('get', function(variable:String)
 		{
 			return Reflect.getProperty(this, variable);
 		});
 
-		set('setGraphicSize', function(width:Int = 0, height:Int = 0)
+		setVar('setGraphicSize', function(width:Int = 0, height:Int = 0)
 		{
 			setGraphicSize(width, height);
 			updateHitbox();
 		});
 
-		set('setTex', function(character:String, library:String = 'assets', folder:String = 'images')
+		setVar('setTex', function(character:String, library:String = 'assets', folder:String = 'images')
 		{
+			trace('setTex is deprecated!');
+			// however I won't make it unusable for now, lol
 			frames = Paths.getSparrowAtlas(character, library, folder);
 		});
 
-		set('setPacker', function(character:String, library:String = 'assets', folder:String = 'images')
+		setVar('setPacker', function(character:String, library:String = 'assets', folder:String = 'images')
 		{
+			trace('setPacker is deprecated!');
 			frames = Paths.getPackerAtlas(character, library, folder);
 		});
 
-		set('playAnim', function(name:String, ?force:Bool = false, ?reversed:Bool = false, ?frames:Int = 0)
+		setVar('playAnim', function(name:String, ?force:Bool = false, ?reversed:Bool = false, ?frames:Int = 0)
 		{
 			playAnim(name, force, reversed, frames);
 		});
 
-		set('isPlayer', isPlayer);
-		set('curStage', PlayState.curStage);
+		setVar('isPlayer', isPlayer);
+		setVar('curStage', PlayState.curStage);
+		setVar('song', PlayState.SONG.song.toLowerCase());
 
-		call('loadAnimations', null);
+		callFunc('loadAnimations', null);
 
 		if (isPlayer) // fuck you ninjamuffin lmao
 		{
@@ -434,7 +459,7 @@ class Character extends FNFSprite
 		}
 
 		if (icon == null)
-			icon = curCharacter;
+			icon = char;
 
 		if (animation.getByName('danceLeft') != null)
 			playAnim('danceLeft');
@@ -442,7 +467,7 @@ class Character extends FNFSprite
 			playAnim('idle');
 	}
 
-	public function call(key:String, value:Dynamic)
+	public function callFunc(key:String, value:Dynamic)
 	{
 		for (i in scriptArray)
 		{
@@ -453,7 +478,7 @@ class Character extends FNFSprite
 		return key;
 	}
 
-	public function set(key:String, value:Dynamic):Bool
+	public function setVar(key:String, value:Dynamic):Bool
 	{
 		for (i in scriptArray)
 			i.set(key, value);
@@ -463,12 +488,12 @@ class Character extends FNFSprite
 
 	public var psychAnimationsArray:Array<PsychAnimArray> = [];
 
-	function generatePsychChar()
+	function generatePsychChar(char:String = 'bf')
 	{
 		/**
 		 * @author Shadow_Mario_
 		 */
-		var path = Paths.getPreloadPath('characters/$character/' + character + '.json');
+		var path = Paths.getPreloadPath('characters/$char/' + character + '.json');
 
 		#if MODS_ALLOWED
 		var rawJson = File.getContent(path);
@@ -480,12 +505,12 @@ class Character extends FNFSprite
 		var spriteType = "sparrow";
 
 		#if MODS_ALLOWED
-		var modTxtToFind:String = Paths.getModPath('characters/$character', json.image, 'txt');
-		var txtToFind:String = Paths.getPath('characters/$character/' + json.image + '.txt', TEXT);
+		var modTxtToFind:String = Paths.getModPath('characters/$char', json.image, 'txt');
+		var txtToFind:String = Paths.getPath('characters/$char/' + json.image + '.txt', TEXT);
 
 		if (FileSystem.exists(modTxtToFind) || FileSystem.exists(txtToFind) || Assets.exists(txtToFind))
 		#else
-		if (Assets.exists(Paths.getPath('characters/$character/' + json.image + '.txt', TEXT)))
+		if (Assets.exists(Paths.getPath('characters/$char/' + json.image + '.txt', TEXT)))
 		#end
 		{
 			spriteType = "packer";
@@ -493,11 +518,11 @@ class Character extends FNFSprite
 		switch (spriteType)
 		{
 			case "packer":
-				frames = Paths.getPackerAtlas(json.image.replace('characters/', ''), 'assets', 'characters/$character');
+				frames = Paths.getPackerAtlas(json.image.replace('characters/', ''), 'assets', 'characters/$char');
 			case "sparrow":
-				frames = Paths.getSparrowAtlas(json.image.replace('characters/', ''), 'assets', 'characters/$character');
+				frames = Paths.getSparrowAtlas(json.image.replace('characters/', ''), 'assets', 'characters/$char');
 			case "sparrow-hash":
-				frames = Paths.getSparrowHashAtlas(json.image.replace('characters/', ''), 'assets', 'characters/$character');
+				frames = Paths.getSparrowHashAtlas(json.image.replace('characters/', ''), 'assets', 'characters/$char');
 		}
 
 		psychAnimationsArray = json.animations;

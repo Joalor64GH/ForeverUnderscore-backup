@@ -1,7 +1,5 @@
 function loadAnimations()
 {
-    setTex('characters/base/GF_assets');
-
     addByPrefix('cheer', 'GF Cheer', 24, false);
     addByPrefix('singLEFT', 'GF left note', 24, false);
     addByPrefix('singRIGHT', 'GF Right Note', 24, false);    

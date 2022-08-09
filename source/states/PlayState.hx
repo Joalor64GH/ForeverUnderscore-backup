@@ -1274,6 +1274,7 @@ class PlayState extends MusicBeatState
 				stringArrow = 'hey';
 				character.specialAnim = true;
 				character.heyTimer = 0.6;
+				
 			case NO_ANIM:
 				stringArrow = '';
 
@@ -2637,7 +2638,7 @@ class PlayState extends MusicBeatState
 			});
 
 		setVar('loadAnimatedGraphic',
-			function(spriteID:String, key:String, spriteType:String, anims:Array<Array<Dynamic>>, defaultAnim:String, x:Float = 0, y:Float = 0,
+			function(spriteID:String, key:String, path:String = null, spriteType:String, anims:Array<Array<Dynamic>>, defaultAnim:String, x:Float = 0, y:Float = 0,
 					scrollX:Float = 0, scrollY:Float = 0, alpha:Float = 1, size:Float = 1, scaleX:Float = 1, scaleY:Float = 1)
 			{
 				var sprite:FNFSprite = new FNFSprite(x, y);
@@ -2645,11 +2646,11 @@ class PlayState extends MusicBeatState
 				switch (spriteType)
 				{
 					case "packer":
-						sprite.frames = Paths.getPackerAtlas(key);
+						sprite.frames = Paths.getPackerAtlas(key, (path != null ? 'assets' : ''), path);
 					case "sparrow":
-						sprite.frames = Paths.getSparrowAtlas(key);
+						sprite.frames = Paths.getSparrowAtlas(key, (path != null ? 'assets' : ''), path);
 					case "sparrow-hash":
-						sprite.frames = Paths.getSparrowHashAtlas(key);
+						sprite.frames = Paths.getSparrowHashAtlas(key, (path != null ? 'assets' : ''), path);
 				}
 
 				for (anim in anims)

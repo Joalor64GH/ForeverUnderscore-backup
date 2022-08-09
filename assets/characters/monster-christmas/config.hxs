@@ -1,7 +1,5 @@
 function loadAnimations()
 {
-    setTex('characters/base/monsterChristmas');
-
     addByPrefix('idle', 'monster idle', 24, false);
     addByPrefix('singUP', 'monster up note', 24, false);
     addByPrefix('singDOWN', 'monster down', 24, false);
