@@ -1,5 +1,5 @@
 import base.CoolUtil;
-import base.ui.Overlay;
+import base.debug.Overlay;
 import flixel.FlxG;
 import flixel.FlxState;
 import flixel.graphics.FlxGraphic;
