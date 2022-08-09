@@ -34,7 +34,7 @@ class MainMenuState extends MusicBeatState
 	var optionShit:Array<String> = ['story mode', 'freeplay', 'donate', 'options'];
 	var canSnap:Array<Float> = [];
 
-	static var tweenFinished:Bool = false;
+	static var tweenFinished:Bool = true;
 
 	override function create()
 	{
@@ -88,7 +88,7 @@ class MainMenuState extends MusicBeatState
 			menuItem.antialiasing = true;
 			menuItem.updateHitbox();
 
-			if (!tweenFinished)
+			/*if (!tweenFinished)
 			{
 				FlxTween.tween(menuItem, {y: 60 + (i * 160)}, 1 + (i * 0.25),
 				{
@@ -100,7 +100,7 @@ class MainMenuState extends MusicBeatState
 					}
 				});
 			}
-			else
+			else*/
 			{
 				menuItem.y = 60 + (i * 160);
 			}
@@ -126,11 +126,13 @@ class MainMenuState extends MusicBeatState
 			Main.switchState(this, new TitleState());
 		}
 
+		#if MODS_ALLOWED
 		if (controls.RESET)
 		{
 			FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
 			Main.switchState(this, new ModsMenuState());
 		}
+		#end
 		
 		var controlArray:Array<Bool> = [
 			controls.UI_UP,
@@ -146,7 +148,6 @@ class MainMenuState extends MusicBeatState
 			{
 				if (controlArray[i] == true)
 				{
-					// up = 2, down = 3
 					if (i > 1)
 					{
 						if (i == 2 || i == 4)

@@ -31,10 +31,16 @@ typedef ModData =
 **/
 class ModsMenuState extends MusicBeatState
 {
+	// look I don't feel like commenting specific lines on a MODS menu.
+	#if MODS_ALLOWED
 	var bg:FlxSprite;
 	var fg:FlxSprite;
+	var infoText:FlxText;
 
-	var modList:Array<String> = [];
+	var curMod:Int = -1;
+	var curSelection:Int = -1;
+
+	var modList:Array<String> = [null];
 
 	override function create()
 	{
@@ -61,6 +67,23 @@ class ModsMenuState extends MusicBeatState
 		text.antialiasing = true;
 		text.screenCenter(X);
 		add(text);
+
+		infoText = new FlxText(5, FlxG.height - 24, 0, "", 32);
+		infoText.setFormat("VCR OSD Mono", 20, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		infoText.textField.background = true;
+		infoText.textField.backgroundColor = FlxColor.BLACK;
+		add(infoText);
+
+		for (modFolders in Paths.getModDirs())
+		{
+			modList.push(modFolders);
+		}
+
+		var mod:Int = modList.indexOf(Paths.currentPack);
+		if (mod > -1)
+			curMod = mod;
+
+		changeMod();
 	}
 
 	override function update(elapsed:Float)
@@ -71,5 +94,34 @@ class ModsMenuState extends MusicBeatState
 		{
 			Main.switchState(this, new MainMenuState());
 		}
+		if (controls.UI_LEFT_P)
+			changeMod(-1);
+		if (controls.UI_RIGHT_P)
+			changeMod(1);
 	}
+
+	function changeMod(change:Int = 0)
+	{
+		FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
+
+		curMod += change;
+
+		if (curMod < 0)
+			curMod = modList.length - 1;
+		if (curMod >= modList.length)
+			curMod = 0;
+
+		if (modList[curMod] == null || modList[curMod].length < 1)
+		{
+			infoText.text = '[NO MODS LOADED]';
+			Paths.currentPack = Paths.defaultPack;
+		}
+		else
+		{
+			Paths.currentPack = modList[curMod];
+			infoText.text = '[LOADED MOD: ' + Paths.currentPack + ']';
+		}
+		infoText.text = infoText.text.toUpperCase();
+	}
+	#end
 }

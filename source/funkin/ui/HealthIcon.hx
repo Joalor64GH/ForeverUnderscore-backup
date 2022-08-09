@@ -44,7 +44,7 @@ class HealthIcon extends FlxSprite
 
 	public function updateIcon(icon:String = 'bf', isPlayer:Bool = false)
 	{
-		var path = Paths.image('$icon/icon', 'assets', 'characters');
+		var path = Paths.image('$icon/icon', 'characters');
 		var iconExists = FileSystem.exists(Paths.getPath('characters/$icon/icon.png', IMAGE));
 
 		var trimmedIcon:String = icon;
@@ -54,7 +54,7 @@ class HealthIcon extends FlxSprite
 		if (!iconExists)
 		{
 			if (icon != trimmedIcon)
-				path = Paths.image('$trimmedIcon/icon', 'assets', 'characters');
+				path = Paths.image('$trimmedIcon/icon', 'characters');
 			else
 				path = Paths.image('credits/face');
 			trace('$icon icon is invalid, trying $trimmedIcon instead you fuck');
@@ -63,7 +63,7 @@ class HealthIcon extends FlxSprite
 		switch (icon)
 		{
 			case 'hypno2plus':
-				frames = Paths.getSparrowAtlas('icon', 'assets', 'characters/$icon');
+				frames = Paths.getSparrowAtlas('icon', 'characters/$icon');
 
 				animation.addByPrefix('static', '$icon-static', 24, true, isPlayer);
 				animation.addByPrefix('losing', '$icon-losing', 24, true, isPlayer);

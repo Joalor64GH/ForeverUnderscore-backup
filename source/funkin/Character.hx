@@ -300,7 +300,7 @@ class Character extends FNFSprite
 		var charExists = FileSystem.exists(Paths.getPreloadPath('characters/$char/$char.xml'));
 
 		var baseFrames = null;
-		var fallbackFrames = Paths.getSparrowAtlas('bf', 'assets', 'characters/bf');
+		var fallbackFrames = Paths.getSparrowAtlas('bf', 'characters/bf');
 		var spriteType = "sparrow";
 
 		#if MODS_ALLOWED
@@ -317,11 +317,11 @@ class Character extends FNFSprite
 		switch (spriteType)
 		{
 			case "packer":
-				baseFrames = Paths.getPackerAtlas('$char', 'assets', 'characters/$char');
+				baseFrames = Paths.getPackerAtlas('$char', 'characters/$char');
 			case "sparrow":
-				baseFrames = Paths.getSparrowAtlas('$char', 'assets', 'characters/$char');
+				baseFrames = Paths.getSparrowAtlas('$char', 'characters/$char');
 			case "sparrow-hash":
-				baseFrames = Paths.getSparrowHashAtlas('$char', 'assets', 'characters/$char');
+				baseFrames = Paths.getSparrowHashAtlas('$char', 'characters/$char');
 		}
 
 		if (charExists)
@@ -409,14 +409,15 @@ class Character extends FNFSprite
 			return true;
 		});
 
-		setVar('setDeathChar', function(char:String = 'bf-dead', lossSfx:String = 'fnf_loss_sfx', song:String = 'gameOver', confirmSound:String = 'gameOverEnd', bpm:Int)
-		{
-			GameOverSubState.character = char;
-			GameOverSubState.deathSound = lossSfx;
-			GameOverSubState.deathMusic = song;
-			GameOverSubState.deathConfirm = confirmSound;
-			GameOverSubState.deathBPM = bpm;
-		});
+		setVar('setDeathChar',
+			function(char:String = 'bf-dead', lossSfx:String = 'fnf_loss_sfx', song:String = 'gameOver', confirmSound:String = 'gameOverEnd', bpm:Int)
+			{
+				GameOverSubState.character = char;
+				GameOverSubState.deathSound = lossSfx;
+				GameOverSubState.deathMusic = song;
+				GameOverSubState.deathConfirm = confirmSound;
+				GameOverSubState.deathBPM = bpm;
+			});
 
 		setVar('get', function(variable:String)
 		{
@@ -429,17 +430,17 @@ class Character extends FNFSprite
 			updateHitbox();
 		});
 
-		setVar('setTex', function(character:String, library:String = 'assets', folder:String = 'images')
+		setVar('setTex', function(character:String, folder:String = 'images')
 		{
 			trace('setTex is deprecated!');
 			// however I won't make it unusable for now, lol
-			frames = Paths.getSparrowAtlas(character, library, folder);
+			frames = Paths.getSparrowAtlas(character, folder);
 		});
 
-		setVar('setPacker', function(character:String, library:String = 'assets', folder:String = 'images')
+		setVar('setPacker', function(character:String, folder:String = 'images')
 		{
 			trace('setPacker is deprecated!');
-			frames = Paths.getPackerAtlas(character, library, folder);
+			frames = Paths.getPackerAtlas(character, folder);
 		});
 
 		setVar('playAnim', function(name:String, ?force:Bool = false, ?reversed:Bool = false, ?frames:Int = 0)
@@ -518,11 +519,11 @@ class Character extends FNFSprite
 		switch (spriteType)
 		{
 			case "packer":
-				frames = Paths.getPackerAtlas(json.image.replace('characters/', ''), 'assets', 'characters/$char');
+				frames = Paths.getPackerAtlas(json.image.replace('characters/', ''), 'characters/$char');
 			case "sparrow":
-				frames = Paths.getSparrowAtlas(json.image.replace('characters/', ''), 'assets', 'characters/$char');
+				frames = Paths.getSparrowAtlas(json.image.replace('characters/', ''), 'characters/$char');
 			case "sparrow-hash":
-				frames = Paths.getSparrowHashAtlas(json.image.replace('characters/', ''), 'assets', 'characters/$char');
+				frames = Paths.getSparrowHashAtlas(json.image.replace('characters/', ''), 'characters/$char');
 		}
 
 		psychAnimationsArray = json.animations;

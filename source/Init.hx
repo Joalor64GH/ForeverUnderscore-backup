@@ -256,6 +256,12 @@ class Init extends FlxState
 			'Set the text size for the Score Bar.',
 			NOT_FORCED
 		],
+		'Disable Button Flickering' => [
+			false,
+			Checkmark,
+			"Whether to disable button flickering when interacting with the items on the Options Menu.",
+			NOT_FORCED
+		],
 	];
 
 	public static var trueSettings:Map<String, Dynamic> = [];

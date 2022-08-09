@@ -38,10 +38,10 @@ class Paths
 	inline public static var SOUND_EXT = "ogg";
 	inline public static var VIDEO_EXT = "mp4";
 
-	inline public static var currentPack:String = '';
+	public static var currentPack:String = '';
 
 	// in case anything goes wrong with your mods
-	inline public static var defaultPack:String = 'default';
+	public static var defaultPack:String = 'default';
 
 	// level we're loading
 	static var currentLevel:String;
@@ -138,7 +138,7 @@ class Paths
 		localTrackedAssets = [];
 	}
 
-	public static function returnGraphic(key:String, ?library:String, folder:String = 'images', ?textureCompression:Bool)
+	public static function returnGraphic(key:String, folder:String = 'images', ?library:String, ?textureCompression:Bool)
 	{
 		textureCompression = Init.trueSettings.get('Hardware Caching');
 
@@ -392,10 +392,10 @@ class Paths
 		return inst;
 	}
 
-	inline static public function image(key:String, ?library:String, folder:String = 'images', ?textureCompression:Bool)
+	inline static public function image(key:String, folder:String = 'images', ?library:String, ?textureCompression:Bool)
 	{
 		textureCompression = Init.trueSettings.get('Hardware Caching');
-		var returnAsset:FlxGraphic = returnGraphic(key, library, folder, textureCompression);
+		var returnAsset:FlxGraphic = returnGraphic(key, folder, library, textureCompression);
 		return returnAsset;
 	}
 
@@ -404,18 +404,18 @@ class Paths
 		return 'assets/fonts/$key';
 	}
 
-	inline static public function getSparrowAtlas(key:String, ?library:String, folder:String = 'images')
+	inline static public function getSparrowAtlas(key:String, folder:String = 'images', ?library:String)
 	{
-		var graphic:FlxGraphic = returnGraphic(key, library, folder);
+		var graphic:FlxGraphic = returnGraphic(key, folder, library);
 		return (FlxAtlasFrames.fromSparrow(graphic, File.getContent(file('$folder/$key.xml', library))));
 	}
 
-	inline static public function getPackerAtlas(key:String, ?library:String, folder:String = 'images')
+	inline static public function getPackerAtlas(key:String, folder:String = 'images', ?library:String)
 	{
 		return (FlxAtlasFrames.fromSpriteSheetPacker(image(key, library, folder), file('$folder/$key.txt', library)));
 	}
 
-	inline static public function getSparrowHashAtlas(key:String, ?library:String, folder:String = 'images')
+	inline static public function getSparrowHashAtlas(key:String, folder:String = 'images', ?library:String)
 	{
 		return FlxAtlasFrames.fromTexturePackerJson(image(key, library), file('$folder/$key.json', library));
 	}
@@ -449,7 +449,7 @@ class Paths
 	* something that i'm gonna work on soon! -gabi
 	**/
 	#if MODS_ALLOWED
-	inline static public function getModpack(key:String = 'default')
+	inline static public function getModpack(key:String = '')
 	{
 		return 'mods/' + key;
 	}
@@ -471,7 +471,7 @@ class Paths
 
 	public inline static function getModPath(path:String, file:String, extension:String)
 	{
-		var returnPath:String = 'mods/$defaultPack/$path/$file.$extension';
+		var returnPath:String = 'mods/$currentPack/$path/$file.$extension';
 		if (!FileSystem.exists(returnPath))
 			returnPath = CoolUtil.swapSpaceDash(returnPath);
 		return returnPath;

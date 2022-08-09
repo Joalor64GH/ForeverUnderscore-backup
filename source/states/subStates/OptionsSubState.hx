@@ -15,7 +15,7 @@ using StringTools;
 
 class OptionsSubState extends MusicBeatSubState
 {
-	var curSelection = 0;
+	var curSelection = -1;
 	var submenuGroup:FlxTypedGroup<FlxBasic>;
 	var submenuoffsetGroup:FlxTypedGroup<FlxBasic>;
 
@@ -197,7 +197,6 @@ class OptionsSubState extends MusicBeatSubState
 		else if (curSelection >= keyOptions.length)
 			curSelection = 0;
 
-		//
 		for (i in 0...keyOptions.length)
 		{
 			keyOptions.members[i].alpha = 0.6;
@@ -205,14 +204,13 @@ class OptionsSubState extends MusicBeatSubState
 		}
 		keyOptions.members[curSelection].alpha = 1;
 
-		///*
 		for (i in 0...otherKeys.length)
 		{
 			otherKeys.members[i].alpha = 0.6;
 			otherKeys.members[i].targetY = (((Math.floor(i / 2)) - curSelection) / 2) - 0.25;
 		}
 		otherKeys.members[(curSelection * 2) + curHorizontalSelection].alpha = 1;
-		// */
+
 		if (keyOptions.members[curSelection].text == '' && curSelection != prevSelection)
 			updateSelection(curSelection + (curSelection - prevSelection));
 	}
@@ -238,13 +236,11 @@ class OptionsSubState extends MusicBeatSubState
 					else if (curHorizontalSelection > 1)
 						curHorizontalSelection = 0;
 
-					// update stuffs
 					FlxG.sound.play(Paths.sound('scrollMenu'));
 				}
 			}
 
 			updateSelection(curSelection);
-			//
 		}
 	}
 
@@ -305,7 +301,6 @@ class OptionsSubState extends MusicBeatSubState
 
 	override public function close()
 	{
-		//
 		Init.saveControls(); // for controls
 		Init.saveSettings(); // for offset
 		super.close();
@@ -342,49 +337,26 @@ class OptionsSubState extends MusicBeatSubState
 			// be able to close the submenu
 			if (FlxG.keys.justPressed.ESCAPE)
 				closeSubmenu();
-			else if (FlxG.keys.justPressed.ANY)
+			else if (FlxG.keys.justPressed.ANY && !FlxG.keys.justPressed.ENTER && !FlxG.keys.justPressed.PRINTSCREEN)
 			{
 				// loop through existing keys and see if there are any alike
 				var checkKey = FlxG.keys.getIsDown()[0].ID;
-				var delKey = FlxG.keys.getIsDown()[-1];
-
-				// check if any keys use the same key lol
-				/*
-					for (i in 0...otherKeys.members.length)	{
-						if (otherKeys.members[i].text == checkKey.toString())
-						{
-							// switch them I guess???
-							var oldKey = Init.gameControls.get(keyOptions.members[curSelection].text)[0][curHorizontalSelection];
-							Init.gameControls.get(keyOptions.members[otherKeys.members[i].controlGroupID].text)[0][otherKeys.members[i].extensionJ] = oldKey;
-							otherKeys.members[i].text = getStringKey(oldKey);
-						}
-					}
-				 */
 
 				// now check if its the key we want to change
 				Init.gameControls.get(keyOptions.members[curSelection].text)[0][curHorizontalSelection] = checkKey;
 				otherKeys.members[(curSelection * 2) + curHorizontalSelection].text = getStringKey(checkKey);
 
 				if (FlxG.keys.justPressed.DELETE) {
-					Init.gameControls.get(keyOptions.members[curSelection].text)[0][curHorizontalSelection] = delKey;
-					otherKeys.members[(curSelection * 2) + curHorizontalSelection].text = getStringKey(delKey);
+					Init.gameControls.get(keyOptions.members[curSelection].text)[0][curHorizontalSelection] = null;
+					otherKeys.members[(curSelection * 2) + curHorizontalSelection].text = getStringKey(null);
 				}
 
 				// refresh keys
 				controls.setKeyboardScheme(None, false);
 
-				// update all keys on screen to have the right values
-				// inefficient so I rewrote it lolllll
-				/*for (i in 0...otherKeys.members.length)
-					{
-						var stringKey = getStringKey(Init.gameControls.get(keyOptions.members[otherKeys.members[i].controlGroupID].text)[0][otherKeys.members[i].extensionJ]);
-						trace('running $i times, options menu');
-				}*/
-
 				// close the submenu
 				closeSubmenu();
 			}
-			//
 		}
 		else
 		{
@@ -397,9 +369,16 @@ class OptionsSubState extends MusicBeatSubState
 				closeSubmenu();
 
 			var move = 0;
-			if (FlxG.keys.justPressed.LEFT || FlxG.keys.pressed.LEFT && FlxG.keys.pressed.SHIFT)
+			
+			var left = FlxG.keys.justPressed.LEFT;
+			var right = FlxG.keys.justPressed.RIGHT;
+			var leftP = FlxG.keys.pressed.LEFT;
+			var rightP = FlxG.keys.pressed.RIGHT;
+			var shiftP = FlxG.keys.pressed.SHIFT;
+			
+			if (left || leftP && shiftP)
 				move = -1;
-			else if (FlxG.keys.justPressed.RIGHT || FlxG.keys.pressed.RIGHT && FlxG.keys.pressed.SHIFT)
+			else if (right || rightP && shiftP)
 				move = 1;
 
 			offsetTemp += move * 0.1;

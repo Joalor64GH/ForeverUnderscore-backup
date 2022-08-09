@@ -109,6 +109,7 @@ class OptionsMenuState extends MusicBeatState
 					['Accessibility Settings', null],
 					//
 					['Disable Antialiasing', getFromOption],
+					['Disable Button Flickering', getFromOption],
 					['Disable Flashing Lights', getFromOption],
 					['Reduced Movements', getFromOption],
 					['Filter', getFromOption],
@@ -459,20 +460,20 @@ class OptionsMenuState extends MusicBeatState
 					// checkmark basics lol
 					if (controls.ACCEPT || FlxG.mouse.justPressed)
 					{
-						FlxG.sound.play(Paths.sound('confirmMenu'));
-						lockedMovement = true;
-						FlxFlicker.flicker(activeSubgroup.members[curSelection], 0.5, 0.06 * 2, true, false, function(flick:FlxFlicker)
+						if (!Init.trueSettings.get('Disable Button Flickering'))
 						{
-							// LMAO THIS IS HUGE
-							Init.trueSettings.set(activeSubgroup.members[curSelection].text,
-								!Init.trueSettings.get(activeSubgroup.members[curSelection].text));
-							updateCheckmark(currentAttachmentMap.get(activeSubgroup.members[curSelection]),
-								Init.trueSettings.get(activeSubgroup.members[curSelection].text));
-
-							// save the setting
-							Init.saveSettings();
-							lockedMovement = false;
-						});
+							playSound('confirmMenu');
+							lockedMovement = true;
+							FlxFlicker.flicker(activeSubgroup.members[curSelection], 0.5, 0.06 * 2, true, false, function(flick:FlxFlicker)
+							{
+								checkmarkBasics();
+							});
+						}
+						else
+						{
+							playSound('scrollMenu');
+							checkmarkBasics();
+						}
 					}
 				case Init.SettingTypes.Selector:
 					#if !html5
@@ -492,6 +493,17 @@ class OptionsMenuState extends MusicBeatState
 					// none
 			}
 		}
+	}
+
+	function checkmarkBasics()
+	{
+		// LMAO THIS IS HUGE
+		Init.trueSettings.set(activeSubgroup.members[curSelection].text, !Init.trueSettings.get(activeSubgroup.members[curSelection].text));
+		updateCheckmark(currentAttachmentMap.get(activeSubgroup.members[curSelection]), Init.trueSettings.get(activeSubgroup.members[curSelection].text));
+
+		// save the setting
+		Init.saveSettings();
+		lockedMovement = false;
 	}
 
 	function updateCheckmark(checkmark:FNFSprite, animation:Bool)
@@ -585,12 +597,20 @@ class OptionsMenuState extends MusicBeatState
 	{
 		if (controls.ACCEPT || FlxG.mouse.justPressed)
 		{
-			FlxG.sound.play(Paths.sound('confirmMenu'));
-			lockedMovement = true;
-			FlxFlicker.flicker(activeSubgroup.members[curSelection], 0.5, 0.06 * 2, true, false, function(flick:FlxFlicker)
+			if (!Init.trueSettings.get('Disable Button Flickering'))
 			{
+				playSound('confirmMenu');
+				lockedMovement = true;
+				FlxFlicker.flicker(activeSubgroup.members[curSelection], 0.5, 0.06 * 2, true, false, function(flick:FlxFlicker)
+				{
+					loadSubgroup(activeSubgroup.members[curSelection].text);
+				});
+			}
+			else
+			{
+				playSound('scrollMenu');
 				loadSubgroup(activeSubgroup.members[curSelection].text);
-			});
+			}
 		}
 	}
 
@@ -598,13 +618,21 @@ class OptionsMenuState extends MusicBeatState
 	{
 		if (controls.ACCEPT || FlxG.mouse.justPressed)
 		{
-			FlxG.sound.play(Paths.sound('confirmMenu'));
-			lockedMovement = true;
-			FlxFlicker.flicker(activeSubgroup.members[curSelection], 0.5, 0.06 * 2, true, false, function(flick:FlxFlicker)
+			if (!Init.trueSettings.get('Disable Button Flickering'))
 			{
+				playSound('confirmMenu');
+				lockedMovement = true;
+				FlxFlicker.flicker(activeSubgroup.members[curSelection], 0.5, 0.06 * 2, true, false, function(flick:FlxFlicker)
+				{
+					openSubState(new OptionsSubState());
+					lockedMovement = false;
+				});
+			}
+			else
+			{
+				playSound('scrollMenu');
 				openSubState(new OptionsSubState());
-				lockedMovement = false;
-			});
+			}
 		}
 	}
 
@@ -620,19 +648,43 @@ class OptionsMenuState extends MusicBeatState
 		//
 		if (controls.ACCEPT || FlxG.mouse.justPressed)
 		{
-			FlxG.sound.play(Paths.sound('confirmMenu'));
-			lockedMovement = true;
-			FlxFlicker.flicker(activeSubgroup.members[curSelection], 0.5, 0.06 * 2, true, false, function(flick:FlxFlicker)
+			if (!Init.trueSettings.get('Disable Button Flickering'))
 			{
-				if (PauseSubState.toOptions) {
+				playSound('confirmMenu');
+				lockedMovement = true;
+				FlxFlicker.flicker(activeSubgroup.members[curSelection], 0.5, 0.06 * 2, true, false, function(flick:FlxFlicker)
+				{
+					if (PauseSubState.toOptions)
+					{
+						PlayState.resetMusic();
+						Main.switchState(this, new PlayState());
+					}
+					else
+					{
+						Main.switchState(this, new MainMenuState());
+					}
+					lockedMovement = false;
+				});
+			}
+			else
+			{
+				playSound('scrollMenu');
+				if (PauseSubState.toOptions)
+				{
 					PlayState.resetMusic();
 					Main.switchState(this, new PlayState());
-				} else {
+				}
+				else
+				{
 					Main.switchState(this, new MainMenuState());
 				}
-				lockedMovement = false;
-			});
+			}
 		}
 		//
+	}
+
+	function playSound(soundToPlay:String)
+	{
+		FlxG.sound.play(Paths.sound(soundToPlay));
 	}
 }

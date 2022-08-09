@@ -283,9 +283,9 @@ class OriginalChartingState extends MusicBeatState
 		var baseStages:Array<String> = CoolUtil.returnAssetsLibrary('backgrounds', 'assets/images');
 		var baseAssets:Array<String> = CoolUtil.returnAssetsLibrary('UI/default', 'assets/images');
 
-		var modChars:Array<String> = CoolUtil.returnAssetsLibrary('characters', 'mods/${Paths.defaultPack}'/* + Paths.getModpack()*/);
-		var modAssets:Array<String> = CoolUtil.returnAssetsLibrary('UI', 'mods/${Paths.defaultPack}'/* + Paths.getModpack() + */ + '/images');
-		var modStages:Array<String> = CoolUtil.returnAssetsLibrary('backgrounds', 'mods/${Paths.defaultPack}'/* + Paths.getModpack() + */ + '/images');
+		var modChars:Array<String> = CoolUtil.returnAssetsLibrary('characters', 'mods/${Paths.currentPack}');
+		var modAssets:Array<String> = CoolUtil.returnAssetsLibrary('UI', 'mods/${Paths.currentPack}/images');
+		var modStages:Array<String> = CoolUtil.returnAssetsLibrary('backgrounds', 'mods/${Paths.currentPack}/images');
 
 		var characters:Array<String> = baseChars/*, modChars*/;
 

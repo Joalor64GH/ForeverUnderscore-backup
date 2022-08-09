@@ -1274,7 +1274,7 @@ class PlayState extends MusicBeatState
 				stringArrow = 'hey';
 				character.specialAnim = true;
 				character.heyTimer = 0.6;
-				
+
 			case NO_ANIM:
 				stringArrow = '';
 
@@ -1745,11 +1745,7 @@ class PlayState extends MusicBeatState
 			SONG.author = '???';
 
 		// String that contains the mode defined here so it isn't necessary to call changePresence for each mode
-		songDetails = CoolUtil.dashToSpace(SONG.song)
-			+ ' ['
-			+ CoolUtil.difficultyFromNumber(storyDifficulty)
-			+ '] - by '
-			+ SONG.author;
+		songDetails = CoolUtil.dashToSpace(SONG.song) + ' [' + CoolUtil.difficultyFromNumber(storyDifficulty) + '] - by ' + SONG.author;
 
 		// String for when the game is paused
 		detailsPausedText = "Paused - " + songDetails;
@@ -2638,8 +2634,8 @@ class PlayState extends MusicBeatState
 			});
 
 		setVar('loadAnimatedGraphic',
-			function(spriteID:String, key:String, path:String = null, spriteType:String, anims:Array<Array<Dynamic>>, defaultAnim:String, x:Float = 0, y:Float = 0,
-					scrollX:Float = 0, scrollY:Float = 0, alpha:Float = 1, size:Float = 1, scaleX:Float = 1, scaleY:Float = 1)
+			function(spriteID:String, key:String, path:String = null, spriteType:String, anims:Array<Array<Dynamic>>, defaultAnim:String, x:Float = 0,
+					y:Float = 0, scrollX:Float = 0, scrollY:Float = 0, alpha:Float = 1, size:Float = 1, scaleX:Float = 1, scaleY:Float = 1)
 			{
 				var sprite:FNFSprite = new FNFSprite(x, y);
 
