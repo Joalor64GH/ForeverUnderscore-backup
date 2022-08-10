@@ -103,7 +103,7 @@ class OriginalChartingState extends MusicBeatState
 	// was annoying.
 	var blockPressWhileTypingOn:Array<FlxUIInputText> = [];
 	var blockPressWhileTypingOnStepper:Array<FlxUINumericStepper> = [];
-	var blockPressWhileScrolling:Array<FlxUIDropDownMenuCustom> = [];
+	var blockPressWhileScrolling:Array<PsychDropDown> = [];
 	
 	override function create()
 	{
@@ -289,7 +289,7 @@ class OriginalChartingState extends MusicBeatState
 
 		var characters:Array<String> = baseChars;
 
-		var player1DropDown = new FlxUIDropDownMenuCustom(10, stepperSpeed.y + 45, FlxUIDropDownMenuCustom.makeStrIdLabelArray(characters, true), function(character:String)
+		var player1DropDown = new PsychDropDown(10, stepperSpeed.y + 45, PsychDropDown.makeStrIdLabelArray(characters, true), function(character:String)
 		{
 			_song.player1 = characters[Std.parseInt(character)];
 			updateHeads();
@@ -297,7 +297,7 @@ class OriginalChartingState extends MusicBeatState
 		player1DropDown.selectedLabel = _song.player1;
 		blockPressWhileScrolling.push(player1DropDown);
 
-		var gfVersionDropDown = new FlxUIDropDownMenuCustom(player1DropDown.x, player1DropDown.y + 40, FlxUIDropDownMenuCustom.makeStrIdLabelArray(characters, true), function(character:String)
+		var gfVersionDropDown = new PsychDropDown(player1DropDown.x, player1DropDown.y + 40, PsychDropDown.makeStrIdLabelArray(characters, true), function(character:String)
 		{
 			_song.gfVersion = characters[Std.parseInt(character)];
 			updateHeads();
@@ -305,7 +305,7 @@ class OriginalChartingState extends MusicBeatState
 		gfVersionDropDown.selectedLabel = _song.gfVersion;
 		blockPressWhileScrolling.push(gfVersionDropDown);
 
-		var player2DropDown = new FlxUIDropDownMenuCustom(player1DropDown.x, gfVersionDropDown.y + 40, FlxUIDropDownMenuCustom.makeStrIdLabelArray(characters, true), function(character:String)
+		var player2DropDown = new PsychDropDown(player1DropDown.x, gfVersionDropDown.y + 40, PsychDropDown.makeStrIdLabelArray(characters, true), function(character:String)
 		{
 			_song.player2 = characters[Std.parseInt(character)];
 			updateHeads();
@@ -315,7 +315,7 @@ class OriginalChartingState extends MusicBeatState
 
 		var stages:Array<String> = baseStages/*, modStages*/;
 
-		var stageDropDown = new FlxUIDropDownMenuCustom(player1DropDown.x + 140, player1DropDown.y, FlxUIDropDownMenuCustom.makeStrIdLabelArray(stages, true), function(stage:String)
+		var stageDropDown = new PsychDropDown(player1DropDown.x + 140, player1DropDown.y, PsychDropDown.makeStrIdLabelArray(stages, true), function(stage:String)
 		{
 			_song.stage = stages[Std.parseInt(stage)];
 		});
@@ -324,7 +324,7 @@ class OriginalChartingState extends MusicBeatState
 
 		var assetModifiers:Array<String> = baseAssets/*, modAssets*/;
 
-		var assetModifierDropDown = new FlxUIDropDownMenuCustom(stageDropDown.x , gfVersionDropDown.y, FlxUIDropDownMenuCustom.makeStrIdLabelArray(assetModifiers, true), function(asset:String)
+		var assetModifierDropDown = new PsychDropDown(stageDropDown.x , gfVersionDropDown.y, PsychDropDown.makeStrIdLabelArray(assetModifiers, true), function(asset:String)
 		{
 			_song.assetModifier = assetModifiers[Std.parseInt(asset)];
 		});
@@ -460,8 +460,8 @@ class OriginalChartingState extends MusicBeatState
 
 	var stepperSusLength:FlxUINumericStepper;
 	var stepperSusType:FlxUINumericStepper;
-	var noteTypeDropDown:FlxUIDropDownMenuCustom;
-	var noteSustainDropDown:FlxUIDropDownMenuCustom;
+	var noteTypeDropDown:PsychDropDown;
+	var noteSustainDropDown:PsychDropDown;
 	var currentType:NoteType = NORMAL;
 	var lnType:SustainType = NORMAL;
 	var key:Int = 0;
@@ -477,13 +477,13 @@ class OriginalChartingState extends MusicBeatState
 		blockPressWhileTypingOnStepper.push(stepperSusLength);
 
 		// sustain types
-		noteSustainDropDown = new FlxUIDropDownMenuCustom(160, 65, FlxUIDropDownMenuCustom.makeStrIdLabelArray(Note.sustainTypeList, false), function(type:String)
+		noteSustainDropDown = new PsychDropDown(160, 65, PsychDropDown.makeStrIdLabelArray(Note.sustainTypeList, false), function(type:String)
 		{
 			lnType = Note.sustainTypeMap[type];
 		});
 
 		// note types
-		noteTypeDropDown = new FlxUIDropDownMenuCustom(10, 65, FlxUIDropDownMenuCustom.makeStrIdLabelArray(Note.noteTypeList, false), function(type:String)
+		noteTypeDropDown = new PsychDropDown(10, 65, PsychDropDown.makeStrIdLabelArray(Note.noteTypeList, false), function(type:String)
 		{
 			currentType = Note.noteTypeMap[type];
 		});
