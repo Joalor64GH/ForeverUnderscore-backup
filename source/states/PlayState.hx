@@ -2530,7 +2530,7 @@ class PlayState extends MusicBeatState
 			changeCharacter(key, target, x, y);
 		});
 
-		setVar('castShader', function(shaderID:String, key:String, startEnabled:Bool = true)
+		setVar('castShader', function(shaderID:String, key:String, camera:String, startEnabled:Bool = true)
 		{
 			if (Init.trueSettings.get('Disable Shaders'))
 			{
@@ -2541,9 +2541,24 @@ class PlayState extends MusicBeatState
 				if (key != null || key != '')
 				{
 					var shader:GraphicsShader = new GraphicsShader("", File.getContent(Paths.shader(key)));
-					var messageGiven:Bool = false;
 					ShaderMap.set(shaderID, shader);
-					FlxG.game.setFilters([new ShaderFilter(shader)]);
+
+					switch (camera)
+					{
+						case 'camhud' | 'camHUD' | 'hud' | 'ui':
+							camHUD.setFilters([new ShaderFilter(shader)]);
+						case 'camgame' | 'camGame' | 'game' | 'world':
+							camGame.setFilters([new ShaderFilter(shader)]);
+						case 'strumhud' | 'strumHUD' | 'strum' | 'strumlines':
+							for(i in 0...strumHUD.length)
+							{
+								strumHUD[i].setFilters([new ShaderFilter(shader)]);
+							}
+						case 'dialoguehud', | 'dialogueHUD' | 'dialogue' | 'dialogueBox':
+							dialogueHUD.setFilters([new ShaderFilter(shader)]):
+					}
+
+					var messageGiven:Bool = false;
 					if (!startEnabled)
 					{
 						if (!messageGiven)
