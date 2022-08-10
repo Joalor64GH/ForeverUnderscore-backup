@@ -2558,22 +2558,8 @@ class PlayState extends MusicBeatState
 							dialogueHUD.setFilters([new ShaderFilter(shader)]):
 					}
 
-					var messageGiven:Bool = false;
 					if (!startEnabled)
-					{
-						if (!messageGiven)
-						{
-							uiHUD.traceBar.text += 'Use\nFlxG.camera.filtersEnabled = true\nto enable shaders\n';
-							FlxTween.tween(uiHUD.traceBar, {alpha: 1}, 0.5, {ease: FlxEase.circOut});
-
-							new FlxTimer().start(6, function(tmr:FlxTimer)
-							{
-								FlxTween.tween(uiHUD.traceBar, {alpha: 0}, 0.5, {ease: FlxEase.circOut});
-							});
-							messageGiven = true;
-						}
 						FlxG.camera.filtersEnabled = false;
-					}
 				}
 				else
 				{
