@@ -238,11 +238,6 @@ class Note extends FNFSprite
 						if (noteData == 0)
 							newNote.animation.addByPrefix('purpleholdend', 'pruple end hold'); // uh?
 
-						// Kade Engine Styled						
-						newNote.animation.addByPrefix(noteColorID[noteData] + 'Scroll', noteColorID[noteData] + ' alone');
-						newNote.animation.addByPrefix(noteColorID[noteData] + 'hold', noteColorID[noteData] + ' hold');
-						newNote.animation.addByPrefix(noteColorID[noteData] + 'holdend', noteColorID[noteData] + ' tail');
-
 						newNote.setGraphicSize(Std.int(newNote.width * 0.7));
 						newNote.updateHitbox();
 						newNote.antialiasing = true;
