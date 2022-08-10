@@ -2530,7 +2530,7 @@ class PlayState extends MusicBeatState
 			changeCharacter(key, target, x, y);
 		});
 
-		setVar('castShader', function(shaderID:String, key:String, camera:String, startEnabled:Bool = true)
+		setVar('castShader', function(shaderID:String, key:String, camera:String = 'camGame', startEnabled:Bool = true)
 		{
 			if (Init.trueSettings.get('Disable Shaders'))
 			{
