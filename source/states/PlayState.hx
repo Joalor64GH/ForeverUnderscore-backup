@@ -1022,7 +1022,7 @@ class PlayState extends MusicBeatState
 
 					if (!daNote.tooLate && daNote.strumTime < Conductor.songPosition - (Timings.msThreshold) && !daNote.wasGoodHit)
 					{
-						if ((!daNote.tooLate) && (daNote.mustPress) && (daNote.noteType != MINE) && (daNote.noteType != NUKE))
+						if ((!daNote.tooLate) && (daNote.mustPress) && (!daNote.badNote))
 						{
 							if (!daNote.isSustainNote)
 							{
@@ -1166,12 +1166,8 @@ class PlayState extends MusicBeatState
 			if (coolNote.noteType == MINE)
 			{
 				decreaseCombo(true);
-				createSplash(coolNote, characterStrums, 'noteSplashDanger');
 				health -= coolNote.healthLoss;
 			}
-
-			if (coolNote.noteType == NUKE)
-				health -= 999; // haha
 
 			characterPlayAnimation(coolNote, character);
 
@@ -1202,7 +1198,7 @@ class PlayState extends MusicBeatState
 					}
 				}
 
-				if (!coolNote.isSustainNote && coolNote.noteType != MINE && coolNote.noteType != NUKE)
+				if (!coolNote.isSustainNote && !coolNote.badNote)
 				{
 					increaseCombo(foundRating, coolNote.noteData, character);
 					popUpScore(foundRating, ratingTiming, characterStrums, coolNote);
@@ -1212,7 +1208,7 @@ class PlayState extends MusicBeatState
 
 					healthCall(Timings.judgementsMap.get(foundRating)[3]);
 				}
-				else if (coolNote.isSustainNote && coolNote.noteType != MINE && coolNote.noteType != NUKE)
+				else if (coolNote.isSustainNote && !coolNote.badNote)
 				{
 					// call updated accuracy stuffs
 					if (coolNote.parentNote != null)
@@ -1267,6 +1263,8 @@ class PlayState extends MusicBeatState
 				altString = '';
 		}
 
+		// custom strings go here idk, WIP;
+
 		switch (coolNote.noteType)
 		{
 			case ALT:
@@ -1280,7 +1278,7 @@ class PlayState extends MusicBeatState
 			case NO_ANIM:
 				stringArrow = '';
 
-			case MINE | NUKE:
+			case MINE:
 				if (character.curCharacter == 'bf-psych')
 					stringArrow = 'hurt';
 				else
@@ -1291,9 +1289,6 @@ class PlayState extends MusicBeatState
 			default:
 				stringArrow = baseString + altString;
 		}
-
-		// if (coolNote.foreverMods.get('string')[0] != "")
-		//	stringArrow = coolNote.noteString;
 
 		character.playAnim(stringArrow, true);
 		character.holdTimer = 0;
@@ -1331,17 +1326,8 @@ class PlayState extends MusicBeatState
 		if (autoplay)
 		{
 			// check if the note was a good hit
-			if (daNote.strumTime <= Conductor.songPosition && daNote.noteType != MINE && daNote.noteType != NUKE)
+			if (daNote.strumTime <= Conductor.songPosition && !daNote.badNote)
 			{
-				// use a switch thing cus it feels right idk lol
-				// make sure the strum is played for the autoplay stuffs
-				/*
-					charStrum.forEach(function(cStrum:UIStaticArrow)
-					{
-						strumCallsAuto(cStrum, 0, daNote);
-					});
-				 */
-
 				// kill the note, then remove it from the array
 				var canDisplayJudgement = false;
 				if (strumline.displayJudgements)
@@ -1351,12 +1337,8 @@ class PlayState extends MusicBeatState
 					{
 						if (noteDouble.noteData == daNote.noteData)
 						{
-							// if (Math.abs(noteDouble.strumTime - daNote.strumTime) < 10)
 							canDisplayJudgement = false;
-							// removing the fucking check apparently fixes it
-							// god damn it that stupid glitch with the double judgements is annoying
 						}
-						//
 					}
 					notesPressedAutoplay.push(daNote);
 				}
@@ -1496,9 +1478,8 @@ class PlayState extends MusicBeatState
 		// set up the rating
 		var score:Int = 50;
 
-		// notesplashes
+		// create the note splash if you hit a sick
 		if (baseRating == "sick")
-			// create the note splash if you hit a sick
 			createSplash(coolNote, strumline);
 		else
 			// if it isn't a sick, and you had a sick combo, then it becomes not sick :(
@@ -1515,11 +1496,9 @@ class PlayState extends MusicBeatState
 		popUpCombo();
 	}
 
-	public function createSplash(coolNote:Note, strumline:Strumline, skin:String = 'noteSplashes')
+	public function createSplash(coolNote:Note, strumline:Strumline)
 	{
 		// play animation in existing notesplashes
-		strumline.splashSkin = skin;
-
 		var noteSplashRandom:String = (Std.string((FlxG.random.int(0, 1) + 1)));
 		if (strumline.splashNotes != null)
 			strumline.splashNotes.members[coolNote.noteData].playAnim('anim' + noteSplashRandom, true);
@@ -1595,7 +1574,6 @@ class PlayState extends MusicBeatState
 			combo--;
 
 		// misses
-
 		if (!practiceMode)
 			songScore -= 10;
 

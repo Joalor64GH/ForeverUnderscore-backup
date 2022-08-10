@@ -799,16 +799,13 @@ class OriginalChartingState extends MusicBeatState
 			else if (FlxG.keys.justPressed.BACKSPACE)
 				saveAndClose('FreeplayState');
 
-			if (currentType != MINE && currentType != NUKE)
+			if (FlxG.keys.justPressed.E)
 			{
-				if (FlxG.keys.justPressed.E)
-				{
-					changeNoteSustain(Conductor.stepCrochet);
-				}
-				if (FlxG.keys.justPressed.Q)
-				{
-					changeNoteSustain(-Conductor.stepCrochet);
-				}
+				changeNoteSustain(Conductor.stepCrochet);
+			}
+			if (FlxG.keys.justPressed.Q)
+			{
+				changeNoteSustain(-Conductor.stepCrochet);
 			}
 
 			if (FlxG.keys.justPressed.TAB)

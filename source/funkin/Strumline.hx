@@ -56,15 +56,20 @@ class UIStaticArrow extends FlxSprite
 
 	override function update(elapsed:Float)
 	{
-		if(resetAnim > 0) {
+		super.update(elapsed);
+		
+		if (resetAnim > 0)
+		{
 			resetAnim -= elapsed;
-			if(resetAnim <= 0) {
+
+			if (resetAnim <= 0.0975) // little detail.
+				playAnim('pressed');
+			if (resetAnim < 0)
+			{
 				playAnim('static');
 				resetAnim = 0;
 			}
 		}
-
-		super.update(elapsed);
 	}
 
 	// literally just character code
@@ -144,8 +149,6 @@ class Strumline extends FlxTypedGroup<FlxBasic>
 	public var playState:PlayState;
 	public var displayJudgements:Bool = false;
 
-	public var splashSkin = 'noteSplashes';
-
 	public function new(x:Float = 0, playState:PlayState, ?character:Character, ?displayJudgements:Bool = true, ?autoplay:Bool = true,
 			?noteSplashes:Bool = false, ?keyAmount:Int = 4, ?downscroll:Bool = false, ?parent:Strumline)
 	{
@@ -183,7 +186,7 @@ class Strumline extends FlxTypedGroup<FlxBasic>
 
 			if (noteSplashes)
 			{
-				var noteSplash:NoteSplash = ForeverAssets.generateNoteSplashes(splashSkin, PlayState.assetModifier, PlayState.changeableSkin, 'UI', i);
+				var noteSplash:NoteSplash = ForeverAssets.generateNoteSplashes('noteSplashes', PlayState.assetModifier, PlayState.changeableSkin, 'UI', i);
 				splashNotes.add(noteSplash);
 			}
 		}

@@ -162,7 +162,7 @@ class ChartingState extends MusicBeatState
 		add(curRenderedEvents);
 
 		// epic strum line
-		strumLine = new FlxSprite(0, 0).makeGraphic(Std.int(FlxG.width / 2), 2);
+		strumLine = new FlxSprite(0, 0).makeGraphic(Std.int(FlxG.width / 2 - 155), 2);
 		add(strumLine);
 		strumLine.screenCenter(X);
 
@@ -1080,8 +1080,8 @@ class ChartingState extends MusicBeatState
 		quantL.screenCenter(X);
 		quantR.screenCenter(X);
 
-		quantR.setPosition(bfIcon.x + 70, 30);
-		quantL.setPosition(dadIcon.x + 61, quantR.y);
+		quantR.setPosition(strumLine.x + 70, 30);
+		quantL.setPosition(strumLine.x + 100, quantR.y);
 
 		quantL.animation.play('${speedVal}th');
 		quantR.animation.play('${speedVal}th');

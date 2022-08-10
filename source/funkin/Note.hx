@@ -16,7 +16,6 @@ enum NoteType
 	GF; // GF Notes
 	HEY; // Hey Notes
 	MINE; // Mines - Hit causes miss, deals damage
-	NUKE; // Nukes - Hit instantly kills you
 }
 
 enum SustainType
@@ -67,7 +66,6 @@ class Note extends FNFSprite
 		'Girlfriend Note' => GF,
 		'Hey!' => HEY,
 		'Mine Note' => MINE,
-		'Nuke Note' => NUKE,
 	];
 
 	public static var sustainTypeMap:Map<String, SustainType> = [
@@ -82,8 +80,7 @@ class Note extends FNFSprite
 		'No Animation',
 		'Girlfriend Note',
 		'Hey!',
-		'Mine Note',
-		'Nuke Note'
+		'Mine Note'
 	];
 
 	/**
@@ -96,6 +93,7 @@ class Note extends FNFSprite
 
 	public var healthGain:Float = 0.023;
 	public var healthLoss:Float = 0.0475;
+	public var badNote:Bool = false;
 
 	public function new(strumTime:Float, noteData:Int, noteAlt:Float, ?prevNote:Note, ?sustainNote:Bool = false, type:NoteType = NORMAL, susType:SustainType = NORMAL)
 	{
@@ -106,7 +104,25 @@ class Note extends FNFSprite
 
 		this.prevNote = prevNote;
 		isSustainNote = sustainNote;
-		sustainType = susType;
+
+		if (susType != null)
+			sustainType = susType;
+		else
+			sustainType = NORMAL;
+
+		if (type != null)
+			noteType = type;
+		else
+			noteType = NORMAL;
+
+		switch (type)
+		{
+			case MINE:
+				healthLoss = 0.065;
+				badNote = true;
+			default:
+				badNote = false;
+		}
 
 		// oh okay I know why this exists now
 		y -= 2000;
@@ -114,11 +130,6 @@ class Note extends FNFSprite
 		this.strumTime = strumTime;
 		this.noteData = noteData;
 		this.noteAlt = noteAlt;
-
-		if (type != null)
-			this.noteType = type;
-		else
-			this.noteType = NORMAL;
 
 		// determine parent note
 		if (isSustainNote && prevNote != null)
@@ -143,7 +154,6 @@ class Note extends FNFSprite
 			else
 				canBeHit = false;
 		}
-		
 		else // make sure the note can't be hit if it's the dad's I guess
 			canBeHit = false;
 
@@ -168,9 +178,12 @@ class Note extends FNFSprite
 				{
 					switch (type)
 					{
+						case MINE:
+							newNote.kill();
 						default: // pixel holds default
 							newNote.loadGraphic(Paths.image(ForeverTools.returnSkinAsset('arrowEnds', assetModifier, Init.trueSettings.get("Note Skin"),
-							'noteskins/notes')), true, 7, 6);
+								'noteskins/notes')),
+								true, 7, 6);
 							newNote.animation.add('purpleholdend', [4]);
 							newNote.animation.add('greenholdend', [6]);
 							newNote.animation.add('redholdend', [7]);
@@ -185,14 +198,6 @@ class Note extends FNFSprite
 				{
 					switch (type)
 					{
-						case NUKE: // pixel nukes
-							newNote.loadGraphic(Paths.image(ForeverTools.returnSkinAsset('nukes', assetModifier, '', 'noteskins/mines')),
-								true, 17, 17);
-							newNote.animation.add('greenScroll', [0, 1, 2, 3, 4, 5, 6, 7]);
-							newNote.animation.add('redScroll', [0, 1, 2, 3, 4, 5, 6, 7]);
-							newNote.animation.add('blueScroll', [0, 1, 2, 3, 4, 5, 6, 7]);
-							newNote.animation.add('purpleScroll', [0, 1, 2, 3, 4, 5, 6, 7]);
-
 						case MINE: // pixel mines
 							newNote.loadGraphic(Paths.image(ForeverTools.returnSkinAsset('mines', assetModifier, '', 'noteskins/mines')),
 								true, 17, 17);
@@ -205,10 +210,7 @@ class Note extends FNFSprite
 							newNote.loadGraphic(Paths.image(ForeverTools.returnSkinAsset('arrows-pixels', assetModifier, Init.trueSettings.get("Note Skin"),
 								'noteskins/notes')),
 								true, 17, 17);
-							newNote.animation.add('greenScroll', [6]);
-							newNote.animation.add('redScroll', [7]);
-							newNote.animation.add('blueScroll', [5]);
-							newNote.animation.add('purpleScroll', [4]);
+							loadPixelAnimations(newNote);
 					}
 				}
 				newNote.antialiasing = false;
@@ -218,17 +220,6 @@ class Note extends FNFSprite
 			default: // base game arrows for no reason whatsoever
 				switch (type)
 				{
-					case NUKE: // nukes
-						newNote.loadGraphic(Paths.image(ForeverTools.returnSkinAsset('nukes', assetModifier, '', 'noteskins/mines')),
-							true, 133, 128);
-						newNote.animation.add('greenScroll', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]);
-						newNote.animation.add('redScroll', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]);
-						newNote.animation.add('blueScroll', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]);
-						newNote.animation.add('purpleScroll', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]);
-						newNote.setGraphicSize(Std.int(newNote.width * 0.8));
-						newNote.updateHitbox();
-						newNote.antialiasing = true;
-
 					case MINE: // mines
 						newNote.loadGraphic(Paths.image(ForeverTools.returnSkinAsset('mines', assetModifier, '', 'noteskins/mines')),
 							true, 133, 128);
@@ -236,43 +227,19 @@ class Note extends FNFSprite
 						newNote.animation.add('redScroll', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]);
 						newNote.animation.add('blueScroll', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]);
 						newNote.animation.add('purpleScroll', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]);
+
+						if (isSustainNote)
+							newNote.kill();
+
 						newNote.setGraphicSize(Std.int(newNote.width * 0.8));
 						newNote.updateHitbox();
 						newNote.antialiasing = true;
 
 					default: // anything else
 						newNote.frames = Paths.getSparrowAtlas(ForeverTools.returnSkinAsset('NOTE_assets', assetModifier, Init.trueSettings.get("Note Skin"),
-						'noteskins/notes'));
+							'noteskins/notes'));
 
-						// notes
-						newNote.animation.addByPrefix('greenScroll', 'green0');
-						newNote.animation.addByPrefix('redScroll', 'red0');
-						newNote.animation.addByPrefix('blueScroll', 'blue0');
-						newNote.animation.addByPrefix('purpleScroll', 'purple0');
-
-						// hold ends
-						newNote.animation.addByPrefix('purpleholdend', 'pruple end hold');
-						newNote.animation.addByPrefix('greenholdend', 'green hold end');
-						newNote.animation.addByPrefix('redholdend', 'red hold end');
-						newNote.animation.addByPrefix('blueholdend', 'blue hold end');
-						
-						// hold pieces
-						newNote.animation.addByPrefix('purplehold', 'purple hold piece');
-						newNote.animation.addByPrefix('greenhold', 'green hold piece');
-						newNote.animation.addByPrefix('redhold', 'red hold piece');
-						newNote.animation.addByPrefix('bluehold', 'blue hold piece');
-
-						// roll ends
-						newNote.animation.addByPrefix('redrollend', 'pruple end hold');
-						newNote.animation.addByPrefix('bluerollend', 'green hold end');
-						newNote.animation.addByPrefix('greenrollend', 'blue hold end');
-						newNote.animation.addByPrefix('purplerollend', 'red hold end');
-						
-						// roll pieces
-						newNote.animation.addByPrefix('redroll', 'purple hold piece');
-						newNote.animation.addByPrefix('blueroll', 'green hold piece');
-						newNote.animation.addByPrefix('greenroll', 'blue hold piece');
-						newNote.animation.addByPrefix('purpleroll', 'red hold piece');
+						loadDefaultAnimations(newNote);
 
 						//
 						newNote.setGraphicSize(Std.int(newNote.width * 0.7));
@@ -364,26 +331,6 @@ class Note extends FNFSprite
 				{
 					switch (type)
 					{
-						case NUKE: // pixel nukes
-							if (assetModifier == 'pixel')
-							{
-								newNote.loadGraphic(Paths.image(ForeverTools.returnSkinAsset('nukes', assetModifier, '', 'noteskins/mines')),
-									true, 17, 17);
-								newNote.animation.add('leftScroll', [0, 1, 2, 3, 4, 5, 6, 7]);
-								newNote.animation.add('downScroll', [0, 1, 2, 3, 4, 5, 6, 7]);
-								newNote.animation.add('upScroll', [0, 1, 2, 3, 4, 5, 6, 7]);
-								newNote.animation.add('rightScroll', [0, 1, 2, 3, 4, 5, 6, 7]);
-							}
-							else
-							{
-								newNote.loadGraphic(Paths.image(ForeverTools.returnSkinAsset('nukes', assetModifier, '', 'noteskins/mines')),
-									true, 133, 128);
-								newNote.animation.add('leftScroll', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]);
-								newNote.animation.add('downScroll', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]);
-								newNote.animation.add('upScroll', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]);
-								newNote.animation.add('rightScroll', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]);
-							}
-
 						case MINE: // pixel mines
 							if (assetModifier == 'pixel')
 							{
@@ -475,5 +422,46 @@ class Note extends FNFSprite
 		}
 
 		return newNote;
+	}
+
+	static function loadDefaultAnimations(newNote:Note)
+	{
+		// notes
+		newNote.animation.addByPrefix('greenScroll', 'green0');
+		newNote.animation.addByPrefix('redScroll', 'red0');
+		newNote.animation.addByPrefix('blueScroll', 'blue0');
+		newNote.animation.addByPrefix('purpleScroll', 'purple0');
+
+		// hold ends
+		newNote.animation.addByPrefix('purpleholdend', 'pruple end hold');
+		newNote.animation.addByPrefix('greenholdend', 'green hold end');
+		newNote.animation.addByPrefix('redholdend', 'red hold end');
+		newNote.animation.addByPrefix('blueholdend', 'blue hold end');
+
+		// hold pieces
+		newNote.animation.addByPrefix('purplehold', 'purple hold piece');
+		newNote.animation.addByPrefix('greenhold', 'green hold piece');
+		newNote.animation.addByPrefix('redhold', 'red hold piece');
+		newNote.animation.addByPrefix('bluehold', 'blue hold piece');
+
+		// roll ends
+		newNote.animation.addByPrefix('redrollend', 'pruple end hold');
+		newNote.animation.addByPrefix('bluerollend', 'green hold end');
+		newNote.animation.addByPrefix('greenrollend', 'blue hold end');
+		newNote.animation.addByPrefix('purplerollend', 'red hold end');
+
+		// roll pieces
+		newNote.animation.addByPrefix('redroll', 'purple hold piece');
+		newNote.animation.addByPrefix('blueroll', 'green hold piece');
+		newNote.animation.addByPrefix('greenroll', 'blue hold piece');
+		newNote.animation.addByPrefix('purpleroll', 'red hold piece');
+	}
+
+	static function loadPixelAnimations(newNote:Note)
+	{
+		newNote.animation.add('greenScroll', [6]);
+		newNote.animation.add('redScroll', [7]);
+		newNote.animation.add('blueScroll', [5]);
+		newNote.animation.add('purpleScroll', [4]);
 	}
 }
