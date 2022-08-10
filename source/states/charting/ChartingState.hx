@@ -1021,10 +1021,8 @@ class ChartingState extends MusicBeatState
 		bfIcon.screenCenter(X);
 		dadIcon.screenCenter(X);
 
-		var consistentPosition:Array<Float> = [strumLine.width / 2, 0];
-
-		dadIcon.setPosition(consistentPosition[0], consistentPosition[1]);
-		bfIcon.setPosition(consistentPosition[0] + 500, consistentPosition[1]);
+		dadIcon.setPosition(strumLine.width / 2 + 80, 0);
+		bfIcon.setPosition(strumLine.width / 2 + 590, 0);
 
 		quantL = new FlxSprite();
 		quantR = new FlxSprite();
@@ -1080,8 +1078,8 @@ class ChartingState extends MusicBeatState
 		quantL.screenCenter(X);
 		quantR.screenCenter(X);
 
-		quantR.setPosition(strumLine.x + 70, 30);
-		quantL.setPosition(strumLine.x + 100, quantR.y);
+		quantR.setPosition(strumLine.x + 10, 30);
+		quantL.setPosition(strumLine.x + 490, quantR.y);
 
 		quantL.animation.play('${speedVal}th');
 		quantR.animation.play('${speedVal}th');
