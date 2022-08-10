@@ -67,8 +67,7 @@ class TitleState extends MusicBeatState
 		startIntro();
 	}
 
-	var logoBl:FlxSprite;
-	var funkinLogo:FlxSprite;
+	var gameLogo:FlxSprite;
 
 	var gfDance:FlxSprite;
 	var danceLeft:Bool = false;
@@ -101,21 +100,10 @@ class TitleState extends MusicBeatState
 		gfDance.antialiasing = true;
 		add(gfDance);
 
-		logoBl = new FlxSprite(-150, -100);
-		logoBl.frames = Paths.getSparrowAtlas('menus/base/title/logoBumpin');
-		logoBl.antialiasing = true;
-		logoBl.animation.addByPrefix('bump', 'logo bumpin', 24);
-		logoBl.animation.play('bump');
-		logoBl.updateHitbox();
-		add(logoBl);
-
-		/*
-		// idk something about it bothers me, will do it later
-		funkinLogo = new FlxSprite(0, 50);
-		funkinLogo.loadGraphic(Paths.image('menus/base/title/fnfLogo'));
-		funkinLogo.antialiasing = true;
-		add(funkinLogo);
-		*/
+		gameLogo = new FlxSprite(0, 50);
+		gameLogo.loadGraphic(Paths.image('menus/base/title/logo'));
+		gameLogo.antialiasing = true;
+		add(gameLogo);
 
 		titleText = new FlxSprite(100, FlxG.height * 0.8);
 		titleText.frames = Paths.getSparrowAtlas('menus/base/title/titleEnter');
@@ -326,13 +314,10 @@ class TitleState extends MusicBeatState
 	{
 		super.beatHit();
 
-		if(logoBl != null)
-			logoBl.animation.play('bump', true);
-
-		if (funkinLogo != null)
+		if (gameLogo != null)
 		{
-			funkinLogo.scale.set(1.05, 1.05);
-			FlxTween.tween(funkinLogo, {'scale.x': 0.95, 'scale.y': 0.95}, 0.3, {ease: FlxEase.bounceIn});
+			gameLogo.scale.set(1.05, 1.05);
+			FlxTween.tween(gameLogo, {'scale.x': 0.95, 'scale.y': 0.95}, 0.3, {ease: FlxEase.bounceIn});
 		}
 
 		if(gfDance != null)

@@ -25,7 +25,6 @@ title FNF Setup - Installing libraries
 haxelib git polymod https://github.com/larsiusprime/polymod.git
 haxelib git discord_rpc https://github.com/Aidan63/linc_discord-rpc
 haxelib git SScript https://github.com/TahirRollingArch/SScript
-haxelib git linc_luajit https://github.com/nebulazorua/linc_luajit
 haxelib git hxCodec https://github.com/polybiusproxy/hxCodec
 cls
 goto CommunitySetup
