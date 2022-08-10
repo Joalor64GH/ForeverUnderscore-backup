@@ -2660,18 +2660,39 @@ class PlayState extends MusicBeatState
 			changeCharacter(key, target, x, y);
 		});
 
-		setVar('castShader', function(shaderID:String, key:String)
+		setVar('castShader', function(shaderID:String, key:String, startEnabled:Bool = true)
 		{
-			if (key != null || key != '')
-			{
-				var shader:GraphicsShader = new GraphicsShader("", File.getContent(Paths.shader(key)));
-				ShaderMap.set(shaderID, shader);
-				FlxG.camera.setFilters([new ShaderFilter(shader)]);
-			}
+			if (Init.trueSettings.get('Disable Shaders'))
+				return null;
 			else
 			{
-				return trace('Function Usage - castShader("shaderID", "shaderFilename");
-				\nInvalid Shader Filename, Current Name is $key, with an ID of $shaderID');
+				if (key != null || key != '')
+				{
+					var shader:GraphicsShader = new GraphicsShader("", File.getContent(Paths.shader(key)));
+					static var messageGiven:Bool = false;
+					ShaderMap.set(shaderID, shader);
+					FlxG.game.setFilters([new ShaderFilter(shader)]);
+					if (!startEnabled)
+					{
+						if (!messageGiven)
+						{
+							uiHUD.traceBar.text += 'Use\nFlxG.camera.filtersEnabled = true\nto enable shaders\n';
+							FlxTween.tween(uiHUD.traceBar, {alpha: 1}, 0.5, {ease: FlxEase.circOut});
+
+							new FlxTimer().start(6, function(tmr:FlxTimer)
+							{
+								FlxTween.tween(uiHUD.traceBar, {alpha: 0}, 0.5, {ease: FlxEase.circOut});
+							});
+							messageGiven = true;
+						}
+						FlxG.camera.filtersEnabled = false;
+					}
+				}
+				else
+				{
+					return trace('Function Usage - preloadShader("shaderID", "shaderFilename", object);
+					\nInvalid Shader Filename, Current Name is $key, with an ID of $shaderID');
+				}
 			}
 		});
 

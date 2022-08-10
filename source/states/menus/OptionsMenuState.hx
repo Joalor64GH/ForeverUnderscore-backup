@@ -111,6 +111,7 @@ class OptionsMenuState extends MusicBeatState
 					['Disable Antialiasing', getFromOption],
 					['Disable Button Flickering', getFromOption],
 					['Disable Flashing Lights', getFromOption],
+					['Disable Shaders', getFromOption],
 					['Reduced Movements', getFromOption],
 					['Filter', getFromOption],
 					["Stage Opacity", getFromOption],

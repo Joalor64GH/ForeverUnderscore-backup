@@ -262,6 +262,12 @@ class Init extends FlxState
 			"Whether to disable button flickering when interacting with the items on the Options Menu.",
 			NOT_FORCED
 		],
+		'Disable Shaders' => [
+			false,
+			Checkmark,
+			"Whether to disable Fragment Shader effects during gameplay, can improve performance.",
+			NOT_FORCED
+		],
 	];
 
 	public static var trueSettings:Map<String, Dynamic> = [];
