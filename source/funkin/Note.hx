@@ -232,15 +232,17 @@ class Note extends FNFSprite
 							'noteskins/notes'));
 
 						newNote.animation.addByPrefix(noteColorID[noteData] + 'Scroll', noteColorID[noteData] + '0');
-
-						if (noteData == 0)
-							newNote.animation.addByPrefix('purpleholdend', 'pruple end hold');
-						else
-							newNote.animation.addByPrefix(noteColorID[noteData] + 'holdend', noteColorID[noteData] + ' hold end');
-
+						newNote.animation.addByPrefix(noteColorID[noteData] + 'holdend', noteColorID[noteData] + ' hold end');
 						newNote.animation.addByPrefix(noteColorID[noteData] + 'hold', noteColorID[noteData] + ' hold piece');
 
-						//
+						if (noteData == 0)
+							newNote.animation.addByPrefix('purpleholdend', 'pruple end hold'); // uh?
+
+						// Kade Engine Styled						
+						newNote.animation.addByPrefix(noteColorID[noteData] + 'Scroll', noteColorID[noteData] + ' alone');
+						newNote.animation.addByPrefix(noteColorID[noteData] + 'hold', noteColorID[noteData] + ' hold');
+						newNote.animation.addByPrefix(noteColorID[noteData] + 'holdend', noteColorID[noteData] + ' tail');
+
 						newNote.setGraphicSize(Std.int(newNote.width * 0.7));
 						newNote.updateHitbox();
 						newNote.antialiasing = true;
@@ -267,6 +269,7 @@ class Note extends FNFSprite
 				prevNote.scale.y *= Conductor.stepCrochet / 100 * 1.5 * prevNote.noteSpeed;
 				prevNote.updateHitbox();
 				// prevNote.setGraphicSize();
+				
 			}
 		}
 
