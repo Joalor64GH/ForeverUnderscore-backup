@@ -333,14 +333,14 @@ class Note extends FNFSprite
 						case MINE: // pixel mines
 							if (assetModifier == 'pixel')
 							{
-								newNote.loadGraphic(Paths.image(ForeverTools.returnSkinAsset('mines', assetModifier, '', 'noteskins/mines')),
-									true, 17, 17);
+								newNote.loadGraphic(Paths.image(ForeverTools.returnSkinAsset('mines', assetModifier, '',
+									'noteskins/mines')), true, 17, 17);
 								newNote.animation.add(directionID[noteData] + 'Scroll', [0, 1, 2, 3, 4, 5, 6, 7]);
 							}
 							else
 							{
-								newNote.loadGraphic(Paths.image(ForeverTools.returnSkinAsset('mines', assetModifier, '', 'noteskins/mines')),
-									true, 133, 128);
+								newNote.loadGraphic(Paths.image(ForeverTools.returnSkinAsset('mines', assetModifier, '',
+									'noteskins/mines')), true, 133, 128);
 								newNote.animation.add(directionID[noteData] + 'Scroll', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]);
 							}
 
@@ -348,8 +348,7 @@ class Note extends FNFSprite
 							// in case you're unfamiliar with these, they're ternary operators, I just dont wanna check for pixel notes using a separate statement
 							var newNoteSize:Int = (assetModifier == 'pixel') ? 17 : 157;
 							newNote.loadGraphic(Paths.image(ForeverTools.returnSkinAsset('NOTE_quants', assetModifier, Init.trueSettings.get("Note Skin"),
-								'noteskins/notes', 'quant')),
-								true, newNoteSize, newNoteSize);
+								'noteskins/notes', 'quant')), true, newNoteSize, newNoteSize);
 
 							newNote.animation.add('leftScroll', [0 + (newNote.noteQuant * 4)]);
 							// LOL downscroll thats so funny to me
@@ -374,6 +373,10 @@ class Note extends FNFSprite
 					}
 				}
 
+				var sizeThing = 0.7;
+				if (type == MINE)
+					sizeThing = 0.8;
+
 				if (assetModifier == 'pixel')
 				{
 					newNote.antialiasing = false;
@@ -382,7 +385,7 @@ class Note extends FNFSprite
 				}
 				else
 				{
-					newNote.setGraphicSize(Std.int(newNote.width * 0.7));
+					newNote.setGraphicSize(Std.int(newNote.width * sizeThing));
 					newNote.updateHitbox();
 					newNote.antialiasing = true;
 				}
