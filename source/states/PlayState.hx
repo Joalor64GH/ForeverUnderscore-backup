@@ -2568,10 +2568,14 @@ class PlayState extends MusicBeatState
 			}
 		});
 
-		setVar('trace', function(text:String)
+		setVar('trace', function(text:String, color:Array<Int> = null)
 		{
+			if (color == null)
+				color = [255, 255, 255];
+			
 			trace(text);
 			uiHUD.traceBar.text += '$text\n';
+			uiHUD.traceBar.color = FlxColor.fromRGB(color[0], color[1], color[2]);
 			FlxTween.tween(uiHUD.traceBar, {alpha: 1}, 0.5, {ease: FlxEase.circOut});
 
 			new FlxTimer().start(6, function(tmr:FlxTimer)
