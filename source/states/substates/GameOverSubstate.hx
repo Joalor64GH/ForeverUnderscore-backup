@@ -1,7 +1,7 @@
-package states.subStates;
+package states.substates;
 
 import base.Conductor;
-import base.MusicBeat.MusicBeatSubState;
+import base.MusicBeat.MusicBeatSubstate;
 import flixel.FlxG;
 import flixel.FlxObject;
 import flixel.math.FlxPoint;
@@ -11,7 +11,7 @@ import funkin.Boyfriend;
 import states.*;
 import states.menus.*;
 
-class GameOverSubState extends MusicBeatSubState
+class GameOverSubstate extends MusicBeatSubstate
 {
 	//
 	var bf:Boyfriend;

@@ -1,8 +1,8 @@
-package states.subStates;
+package states.substates;
 
 import base.*;
 import base.CoolUtil;
-import base.MusicBeat.MusicBeatSubState;
+import base.MusicBeat.MusicBeatSubstate;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.FlxSubState;
@@ -21,7 +21,7 @@ import funkin.Song;
 import states.*;
 import states.menus.*;
 
-class PauseSubState extends MusicBeatSubState
+class PauseSubstate extends MusicBeatSubstate
 {
 	var grpMenuShit:FlxTypedGroup<Alphabet>;
 	var curSelected:Int = 0;
@@ -32,11 +32,15 @@ class PauseSubState extends MusicBeatSubState
 	public static var toOptions:Bool = false;
 	public static var practiceText:FlxText;
 
+	var songToPlay = 'breakfast';
+
 	public function new(x:Float, y:Float)
 	{
 		super();
 
-		pauseMusic = new FlxSound().loadEmbedded(Paths.music('breakfast'), true, true);
+		songToPlay = Init.trueSettings.get('Pause Song');
+
+		pauseMusic = new FlxSound().loadEmbedded(Paths.music('menus/pause/$songToPlay/pause'), true, true);
 		pauseMusic.volume = 0;
 		pauseMusic.play(false, FlxG.random.int(0, Std.int(pauseMusic.length / 2)));
 

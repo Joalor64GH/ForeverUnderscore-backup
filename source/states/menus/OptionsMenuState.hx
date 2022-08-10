@@ -14,8 +14,8 @@ import flixel.util.FlxTimer;
 import funkin.Alphabet;
 import funkin.ui.menu.Checkmark;
 import funkin.ui.menu.Selector;
-import states.subStates.OptionsSubState;
-import states.subStates.PauseSubState;
+import states.substates.OptionsSubstate;
+import states.substates.PauseSubstate;
 
 /**
 	Options menu rewrite because I'm unhappy with how it was done previously
@@ -81,6 +81,7 @@ class OptionsMenuState extends MusicBeatState
 					['Auto Pause', getFromOption],
 					['Check for Updates', getFromOption],
 					['Hardware Caching', getFromOption],
+					['Menu Music', getFromOption],
 					#if !neko ["Framerate Cap", getFromOption], #end
 					['FPS Counter', getFromOption],
 					['Memory Counter', getFromOption],
@@ -342,7 +343,7 @@ class OptionsMenuState extends MusicBeatState
 
 			if (curCategory != 'main') {
 				loadSubgroup('main');
-			} else if (PauseSubState.toOptions) {
+			} else if (PauseSubstate.toOptions) {
 					PlayState.resetMusic();
 					Main.switchState(this, new PlayState());
 				} else {
@@ -625,21 +626,21 @@ class OptionsMenuState extends MusicBeatState
 				lockedMovement = true;
 				FlxFlicker.flicker(activeSubgroup.members[curSelection], 0.5, 0.06 * 2, true, false, function(flick:FlxFlicker)
 				{
-					openSubState(new OptionsSubState());
+					openSubState(new OptionsSubstate());
 					lockedMovement = false;
 				});
 			}
 			else
 			{
 				playSound('scrollMenu');
-				openSubState(new OptionsSubState());
+				openSubState(new OptionsSubstate());
 			}
 		}
 	}
 
 	public function resetGame()
 	{
-		TitleState.initialized = false;
+		TitleScreen.initialized = false;
 		FlxG.sound.music.fadeOut(0.3);
 		FlxG.camera.fade(FlxColor.BLACK, 0.5, false, FlxG.resetGame, false);
 	}
@@ -655,7 +656,7 @@ class OptionsMenuState extends MusicBeatState
 				lockedMovement = true;
 				FlxFlicker.flicker(activeSubgroup.members[curSelection], 0.5, 0.06 * 2, true, false, function(flick:FlxFlicker)
 				{
-					if (PauseSubState.toOptions)
+					if (PauseSubstate.toOptions)
 					{
 						PlayState.resetMusic();
 						Main.switchState(this, new PlayState());
@@ -670,7 +671,7 @@ class OptionsMenuState extends MusicBeatState
 			else
 			{
 				playSound('scrollMenu');
-				if (PauseSubState.toOptions)
+				if (PauseSubstate.toOptions)
 				{
 					PlayState.resetMusic();
 					Main.switchState(this, new PlayState());

@@ -26,9 +26,13 @@ function loadAnimations()
 
     setBarColor([49, 176, 209]);
     setIcon('bf-holding-gf');
-    setDeathChar('bf-holding-gf-dead');
     if (isPlayer)
+    {
+        setDeathChar('bf-pixel-dead', 'fnf_loss_sfx-pixel', 'gameOver-pixel', 'gameOverEnd-pixel');
         set('flipX', false);
+    }
     else
+    {
         set('flipX', true);
+    }
 }

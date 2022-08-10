@@ -32,7 +32,7 @@ import openfl.events.Event;
 import openfl.geom.ColorTransform;
 import states.charting.data.*;
 import states.menus.FreeplayState;
-import states.subStates.charting.*;
+import states.substates.charting.*;
 
 using StringTools;
 
@@ -396,15 +396,16 @@ class ChartingState extends MusicBeatState
 		if (FlxG.keys.justPressed.ESCAPE)
 			saveAndClose(FlxG.keys.pressed.SHIFT ? 'FreeplayState' : 'PlayState');
 
-		if (FlxG.keys.justPressed.BACKSPACE) {
+		if (FlxG.keys.justPressed.BACKSPACE)
+		{
 			pauseMusic();
-			openSubState(new PreferenceSubState(camHUD, 'help'));
+			openSubState(new PreferenceSubstate(camHUD, 'help'));
 		}
 
 		if (FlxG.keys.justPressed.ENTER)
 		{
 			pauseMusic();
-			openSubState(new PreferenceSubState(camHUD, 'prefs'));
+			openSubState(new PreferenceSubstate(camHUD, 'prefs'));
 		}
 
 		if(FlxG.keys.justPressed.RIGHT)

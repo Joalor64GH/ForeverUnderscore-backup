@@ -1,6 +1,6 @@
-package states.subStates;
+package states.substates;
 
-import base.MusicBeat.MusicBeatSubState;
+import base.MusicBeat.MusicBeatSubstate;
 import flixel.FlxBasic;
 import flixel.FlxG;
 import flixel.FlxSprite;
@@ -13,7 +13,7 @@ import funkin.Alphabet;
 
 using StringTools;
 
-class OptionsSubState extends MusicBeatSubState
+class OptionsSubstate extends MusicBeatSubstate
 {
 	var curSelection = -1;
 	var submenuGroup:FlxTypedGroup<FlxBasic>;

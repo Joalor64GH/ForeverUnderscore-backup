@@ -28,13 +28,14 @@ class ForeverTools
 		// make sure the music is playing
 		if (((FlxG.sound.music != null) && (!FlxG.sound.music.playing)) || (FlxG.sound.music == null))
 		{
-			var song = (Init.trueSettings.get("Custom Titlescreen") ? Paths.music('foreverMenu') : Paths.music('freakyMenu'));
+			var menuSong:String = 'foreverMenu';
+			menuSong = Init.trueSettings.get('Menu Song');
+			
+			var song = Paths.music(menuSong);
 			FlxG.sound.playMusic(song, (resetVolume) ? 0 : 0.7);
 			if (resetVolume) FlxG.sound.music.fadeIn(4, 0, 0.7);
-			// placeholder bpm
 			Conductor.changeBPM(102);
 		}
-		//
 	}
 
 	public static function returnSkinAsset(asset:String, assetModifier:String = 'base', changeableSkin:String = 'default', baseLibrary:String,

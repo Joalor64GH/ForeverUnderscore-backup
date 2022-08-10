@@ -148,7 +148,7 @@ class MusicBeatState extends FNFUIState
 	}
 }
 
-class MusicBeatSubState extends FlxSubState
+class MusicBeatSubstate extends FlxSubState
 {
 	public function new()
 	{

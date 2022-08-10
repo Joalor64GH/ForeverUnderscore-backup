@@ -28,9 +28,13 @@ function loadAnimations()
     setBarColor([123,214,246]);
     if (curStage == 'school') setCameraOffsets(50, -100);
     if (curStage == 'schoolEvil') setCameraOffsets(200, -100);
-    setDeathChar('bf-pixel-dead', 'fnf_loss_sfx-pixel', 'gameOver-pixel', 'gameOverEnd-pixel');
     if (isPlayer)
+    {
+        setDeathChar('bf-pixel-dead', 'fnf_loss_sfx-pixel', 'gameOver-pixel', 'gameOverEnd-pixel');
         set('flipX', false);
+    }
     else
+    {
         set('flipX', true);
+    }
 }

@@ -1,6 +1,6 @@
 package dependency;
 
-import base.MusicBeat.MusicBeatSubState;
+import base.MusicBeat.MusicBeatSubstate;
 import flixel.FlxCamera;
 import flixel.FlxG;
 import flixel.FlxSprite;
@@ -17,7 +17,7 @@ import flixel.util.FlxGradient;
  * @author Shadow_Mario_
  *
 **/
-class FNFTransition extends MusicBeatSubState
+class FNFTransition extends MusicBeatSubstate
 {
 	public static var finishCallback:Void->Void;
 

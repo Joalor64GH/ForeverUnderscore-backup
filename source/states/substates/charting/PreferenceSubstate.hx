@@ -1,6 +1,6 @@
-package states.subStates.charting;
+package states.substates.charting;
 
-import base.MusicBeat.MusicBeatSubState;
+import base.MusicBeat.MusicBeatSubstate;
 import dependency.FNFSprite;
 import flixel.FlxBasic;
 import flixel.FlxCamera;
@@ -21,7 +21,7 @@ enum SettingTypes
 	Selector;
 }
 
-class PreferenceSubState extends MusicBeatSubState
+class PreferenceSubstate extends MusicBeatSubstate
 {
 	//
 	var blackTopBar:FlxSprite;

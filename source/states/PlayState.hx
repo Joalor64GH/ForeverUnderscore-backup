@@ -36,7 +36,7 @@ import openfl.events.KeyboardEvent;
 import openfl.filters.ShaderFilter;
 import states.charting.*;
 import states.menus.*;
-import states.subStates.*;
+import states.substates.*;
 
 using StringTools;
 
@@ -210,7 +210,7 @@ class PlayState extends MusicBeatState
 		resetMusic();
 		if (FlxG.sound.music != null)
 			FlxG.sound.music.stop();
-		GameOverSubState.resetGameOver();
+		GameOverSubstate.resetGameOver();
 
 		// create the game camera
 		camGame = new FlxCamera();
@@ -1399,7 +1399,7 @@ class PlayState extends MusicBeatState
 		});
 
 		// open pause substate
-		openSubState(new PauseSubState(boyfriend.getScreenPosition().x, boyfriend.getScreenPosition().y));
+		openSubState(new PauseSubstate(boyfriend.getScreenPosition().x, boyfriend.getScreenPosition().y));
 	}
 
 	override public function onFocus():Void
@@ -1785,9 +1785,9 @@ class PlayState extends MusicBeatState
 
 			deaths += 1;
 
-			openSubState(new GameOverSubState(boyfriend.getScreenPosition().x, boyfriend.getScreenPosition().y));
+			openSubState(new GameOverSubstate(boyfriend.getScreenPosition().x, boyfriend.getScreenPosition().y));
 
-			FlxG.sound.play(Paths.sound(GameOverSubState.deathSound));
+			FlxG.sound.play(Paths.sound(GameOverSubstate.deathSound));
 
 			#if DISCORD_RPC
 			Discord.changePresence("Game Over - " + songDetails, detailsSub, iconRPC);

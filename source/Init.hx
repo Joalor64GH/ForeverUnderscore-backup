@@ -194,12 +194,6 @@ class Init extends FlxState
 			"Center the notes, disables the enemy's notes.",
 			NOT_FORCED
 		],
-		"Custom Titlescreen" => [
-			false,
-			Checkmark,
-			"Enables the custom Forever Engine titlescreen! (only effective with a restart)",
-			FORCED
-		],
 		'Skip Text' => [
 			'freeplay only',
 			Selector,
@@ -267,6 +261,13 @@ class Init extends FlxState
 			Checkmark,
 			"Whether to disable Fragment Shader effects during gameplay, can improve performance.",
 			NOT_FORCED
+		],
+		'Menu Song' => [
+			'foreverMenu',
+			Selector,
+			'Which song should we use for the Main Menu? takes effect upon switching states or restarting the game.',
+			NOT_FORCED,
+			['foreverMenu', 'freakyMenu']
 		],
 	];
 
@@ -416,7 +417,7 @@ class Init extends FlxState
 		{
 			// bind save back to settings
 			FlxG.save.bind('forever-settings', 'BeastlyGhost');
-			Main.switchState(this, (trueSettings.get("Custom Titlescreen") ? new CustomTitlescreen() : new TitleState()));
+			Main.switchState(this, new TitleScreen());
 		}
 	}
 

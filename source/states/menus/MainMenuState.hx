@@ -14,7 +14,7 @@ import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
 import lime.app.Application;
-import states.subStates.PauseSubState;
+import states.substates.PauseSubstate;
 
 using StringTools;
 
@@ -123,7 +123,7 @@ class MainMenuState extends MusicBeatState
 		if (controls.BACK || FlxG.mouse.justPressedRight)
 		{
 			FlxG.sound.play(Paths.sound('cancelMenu'), 0.4);
-			Main.switchState(this, new TitleState());
+			Main.switchState(this, new TitleScreen());
 		}
 
 		/*
@@ -266,7 +266,7 @@ class MainMenuState extends MusicBeatState
 			case 'donate':
 				Main.switchState(this, new CreditsMenuState());
 			case 'options':
-				PauseSubState.toOptions = false;
+				PauseSubstate.toOptions = false;
 				transIn = FlxTransitionableState.defaultTransIn;
 				transOut = FlxTransitionableState.defaultTransOut;
 				Main.switchState(this, new OptionsMenuState());

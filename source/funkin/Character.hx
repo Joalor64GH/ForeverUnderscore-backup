@@ -19,7 +19,7 @@ import haxe.Json;
 import openfl.Assets;
 import openfl.utils.Assets as OpenFlAssets;
 import states.PlayState;
-import states.subStates.GameOverSubState;
+import states.substates.GameOverSubstate;
 import sys.FileSystem;
 import sys.io.File;
 
@@ -412,11 +412,11 @@ class Character extends FNFSprite
 		setVar('setDeathChar',
 			function(char:String = 'bf-dead', lossSfx:String = 'fnf_loss_sfx', song:String = 'gameOver', confirmSound:String = 'gameOverEnd', bpm:Int)
 			{
-				GameOverSubState.character = char;
-				GameOverSubState.deathSound = lossSfx;
-				GameOverSubState.deathMusic = song;
-				GameOverSubState.deathConfirm = confirmSound;
-				GameOverSubState.deathBPM = bpm;
+				GameOverSubstate.character = char;
+				GameOverSubstate.deathSound = lossSfx;
+				GameOverSubstate.deathMusic = song;
+				GameOverSubstate.deathConfirm = confirmSound;
+				GameOverSubstate.deathBPM = bpm;
 			});
 
 		setVar('get', function(variable:String)

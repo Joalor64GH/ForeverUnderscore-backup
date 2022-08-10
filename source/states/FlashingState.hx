@@ -60,11 +60,8 @@ class FlashingState extends MusicBeatState
 		FlxTransitionableState.skipNextTransIn = false;
 		FlxTransitionableState.skipNextTransOut = false;
 
-		if (Init.trueSettings.get("Custom Titlescreen"))
-			Main.switchState(this, new CustomTitlescreen());
-		else
-			Main.switchState(this, new TitleState());
-
+		Main.switchState(this, new TitleScreen());
+		
 		// set it to true, since you don't wanna go back to this state
 		FlxG.save.data.leftFlashing = true;
 	}
