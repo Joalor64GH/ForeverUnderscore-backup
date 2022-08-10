@@ -2663,13 +2663,15 @@ class PlayState extends MusicBeatState
 		setVar('castShader', function(shaderID:String, key:String, startEnabled:Bool = true)
 		{
 			if (Init.trueSettings.get('Disable Shaders'))
+			{
 				return null;
+			}
 			else
 			{
 				if (key != null || key != '')
 				{
 					var shader:GraphicsShader = new GraphicsShader("", File.getContent(Paths.shader(key)));
-					static var messageGiven:Bool = false;
+					var messageGiven:Bool = false;
 					ShaderMap.set(shaderID, shader);
 					FlxG.game.setFilters([new ShaderFilter(shader)]);
 					if (!startEnabled)
