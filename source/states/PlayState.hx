@@ -2550,12 +2550,8 @@ class PlayState extends MusicBeatState
 						case 'camgame' | 'camGame' | 'game' | 'world':
 							camGame.setFilters([new ShaderFilter(shader)]);
 						case 'strumhud' | 'strumHUD' | 'strum' | 'strumlines':
-							for(i in 0...strumHUD.length)
-							{
-								strumHUD[i].setFilters([new ShaderFilter(shader)]);
-							}
-						case 'dialoguehud', | 'dialogueHUD' | 'dialogue' | 'dialogueBox':
-							dialogueHUD.setFilters([new ShaderFilter(shader)]):
+							for(lines in 0...strumHUD.length)
+								strumHUD[lines].setFilters([new ShaderFilter(shader)]);
 					}
 
 					if (!startEnabled)
@@ -2563,8 +2559,7 @@ class PlayState extends MusicBeatState
 				}
 				else
 				{
-					return trace('Function Usage - preloadShader("shaderID", "shaderFilename", object);
-					\nInvalid Shader Filename, Current Name is $key, with an ID of $shaderID');
+					return;
 				}
 			}
 		});
