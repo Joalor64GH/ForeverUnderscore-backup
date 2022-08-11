@@ -216,9 +216,6 @@ class ChartingState extends MusicBeatState
 		FlxG.cameras.setDefaultDrawTarget(camGame, true);
 		FlxG.camera.follow(strumLine);
 
-		if (_song.author == null || _song.author == '')
-			_song.author = '???';
-
 		generateText();
 
 		FlxG.mouse.useSystemCursor = true; // Use system cursor because it's prettier

@@ -305,7 +305,7 @@ class PlayState extends MusicBeatState
 		changeableSkin = Init.trueSettings.get("UI Skin");
 		changeableSound = Init.trueSettings.get("Hitsound Type");
 
-		if (ChartParser.songType == UNDERSCORE && SONG.assetModifier != null && SONG.assetModifier.length > 1)
+		if (ChartParser.songType == UNDERSCORE)
 			assetModifier = SONG.assetModifier;
 
 		if ((curStage.startsWith("school")) && (ChartParser.songType == FNF_LEGACY))
@@ -1683,9 +1683,6 @@ class PlayState extends MusicBeatState
 
 		var songData = SONG;
 		Conductor.changeBPM(songData.bpm);
-
-		if (SONG.author == null || SONG.author == '')
-			SONG.author = '???';
 
 		// String that contains the mode defined here so it isn't necessary to call changePresence for each mode
 		songDetails = CoolUtil.dashToSpace(SONG.song) + ' [' + CoolUtil.difficultyFromNumber(storyDifficulty) + '] - by ' + SONG.author;
