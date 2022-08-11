@@ -650,12 +650,12 @@ class Stage extends FlxTypedGroup<FlxBasic>
 				gf.x -= 30;
 				boyfriend.x += 40;
 				boyfriend.y += 0;
-				dad.y += 60;
+				dad.y += 100;
 				dad.x -= 80;
 				if (gfVersion != 'pico-speaker')
 				{
 					gf.x -= 50;
-					gf.y -= 10;
+					gf.y -= 110;
 				}
 		}
 
