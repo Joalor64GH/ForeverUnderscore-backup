@@ -132,7 +132,7 @@ class ClassHUD extends FlxTypedGroup<FlxBasic>
 		autoplayMark.setBorderStyle(OUTLINE, FlxColor.BLACK, 1.25);
 		autoplayMark.scrollFactor.set();
 		autoplayMark.visible = PlayState.contents.bfStrums.autoplay;
-		autoplayMark.x -= 10;
+		autoplayMark.x -= 5;
 		add(autoplayMark);
 
 		if (Init.trueSettings.get('Downscroll'))
