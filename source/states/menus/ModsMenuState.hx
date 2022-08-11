@@ -3,6 +3,7 @@ package states.menus;
 import base.MusicBeat.MusicBeatState;
 import flixel.FlxG;
 import flixel.FlxSprite;
+import flixel.group.FlxGroup;
 import flixel.text.FlxText;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
@@ -37,10 +38,13 @@ class ModsMenuState extends MusicBeatState
 	var fg:FlxSprite;
 	var infoText:FlxText;
 
-	var curMod:Int = -1;
 	var curSelection:Int = -1;
 
-	var modList:Array<String> = [null];
+	var grpMenuMods:FlxTypedGroup<Alphabet>;
+
+	var modList:Array<String> = [];
+	
+	var isEnabled = true;
 
 	override function create()
 	{
@@ -59,8 +63,6 @@ class ModsMenuState extends MusicBeatState
 		fg.scrollFactor.set();
 		add(fg);
 
-		FlxTween.tween(fg, {alpha: 0.6}, 0.4, {ease: FlxEase.quartInOut});
-
 		var text:FlxText = new FlxText(0, 0, 0, '- MODS MENU -');
 		text.setFormat(Paths.font('vcr.ttf'), 36, FlxColor.WHITE);
 		text.setBorderStyle(OUTLINE, FlxColor.BLACK, 1.5);
@@ -68,11 +70,8 @@ class ModsMenuState extends MusicBeatState
 		text.screenCenter(X);
 		add(text);
 
-		infoText = new FlxText(5, FlxG.height - 24, 0, "", 32);
-		infoText.setFormat("VCR OSD Mono", 20, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
-		infoText.textField.background = true;
-		infoText.textField.backgroundColor = FlxColor.BLACK;
-		add(infoText);
+		grpMenuMods = new FlxTypedGroup<Alphabet>();
+		add(grpMenuMods);
 
 		for (modFolders in Paths.getModDirs())
 		{
@@ -81,9 +80,22 @@ class ModsMenuState extends MusicBeatState
 
 		var mod:Int = modList.indexOf(Paths.currentPack);
 		if (mod > -1)
-			curMod = mod;
+			curSelection = mod;
+		for (i in 0...modList.length)
+		{
+			var alphabet:Alphabet = new Alphabet(0, 70 * i, modList[i], true);
+			alphabet.isMenuItem = true;
+			alphabet.screenCenter(X);
+			alphabet.targetY = i;
+			grpMenuMods.add(alphabet);
 
-		changeMod();
+			if (curSelection == -1)
+				curSelection = i;
+		}
+
+		FlxTween.tween(fg, {alpha: 0.6}, 0.4, {ease: FlxEase.quartInOut});
+
+		updateSelection();
 	}
 
 	override function update(elapsed:Float)
@@ -94,34 +106,50 @@ class ModsMenuState extends MusicBeatState
 		{
 			Main.switchState(this, new MainMenuState());
 		}
-		if (controls.UI_LEFT_P)
-			changeMod(-1);
-		if (controls.UI_RIGHT_P)
-			changeMod(1);
+		if (controls.UI_UP_P)
+			updateSelection(-1);
+		if (controls.UI_DOWN_P)
+			updateSelection(1);
 	}
 
-	function changeMod(change:Int = 0)
+	function updateSelection(change:Int = 0)
 	{
 		FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
 
-		curMod += change;
+		curSelection += change;
 
-		if (curMod < 0)
-			curMod = modList.length - 1;
-		if (curMod >= modList.length)
-			curMod = 0;
+		if (curSelection < 0)
+			curSelection = modList.length - 1;
+		if (curSelection >= modList.length)
+			curSelection = 0;
 
-		if (modList[curMod] == null || modList[curMod].length < 1)
+		var bullShit:Int = 0;
+		for (item in grpMenuMods.members)
 		{
-			infoText.text = '[NO MODS LOADED]';
+			item.targetY = bullShit - curSelection;
+			bullShit++;
+
+			item.alpha = 0.6;
+
+			if (item.targetY == 0)
+			{
+				if (isEnabled)
+					item.alpha = 1;
+				else
+					item.alpha = 0.6;
+			}
+		}
+
+		if (modList[curSelection] == null || modList[curSelection].length < 1)
+		{
+			modList[curSelection] = 'NO MODS LOADED';
 			Paths.currentPack = Paths.defaultPack;
 		}
 		else
 		{
-			Paths.currentPack = modList[curMod];
-			infoText.text = '[LOADED MOD: ' + Paths.currentPack + ']';
+			Paths.currentPack = modList[curSelection];
+			modList[curSelection] = Paths.currentPack;
 		}
-		infoText.text = infoText.text.toUpperCase();
 	}
 	#end
 }
