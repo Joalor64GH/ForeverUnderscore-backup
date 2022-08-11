@@ -81,7 +81,7 @@ class OptionsMenuState extends MusicBeatState
 					['Auto Pause', getFromOption],
 					['Check for Updates', getFromOption],
 					['Hardware Caching', getFromOption],
-					['Menu Music', getFromOption],
+					['Menu Song', getFromOption],
 					#if !neko ["Framerate Cap", getFromOption], #end
 					['FPS Counter', getFromOption],
 					['Memory Counter', getFromOption],
