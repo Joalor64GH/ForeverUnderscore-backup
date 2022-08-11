@@ -768,7 +768,7 @@ class PlayState extends MusicBeatState
 					camFollow.setPosition(getCenterX + camDisplaceX + char.characterCamOffsets[0], getCenterY + camDisplaceY + char.characterCamOffsets[1]);
 
 					if (char.curCharacter == 'mom')
-						Conductor.setVocalsVolume(1);
+						Conductor.songVocals.volume = 1;
 				}
 				else if (mustHit && !gfSection)
 				{
@@ -1004,7 +1004,7 @@ class PlayState extends MusicBeatState
 								for (note in daNote.childrenNotes)
 									note.tooLate = true;
 
-								Conductor.setVocalsVolume(0);
+								Conductor.songVocals.volume = 0;
 								missNoteCheck((Init.trueSettings.get('Ghost Tapping')) ? true : false, daNote.noteData, boyfriend, true);
 								// ambiguous name
 								Timings.updateAccuracy(0);
@@ -1131,7 +1131,7 @@ class PlayState extends MusicBeatState
 			callFunc('goodNoteHit', null);
 
 			coolNote.wasGoodHit = true;
-			Conductor.setVocalsVolume(1);
+			Conductor.songVocals.volume = 1;
 
 			if (coolNote.noteType == MINE)
 			{
@@ -1899,7 +1899,8 @@ class PlayState extends MusicBeatState
 
 		canPause = false;
 		endingSong = true;
-		Conductor.setVocalsVolume(0);
+		Conductor.songMusic.volume = 1;
+		Conductor.songVocals.volume = 0;
 
 		deaths = 0;
 

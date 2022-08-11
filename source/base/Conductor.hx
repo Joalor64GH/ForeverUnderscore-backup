@@ -110,7 +110,7 @@ class Conductor
 	public static function startMusic(completeFunc:Dynamic)
 	{
 		songMusic.play();
-		vocalArray[0].play();
+		songVocals.play();
 
 		songMusic.onComplete = completeFunc;
 
@@ -148,17 +148,12 @@ class Conductor
 		}
 	}
 
-	public static function setVocalsVolume(newVolume:Int)
-	{
-		vocalArray[0].volume = newVolume;
-	}
-
 	public static function resyncVocals():Void
 	{
 		PlayState.contents.callFunc('onResyncVocals', null);
 		PlayState.contents.callFunc('resyncVocals', null);
 
-		#if DEBUG_TRACES trace('resyncing vocal time ${vocalArray[0].time}'); #end
+		#if DEBUG_TRACES trace('resyncing vocal time ${songVocals.time}'); #end
 		for (vocalTrack in vocalArray)
 		{
 			songMusic.pause();
@@ -172,10 +167,10 @@ class Conductor
 
 	public static function resyncBySteps()
 	{
-		for (vocalTrack in vocalArray)
+		for (vocals in vocalArray)
 		{
 			if (Math.abs(songMusic.time - (Conductor.songPosition - Conductor.offset)) > 20
-				|| (PlayState.SONG.needsVoices && Math.abs(vocalTrack.time - (Conductor.songPosition - Conductor.offset)) > 20))
+				|| (PlayState.SONG.needsVoices && Math.abs(vocals.time - (Conductor.songPosition - Conductor.offset)) > 20))
 				resyncVocals();
 		}
 	}
