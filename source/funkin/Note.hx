@@ -101,7 +101,7 @@ class Note extends FNFSprite
 	// quants
 	static var directionID:Array<String> = ['left', 'down', 'up', 'right'];
 
-	public static function convertNotetypes(thing:NoteType, epicNote:Note = null):NoteType
+	public static function convertNotetypes(noteType:NoteType, epicNote:Note = null):NoteType
 	{
 		// psych notetype compatibility
 		var string = '';
@@ -115,7 +115,7 @@ class Note extends FNFSprite
 			default: NORMAL;
 		}
 
-		return epicNote.noteType;
+		return noteType;
 	}
 
 	public function new(strumTime:Float, noteData:Int, noteAlt:Float, ?prevNote:Note, ?sustainNote:Bool = false, type:NoteType = NORMAL, susType:SustainType = NORMAL)
