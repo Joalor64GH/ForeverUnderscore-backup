@@ -277,16 +277,14 @@ class PlayState extends MusicBeatState
 		{
 			case UNDERSCORE | PSYCH:
 				gf = new Character(300, 100, false, SONG.gfVersion);
-				gf.dance(true);
 
 			case FNF_LEGACY:
 				gf = new Character(300, 100, false, stageBuild.returnGFtype(curStage));
-				gf.dance(true);
 
 			default:
 				// blah
 		}
-
+		gf.dance(true);
 		gf.scrollFactor.set(0.95, 0.95);
 
 		dadOpponent = new Character(100, 100, false, SONG.player2);
