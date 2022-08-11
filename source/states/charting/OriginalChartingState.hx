@@ -1,10 +1,10 @@
 package states.charting;
 
 import base.*;
+import base.ChartParser.Song;
+import base.ChartParser.SwagSection;
+import base.ChartParser.SwagSong;
 import base.Conductor.BPMChangeEvent;
-import base.Conductor.Song;
-import base.Conductor.SwagSection;
-import base.Conductor.SwagSong;
 import base.CoolUtil;
 import base.MusicBeat.MusicBeatState;
 import dependency.Discord;

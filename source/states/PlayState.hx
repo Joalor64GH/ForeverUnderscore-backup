@@ -2,8 +2,8 @@ package states;
 
 import Paths.ChartType;
 import base.*;
-import base.Conductor.Song;
-import base.Conductor.SwagSong;
+import base.ChartParser.Song;
+import base.ChartParser.SwagSong;
 import base.MusicBeat.MusicBeatState;
 import dependency.*;
 import flixel.FlxBasic;
@@ -61,8 +61,6 @@ class PlayState extends MusicBeatState
 	public static var storyPlaylist:Array<String> = [];
 	public static var storyDifficulty:Int = 2;
 	public static var contents:PlayState;
-	public static var songMusic:FlxSound;
-	public static var vocals:FlxSound;
 
 	public static var campaignScore:Int = 0;
 	public static var campaignMisses:Int = 0;
@@ -208,7 +206,7 @@ class PlayState extends MusicBeatState
 		changeableSound = 'default';
 
 		// stop any existing music tracks playing
-		resetMusic();
+		Conductor.resetMusic();
 		if (FlxG.sound.music != null)
 			FlxG.sound.music.stop();
 		GameOverSubstate.resetGameOver();
@@ -492,7 +490,7 @@ class PlayState extends MusicBeatState
 			if (generatedMusic)
 			{
 				var previousTime:Float = Conductor.songPosition;
-				Conductor.songPosition = songMusic.time;
+				Conductor.songPosition = Conductor.songMusic.time;
 				// improved this a little bit, maybe its a lil
 				var possibleNoteList:Array<Note> = [];
 				var pressedNotes:Array<Note> = [];
@@ -664,7 +662,7 @@ class PlayState extends MusicBeatState
 				// charting state (more on that later)
 				if ((FlxG.keys.justPressed.SEVEN))
 				{
-					resetMusic();
+					Conductor.resetMusic();
 					chartingMode = true;
 					preventScoring = true;
 					if (FlxG.keys.pressed.SHIFT)
@@ -683,7 +681,7 @@ class PlayState extends MusicBeatState
 					var holdingShift = FlxG.keys.pressed.SHIFT;
 					var holdingAlt = FlxG.keys.pressed.ALT;
 
-					resetMusic();
+					Conductor.resetMusic();
 					Main.switchState(this, new CharacterDebug(holdingShift ? SONG.player1 : holdingAlt ? SONG.gfVersion : SONG.player2));
 				}
 
@@ -770,7 +768,7 @@ class PlayState extends MusicBeatState
 					camFollow.setPosition(getCenterX + camDisplaceX + char.characterCamOffsets[0], getCenterY + camDisplaceY + char.characterCamOffsets[1]);
 
 					if (char.curCharacter == 'mom')
-						vocals.volume = 1;
+						Conductor.setVocalsVolume(1);
 				}
 				else if (mustHit && !gfSection)
 				{
@@ -1006,7 +1004,7 @@ class PlayState extends MusicBeatState
 								for (note in daNote.childrenNotes)
 									note.tooLate = true;
 
-								vocals.volume = 0;
+								Conductor.setVocalsVolume(0);
 								missNoteCheck((Init.trueSettings.get('Ghost Tapping')) ? true : false, daNote.noteData, boyfriend, true);
 								// ambiguous name
 								Timings.updateAccuracy(0);
@@ -1133,7 +1131,7 @@ class PlayState extends MusicBeatState
 			callFunc('goodNoteHit', null);
 
 			coolNote.wasGoodHit = true;
-			vocals.volume = 1;
+			Conductor.setVocalsVolume(1);
 
 			if (coolNote.noteType == MINE)
 			{
@@ -1659,15 +1657,11 @@ class PlayState extends MusicBeatState
 
 		if (!paused)
 		{
-			songMusic.play();
-			songMusic.onComplete = endSong.bind();
-			vocals.play();
-
-			resyncVocals();
+			Conductor.startMusic(endSong.bind());
 
 			#if DISCORD_RPC
 			// Song duration in a float, useful for the time left feature
-			songLength = songMusic.length;
+			songLength = Conductor.songMusic.length;
 
 			// Updating Discord Rich Presence (with Time Left)
 			updateRPC(false);
@@ -1682,34 +1676,23 @@ class PlayState extends MusicBeatState
 		var songData = SONG;
 		Conductor.changeBPM(songData.bpm);
 
-		// String that contains the mode defined here so it isn't necessary to call changePresence for each mode
 		songDetails = CoolUtil.dashToSpace(SONG.song) + ' [' + CoolUtil.difficultyFromNumber(storyDifficulty) + '] - by ' + SONG.author;
 
-		// String for when the game is paused
 		detailsPausedText = "Paused - " + songDetails;
-
-		// set details for song stuffs
 		detailsSub = "";
 
-		// Updating Discord Rich Presence.
 		updateRPC(false);
 
 		curSong = songData.song;
-		songMusic = new FlxSound().loadEmbedded(Paths.inst(SONG.song), false, true);
 
-		if (SONG.needsVoices)
-			vocals = new FlxSound().loadEmbedded(Paths.voices(SONG.song), false, true);
-		else
-			vocals = new FlxSound();
-
-		FlxG.sound.list.add(songMusic);
-		FlxG.sound.list.add(vocals);
+		// call song
+		Conductor.bindMusic();
 
 		// generate the chart and sort through notes
 		unspawnNotes = ChartParser.loadChart(SONG, ChartParser.songType);
-		unspawnNotes.sort(sortByShit);
-
 		unspawnEvents = ChartParser.loadEvents(SONG, ChartParser.songType);
+
+		unspawnNotes.sort(sortByShit);
 		unspawnEvents.sort(sortByEvent);
 
 		generatedMusic = true;
@@ -1721,28 +1704,11 @@ class PlayState extends MusicBeatState
 	function sortByEvent(event1:EventNote, event2:EventNote):Int
 		return FlxSort.byValues(FlxSort.ASCENDING, event1.strumTime, event2.strumTime);
 
-	function resyncVocals():Void
-	{
-		callFunc('onResyncVocals', null);
-		callFunc('resyncVocals', null);
-
-		#if DEBUG_TRACES trace('resyncing vocal time ${vocals.time}'); #end
-		songMusic.pause();
-		vocals.pause();
-		Conductor.songPosition = songMusic.time;
-		vocals.time = Conductor.songPosition;
-		songMusic.play();
-		vocals.play();
-		#if DEBUG_TRACES trace('new vocal time ${Conductor.songPosition}'); #end
-	}
-
 	override function stepHit()
 	{
 		super.stepHit();
 
-		if (Math.abs(songMusic.time - (Conductor.songPosition - Conductor.offset)) > 20
-			|| (SONG.needsVoices && Math.abs(vocals.time - (Conductor.songPosition - Conductor.offset)) > 20))
-			resyncVocals();
+		Conductor.resyncBySteps();
 
 		callFunc('onStepHit', curStep);
 		callFunc('stepHit', curStep);
@@ -1781,7 +1747,7 @@ class PlayState extends MusicBeatState
 			persistentUpdate = false;
 			persistentDraw = false;
 
-			resetMusic();
+			Conductor.resetMusic();
 
 			deaths += 1;
 
@@ -1802,13 +1768,6 @@ class PlayState extends MusicBeatState
 	{
 		switch (SONG.song.toLowerCase())
 		{
-			case 'bopeebo':
-				switch (curBeat)
-				{
-					case 128, 129, 130:
-						vocals.volume = 0;
-				}
-
 			case 'fresh':
 				switch (curBeat)
 				{
@@ -1873,28 +1832,11 @@ class PlayState extends MusicBeatState
 	//
 	//
 
-	public static function resetMusic()
-	{
-		// simply stated, resets the playstate's music for other states and substates
-		if (songMusic != null)
-			songMusic.stop();
-
-		if (vocals != null)
-			vocals.stop();
-	}
-
 	override function openSubState(SubState:FlxSubState)
 	{
 		if (paused)
 		{
-			// trace('null song');
-			if (songMusic != null)
-			{
-				//	trace('nulled song');
-				songMusic.pause();
-				vocals.pause();
-				//	trace('nulled song finished');
-			}
+			Conductor.pauseMusic();
 		}
 
 		// trace('open substate');
@@ -1906,8 +1848,8 @@ class PlayState extends MusicBeatState
 	{
 		if (paused)
 		{
-			if (songMusic != null && !startingSong)
-				resyncVocals();
+			if (Conductor.songMusic != null && !startingSong)
+				Conductor.resyncVocals();
 
 			// if ((startTimer != null) && (!startTimer.finished))
 			//	startTimer.active = true;
@@ -1957,8 +1899,7 @@ class PlayState extends MusicBeatState
 
 		canPause = false;
 		endingSong = true;
-		songMusic.volume = 0;
-		vocals.volume = 0;
+		Conductor.setVocalsVolume(0);
 
 		deaths = 0;
 
@@ -2042,7 +1983,7 @@ class PlayState extends MusicBeatState
 		FlxTransitionableState.skipNextTransOut = true;
 
 		PlayState.SONG = Song.loadSong(PlayState.storyPlaylist[0].toLowerCase() + difficulty, PlayState.storyPlaylist[0]);
-		ForeverTools.killMusic([songMusic, vocals]);
+		Conductor.killMusic();
 
 		// deliberately did not use the main.switchstate as to not unload the assets
 		FlxG.switchState(new PlayState());

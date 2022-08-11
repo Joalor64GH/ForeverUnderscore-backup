@@ -2,6 +2,7 @@ package states.menus;
 
 import base.ForeverAssets;
 import base.ForeverTools;
+import base.Conductor;
 import base.MusicBeat.MusicBeatState;
 import dependency.Discord;
 import dependency.FNFSprite;
@@ -348,7 +349,7 @@ class OptionsMenuState extends MusicBeatState
 			if (curCategory != 'main') {
 				loadSubgroup('main');
 			} else if (PauseSubstate.toOptions) {
-					PlayState.resetMusic();
+					Conductor.resetMusic();
 					Main.switchState(this, new PlayState());
 				} else {
 					Main.switchState(this, new MainMenuState());
@@ -666,7 +667,7 @@ class OptionsMenuState extends MusicBeatState
 				{
 					if (PauseSubstate.toOptions)
 					{
-						PlayState.resetMusic();
+						Conductor.resetMusic();
 						Main.switchState(this, new PlayState());
 					}
 					else
@@ -681,7 +682,7 @@ class OptionsMenuState extends MusicBeatState
 				playSound('scrollMenu');
 				if (PauseSubstate.toOptions)
 				{
-					PlayState.resetMusic();
+					Conductor.resetMusic();
 					Main.switchState(this, new PlayState());
 				}
 				else

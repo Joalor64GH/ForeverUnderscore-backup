@@ -1,7 +1,7 @@
 package states.substates;
 
 import base.*;
-import base.Conductor.Song;
+import base.ChartParser.Song;
 import base.CoolUtil;
 import base.MusicBeat.MusicBeatSubstate;
 import flixel.FlxG;
@@ -163,7 +163,7 @@ class PauseSubstate extends MusicBeatSubstate
 					// FlxG.resizeWindow(1280, 720);
 					// FlxG.scaleMode = new RatioScaleMode();
 
-					PlayState.resetMusic();
+					Conductor.resetMusic();
 					PlayState.deaths = 0;
 					disableCheats(true);
 

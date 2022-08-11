@@ -5,9 +5,9 @@ package funkin;
 	stay the same as it was in the original source of the game. I'll most likely make some changes afterwards though!
 **/
 import base.*;
-import base.Conductor.Song;
-import base.Conductor.SwagSection;
-import base.Conductor.SwagSong;
+import base.ChartParser.Song;
+import base.ChartParser.SwagSection;
+import base.ChartParser.SwagSong;
 import dependency.FNFSprite;
 import flixel.FlxG;
 import flixel.addons.util.FlxSimplex;

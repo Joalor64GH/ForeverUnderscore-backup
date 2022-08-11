@@ -1,7 +1,7 @@
 package states.menus;
 
-import base.Conductor.Song;
-import base.Conductor.SwagSong;
+import base.ChartParser.Song;
+import base.ChartParser.SwagSong;
 import base.CoolUtil;
 import base.MusicBeat.MusicBeatState;
 import dependency.Discord;

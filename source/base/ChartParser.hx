@@ -1,14 +1,16 @@
 package base;
 
 import Paths.ChartType;
-import base.Conductor.SwagSection;
-import base.Conductor.SwagSong;
 import funkin.EventNote;
 import funkin.Note.NoteType;
 import funkin.Note.SustainType;
 import funkin.Note;
 import funkin.Strumline;
+import haxe.Json;
 import states.PlayState;
+import sys.io.File;
+
+using StringTools;
 
 /**
 	This is the ChartParser class. it loads in charts, but also exports charts, the chart parameters are based on the type of chart, 
@@ -16,6 +18,56 @@ import states.PlayState;
 	and so on. This class will handle both saving and loading of charts with useful features and scripts that will make things much easier
 	to handle and load, as well as much more modular!
 **/
+
+/**
+* Song Information, such as name, notes, events, bpm, etc;
+**/
+typedef SwagSong =
+{
+	var song:String;
+	var notes:Array<SwagSection>;
+	var events:Array<Array<Dynamic>>;
+	var bpm:Float;
+	var needsVoices:Bool;
+	var speed:Float;
+
+	var player1:String;
+	var player2:String;
+	var gfVersion:String;
+	var stage:String;
+	var noteSkin:String;
+	var splashSkin:String;
+	var author:String;
+	var assetModifier:String;
+	var validScore:Bool;
+	var ?offset:Int;
+	var mania:Int;
+}
+
+/**
+* Song Meta Information, such as author, asset modifier and offset;
+**/
+typedef SwagMeta =
+{
+	var author:String;
+	var assetModifier:String;
+	var ?offset:Int;
+}
+
+/**
+* Song Section Information;
+**/
+typedef SwagSection =
+{
+	var sectionNotes:Array<Dynamic>;
+	var lengthInSteps:Int;
+	var typeOfSection:Int;
+	var mustHitSection:Bool;
+	var gfSection:Bool;
+	var bpm:Float;
+	var changeBPM:Bool;
+	var altAnim:Bool;
+}
 
 class ChartParser
 {
@@ -31,7 +83,7 @@ class ChartParser
 		switch (songType)
 		{
 			case FNF:
-			// placeholder until 0.3!
+				// placeholder until 0.3!
 			case FNF_LEGACY:
 				// load fnf style charts (PRE 0.3)
 				var daBeats:Int = 0; // Not exactly representative of 'daBeats' lol, just how much it has looped
@@ -213,3 +265,122 @@ class ChartParser
 		return unspawnEvents;
 	}
 }
+
+class Song
+{
+	public var song:String;
+	public var notes:Array<SwagSection>;
+	public var bpm:Float;
+	public var needsVoices:Bool = true;
+	public var speed:Float = 1;
+
+	public var player1:String = 'bf';
+	public var player2:String = 'dad';
+
+	public function new(song, notes, bpm)
+	{
+		this.song = song;
+		this.notes = notes;
+		this.bpm = bpm;
+	}
+
+	public static function loadSong(jsonInput:String, ?folder:String):SwagSong
+	{
+		var rawJson = '';
+		var rawMeta = '';
+
+		try
+		{
+			rawJson = File.getContent(Paths.songJson(folder.toLowerCase(), jsonInput.toLowerCase())).trim();
+		}
+		catch (e)
+		{
+			rawJson = null;
+		}
+
+		if (rawJson != null)
+		{
+			while (!rawJson.endsWith("}"))
+				rawJson = rawJson.substr(0, rawJson.length - 1);
+		}
+
+		try
+		{
+			rawMeta = File.getContent(Paths.songJson(folder.toLowerCase(), 'meta')).trim();
+		}
+		catch (e)
+		{
+			rawMeta = null;
+		}
+
+		if (rawMeta != null)
+		{
+			while (!rawMeta.endsWith("}"))
+				rawMeta = rawMeta.substr(0, rawMeta.length - 1);
+		}
+
+		if (rawMeta == null)
+		{
+			rawMeta = '{
+				"author": "???",
+				"assetModifier": "base",
+				"offset": 0
+			}';
+		}
+
+		return parseSong(rawJson, rawMeta);
+	}
+
+	public static function parseSong(rawJson:String, rawMeta:String = 'meta'):SwagSong
+	{
+		var swagShit:SwagSong = cast Json.parse(rawJson).song;
+		swagShit.validScore = true;
+
+		var swagMeta:SwagMeta = cast Json.parse(rawMeta);
+
+		// injecting info from the meta file if it's valid data, else get from the song data
+		// please spare me I know it looks weird.
+		if (swagMeta.assetModifier != null)
+			swagShit.assetModifier = swagMeta.assetModifier;
+		else if (swagMeta.assetModifier == null)
+			swagShit.assetModifier = swagShit.assetModifier;
+		else
+			swagShit.assetModifier == 'base';
+
+		if (swagMeta.author != null)
+			swagShit.author = swagMeta.author;
+		else if (swagMeta.author == null)
+			swagShit.author = swagShit.author;
+		else
+			swagShit.author = '???';
+
+		if (swagMeta.offset != null)
+			swagShit.offset = swagMeta.offset;
+		else if (swagMeta.offset == null)
+			swagShit.offset = swagShit.offset;
+		else
+			swagShit.offset = 0;
+
+		return swagShit;
+	}
+}
+
+class Section
+{
+	public var sectionNotes:Array<Dynamic> = [];
+
+	public var lengthInSteps:Int = 16;
+	public var typeOfSection:Int = 0;
+	public var mustHitSection:Bool = true;
+
+	/**
+	 *	Copies the first section into the second section!
+	 */
+	public static var COPYCAT:Int = 0;
+
+	public function new(lengthInSteps:Int = 16)
+	{
+		this.lengthInSteps = lengthInSteps;
+	}
+}
+

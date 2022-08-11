@@ -1,7 +1,8 @@
 package states.charting;
 
 import base.*;
-import base.Conductor.SwagSong;
+import base.ChartParser.Song;
+import base.ChartParser.SwagSong;
 import base.Conductor;
 import base.MusicBeat.MusicBeatState;
 import dependency.*;

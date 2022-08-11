@@ -1,7 +1,7 @@
 package states.menus;
 
 import base.*;
-import base.Conductor.Song;
+import base.ChartParser.Song;
 import base.MusicBeat.MusicBeatState;
 import dependency.Discord;
 import flixel.FlxG;
