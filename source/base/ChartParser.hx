@@ -196,13 +196,11 @@ class ChartParser
 						{
 							daSusType = songNotes[4];
 						}
-						/*
-						doesn't work lol
+						// doesn't work????
 						if (Std.isOfType(songNotes[3], String))
 						{
 							daNoteType = Note.convertNotetypes(songNotes[3]);
 						}
-						*/
 
 						var gottaHitNote:Bool = section.mustHitSection;
 						if (songNotes[1] > 3)
