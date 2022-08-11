@@ -101,6 +101,23 @@ class Note extends FNFSprite
 	// quants
 	static var directionID:Array<String> = ['left', 'down', 'up', 'right'];
 
+	public static function convertNotetypes(thing:NoteType, epicNote:Note = null):NoteType
+	{
+		// psych notetype compatibility
+		var string = '';
+		switch (string)
+		{
+			case 'No Animation': NO_ANIM;
+			case 'Hey!': HEY;
+			case 'Hurt Note': MINE; // tex is gonna be a grey disc rather than a fire note, wacky.
+			case 'GF Note': GF;
+			case 'Alt Animation': ALT;
+			default: NORMAL;
+		}
+
+		return epicNote.noteType;
+	}
+
 	public function new(strumTime:Float, noteData:Int, noteAlt:Float, ?prevNote:Note, ?sustainNote:Bool = false, type:NoteType = NORMAL, susType:SustainType = NORMAL)
 	{
 		super(x, y);
