@@ -269,6 +269,18 @@ class Init extends FlxState
 			NOT_FORCED,
 			['foreverMenu', 'freakyMenu']
 		],
+		'Use Set Scroll Speed' => [
+			false,
+			Checkmark,
+			"Whether to override the song's scroll speed to use your own.",
+			NOT_FORCED
+		],
+		'Scroll Speed' => [
+			1,
+			Selector,
+			'Set the scroll speed for the Notes.',
+			NOT_FORCED
+		],
 	];
 
 	public static var trueSettings:Map<String, Dynamic> = [];

@@ -268,6 +268,10 @@ class PlayState extends MusicBeatState
 			add(stageBuild);
 		}
 
+		var setSpeed = Init.trueSettings.get('Scroll Speed');
+		if (Init.trueSettings.get('Use Set Scroll Speed'))
+			SONG.speed = setSpeed;
+
 		// set up characters here too
 		switch (ChartParser.songType)
 		{

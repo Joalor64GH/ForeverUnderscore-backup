@@ -71,6 +71,8 @@ class OptionsMenuState extends MusicBeatState
 					['Hitsound Type', getFromOption],
 					['Hitsound Volume', getFromOption],
 					['Ghost Tapping', getFromOption],
+					['Use Set Scroll Speed', getFromOption],
+					['Scroll Speed', getFromOption],
 					['', null],
 					['Text Settings', null],
 					//
@@ -438,7 +440,8 @@ class OptionsMenuState extends MusicBeatState
 							(letter.text == 'Framerate Cap') ? true : false,
 							(letter.text == 'Stage Opacity') ? true : false,
 							(letter.text == 'Hitsound Volume') ? true : false,
-							(letter.text == 'Score Bar Size') ? true : false);
+							(letter.text == 'Score Bar Size') ? true : false,
+							(letter.text == 'Scroll Speed' ? true : false));
 
 						extrasMap.set(letter, selector);
 					default:
@@ -522,6 +525,7 @@ class OptionsMenuState extends MusicBeatState
 		var bgdark = selector.darkBG;
 		var hitVol = selector.hitVol;
 		var scoreSize = selector.scoreSize;
+		var scrollspeed = selector.scrollSpeed;
 
 		/**
 		* not too lazy now i guess?
@@ -536,7 +540,9 @@ class OptionsMenuState extends MusicBeatState
 			generateSelector(0, 100, 5, updateBy, selector);
 		else if (scoreSize)
 			generateSelector(10, 30, 1, updateBy, selector);
-		if (!fps && !bgdark && !hitVol && !scoreSize)
+		else if (scrollspeed)
+			generateSelector(1, 6, 0.1, updateBy, selector);
+		if (!fps && !bgdark && !hitVol && !scoreSize && !scrollspeed)
 		{ 
 			// get the current option as a number
 			var storedNumber:Int = 0;
