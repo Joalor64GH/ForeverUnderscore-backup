@@ -113,8 +113,6 @@ class Conductor
 		songVocals.play();
 
 		songMusic.onComplete = completeFunc;
-
-		resyncVocals();
 	}
 
 	public static function pauseMusic()
@@ -145,33 +143,6 @@ class Conductor
 		{
 			if (vocals != null)
 				ForeverTools.killMusic([songMusic, vocals]);
-		}
-	}
-
-	public static function resyncVocals():Void
-	{
-		PlayState.contents.callFunc('onResyncVocals', null);
-		PlayState.contents.callFunc('resyncVocals', null);
-
-		#if DEBUG_TRACES trace('resyncing vocal time ${songVocals.time}'); #end
-		for (vocalTrack in vocalArray)
-		{
-			songMusic.pause();
-			vocalTrack.pause();
-			songPosition = songMusic.time;
-			songMusic.play();
-			vocalTrack.play();
-		}
-		#if DEBUG_TRACES trace('new vocal time ${Conductor.songPosition}'); #end
-	}
-
-	public static function resyncBySteps()
-	{
-		for (vocals in vocalArray)
-		{
-			if (Math.abs(songMusic.time - (Conductor.songPosition - Conductor.offset)) > 20
-				|| (PlayState.SONG.needsVoices && Math.abs(vocals.time - (Conductor.songPosition - Conductor.offset)) > 20))
-				resyncVocals();
 		}
 	}
 }

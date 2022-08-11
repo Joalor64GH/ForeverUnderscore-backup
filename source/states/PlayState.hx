@@ -1412,8 +1412,8 @@ class PlayState extends MusicBeatState
 
 	override public function onFocusLost():Void
 	{
-		if (canPause && !paused && !Init.trueSettings.get('Auto Pause'))
-			pauseGame();
+		//if (canPause && !paused && !Init.trueSettings.get('Auto Pause'))
+		//	pauseGame();
 		super.onFocusLost();
 	}
 
@@ -1658,6 +1658,7 @@ class PlayState extends MusicBeatState
 		if (!paused)
 		{
 			Conductor.startMusic(endSong.bind());
+			resyncVocals();
 
 			#if DISCORD_RPC
 			// Song duration in a float, useful for the time left feature
@@ -1704,11 +1705,33 @@ class PlayState extends MusicBeatState
 	function sortByEvent(event1:EventNote, event2:EventNote):Int
 		return FlxSort.byValues(FlxSort.ASCENDING, event1.strumTime, event2.strumTime);
 
+	public function resyncVocals():Void
+	{
+		callFunc('onResyncVocals', null);
+		callFunc('resyncVocals', null);
+
+		#if DEBUG_TRACES trace('resyncing vocal time ${Conductor.songVocals.time}'); #end
+		for (vocalTrack in Conductor.vocalArray)
+		{
+			Conductor.songMusic.pause();
+			vocalTrack.pause();
+			Conductor.songPosition = Conductor.songMusic.time;
+			Conductor.songMusic.play();
+			vocalTrack.play();
+		}
+		#if DEBUG_TRACES trace('new vocal time ${Conductor.songPosition}'); #end
+	}
+
 	override function stepHit()
 	{
 		super.stepHit();
 
-		Conductor.resyncBySteps();
+		for (vocals in Conductor.vocalArray)
+		{
+			if (Math.abs(Conductor.songMusic.time - (Conductor.songPosition - Conductor.offset)) > 20
+				|| (PlayState.SONG.needsVoices && Math.abs(vocals.time - (Conductor.songPosition - Conductor.offset)) > 20))
+				resyncVocals();
+		}
 
 		callFunc('onStepHit', curStep);
 		callFunc('stepHit', curStep);
@@ -1849,7 +1872,7 @@ class PlayState extends MusicBeatState
 		if (paused)
 		{
 			if (Conductor.songMusic != null && !startingSong)
-				Conductor.resyncVocals();
+				resyncVocals();
 
 			// if ((startTimer != null) && (!startTimer.finished))
 			//	startTimer.active = true;
