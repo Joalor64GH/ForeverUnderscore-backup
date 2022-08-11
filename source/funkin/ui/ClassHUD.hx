@@ -2,6 +2,7 @@ package funkin.ui;
 
 import base.Conductor;
 import base.CoolUtil;
+import base.ForeverTools;
 import flixel.FlxBasic;
 import flixel.FlxCamera;
 import flixel.FlxG;

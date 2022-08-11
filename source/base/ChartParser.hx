@@ -1,12 +1,12 @@
 package base;
 
 import Paths.ChartType;
+import base.Conductor.SwagSection;
+import base.Conductor.SwagSong;
 import funkin.EventNote;
 import funkin.Note.NoteType;
 import funkin.Note.SustainType;
 import funkin.Note;
-import funkin.Section.SwagSection;
-import funkin.Song.SwagSong;
 import funkin.Strumline;
 import states.PlayState;
 

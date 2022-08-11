@@ -1,6 +1,7 @@
 package states.charting;
 
 import base.*;
+import base.Conductor.SwagSong;
 import base.Conductor;
 import base.MusicBeat.MusicBeatState;
 import dependency.*;
@@ -24,7 +25,6 @@ import flixel.util.FlxColor;
 import flixel.util.FlxGradient;
 import funkin.*;
 import funkin.Note.NoteType;
-import funkin.Song.SwagSong;
 import funkin.Strumline.UIStaticArrow;
 import funkin.ui.*;
 import lime.app.Application;
@@ -122,7 +122,7 @@ class ChartingState extends MusicBeatState
 
 		else
 		{
-			_song = Song.loadFromJson('test', 'test');
+			_song = Song.loadSong('test', 'test');
 
 			if (_song.events == null)
 				_song.events = [];

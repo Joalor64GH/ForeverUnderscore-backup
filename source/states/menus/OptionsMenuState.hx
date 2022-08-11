@@ -1,5 +1,7 @@
 package states.menus;
 
+import base.ForeverAssets;
+import base.ForeverTools;
 import base.MusicBeat.MusicBeatState;
 import dependency.Discord;
 import dependency.FNFSprite;

@@ -1,9 +1,6 @@
 package funkin;
 
-import base.ChartParser;
-import base.Conductor;
-import base.CoolUtil;
-import base.ScriptHandler;
+import base.*;
 import dependency.FNFSprite;
 import flixel.FlxBasic;
 import flixel.FlxCamera;

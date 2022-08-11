@@ -1,6 +1,7 @@
 package funkin;
 
 import base.Conductor;
+import base.ForeverAssets;
 import flixel.FlxBasic;
 import flixel.FlxG;
 import flixel.FlxSprite;

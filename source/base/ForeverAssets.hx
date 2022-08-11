@@ -1,5 +1,6 @@
-package;
+package base;
 
+import base.Conductor.SwagSection;
 import base.Conductor;
 import flixel.FlxG;
 import flixel.FlxSprite;
@@ -10,7 +11,6 @@ import funkin.ColorSwap.ColorSwapShader;
 import funkin.ColorSwap;
 import funkin.Note.NoteType;
 import funkin.Note.SustainType;
-import funkin.Section.SwagSection;
 import funkin.Strumline.UIStaticArrow;
 import funkin.Timings;
 import funkin.ui.menu.*;

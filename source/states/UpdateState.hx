@@ -1,5 +1,6 @@
 package states;
 
+import base.ForeverTools;
 import base.MusicBeat.MusicBeatState;
 import flixel.FlxG;
 import flixel.FlxSprite;

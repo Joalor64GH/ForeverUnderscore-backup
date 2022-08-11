@@ -1,4 +1,4 @@
-package;
+package base;
 
 import base.*;
 import flixel.FlxG;

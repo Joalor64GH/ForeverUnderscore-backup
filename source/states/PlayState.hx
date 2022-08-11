@@ -2,6 +2,8 @@ package states;
 
 import Paths.ChartType;
 import base.*;
+import base.Conductor.Song;
+import base.Conductor.SwagSong;
 import base.MusicBeat.MusicBeatState;
 import dependency.*;
 import flixel.FlxBasic;
@@ -25,7 +27,6 @@ import flixel.util.FlxColor;
 import flixel.util.FlxSort;
 import flixel.util.FlxTimer;
 import funkin.*;
-import funkin.Song.SwagSong;
 import funkin.Strumline.UIStaticArrow;
 import funkin.ui.*;
 import lime.app.Application;
@@ -234,7 +235,7 @@ class PlayState extends MusicBeatState
 
 		// default song
 		if (SONG == null)
-			SONG = Song.loadFromJson('test', 'test');
+			SONG = Song.loadSong('test', 'test');
 
 		Conductor.mapBPMChanges(SONG);
 		Conductor.changeBPM(SONG.bpm);
@@ -2041,7 +2042,7 @@ class PlayState extends MusicBeatState
 		FlxTransitionableState.skipNextTransIn = true;
 		FlxTransitionableState.skipNextTransOut = true;
 
-		PlayState.SONG = Song.loadFromJson(PlayState.storyPlaylist[0].toLowerCase() + difficulty, PlayState.storyPlaylist[0]);
+		PlayState.SONG = Song.loadSong(PlayState.storyPlaylist[0].toLowerCase() + difficulty, PlayState.storyPlaylist[0]);
 		ForeverTools.killMusic([songMusic, vocals]);
 
 		// deliberately did not use the main.switchstate as to not unload the assets

@@ -1,5 +1,7 @@
 package states.menus;
 
+import base.Conductor.Song;
+import base.Conductor.SwagSong;
 import base.CoolUtil;
 import base.MusicBeat.MusicBeatState;
 import dependency.Discord;
@@ -18,7 +20,6 @@ import flixel.util.FlxColor;
 import flixel.util.FlxTimer;
 import funkin.*;
 import funkin.Alphabet;
-import funkin.Song.SwagSong;
 import funkin.ui.HealthIcon;
 import lime.utils.Assets;
 import openfl.media.Sound;
@@ -109,7 +110,7 @@ class FreeplayState extends MusicBeatState
 				var chartExists:Bool = FileSystem.exists(Paths.songJson(i, i));
 				if (chartExists)
 				{
-					var castSong:SwagSong = Song.loadFromJson(i, i);
+					var castSong:SwagSong = Song.loadSong(i, i);
 					icon = (castSong != null) ? castSong.player2 : 'gf';
 					addSong(CoolUtil.spaceToDash(castSong.song), 1, icon, FlxColor.WHITE);
 				}
@@ -346,7 +347,7 @@ class FreeplayState extends MusicBeatState
 		var poop:String = Highscore.formatSong(songs[curSelected].songName.toLowerCase(),
 			CoolUtil.baseDifficulties.indexOf(existingDifficulties[curSelected][curDifficulty]));
 
-		PlayState.SONG = Song.loadFromJson(poop, songs[curSelected].songName.toLowerCase());
+		PlayState.SONG = Song.loadSong(poop, songs[curSelected].songName.toLowerCase());
 		PlayState.isStoryMode = false;
 		PlayState.storyDifficulty = curDifficulty;
 

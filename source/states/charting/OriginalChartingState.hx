@@ -2,6 +2,9 @@ package states.charting;
 
 import base.*;
 import base.Conductor.BPMChangeEvent;
+import base.Conductor.Song;
+import base.Conductor.SwagSection;
+import base.Conductor.SwagSong;
 import base.CoolUtil;
 import base.MusicBeat.MusicBeatState;
 import dependency.Discord;
@@ -31,8 +34,6 @@ import flixel.util.FlxColor;
 import funkin.*;
 import funkin.Note.NoteType;
 import funkin.Note.SustainType;
-import funkin.Section.SwagSection;
-import funkin.Song.SwagSong;
 import funkin.ui.*;
 import haxe.Json;
 import lime.utils.Assets;
@@ -1340,13 +1341,13 @@ class OriginalChartingState extends MusicBeatState
 
 	function loadJson(song:String):Void
 	{
-		PlayState.SONG = Song.loadFromJson(song.toLowerCase(), song.toLowerCase());
+		PlayState.SONG = Song.loadSong(song.toLowerCase(), song.toLowerCase());
 		FlxG.resetState();
 	}
 
 	function loadAutosave():Void
 	{
-		PlayState.SONG = Song.parseJSONshit(FlxG.save.data.autosave);
+		PlayState.SONG = Song.parseSong(FlxG.save.data.autosave);
 		FlxG.resetState();
 	}
 

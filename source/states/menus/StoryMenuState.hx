@@ -1,6 +1,7 @@
 package states.menus;
 
 import base.*;
+import base.Conductor.Song;
 import base.MusicBeat.MusicBeatState;
 import dependency.Discord;
 import flixel.FlxG;
@@ -17,7 +18,6 @@ import flixel.util.FlxColor;
 import flixel.util.FlxTimer;
 import funkin.Alphabet;
 import funkin.Highscore;
-import funkin.Song;
 import funkin.ui.menu.*;
 
 using StringTools;
@@ -293,7 +293,7 @@ class StoryMenuState extends MusicBeatState
 
 			PlayState.storyDifficulty = curDifficulty;
 
-			PlayState.SONG = Song.loadFromJson(PlayState.storyPlaylist[0].toLowerCase() + diffic, PlayState.storyPlaylist[0].toLowerCase());
+			PlayState.SONG = Song.loadSong(PlayState.storyPlaylist[0].toLowerCase() + diffic, PlayState.storyPlaylist[0].toLowerCase());
 			PlayState.storyWeek = curWeek;
 			PlayState.campaignScore = 0;
 			new FlxTimer().start(1, function(tmr:FlxTimer)

@@ -5,14 +5,15 @@ package funkin;
 	stay the same as it was in the original source of the game. I'll most likely make some changes afterwards though!
 **/
 import base.*;
+import base.Conductor.Song;
+import base.Conductor.SwagSection;
+import base.Conductor.SwagSong;
 import dependency.FNFSprite;
 import flixel.FlxG;
 import flixel.addons.util.FlxSimplex;
 import flixel.animation.FlxBaseAnimation;
 import flixel.graphics.frames.FlxAtlasFrames;
 import flixel.util.FlxSort;
-import funkin.Section.SwagSection;
-import funkin.Song.SwagSong;
 import funkin.background.TankmenBG;
 import funkin.ui.HealthIcon;
 import haxe.Json;
@@ -277,7 +278,7 @@ class Character extends FNFSprite
 
 	function loadMappedAnims()
 	{
-		var sections:Array<SwagSection> = Song.loadFromJson('picospeaker', PlayState.SONG.song.toLowerCase()).notes;
+		var sections:Array<SwagSection> = Song.loadSong('picospeaker', PlayState.SONG.song.toLowerCase()).notes;
 		for (section in sections)
 		{
 			for (note in section.sectionNotes)

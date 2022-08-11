@@ -1,6 +1,7 @@
 package states.substates;
 
 import base.*;
+import base.Conductor.Song;
 import base.CoolUtil;
 import base.MusicBeat.MusicBeatSubstate;
 import flixel.FlxG;
@@ -17,7 +18,6 @@ import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
 import funkin.Alphabet;
 import funkin.Highscore;
-import funkin.Song;
 import states.*;
 import states.menus.*;
 
