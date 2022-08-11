@@ -18,7 +18,7 @@ function loadAnimations()
 
     //
     addByPrefix('singUP-alt', 'TANKMAN UGH', 24, false);
-    addByPrefix('singDOWN-alt', 'PRETTY GOOD tankman', 24, true);
+    addByPrefix('singDOWN-alt', 'PRETTY GOOD tankman', 24, false);
 
     /* ===== OFFSETS ===== */
 

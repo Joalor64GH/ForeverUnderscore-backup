@@ -28,7 +28,7 @@ function loadAnimations()
     setIcon('bf-holding-gf');
     if (isPlayer)
     {
-        setDeathChar('bf-pixel-dead', 'fnf_loss_sfx-pixel', 'gameOver-pixel', 'gameOverEnd-pixel');
+        setDeathChar('bf-holding-gf-dead');
         set('flipX', false);
     }
     else

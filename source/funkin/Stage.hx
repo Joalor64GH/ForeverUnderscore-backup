@@ -646,7 +646,7 @@ class Stage extends FlxTypedGroup<FlxBasic>
 				gf.y += 300;
 
 			case "military":
-				gf.y += 10;
+				gf.y -= 90;
 				gf.x -= 30;
 				boyfriend.x += 40;
 				boyfriend.y += 0;
@@ -655,7 +655,7 @@ class Stage extends FlxTypedGroup<FlxBasic>
 				if (gfVersion != 'pico-speaker')
 				{
 					gf.x -= 50;
-					gf.y -= 110;
+					gf.y -= 10;
 				}
 		}
 

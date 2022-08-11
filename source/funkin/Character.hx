@@ -217,7 +217,7 @@ class Character extends FNFSprite
 	 */
 	public function dance(?forced:Bool = false)
 	{
-		if (!debugMode && !skipDance && animation.curAnim != null)
+		if (!debugMode && !skipDance && !specialAnim && animation.curAnim != null)
 		{
 			var curCharSimplified:String = simplifyCharacter();
 			switch (curCharSimplified)

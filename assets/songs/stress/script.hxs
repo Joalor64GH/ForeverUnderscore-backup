@@ -1,0 +1,9 @@
+function onStepHit(curStep)
+{
+    switch (curStep)
+    {
+        case 736:
+            dad.playAnim('singDOWN-alt', true);
+            dad.specialAnim = true;
+    }
+}
