@@ -218,18 +218,8 @@ class CreditsMenuState extends MusicBeatState
 			Paths.clearUnusedMemory();
 		}
 
-		if (controls.ACCEPT || FlxG.mouse.justPressed && doChecks(4, curSocial))
+		if (controls.ACCEPT || FlxG.mouse.justPressed && doChecks(4, curSocial, 1))
 			CoolUtil.browserLoad(creditsData.data[curSelected][4][curSocial][1]);
-	}
-
-	function doChecks(id:Int, variable:Dynamic):Bool
-	{
-		if (selectableItem(curSelected)
-			&& creditsData.data[curSelected][id][variable] != null
-			&& creditsData.data[curSelected][id][variable] != [''])
-			return true;
-		else
-			return false;
 	}
 
 	function regenInfoText()
@@ -299,7 +289,7 @@ class CreditsMenuState extends MusicBeatState
 		if (curSocial >= creditsData.data[curSelected][4].length)
 			curSocial = 0;
 
-		// changeIcon(data[curSelected][4][curSocial][0]);
+		// iconSocial.updateAnim(data[curSelected][4][curSocial][0]);
 	}
 
 	public function updateInfoText()
@@ -317,12 +307,24 @@ class CreditsMenuState extends MusicBeatState
 			fullText += ' - "' + data[curSelected][3] + '"';
 
 		// socials
-		if (doChecks(4, curSocial))
+		if (doChecks(4, curSocial, 0))
 			fullText += ' • Visit: <' + data[curSelected][4][curSocial][0] + '>';
 
 		infoText.text = fullText;
 	}
 
+	function doChecks(id:Int, variable:Dynamic, arrayID:Int):Bool
+	{
+		if (selectableItem(curSelected)
+			&& creditsData.data[curSelected][id][variable][arrayID] != null
+			&& creditsData.data[curSelected][id][variable][arrayID] != [null]
+			&& creditsData.data[curSelected][id][variable][arrayID] != ''
+			&& creditsData.data[curSelected][id][variable][arrayID] != [''])
+			return true;
+		else
+			return false;
+	}
+	
 	public function selectableItem(id:Int):Bool
 		return creditsData.data[id].length > 1;
 }

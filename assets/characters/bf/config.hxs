@@ -17,7 +17,7 @@ function loadAnimations()
     playAnim('idle');
 
     setBarColor([49,176,209]);
-    setCameraOffsets(0, -50);
+    setCamOffsets(0, -50);
     if (isPlayer)
         set('flipX', false);
     else

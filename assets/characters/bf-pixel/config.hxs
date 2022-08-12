@@ -26,8 +26,8 @@ function loadAnimations()
     set('antialiasing', false);
 
     setBarColor([123,214,246]);
-    if (curStage == 'school') setCameraOffsets(50, -100);
-    if (curStage == 'schoolEvil') setCameraOffsets(200, -100);
+    if (curStage == 'school') setCamOffsets(50, -100);
+    if (curStage == 'schoolEvil') setCamOffsets(200, -100);
     if (isPlayer)
     {
         setDeathChar('bf-pixel-dead', 'fnf_loss_sfx-pixel', 'gameOver-pixel', 'gameOverEnd-pixel');

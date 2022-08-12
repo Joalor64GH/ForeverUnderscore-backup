@@ -62,11 +62,10 @@ class Character extends FNFSprite
 	public var icon:String;
 
 	public var animationNotes:Array<Dynamic> = [];
-	public var positionArray:Array<Float> = [0, 0];
+	public var idlePos:Array<Float> = [0, 0];
 	public var barColor:Array<Float> = [];
-
-	public var characterScales:Array<Float> = [0, 0];
-	public var characterCamOffsets:Array<Float> = [0, 0];
+	public var camOffsets:Array<Float> = [0, 0];
+	public var scales:Array<Float> = [0, 0];
 
 	public var debugMode:Bool = false;
 	public var isPlayer:Bool = false;
@@ -74,8 +73,9 @@ class Character extends FNFSprite
 
 	public var scriptArray:Array<ScriptHandler> = [];
 
-	// FOR PSYCH COMPATIBILITY
 	public var idleSuffix:String = '';
+	
+	// FOR PSYCH COMPATIBILITY
 	public var danceIdle:Bool = false; // Character use "danceLeft" and "danceRight" instead of "idle"
 	public var skipDance:Bool = false;
 	public var heyTimer:Float = 0;
@@ -206,6 +206,12 @@ class Character extends FNFSprite
 					if ((animation.curAnim.name.startsWith('sad')) && (animation.curAnim.finished))
 						playAnim('danceLeft');
 			}
+
+		if (animation.curAnim.finished && animation.curAnim.name == 'idle')
+		{
+			if (animation.getByName('idlePost') != null)
+				animation.play('idlePost', true, false, 0);
+		}
 
 		super.update(elapsed);
 	}
@@ -370,7 +376,7 @@ class Character extends FNFSprite
 		{
 			addOffset(name, x, y);
 			if (name == 'idle')
-				positionArray = [x, y];
+				idlePos = [x, y];
 		});
 
 		setVar('setSingDuration', function(amount:Int)
@@ -383,15 +389,15 @@ class Character extends FNFSprite
 			Reflect.setProperty(this, name, value);
 		});
 
-		setVar('setCameraOffsets', function(?x:Float = 0, ?y:Float = 0)
+		setVar('setCamOffsets', function(?x:Float = 0, ?y:Float = 0)
 		{
-			characterCamOffsets = [x, y];
+			camOffsets = [x, y];
 		});
 
 		setVar('setScale', function(?x:Float = 1, ?y:Float = 1)
 		{
-			characterScales = [x, y];
-			scale.set(characterScales[0], characterScales[1]);
+			scales = [x, y];
+			scale.set(scales[0], scales[1]);
 		});
 
 		setVar('setIcon', function(swag:String = 'face') icon = swag);

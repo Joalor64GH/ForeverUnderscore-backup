@@ -40,8 +40,6 @@ class GameOverSubstate extends MusicBeatSubstate
 		Conductor.songPosition = 0;
 
 		bf = new Boyfriend(x, y, character);
-		bf.x += bf.positionArray[0];
-		bf.y += bf.positionArray[1];
 		add(bf);
 
 		PlayState.boyfriend.destroy();

@@ -20,5 +20,5 @@ function loadAnimations()
 
     set('flipX', true);
     setBarColor([183,216,85]);
-    setCameraOffsets(30, 300);
+    setCamOffsets(30, 300);
 }
