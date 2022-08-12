@@ -28,9 +28,12 @@ import funkin.*;
 import funkin.Note.NoteType;
 import funkin.Strumline.UIStaticArrow;
 import funkin.ui.*;
+import haxe.Json;
 import lime.app.Application;
 import openfl.events.Event;
+import openfl.events.IOErrorEvent;
 import openfl.geom.ColorTransform;
+import openfl.net.FileReference;
 import states.charting.data.*;
 import states.menus.FreeplayState;
 import states.substates.charting.*;
@@ -46,6 +49,8 @@ class ChartingState extends MusicBeatState
 {
 	public var _song:SwagSong;
 
+	var _file:FileReference;
+
 	var songMusic:FlxSound;
 	var vocals:FlxSound;
 	var keysTotal = 8;
@@ -59,6 +64,7 @@ class ChartingState extends MusicBeatState
 	public var currentSection:Null<Int> = 0;
 
 	var curSelectedNote:Note;
+	var curSelectedSustain:Dynamic;
 
 	public static var songPosition:Float = 0;
 	public static var curSong:SwagSong;
@@ -66,9 +72,9 @@ class ChartingState extends MusicBeatState
 	var baseGrid:FlxSprite;
 	public static var gridSize:Int = 50;
 
-	var dummyArrow:FlxSprite;
+	var mouseIndicator:FlxSprite;
 	var curRenderedNotes:FlxTypedGroup<Note>;
-	var curRenderedSustains:FlxTypedGroup<Note>;
+	var curRenderedSustains:FlxTypedGroup<FlxSprite>;
 	var curRenderedEvents:FlxTypedGroup<EventNote>;
 	var curRenderedSections:FlxTypedGroup<FlxBasic>;
 
@@ -150,7 +156,7 @@ class ChartingState extends MusicBeatState
 		//generateGrid();
 		
 		curRenderedNotes = new FlxTypedGroup<Note>();
-		curRenderedSustains = new FlxTypedGroup<Note>();
+		curRenderedSustains = new FlxTypedGroup<FlxSprite>();
 		curRenderedEvents = new FlxTypedGroup<EventNote>();
 		curRenderedSections = new FlxTypedGroup<FlxBasic>();
 
@@ -168,8 +174,9 @@ class ChartingState extends MusicBeatState
 		strumLine.screenCenter(X);
 
 		// cursor
-		dummyArrow = new FlxSprite().makeGraphic(gridSize, gridSize);
-		add(dummyArrow);
+		mouseIndicator = new FlxSprite().makeGraphic(gridSize, gridSize);
+		mouseIndicator.alpha = 0.6;
+		add(mouseIndicator);
 
 		// and now the epic note thingies
 		arrowGroup = new FlxTypedSpriteGroup<UIStaticArrow>(0, 0);
@@ -297,23 +304,6 @@ class ChartingState extends MusicBeatState
 		// mouse stuffs
 		if (FlxG.mouse.justPressed)
 		{
-			// renderedNotes code here.
-			
-			//
-			if (FlxG.mouse.overlaps(curRenderedEvents))
-			{
-				curRenderedEvents.forEachAlive(function(daEvent:EventNote)
-				{
-					if (FlxG.mouse.overlaps(daEvent))
-					{
-						daEvent.kill();
-						curRenderedEvents.remove(daEvent, true);
-						deleteEvent(daEvent);
-						daEvent.destroy();
-					}
-				});
-			}
-
 			//
 			if (FlxG.mouse.overlaps(buttonGroup))
 			{
@@ -326,14 +316,63 @@ class ChartingState extends MusicBeatState
 				});
 			}
 
+			var currentType:NoteType = NORMAL;
+			if (!FlxG.mouse.overlaps(curRenderedNotes))
+			{
+				// add note funny
+				var noteStrum = getStrumTime(mouseIndicator.y);
+
+				var notesSection = Math.floor(noteStrum / (Conductor.stepCrochet * 16));
+				var noteData = adjustSide(Math.floor((mouseIndicator.x - baseGrid.x) / gridSize), _song.notes[notesSection].mustHitSection);
+				var noteType = currentType; // define notes as the current type
+				var noteSus = 0; // ninja you will NOT get away with this
+
+				noteData--;
+
+				if (noteData > -1)
+					generateChartNote(noteData, noteStrum, noteSus, 0, noteType, notesSection);
+				else
+					generateEvent(noteStrum, null, null, currentSelectedEvent, true);
+				autosaveSong();
+			}
+			else
+			{
+				curRenderedNotes.forEachAlive(function(note:Note)
+				{
+					if (FlxG.mouse.overlaps(note))
+					{
+						if (FlxG.keys.pressed.CONTROL)
+						{
+							curSelectedNote = note;
+						}
+						else
+						{
+							note.kill();
+							curRenderedNotes.remove(note, true);
+							deleteNote(note);
+							note.destroy();
+						}
+					}
+				});
+				curRenderedEvents.forEachAlive(function(event:EventNote)
+				{
+					if (FlxG.mouse.overlaps(event))
+					{
+						event.kill();
+						curRenderedEvents.remove(event, true);
+						deleteEvent(event);
+						event.destroy();
+					}
+				});
+			}
+
 			// would be cool maybe
 			if (FlxG.mouse.overlaps(quantL) || FlxG.mouse.overlaps(quantR))
 			{
-				changeQuant(1);
+				changeQuant(FlxG.mouse.overlaps(quantL) ? -1 : 1);
 			}
 		}
 
-		///*
 		if (FlxG.mouse.x > (baseGrid.x)
 			&& FlxG.mouse.x < (baseGrid.x + baseGrid.width)
 			&& FlxG.mouse.y > 0
@@ -341,76 +380,31 @@ class ChartingState extends MusicBeatState
 		{
 			var fakeMouseX:Float = FlxG.mouse.x - baseGrid.x;
 
-			dummyArrow.x = (Math.floor((fakeMouseX) / gridSize) * gridSize) + baseGrid.x;
+			mouseIndicator.x = (Math.floor((fakeMouseX) / gridSize) * gridSize) + baseGrid.x;
 
 			if (FlxG.keys.pressed.SHIFT)
-				dummyArrow.y = FlxG.mouse.y;
+				mouseIndicator.y = FlxG.mouse.y;
 			else
-				dummyArrow.y = Math.floor(FlxG.mouse.y / gridSize) * gridSize;
-
-			// moved this in here for the sake of not dying
-			if (FlxG.mouse.justPressed)
-			{
-				if (!FlxG.mouse.overlaps(curRenderedNotes))
-				{
-					// add note funny
-					var noteStrum = getStrumTime(dummyArrow.y);
-
-					var notesSection = Math.floor(noteStrum / (Conductor.stepCrochet * 16));
-					var noteData = adjustSide(Math.floor((dummyArrow.x - baseGrid.x) / gridSize), _song.notes[notesSection].mustHitSection);
-					var noteSus = 0; // ninja you will NOT get away with this
-
-					noteData--;
-						
-					if (noteData > -1)
-						generateChartNote(noteData, noteStrum, noteSus, 0, notesSection);
-					else
-						generateEvent(noteStrum, null, null, currentSelectedEvent, true);
-				}
-
-				else
-				{
-					curRenderedNotes.forEachAlive(function(note:Note)
-					{
-						if (FlxG.mouse.overlaps(note))
-						{
-							if (FlxG.keys.pressed.CONTROL)
-							{
-								curSelectedNote = note;
-							}
-							else
-							{
-								note.kill();
-								curRenderedNotes.remove(note, true);
-								deleteNote(note);
-								note.destroy();
-							}
-						}
-					});
-				}
-			}
+				mouseIndicator.y = Math.floor(FlxG.mouse.y / gridSize) * gridSize;
 		}
 
 		if (FlxG.keys.justPressed.ESCAPE)
 			saveAndClose(FlxG.keys.pressed.SHIFT ? 'FreeplayState' : 'PlayState');
 
-		if (FlxG.keys.justPressed.BACKSPACE)
+		if (FlxG.keys.justPressed.BACKSPACE || FlxG.keys.justPressed.ENTER)
 		{
 			pauseMusic();
-			openSubState(new PreferenceSubstate(camHUD, 'help'));
+			openSubState(new PreferenceSubstate(camHUD, (FlxG.keys.justPressed.ENTER) ? 'prefs' : 'help'));
 		}
 
-		if (FlxG.keys.justPressed.ENTER)
-		{
-			pauseMusic();
-			openSubState(new PreferenceSubstate(camHUD, 'prefs'));
-		}
+		if (FlxG.keys.justPressed.Q || FlxG.keys.justPressed.E)
+			changeNoteSustain(FlxG.keys.justPressed.Q ? -Conductor.stepCrochet : Conductor.stepCrochet);
+		
+		var left = FlxG.keys.justPressed.LEFT;
+		var right = FlxG.keys.justPressed.RIGHT;
 
-		if(FlxG.keys.justPressed.RIGHT)
-			changeQuant(1);
-
-		if(FlxG.keys.justPressed.LEFT)
-			changeQuant(-1);
+		if(left || right)
+			changeQuant(left ? -1 : 1);
 
 		if (FlxG.keys.anyPressed([W, S]))
 		{
@@ -446,6 +440,20 @@ class ChartingState extends MusicBeatState
 		quantR.animation.play('${speedVal}th');
 	}
 
+	function changeNoteSustain(value:Float):Void
+	{
+		if (curSelectedNote != null)
+		{
+			if (curSelectedSustain != null)
+			{
+				curSelectedSustain += value;
+				curSelectedSustain = Math.max(curSelectedSustain, 0);
+			}
+		}
+
+		updateGrid(false);
+	}
+
 	function saveAndClose(State:String)
 	{
 		songPosition = songMusic.time;
@@ -468,7 +476,7 @@ class ChartingState extends MusicBeatState
 	{
 		var data:Null<Int> = note.noteData;
 
-		var noteStrum = getStrumTime(dummyArrow.y);
+		var noteStrum = getStrumTime(mouseIndicator.y);
 		var curSection = Math.floor(noteStrum / (Conductor.stepCrochet * 16));
 
 		if (data > -1 && note.mustPress != _song.notes[curSection].mustHitSection)
@@ -612,7 +620,7 @@ class ChartingState extends MusicBeatState
 			if (_song.mania == 2)
 				keys = 6;
 
-			generateChartNote(daNoteInfo, daStrumTime, daSus, 0, currentSection, false);
+			generateChartNote(daNoteInfo, daStrumTime, daSus, 0, daNoteType, currentSection, false);
 		}
 
 		for (i in eventInfo)
@@ -722,7 +730,11 @@ class ChartingState extends MusicBeatState
 				if (i.length > 2)
 					daNoteAlt = i[3];
 
-				generateChartNote(i[1], i[0], i[2], daNoteAlt, section, false);
+				var daNoteType:NoteType = NORMAL;
+				if (i.length > 2)
+					daNoteType = i[3];
+
+				generateChartNote(i[1], i[0], i[2], daNoteAlt, daNoteType, section, false);
 			}
 		}
 		// lolll
@@ -775,7 +787,7 @@ class ChartingState extends MusicBeatState
 		};
 	}
 
-	function generateChartNote(daNoteInfo, daStrumTime, daSus, daNoteAlt:Float, noteSection, ?shouldPush:Bool = true)
+	function generateChartNote(daNoteInfo, daStrumTime, daSus, daNoteAlt:Float, daNoteType:NoteType, noteSection, ?shouldPush:Bool = true)
 	{
 		//trace(daNoteInfo);
 
@@ -796,7 +808,16 @@ class ChartingState extends MusicBeatState
 		}
 
 		curRenderedNotes.add(note);
-		//generateSustain(daStrumTime, daNoteInfo, daSus, daNoteAlt, note);
+
+		if (daSus > 0)
+		{
+			var sustainVis:FlxSprite = new FlxSprite(note.x + (gridSize / 2),
+				note.y + gridSize).makeGraphic(8, Math.floor(FlxMath.remapToRange(daSus, 0, Conductor.stepCrochet * 16, 0, baseGrid.height)));
+			sustainVis.color = (note.sustainType == ROLL ? FlxColor.BLUE : FlxColor.WHITE);
+			curRenderedSustains.add(sustainVis);
+		}
+		
+		//generateSustain(daStrumTime, daNoteInfo, daSus, daNoteAlt, daNoteType, note);
 	}
 
 	function generateEvent(strumTime:Float, val1:String, val2:String, id:String, ?shouldPush:Bool = false):Void
@@ -806,7 +827,6 @@ class ChartingState extends MusicBeatState
 		var eventNote:EventNote = new EventNote(strumTime, val1, val2, id);
 		eventNote.setGraphicSize(gridSize, gridSize);
 		eventNote.updateHitbox();
-		//eventNote.screenCenter(X);
 		eventNote.x += 370;
 		eventNote.y = Math.floor(getYfromStrum((event[0] - sectionStartTime()) % (Conductor.stepCrochet * _song.notes[currentSection].lengthInSteps)));
 
@@ -815,43 +835,38 @@ class ChartingState extends MusicBeatState
 			_song.events.push(event);
 		} 
 
-		//trace('EVENT GENERATED');
-
 		curRenderedEvents.add(eventNote);
 	}
 
-	function generateSustain(daStrumTime:Float = 0, daNoteInfo:Int = 0, daSus:Float = 0, daNoteAlt:Float = 0, note:Note)
+	function generateSustain(daStrumTime:Float = 0, daNoteInfo:Int = 0, daSus:Float = 0, daNoteAlt:Float = 0, daNoteType:NoteType = NORMAL, note:Note)
 	{
 		/*
-			if (daSus > 0)
-			{
-				//prevNote = note;
-				var constSize = Std.int(gridSize / 3);
+		if (daSus > 0)
+		{
+			var prevNote:Note = null;
+			prevNote = note;
+			var constSize = Std.int(gridSize / 3);
 
-				var sustainVis:Note = new Note(daStrumTime + (Conductor.stepCrochet * daSus) + Conductor.stepCrochet, daNoteInfo % 4, daNoteAlt, prevNote, true);
-				sustainVis.setGraphicSize(constSize,
-					Math.floor(FlxMath.remapToRange((daSus / 2) - constSize, 0, Conductor.stepCrochet * verticalSize, 0, gridSize * verticalSize)));
-				sustainVis.updateHitbox();
-				sustainVis.x = note.x + constSize;
-				sustainVis.y = note.y + (gridSize / 2);
+			var sustainVis:Note = new Note(daStrumTime + (Conductor.stepCrochet * daSus) + Conductor.stepCrochet, daNoteInfo % 4, daNoteAlt, prevNote, true, daNoteType);
+			sustainVis.setGraphicSize(constSize,
+				Math.floor(FlxMath.remapToRange((daSus / 2) - constSize, 0, Conductor.stepCrochet * 16, 0, gridSize * gridSize)));
+			sustainVis.updateHitbox();
+			sustainVis.x = note.x + constSize;
+			sustainVis.y = note.y + (gridSize / 2);
 
-				var sustainEnd:Note = new Note(daStrumTime + (Conductor.stepCrochet * daSus) + Conductor.stepCrochet, daNoteInfo % 4, daNoteAlt, sustainVis, true);
-				sustainEnd.setGraphicSize(constSize, constSize);
-				sustainEnd.updateHitbox();
-				sustainEnd.x = sustainVis.x;
-				sustainEnd.y = note.y + (sustainVis.height) + (gridSize / 2);
+			var sustainEnd:Note = new Note(daStrumTime + (Conductor.stepCrochet * daSus) + Conductor.stepCrochet, daNoteInfo % 4, daNoteAlt, sustainVis, true, daNoteType);
+			sustainEnd.setGraphicSize(constSize, constSize);
+			sustainEnd.updateHitbox();
+			sustainEnd.x = sustainVis.x;
+			sustainEnd.y = note.y + (sustainVis.height) + (gridSize / 2);
 
-				// loll for later
-				sustainVis.rawNoteData = daNoteInfo;
-				sustainEnd.rawNoteData = daNoteInfo;
+			// loll for later
+			sustainVis.rawNoteData = daNoteInfo;
+			sustainEnd.rawNoteData = daNoteInfo;
 
-				curRenderedSustains.add(sustainVis);
-				curRenderedSustains.add(sustainEnd);
-				//
-
-				// set the note at the current note map
-				curNoteMap.set(note, [sustainVis, sustainEnd]);
-			}
+			curRenderedSustains.add(sustainVis);
+			curRenderedSustains.add(sustainEnd);
+		}
 		*/
 	}
 
@@ -881,10 +896,12 @@ class ChartingState extends MusicBeatState
 		// function that will be called when pressed (optional)
 		
 		buttonArray = [
-			[FlxG.width - 180, 20, "RELOAD SONG", 20, null, "", null],
-			[FlxG.width - 240, 70, "SWAP SECTION NOTES", 20, null, "", null],
-			[FlxG.width - 240, 120, "COPY SECTION NOTES", 20, null, "", null],
-			[FlxG.width - 240, 170, "PASTE SECTION NOTES", 20, null, "", null]
+			[FlxG.width - 240, 20, "SAVE SONG", 20, null, "", null],
+			[FlxG.width - 240, 70, "RELOAD SONG", 20, null, "", null],
+			[FlxG.width - 240, 120, "LOAD AUTOSAVE", 20, null, "", null],
+			[FlxG.width - 240, 170, "SWAP SECTION NOTES", 20, null, "", null],
+			[FlxG.width - 240, 220, "COPY SECTION NOTES", 20, null, "", null],
+			[FlxG.width - 240, 270, "PASTE SECTION NOTES", 20, null, "", null]
 		];
 
 		buttonGroup.clear();
@@ -906,6 +923,19 @@ class ChartingState extends MusicBeatState
 							loadSong(PlayState.SONG.song);
 							FlxG.resetState();
 						};
+
+					case 'save song':
+						void = function()
+						{
+							saveLevel();
+						}
+
+					case 'load autosave':
+						void = function()
+						{
+							PlayState.SONG = Song.parseSong(FlxG.save.data.autosave);
+							FlxG.resetState();
+						}
 
 					case 'swap section notes':
 						void = function()
@@ -1107,6 +1137,66 @@ class ChartingState extends MusicBeatState
 
 		return curStep;
 	}
+
+	function autosaveSong():Void
+	{
+		FlxG.save.data.autosave = Json.stringify({
+			"song": _song
+		});
+		FlxG.save.flush();
+	}
+
+	// save things
+	function saveLevel()
+	{
+		var json = {
+			"song": _song
+		};
+
+		var data:String = Json.stringify(json, "\t");
+
+		if ((data != null) && (data.length > 0))
+		{
+			_file = new FileReference();
+			_file.addEventListener(Event.COMPLETE, onSaveComplete);
+			_file.addEventListener(Event.CANCEL, onSaveCancel);
+			_file.addEventListener(IOErrorEvent.IO_ERROR, onSaveError);
+			_file.save(data.trim(), _song.song.toLowerCase() + ".json");
+		}
+	}
+
+	function onSaveComplete(_):Void
+	{
+		_file.removeEventListener(Event.COMPLETE, onSaveComplete);
+		_file.removeEventListener(Event.CANCEL, onSaveCancel);
+		_file.removeEventListener(IOErrorEvent.IO_ERROR, onSaveError);
+		_file = null;
+		FlxG.log.notice("Successfully saved LEVEL DATA.");
+	}
+
+	/**
+	 * Called when the save file dialog is cancelled.
+	 */
+	function onSaveCancel(_):Void
+	{
+		_file.removeEventListener(Event.COMPLETE, onSaveComplete);
+		_file.removeEventListener(Event.CANCEL, onSaveCancel);
+		_file.removeEventListener(IOErrorEvent.IO_ERROR, onSaveError);
+		_file = null;
+	}
+
+	/**
+	 * Called if there is an error while saving the gameplay recording.
+	 */
+	function onSaveError(_):Void
+	{
+		_file.removeEventListener(Event.COMPLETE, onSaveComplete);
+		_file.removeEventListener(Event.CANCEL, onSaveCancel);
+		_file.removeEventListener(IOErrorEvent.IO_ERROR, onSaveError);
+		_file = null;
+		FlxG.log.error("Problem saving Level data");
+	}
+	//
 
 	function pauseMusic()
 	{

@@ -22,6 +22,7 @@ import flixel.addons.ui.FlxUITabMenu;
 import flixel.addons.ui.FlxUITooltip.FlxUITooltipStyle;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.group.FlxGroup;
+import flixel.group.FlxSpriteGroup.FlxTypedSpriteGroup;
 import flixel.math.FlxMath;
 import flixel.math.FlxPoint;
 import flixel.system.FlxSound;
@@ -34,6 +35,7 @@ import flixel.util.FlxColor;
 import funkin.*;
 import funkin.Note.NoteType;
 import funkin.Note.SustainType;
+import funkin.Strumline.UIStaticArrow;
 import funkin.ui.*;
 import haxe.Json;
 import lime.utils.Assets;
@@ -92,6 +94,8 @@ class OriginalChartingState extends MusicBeatState
 	var curSelectedNote:Array<Dynamic>;
 
 	var tempBpm:Float = 0;
+
+	var arrowGroup:FlxTypedSpriteGroup<UIStaticArrow>;
 
 	var vocals:FlxSound;
 
@@ -182,7 +186,8 @@ class OriginalChartingState extends MusicBeatState
 		strumLine = new FlxSprite(0, 50).makeGraphic(Std.int(FlxG.width / 2), 4);
 		add(strumLine);
 
-		dummyArrow = new FlxSprite().makeGraphic(GRID_SIZE, GRID_SIZE);
+		dummyArrow = new FlxSprite().makeGraphic(GRID_SIZE, GRID_SIZE, FlxColor.BLACK);
+		dummyArrow.alpha = 0.6;
 		add(dummyArrow);
 
 		var tabs:Array<{name:String, label:String}> = [
@@ -201,6 +206,36 @@ class OriginalChartingState extends MusicBeatState
 		addSongUI();
 		addSectionUI();
 		addNoteUI();
+
+		// don't mind me, just adding the arrow group
+		// from the new charting state since i'm not going to work on it for a while
+
+		arrowGroup = new FlxTypedSpriteGroup<UIStaticArrow>(0, 0);
+		for (keys in 0...8)
+		{
+			var typeReal:Int = 0;
+			typeReal = keys;
+			if (typeReal > 3)
+				typeReal -= 4;
+
+			var newArrow:UIStaticArrow = ForeverAssets.generateUIArrows(GRID_SIZE * (keys + 1) - 98, 0, typeReal, 'chart editor');
+
+			newArrow.ID = keys;
+			newArrow.setGraphicSize(GRID_SIZE, GRID_SIZE);
+			newArrow.updateHitbox();
+			newArrow.alpha = 0.8;
+			newArrow.antialiasing = true;
+
+			// lol silly idiot
+			newArrow.playAnim('static');
+
+			if (newArrow.animation.curAnim.name == 'confirm')
+				newArrow.alpha = 1;
+
+			arrowGroup.add(newArrow);
+		}
+
+		add(arrowGroup);
 
 		add(curRenderedNotes);
 		add(curRenderedSustains);
@@ -682,6 +717,18 @@ class OriginalChartingState extends MusicBeatState
             {
 				var data:Int = note.noteData % 4;
 
+				var pain = (Math.floor(Conductor.songPosition / Conductor.stepCrochet));
+
+				if (pain == Math.floor(note.strumTime / Conductor.stepCrochet))
+				{
+					var data:Null<Int> = note.noteData;
+					if (data > -1 && note.mustPress != _song.notes[curSection].mustHitSection)
+						data += 4;
+
+					arrowGroup.members[data].playAnim('confirm', true);
+					arrowGroup.members[data].resetAnim = (note.sustainLength / 1000) + 0.2;
+				}
+
 				if (songMusic.playing && !playedSound[data] && note.noteData > -1 && note.strumTime >= lastSongPos)
                 {
 					if ((playTicksBf.checked) && (note.mustPress) || (playTicksDad.checked) && (!note.mustPress))
@@ -694,6 +741,7 @@ class OriginalChartingState extends MusicBeatState
         });
 
 		strumLine.y = getYfromStrum((Conductor.songPosition - sectionStartTime()) % (Conductor.stepCrochet * _song.notes[curSection].lengthInSteps));
+		arrowGroup.y = strumLine.y - 60;
 
 		if (curBeat % 4 == 0 && curStep >= 16 * (curSection + 1))
 		{
@@ -1176,10 +1224,7 @@ class OriginalChartingState extends MusicBeatState
 			{
 				var sustainVis:FlxSprite = new FlxSprite(note.x + (GRID_SIZE / 2),
 					note.y + GRID_SIZE).makeGraphic(8, Math.floor(FlxMath.remapToRange(daSus, 0, Conductor.stepCrochet * 16, 0, gridBG.height)));
-				if (note.sustainType == ROLL)
-					sustainVis.color = FlxColor.BLUE;
-				else if (note.sustainType == NORMAL)
-					sustainVis.color = FlxColor.WHITE;
+				sustainVis.color = (note.sustainType == ROLL ? FlxColor.BLUE : FlxColor.WHITE);
 				curRenderedSustains.add(sustainVis);
 			}
 		}

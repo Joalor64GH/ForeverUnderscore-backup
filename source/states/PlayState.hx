@@ -837,10 +837,10 @@ class PlayState extends MusicBeatState
 
 			if (unspawnEvents[0] != null && unspawnEvents[0].strumTime - Conductor.songPosition < 3500)
 			{
-				var eventNote:EventNote = unspawnEvents[0];
-				eventNote.visible = false;
-				events.add(eventNote);
-				unspawnEvents.splice(unspawnEvents.indexOf(eventNote), 1);
+				var dunceEvent:EventNote = unspawnEvents[0];
+				dunceEvent.visible = false;
+				events.add(dunceEvent);
+				unspawnEvents.splice(unspawnEvents.indexOf(dunceEvent), 1);
 			}
 
 			noteCalls();

@@ -119,6 +119,9 @@ class Conductor
 
 	public static function pauseMusic()
 	{
+		songMusic.time = Math.max(songMusic.time, 0);
+		songMusic.time = Math.min(songMusic.time, songMusic.length);
+		
 		songMusic.pause();
 		for (vocals in vocalArray)
 		{
