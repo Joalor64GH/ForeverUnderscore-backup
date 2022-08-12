@@ -25,6 +25,7 @@ using StringTools;
 class StoryMenuState extends MusicBeatState
 {
 	static var lastDifficultyName:String = '';
+
 	var scoreText:FlxText;
 	var curDifficulty:Int = 1;
 
@@ -164,7 +165,7 @@ class StoryMenuState extends MusicBeatState
 		leftArrow.animation.play('idle');
 		difficultySelectors.add(leftArrow);
 
-		if(lastDifficultyName == '')
+		if (lastDifficultyName == '')
 		{
 			lastDifficultyName = 'NORMAL';
 		}
@@ -246,7 +247,7 @@ class StoryMenuState extends MusicBeatState
 				if (controls.UI_LEFT_P)
 					changeDifficulty(-1);
 
-				if(FlxG.mouse.wheel != 0)
+				if (FlxG.mouse.wheel != 0)
 				{
 					changeWeek(-FlxG.mouse.wheel);
 					changeDifficulty();
@@ -304,6 +305,7 @@ class StoryMenuState extends MusicBeatState
 	}
 
 	var tweenDifficulty:FlxTween;
+
 	function changeDifficulty(change:Int = 0):Void
 	{
 		curDifficulty += change;
@@ -316,7 +318,7 @@ class StoryMenuState extends MusicBeatState
 		var diff:String = CoolUtil.baseDifficulties[curDifficulty];
 		var newImage:FlxGraphic = Paths.image('menus/base/storymenu/difficulties/' + Paths.songPath(diff));
 
-		if(sprDifficulty.graphic != newImage)
+		if (sprDifficulty.graphic != newImage)
 		{
 			sprDifficulty.loadGraphic(newImage);
 			sprDifficulty.x = leftArrow.x + 60;
@@ -324,11 +326,14 @@ class StoryMenuState extends MusicBeatState
 			sprDifficulty.alpha = 0;
 			sprDifficulty.y = leftArrow.y - 15;
 
-			if(tweenDifficulty != null) tweenDifficulty.cancel();
-			tweenDifficulty = FlxTween.tween(sprDifficulty, {y: leftArrow.y + 15, alpha: 1}, 0.07, {onComplete: function(twn:FlxTween)
-			{
-				tweenDifficulty = null;
-			}});
+			if (tweenDifficulty != null)
+				tweenDifficulty.cancel();
+			tweenDifficulty = FlxTween.tween(sprDifficulty, {y: leftArrow.y + 15, alpha: 1}, 0.07, {
+				onComplete: function(twn:FlxTween)
+				{
+					tweenDifficulty = null;
+				}
+			});
 		}
 		lastDifficultyName = diff;
 

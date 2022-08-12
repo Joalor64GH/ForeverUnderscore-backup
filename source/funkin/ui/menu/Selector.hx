@@ -24,7 +24,8 @@ class Selector extends FlxTypedSpriteGroup<FlxSprite>
 	public var scoreSize:Bool = false;
 	public var scrollSpeed:Bool = false;
 
-	public function new(x:Float = 0, y:Float = 0, word:String, options:Array<String>, fpsCap:Bool = false, darkBG:Bool = false, hitVol:Bool = false, scoreSize:Bool = false, scrollSpeed:Bool = false)
+	public function new(x:Float = 0, y:Float = 0, word:String, options:Array<String>, fpsCap:Bool = false, darkBG:Bool = false, hitVol:Bool = false,
+			scoreSize:Bool = false, scrollSpeed:Bool = false)
 	{
 		// call back the function
 		super(x, y);
@@ -35,7 +36,7 @@ class Selector extends FlxTypedSpriteGroup<FlxSprite>
 		// oops magic numbers
 		var shiftX = 48;
 		var shiftY = 35;
-		
+
 		// generate multiple pieces
 		this.fpsCap = fpsCap;
 		this.darkBG = darkBG;

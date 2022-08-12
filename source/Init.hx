@@ -65,12 +65,7 @@ class Init extends FlxState
 			"Whether the game should upload images to the GPU, takes effect after restart.",
 			NOT_FORCED
 		],
-		'FPS Counter' => [
-			true,
-			Checkmark,
-			'Whether to display the FPS counter.',
-			NOT_FORCED
-		],
+		'FPS Counter' => [true, Checkmark, 'Whether to display the FPS counter.', NOT_FORCED],
 		'Memory Counter' => [
 			true,
 			Checkmark,
@@ -109,12 +104,7 @@ class Init extends FlxState
 			NOT_FORCED,
 			['None', 'Left', 'Right']
 		],
-		'Display Accuracy' => [
-			true,
-			Checkmark,
-			'Whether to display your accuracy on screen.',
-			NOT_FORCED
-		],
+		'Display Accuracy' => [true, Checkmark, 'Whether to display your accuracy on screen.', NOT_FORCED],
 		'Disable Antialiasing' => [
 			false,
 			Checkmark,
@@ -156,44 +146,22 @@ class Init extends FlxState
 			NOT_FORCED,
 			''
 		],
-		"Note Skin" => [
-			'default',
-			Selector,
-			'Choose a note skin.',
-			NOT_FORCED,
-			''
-		],
-		"Framerate Cap" => [
-			120,
-			Selector,
-			'Define your maximum FPS.',
-			NOT_FORCED,
-			['']
-		],
+		"Note Skin" => ['default', Selector, 'Choose a note skin.', NOT_FORCED, ''],
+		"Framerate Cap" => [120, Selector, 'Define your maximum FPS.', NOT_FORCED, ['']],
 		"Opaque Arrows" => [
 			false,
 			Checkmark,
 			"Makes the arrows at the top of the screen opaque again.",
 			NOT_FORCED
 		],
-		"Opaque Holds" => [
-			false,
-			Checkmark,
-			"Huh, why isnt the trail cut off?",
-			NOT_FORCED
-		],
+		"Opaque Holds" => [false, Checkmark, "Huh, why isnt the trail cut off?", NOT_FORCED],
 		'Ghost Tapping' => [
 			false,
 			Checkmark,
 			"Enables Ghost Tapping, allowing you to press inputs without missing.",
 			NOT_FORCED
 		],
-		'Centered Notefield' => [
-			false,
-			Checkmark,
-			"Center the notes, disables the enemy's notes.",
-			NOT_FORCED
-		],
+		'Centered Notefield' => [false, Checkmark, "Center the notes, disables the enemy's notes.", NOT_FORCED],
 		'Skip Text' => [
 			'freeplay only',
 			Selector,
@@ -213,19 +181,8 @@ class Init extends FlxState
 			"Simplifies the judgement animations, displaying only one judgement / rating sprite at a time.",
 			NOT_FORCED
 		],
-		"Hitsound Type" => [
-			'default',
-			Selector,
-			'Choose the Note Hitsound you prefer.',
-			NOT_FORCED,
-			''
-		],
-		'Hitsound Volume' => [
-			Checkmark,
-			Selector,
-			'The volume for your Note Hitsounds.',
-			NOT_FORCED
-		],
+		"Hitsound Type" => ['default', Selector, 'Choose the Note Hitsound you prefer.', NOT_FORCED, ''],
+		'Hitsound Volume' => [Checkmark, Selector, 'The volume for your Note Hitsounds.', NOT_FORCED],
 		'Colored Health Bar' => [
 			false,
 			Checkmark,
@@ -244,12 +201,7 @@ class Init extends FlxState
 			"Whether to check for updates when opening the game.",
 			NOT_FORCED
 		],
-		'Score Bar Size' => [
-			18,
-			Selector,
-			'Set the text size for the Score Bar.',
-			NOT_FORCED
-		],
+		'Score Bar Size' => [18, Selector, 'Set the text size for the Score Bar.', NOT_FORCED],
 		'Disable Button Flickering' => [
 			false,
 			Checkmark,
@@ -275,12 +227,7 @@ class Init extends FlxState
 			"Whether to override the song's scroll speed to use your own.",
 			NOT_FORCED
 		],
-		'Scroll Speed' => [
-			1,
-			Selector,
-			'Set the scroll speed for the Notes.',
-			NOT_FORCED
-		],
+		'Scroll Speed' => [1, Selector, 'Set the scroll speed for the Notes.', NOT_FORCED],
 	];
 
 	public static var trueSettings:Map<String, Dynamic> = [];
@@ -291,12 +238,10 @@ class Init extends FlxState
 		'DOWN' => [[FlxKey.DOWN, S], 1],
 		'UP' => [[FlxKey.UP, W], 2],
 		'RIGHT' => [[FlxKey.RIGHT, D], 3],
-
 		'ACCEPT' => [[FlxKey.SPACE, Z, FlxKey.ENTER], 6],
 		'BACK' => [[FlxKey.BACKSPACE, X, FlxKey.ESCAPE], 7],
 		'PAUSE' => [[FlxKey.ENTER, P], 8],
 		'RESET' => [[R, null], 9],
-
 		'UI_UP' => [[FlxKey.UP, W], 12],
 		'UI_DOWN' => [[FlxKey.DOWN, S], 13],
 		'UI_LEFT' => [[FlxKey.LEFT, A], 14],
@@ -410,7 +355,7 @@ class Init extends FlxState
 		saveSettings();
 		updateAll();
 
-		if(FlxG.save.data.volume != null)
+		if (FlxG.save.data.volume != null)
 			FlxG.sound.volume = FlxG.save.data.volume;
 		if (FlxG.save.data.mute != null)
 			FlxG.sound.muted = FlxG.save.data.mute;
@@ -449,7 +394,7 @@ class Init extends FlxState
 		FlxG.save.bind('forever-controls', 'BeastlyGhost');
 		FlxG.save.data.controls = gameControls;
 		FlxG.save.flush();
-		
+
 		#if DEBUG_TRACES trace('Controls Saved!'); #end
 	}
 

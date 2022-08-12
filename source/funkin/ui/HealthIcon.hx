@@ -76,9 +76,12 @@ class HealthIcon extends FlxSprite
 
 			switch (iconGraphic.width)
 			{
-				case 450: iconWidth = 3;
-				case 300: iconWidth = 2;
-				case 150: iconWidth = 1;
+				case 450:
+					iconWidth = 3;
+				case 300:
+					iconWidth = 2;
+				case 150:
+					iconWidth = 1;
 			}
 
 			loadGraphic(iconGraphic);

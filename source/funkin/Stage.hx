@@ -45,6 +45,7 @@ class Stage extends FlxTypedGroup<FlxBasic>
 	// week 4
 	public var limo:FNFSprite;
 	public var grpLimoDancers:FlxTypedGroup<BackgroundDancer>;
+
 	var fastCar:FNFSprite;
 
 	// week 5
@@ -70,7 +71,6 @@ class Stage extends FlxTypedGroup<FlxBasic>
 	var tankdude5:FNFSprite;
 
 	//
-
 	public var gfVersion:String = 'gf';
 
 	public var curStage:String;
@@ -93,7 +93,7 @@ class Stage extends FlxTypedGroup<FlxBasic>
 		switch (ChartParser.songType)
 		{
 			case FNF:
-				// placeholder
+			// placeholder
 			case FNF_LEGACY:
 				/// get hardcoded stage type if chart is fnf style
 				// this is because I want to avoid editing the fnf chart type
@@ -123,7 +123,7 @@ class Stage extends FlxTypedGroup<FlxBasic>
 				PlayState.curStage = curStage;
 
 			case UNDERSCORE | PSYCH | FOREVER:
-				if(curStage == null || curStage.length < 1)
+				if (curStage == null || curStage.length < 1)
 				{
 					switch (CoolUtil.spaceToDash(PlayState.SONG.song.toLowerCase()))
 					{
@@ -426,7 +426,7 @@ class Stage extends FlxTypedGroup<FlxBasic>
 				bgGirls.setGraphicSize(Std.int(bgGirls.width * daPixelZoom));
 				bgGirls.updateHitbox();
 				add(bgGirls);
-				
+
 			case 'schoolEvil':
 				var posX = 400;
 				var posY = 200;
@@ -441,7 +441,7 @@ class Stage extends FlxTypedGroup<FlxBasic>
 			case 'military':
 				curStage = 'military';
 				PlayState.defaultCamZoom = 0.9;
-				
+
 				var sky:FNFSprite = new FNFSprite(-400, -400).loadGraphic(Paths.image('backgrounds/' + curStage + '/tankSky'));
 				sky.scrollFactor.set(0, 0);
 				add(sky);
@@ -457,19 +457,19 @@ class Stage extends FlxTypedGroup<FlxBasic>
 				clouds.active = true;
 				clouds.velocity.x = FlxG.random.float(5, 15);
 				add(clouds);
-						
+
 				var mountains:FNFSprite = new FNFSprite(300, -20).loadGraphic(Paths.image('backgrounds/' + curStage + '/tankMountains'));
 				mountains.scrollFactor.set(0.2, 0.2);
 				mountains.setGraphicSize(Std.int(mountains.width * 1.2));
 				mountains.updateHitbox();
 				add(mountains);
-						
+
 				var buildings:FNFSprite = new FNFSprite(-200, 0).loadGraphic(Paths.image('backgrounds/' + curStage + '/tankBuildings'));
 				buildings.scrollFactor.set(0.3, 0.3);
 				buildings.setGraphicSize(Std.int(buildings.width * 1.1));
 				buildings.updateHitbox();
 				add(buildings);
-						
+
 				var ruins:FNFSprite = new FNFSprite(-200, 0).loadGraphic(Paths.image('backgrounds/' + curStage + '/tankRuins'));
 				ruins.scrollFactor.set(0.35, 0.35);
 				ruins.setGraphicSize(Std.int(ruins.width * 1.1));
@@ -503,10 +503,10 @@ class Stage extends FlxTypedGroup<FlxBasic>
 				tankGround.antialiasing = true;
 				tankGround.scrollFactor.set(0.5, 0.5);
 				add(tankGround);
-						
+
 				tankmanRun = new FlxTypedGroup<TankmenBG>();
 				add(tankmanRun);
-						
+
 				var ground:FNFSprite = new FNFSprite(-420, -150).loadGraphic(Paths.image('backgrounds/' + curStage + '/tankGround'));
 				ground.setGraphicSize(Std.int(ground.width * 1.15));
 				ground.updateHitbox();
@@ -525,7 +525,7 @@ class Stage extends FlxTypedGroup<FlxBasic>
 				tankdude1.animation.addByPrefix('fg', 'fg');
 				tankdude1.antialiasing = true;
 				tankdude1.scrollFactor.set(2, 0.2);
-				foreground.add(tankdude1);	
+				foreground.add(tankdude1);
 
 				tankdude2 = new FNFSprite(450, 940);
 				tankdude2.frames = Paths.getSparrowAtlas('backgrounds/' + curStage + '/tank2');
@@ -583,7 +583,7 @@ class Stage extends FlxTypedGroup<FlxBasic>
 			case 'stress':
 				gfVersion = 'pico-speaker';
 		}
-		
+
 		return gfVersion;
 	}
 
@@ -671,6 +671,7 @@ class Stage extends FlxTypedGroup<FlxBasic>
 	var trainFinishing:Bool = false;
 	var trainCooldown:Int = 0;
 	var startedMoving:Bool = false;
+
 	public function stageUpdate(curBeat:Int, boyfriend:Boyfriend, gf:Character, dadOpponent:Character)
 	{
 		// trace('update backgrounds');
@@ -854,53 +855,51 @@ class Stage extends FlxTypedGroup<FlxBasic>
 	{
 		stageScript = new ScriptHandler(Paths.getPreloadPath('stages/$curStage.hxs'));
 
-		stageScript.set('createGraphic', function(id:String, x:Float, y:Float, 
-			size:Float = 1, scrollX:Float, scrollY:Float, alphaValue:Float = 1, scaleX:Float = 1, scaleY:Float = 1,
-			image:String, fore:Bool = false,
-			blendString:String = 'normal')
-		{
-			var madeGraphic:FNFSprite = new FNFSprite(x, y).loadGraphic(Paths.image(image));
-			madeGraphic.setGraphicSize(Std.int(madeGraphic.width * size));
-			madeGraphic.scrollFactor.set(scrollX, scrollY);
-			madeGraphic.updateHitbox();
-			madeGraphic.antialiasing = true;
-			madeGraphic.blend = ForeverTools.getBlendFromString(blendString);
-			madeGraphic.alpha = alphaValue;
-			PlayState.GraphicMap.set(id, madeGraphic);
-
-			if (fore)
-				foreground.add(madeGraphic);
-			else
-				add(madeGraphic);
-		});
-
-		stageScript.set('createAnimatedGraphic', function(id:String, x:Float, y:Float, 
-			size:Float, scrollX:Float, scrollY:Float, alphaValue:Float = 1, scaleX:Float = 1, scaleY:Float = 1,
-			image:String, anims:Array<Array<Dynamic>>, defaultAnim:String, fore:Bool = false,
-			blendString:String = 'normal')
-		{
-			var madeGraphic:FNFSprite = new FNFSprite(x, y);
-			madeGraphic.frames = Paths.getSparrowAtlas(image);
-
-			for (anim in anims)
+		stageScript.set('createGraphic',
+			function(id:String, x:Float, y:Float, size:Float = 1, scrollX:Float, scrollY:Float, alphaValue:Float = 1, scaleX:Float = 1, scaleY:Float = 1,
+					image:String, fore:Bool = false, blendString:String = 'normal')
 			{
-				madeGraphic.animation.addByPrefix(anim[0], anim[1], anim[2], anim[3]);
-			}
+				var madeGraphic:FNFSprite = new FNFSprite(x, y).loadGraphic(Paths.image(image));
+				madeGraphic.setGraphicSize(Std.int(madeGraphic.width * size));
+				madeGraphic.scrollFactor.set(scrollX, scrollY);
+				madeGraphic.updateHitbox();
+				madeGraphic.antialiasing = true;
+				madeGraphic.blend = ForeverTools.getBlendFromString(blendString);
+				madeGraphic.alpha = alphaValue;
+				PlayState.GraphicMap.set(id, madeGraphic);
 
-			madeGraphic.setGraphicSize(Std.int(madeGraphic.width * size));
-			madeGraphic.scrollFactor.set(scrollX, scrollY);
-			madeGraphic.updateHitbox();
-			madeGraphic.animation.play(defaultAnim);
-			madeGraphic.antialiasing = true;
-			madeGraphic.blend = ForeverTools.getBlendFromString(blendString);
-			madeGraphic.alpha = alphaValue;
-			madeGraphic.scale.set(scaleX, scaleY);
-			PlayState.GraphicMap.set(id, madeGraphic);
-			if (fore)
-				foreground.add(madeGraphic);
-			else
-				add(madeGraphic);
-		});
+				if (fore)
+					foreground.add(madeGraphic);
+				else
+					add(madeGraphic);
+			});
+
+		stageScript.set('createAnimatedGraphic',
+			function(id:String, x:Float, y:Float, size:Float, scrollX:Float, scrollY:Float, alphaValue:Float = 1, scaleX:Float = 1, scaleY:Float = 1,
+					image:String, anims:Array<Array<Dynamic>>, defaultAnim:String, fore:Bool = false, blendString:String = 'normal')
+			{
+				var madeGraphic:FNFSprite = new FNFSprite(x, y);
+				madeGraphic.frames = Paths.getSparrowAtlas(image);
+
+				for (anim in anims)
+				{
+					madeGraphic.animation.addByPrefix(anim[0], anim[1], anim[2], anim[3]);
+				}
+
+				madeGraphic.setGraphicSize(Std.int(madeGraphic.width * size));
+				madeGraphic.scrollFactor.set(scrollX, scrollY);
+				madeGraphic.updateHitbox();
+				madeGraphic.animation.play(defaultAnim);
+				madeGraphic.antialiasing = true;
+				madeGraphic.blend = ForeverTools.getBlendFromString(blendString);
+				madeGraphic.alpha = alphaValue;
+				madeGraphic.scale.set(scaleX, scaleY);
+				PlayState.GraphicMap.set(id, madeGraphic);
+				if (fore)
+					foreground.add(madeGraphic);
+				else
+					add(madeGraphic);
+			});
 
 		stageScript.set('addOffsetByID', function(id:String, anim:String, x:Float, y:Float)
 		{

@@ -170,14 +170,14 @@ class FreeplayState extends MusicBeatState
 		resetScore(true);
 
 		/*infoText = new FlxText(5, FlxG.height - 24, 0, '', 32);
-		infoText.setFormat("VCR OSD Mono", 20, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
-		infoText.textField.background = true;
-		infoText.textField.backgroundColor = FlxColor.BLACK;
-		add(infoText);
+			infoText.setFormat("VCR OSD Mono", 20, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+			infoText.textField.background = true;
+			infoText.textField.backgroundColor = FlxColor.BLACK;
+			add(infoText);
 
-		infoText.applyMarkup(
-			"- **(SHIFT+)** ALT = Open **(NEW)** Charting State. - RESET = Reset Score and Ranking. -",
-			[new FlxTextFormatMarkerPair(cyanMarkup, '**')]);*/
+			infoText.applyMarkup(
+				"- **(SHIFT+)** ALT = Open **(NEW)** Charting State. - RESET = Reset Score and Ranking. -",
+				[new FlxTextFormatMarkerPair(cyanMarkup, '**')]); */
 	}
 
 	public function addSong(songName:String, weekNum:Int, songCharacter:String, songColor:FlxColor)
@@ -216,6 +216,7 @@ class FreeplayState extends MusicBeatState
 	}
 
 	var holdTime:Float = 0;
+
 	override function update(elapsed:Float)
 	{
 		super.update(elapsed);
@@ -236,9 +237,10 @@ class FreeplayState extends MusicBeatState
 		var shiftP = FlxG.keys.pressed.SHIFT;
 
 		var shiftMult:Int = 1;
-		if(shiftP) shiftMult = 3;
+		if (shiftP)
+			shiftMult = 3;
 
-		if(songs.length > 1)
+		if (songs.length > 1)
 		{
 			if (upP)
 			{
@@ -252,24 +254,24 @@ class FreeplayState extends MusicBeatState
 			}
 
 			/**
-			* Hold Scrolling Code
-			* @author ShadowMario
+			 * Hold Scrolling Code
+			 * @author ShadowMario
 			**/
 
-			if(controls.UI_DOWN || controls.UI_UP)
+			if (controls.UI_DOWN || controls.UI_UP)
 			{
 				var checkLastHold:Int = Math.floor((holdTime - 0.5) * 10);
 				holdTime += elapsed;
 				var checkNewHold:Int = Math.floor((holdTime - 0.5) * 10);
 
-				if(holdTime > 0.5 && checkNewHold - checkLastHold > 0)
+				if (holdTime > 0.5 && checkNewHold - checkLastHold > 0)
 				{
 					changeSelection((checkNewHold - checkLastHold) * (controls.UI_UP ? -shiftMult : shiftMult));
 					changeDiff();
 				}
 			}
 
-			if(FlxG.mouse.wheel != 0)
+			if (FlxG.mouse.wheel != 0)
 			{
 				changeSelection(-shiftMult * FlxG.mouse.wheel);
 				changeDiff();
@@ -285,7 +287,8 @@ class FreeplayState extends MusicBeatState
 		{
 			if (presses <= 0)
 			{
-				if (FlxG.sound.music != null) FlxG.sound.music.stop();
+				if (FlxG.sound.music != null)
+					FlxG.sound.music.stop();
 				threadActive = false;
 				FlxG.sound.play(Paths.sound('cancelMenu'), 0.4);
 				Main.switchState(this, new MainMenuState());
@@ -296,7 +299,7 @@ class FreeplayState extends MusicBeatState
 				FlxG.sound.play(Paths.sound('confirmMenu'), 0.4);
 				/*infoText.applyMarkup(
 					"- **Data Destruction was Interrupted!** -",
-					[new FlxTextFormatMarkerPair(cyanMarkup, '**')]);*/
+					[new FlxTextFormatMarkerPair(cyanMarkup, '**')]); */
 				endBullshit();
 			}
 		}
@@ -356,13 +359,16 @@ class FreeplayState extends MusicBeatState
 
 		if (stopThread)
 		{
-			if (FlxG.sound.music != null) FlxG.sound.music.stop();
+			if (FlxG.sound.music != null)
+				FlxG.sound.music.stop();
 			threadActive = false;
 		}
-		if (go) Main.switchState(this, new PlayState());
+		if (go)
+			Main.switchState(this, new PlayState());
 	}
 
 	var lastDifficulty:String;
+
 	function changeDiff(change:Int = 0)
 	{
 		curDifficulty += change;
@@ -506,13 +512,13 @@ class FreeplayState extends MusicBeatState
 		/*if (presses == 1)
 			infoText.applyMarkup(
 				"- ;;Are you Sure?;; -",
-				[new FlxTextFormatMarkerPair(grayMarkup, ';;')]);*/
+				[new FlxTextFormatMarkerPair(grayMarkup, ';;')]); */
 
 		if (presses == 2)
 		{
 			/*infoText.applyMarkup(
 				"- ^^Really Sure?^^ -",
-				[new FlxTextFormatMarkerPair(yellowMarkup, '^^')]);*/
+				[new FlxTextFormatMarkerPair(yellowMarkup, '^^')]); */
 			FlxG.sound.music.volume = 0.3;
 		}
 
@@ -521,7 +527,7 @@ class FreeplayState extends MusicBeatState
 			noSound = true;
 			/*infoText.applyMarkup(
 				"- ++Data Destroyed!++ -",
-				[new FlxTextFormatMarkerPair(redMarkup, '++')]);*/
+				[new FlxTextFormatMarkerPair(redMarkup, '++')]); */
 			FlxG.sound.play(Paths.sound('resetScore_sfx'), 0.4);
 			iconArray[curSelected].animation.play('losing');
 			Highscore.clearData(songs[curSelected].songName, curDifficulty);
@@ -536,7 +542,7 @@ class FreeplayState extends MusicBeatState
 		{
 			/*infoText.applyMarkup(
 				"- ALT **(+SHIFT)** = Open **(NEW)** Charting State. - RESET = Reset Score and Ranking. -",
-				[new FlxTextFormatMarkerPair(cyanMarkup, '**')]);*/
+				[new FlxTextFormatMarkerPair(cyanMarkup, '**')]); */
 			presses = 0;
 			iconArray[curSelected].animation.play('static');
 			FlxG.sound.music.fadeIn(1.0, 0.3, 1.0);

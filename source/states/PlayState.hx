@@ -1899,7 +1899,7 @@ class PlayState extends MusicBeatState
 
 		canPause = false;
 		endingSong = true;
-		
+
 		Conductor.songMusic.volume = 0;
 		Conductor.songVocals.volume = 0;
 
@@ -2493,7 +2493,7 @@ class PlayState extends MusicBeatState
 						case 'camgame' | 'camGame' | 'game' | 'world':
 							camGame.setFilters([new ShaderFilter(shader)]);
 						case 'strumhud' | 'strumHUD' | 'strum' | 'strumlines':
-							for(lines in 0...strumHUD.length)
+							for (lines in 0...strumHUD.length)
 								strumHUD[lines].setFilters([new ShaderFilter(shader)]);
 					}
 
@@ -2511,7 +2511,7 @@ class PlayState extends MusicBeatState
 		{
 			if (color == null)
 				color = [255, 255, 255];
-			
+
 			trace(text);
 			uiHUD.traceBar.text += '$text\n';
 			uiHUD.traceBar.color = FlxColor.fromRGB(color[0], color[1], color[2]);
