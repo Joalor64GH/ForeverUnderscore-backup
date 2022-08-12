@@ -59,7 +59,7 @@ class ClassHUD extends FlxTypedGroup<FlxBasic>
 
 	var timingsMap:Map<String, FlxText> = [];
 
-	var fillDirection = RIGHT_TO_LEFT;
+	var barFillDir = RIGHT_TO_LEFT;
 
 	// eep
 	public function new()
@@ -79,7 +79,7 @@ class ClassHUD extends FlxTypedGroup<FlxBasic>
 		healthBarBG.scrollFactor.set();
 		add(healthBarBG);
 
-		healthBar = new FlxBar(healthBarBG.x + 4, healthBarBG.y + 4, fillDirection, Std.int(healthBarBG.width - 8), Std.int(healthBarBG.height - 8));
+		healthBar = new FlxBar(healthBarBG.x + 4, healthBarBG.y + 4, barFillDir, Std.int(healthBarBG.width - 8), Std.int(healthBarBG.height - 8));
 
 		healthBar.scrollFactor.set();
 		if (Init.trueSettings.get('Colored Health Bar'))

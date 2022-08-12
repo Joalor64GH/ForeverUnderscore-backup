@@ -46,6 +46,7 @@ class HealthIcon extends FlxSprite
 	{
 		var path = Paths.image('$icon/icon', 'characters');
 		var iconExists = FileSystem.exists(Paths.getPath('characters/$icon/icon.png', IMAGE));
+		var sparrowIcon = FileSystem.exists(Paths.getPath('characters/$icon/icon.xml', TEXT));
 
 		var trimmedIcon:String = icon;
 		if (trimmedIcon.contains('-'))
@@ -60,33 +61,34 @@ class HealthIcon extends FlxSprite
 			trace('$icon icon is invalid, trying $trimmedIcon instead you fuck');
 		}
 
-		switch (icon)
+		if (sparrowIcon)
 		{
-			case 'hypno2plus':
-				frames = Paths.getSparrowAtlas('icon', 'characters/$icon');
+			frames = Paths.getSparrowAtlas('icon', 'characters/$icon');
 
-				animation.addByPrefix('static', '$icon-static', 24, true, isPlayer);
-				animation.addByPrefix('losing', '$icon-losing', 24, true, isPlayer);
-				animation.addByPrefix('winning', '$icon-winning', 24, true, isPlayer);
-			default:
-				var iconGraphic:FlxGraphic = path;
-				var iconWidth = 1;
+			animation.addByPrefix('static', '$icon-static', 24, true, isPlayer);
+			animation.addByPrefix('losing', '$icon-losing', 24, true, isPlayer);
+			animation.addByPrefix('winning', '$icon-winning', 24, true, isPlayer);
+		}
+		else
+		{
+			var iconGraphic:FlxGraphic = path;
+			var iconWidth = 1;
 
-				switch (iconGraphic.width)
-				{
-					case 450: iconWidth = 3;
-					case 300: iconWidth = 2;
-					case 150: iconWidth = 1;
-				}
+			switch (iconGraphic.width)
+			{
+				case 450: iconWidth = 3;
+				case 300: iconWidth = 2;
+				case 150: iconWidth = 1;
+			}
 
-				loadGraphic(iconGraphic);
-				loadGraphic(iconGraphic, true, Std.int(iconGraphic.width / iconWidth), iconGraphic.height);
+			loadGraphic(iconGraphic);
+			loadGraphic(iconGraphic, true, Std.int(iconGraphic.width / iconWidth), iconGraphic.height);
 
-				animation.add('static', [0], 0, false, isPlayer);
-				animation.add('losing', [1], 0, false, isPlayer);
+			animation.add('static', [0], 0, false, isPlayer);
+			animation.add('losing', [1], 0, false, isPlayer);
 
-				// ternary to avoid frame 1 playing where it shouldn't
-				animation.add('winning', (iconWidth == 3 ? [2] : [0]), 0, false, isPlayer);
+			// ternary to avoid frame 1 playing where it shouldn't
+			animation.add('winning', (iconWidth == 3 ? [2] : [0]), 0, false, isPlayer);
 		}
 		animation.play('static');
 		scrollFactor.set();

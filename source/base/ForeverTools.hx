@@ -82,7 +82,8 @@ class ForeverTools
 					mustUpdate = true;
 				}
 			}
-			http.onError = function (error) {
+			http.onError = function (error)
+			{
 				trace('error: $error');
 			}
 			http.request();
