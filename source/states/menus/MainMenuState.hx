@@ -55,7 +55,7 @@ class MainMenuState extends MusicBeatState
 
 		// uh
 		persistentUpdate = persistentDraw = true;
-		
+
 		generateBackground();
 
 		camFollow = new FlxObject(0, 0, 1, 1);
@@ -90,18 +90,18 @@ class MainMenuState extends MusicBeatState
 			menuItem.updateHitbox();
 
 			/*if (!tweenFinished)
-			{
-				FlxTween.tween(menuItem, {y: 60 + (i * 160)}, 1 + (i * 0.25),
 				{
-					ease: FlxEase.expoInOut,
-					onComplete: function(flxTween:FlxTween)
+					FlxTween.tween(menuItem, {y: 60 + (i * 160)}, 1 + (i * 0.25),
 					{
-						tweenFinished = true;
-						updateSelection();
-					}
-				});
-			}
-			else*/
+						ease: FlxEase.expoInOut,
+						onComplete: function(flxTween:FlxTween)
+						{
+							tweenFinished = true;
+							updateSelection();
+						}
+					});
+				}
+				else */
 			{
 				menuItem.y = 60 + (i * 160);
 			}
@@ -112,13 +112,19 @@ class MainMenuState extends MusicBeatState
 
 		updateSelection();
 
-		var versionShit:FlxText = new FlxText(5, FlxG.height - 18, 0, "Forever Engine v" + Application.current.meta.get('version') + '_' + Main.underscoreVersion.replace(".", ""), 12);
+		var versionShit:FlxText = new FlxText(5, FlxG.height
+			- 18, 0,
+			"Forever Engine v"
+			+ Application.current.meta.get('version')
+			+ '_'
+			+ Main.underscoreVersion.replace(".", ""), 12);
 		versionShit.scrollFactor.set();
 		versionShit.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		add(versionShit);
 	}
 
 	var selectedSomethin:Bool = false;
+
 	override function update(elapsed:Float)
 	{
 		if (controls.BACK || FlxG.mouse.justPressedRight)
@@ -134,7 +140,7 @@ class MainMenuState extends MusicBeatState
 			Main.switchState(this, new ModsMenuState());
 		}
 		#end
-		
+
 		var controlArray:Array<Bool> = [
 			controls.UI_UP,
 			controls.UI_DOWN,
@@ -173,9 +179,11 @@ class MainMenuState extends MusicBeatState
 			FlxG.sound.play(Paths.sound('confirmMenu'));
 
 			var flickerVal:Float = 0.06;
-			
-			if (Init.trueSettings.get('Disable Flashing Lights')) flickerVal = 1;
-			if (!Init.trueSettings.get('Disable Flashing Lights')) FlxFlicker.flicker(magenta, 0.8, 0.1, false);
+
+			if (Init.trueSettings.get('Disable Flashing Lights'))
+				flickerVal = 1;
+			if (!Init.trueSettings.get('Disable Flashing Lights'))
+				FlxFlicker.flicker(magenta, 0.8, 0.1, false);
 
 			menuItems.forEach(function(spr:FlxSprite)
 			{
@@ -233,6 +241,7 @@ class MainMenuState extends MusicBeatState
 	}
 
 	var lastCurSelected:Int = 0;
+
 	function updateSelection()
 	{
 		// reset all selections

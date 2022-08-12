@@ -31,7 +31,7 @@ typedef CreditsDataDef =
 	size:Float,
 	menuBG:String,
 	menuBGColor:Array<FlxColor>,
-    colorTween:Bool,
+	colorTween:Bool,
 }
 
 class CreditsMenuState extends MusicBeatState
@@ -47,7 +47,7 @@ class CreditsMenuState extends MusicBeatState
 	var icons:Array<AbsoluteSprite> = [];
 	var creditsData:CreditsDataDef;
 
-    public static var offsetNumbers:Bool = false;
+	public static var offsetNumbers:Bool = false;
 
 	var fullText:String = '';
 
@@ -55,7 +55,7 @@ class CreditsMenuState extends MusicBeatState
 	{
 		super.create();
 
-        offsetNumbers = true;
+		offsetNumbers = true;
 
 		creditsData = Json.parse(Paths.getTextFromFile('credits.json'));
 
@@ -155,7 +155,6 @@ class CreditsMenuState extends MusicBeatState
 			}
 		}
 
-
 		var shiftMult:Int = 1;
 		if (FlxG.keys.pressed.SHIFT)
 			shiftMult = 3;
@@ -244,20 +243,20 @@ class CreditsMenuState extends MusicBeatState
 		}
 		while (!selectableItem(curSelected));
 
-        if (creditsData.colorTween) 
-        {
-			var color:FlxColor = FlxColor.fromRGB(creditsData.data[curSelected][5][0], creditsData.data[curSelected][5][1], creditsData.data[curSelected][5][2]);
+		if (creditsData.colorTween)
+		{
+			var color:FlxColor = FlxColor.fromRGB(creditsData.data[curSelected][5][0], creditsData.data[curSelected][5][1],
+				creditsData.data[curSelected][5][2]);
 			if (bgTween != null)
 				bgTween.cancel();
 
 			if (color != bg.color)
 			{
-				bgTween = FlxTween.color(bg, 0.35, bg.color, color,
-									{
-				onComplete: function(tween:FlxTween) bgTween = null
+				bgTween = FlxTween.color(bg, 0.35, bg.color, color, {
+					onComplete: function(tween:FlxTween) bgTween = null
 				});
 			}
-        }
+		}
 
 		var bullShit:Int = 0;
 		for (item in alfabe.members)
@@ -324,7 +323,7 @@ class CreditsMenuState extends MusicBeatState
 		else
 			return false;
 	}
-	
+
 	public function selectableItem(id:Int):Bool
 		return creditsData.data[id].length > 1;
 }

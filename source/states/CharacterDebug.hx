@@ -36,7 +36,6 @@ using StringTools;
 	* offsets are currently broken, as characters never spawn at their in-game idle position
 	* ghost characters don't properly work
  */
- 
 class CharacterDebug extends MusicBeatState
 {
 	var _file:FileReference;
@@ -85,7 +84,7 @@ class CharacterDebug extends MusicBeatState
 		FlxG.cameras.reset(camGame);
 		FlxG.cameras.add(camHUD, false);
 
-		//FlxCamera.defaultCameras = [camGame];
+		// FlxCamera.defaultCameras = [camGame];
 		FlxG.cameras.setDefaultDrawTarget(camGame, true);
 
 		// set up camera
@@ -124,9 +123,7 @@ class CharacterDebug extends MusicBeatState
 		#end
 
 		// add menu tabs
-		var tabs = [
-			{name: 'Preferences', label: 'Preferences'},
-		];
+		var tabs = [{name: 'Preferences', label: 'Preferences'},];
 
 		UI_box = new FlxUITabMenu(null, tabs, true);
 		UI_box.cameras = [camHUD];
@@ -143,6 +140,7 @@ class CharacterDebug extends MusicBeatState
 
 	var coolGrid:FlxBackdrop;
 	var coolGradient:FlxSprite;
+
 	function generateBackground()
 	{
 		coolGrid = new FlxBackdrop(null, 1, 1, true, true, 1, 1);
@@ -196,7 +194,8 @@ class CharacterDebug extends MusicBeatState
 		textAnim.text = char.animation.curAnim.name;
 		ghost.flipX = char.flipX;
 
-		if (FlxG.keys.justPressed.ESCAPE) {
+		if (FlxG.keys.justPressed.ESCAPE)
+		{
 			FlxG.mouse.visible = false;
 			Main.switchState(this, new PlayState());
 		}
@@ -240,10 +239,11 @@ class CharacterDebug extends MusicBeatState
 
 		// character controls
 
-		if (FlxG.keys.justPressed.F) {
+		if (FlxG.keys.justPressed.F)
+		{
 			char.flipX = !char.flipX;
 		}
-		
+
 		if (FlxG.keys.justPressed.W)
 			updateAnimation(-1);
 
@@ -284,7 +284,7 @@ class CharacterDebug extends MusicBeatState
 
 					updateTexts();
 					genCharOffsets(false);
-					//ghost.setPosition(char.x, char.y);
+					// ghost.setPosition(char.x, char.y);
 					char.playAnim(animList[curAnim], false);
 				}
 			}
@@ -313,7 +313,7 @@ class CharacterDebug extends MusicBeatState
 		char.debugMode = true;
 		add(char);
 	}
-	
+
 	function genCharOffsets(pushList:Bool = true):Void
 	{
 		var daLoop:Int = 0;
@@ -341,8 +341,7 @@ class CharacterDebug extends MusicBeatState
 		{
 			animList = ['[NONE]'];
 
-			var text:FlxText = new FlxText(10, 38, 0,
-				'
+			var text:FlxText = new FlxText(10, 38, 0, '
 				No animations found
 				\nplease make sure your ${curCharacter}.$fileExt script
 				has the offsets properly set up

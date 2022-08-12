@@ -46,7 +46,7 @@ class Timings
 	public static var smallestRating:String;
 
 	public static function callAccuracy()
-	{	
+	{
 		// reset the accuracy to 0%
 		accuracy = 0.001;
 		trueAccuracy = 0;

@@ -68,28 +68,15 @@ class Note extends FNFSprite
 		'Mine Note' => MINE,
 	];
 
-	public static var sustainTypeMap:Map<String, SustainType> = [
-		'' => NORMAL,
-		'Roll' => ROLL,
-	];
+	public static var sustainTypeMap:Map<String, SustainType> = ['' => NORMAL, 'Roll' => ROLL,];
 
 	// for the Chart Editor, and later on for Psych Engine Notetypes Conversion
-	public static var noteTypeList:Array<String> = [
-		'',
-		'Alt Animation',
-		'No Animation',
-		'Girlfriend Note',
-		'Hey!',
-		'Mine Note'
-	];
+	public static var noteTypeList:Array<String> = ['', 'Alt Animation', 'No Animation', 'Girlfriend Note', 'Hey!', 'Mine Note'];
 
 	/**
-	* WIP AND NOT REALLY WORKING RIGHT NOW!!
+	 * WIP AND NOT REALLY WORKING RIGHT NOW!!
 	**/
-	public static var sustainTypeList:Array<String> = [
-		'',
-		'Roll'
-	];
+	public static var sustainTypeList:Array<String> = ['', 'Roll'];
 
 	public var healthGain:Float = 0.023;
 	public var healthLoss:Float = 0.0475;
@@ -107,18 +94,25 @@ class Note extends FNFSprite
 		var string = '';
 		switch (string)
 		{
-			case 'No Animation': NO_ANIM;
-			case 'Hey!': HEY;
-			case 'Hurt Note': MINE; // tex is gonna be a grey disc rather than a fire note, wacky.
-			case 'GF Note': GF;
-			case 'Alt Animation': ALT;
-			default: NORMAL;
+			case 'No Animation':
+				NO_ANIM;
+			case 'Hey!':
+				HEY;
+			case 'Hurt Note':
+				MINE; // tex is gonna be a grey disc rather than a fire note, wacky.
+			case 'GF Note':
+				GF;
+			case 'Alt Animation':
+				ALT;
+			default:
+				NORMAL;
 		}
 
 		return noteType;
 	}
 
-	public function new(strumTime:Float, noteData:Int, noteAlt:Float, ?prevNote:Note, ?sustainNote:Bool = false, type:NoteType = NORMAL, susType:SustainType = NORMAL)
+	public function new(strumTime:Float, noteData:Int, noteAlt:Float, ?prevNote:Note, ?sustainNote:Bool = false, type:NoteType = NORMAL,
+			susType:SustainType = NORMAL)
 	{
 		super(x, y);
 
@@ -189,7 +183,8 @@ class Note extends FNFSprite
 
 		these are for all your custom note needs
 	**/
-	public static function returnDefaultNote(assetModifier, strumTime, noteData, noteAlt, ?isSustainNote:Bool = false, ?prevNote:Note, type:NoteType = NORMAL, susType:SustainType = NORMAL):Note
+	public static function returnDefaultNote(assetModifier, strumTime, noteData, noteAlt, ?isSustainNote:Bool = false, ?prevNote:Note, type:NoteType = NORMAL,
+			susType:SustainType = NORMAL):Note
 	{
 		var newNote:Note = new Note(strumTime, noteData, noteAlt, prevNote, isSustainNote, type, susType);
 
@@ -205,7 +200,8 @@ class Note extends FNFSprite
 							newNote.kill();
 						default: // pixel holds default
 							newNote.loadGraphic(Paths.image(ForeverTools.returnSkinAsset('arrowEnds', assetModifier, Init.trueSettings.get("Note Skin"),
-								'noteskins/notes')), true, 7, 6);
+								'noteskins/notes')),
+								true, 7, 6);
 							newNote.animation.add(noteColorID[noteData] + 'holdend', [pixelNoteID[noteData]]);
 							newNote.animation.add(noteColorID[noteData] + 'hold', [pixelNoteID[noteData] - 4]);
 					}
@@ -215,13 +211,13 @@ class Note extends FNFSprite
 					switch (type)
 					{
 						case MINE: // pixel mines
-							newNote.loadGraphic(Paths.image(ForeverTools.returnSkinAsset('mines', assetModifier, '',
-								'noteskins/mines')), true, 17, 17);
+							newNote.loadGraphic(Paths.image(ForeverTools.returnSkinAsset('mines', assetModifier, '', 'noteskins/mines')), true, 17, 17);
 							newNote.animation.add(noteColorID[noteData] + 'Scroll', [0, 1, 2, 3, 4, 5, 6, 7]);
 
 						default: // pixel notes default
 							newNote.loadGraphic(Paths.image(ForeverTools.returnSkinAsset('arrows-pixels', assetModifier, Init.trueSettings.get("Note Skin"),
-								'noteskins/notes')), true, 17, 17);
+								'noteskins/notes')),
+								true, 17, 17);
 							newNote.animation.add(noteColorID[noteData] + 'Scroll', [pixelNoteID[noteData]]);
 					}
 				}
@@ -233,8 +229,7 @@ class Note extends FNFSprite
 				switch (type)
 				{
 					case MINE: // mines
-						newNote.loadGraphic(Paths.image(ForeverTools.returnSkinAsset('mines', assetModifier, '',
-							'noteskins/mines')), true, 133, 128);
+						newNote.loadGraphic(Paths.image(ForeverTools.returnSkinAsset('mines', assetModifier, '', 'noteskins/mines')), true, 133, 128);
 						newNote.animation.add(noteColorID[noteData] + 'Scroll', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]);
 
 						if (isSustainNote)
@@ -277,18 +272,18 @@ class Note extends FNFSprite
 			if (prevNote.isSustainNote)
 			{
 				prevNote.animation.play(UIStaticArrow.getColorFromNumber(prevNote.noteData) + sustainPrefix);
-				
+
 				prevNote.scale.y *= Conductor.stepCrochet / 100 * 1.5 * prevNote.noteSpeed;
 				prevNote.updateHitbox();
 				// prevNote.setGraphicSize();
-				
 			}
 		}
 
 		return newNote;
 	}
 
-	public static function returnQuantNote(assetModifier, strumTime, noteData, noteAlt, ?isSustainNote:Bool = false, ?prevNote:Note = null, type:NoteType = NORMAL, susType:SustainType = NORMAL):Note
+	public static function returnQuantNote(assetModifier, strumTime, noteData, noteAlt, ?isSustainNote:Bool = false, ?prevNote:Note = null,
+			type:NoteType = NORMAL, susType:SustainType = NORMAL):Note
 	{
 		var newNote:Note = new Note(strumTime, noteData, noteAlt, prevNote, isSustainNote, type, susType);
 
@@ -348,14 +343,12 @@ class Note extends FNFSprite
 						case MINE: // pixel mines
 							if (assetModifier == 'pixel')
 							{
-								newNote.loadGraphic(Paths.image(ForeverTools.returnSkinAsset('mines', assetModifier, '',
-									'noteskins/mines')), true, 17, 17);
+								newNote.loadGraphic(Paths.image(ForeverTools.returnSkinAsset('mines', assetModifier, '', 'noteskins/mines')), true, 17, 17);
 								newNote.animation.add(directionID[noteData] + 'Scroll', [0, 1, 2, 3, 4, 5, 6, 7]);
 							}
 							else
 							{
-								newNote.loadGraphic(Paths.image(ForeverTools.returnSkinAsset('mines', assetModifier, '',
-									'noteskins/mines')), true, 133, 128);
+								newNote.loadGraphic(Paths.image(ForeverTools.returnSkinAsset('mines', assetModifier, '', 'noteskins/mines')), true, 133, 128);
 								newNote.animation.add(directionID[noteData] + 'Scroll', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]);
 							}
 
@@ -363,7 +356,8 @@ class Note extends FNFSprite
 							// in case you're unfamiliar with these, they're ternary operators, I just dont wanna check for pixel notes using a separate statement
 							var newNoteSize:Int = (assetModifier == 'pixel') ? 17 : 157;
 							newNote.loadGraphic(Paths.image(ForeverTools.returnSkinAsset('NOTE_quants', assetModifier, Init.trueSettings.get("Note Skin"),
-								'noteskins/notes', 'quant')), true, newNoteSize, newNoteSize);
+								'noteskins/notes', 'quant')),
+								true, newNoteSize, newNoteSize);
 
 							newNote.animation.add('leftScroll', [0 + (newNote.noteQuant * 4)]);
 							// LOL downscroll thats so funny to me
@@ -379,8 +373,8 @@ class Note extends FNFSprite
 						default:
 							// quant holds
 							newNote.loadGraphic(Paths.image(ForeverTools.returnSkinAsset('HOLD_quants', assetModifier, Init.trueSettings.get("Note Skin"),
-							'noteskins/notes', 'quant')),
-							true, (assetModifier == 'pixel') ? 17 : 109, (assetModifier == 'pixel') ? 6 : 52);
+								'noteskins/notes', 'quant')),
+								true, (assetModifier == 'pixel') ? 17 : 109, (assetModifier == 'pixel') ? 6 : 52);
 							newNote.animation.add('hold', [0 + (newNote.noteQuant * 4)]);
 							newNote.animation.add('holdend', [1 + (newNote.noteQuant * 4)]);
 							newNote.animation.add('roll', [2 + (newNote.noteQuant * 4)]);

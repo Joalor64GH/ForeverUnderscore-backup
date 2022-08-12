@@ -92,7 +92,7 @@ class Conductor
 	public static function bindMusic()
 	{
 		var songData = PlayState.SONG;
-		
+
 		songMusic = new FlxSound();
 		songVocals = new FlxSound();
 
@@ -139,7 +139,7 @@ class Conductor
 			if (vocals != null)
 				vocals.stop();
 		}
-		//songMusic.stop();
+		// songMusic.stop();
 	}
 
 	public static function killMusic()
@@ -155,10 +155,10 @@ class Conductor
 	{
 		PlayState.contents.callFunc('onResyncVocals', null);
 		PlayState.contents.callFunc('resyncVocals', null);
-		
+
 		#if DEBUG_TRACES trace('resyncing vocal time ${songVocals.time}'); #end
 		songVocals.pause();
-		
+
 		songMusic.play();
 		songPosition = songMusic.time;
 		if (songVocals != null && songPosition <= songVocals.length)
@@ -178,4 +178,3 @@ class Conductor
 		}
 	}
 }
-

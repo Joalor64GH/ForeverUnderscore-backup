@@ -74,7 +74,7 @@ class Character extends FNFSprite
 	public var scriptArray:Array<ScriptHandler> = [];
 
 	public var idleSuffix:String = '';
-	
+
 	// FOR PSYCH COMPATIBILITY
 	public var danceIdle:Bool = false; // Character use "danceLeft" and "danceRight" instead of "idle"
 	public var skipDance:Bool = false;

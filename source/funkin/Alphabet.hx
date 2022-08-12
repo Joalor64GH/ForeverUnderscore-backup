@@ -100,13 +100,11 @@ class Alphabet extends FlxSpriteGroup
 			{
 				startTypedText();
 			}
-
 			else
 			{
 				addText();
 			}
 		}
-
 		else
 		{
 			if (swagTypingTimer != null)
@@ -139,7 +137,6 @@ class Alphabet extends FlxSpriteGroup
 			if (character == " " || character == "-")
 				lastWasSpace = true;
 
-			
 			var isNumber:Bool = AlphaCharacter.numbers.indexOf(character) != -1;
 			var isSymbol:Bool = AlphaCharacter.symbols.indexOf(character) != -1;
 			var isAlphabet:Bool = AlphaCharacter.alphabet.indexOf(character.toLowerCase()) != -1;
@@ -169,22 +166,17 @@ class Alphabet extends FlxSpriteGroup
 				{
 					if (isSymbol)
 						letter.createBoldSymbol(character);
-
 					else if (isNumber)
 						letter.createBoldNumber(character);
-
 					else
 						letter.createBold(character);
 				}
-
 				else if (!isBold && (isNumber || isSymbol || isAlphabet))
 				{
 					if (isSymbol)
 						letter.createSymbol(character);
-
 					else if (isNumber)
 						letter.createNumber(character);
-					
 					else
 						letter.createLetter(character);
 				}
@@ -264,25 +256,20 @@ class Alphabet extends FlxSpriteGroup
 				{
 					if (isSymbol)
 						letter.createBoldSymbol(splitWords[loopNum]);
-
 					else if (isNumber)
 						letter.createBoldNumber(splitWords[loopNum]);
-
 					else
 						letter.createBold(splitWords[loopNum]);
 				}
-
 				else
 				{
 					if (isNumber)
 						letter.createNumber(splitWords[loopNum]);
-					
 					else if (isSymbol)
 						letter.createSymbol(splitWords[loopNum]);
-
 					else
 						letter.createLetter(splitWords[loopNum]);
-	
+
 					letter.x += 90;
 				}
 
@@ -327,27 +314,27 @@ class Alphabet extends FlxSpriteGroup
 		if (isMenuItem)
 		{
 			var scaledY = FlxMath.remapToRange(targetY, 0, 1, 0, 1.3);
-			
-			switch (itemType) 
+
+			switch (itemType)
 			{
 				case "Classic":
 					y = FlxMath.lerp(y, (scaledY * 120) + (FlxG.height * 0.48), elapsed * 6);
-				// lmao
-				if (!disableX)
-					x = FlxMath.lerp(x, (targetY * 20) + 90, elapsed * 6);
-				else
-					x = FlxMath.lerp(x, xTo, elapsed * 6);
+					// lmao
+					if (!disableX)
+						x = FlxMath.lerp(x, (targetY * 20) + 90, elapsed * 6);
+					else
+						x = FlxMath.lerp(x, xTo, elapsed * 6);
 
 				case "Classic-Fast":
 					y = FlxMath.lerp(y, (scaledY * 120) + (FlxG.height * 0.48), 0.16);
-				// lmao
-				if (!disableX)
-					x = FlxMath.lerp(x, (targetY * 20) + 90, elapsed * 6);
-				else
-					x = FlxMath.lerp(x, xTo, elapsed * 6);
+					// lmao
+					if (!disableX)
+						x = FlxMath.lerp(x, (targetY * 20) + 90, elapsed * 6);
+					else
+						x = FlxMath.lerp(x, xTo, elapsed * 6);
 
 				case "Centered":
-					y = FlxMath.lerp(y, (scaledY * 120) + (FlxG.height * 0.5), 0.16/*/ (openfl.Lib.application.window.frameRate / 60)*/);
+					y = FlxMath.lerp(y, (scaledY * 120) + (FlxG.height * 0.5), 0.16 /*/ (openfl.Lib.application.window.frameRate / 60)*/);
 
 				case "Vertical":
 					y = FlxMath.lerp(y, (scaledY * 120) + (FlxG.height * 0.5), 0.16 / (openfl.Lib.application.window.frameRate / 60));
@@ -398,7 +385,7 @@ class AlphaCharacter extends FlxSprite
 		{
 			case '.':
 				animName = 'PERIOD bold';
-			
+
 			case "'":
 				animName = 'APOSTRAPHIE bold';
 
@@ -407,25 +394,25 @@ class AlphaCharacter extends FlxSprite
 
 			case '¿':
 				animName = 'QUESTION MARK bold FLIPPED';
-			
+
 			case '!':
 				animName = 'EXCLAMATION POINT bold';
-			
+
 			case '¡':
 				animName = 'EXCLAMATION POINT bold FLIPPED';
 
 			case '^':
 				animName = '^ bold';
-			
+
 			case '$':
 				animName = '$';
-			
+
 			case ',':
 				animName = 'comma';
 
 			case '/':
 				animName = 'bold forward slash';
-			
+
 			default:
 				animName = 'bold $letter';
 		}

@@ -30,13 +30,16 @@ class UpdateState extends MusicBeatState
 		bg.antialiasing = true;
 		add(bg);
 
-		warnText = new FlxText(0, 0, FlxG.width,
-			"Hey, fair warning
+		warnText = new FlxText(0, 0, FlxG.width, "Hey, fair warning
 			\nit looks like your Game Version is outdated!
-			\nPress ENTER to Update\nfrom " + Main.underscoreVersion + ' (FE v' + Application.current.meta.get('version') + ') to ' + ForeverTools.updateVersion
+			\nPress ENTER to Update\nfrom "
+			+ Main.underscoreVersion
+			+ ' (FE v'
+			+ Application.current.meta.get('version')
+			+ ') to '
+			+ ForeverTools.updateVersion
 			+ '\nPress ESCAPE to ignore this message.
-			\nif you wish to disable this, Uncheck "Check for Updates" on the Options Menu',
-			32);
+			\nif you wish to disable this, Uncheck "Check for Updates" on the Options Menu', 32);
 		warnText.setFormat("VCR OSD Mono", 32, FlxColor.WHITE, CENTER);
 		warnText.screenCenter(Y);
 		add(warnText);
@@ -46,29 +49,37 @@ class UpdateState extends MusicBeatState
 	{
 		super.update(elapsed);
 
-		if(!FlxG.save.data.leftFlashing) {
+		if (!FlxG.save.data.leftFlashing)
+		{
 			var accept:Bool = controls.ACCEPT;
 			var back:Bool = controls.BACK;
 
 			if (accept || back)
 			{
-				if(!back) {
+				if (!back)
+				{
 					FlxG.sound.play(Paths.sound('confirmMenu'));
 					FlxTween.tween(warnText, {alpha: 0}, 1, {
-						onComplete: function (twn:FlxTween) {
+						onComplete: function(twn:FlxTween)
+						{
 							CoolUtil.browserLoad('https://github.com/BeastlyGhost/Forever-Engine-Underscore');
 							Main.switchState(this, new MainMenuState());
 						}
 					});
-				} else {
+				}
+				else
+				{
 					FlxTween.tween(warnText, {alpha: 0}, 1, {
-						onComplete: function (twn:FlxTween) {
+						onComplete: function(twn:FlxTween)
+						{
 							Main.switchState(this, new MainMenuState());
 						}
 					});
 				}
 			}
-		} else {
+		}
+		else
+		{
 			// anti "haha u stuck here now lmao!!!"
 			Main.switchState(this, new MainMenuState());
 		}

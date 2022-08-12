@@ -60,7 +60,7 @@ class GameOverSubstate extends MusicBeatSubstate
 	{
 		if (FlxG.sound.music.playing)
 			Conductor.songPosition = FlxG.sound.music.time;
-		
+
 		super.update(elapsed);
 
 		if (controls.ACCEPT)
@@ -68,8 +68,8 @@ class GameOverSubstate extends MusicBeatSubstate
 
 		if (controls.BACK)
 		{
-			//FlxG.resizeWindow(1280, 720);
-			//FlxG.scaleMode = new RatioScaleMode();
+			// FlxG.resizeWindow(1280, 720);
+			// FlxG.scaleMode = new RatioScaleMode();
 
 			FlxG.sound.music.stop();
 			PlayState.deaths = 0;
@@ -96,7 +96,8 @@ class GameOverSubstate extends MusicBeatSubstate
 			{
 				FlxG.sound.play(Paths.sound('jeff/jeffGameover-' + FlxG.random.int(1, 25)), 1, false, null, true, function()
 				{
-					if (!isEnding) FlxG.sound.music.fadeIn(4, 0.2, 1);
+					if (!isEnding)
+						FlxG.sound.music.fadeIn(4, 0.2, 1);
 				});
 			}
 		}

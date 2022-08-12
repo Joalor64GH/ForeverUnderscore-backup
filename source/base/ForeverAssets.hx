@@ -136,7 +136,7 @@ class ForeverAssets
 
 			default:
 				asset = 'noteSplashes';
-				
+
 				tempSplash.loadGraphic(Paths.image(ForeverTools.returnSkinAsset(asset, assetModifier, changeableSkin, baseLibrary)), true, 210, 210);
 				tempSplash.animation.add('anim1', [
 					(noteData * 2 + 1),
@@ -241,7 +241,8 @@ class ForeverAssets
 	/**
 		Notes!
 	**/
-	public static function generateArrow(assetModifier, strumTime, noteData, noteAlt, ?isSustainNote:Bool = false, ?prevNote:Note = null, noteType:NoteType = NORMAL, susType:SustainType = NORMAL):Note
+	public static function generateArrow(assetModifier, strumTime, noteData, noteAlt, ?isSustainNote:Bool = false, ?prevNote:Note = null,
+			noteType:NoteType = NORMAL, susType:SustainType = NORMAL):Note
 	{
 		var newNote:Note;
 		var changeableSkin:String = Init.trueSettings.get("Note Skin");
@@ -262,10 +263,10 @@ class ForeverAssets
 		}
 
 		/*var colorSwap:ColorSwap = new ColorSwap();
-		colorSwap.hue = Note.arrowColors[noteData][0] / 360;
-		colorSwap.saturation = Note.arrowColors[noteData][1] / 100;
-		colorSwap.brightness = Note.arrowColors[noteData][2] / 100;
-		newNote.shader = colorSwap.shader;*/
+			colorSwap.hue = Note.arrowColors[noteData][0] / 360;
+			colorSwap.saturation = Note.arrowColors[noteData][1] / 100;
+			colorSwap.brightness = Note.arrowColors[noteData][2] / 100;
+			newNote.shader = colorSwap.shader; */
 
 		return newNote;
 	}

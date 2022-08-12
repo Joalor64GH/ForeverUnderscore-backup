@@ -346,7 +346,8 @@ class OptionsSubstate extends MusicBeatSubstate
 				Init.gameControls.get(keyOptions.members[curSelection].text)[0][curHorizontalSelection] = checkKey;
 				otherKeys.members[(curSelection * 2) + curHorizontalSelection].text = getStringKey(checkKey);
 
-				if (FlxG.keys.justPressed.DELETE) {
+				if (FlxG.keys.justPressed.DELETE)
+				{
 					Init.gameControls.get(keyOptions.members[curSelection].text)[0][curHorizontalSelection] = null;
 					otherKeys.members[(curSelection * 2) + curHorizontalSelection].text = getStringKey(null);
 				}
@@ -369,13 +370,13 @@ class OptionsSubstate extends MusicBeatSubstate
 				closeSubmenu();
 
 			var move = 0;
-			
+
 			var left = FlxG.keys.justPressed.LEFT;
 			var right = FlxG.keys.justPressed.RIGHT;
 			var leftP = FlxG.keys.pressed.LEFT;
 			var rightP = FlxG.keys.pressed.RIGHT;
 			var shiftP = FlxG.keys.pressed.SHIFT;
-			
+
 			if (left || leftP && shiftP)
 				move = -1;
 			else if (right || rightP && shiftP)

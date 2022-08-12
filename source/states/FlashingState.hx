@@ -41,14 +41,12 @@ class FlashingState extends MusicBeatState
 		bg.antialiasing = true;
 		add(bg);
 
-		warnText = new FlxText(0, 0, FlxG.width,
-			"Hey, watch out!\n
+		warnText = new FlxText(0, 0, FlxG.width, "Hey, watch out!\n
 			This Mod contains some flashing lights!\n
 			Press ENTER to disable them now.\n
 			You can also disable them later on the Options Menu.\n
 			Press ESCAPE to ignore this message.\n
-			You've been warned!",
-			32);
+			You've been warned!", 32);
 		warnText.setFormat("VCR OSD Mono", 32, FlxColor.WHITE, CENTER);
 		warnText.screenCenter(Y);
 		add(warnText);
@@ -61,7 +59,7 @@ class FlashingState extends MusicBeatState
 		FlxTransitionableState.skipNextTransOut = false;
 
 		Main.switchState(this, new TitleScreen());
-		
+
 		// set it to true, since you don't wanna go back to this state
 		FlxG.save.data.leftFlashing = true;
 	}
@@ -70,31 +68,38 @@ class FlashingState extends MusicBeatState
 	{
 		super.update(elapsed);
 
-		if(!FlxG.save.data.leftFlashing)
+		if (!FlxG.save.data.leftFlashing)
 		{
 			var accept:Bool = controls.ACCEPT;
 			var back:Bool = controls.BACK;
 
 			if (accept || back)
 			{
-				if(!back) {
+				if (!back)
+				{
 					Init.trueSettings.set('Disable Flashing Lights', true);
 					FlxG.sound.play(Paths.sound('confirmMenu'));
 					FlxTween.tween(warnText, {alpha: 0}, 1, {
-						onComplete: function (twn:FlxTween) {
+						onComplete: function(twn:FlxTween)
+						{
 							gotoTitleScreen();
 						}
 					});
-				} else {
+				}
+				else
+				{
 					FlxG.sound.play(Paths.sound('cancelMenu'));
 					FlxTween.tween(warnText, {alpha: 0}, 1, {
-						onComplete: function (twn:FlxTween) {
+						onComplete: function(twn:FlxTween)
+						{
 							gotoTitleScreen();
 						}
 					});
 				}
 			}
-		} else {
+		}
+		else
+		{
 			// anti "haha u stuck here now lmao!!!"
 			gotoTitleScreen();
 		}

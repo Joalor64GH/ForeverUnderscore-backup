@@ -18,7 +18,8 @@ class CoolUtil
 
 	public static var difficulties:Array<String> = [];
 
-	inline public static function boundTo(value:Float, min:Float, max:Float):Float {
+	inline public static function boundTo(value:Float, min:Float, max:Float):Float
+	{
 		return Math.max(min, Math.min(max, value));
 	}
 
@@ -109,7 +110,7 @@ class CoolUtil
 		}
 		return dumbArray;
 	}
-	
+
 	public static function browserLoad(site:String)
 	{
 		#if linux
