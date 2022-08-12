@@ -1,8 +1,8 @@
 package states.menus;
 
+import base.Conductor;
 import base.ForeverAssets;
 import base.ForeverTools;
-import base.Conductor;
 import base.MusicBeat.MusicBeatState;
 import dependency.Discord;
 import dependency.FNFSprite;
@@ -223,7 +223,7 @@ class OptionsMenuState extends MusicBeatState
 			if (currentAttachmentMap != null)
 				setAttachmentAlpha(currentAttachmentMap.get(activeSubgroup.members[i]), 0.6);
 			activeSubgroup.members[i].targetY = (i - curSelection) / 1.8;
-			//activeSubgroup.members[i].xTo = 200 + ((i - curSelection) * 25);
+			// activeSubgroup.members[i].xTo = 200 + ((i - curSelection) * 25);
 
 			// check for null members and hardcode the dividers
 			if (categoryMap.get(curCategory)[0][i][1] == null)
@@ -252,7 +252,7 @@ class OptionsMenuState extends MusicBeatState
 
 				sepMem.alpha = 1;
 				sepMem.xTo = Std.int((FlxG.width / 2) - ((sepMem.text.length / 2) * divideVal)) - decreaseVal;
-				//sepMem.xTo += Std.int((FlxG.width / 2) - ((sepMem.text.length / 2) * divideVal)) - decreaseVal;
+				// sepMem.xTo += Std.int((FlxG.width / 2) - ((sepMem.text.length / 2) * divideVal)) - decreaseVal;
 			}
 		}
 
@@ -346,14 +346,19 @@ class OptionsMenuState extends MusicBeatState
 		{
 			FlxG.sound.play(Paths.sound('cancelMenu'));
 
-			if (curCategory != 'main') {
+			if (curCategory != 'main')
+			{
 				loadSubgroup('main');
-			} else if (PauseSubstate.toOptions) {
-					Conductor.resetMusic();
-					Main.switchState(this, new PlayState());
-				} else {
-					Main.switchState(this, new MainMenuState());
-				}
+			}
+			else if (PauseSubstate.toOptions)
+			{
+				Conductor.resetMusic();
+				Main.switchState(this, new PlayState());
+			}
+			else
+			{
+				Main.switchState(this, new MainMenuState());
+			}
 		}
 	}
 
@@ -438,10 +443,8 @@ class OptionsMenuState extends MusicBeatState
 					case Init.SettingTypes.Selector:
 						// selector
 						var selector:Selector = new Selector(10, letter.y, letter.text, Init.gameSettings.get(letter.text)[4],
-							(letter.text == 'Framerate Cap') ? true : false,
-							(letter.text == 'Stage Opacity') ? true : false,
-							(letter.text == 'Hitsound Volume') ? true : false,
-							(letter.text == 'Score Bar Size') ? true : false,
+							(letter.text == 'Framerate Cap') ? true : false, (letter.text == 'Stage Opacity') ? true : false,
+							(letter.text == 'Hitsound Volume') ? true : false, (letter.text == 'Score Bar Size') ? true : false,
 							(letter.text == 'Scroll Speed' ? true : false));
 
 						extrasMap.set(letter, selector);
@@ -529,11 +532,11 @@ class OptionsMenuState extends MusicBeatState
 		var scrollspeed = selector.scrollSpeed;
 
 		/**
-		* not too lazy now i guess?
-		* won't do a switch because it can somehow break stuff??, will figure it out later -gabi(Ghost)
-		========
-		* left to right, minimum value, maximum value, change value
-		* rest is default stuff that I needed to keep
+			* not too lazy now i guess?
+			* won't do a switch because it can somehow break stuff??, will figure it out later -gabi(Ghost)
+			========
+			* left to right, minimum value, maximum value, change value
+			* rest is default stuff that I needed to keep
 		**/
 		if (fps)
 			generateSelector(30, 360, 15, updateBy, selector);
@@ -544,7 +547,7 @@ class OptionsMenuState extends MusicBeatState
 		else if (scrollspeed)
 			generateSelector(1, 6, 0.1, updateBy, selector);
 		if (!fps && !bgdark && !hitVol && !scoreSize && !scrollspeed)
-		{ 
+		{
 			// get the current option as a number
 			var storedNumber:Int = 0;
 			var newSelection:Int = storedNumber;

@@ -43,7 +43,7 @@ class ModsMenuState extends MusicBeatState
 	var grpMenuMods:FlxTypedGroup<Alphabet>;
 
 	var modList:Array<String> = [];
-	
+
 	var isEnabled = true;
 
 	override function create()

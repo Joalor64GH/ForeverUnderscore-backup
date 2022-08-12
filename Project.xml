@@ -1,12 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<project
-	xmlns="http://lime.software/project/1.0.2"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://lime.software/project/1.0.2 http://lime.software/xsd/project-1.0.2.xsd">
+<project xmlns="http://lime.software/project/1.0.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://lime.software/project/1.0.2 http://lime.software/xsd/project-1.0.2.xsd">
 
 	<!-- _________________________ Application Settings _________________________ -->
 
-	<app title="Friday Night Funkin' Forever Engine" file="Forever-Engine" packageName="com.yoshubs.foreverengine" package="com.yoshubs.foreverengine" main="Main" version="0.3.1" company="Yoshubs"/>
+	<app title="Friday Night Funkin' Forever Engine" file="Forever-Engine" packageName="com.yoshubs.foreverengine" package="com.yoshubs.foreverengine" main="Main" version="0.3.1" company="Yoshubs" />
 
 	<!--The flixel preloader is not accurate in Chrome. You can use it regularly if you embed the swf into a html file
 		or you can set the actual size of your file manually at "FlxPreloaderBase-onUpdate-bytesTotal"-->
@@ -59,14 +56,14 @@
 	<haxelib name="flixel-tools" />
 	<haxelib name="flixel-ui" />
 
-	<haxelib name="discord_rpc" if="DISCORD_RPC"/>
+	<haxelib name="discord_rpc" if="DISCORD_RPC" />
 	<haxelib name="hxCodec" if="VIDEO_PLUGIN" />
 
 	<haxelib name="SScript" if="HAXE_EXTENSION" />
 	<haxelib name="hscript" if="HAXE_EXTENSION" /> <!-- if i ever need it -gabi -->
 
 	<haxedef name="HXC_DEBUG_TRACE" if="debug" />
-	<haxelib name="hxcpp-debug-server" if="desktop"/>
+	<haxelib name="hxcpp-debug-server" if="desktop" />
 
 	<!-- ______________________________ Haxedefines _____________________________ -->
 
@@ -84,11 +81,11 @@
 
 	<!-- _________________________________ Custom _______________________________ -->
 
-	<icon path="art/icon16.png" size='16'/>
-	<icon path="art/icon32.png" size='32'/>
-	<icon path="art/icon64.png" size='64'/>
-	<icon path="art/icon128.png" size='128'/>
-	<icon path="art/icon256.png" size='256'/>
-	<icon path="art/icon512.png" size='512'/>
+	<icon path="art/icon16.png" size='16' />
+	<icon path="art/icon32.png" size='32' />
+	<icon path="art/icon64.png" size='64' />
+	<icon path="art/icon128.png" size='128' />
+	<icon path="art/icon256.png" size='256' />
+	<icon path="art/icon512.png" size='512' />
 	<icon path="art/iconOG.png" />
 </project>

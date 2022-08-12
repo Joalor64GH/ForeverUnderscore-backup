@@ -18,9 +18,8 @@ using StringTools;
 	and so on. This class will handle both saving and loading of charts with useful features and scripts that will make things much easier
 	to handle and load, as well as much more modular!
 **/
-
 /**
-* Song Information, such as name, notes, events, bpm, etc;
+ * Song Information, such as name, notes, events, bpm, etc;
 **/
 typedef SwagSong =
 {
@@ -45,7 +44,7 @@ typedef SwagSong =
 }
 
 /**
-* Song Meta Information, such as author, asset modifier and offset;
+ * Song Meta Information, such as author, asset modifier and offset;
 **/
 typedef SwagMeta =
 {
@@ -55,7 +54,7 @@ typedef SwagMeta =
 }
 
 /**
-* Song Section Information;
+ * Song Section Information;
 **/
 typedef SwagSection =
 {
@@ -72,7 +71,7 @@ typedef SwagSection =
 class ChartParser
 {
 	public static var songType:ChartType = UNDERSCORE;
-	
+
 	// hopefully this makes it easier for people to load and save chart features and such, y'know the deal lol
 	public static function loadChart(songData:SwagSong, songType:ChartType = FNF_LEGACY):Array<Note>
 	{
@@ -83,7 +82,7 @@ class ChartParser
 		switch (songType)
 		{
 			case FNF:
-				// placeholder until 0.3!
+			// placeholder until 0.3!
 			case FNF_LEGACY:
 				// load fnf style charts (PRE 0.3)
 				var daBeats:Int = 0; // Not exactly representative of 'daBeats' lol, just how much it has looped
@@ -164,7 +163,7 @@ class ChartParser
 				}
 
 			case FOREVER:
-				// placeholder
+			// placeholder
 
 			case UNDERSCORE:
 				/**
@@ -388,4 +387,3 @@ class Section
 		this.lengthInSteps = lengthInSteps;
 	}
 }
-

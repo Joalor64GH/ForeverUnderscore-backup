@@ -24,7 +24,6 @@ using StringTools;
 	future chart types support (unfinished!)
 	code taken from: FNF-Forever-Engine, https://github.com/Yoshubs/FNF-Forever-Engine
 **/
-
 @:enum abstract ChartType(String) to String
 {
 	var FNF;
@@ -147,9 +146,9 @@ class Paths
 
 		#if MODS_ALLOWED
 		var modPath:String = modImages(key);
-		if(FileSystem.exists(modPath))
+		if (FileSystem.exists(modPath))
 		{
-			if(!currentTrackedAssets.exists(modPath))
+			if (!currentTrackedAssets.exists(modPath))
 			{
 				var bitmap = BitmapData.fromFile(modPath);
 				var newGraphic:FlxGraphic = FlxGraphic.fromBitmapData(bitmap, false, modPath);
@@ -176,7 +175,7 @@ class Paths
 		}
 		#end
 		var path = getPath('$folder/$key.png', IMAGE, library);
-		
+
 		if (FileSystem.exists(path))
 		{
 			if (!currentTrackedAssets.exists(key))
@@ -246,17 +245,18 @@ class Paths
 		gottenPath = gottenPath.substring(gottenPath.indexOf(':') + 1, gottenPath.length);
 		// trace(gottenPath);
 		if (!currentTrackedSounds.exists(gottenPath))
-		#if MODS_ALLOWED
+			#if MODS_ALLOWED
 			currentTrackedSounds.set(gottenPath, Sound.fromFile('./' + gottenPath));
-		#else
-		{
-			var folder:String = '';
-			if(path == 'songs') folder = 'songs:';
+			#else
+			{
+				var folder:String = '';
+				if (path == 'songs')
+					folder = 'songs:';
 
-			currentTrackedSounds.set(gottenPath, OpenFlAssets.getSound(folder + getPath('$path/$key.$SOUND_EXT', SOUND, library)));
-		}
-		#end
-			//currentTrackedSounds.set(gottenPath, Sound.fromFile(gottenPath));
+				currentTrackedSounds.set(gottenPath, OpenFlAssets.getSound(folder + getPath('$path/$key.$SOUND_EXT', SOUND, library)));
+			}
+			#end
+		// currentTrackedSounds.set(gottenPath, Sound.fromFile(gottenPath));
 		localTrackedAssets.push(key);
 		return currentTrackedSounds.get(gottenPath);
 	}
@@ -346,16 +346,16 @@ class Paths
 	}
 
 	/*inline static public function offsetTxt(key:String, ?library:String)
-	{
-		return getPath('images/characters/$key.txt', TEXT, library);
+		{
+			return getPath('images/characters/$key.txt', TEXT, library);
 	}*/
-
 	inline static public function json(key:String, ?library:String)
 	{
 		return getPath('songs/$key.json', TEXT, library);
 	}
 
-	inline static public function songJson(song:String, secondSong:String, ?library:String) {
+	inline static public function songJson(song:String, secondSong:String, ?library:String)
+	{
 		return getPath('songs/${song.toLowerCase()}/${secondSong.toLowerCase()}.json', TEXT, library);
 	}
 
@@ -448,8 +448,8 @@ class Paths
 	}
 
 	/**
-	* MOD PATHS AND ANYTHING RELATED TO MODS
-	* something that i'm gonna work on soon! -gabi
+	 * MOD PATHS AND ANYTHING RELATED TO MODS
+	 * something that i'm gonna work on soon! -gabi
 	**/
 	#if MODS_ALLOWED
 	inline static public function getModpack(key:String = '')
@@ -484,7 +484,7 @@ class Paths
 	{
 		var modsList:Array<String> = [];
 		var modsFolder:String = getModpack();
-		if(FileSystem.exists(modsFolder))
+		if (FileSystem.exists(modsFolder))
 		{
 			for (folder in FileSystem.readDirectory(modsFolder))
 			{

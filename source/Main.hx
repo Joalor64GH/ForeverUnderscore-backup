@@ -26,10 +26,9 @@ import sys.FileSystem;
 import sys.io.File;
 import sys.io.Process;
 
-
 /**
-* mod week stuffs that will be added later!
-* gonna try to make it as compatible with psych as possible
+ * mod week stuffs that will be added later!
+ * gonna try to make it as compatible with psych as possible
 **/
 typedef WeekDataDef =
 {
@@ -57,6 +56,7 @@ class Main extends Sprite
 
 	var zoom:Float = -1; // If -1, zoom is automatically calculated to fit the window dimensions.
 	var skipSplash:Bool = true; // Whether to skip the flixel splash screen that appears in release mode.
+
 	static var infoCounter:Overlay; // initialize the heads up display that shows information before creating it.
 
 	// heres gameweeks set up!
@@ -69,12 +69,7 @@ class Main extends Sprite
 		[ [songs to use], [characters in songs], [color of week], name of week ]
 	**/
 	public static var gameWeeks:Array<Dynamic> = [
-		[
-			['Tutorial'],
-			['gf'],
-			[FlxColor.fromRGB(129, 100, 223)],
-			'Funky Beginnings'
-		],
+		[['Tutorial'], ['gf'], [FlxColor.fromRGB(129, 100, 223)], 'Funky Beginnings'],
 		[
 			['Bopeebo', 'Fresh', 'Dadbattle'],
 			['dad', 'dad', 'dad'],
@@ -256,7 +251,10 @@ class Main extends Sprite
 			}
 		}
 
-		errMsg += "\nUncaught Error: " + e.error + "\nPlease report this error to the GitHub page: https://github.com/BeastlyGhost/Forever-Engine-Underscore\non the \"master\" branch\n\n>Crash Handler written by: sqirra-rng\n\n";
+		errMsg += "\nUncaught Error: "
+			+ e.error
+			+
+			"\nPlease report this error to the GitHub page: https://github.com/BeastlyGhost/Forever-Engine-Underscore\non the \"master\" branch\n\n>Crash Handler written by: sqirra-rng\n\n";
 
 		if (!FileSystem.exists(";/crash/"))
 			FileSystem.createDirectory("./crash/");

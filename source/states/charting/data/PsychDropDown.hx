@@ -20,20 +20,16 @@ import flixel.util.FlxColor;
 import flixel.util.FlxDestroyUtil;
 import flixel.util.FlxStringUtil;
 
-
 /*
 
-THIS IS AN EDIT OF FlxUIDropDownMenu I'VE MADE BECAUSE I'M TIRED OF IT NOT SUPPORTING SCROLLING UP/DOWN
-BAH!
+	THIS IS AN EDIT OF FlxUIDropDownMenu I'VE MADE BECAUSE I'M TIRED OF IT NOT SUPPORTING SCROLLING UP/DOWN
+	BAH!
 
-The differences are the following:
-* Support to scrolling up/down with mouse wheel or arrow keys
-* THe default drop direction is "Down" instead of "Automatic"
+	The differences are the following:
+	* Support to scrolling up/down with mouse wheel or arrow keys
+	* THe default drop direction is "Down" instead of "Automatic"
 
-*/
-
-
-
+ */
 /**
  * @author larsiusprime
  * @origin Psych Engine
@@ -55,7 +51,8 @@ class PsychDropDown extends FlxUIGroup implements IFlxUIWidget implements IFlxUI
 	var _selectedId:String;
 	var _selectedLabel:String;
 
-	var currentScroll:Int = 0; //Handles the scrolling
+	var currentScroll:Int = 0; // Handles the scrolling
+
 	public var canScroll:Bool = true;
 
 	function get_selectedId():String
@@ -229,16 +226,19 @@ class PsychDropDown extends FlxUIGroup implements IFlxUIWidget implements IFlxUI
 			dropPanel.y += buttonHeight;
 
 		var offset = dropPanel.y;
-		for (i in 0...currentScroll) { //Hides buttons that goes before the current scroll
+		for (i in 0...currentScroll)
+		{ // Hides buttons that goes before the current scroll
 			var button:FlxUIButton = list[i];
-			if(button != null) {
+			if (button != null)
+			{
 				button.y = -99999;
 			}
 		}
 		for (i in currentScroll...list.length)
 		{
 			var button:FlxUIButton = list[i];
-			if(button != null) {
+			if (button != null)
+			{
 				button.y = offset;
 				offset += buttonHeight;
 			}
@@ -434,17 +434,22 @@ class PsychDropDown extends FlxUIGroup implements IFlxUIWidget implements IFlxUI
 		#if FLX_MOUSE
 		if (dropPanel.visible)
 		{
-			if(list.length > 1 && canScroll) {
-				if(FlxG.mouse.wheel > 0 || FlxG.keys.justPressed.UP) {
+			if (list.length > 1 && canScroll)
+			{
+				if (FlxG.mouse.wheel > 0 || FlxG.keys.justPressed.UP)
+				{
 					// Go up
 					--currentScroll;
-					if(currentScroll < 0) currentScroll = 0;
+					if (currentScroll < 0)
+						currentScroll = 0;
 					updateButtonPositions();
 				}
-				else if (FlxG.mouse.wheel < 0 || FlxG.keys.justPressed.DOWN) {
+				else if (FlxG.mouse.wheel < 0 || FlxG.keys.justPressed.DOWN)
+				{
 					// Go down
 					currentScroll++;
-					if(currentScroll >= list.length) currentScroll = list.length-1;
+					if (currentScroll >= list.length)
+						currentScroll = list.length - 1;
 					updateButtonPositions();
 				}
 			}
@@ -477,7 +482,8 @@ class PsychDropDown extends FlxUIGroup implements IFlxUIWidget implements IFlxUI
 		}
 
 		dropPanel.visible = b;
-		if(currentScroll != 0) {
+		if (currentScroll != 0)
+		{
 			currentScroll = 0;
 			updateButtonPositions();
 		}

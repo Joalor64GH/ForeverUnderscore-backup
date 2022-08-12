@@ -167,13 +167,16 @@ class Highscore
 	public static function load():Void
 	{
 		FlxG.save.bind('forever-highscores', 'BeastlyGhost');
-		if (FlxG.save.data.weekScores != null) {
+		if (FlxG.save.data.weekScores != null)
+		{
 			weekScores = FlxG.save.data.weekScores;
 		}
-		if (FlxG.save.data.songScores != null) {
+		if (FlxG.save.data.songScores != null)
+		{
 			songScores = FlxG.save.data.songScores;
 		}
-		if (FlxG.save.data.songRanks != null) {
+		if (FlxG.save.data.songRanks != null)
+		{
 			songRanks = FlxG.save.data.songRanks;
 		}
 		FlxG.save.flush();

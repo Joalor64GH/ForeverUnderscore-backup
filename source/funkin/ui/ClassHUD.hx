@@ -93,7 +93,7 @@ class ClassHUD extends FlxTypedGroup<FlxBasic>
 
 		// healthBar
 		add(healthBar);
-		
+
 		iconP1 = new HealthIcon(PlayState.boyfriend.icon, true);
 		iconP1.y = healthBar.y - (iconP1.height / 2);
 		add(iconP1);
@@ -199,7 +199,7 @@ class ClassHUD extends FlxTypedGroup<FlxBasic>
 		iconP1.updateAnim(healthBar.percent);
 		iconP2.updateAnim(100 - healthBar.percent);
 
-		if(autoplayMark.visible)
+		if (autoplayMark.visible)
 		{
 			autoplaySine += 30 * elapsed;
 			autoplayMark.alpha = 1 - Math.sin((Math.PI * autoplaySine) / 80);

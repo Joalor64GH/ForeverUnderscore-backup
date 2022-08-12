@@ -64,6 +64,7 @@ class ChartingState extends MusicBeatState
 	public static var curSong:SwagSong;
 
 	var baseGrid:FlxSprite;
+
 	public static var gridSize:Int = 50;
 
 	var dummyArrow:FlxSprite;
@@ -88,14 +89,28 @@ class ChartingState extends MusicBeatState
 	var quantR:FlxSprite;
 
 	// event name - desciption
-	var events:Array<Array<String>> =
-	[
+	var events:Array<Array<String>> = [
 		["", ""],
-		["Hey!", "Plays the \"Hey!\" animation from Bopeebo,\nValue 1: BF = Only Boyfriend, GF = Only Girlfriend,\nSomething else = Both.\nValue 2: Custom animation duration,\nleave it blank for 0.6s"],
-		["Set GF Speed", "Sets GF head bopping speed,\nValue 1: 1 = Normal speed,\n2 = 1/2 speed, 4 = 1/4 speed etc.\nUsed on Fresh during the beatbox parts.\n\nWarning: Value must be integer!"],
-		["Change Character", "Sets the current Character to a new one\nValue 1: Character to change (dad, bf, gf)\nValue 2: New character's name"],
-		["Change Scroll Speed", "Value 1: Scroll Speed Multiplier (1 is default)\nValue 2: Time it takes to change fully in seconds."],
-		["Play Animation", "Plays an animation on a Character,\nonce the animation is completed,\nthe animation changes to Idle\n\nValue 1: Animation to play.\nValue 2: Character (Dad, BF, GF)"]
+		[
+			"Hey!",
+			"Plays the \"Hey!\" animation from Bopeebo,\nValue 1: BF = Only Boyfriend, GF = Only Girlfriend,\nSomething else = Both.\nValue 2: Custom animation duration,\nleave it blank for 0.6s"
+		],
+		[
+			"Set GF Speed",
+			"Sets GF head bopping speed,\nValue 1: 1 = Normal speed,\n2 = 1/2 speed, 4 = 1/4 speed etc.\nUsed on Fresh during the beatbox parts.\n\nWarning: Value must be integer!"
+		],
+		[
+			"Change Character",
+			"Sets the current Character to a new one\nValue 1: Character to change (dad, bf, gf)\nValue 2: New character's name"
+		],
+		[
+			"Change Scroll Speed",
+			"Value 1: Scroll Speed Multiplier (1 is default)\nValue 2: Time it takes to change fully in seconds."
+		],
+		[
+			"Play Animation",
+			"Plays an animation on a Character,\nonce the animation is completed,\nthe animation changes to Idle\n\nValue 1: Animation to play.\nValue 2: Character (Dad, BF, GF)"
+		]
 	];
 	var eventTxt:FlxText;
 	var currentSelectedEvent:String;
@@ -117,10 +132,9 @@ class ChartingState extends MusicBeatState
 		{
 			if (PlayState.SONG.events == null)
 				PlayState.SONG.events = [];
-		
-			_song = PlayState.SONG;	
-		}
 
+			_song = PlayState.SONG;
+		}
 		else
 		{
 			_song = Song.loadSong('test', 'test');
@@ -134,7 +148,11 @@ class ChartingState extends MusicBeatState
 		Conductor.mapBPMChanges(_song);
 
 		#if DISCORD_RPC
-		Discord.changePresence('CHART EDITOR', 'Charting: ' + _song.song + ' [${CoolUtil.difficultyFromNumber(PlayState.storyDifficulty)}] - by ' + _song.author, true);
+		Discord.changePresence('CHART EDITOR',
+			'Charting: '
+			+ _song.song
+			+ ' [${CoolUtil.difficultyFromNumber(PlayState.storyDifficulty)}] - by '
+			+ _song.author, true);
 		#end
 
 		gridGroup = new FlxTypedGroup<FlxObject>();
@@ -147,16 +165,16 @@ class ChartingState extends MusicBeatState
 		add(buttonTextGroup);
 
 		generateButtons();
-		//generateGrid();
-		
+		// generateGrid();
+
 		curRenderedNotes = new FlxTypedGroup<Note>();
 		curRenderedSustains = new FlxTypedGroup<Note>();
 		curRenderedEvents = new FlxTypedGroup<EventNote>();
 		curRenderedSections = new FlxTypedGroup<FlxBasic>();
 
-		//generateNotes();
+		// generateNotes();
 		recreateGrid();
-		
+
 		add(curRenderedSections);
 		add(curRenderedSustains);
 		add(curRenderedNotes);
@@ -224,12 +242,13 @@ class ChartingState extends MusicBeatState
 	}
 
 	var hitSoundsPlayed:Array<Note> = [];
+
 	override public function update(elapsed:Float)
 	{
 		super.update(elapsed);
 
 		curStep = recalculateSteps();
-		
+
 		if (FlxG.keys.justPressed.SPACE)
 		{
 			if (songMusic.playing)
@@ -252,7 +271,6 @@ class ChartingState extends MusicBeatState
 
 		if (FlxG.keys.justPressed.E && curSelectedNote != null)
 			curSelectedNote.sustainLength += Conductor.stepCrochet;
-		
 		else if (FlxG.keys.justPressed.Q && curSelectedNote != null)
 			curSelectedNote.sustainLength -= Conductor.stepCrochet;
 
@@ -273,7 +291,7 @@ class ChartingState extends MusicBeatState
 		Conductor.songPosition = songMusic.time;
 
 		strumLine.y = getYfromStrum((Conductor.songPosition - sectionStartTime()) % (Conductor.stepCrochet * _song.notes[currentSection].lengthInSteps));
-		//trace(strumLine.y);
+		// trace(strumLine.y);
 		strumLineCam.y = strumLine.y + (FlxG.height / 3);
 		arrowGroup.y = strumLine.y;
 
@@ -290,7 +308,6 @@ class ChartingState extends MusicBeatState
 
 		if (curBeat % 4 == 0 && curStep >= 16 * (currentSection + 1))
 			changeSection(currentSection + 1, false);
-
 		else if (strumLine.y < -15)
 			changeSection(currentSection - 1, false);
 
@@ -298,7 +315,7 @@ class ChartingState extends MusicBeatState
 		if (FlxG.mouse.justPressed)
 		{
 			// renderedNotes code here.
-			
+
 			//
 			if (FlxG.mouse.overlaps(curRenderedEvents))
 			{
@@ -361,13 +378,12 @@ class ChartingState extends MusicBeatState
 					var noteSus = 0; // ninja you will NOT get away with this
 
 					noteData--;
-						
+
 					if (noteData > -1)
 						generateChartNote(noteData, noteStrum, noteSus, 0, notesSection);
 					else
 						generateEvent(noteStrum, null, null, currentSelectedEvent, true);
 				}
-
 				else
 				{
 					curRenderedNotes.forEachAlive(function(note:Note)
@@ -406,17 +422,17 @@ class ChartingState extends MusicBeatState
 			openSubState(new PreferenceSubstate(camHUD, 'prefs'));
 		}
 
-		if(FlxG.keys.justPressed.RIGHT)
+		if (FlxG.keys.justPressed.RIGHT)
 			changeQuant(1);
 
-		if(FlxG.keys.justPressed.LEFT)
+		if (FlxG.keys.justPressed.LEFT)
 			changeQuant(-1);
 
 		if (FlxG.keys.anyPressed([W, S]))
 		{
 			if (curStep <= 0)
 				return;
-			
+
 			songMusic.pause();
 			vocals.pause();
 
@@ -435,9 +451,9 @@ class ChartingState extends MusicBeatState
 	{
 		curSpeed += newSpd;
 
-		if(curSpeed > speedList.length - 1)
+		if (curSpeed > speedList.length - 1)
 			curSpeed = 0;
-		if(curSpeed < 0)
+		if (curSpeed < 0)
 			curSpeed = speedList.length - 1;
 
 		speedVal = speedList[curSpeed];
@@ -604,7 +620,7 @@ class ChartingState extends MusicBeatState
 			var daSus = i[2];
 			var daNoteType:NoteType = i[3];
 
-			//trace('Current note type is $daNoteType.');
+			// trace('Current note type is $daNoteType.');
 
 			var keys = 4;
 
@@ -627,6 +643,7 @@ class ChartingState extends MusicBeatState
 	}
 
 	var fullGrid:FlxTiledSprite;
+
 	function recreateGrid():Void
 	{
 		gridGroup.clear();
@@ -635,7 +652,7 @@ class ChartingState extends MusicBeatState
 		baseGrid = FlxGridOverlay.create(gridSize, gridSize, gridSize * 9, gridSize * 32, true, FlxColor.WHITE, FlxColor.BLACK);
 		baseGrid.graphic.bitmap.colorTransform(baseGrid.graphic.bitmap.rect, new ColorTransform(1, 1, 1, newAlpha));
 		baseGrid.screenCenter(X);
-		//gridGroup.add(baseGrid);
+		// gridGroup.add(baseGrid);
 
 		fullGrid = new FlxTiledSprite(null, gridSize * keysTotal, gridSize);
 		fullGrid.loadGraphic(baseGrid.graphic);
@@ -648,7 +665,6 @@ class ChartingState extends MusicBeatState
 
 		updateGrid(false);
 	}
-
 
 	public var sectionLineGraphic:FlxGraphic;
 	public var sectionCameraGraphic:FlxGraphic;
@@ -731,8 +747,8 @@ class ChartingState extends MusicBeatState
 
 	var extraSize = 6;
 
-	function generateSection() 
-	{ 
+	function generateSection()
+	{
 		// pregenerate assets so it doesnt destroy your ram later
 		sectionLineGraphic = FlxG.bitmap.create(gridSize * keysTotal + extraSize, 2, FlxColor.WHITE);
 		sectionCameraGraphic = FlxG.bitmap.create(Std.int(gridSize * (keysTotal / 2)), 16 * gridSize, FlxColor.fromRGB(43, 116, 219));
@@ -753,7 +769,7 @@ class ChartingState extends MusicBeatState
 			vocals = new FlxSound().loadEmbedded(Paths.voices(daSong), false, true);
 		else
 			vocals = new FlxSound();
-		
+
 		FlxG.sound.list.add(songMusic);
 		FlxG.sound.list.add(vocals);
 
@@ -762,7 +778,7 @@ class ChartingState extends MusicBeatState
 
 		if (curSong == _song)
 			songMusic.time = songPosition;
-		
+
 		curSong = _song;
 		songPosition = 0;
 
@@ -777,7 +793,7 @@ class ChartingState extends MusicBeatState
 
 	function generateChartNote(daNoteInfo, daStrumTime, daSus, daNoteAlt:Float, noteSection, ?shouldPush:Bool = true)
 	{
-		//trace(daNoteInfo);
+		// trace(daNoteInfo);
 
 		var note:Note = ForeverAssets.generateArrow(PlayState.assetModifier, daStrumTime, daNoteInfo % 4, 0, false, null);
 		note.rawNoteData = daNoteInfo;
@@ -787,8 +803,8 @@ class ChartingState extends MusicBeatState
 		note.screenCenter(X);
 		note.x = Math.ffloor(daNoteInfo * gridSize) + gridSize;
 		note.x += 418;
-		note.y = Math.ffloor(getYfromStrum((daStrumTime - sectionStartTime()) % (Conductor.stepCrochet * _song.notes[currentSection].lengthInSteps)));	
-		
+		note.y = Math.ffloor(getYfromStrum((daStrumTime - sectionStartTime()) % (Conductor.stepCrochet * _song.notes[currentSection].lengthInSteps)));
+
 		if (shouldPush)
 		{
 			_song.notes[noteSection].sectionNotes.push([daStrumTime, (daNoteInfo + 4) % 8, daSus, NORMAL]);
@@ -796,26 +812,26 @@ class ChartingState extends MusicBeatState
 		}
 
 		curRenderedNotes.add(note);
-		//generateSustain(daStrumTime, daNoteInfo, daSus, daNoteAlt, note);
+		// generateSustain(daStrumTime, daNoteInfo, daSus, daNoteAlt, note);
 	}
 
 	function generateEvent(strumTime:Float, val1:String, val2:String, id:String, ?shouldPush:Bool = false):Void
 	{
 		var event:Array<Dynamic> = [strumTime, val1, val2, id];
-		
+
 		var eventNote:EventNote = new EventNote(strumTime, val1, val2, id);
 		eventNote.setGraphicSize(gridSize, gridSize);
 		eventNote.updateHitbox();
-		//eventNote.screenCenter(X);
+		// eventNote.screenCenter(X);
 		eventNote.x += 370;
 		eventNote.y = Math.floor(getYfromStrum((event[0] - sectionStartTime()) % (Conductor.stepCrochet * _song.notes[currentSection].lengthInSteps)));
 
 		if (shouldPush)
 		{
 			_song.events.push(event);
-		} 
+		}
 
-		//trace('EVENT GENERATED');
+		// trace('EVENT GENERATED');
 
 		curRenderedEvents.add(eventNote);
 	}
@@ -852,7 +868,7 @@ class ChartingState extends MusicBeatState
 				// set the note at the current note map
 				curNoteMap.set(note, [sustainVis, sustainEnd]);
 			}
-		*/
+		 */
 	}
 
 	///*
@@ -879,7 +895,7 @@ class ChartingState extends MusicBeatState
 	{
 		// x, y, text on button, text size, child (optional), size ("" (medium), "big", or "small"),
 		// function that will be called when pressed (optional)
-		
+
 		buttonArray = [
 			[FlxG.width - 180, 20, "RELOAD SONG", 20, null, "", null],
 			[FlxG.width - 240, 70, "SWAP SECTION NOTES", 20, null, "", null],
@@ -890,13 +906,13 @@ class ChartingState extends MusicBeatState
 		buttonGroup.clear();
 		buttonTextGroup.clear();
 
-		var void:Void -> Void = null;
+		var void:Void->Void = null;
 
 		for (i in buttonArray)
 		{
 			if (i != null)
 			{
-				//trace(i);
+				// trace(i);
 
 				switch (i[2].toLowerCase())
 				{
@@ -962,8 +978,11 @@ class ChartingState extends MusicBeatState
 		add(songTxt);
 
 		editorTxt.text = 'CHART EDITOR\n';
-		songTxt.text = _song.song.toUpperCase() + ' <${CoolUtil.difficultyFromNumber(PlayState.storyDifficulty)}> '
-			+ 'BY ' + _song.author.toUpperCase() + '\n';
+		songTxt.text = _song.song.toUpperCase()
+			+ ' <${CoolUtil.difficultyFromNumber(PlayState.storyDifficulty)}> '
+			+ 'BY '
+			+ _song.author.toUpperCase()
+			+ '\n';
 
 		// fallback text in case the game explodes idk
 		bpmTxt = new FlxText(5, FlxG.height - 30, 0, "FOREVER ENGINE v" + Application.current.meta.get('version'), 16);
@@ -990,12 +1009,10 @@ class ChartingState extends MusicBeatState
 
 	function updateText()
 	{
-		bpmTxt.text = bpmTxt.text = Std.string('BEAT: '
-			+ FlxMath.roundDecimal(decBeat, 2)
-			+ '  QUANT: ' + speedVal
-			+ '  MEASURE: ' + currentSection
+		bpmTxt.text = bpmTxt.text = Std.string('BEAT: ' + FlxMath.roundDecimal(decBeat, 2) + '  QUANT: ' + speedVal + '  MEASURE: ' + currentSection
 			+ '  TIME: ' + FlxMath.roundDecimal(Conductor.songPosition / 1000, 2))
-			+ '  BPM: ' + _song.bpm;
+			+ '  BPM: '
+			+ _song.bpm;
 	}
 
 	function generateIcons()
@@ -1040,7 +1057,7 @@ class ChartingState extends MusicBeatState
 		quantL.animation.add('64th', [8]);
 		quantL.animation.add('96th', [9]);
 		quantL.animation.add('192th', [10]);
-		
+
 		quantL.updateHitbox();
 		quantL.antialiasing = true;
 
@@ -1059,7 +1076,7 @@ class ChartingState extends MusicBeatState
 		quantR.animation.add('64th', [8]);
 		quantR.animation.add('96th', [9]);
 		quantR.animation.add('192th', [10]);
-		
+
 		quantR.updateHitbox();
 		quantR.antialiasing = true;
 

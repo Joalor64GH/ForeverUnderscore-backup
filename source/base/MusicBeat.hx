@@ -41,8 +41,7 @@ class MusicBeatState extends FNFUIState
 	{
 		// dump
 		Paths.clearStoredMemory();
-		if ((!Std.isOfType(this,states.PlayState)) 
-		&& (!Std.isOfType(this, states.charting.OriginalChartingState)))
+		if ((!Std.isOfType(this, states.PlayState)) && (!Std.isOfType(this, states.charting.OriginalChartingState)))
 			Paths.clearUnusedMemory();
 
 		#if debug
@@ -199,7 +198,7 @@ class MusicBeatSubstate extends FlxSubState
 		decStep = lastChange.stepTime + ((Conductor.songPosition - lastChange.songTime) / Conductor.stepCrochet);
 		curStep = lastChange.stepTime + Math.floor((Conductor.songPosition - lastChange.songTime) / Conductor.stepCrochet);
 	}
-	
+
 	function updateBeat()
 	{
 		curBeat = Math.floor(curStep / 4);

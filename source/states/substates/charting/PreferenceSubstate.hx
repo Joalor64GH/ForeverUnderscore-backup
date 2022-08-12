@@ -50,8 +50,8 @@ class PreferenceSubstate extends MusicBeatSubstate
 	var closing = false;
 
 	/**
-	* a map for your settings, feel free to add or remove as you please
-	* will rewrite settings later as they use code from Options and Init
+	 * a map for your settings, feel free to add or remove as you please
+	 * will rewrite settings later as they use code from Options and Init
 	**/
 	public static var chartSettings:Map<String, Dynamic> = [
 		'Boyfriend Hitsounds' => [true],
@@ -81,7 +81,7 @@ class PreferenceSubstate extends MusicBeatSubstate
 
 		blackTopBar = new FlxSprite(0, -75).makeGraphic(FlxG.width, 75, FlxColor.BLACK);
 		add(blackTopBar);
-		
+
 		topText = new FlxText(blackTopBar.x + 15, blackTopBar.y + 15, topTextString);
 		topText.setFormat(Paths.font("vcr.ttf"), 24);
 		add(topText);

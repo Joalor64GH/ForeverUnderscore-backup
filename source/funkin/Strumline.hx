@@ -58,7 +58,7 @@ class UIStaticArrow extends FlxSprite
 	override function update(elapsed:Float)
 	{
 		super.update(elapsed);
-		
+
 		if (resetAnim > 0)
 		{
 			resetAnim -= elapsed;
@@ -181,7 +181,7 @@ class Strumline extends FlxTypedGroup<FlxBasic>
 			receptor.angleTo = 0;
 			receptor.y -= 10;
 			receptor.playAnim('static');
-			
+
 			receptor.alpha = 0;
 			FlxTween.tween(receptor, {y: receptor.initialY, alpha: receptor.setAlpha}, 1, {ease: FlxEase.circOut, startDelay: 0.5 + (0.2 * i)});
 
