@@ -321,27 +321,6 @@ class ChartingState extends MusicBeatState
 		// mouse stuffs
 		if (FlxG.mouse.justPressed)
 		{
-<<<<<<< HEAD
-=======
-			// renderedNotes code here.
-
-			//
-			if (FlxG.mouse.overlaps(curRenderedEvents))
-			{
-				curRenderedEvents.forEachAlive(function(daEvent:EventNote)
-				{
-					if (FlxG.mouse.overlaps(daEvent))
-					{
-						daEvent.kill();
-						curRenderedEvents.remove(daEvent, true);
-						deleteEvent(daEvent);
-						daEvent.destroy();
-					}
-				});
-			}
-
->>>>>>> 89f20658561dbd36f5fcae056b6dd07fff21fdb8
-			//
 			if (FlxG.mouse.overlaps(buttonGroup))
 			{
 				buttonGroup.forEach(function(button:CoolAssButton)
@@ -422,52 +401,7 @@ class ChartingState extends MusicBeatState
 			if (FlxG.keys.pressed.SHIFT)
 				mouseIndicator.y = FlxG.mouse.y;
 			else
-<<<<<<< HEAD
 				mouseIndicator.y = Math.floor(FlxG.mouse.y / gridSize) * gridSize;
-=======
-				dummyArrow.y = Math.floor(FlxG.mouse.y / gridSize) * gridSize;
-
-			// moved this in here for the sake of not dying
-			if (FlxG.mouse.justPressed)
-			{
-				if (!FlxG.mouse.overlaps(curRenderedNotes))
-				{
-					// add note funny
-					var noteStrum = getStrumTime(dummyArrow.y);
-
-					var notesSection = Math.floor(noteStrum / (Conductor.stepCrochet * 16));
-					var noteData = adjustSide(Math.floor((dummyArrow.x - baseGrid.x) / gridSize), _song.notes[notesSection].mustHitSection);
-					var noteSus = 0; // ninja you will NOT get away with this
-
-					noteData--;
-
-					if (noteData > -1)
-						generateChartNote(noteData, noteStrum, noteSus, 0, notesSection);
-					else
-						generateEvent(noteStrum, null, null, currentSelectedEvent, true);
-				}
-				else
-				{
-					curRenderedNotes.forEachAlive(function(note:Note)
-					{
-						if (FlxG.mouse.overlaps(note))
-						{
-							if (FlxG.keys.pressed.CONTROL)
-							{
-								curSelectedNote = note;
-							}
-							else
-							{
-								note.kill();
-								curRenderedNotes.remove(note, true);
-								deleteNote(note);
-								note.destroy();
-							}
-						}
-					});
-				}
-			}
->>>>>>> 89f20658561dbd36f5fcae056b6dd07fff21fdb8
 		}
 
 		if (FlxG.keys.justPressed.ESCAPE)
@@ -485,16 +419,8 @@ class ChartingState extends MusicBeatState
 		var left = FlxG.keys.justPressed.LEFT;
 		var right = FlxG.keys.justPressed.RIGHT;
 
-<<<<<<< HEAD
 		if(left || right)
 			changeQuant(left ? -1 : 1);
-=======
-		if (FlxG.keys.justPressed.RIGHT)
-			changeQuant(1);
-
-		if (FlxG.keys.justPressed.LEFT)
-			changeQuant(-1);
->>>>>>> 89f20658561dbd36f5fcae056b6dd07fff21fdb8
 
 		if (FlxG.keys.anyPressed([W, S]))
 		{
@@ -898,7 +824,6 @@ class ChartingState extends MusicBeatState
 		}
 
 		curRenderedNotes.add(note);
-<<<<<<< HEAD
 
 		if (daSus > 0)
 		{
@@ -909,9 +834,6 @@ class ChartingState extends MusicBeatState
 		}
 		
 		//generateSustain(daStrumTime, daNoteInfo, daSus, daNoteAlt, daNoteType, note);
-=======
-		// generateSustain(daStrumTime, daNoteInfo, daSus, daNoteAlt, note);
->>>>>>> 89f20658561dbd36f5fcae056b6dd07fff21fdb8
 	}
 
 	function generateEvent(strumTime:Float, val1:String, val2:String, id:String, ?shouldPush:Bool = false):Void
@@ -921,10 +843,6 @@ class ChartingState extends MusicBeatState
 		var eventNote:EventNote = new EventNote(strumTime, val1, val2, id);
 		eventNote.setGraphicSize(gridSize, gridSize);
 		eventNote.updateHitbox();
-<<<<<<< HEAD
-=======
-		// eventNote.screenCenter(X);
->>>>>>> 89f20658561dbd36f5fcae056b6dd07fff21fdb8
 		eventNote.x += 370;
 		eventNote.y = Math.floor(getYfromStrum((event[0] - sectionStartTime()) % (Conductor.stepCrochet * _song.notes[currentSection].lengthInSteps)));
 
@@ -933,11 +851,6 @@ class ChartingState extends MusicBeatState
 			_song.events.push(event);
 		}
 
-<<<<<<< HEAD
-=======
-		// trace('EVENT GENERATED');
-
->>>>>>> 89f20658561dbd36f5fcae056b6dd07fff21fdb8
 		curRenderedEvents.add(eventNote);
 	}
 
@@ -967,21 +880,10 @@ class ChartingState extends MusicBeatState
 			sustainVis.rawNoteData = daNoteInfo;
 			sustainEnd.rawNoteData = daNoteInfo;
 
-<<<<<<< HEAD
 			curRenderedSustains.add(sustainVis);
 			curRenderedSustains.add(sustainEnd);
 		}
 		*/
-=======
-				curRenderedSustains.add(sustainVis);
-				curRenderedSustains.add(sustainEnd);
-				//
-
-				// set the note at the current note map
-				curNoteMap.set(note, [sustainVis, sustainEnd]);
-			}
-		 */
->>>>>>> 89f20658561dbd36f5fcae056b6dd07fff21fdb8
 	}
 
 	///*
