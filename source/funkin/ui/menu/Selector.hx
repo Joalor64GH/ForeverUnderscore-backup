@@ -18,14 +18,10 @@ class Selector extends FlxTypedSpriteGroup<FlxSprite>
 	public var chosenOptionString:String = '';
 	public var options:Array<String>;
 
-	public var fpsCap:Bool = false;
-	public var darkBG:Bool = false;
-	public var hitVol:Bool = false;
-	public var scoreSize:Bool = false;
-	public var scrollSpeed:Bool = false;
+	// will make this better in the future, adding everything related to selectors right here from the git go;
+	public var optionBooleans:Array<Bool> = [false, false, false, false, false];
 
-	public function new(x:Float = 0, y:Float = 0, word:String, options:Array<String>, fpsCap:Bool = false, darkBG:Bool = false, hitVol:Bool = false,
-			scoreSize:Bool = false, scrollSpeed:Bool = false)
+	public function new(x:Float = 0, y:Float = 0, word:String, options:Array<String>, optionBooleans:Array<Bool>)
 	{
 		// call back the function
 		super(x, y);
@@ -38,29 +34,25 @@ class Selector extends FlxTypedSpriteGroup<FlxSprite>
 		var shiftY = 35;
 
 		// generate multiple pieces
-		this.fpsCap = fpsCap;
-		this.darkBG = darkBG;
-		this.hitVol = hitVol;
-		this.scoreSize = scoreSize;
-		this.scrollSpeed = scrollSpeed;
+		this.optionBooleans = optionBooleans;
 
 		#if html5
 		// lol heres how we fuck with everyone
-		var lock = new FlxSprite(shiftX + ((word.length) * 50) + (shiftX / 4) + ((fpsCap) ? 20 : 0), shiftY);
+		var lock = new FlxSprite(shiftX + ((word.length) * 50) + (shiftX / 4) + ((optionBooleans[0]) ? 20 : 0), shiftY);
 		lock.frames = Paths.getSparrowAtlas('menus/base/storymenu/campaign_menu_UI_assets');
 		lock.animation.addByPrefix('lock', 'lock', 24, false);
 		lock.animation.play('lock');
 		add(lock);
 		#else
 		leftSelector = createSelector(shiftX, shiftY, word, 'left');
-		rightSelector = createSelector(shiftX + ((word.length) * 50) + (shiftX / 4) + ((fpsCap) ? 20 : 0), shiftY, word, 'right');
+		rightSelector = createSelector(shiftX + ((word.length) * 50) + (shiftX / 4) + ((optionBooleans[0]) ? 20 : 0), shiftY, word, 'right');
 
 		add(leftSelector);
 		add(rightSelector);
 		#end
 
 		chosenOptionString = Init.trueSettings.get(word);
-		if (fpsCap || darkBG || hitVol || scoreSize || scrollSpeed)
+		if (optionBooleans.contains(true))
 		{
 			chosenOptionString = Std.string(Init.trueSettings.get(word));
 			optionChosen = new Alphabet(FlxG.width / 2 + 200, shiftY + 20, chosenOptionString, false, false);

@@ -442,10 +442,13 @@ class OptionsMenuState extends MusicBeatState
 						extrasMap.set(letter, checkmark);
 					case Init.SettingTypes.Selector:
 						// selector
-						var selector:Selector = new Selector(10, letter.y, letter.text, Init.gameSettings.get(letter.text)[4],
-							(letter.text == 'Framerate Cap') ? true : false, (letter.text == 'Stage Opacity') ? true : false,
-							(letter.text == 'Hitsound Volume') ? true : false, (letter.text == 'Score Bar Size') ? true : false,
-							(letter.text == 'Scroll Speed' ? true : false));
+						var selector:Selector = new Selector(10, letter.y, letter.text, Init.gameSettings.get(letter.text)[4], [
+							(letter.text == 'Framerate Cap') ? true : false,
+							(letter.text == 'Stage Opacity') ? true : false,
+							(letter.text == 'Hitsound Volume') ? true : false,
+							(letter.text == 'Score Bar Size') ? true : false,
+							(letter.text == 'Scroll Speed' ? true : false)
+						]);
 
 						extrasMap.set(letter, selector);
 					default:
@@ -525,11 +528,11 @@ class OptionsMenuState extends MusicBeatState
 
 	function updateSelector(selector:Selector, updateBy:Int)
 	{
-		var fps = selector.fpsCap;
-		var bgdark = selector.darkBG;
-		var hitVol = selector.hitVol;
-		var scoreSize = selector.scoreSize;
-		var scrollspeed = selector.scrollSpeed;
+		var fps = selector.optionBooleans[0];
+		var bgdark = selector.optionBooleans[1];
+		var hitVol = selector.optionBooleans[2];
+		var scoreSize = selector.optionBooleans[3];
+		var scrollspeed = selector.optionBooleans[4];
 
 		/**
 			* not too lazy now i guess?
