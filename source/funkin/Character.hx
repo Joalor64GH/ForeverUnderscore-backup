@@ -454,6 +454,11 @@ class Character extends FNFSprite
 			frames = Paths.getCharacter(character, PACKER);
 		});
 
+		setVar('playAnim', function(name:String, ?force:Bool = false, ?reversed:Bool = false, ?frames:Int = 0)
+		{
+			playAnim(name, force, reversed, frames);
+		});
+
 		setVar('isPlayer', isPlayer);
 		setVar('curStage', PlayState.curStage);
 		setVar('song', PlayState.SONG.song.toLowerCase());
