@@ -27,7 +27,7 @@ class StoryMenuState extends MusicBeatState
 	static var lastDifficultyName:String = '';
 
 	var scoreText:FlxText;
-	var curDifficulty:Int = 1;
+	private static var curDifficulty:Int = 1;
 
 	public static var weekUnlocked:Array<Bool> = [true, true, true, true, true, true, true, true];
 
@@ -44,7 +44,7 @@ class StoryMenuState extends MusicBeatState
 
 	var txtWeekTitle:FlxText;
 
-	var curWeek:Int = 0;
+	private static var curWeek:Int = 0;
 
 	var txtTracklist:FlxText;
 

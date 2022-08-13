@@ -38,7 +38,7 @@ class ModsMenuState extends MusicBeatState
 	var fg:FlxSprite;
 	var infoText:FlxText;
 
-	var curSelection:Int = -1;
+	private static var curSelection:Int = -1;
 
 	var grpMenuMods:FlxTypedGroup<Alphabet>;
 

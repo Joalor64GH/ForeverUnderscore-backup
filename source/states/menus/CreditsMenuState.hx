@@ -41,7 +41,7 @@ class CreditsMenuState extends MusicBeatState
 	var bgTween:FlxTween;
 	var infoText:FlxText;
 
-	var curSelected:Int = -1;
+	private static var curSelected:Int = -1;
 	var curSocial:Int = -1;
 
 	var icons:Array<AbsoluteSprite> = [];
