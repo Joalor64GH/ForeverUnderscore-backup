@@ -2584,35 +2584,81 @@ class PlayState extends MusicBeatState
 			ForeverTools.getColorFromString(color);
 		});
 
-		setVar('doTweenX', function(object:Dynamic, value:Float, time:Float, ease:String)
+		setVar('doTweenX', function(tweenID:String, object:Dynamic, value:Float, time:Float, ease:String)
 		{
-			FlxTween.tween(object, {x: value}, time, {ease: ForeverTools.getEaseFromString(ease)});
+			FlxTween.tween(object, {x: value}, time, {
+				ease: ForeverTools.getEaseFromString(ease),
+				onComplete: function(tween:FlxTween)
+				{
+					completeTween(tweenID);
+				}
+			});
 		});
 
-		setVar('doTweenY', function(object:Dynamic, value:Float, time:Float, ease:String)
+		setVar('doTweenY', function(tweenID:String, object:Dynamic, value:Float, time:Float, ease:String)
 		{
-			FlxTween.tween(object, {y: value}, time, {ease: ForeverTools.getEaseFromString(ease)});
+			FlxTween.tween(object, {y: value}, time, {
+				ease: ForeverTools.getEaseFromString(ease),
+				onComplete: function(tween:FlxTween)
+				{
+					completeTween(tweenID);
+				}
+			});
 		});
 
-		setVar('doTweenAlpha', function(object:Dynamic, value:Float, time:Float, ease:String)
+		setVar('doTweenAlpha', function(tweenID:String, object:Dynamic, value:Float, time:Float, ease:String)
 		{
-			FlxTween.tween(object, {alpha: value}, time, {ease: ForeverTools.getEaseFromString(ease)});
+			FlxTween.tween(object, {alpha: value}, time, {
+				ease: ForeverTools.getEaseFromString(ease),
+				onComplete: function(tween:FlxTween)
+				{
+					completeTween(tweenID);
+				}
+			});
 		});
 
-		setVar('doTweenAngle', function(object:Dynamic, value:Float, time:Float, ease:String)
+		setVar('doTweenAngle', function(tweenID:String, object:Dynamic, value:Float, time:Float, ease:String)
 		{
-			FlxTween.tween(object, {angle: value}, time, {ease: ForeverTools.getEaseFromString(ease)});
+			FlxTween.tween(object, {angle: value}, time, {
+				ease: ForeverTools.getEaseFromString(ease),
+				onComplete: function(tween:FlxTween)
+				{
+					completeTween(tweenID);
+				}
+			});
 		});
 
-		setVar('doTweenZoom', function(object:Dynamic, value:Float, time:Float, ease:String)
+		setVar('doTweenZoom', function(tweenID:String, object:Dynamic, value:Float, time:Float, ease:String)
 		{
-			FlxTween.tween(object, {zoom: value}, time, {ease: ForeverTools.getEaseFromString(ease)});
+			FlxTween.tween(object, {zoom: value}, time, {
+				ease: ForeverTools.getEaseFromString(ease),
+				onComplete: function(tween:FlxTween)
+				{
+					completeTween(tweenID);
+				}
+			});
 		});
 
-		setVar('doTweenColor', function(object:Dynamic, value:Float, time:Float, ease:String)
+		setVar('doTweenColor', function(tweenID:String, object:Dynamic, value:Float, time:Float, ease:String)
 		{
-			FlxTween.tween(object, {alpha: value}, time, {ease: ForeverTools.getEaseFromString(ease)});
+			FlxTween.tween(object, {alpha: value}, time, {
+				ease: ForeverTools.getEaseFromString(ease),
+				onComplete: function(tween:FlxTween)
+				{
+					completeTween(tweenID);
+				}
+			});
 		});
+	}
+
+	function completeTween(id:String)
+	{
+		callFunc('onCompleteTween', null);
+		callFunc('completeTween', null);
+		
+		// add your custom actions for finishing a tween here;
+
+		return;
 	}
 
 	function callPlayStateVars()
