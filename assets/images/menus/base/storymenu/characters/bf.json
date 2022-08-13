@@ -1,0 +1,8 @@
+{
+	"image": "player/boyfriend",
+	"position": [15,35],
+	"scale": 1,
+	"flipX": false,
+	"idleAnim": ["boyfriend idle", 24, true],
+	"heyAnim": ["boyfriend confirm", 24, false]
+}

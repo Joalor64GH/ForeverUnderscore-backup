@@ -1,0 +1,7 @@
+{
+	"image": "player/tankman",
+	"position": [0, 50],
+	"scale": 1.3,
+	"flipX": false,
+	"idleAnim": ["M Tankman Idle", 24, true]
+}
