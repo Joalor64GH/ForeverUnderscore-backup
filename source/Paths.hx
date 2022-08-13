@@ -7,6 +7,7 @@ import base.CoolUtil;
 import flixel.FlxG;
 import flixel.graphics.FlxGraphic;
 import flixel.graphics.frames.FlxAtlasFrames;
+import funkin.Character.CharacterType;
 import haxe.Json;
 import lime.utils.Assets;
 import openfl.display.BitmapData;
@@ -421,6 +422,19 @@ class Paths
 	inline static public function getSparrowHashAtlas(key:String, folder:String = 'images', ?library:String)
 	{
 		return FlxAtlasFrames.fromTexturePackerJson(image(key, library), file('$folder/$key.json', library));
+	}
+
+	inline static public function getCharacter(key:String, type:CharacterType)
+	{
+		return switch (type)
+		{
+			case SPARROW:
+				getSparrowAtlas(key, 'characters/$key');
+			case PACKER:
+				getPackerAtlas(key, 'characters/$key');
+			case HASH:
+				getSparrowHashAtlas(key, 'characters/$key');
+		}
 	}
 
 	inline static public function video(key:String)

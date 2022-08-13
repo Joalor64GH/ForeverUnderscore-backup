@@ -26,6 +26,13 @@ import sys.io.File;
 
 using StringTools;
 
+enum CharacterType
+{
+	SPARROW;
+	PACKER;
+	HASH;
+}
+
 typedef PsychEngineChar =
 {
 	var animations:Array<PsychAnimArray>;
@@ -166,7 +173,7 @@ class Character extends FNFSprite
 
 		if (!isPlayer)
 		{
-			if (animation.curAnim.name.startsWith('sing'))
+			if (animation.curAnim != null && animation.curAnim.name.startsWith('sing'))
 			{
 				holdTimer += elapsed;
 			}
@@ -207,7 +214,7 @@ class Character extends FNFSprite
 						playAnim('danceLeft');
 			}
 
-		if (animation.curAnim.finished && animation.curAnim.name == 'idle')
+		if (animation.curAnim != null && animation.curAnim.finished && animation.curAnim.name == 'idle')
 		{
 			if (animation.getByName('idlePost') != null)
 				animation.play('idlePost', true, false, 0);
@@ -304,6 +311,31 @@ class Character extends FNFSprite
 	function generateBaseChar(char:String = 'bf')
 	{
 		var path:String = Paths.getPreloadPath('characters/$char/config.hxs');
+		var scripts:Array<String> = [path];
+
+		#if MODS_ALLOWED
+		scripts.insert(0, Paths.getModPath('characters/$char', 'config', 'hxs'));
+		#end
+
+		var pushedScripts:Array<String> = [];
+
+		for (i in scripts)
+		{
+			if (FileSystem.exists(i) && !pushedScripts.contains(i))
+			{
+				var script:ScriptHandler = new ScriptHandler(i);
+
+				if (script.interp == null)
+				{
+					trace("Something terrible occured! Skipping.");
+					continue;
+				}
+
+				scriptArray.push(script);
+				pushedScripts.push(i);
+			}
+		}
+
 		var charExists = FileSystem.exists(Paths.getPreloadPath('characters/$char/$char.xml'));
 
 		var baseFrames = null;
@@ -335,31 +367,6 @@ class Character extends FNFSprite
 			frames = baseFrames;
 		else
 			frames = fallbackFrames;
-
-		var scripts:Array<String> = [path];
-
-		#if MODS_ALLOWED
-		scripts.insert(0, Paths.getModPath('characters/$char', 'config', 'hxs'));
-		#end
-
-		var pushedScripts:Array<String> = [];
-
-		for (i in scripts)
-		{
-			if (FileSystem.exists(i) && !pushedScripts.contains(i))
-			{
-				var script:ScriptHandler = new ScriptHandler(i);
-
-				if (script.interp == null)
-				{
-					trace("Something terrible occured! Skipping.");
-					continue;
-				}
-
-				scriptArray.push(script);
-				pushedScripts.push(i);
-			}
-		}
 
 		// trace(interp, script);
 		setVar('addByPrefix', function(name:String, prefix:String, ?frames:Int = 24, ?loop:Bool = false)
@@ -437,17 +444,14 @@ class Character extends FNFSprite
 			updateHitbox();
 		});
 
-		setVar('setTex', function(character:String, folder:String = 'images')
+		setVar('setTex', function(character:String)
 		{
-			trace('setTex is deprecated!');
-			// however I won't make it unusable for now, lol
-			frames = Paths.getSparrowAtlas(character, folder);
+			frames = Paths.getCharacter(character, SPARROW);
 		});
 
-		setVar('setPacker', function(character:String, folder:String = 'images')
+		setVar('setPacker', function(character:String)
 		{
-			trace('setPacker is deprecated!');
-			frames = Paths.getPackerAtlas(character, folder);
+			frames = Paths.getCharacter(character, PACKER);
 		});
 
 		setVar('playAnim', function(name:String, ?force:Bool = false, ?reversed:Bool = false, ?frames:Int = 0)
