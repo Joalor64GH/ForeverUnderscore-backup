@@ -42,11 +42,7 @@ class Alphabet extends FlxSpriteGroup
 
 	public var isMenuItem:Bool = false;
 
-	// copied from D&B
-	public var itemType:String = "Classic";
-
 	public var text:String = "";
-
 	public var _finalText:String = "";
 	public var _curText:String = "";
 
@@ -282,7 +278,8 @@ class Alphabet extends FlxSpriteGroup
 						var cur = FlxG.random.int(0, soundChoices.length - 1);
 						var daSound:String = beginPath + soundChoices[cur] + "." + Paths.SOUND_EXT;
 
-						FlxG.sound.play(daSound);
+						if(daSound.endsWith(Paths.SOUND_EXT) && daSound != null)
+							FlxG.sound.play(daSound);
 					}
 				}
 				else
@@ -315,30 +312,12 @@ class Alphabet extends FlxSpriteGroup
 		{
 			var scaledY = FlxMath.remapToRange(targetY, 0, 1, 0, 1.3);
 
-			switch (itemType)
-			{
-				case "Classic":
-					y = FlxMath.lerp(y, (scaledY * 120) + (FlxG.height * 0.48), elapsed * 6);
-					// lmao
-					if (!disableX)
-						x = FlxMath.lerp(x, (targetY * 20) + 90, elapsed * 6);
-					else
-						x = FlxMath.lerp(x, xTo, elapsed * 6);
-
-				case "Classic-Fast":
-					y = FlxMath.lerp(y, (scaledY * 120) + (FlxG.height * 0.48), 0.16);
-					// lmao
-					if (!disableX)
-						x = FlxMath.lerp(x, (targetY * 20) + 90, elapsed * 6);
-					else
-						x = FlxMath.lerp(x, xTo, elapsed * 6);
-
-				case "Centered":
-					y = FlxMath.lerp(y, (scaledY * 120) + (FlxG.height * 0.5), 0.16 /*/ (openfl.Lib.application.window.frameRate / 60)*/);
-
-				case "Vertical":
-					y = FlxMath.lerp(y, (scaledY * 120) + (FlxG.height * 0.5), 0.16 / (openfl.Lib.application.window.frameRate / 60));
-			}
+			y = FlxMath.lerp(y, (scaledY * 120) + (FlxG.height * 0.48), elapsed * 6);
+			// lmao
+			if (!disableX)
+				x = FlxMath.lerp(x, (targetY * 20) + 90, elapsed * 6);
+			else
+				x = FlxMath.lerp(x, xTo, elapsed * 6);
 		}
 
 		if ((text != textInit))
@@ -384,35 +363,25 @@ class AlphaCharacter extends FlxSprite
 		switch (letter)
 		{
 			case '.':
-				animName = 'PERIOD bold';
-
+				animName = 'PERIOD bold0';
 			case "'":
-				animName = 'APOSTRAPHIE bold';
-
+				animName = 'APOSTRAPHIE bold0';
 			case '?':
-				animName = 'QUESTION MARK bold';
-
+				animName = 'QUESTION MARK bold0';
 			case '¿':
-				animName = 'QUESTION MARK bold FLIPPED';
-
+				animName = 'QUESTION MARK bold FLIPPED0';
 			case '!':
-				animName = 'EXCLAMATION POINT bold';
-
+				animName = 'EXCLAMATION POINT bold0';
 			case '¡':
-				animName = 'EXCLAMATION POINT bold FLIPPED';
-
+				animName = 'EXCLAMATION POINT bold FLIPPED0';
 			case '^':
-				animName = '^ bold';
-
+				animName = '^ bold0';
 			case '$':
 				animName = '$';
-
 			case ',':
 				animName = 'comma';
-
 			case '/':
 				animName = 'bold forward slash';
-
 			default:
 				animName = 'bold $letter';
 		}
@@ -509,7 +478,6 @@ class AlphaCharacter extends FlxSprite
 				animation.addByPrefix(letter, letter, 24);
 				animation.play(letter);
 		}
-
 		updateHitbox();
 	}
 }

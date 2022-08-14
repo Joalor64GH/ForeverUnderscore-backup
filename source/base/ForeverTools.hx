@@ -70,7 +70,7 @@ class ForeverTools
 		if (Init.trueSettings.get('Check for Updates'))
 		{
 			trace('checking for update');
-			var http = new haxe.Http("https://raw.githubusercontent.com/BeastlyGhost/Forever-Engine-Underscore/underscore-master/gameVersion.txt");
+			var http = new haxe.Http("https://raw.githubusercontent.com/BeastlyGhost/Forever-Engine-Underscore/master/gameVersion.txt");
 			http.onData = function(data:String)
 			{
 				updateVersion = data.split('\n')[0].trim();
