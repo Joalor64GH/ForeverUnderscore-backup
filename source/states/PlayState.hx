@@ -318,9 +318,7 @@ class PlayState extends MusicBeatState
 			if (stageBuild.spawnGirlfriend)
 				add(gf);
 
-			// add limo cus dumb layering
-			if (curStage == 'highway')
-				add(stageBuild.limo);
+			add(stageBuild.layers);
 
 			add(dadOpponent);
 			add(boyfriend);
