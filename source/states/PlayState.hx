@@ -76,10 +76,12 @@ class PlayState extends MusicBeatState
 	public static var GraphicMap:Map<String, FNFSprite> = new Map<String, FNFSprite>();
 	public static var ShaderMap:Map<String, GraphicsShader> = new Map<String, GraphicsShader>();
 
-	var events:FlxTypedGroup<EventNote> = new FlxTypedGroup<EventNote>();
-	var unspawnEvents:Array<EventNote> = [];
+	public var events:FlxTypedGroup<EventNote> = new FlxTypedGroup<EventNote>();
+	public var unspawnEvents:Array<EventNote> = [];
 
-	var unspawnNotes:Array<Note> = [];
+	public var notes:FlxTypedGroup<Note> = new FlxTypedGroup<Note>();
+	public var unspawnNotes:Array<Note> = [];
+	
 	var ratingArray:Array<String> = [];
 	var allSicks:Bool = true;
 
@@ -171,11 +173,14 @@ class PlayState extends MusicBeatState
 	public static var preventScoring:Bool = false;
 	public static var chartingMode:Bool = false;
 	public static var practiceMode:Bool = false;
+	public static var scriptDebugMode:Bool = false;
 	public static var resetKey:Bool = false;
 
 	public static var prevCharter:Int = 0;
 
 	var precacheList:Map<String, String> = new Map<String, String>();
+
+	var canMiss:Bool = true;
 
 	// at the beginning of the playstate
 	override public function create()
@@ -540,7 +545,7 @@ class PlayState extends MusicBeatState
 				else
 				{ // else just call bad notes
 					ghostMisses++;
-					if (!Init.trueSettings.get('Ghost Tapping'))
+					if (!Init.trueSettings.get('Ghost Tapping') && canMiss)
 						missNoteCheck(true, key, boyfriend, true);
 				}
 
@@ -836,6 +841,7 @@ class PlayState extends MusicBeatState
 				var dunceNote:Note = unspawnNotes[0];
 				// push note to its correct strumline
 				strumLines.members[Math.floor((dunceNote.noteData + (dunceNote.mustPress ? 4 : 0)) / numberOfKeys)].push(dunceNote);
+				notes.add(dunceNote);
 				unspawnNotes.splice(unspawnNotes.indexOf(dunceNote), 1);
 			}
 
@@ -851,6 +857,42 @@ class PlayState extends MusicBeatState
 
 			if (Init.trueSettings.get('Controller Mode'))
 				controllerInput();
+		}
+
+		if (FlxG.keys.justPressed.TWO && !isStoryMode && !startingSong && !endingSong && scriptDebugMode)
+		{ // Go 10 seconds into the future, @author Shadow_Mario_
+			if (Conductor.songPosition + 10000 < Conductor.songMusic.length)
+			{
+				canMiss = false;
+				preventScoring = true;
+				Conductor.songMusic.pause();
+				Conductor.songVocals.pause();
+				Conductor.songPosition += 10000;
+				notes.forEachAlive(function(daNote:Note)
+				{
+					if (daNote.strumTime - 500 < Conductor.songPosition)
+					{
+						daNote.active = false;
+						daNote.visible = false;
+
+						daNote.kill();
+						notes.remove(daNote, true);
+						daNote.alive = false;
+						daNote.destroy();
+					}
+				});
+
+				Conductor.songMusic.time = Conductor.songPosition;
+				Conductor.songVocals.time = Conductor.songPosition;
+
+				Conductor.songMusic.play();
+				Conductor.songVocals.play();
+
+				new FlxTimer().start(0.6, function(timer:FlxTimer)
+				{
+					canMiss = true;
+				});
+			}
 		}
 
 		callFunc('onUpdatePost', null);
@@ -1009,7 +1051,8 @@ class PlayState extends MusicBeatState
 									note.tooLate = true;
 
 								Conductor.songVocals.volume = 0;
-								missNoteCheck((Init.trueSettings.get('Ghost Tapping')) ? true : false, daNote.noteData, boyfriend, true);
+								if(canMiss)
+									missNoteCheck((Init.trueSettings.get('Ghost Tapping')) ? true : false, daNote.noteData, boyfriend, true);
 								// ambiguous name
 								Timings.updateAccuracy(0);
 							}
@@ -1028,7 +1071,8 @@ class PlayState extends MusicBeatState
 
 										if (!breakFromLate)
 										{
-											missNoteCheck((Init.trueSettings.get('Ghost Tapping')) ? true : false, daNote.noteData, boyfriend, true);
+											if (canMiss)
+												missNoteCheck((Init.trueSettings.get('Ghost Tapping')) ? true : false, daNote.noteData, boyfriend, true);
 											for (note in parentNote.childrenNotes)
 												note.tooLate = true;
 										}
@@ -1572,7 +1616,7 @@ class PlayState extends MusicBeatState
 					combo = 0;
 				combo += 1;
 			}
-			else
+			else if (canMiss)
 				missNoteCheck(true, direction, character, false, true);
 		}
 	}
@@ -1894,6 +1938,9 @@ class PlayState extends MusicBeatState
 		callFunc('onEndSong', null);
 		callFunc('onSongEnd', null);
 		callFunc('endSong', null);
+
+		if (!canMiss)
+			health = 0;
 
 		// set ranking
 		rank = Timings.returnScoreRating().toUpperCase();
@@ -2712,6 +2759,10 @@ class PlayState extends MusicBeatState
 		setVar('camHUD', camHUD);
 		setVar('strumHUD', strumHUD);
 		setVar('dialogueHUD', dialogueHUD);
+
+		setVar('scriptDebugMode', scriptDebugMode);
+		setVar('debugMode', scriptDebugMode);
+		setVar('haxeDebugMode', scriptDebugMode);
 
 		setVar('playVideo', function(key:String)
 		{
