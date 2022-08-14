@@ -32,15 +32,11 @@ class PauseSubstate extends MusicBeatSubstate
 	public static var toOptions:Bool = false;
 	public static var practiceText:FlxText;
 
-	var songToPlay = 'breakfast';
-
 	public function new(x:Float, y:Float)
 	{
 		super();
 
-		songToPlay = Init.trueSettings.get('Pause Song');
-
-		pauseMusic = new FlxSound().loadEmbedded(Paths.music('menus/pause/$songToPlay/pause'), true, true);
+		pauseMusic = new FlxSound().loadEmbedded(Paths.music('breakfast'), true, true);
 		pauseMusic.volume = 0;
 		pauseMusic.play(false, FlxG.random.int(0, Std.int(pauseMusic.length / 2)));
 
@@ -57,18 +53,18 @@ class PauseSubstate extends MusicBeatSubstate
 		add(bg);
 
 		var levelInfo:FlxText = new FlxText(20, 15, 0, "", 32);
-		levelInfo.text += CoolUtil.dashToSpace(PlayState.SONG.song);
+		levelInfo.text += CoolUtil.dashToSpace(PlayState.SONG.song) + ' [' + CoolUtil.difficultyFromNumber(PlayState.storyDifficulty) + ']';
 		levelInfo.scrollFactor.set();
 		levelInfo.setFormat(Paths.font('vcr.ttf'), 32);
 		levelInfo.updateHitbox();
 		add(levelInfo);
 
-		var levelDifficulty:FlxText = new FlxText(20, 15 + 32, 0, "", 32);
-		levelDifficulty.text += CoolUtil.difficultyFromNumber(PlayState.storyDifficulty);
-		levelDifficulty.scrollFactor.set();
-		levelDifficulty.setFormat(Paths.font('vcr.ttf'), 32);
-		levelDifficulty.updateHitbox();
-		add(levelDifficulty);
+		var levelAuthor:FlxText = new FlxText(20, 15 + 32, 0, "", 32);
+		levelAuthor.text += 'By: ' + PlayState.SONG.author;
+		levelAuthor.scrollFactor.set();
+		levelAuthor.setFormat(Paths.font('vcr.ttf'), 32);
+		levelAuthor.updateHitbox();
+		add(levelAuthor);
 
 		var levelDeaths:FlxText = new FlxText(20, 15 + 64, 0, "", 32);
 		levelDeaths.text += "Blue balled: " + PlayState.deaths;
@@ -86,18 +82,18 @@ class PauseSubstate extends MusicBeatSubstate
 		add(practiceText);
 
 		levelInfo.alpha = 0;
-		levelDifficulty.alpha = 0;
+		levelAuthor.alpha = 0;
 		levelDeaths.alpha = 0;
 		practiceText.alpha = 0;
 
 		levelInfo.x = FlxG.width - (levelInfo.width + 20);
-		levelDifficulty.x = FlxG.width - (levelDifficulty.width + 20);
+		levelAuthor.x = FlxG.width - (levelAuthor.width + 20);
 		levelDeaths.x = FlxG.width - (levelDeaths.width + 20);
 		practiceText.x = FlxG.width - (practiceText.width + 20);
 
 		FlxTween.tween(bg, {alpha: 0.6}, 0.4, {ease: FlxEase.quartInOut});
 		FlxTween.tween(levelInfo, {alpha: 1, y: 20}, 0.4, {ease: FlxEase.quartInOut, startDelay: 0.3});
-		FlxTween.tween(levelDifficulty, {alpha: 1, y: levelDifficulty.y + 5}, 0.4, {ease: FlxEase.quartInOut, startDelay: 0.5});
+		FlxTween.tween(levelAuthor, {alpha: 1, y: levelAuthor.y + 5}, 0.4, {ease: FlxEase.quartInOut, startDelay: 0.5});
 		FlxTween.tween(levelDeaths, {alpha: 1, y: levelDeaths.y + 5}, 0.4, {ease: FlxEase.quartInOut, startDelay: 0.7});
 		if (PlayState.practiceMode)
 			FlxTween.tween(practiceText, {alpha: 1, y: practiceText.y + 5}, 0.4, {ease: FlxEase.quartInOut, startDelay: 0.9});
