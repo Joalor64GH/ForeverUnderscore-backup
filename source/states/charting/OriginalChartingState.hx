@@ -107,6 +107,8 @@ class OriginalChartingState extends MusicBeatState
 	var playTicksBf:FlxUICheckBox = null;
 	var playTicksDad:FlxUICheckBox = null;
 
+	var showStrumlineNotes:FlxUICheckBox = null;
+
 	// was annoying.
 	var blockPressWhileTypingOn:Array<FlxUIInputText> = [];
 	var blockPressWhileTypingOnStepper:Array<FlxUINumericStepper> = [];
@@ -198,7 +200,6 @@ class OriginalChartingState extends MusicBeatState
 			newArrow.alpha = 0.8;
 			newArrow.antialiasing = true;
 
-			// lol silly idiot
 			newArrow.playAnim('static');
 
 			if (newArrow.animation.curAnim.name == 'confirm')
@@ -482,6 +483,9 @@ class OriginalChartingState extends MusicBeatState
 		stepperSusLength.name = 'note_susLength';
 		blockPressWhileTypingOnStepper.push(stepperSusLength);
 
+		showStrumlineNotes = new FlxUICheckBox(stepperSusLength.x + 60, stepperSusLength.y, null, null, 'Show Strumline Notes', 100);
+		showStrumlineNotes.checked = false;
+
 		// sustain types
 		noteSustainDropDown = new PsychDropDown(160, 65, PsychDropDown.makeStrIdLabelArray(Note.sustainTypeList, false), function(type:String)
 		{
@@ -498,6 +502,7 @@ class OriginalChartingState extends MusicBeatState
 
 		tab_group_note.add(new FlxText(10, 10, 0, 'Sustain length:'));
 		tab_group_note.add(new FlxText(10, noteTypeDropDown.y - 15, 0, 'Note Type:'));
+		tab_group_note.add(showStrumlineNotes);
 		// tab_group_note.add(new FlxText(160, noteSustainDropDown.y - 15, 0, 'Sustain Type:'));
 		tab_group_note.add(stepperSusLength);
 		tab_group_note.add(noteTypeDropDown);
@@ -649,6 +654,8 @@ class OriginalChartingState extends MusicBeatState
 	override function update(elapsed:Float)
 	{
 		curStep = recalculateSteps();
+
+		arrowGroup.visible = showStrumlineNotes.checked;
 
 		Conductor.songPosition = songMusic.time;
 
@@ -902,14 +909,10 @@ class OriginalChartingState extends MusicBeatState
 			changeSection(curSection - shiftThing);
 
 		bpmTxt.text = bpmTxt.text = Std.string(FlxMath.roundDecimal(Conductor.songPosition / 1000, 2))
-			+ " / "
-			+ Std.string(FlxMath.roundDecimal(songMusic.length / 1000, 2))
-			+ "\nSection: "
-			+ curSection
-			+ "\nBeat: "
-			+ curBeat
-			+ "\nStep: "
-			+ curStep;
+			+ " / " + Std.string(FlxMath.roundDecimal(songMusic.length / 1000, 2))
+			+ "\nSection: " + curSection
+			+ "\nBeat: " + curBeat
+			+ "\nStep: " + curStep;
 		super.update(elapsed);
 
 		var playedSound:Array<Bool> = [];
