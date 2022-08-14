@@ -33,7 +33,7 @@ import states.menus.*;
 
 using StringTools;
 
-class TitleScreen extends MusicBeatState
+class TitleState extends MusicBeatState
 {
 	public static var initialized:Bool = false;
 

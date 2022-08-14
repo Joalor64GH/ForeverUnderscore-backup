@@ -18,6 +18,7 @@ using StringTools;
 	and so on. This class will handle both saving and loading of charts with useful features and scripts that will make things much easier
 	to handle and load, as well as much more modular!
 **/
+
 /**
  * Song Information, such as name, notes, events, bpm, etc;
 **/
@@ -40,7 +41,6 @@ typedef SwagSong =
 	var assetModifier:String;
 	var validScore:Bool;
 	var ?offset:Int;
-	var mania:Int;
 }
 
 /**
@@ -182,9 +182,8 @@ class ChartParser
 					{
 						var daStrumTime:Float = songNotes[0]#if !neko - Init.trueSettings['Offset'] #end; // - | late, + | early
 						var daNoteData:Int = Std.int(songNotes[1] % 4);
-						// define the note's type
 						var daNoteAlt:Float = 0;
-						var daNoteType:NoteType = NORMAL;
+						var daNoteType:NoteType = NORMAL; // define the note's type
 						var daSusType:SustainType = NORMAL;
 
 						if (songNotes.length > 2)
@@ -196,7 +195,7 @@ class ChartParser
 							daSusType = songNotes[4];
 						}
 						// doesn't work????
-						if (Std.isOfType(songNotes[3], String))
+						if (songNotes.length > 2 && Std.isOfType(songNotes[3], String))
 						{
 							daNoteType = Note.convertNotetypes(songNotes[3]);
 						}

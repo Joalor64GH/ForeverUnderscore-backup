@@ -95,7 +95,7 @@ class ChartingState extends MusicBeatState
 	var quantR:FlxSprite;
 
 	// event name - desciption
-	var events:Array<Array<String>> = [
+	var eventArray:Array<Array<String>> = [
 		["", ""],
 		[
 			"Hey!",
@@ -631,10 +631,6 @@ class ChartingState extends MusicBeatState
 			// trace('Current note type is $daNoteType.');
 
 			var keys = 4;
-
-			// 2 = 6k
-			if (_song.mania == 2)
-				keys = 6;
 
 			generateChartNote(daNoteInfo, daStrumTime, daSus, 0, daNoteType, currentSection, false);
 		}

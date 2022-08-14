@@ -1106,7 +1106,7 @@ class PlayState extends MusicBeatState
 	}
 
 	/**
-	 * a function to switch characters mid song!
+	 * a function to switch characters during songs!
 	 * @param `newCharacter` [your character of choice to switch to, ex: `bf-psych`];
 	 * @param `targetCharacter` [should be either `boyfriend`, `dadOpponent`, or `girlfriend`];
 	 * @param `x` [the X position for the New Character];
@@ -1119,7 +1119,7 @@ class PlayState extends MusicBeatState
 		{
 			case 'dad' | 'opponent' | 'dadOpponent':
 				charType = 1;
-			case 'gf' | 'girlfriend':
+			case 'gf' | 'girlfriend' | 'player3':
 				charType = 2;
 			case 'boyfriend' | 'bf' | 'player':
 				charType = Std.parseInt(targetCharacter);
@@ -1165,6 +1165,90 @@ class PlayState extends MusicBeatState
 	{
 		if (!eventNote.shouldExecute)
 			return;
+
+		switch (eventNote.id)
+		{
+			case 'Change Character':
+				var ogPosition:Array<Float> = [770, 450];
+				switch (eventNote.val2)
+				{
+					case 'dad' | 'opponent' | 'dadOpponent':
+						ogPosition = [100, 100];
+					case 'gf' | 'player3' | 'girlfriend':
+						ogPosition = [300, 100];
+					case 'bf' | 'player' | 'boyfriend':
+						ogPosition = [770, 450];
+				}
+				changeCharacter(eventNote.val1, eventNote.val2, ogPosition[0], ogPosition[1]);
+
+			case 'Set GF Speed':
+				var speed:Int = Std.parseInt(eventNote.val1);
+				if (Math.isNaN(speed) || speed < 1)
+					speed = 1;
+				gfSpeed = speed;
+
+			case 'Hey!':
+				var who:Int = -1;
+				switch (eventNote.val1.toLowerCase().trim())
+				{
+					case 'bf' | 'boyfriend' | 'player':
+						who = 0;
+					case 'gf' | 'girlfriend' | 'player3':
+						who = 1;
+				}
+
+				var tmr:Float = Std.parseFloat(eventNote.val2);
+				if (Math.isNaN(tmr) || tmr <= 0)
+					tmr = 0.6;
+
+				if (who != 0)
+				{
+					if (dadOpponent.curCharacter.startsWith('gf'))
+					{
+						dadOpponent.playAnim('cheer', true);
+						dadOpponent.specialAnim = true;
+						dadOpponent.heyTimer = tmr;
+					}
+					else if (gf != null)
+					{
+						gf.playAnim('cheer', true);
+						gf.specialAnim = true;
+						gf.heyTimer = tmr;
+					}
+				}
+				if (who != 1)
+				{
+					boyfriend.playAnim('hey', true);
+					boyfriend.specialAnim = true;
+					boyfriend.heyTimer = tmr;
+				}
+
+			case 'Play Animation':
+				var char:Character = dadOpponent;
+				switch (eventNote.val2.toLowerCase().trim())
+				{
+					case 'bf' | 'boyfriend':
+						char = boyfriend;
+					case 'gf' | 'girlfriend':
+						char = gf;
+					default:
+						var val2:Int = Std.parseInt(eventNote.val2);
+						if (Math.isNaN(val2))
+							val2 = 0;
+
+						switch (val2)
+						{
+							case 1: char = boyfriend;
+							case 2: char = gf;
+						}
+				}
+
+				if (char != null)
+				{
+					char.playAnim(eventNote.val1, true);
+					char.specialAnim = true;
+				}
+		}
 	}
 
 	function goodNoteHit(coolNote:Note, character:Character, characterStrums:Strumline, ?canDisplayJudgement:Bool = true)

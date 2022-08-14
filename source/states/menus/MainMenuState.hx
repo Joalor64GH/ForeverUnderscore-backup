@@ -130,7 +130,7 @@ class MainMenuState extends MusicBeatState
 		if (controls.BACK || FlxG.mouse.justPressedRight)
 		{
 			FlxG.sound.play(Paths.sound('cancelMenu'), 0.4);
-			Main.switchState(this, new TitleScreen());
+			Main.switchState(this, new TitleState());
 		}
 
 		#if MODS_ALLOWED

@@ -374,7 +374,7 @@ class Init extends FlxState
 		{
 			// bind save back to settings
 			FlxG.save.bind('forever-settings', 'BeastlyGhost');
-			Main.switchState(this, new TitleScreen());
+			Main.switchState(this, new TitleState());
 		}
 	}
 

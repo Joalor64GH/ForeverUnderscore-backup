@@ -9,6 +9,7 @@ import base.CoolUtil;
 import base.MusicBeat.MusicBeatState;
 import dependency.Discord;
 import flixel.FlxG;
+import flixel.FlxObject;
 import flixel.FlxSprite;
 import flixel.addons.display.FlxGridOverlay;
 import flixel.addons.ui.FlxInputText;
@@ -93,9 +94,10 @@ class OriginalChartingState extends MusicBeatState
 	**/
 	var curSelectedNote:Array<Dynamic>;
 
-	var tempBpm:Float = 0;
-
+	var gridGroup:FlxTypedGroup<FlxObject>;
 	var arrowGroup:FlxTypedSpriteGroup<UIStaticArrow>;
+
+	var tempBpm:Float = 0;
 
 	var vocals:FlxSound;
 
@@ -117,63 +119,9 @@ class OriginalChartingState extends MusicBeatState
 		if (PlayState.SONG != null)
 			_song = PlayState.SONG;
 		else
-		{
-			/*
-				_song = {
-					song: 'Test',
-					notes: [],
-					bpm: 150,
-					needsVoices: true,
-					player1: 'bf',
-					player2: 'dad',
-					speed: 1,
-					validScore: false
-			};*/
 			addSection();
-		}
 
 		curSection = lastSection;
-
-		gridBG = FlxGridOverlay.create(GRID_SIZE, GRID_SIZE, GRID_SIZE * 8, GRID_SIZE * 16);
-		add(gridBG);
-
-		gridBlackLine = new FlxSprite(gridBG.x + gridBG.width / 2).makeGraphic(2, Std.int(gridBG.height), FlxColor.BLACK);
-		add(gridBlackLine);
-
-		curRenderedNotes = new FlxTypedGroup<Note>();
-		curRenderedSustains = new FlxTypedGroup<FlxSprite>();
-
-		// stupid.
-		var bf:Character = new Character(0, 0, _song.player1);
-		var dad:Character = new Character(0, 0, _song.player2);
-
-		leftIcon = new HealthIcon(bf.icon);
-		rightIcon = new HealthIcon(dad.icon);
-		leftIcon.scrollFactor.set(1, 1);
-		rightIcon.scrollFactor.set(1, 1);
-
-		leftIcon.setGraphicSize(0, 45);
-		rightIcon.setGraphicSize(0, 45);
-
-		add(leftIcon);
-		add(rightIcon);
-
-		updateHeads();
-
-		FlxG.mouse.visible = true;
-		FlxG.save.bind('funkin', 'ninjamuffin99');
-
-		tempBpm = _song.bpm;
-
-		addSection();
-
-		// sections = _song.notes;
-
-		updateGrid();
-
-		loadSong(_song.song);
-		Conductor.changeBPM(_song.bpm);
-		Conductor.mapBPMChanges(_song);
 
 		#if DISCORD_RPC
 		Discord.changePresence('CHART EDITOR',
@@ -182,6 +130,26 @@ class OriginalChartingState extends MusicBeatState
 			+ ' [${CoolUtil.difficultyFromNumber(PlayState.storyDifficulty)}] - by '
 			+ _song.author, true);
 		#end
+
+		gridGroup = new FlxTypedGroup<FlxObject>();
+		add(gridGroup);
+
+		generateGrid();
+
+		curRenderedNotes = new FlxTypedGroup<Note>();
+		curRenderedSustains = new FlxTypedGroup<FlxSprite>();
+
+		generateHeads();
+		updateHeads();
+
+		tempBpm = _song.bpm;
+
+		addSection();
+		updateGrid();
+
+		loadSong(_song.song);
+		Conductor.changeBPM(_song.bpm);
+		Conductor.mapBPMChanges(_song);
 
 		bpmTxt = new FlxText(1000, 50, 0, "", 16);
 		bpmTxt.scrollFactor.set();
@@ -240,9 +208,11 @@ class OriginalChartingState extends MusicBeatState
 		}
 
 		add(arrowGroup);
-
 		add(curRenderedNotes);
 		add(curRenderedSustains);
+
+		FlxG.mouse.visible = true;
+		FlxG.mouse.useSystemCursor = true;
 	}
 
 	function addSongUI():Void
@@ -313,11 +283,6 @@ class OriginalChartingState extends MusicBeatState
 		stepperBPM.value = Conductor.bpm;
 		stepperBPM.name = 'song_bpm';
 		blockPressWhileTypingOnStepper.push(stepperBPM);
-
-		var stepperKeys:FlxUINumericStepper = new FlxUINumericStepper(10, 95, 1, 1, 0, 5, 0);
-		stepperKeys.value = _song.mania;
-		stepperKeys.name = 'song_keys';
-		blockPressWhileTypingOnStepper.push(stepperKeys);
 
 		var baseChars:Array<String> = CoolUtil.returnAssetsLibrary('characters', 'assets');
 		var baseStages:Array<String> = CoolUtil.returnAssetsLibrary('backgrounds', 'assets/images');
@@ -400,7 +365,6 @@ class OriginalChartingState extends MusicBeatState
 		tab_group_song.add(loadAutosaveBtn);
 		tab_group_song.add(stepperBPM);
 		tab_group_song.add(stepperSpeed);
-		tab_group_song.add(stepperKeys);
 		tab_group_song.add(new FlxText(player1DropDown.x, player1DropDown.y - 15, 0, 'Boyfriend:'));
 		tab_group_song.add(new FlxText(gfVersionDropDown.x, gfVersionDropDown.y - 15, 0, 'Girlfriend:'));
 		tab_group_song.add(new FlxText(player2DropDown.x, player2DropDown.y - 15, 0, 'Opponent:'));
@@ -460,13 +424,9 @@ class OriginalChartingState extends MusicBeatState
 
 				// must press
 				var keys = 4;
-				if (_song.mania == 2)
-					keys = 6;
 
 				// in total
 				var tolKeys = 8;
-				if (_song.mania == 2)
-					keys = 12;
 
 				note[1] = (note[1] + keys) % tolKeys;
 				_song.notes[curSection].sectionNotes[i] = note;
@@ -692,65 +652,12 @@ class OriginalChartingState extends MusicBeatState
 
 		Conductor.songPosition = songMusic.time;
 
-		if (_song.mania == 2 && gridBG.width != GRID_SIZE * 12)
-		{
-			remove(gridBG);
-			gridBG = FlxGridOverlay.create(GRID_SIZE, GRID_SIZE, GRID_SIZE * 12, GRID_SIZE * 16);
-			add(gridBG);
-		}
-		if (_song.mania != 2 && gridBG.width != GRID_SIZE * 8)
-		{
-			remove(gridBG);
-			gridBG = FlxGridOverlay.create(GRID_SIZE, GRID_SIZE, GRID_SIZE * 8, GRID_SIZE * 16);
-			add(gridBG);
-		}
 		gridBlackLine.x = gridBG.x + gridBG.width / 2;
-		// leftIcon.setPosition(0, -100);
-		// rightIcon.setPosition(gridBG.width / 2, -100);
+		
 		UI_box.x = FlxG.width / 2;
 		UI_box.y = 20;
-		if (_song.mania == 2)
-		{
-			UI_box.x = FlxG.width / 2 + 160;
-			UI_box.y = 100;
-		}
 
 		_song.song = typingShit.text;
-
-		// real thanks for the help with this ShadowMario, you are the best -Ghost
-		var playedSound:Array<Bool> = [];
-		for (i in 0...(_song.mania == 2 ? 12 : 8))
-		{
-			playedSound.push(false);
-		}
-		curRenderedNotes.forEachAlive(function(note:Note)
-		{
-			if (note.strumTime < songMusic.time)
-			{
-				var data:Int = note.noteData % 4;
-
-				var pain = (Math.floor(Conductor.songPosition / Conductor.stepCrochet));
-
-				if (pain == Math.floor(note.strumTime / Conductor.stepCrochet))
-				{
-					var data:Null<Int> = note.noteData;
-					if (data > -1 && note.mustPress != _song.notes[curSection].mustHitSection)
-						data += 4;
-
-					arrowGroup.members[data].playAnim('confirm', true);
-					arrowGroup.members[data].resetAnim = (note.sustainLength / 1000) + 0.2;
-				}
-
-				if (songMusic.playing && !playedSound[data] && note.noteData > -1 && note.strumTime >= lastSongPos)
-				{
-					if ((playTicksBf.checked) && (note.mustPress) || (playTicksDad.checked) && (!note.mustPress))
-					{
-						FlxG.sound.play(Paths.sound('hitsounds/${Init.trueSettings.get('Hitsound Type').toLowerCase()}/hit'));
-						playedSound[data] = true;
-					}
-				}
-			}
-		});
 
 		strumLine.y = getYfromStrum((Conductor.songPosition - sectionStartTime()) % (Conductor.stepCrochet * _song.notes[curSection].lengthInSteps));
 		arrowGroup.y = strumLine.y - 60;
@@ -1005,6 +912,43 @@ class OriginalChartingState extends MusicBeatState
 			+ curStep;
 		super.update(elapsed);
 
+		var playedSound:Array<Bool> = [];
+		for (i in 0...8)
+		{
+			playedSound.push(false);
+		}
+
+		// all rendered notes;
+		curRenderedNotes.forEachAlive(function(note:Note)
+		{
+			if ((note.strumTime < songMusic.time))
+			{
+				var data:Int = note.noteData % 4;
+
+				var pain = (Math.floor(Conductor.songPosition / Conductor.stepCrochet));
+
+				if (pain == Math.floor(note.strumTime / Conductor.stepCrochet))
+				{
+					var data:Null<Int> = note.noteData;
+					if (data > -1 && note.mustPress != _song.notes[curSection].mustHitSection)
+						data += 4;
+
+					arrowGroup.members[data].playAnim('confirm', true);
+					arrowGroup.members[data].resetAnim = (note.sustainLength / 1000) + 0.2;
+				}
+
+				// check if the song is playing and if the sound was not played once;
+				if (songMusic.playing && !playedSound[data] && note.noteData > -1 && note.strumTime >= lastSongPos)
+				{
+					if ((playTicksBf.checked) && (note.mustPress) || (playTicksDad.checked) && (!note.mustPress))
+					{
+						FlxG.sound.play(Paths.sound('hitsounds/${Init.trueSettings.get('Hitsound Type').toLowerCase()}/hit'));
+						playedSound[data] = true;
+					}
+				}
+			}
+		});
+
 		lastSongPos = Conductor.songPosition;
 	}
 
@@ -1152,6 +1096,24 @@ class OriginalChartingState extends MusicBeatState
 		updateHeads();
 	}
 
+	function generateHeads()
+	{
+		// stupid.
+		var bf:Character = new Character(0, 0, _song.player1);
+		var dad:Character = new Character(0, 0, _song.player2);
+
+		leftIcon = new HealthIcon(bf.icon);
+		rightIcon = new HealthIcon(dad.icon);
+		leftIcon.scrollFactor.set(1, 1);
+		rightIcon.scrollFactor.set(1, 1);
+
+		leftIcon.setGraphicSize(0, 45);
+		rightIcon.setGraphicSize(0, 45);
+
+		add(leftIcon);
+		add(rightIcon);
+	}
+
 	function updateHeads():Void
 	{
 		if (!_song.notes[curSection].mustHitSection)
@@ -1170,6 +1132,17 @@ class OriginalChartingState extends MusicBeatState
 	{
 		if (curSelectedNote != null)
 			stepperSusLength.value = curSelectedNote[2];
+	}
+
+	function generateGrid()
+	{
+		gridGroup.clear();
+		
+		gridBG = FlxGridOverlay.create(GRID_SIZE, GRID_SIZE, GRID_SIZE * 8, GRID_SIZE * 16);
+		gridGroup.add(gridBG);
+
+		gridBlackLine = new FlxSprite(gridBG.x + gridBG.width / 2).makeGraphic(2, Std.int(gridBG.height), FlxColor.BLACK);
+		gridGroup.add(gridBlackLine);
 	}
 
 	function updateGrid():Void
@@ -1224,11 +1197,7 @@ class OriginalChartingState extends MusicBeatState
 			var daLNType = lnType;
 
 			trace('Current note type is $daNoteType.');
-
-			var keys = 4;
-			if (_song.mania == 2)
-				keys = 6;
-
+			
 			var note:Note = ForeverAssets.generateArrow(PlayState.assetModifier, daStrumTime, daNoteInfo % 4, 0, null, null, daNoteType, daLNType);
 			note.sustainLength = daSus;
 			note.noteType = daNoteType;
@@ -1246,7 +1215,7 @@ class OriginalChartingState extends MusicBeatState
 
 			if (daSus > 0)
 			{
-				var sustainVis:FlxSprite = new FlxSprite(note.x + (GRID_SIZE / 2),
+				var sustainVis:FlxSprite = new FlxSprite(note.x + (GRID_SIZE / 2 - 3),
 					note.y + GRID_SIZE).makeGraphic(8, Math.floor(FlxMath.remapToRange(daSus, 0, Conductor.stepCrochet * 16, 0, gridBG.height)));
 				sustainVis.color = (note.sustainType == ROLL ? FlxColor.BLUE : FlxColor.WHITE);
 				curRenderedSustains.add(sustainVis);
@@ -1276,7 +1245,7 @@ class OriginalChartingState extends MusicBeatState
 
 		for (i in _song.notes[curSection].sectionNotes)
 		{
-			if (i.strumTime == note.strumTime && i.noteData % (_song.mania == 2 ? 6 : 4) == note.noteData)
+			if (i.strumTime == note.strumTime && i.noteData % 4 == note.noteData)
 			{
 				curSelectedNote = _song.notes[curSection].sectionNotes[swagNum];
 			}
@@ -1293,7 +1262,7 @@ class OriginalChartingState extends MusicBeatState
 		var data:Null<Int> = note.noteData;
 
 		if (data > -1 && note.mustPress != _song.notes[curSection].mustHitSection)
-			data += (_song.mania == 2 ? 6 : 4);
+			data += 4;
 
 		if (data > -1)
 		{

@@ -655,7 +655,7 @@ class OptionsMenuState extends MusicBeatState
 
 	public function resetGame()
 	{
-		TitleScreen.initialized = false;
+		TitleState.initialized = false;
 		FlxG.sound.music.fadeOut(0.3);
 		FlxG.camera.fade(FlxColor.BLACK, 0.5, false, FlxG.resetGame, false);
 	}
