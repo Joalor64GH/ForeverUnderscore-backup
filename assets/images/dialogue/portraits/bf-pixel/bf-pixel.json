@@ -10,5 +10,7 @@
 
     "sounds": ["pixelText"],
     "soundChance": 100,
-    "soundPath": "sounds/"
+    "soundPath": "sounds/",
+    "confirmSound": "clickText",
+    "pixelFont": "pixel.otf"
 }

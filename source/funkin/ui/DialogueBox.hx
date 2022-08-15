@@ -26,12 +26,15 @@ typedef PortraitDataDef =
 	var offset:Null<Array<Int>>;
 	var scale:Null<Int>;
 	var antialiasing:Null<Bool>;
+	var pixelFont:Null<String>;
+	var fontSize:Null<Int>;
 	var flipX:Null<Bool>;
 	var loop:Null<Bool>;
 
 	var sounds:Null<Array<String>>;
 	var soundChance:Null<Int>;
 	var soundPath:Null<String>;
+	var confirmSound:String;
 }
 
 typedef DialogueDataDef =
@@ -166,11 +169,13 @@ class DialogueBox extends FlxSpriteGroup
 
 		// stuffs for pixel dialogue!
 		swagDialogue = new FlxTypeText(200, 500, Std.int(FlxG.width * 0.7), "", 32);
-		swagDialogue.setFormat(Paths.font('pixel.otf'), 30, FlxColor.BLACK, LEFT);
+		swagDialogue.font = Paths.font(('pixel.otf'));
+		swagDialogue.size = 30;
 		swagDialogue.color = 0xFF3F2021;
 
 		dropText = new FlxText(202, 502, Std.int(FlxG.width * 0.7), "", 32);
-		dropText.setFormat(Paths.font('pixel.otf'), 30, FlxColor.BLACK, LEFT);
+		dropText.font = Paths.font(('pixel.otf'));
+		dropText.size = 30;
 		dropText.color = 0xFFD89494;
 
 		handSelect = new FlxSprite(1042, 590);

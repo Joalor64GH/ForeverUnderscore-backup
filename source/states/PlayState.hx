@@ -628,7 +628,12 @@ class PlayState extends MusicBeatState
 			// the change I made was just so that it would only take accept inputs
 			if (controls.ACCEPT && dialogueBox.textStarted)
 			{
-				FlxG.sound.play(Paths.sound('cancelMenu'));
+				var sound = 'cancelMenu';
+
+				if (dialogueBox.portraitData.confirmSound != null)
+					sound = dialogueBox.portraitData.confirmSound;
+				
+				FlxG.sound.play(Paths.sound(sound));
 				dialogueBox.curPage += 1;
 
 				if (dialogueBox.curPage == dialogueBox.dialogueData.dialogue.length)
@@ -667,7 +672,7 @@ class PlayState extends MusicBeatState
 			if (!isStoryMode)
 			{
 				// charting state (more on that later)
-				if ((FlxG.keys.justPressed.SEVEN))
+				if (FlxG.keys.justPressed.SEVEN)
 				{
 					Conductor.resetMusic();
 					chartingMode = true;
@@ -683,7 +688,7 @@ class PlayState extends MusicBeatState
 						Main.switchState(this, new OriginalChartingState());
 					}
 				}
-				if ((FlxG.keys.justPressed.EIGHT))
+				if (FlxG.keys.justPressed.EIGHT)
 				{
 					var holdingShift = FlxG.keys.pressed.SHIFT;
 					var holdingAlt = FlxG.keys.pressed.ALT;
@@ -692,14 +697,14 @@ class PlayState extends MusicBeatState
 					Main.switchState(this, new CharacterDebug(holdingShift ? SONG.player1 : holdingAlt ? SONG.gfVersion : SONG.player2));
 				}
 
-				if ((FlxG.keys.justPressed.FIVE))
+				if (FlxG.keys.justPressed.FIVE)
 				{
 					preventScoring = true;
 					FlxG.sound.play(Paths.sound('scrollMenu'));
 					practiceMode = !practiceMode;
 				}
 
-				if ((FlxG.keys.justPressed.SIX))
+				if (FlxG.keys.justPressed.SIX)
 				{
 					preventScoring = true;
 					FlxG.sound.play(Paths.sound('scrollMenu'));
