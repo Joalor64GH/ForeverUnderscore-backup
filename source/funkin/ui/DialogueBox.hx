@@ -28,6 +28,8 @@ typedef PortraitDataDef =
 	var antialiasing:Null<Bool>;
 	var pixelFont:Null<String>;
 	var fontSize:Null<Int>;
+	var fontColor:Array<Int>;
+	var borderColor:Array<Int>;
 	var flipX:Null<Bool>;
 	var loop:Null<Bool>;
 
@@ -89,7 +91,6 @@ class DialogueBox extends FlxSpriteGroup
 
 	// for pixel dialogue
 	var swagDialogue:FlxTypeText;
-	var dropText:FlxText;
 	var handSelect:FlxSprite;
 
 	public var dialogueData:DialogueFileDataDef;
@@ -167,23 +168,26 @@ class DialogueBox extends FlxSpriteGroup
 		text.color = FlxColor.BLACK;
 		text.visible = false;
 
+		//portraitData.pixelFont
+		//portraitData.fontSize
+		//portraitData.fontColor
+		//portraitData.borderColor
+
 		// stuffs for pixel dialogue!
 		swagDialogue = new FlxTypeText(200, 500, Std.int(FlxG.width * 0.7), "", 32);
-		swagDialogue.font = Paths.font(('pixel.otf'));
+		swagDialogue.font = Paths.font('pixel.otf');
+		swagDialogue.color = FlxColor.fromRGB(63, 32, 33);
 		swagDialogue.size = 30;
-		swagDialogue.color = 0xFF3F2021;
 
-		dropText = new FlxText(202, 502, Std.int(FlxG.width * 0.7), "", 32);
-		dropText.font = Paths.font(('pixel.otf'));
-		dropText.size = 30;
-		dropText.color = 0xFFD89494;
+		// should I use the drop text or this? idk;
+		swagDialogue.borderStyle = SHADOW;
+		swagDialogue.borderColor = FlxColor.fromRGB(216, 148, 148);
+		swagDialogue.borderSize = 2;
 
 		handSelect = new FlxSprite(1042, 590);
 		handSelect.loadGraphic(Paths.image(ForeverTools.returnSkinAsset('hand_textbox', PlayState.assetModifier, PlayState.changeableSkin, 'UI')));
 		handSelect.setGraphicSize(Std.int(handSelect.width * PlayState.daPixelZoom * 0.9));
 		handSelect.updateHitbox();
-		handSelect.visible = true;
-		add(handSelect);
 
 		updateDialog(true);
 
@@ -193,11 +197,13 @@ class DialogueBox extends FlxSpriteGroup
 		add(text);
 
 		if(boxData.boxType != 'pixel') // will probably remove this later as it's kinda limiting;
+		{
 			add(alphabetText);
+		}
 		else
 		{
-			add(dropText);
 			add(swagDialogue);
+			add(handSelect);
 		}
 
 		// skip text
@@ -230,7 +236,6 @@ class DialogueBox extends FlxSpriteGroup
 				textToDisplay = pageData.text;
 			
 			swagDialogue.text = textToDisplay;
-			dropText.text = swagDialogue.text;
 
 			alphabetText.startText(textToDisplay, true);
 		}

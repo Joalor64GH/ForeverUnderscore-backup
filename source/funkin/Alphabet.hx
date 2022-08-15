@@ -363,17 +363,17 @@ class AlphaCharacter extends FlxSprite
 		switch (letter)
 		{
 			case '.':
-				animName = 'PERIOD bold0';
+				animName = 'PERIOD bold';
 			case "'":
-				animName = 'APOSTRAPHIE bold0';
+				animName = 'APOSTRAPHIE bold';
 			case '?':
-				animName = 'QUESTION MARK bold0';
+				animName = 'QUESTION MARK bold';
 			case '¿':
-				animName = 'QUESTION MARK bold FLIPPED0';
+				animName = 'QUESTION MARK FLIPPED bold';
 			case '!':
-				animName = 'EXCLAMATION POINT bold0';
+				animName = 'EXCLAMATION POINT bold';
 			case '¡':
-				animName = 'EXCLAMATION POINT bold FLIPPED0';
+				animName = 'EXCLAMATION POINT FLIPPED bold';
 			case '^':
 				animName = '^ bold0';
 			case '$':

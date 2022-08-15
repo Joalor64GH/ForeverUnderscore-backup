@@ -12,5 +12,9 @@
     "soundChance": 100,
     "soundPath": "sounds/",
     "confirmSound": "clickText",
-    "pixelFont": "pixel.otf"
+    
+    "pixelFont": "pixel.otf",
+    "fontSize": 30,
+    "fontColor": [63, 32, 33],
+    "dropColor": [216, 148, 148]
 }

@@ -420,12 +420,6 @@ class PlayState extends MusicBeatState
 			copyKey(Init.gameControls.get('RIGHT')[0])
 		];
 
-		if (!Init.trueSettings.get('Controller Mode'))
-		{
-			FlxG.stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyPress);
-			FlxG.stage.addEventListener(KeyboardEvent.KEY_UP, onKeyRelease);
-		}
-
 		for (key => type in precacheList)
 		{
 			// trace('Key $key is type $type');
@@ -2419,7 +2413,11 @@ class PlayState extends MusicBeatState
 					Conductor.songPosition = -(Conductor.crochet * 1);
 
 				case 4:
-					//
+					if (!Init.trueSettings.get('Controller Mode'))
+					{
+						FlxG.stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyPress);
+						FlxG.stage.addEventListener(KeyboardEvent.KEY_UP, onKeyRelease);
+					}
 			}
 
 			callFunc('onCountdownTick', swagCounter);
