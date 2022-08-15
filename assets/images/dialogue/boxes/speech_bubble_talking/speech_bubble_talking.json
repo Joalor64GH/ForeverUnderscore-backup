@@ -1,6 +1,6 @@
 {
     "position": [20, 370],
-    "boxType": "base",
+    "textType": "base",
     "states": {
         "normal": {
             "open": ["Speech Bubble Normal Open"],

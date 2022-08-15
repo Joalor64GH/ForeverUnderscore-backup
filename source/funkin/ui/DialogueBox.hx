@@ -60,7 +60,8 @@ typedef BoxDataDef =
 	var singleFrame:Null<Bool>;
 	var doFlip:Null<Bool>;
 	var bgColor:Null<Array<Int>>;
-	var boxType:Null<String>;
+	var textType:Null<String>;
+	var showArrow:Null<Bool>;
 
 	var states:Null<Dynamic>;
 }
@@ -86,12 +87,11 @@ class DialogueBox extends FlxSpriteGroup
 	public var box:FNFSprite;
 	public var bgFade:FlxSprite;
 	public var portrait:FNFSprite;
-	public var text:FlxText;
 	public var alphabetText:Alphabet;
 
 	// for pixel dialogue
-	var swagDialogue:FlxTypeText;
-	var handSelect:FlxSprite;
+	public var pixelText:FlxText;
+	public var handSelect:FlxSprite;
 
 	public var dialogueData:DialogueFileDataDef;
 	public var portraitData:PortraitDataDef;
@@ -163,29 +163,28 @@ class DialogueBox extends FlxSpriteGroup
 		// i dont wanna touch it ever
 		alphabetText = new Alphabet(100, 425, "cool", false, true, 0.7);
 
-		// text
-		text = new FlxText(100, 480, 1000, "", 35);
-		text.color = FlxColor.BLACK;
-		text.visible = false;
+		// pixel text
+		pixelText = new FlxText(100, 480, 1000, "", 35);
+		pixelText.font = Paths.font((PlayState.assetModifier == 'pixel' ? 'pixel.otf' : 'vcr.ttf'));
+		pixelText.size = (PlayState.assetModifier == 'pixel' ? 30 : 40);
+		pixelText.borderStyle = SHADOW;
+		pixelText.borderSize = 2;
 
-		//portraitData.pixelFont
-		//portraitData.fontSize
-		//portraitData.fontColor
-		//portraitData.borderColor
+		// hardcoding because i'm stupid;
+		if (PlayState.SONG.song.toLowerCase() == 'thorns')
+			pixelText.color = FlxColor.fromRGB(255, 255, 255);
+		else
+			pixelText.color = FlxColor.fromRGB(63, 32, 33);
 
-		// stuffs for pixel dialogue!
-		swagDialogue = new FlxTypeText(200, 500, Std.int(FlxG.width * 0.7), "", 32);
-		swagDialogue.font = Paths.font('pixel.otf');
-		swagDialogue.color = FlxColor.fromRGB(63, 32, 33);
-		swagDialogue.size = 30;
+		if (PlayState.SONG.song.toLowerCase() == 'thorns')
+			pixelText.color = FlxColor.fromRGB(224, 224, 224);
+		else
+			pixelText.borderColor = FlxColor.fromRGB(216, 148, 148);
 
-		// should I use the drop text or this? idk;
-		swagDialogue.borderStyle = SHADOW;
-		swagDialogue.borderColor = FlxColor.fromRGB(216, 148, 148);
-		swagDialogue.borderSize = 2;
+		pixelText.visible = false;
 
 		handSelect = new FlxSprite(1042, 590);
-		handSelect.loadGraphic(Paths.image(ForeverTools.returnSkinAsset('hand_textbox', PlayState.assetModifier, PlayState.changeableSkin, 'UI')));
+		handSelect.loadGraphic(Paths.image('dialogue/arrows/hand_select'));
 		handSelect.setGraphicSize(Std.int(handSelect.width * PlayState.daPixelZoom * 0.9));
 		handSelect.updateHitbox();
 
@@ -194,17 +193,14 @@ class DialogueBox extends FlxSpriteGroup
 		// add stuff
 		add(portrait);
 		add(box);
-		add(text);
 
-		if(boxData.boxType != 'pixel') // will probably remove this later as it's kinda limiting;
-		{
+		if(boxData.textType != 'custom')
 			add(alphabetText);
-		}
 		else
-		{
-			add(swagDialogue);
+			add(pixelText);
+
+		if (boxData.showArrow)
 			add(handSelect);
-		}
 
 		// skip text
 		var skipText = new FlxText(100, 670, 1000, "PRESS SHIFT TO SKIP", 20);
@@ -234,8 +230,8 @@ class DialogueBox extends FlxSpriteGroup
 
 			if (pageData.text != null)
 				textToDisplay = pageData.text;
-			
-			swagDialogue.text = textToDisplay;
+
+			pixelText.text = textToDisplay;
 
 			alphabetText.startText(textToDisplay, true);
 		}
@@ -353,8 +349,8 @@ class DialogueBox extends FlxSpriteGroup
 
 			if (boxData.textPos != null)
 			{
-				text.x = boxData.textPos[0];
-				text.y = boxData.textPos[1];
+				pixelText.x = boxData.textPos[0];
+				pixelText.y = boxData.textPos[1];
 			}
 
 			box.playAnim('normalOpen');
@@ -577,7 +573,7 @@ class DialogueBox extends FlxSpriteGroup
 			if (boxData.singleFrame != true)
 				box.playAnim('normal');
 
-			text.visible = true;
+			pixelText.visible = true;
 		}
 
 		portrait.animation.paused = alphabetText.finishedLine;
