@@ -1263,11 +1263,7 @@ class PlayState extends MusicBeatState
 			coolNote.wasGoodHit = true;
 			Conductor.songVocals.volume = 1;
 
-			if (coolNote.noteType == MINE)
-			{
-				decreaseCombo(true);
-				health -= coolNote.healthLoss;
-			}
+			coolNote.goodNoteHit(coolNote);
 
 			characterPlayAnimation(coolNote, character);
 
@@ -1324,7 +1320,7 @@ class PlayState extends MusicBeatState
 		}
 	}
 
-	function missNoteCheck(?includeAnimation:Bool = false, direction:Int = 0, character:Character, popMiss:Bool = false, lockMiss:Bool = false)
+	public function missNoteCheck(?includeAnimation:Bool = false, direction:Int = 0, character:Character, popMiss:Bool = false, lockMiss:Bool = false)
 	{
 		callFunc('missNoteCheck', null);
 
@@ -1338,7 +1334,7 @@ class PlayState extends MusicBeatState
 		decreaseCombo(popMiss);
 	}
 
-	function characterPlayAnimation(coolNote:Note, character:Character)
+	public function characterPlayAnimation(coolNote:Note, character:Character)
 	{
 		// alright so we determine which animation needs to play
 		// get alt strings and stuffs
@@ -1656,7 +1652,7 @@ class PlayState extends MusicBeatState
 		}
 	}
 
-	function decreaseCombo(?popMiss:Bool = false)
+	public function decreaseCombo(?popMiss:Bool = false)
 	{
 		if (combo > 5 && gf.animOffsets.exists('sad'))
 			gf.playAnim('sad');

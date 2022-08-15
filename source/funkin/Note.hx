@@ -95,17 +95,17 @@ class Note extends FNFSprite
 		switch (string)
 		{
 			case 'No Animation':
-				NO_ANIM;
+				noteType = NO_ANIM;
 			case 'Hey!':
-				HEY;
+				noteType = HEY;
 			case 'Hurt Note':
-				MINE; // tex is gonna be a grey disc rather than a fire note, wacky.
+				noteType = MINE; // tex is gonna be a grey disc rather than a fire note, wacky.
 			case 'GF Note':
-				GF;
+				noteType = GF;
 			case 'Alt Animation':
-				ALT;
+				noteType = ALT;
 			default:
-				NORMAL;
+				noteType = NORMAL;
 		}
 
 		return noteType;
@@ -427,5 +427,20 @@ class Note extends FNFSprite
 		}
 
 		return newNote;
+	}
+
+	/**
+	* Custom Note Functions (for when you hit a note), this should execute in PlayState;
+	**/
+	public function goodNoteHit(newNote:Note)
+	{
+		switch (newNote.noteType)
+		{
+			case MINE:
+				PlayState.contents.decreaseCombo(true);
+				PlayState.health -= healthLoss;	
+			default:
+				// do NOTHING!
+		}
 	}
 }
