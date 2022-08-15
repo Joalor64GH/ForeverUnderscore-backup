@@ -182,6 +182,9 @@ class Note extends FNFSprite
 		Note creation scripts
 
 		these are for all your custom note needs
+
+		at the very bottom of this file you can find the function
+		for setting up custom note behavior when hit and such
 	**/
 	public static function returnDefaultNote(assetModifier, strumTime, noteData, noteAlt, ?isSustainNote:Bool = false, ?prevNote:Note, type:NoteType = NORMAL,
 			susType:SustainType = NORMAL):Note
