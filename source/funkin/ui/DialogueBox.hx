@@ -1,9 +1,11 @@
 package funkin.ui;
 
+import base.ForeverTools;
 import dependency.FNFSprite;
 import flixel.FlxBasic;
 import flixel.FlxG;
 import flixel.FlxSprite;
+import flixel.addons.text.FlxTypeText;
 import flixel.group.FlxSpriteGroup;
 import flixel.math.FlxPoint;
 import flixel.text.FlxText;
@@ -12,6 +14,9 @@ import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
 import flixel.util.FlxTimer;
 import funkin.Alphabet;
+import states.PlayState;
+
+using StringTools;
 
 typedef PortraitDataDef =
 {
@@ -50,6 +55,7 @@ typedef BoxDataDef =
 	var singleFrame:Null<Bool>;
 	var doFlip:Null<Bool>;
 	var bgColor:Null<Array<Int>>;
+	var boxType:Null<String>;
 
 	var states:Null<Dynamic>;
 }
@@ -58,6 +64,9 @@ typedef DialogueFileDataDef =
 {
 	var box:String;
 	var boxState:Null<String>;
+	var song:Null<String>;
+	var songFadeIn:Null<Int>;
+	var songFadeOut:Null<Int>;
 	var dialogue:Array<DialogueDataDef>;
 }
 
@@ -74,6 +83,11 @@ class DialogueBox extends FlxSpriteGroup
 	public var portrait:FNFSprite;
 	public var text:FlxText;
 	public var alphabetText:Alphabet;
+
+	// for pixel dialogue
+	var swagDialogue:FlxTypeText;
+	var dropText:FlxText;
+	var handSelect:FlxSprite;
 
 	public var dialogueData:DialogueFileDataDef;
 	public var portraitData:PortraitDataDef;
@@ -120,6 +134,15 @@ class DialogueBox extends FlxSpriteGroup
 
 		dialogDataCheck();
 
+		var fadeIn = dialogueData.songFadeIn;
+
+		// dialogue song;
+		if (dialogueData.song != null)
+		{
+			FlxG.sound.playMusic(Paths.music(dialogueData.song), 0);
+			FlxG.sound.music.fadeIn((fadeIn != null ? fadeIn : 1), 0, 0.8);
+		}
+
 		// background fade
 		bgFade = new FlxSprite(-200, -200).makeGraphic(Std.int(FlxG.width * 1.3), Std.int(FlxG.height * 1.3), FlxColor.BLACK);
 		bgFade.scrollFactor.set();
@@ -141,6 +164,22 @@ class DialogueBox extends FlxSpriteGroup
 		text.color = FlxColor.BLACK;
 		text.visible = false;
 
+		// stuffs for pixel dialogue!
+		swagDialogue = new FlxTypeText(200, 500, Std.int(FlxG.width * 0.7), "", 32);
+		swagDialogue.setFormat(Paths.font('pixel.otf'), 30, FlxColor.BLACK, LEFT);
+		swagDialogue.color = 0xFF3F2021;
+
+		dropText = new FlxText(202, 502, Std.int(FlxG.width * 0.7), "", 32);
+		dropText.setFormat(Paths.font('pixel.otf'), 30, FlxColor.BLACK, LEFT);
+		dropText.color = 0xFFD89494;
+
+		handSelect = new FlxSprite(1042, 590);
+		handSelect.loadGraphic(Paths.image(ForeverTools.returnSkinAsset('hand_textbox', PlayState.assetModifier, PlayState.changeableSkin, 'UI')));
+		handSelect.setGraphicSize(Std.int(handSelect.width * PlayState.daPixelZoom * 0.9));
+		handSelect.updateHitbox();
+		handSelect.visible = true;
+		add(handSelect);
+
 		updateDialog(true);
 
 		// add stuff
@@ -148,7 +187,13 @@ class DialogueBox extends FlxSpriteGroup
 		add(box);
 		add(text);
 
-		add(alphabetText);
+		if(boxData.boxType != 'pixel') // will probably remove this later as it's kinda limiting;
+			add(alphabetText);
+		else
+		{
+			add(dropText);
+			add(swagDialogue);
+		}
 
 		// skip text
 		var skipText = new FlxText(100, 670, 1000, "PRESS SHIFT TO SKIP", 20);
@@ -178,6 +223,9 @@ class DialogueBox extends FlxSpriteGroup
 
 			if (pageData.text != null)
 				textToDisplay = pageData.text;
+			
+			swagDialogue.text = textToDisplay;
+			dropText.text = swagDialogue.text;
 
 			alphabetText.startText(textToDisplay, true);
 		}
@@ -491,6 +539,10 @@ class DialogueBox extends FlxSpriteGroup
 	public function closeDialog()
 	{
 		whenDaFinish();
+		
+		var fadeOut = dialogueData.songFadeOut;
+		FlxG.sound.music.fadeOut((fadeOut != null ? fadeOut : 2.2), 0);
+		
 		alphabetText.playSounds = false;
 		kill();
 	}
@@ -509,7 +561,7 @@ class DialogueBox extends FlxSpriteGroup
 	}
 
 	override function update(elapsed:Float)
-	{
+	{		
 		if (box.animation.finished)
 		{
 			if (boxData.singleFrame != true)

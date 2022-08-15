@@ -6,6 +6,7 @@
     "singleFrame": true,
     "doFlip": false,
     "bgColor": [255, 255, 255],
+    "boxType": "pixel",
     "states": {
         "normal": {
             "open": ["Spirit Textbox spawn instance 1"],
