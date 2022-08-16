@@ -46,8 +46,8 @@ import sys.FileSystem;
 import sys.io.File;
 #end
 #if VIDEO_PLUGIN
-import VideoHandler;
-import VideoSprite;
+import vlc.VideoHandler;
+import vlc.VideoSprite;
 #end
 
 class PlayState extends MusicBeatState
@@ -2157,7 +2157,7 @@ class PlayState extends MusicBeatState
 		#end
 	}
 
-	function spawnVideoSprite(x:Float, y:Float, name:String)
+	function spawnVideoSprite(name:String, x:Float, y:Float, cam:Dynamic)
 	{
 		#if VIDEO_PLUGIN
 		var path = Paths.video(name);
@@ -2171,10 +2171,10 @@ class PlayState extends MusicBeatState
 			return;
 		}
 
-		var video:VideoSprite = new VideoSprite(x, y);
-		video.playVideo(path);
-		video.cameras = [camHUD];
-		video.finishCallback = function()
+		var videoSprite:VideoSprite = new VideoSprite(x, y);
+		videoSprite.cameras = [cam];
+		videoSprite.playVideo(path);
+		videoSprite.finishCallback = function()
 		{
 			return;
 		}
@@ -2189,13 +2189,14 @@ class PlayState extends MusicBeatState
 		if (endingSong)
 			endSong();
 		else
-			songIntroCutscene();
+			callTextbox();
 	}
 
 	var dialogueBox:DialogueBox;
 
 	public function songIntroCutscene()
 	{
+		callFunc('songIntroCutscene', null);
 		switch (curSong.toLowerCase())
 		{
 			case "winter-horrorland":
@@ -2275,9 +2276,6 @@ class PlayState extends MusicBeatState
 						});
 					}
 				});
-
-			// case 'bopeebo':
-			//	startCutscene('test');
 
 			default:
 				callTextbox();
@@ -2857,9 +2855,9 @@ class PlayState extends MusicBeatState
 			startCutscene(key);
 		});
 
-		setVar('spawnVideoSprite', function(x:Float, y:Float, key:String)
+		setVar('spawnVideoSprite', function(key:String, x:Float, y:Float, cam:Dynamic)
 		{
-			spawnVideoSprite(x, y, key);
+			spawnVideoSprite(key, x, y, cam);
 		});
 	}
 }
