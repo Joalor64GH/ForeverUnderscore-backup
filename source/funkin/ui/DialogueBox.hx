@@ -37,6 +37,11 @@ typedef PortraitDataDef =
 	var soundChance:Null<Int>;
 	var soundPath:Null<String>;
 	var confirmSound:String;
+
+	var textFont:Null<String>;
+	var textSize:Null<Int>;
+	var textColor:Null<Array<Int>>;
+	var textBorderColor:Null<Array<Int>>;
 }
 
 typedef DialogueDataDef =
@@ -165,21 +170,8 @@ class DialogueBox extends FlxSpriteGroup
 
 		// pixel text
 		pixelText = new FlxText(100, 480, 1000, "", 35);
-		pixelText.font = Paths.font((PlayState.assetModifier == 'pixel' ? 'pixel.otf' : 'vcr.ttf'));
-		pixelText.size = (PlayState.assetModifier == 'pixel' ? 30 : 40);
 		pixelText.borderStyle = SHADOW;
 		pixelText.borderSize = 2;
-
-		// hardcoding because i'm stupid;
-		if (PlayState.SONG.song.toLowerCase() == 'thorns')
-			pixelText.color = FlxColor.fromRGB(255, 255, 255);
-		else
-			pixelText.color = FlxColor.fromRGB(63, 32, 33);
-
-		if (PlayState.SONG.song.toLowerCase() == 'thorns')
-			pixelText.color = FlxColor.fromRGB(224, 224, 224);
-		else
-			pixelText.borderColor = FlxColor.fromRGB(216, 148, 148);
 
 		pixelText.visible = false;
 
@@ -465,6 +457,28 @@ class DialogueBox extends FlxSpriteGroup
 				// flip check
 				if (boxData.doFlip == true)
 					box.flipX = newFlip;
+
+				// custom text
+				if (portraitData.textFont == null)
+					portraitData.textFont = 'pixel.otf';
+				else
+					pixelText.font = Paths.font(portraitData.textFont);
+
+				if (portraitData.textSize == null)
+					portraitData.textSize = 30;
+				else
+					pixelText.size = portraitData.textSize;
+
+				if (portraitData.textColor == null)
+					pixelText.color = FlxColor.fromRGB(63, 32, 33);
+				else
+					pixelText.color = FlxColor.fromRGB(portraitData.textColor[0], portraitData.textColor[1], portraitData.textColor[2]);
+
+				if (portraitData.textBorderColor == null)
+					pixelText.borderColor = FlxColor.fromRGB(216, 148, 148);
+				else
+					pixelText.borderColor = FlxColor.fromRGB(portraitData.textBorderColor[0], portraitData.textBorderColor[1],
+						portraitData.textBorderColor[2]);
 
 				// this causes problems, and i know exactly what the problem is... i just cant fix it
 				// basically i need to get rid of the last tween before doing a new one, or else the portraits slide around all over the place
