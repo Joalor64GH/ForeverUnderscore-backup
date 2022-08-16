@@ -426,19 +426,6 @@ class Paths
 		return FlxAtlasFrames.fromTexturePackerJson(image(key, library), file('$folder/$key.json', library));
 	}
 
-	inline static public function getCharacter(key:String, type:CharacterType)
-	{
-		return switch (type)
-		{
-			case SPARROW:
-				getSparrowAtlas(key, 'characters/$key');
-			case PACKER:
-				getPackerAtlas(key, 'characters/$key');
-			case HASH:
-				getSparrowHashAtlas(key, 'characters/$key');
-		}
-	}
-
 	inline static public function video(key:String)
 	{
 		#if MODS_ALLOWED

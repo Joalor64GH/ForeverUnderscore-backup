@@ -336,10 +336,6 @@ class Character extends FNFSprite
 			}
 		}
 
-		var charExists = FileSystem.exists(Paths.getPreloadPath('characters/$char/$char.xml'));
-
-		var baseFrames = null;
-		var fallbackFrames = Paths.getSparrowAtlas('bf', 'characters/bf');
 		var spriteType = "sparrow";
 
 		#if MODS_ALLOWED
@@ -356,17 +352,12 @@ class Character extends FNFSprite
 		switch (spriteType)
 		{
 			case "packer":
-				baseFrames = Paths.getPackerAtlas('$char', 'characters/$char');
+				frames = Paths.getPackerAtlas(char, 'characters/$char');
 			case "sparrow":
-				baseFrames = Paths.getSparrowAtlas('$char', 'characters/$char');
+				frames = Paths.getSparrowAtlas(char, 'characters/$char');
 			case "sparrow-hash":
-				baseFrames = Paths.getSparrowHashAtlas('$char', 'characters/$char');
+				frames = Paths.getSparrowHashAtlas(char, 'characters/$char');
 		}
-
-		if (charExists)
-			frames = baseFrames;
-		else
-			frames = fallbackFrames;
 
 		// trace(interp, script);
 		setVar('addByPrefix', function(name:String, prefix:String, ?frames:Int = 24, ?loop:Bool = false)
@@ -386,14 +377,14 @@ class Character extends FNFSprite
 				idlePos = [x, y];
 		});
 
-		setVar('setSingDuration', function(amount:Int)
-		{
-			singDuration = amount;
-		});
-
 		setVar('set', function(name:String, value:Dynamic)
 		{
 			Reflect.setProperty(this, name, value);
+		});
+
+		setVar('setSingDuration', function(amount:Int)
+		{
+			singDuration = amount;
 		});
 
 		setVar('setCamOffsets', function(?x:Float = 0, ?y:Float = 0)
@@ -442,16 +433,6 @@ class Character extends FNFSprite
 		{
 			setGraphicSize(width, height);
 			updateHitbox();
-		});
-
-		setVar('setTex', function(character:String)
-		{
-			frames = Paths.getCharacter(character, SPARROW);
-		});
-
-		setVar('setPacker', function(character:String)
-		{
-			frames = Paths.getCharacter(character, PACKER);
 		});
 
 		setVar('playAnim', function(name:String, ?force:Bool = false, ?reversed:Bool = false, ?frames:Int = 0)
@@ -518,15 +499,16 @@ class Character extends FNFSprite
 
 		#if MODS_ALLOWED
 		var modTxtToFind:String = Paths.getModPath('characters/$char', json.image, 'txt');
-		var txtToFind:String = Paths.getPath('characters/$char/' + json.image + '.txt', TEXT);
+		var txtToFind:String = Paths.getPath('characters/$char/${json.image}.txt', TEXT);
 
 		if (FileSystem.exists(modTxtToFind) || FileSystem.exists(txtToFind) || Assets.exists(txtToFind))
 		#else
-		if (Assets.exists(Paths.getPath('characters/$char/' + json.image + '.txt', TEXT)))
+		if (Assets.exists(Paths.getPath('characters/$char/${json.image}.txt', TEXT)))
 		#end
 		{
 			spriteType = "packer";
 		}
+
 		switch (spriteType)
 		{
 			case "packer":
