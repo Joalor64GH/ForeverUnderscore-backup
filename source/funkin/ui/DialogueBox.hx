@@ -40,6 +40,7 @@ typedef PortraitDataDef =
 
 	var textFont:Null<String>;
 	var textSize:Null<Int>;
+	var textBorderSize:Null<Int>;
 	var textColor:Null<Array<Int>>;
 	var textBorderColor:Null<Array<Int>>;
 }
@@ -171,7 +172,6 @@ class DialogueBox extends FlxSpriteGroup
 		// pixel text
 		pixelText = new FlxTypeText(100, 480, 1000, "", 35);
 		pixelText.borderStyle = SHADOW;
-		pixelText.borderSize = 2;
 
 		pixelText.visible = false;
 
@@ -235,6 +235,10 @@ class DialogueBox extends FlxSpriteGroup
 
 			pixelText.resetText(textToDisplay);
 			pixelText.start(pixelTextSpeed, true);
+			pixelText.completeCallback = function()
+			{
+				alphabetText.finishedLine = true;
+			}
 		}
 
 		// change speed
@@ -484,6 +488,11 @@ class DialogueBox extends FlxSpriteGroup
 					pixelText.color = FlxColor.fromRGB(63, 32, 33);
 				else
 					pixelText.color = FlxColor.fromRGB(portraitData.textColor[0], portraitData.textColor[1], portraitData.textColor[2]);
+
+				if (portraitData.textBorderSize == null)
+					pixelText.borderSize = 2;
+				else
+					pixelText.borderSize = portraitData.textBorderSize;
 
 				if (portraitData.textBorderColor == null)
 					pixelText.borderColor = FlxColor.fromRGB(216, 148, 148);
