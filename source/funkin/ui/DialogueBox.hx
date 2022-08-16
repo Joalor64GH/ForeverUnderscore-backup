@@ -95,7 +95,7 @@ class DialogueBox extends FlxSpriteGroup
 	public var alphabetText:Alphabet;
 
 	// for pixel dialogue
-	public var pixelText:FlxText;
+	public var pixelText:FlxTypeText;
 	public var handSelect:FlxSprite;
 
 	public var dialogueData:DialogueFileDataDef;
@@ -169,7 +169,7 @@ class DialogueBox extends FlxSpriteGroup
 		alphabetText = new Alphabet(100, 425, "cool", false, true, 0.7);
 
 		// pixel text
-		pixelText = new FlxText(100, 480, 1000, "", 35);
+		pixelText = new FlxTypeText(100, 480, 1000, "", 35);
 		pixelText.borderStyle = SHADOW;
 		pixelText.borderSize = 2;
 
@@ -222,10 +222,19 @@ class DialogueBox extends FlxSpriteGroup
 
 			if (pageData.text != null)
 				textToDisplay = pageData.text;
+			
+			if (boxData.textType != 'custom')
+				alphabetText.startText(textToDisplay, true);
 
-			pixelText.text = textToDisplay;
+			var pixelTextSpeed = 0.06;
 
-			alphabetText.startText(textToDisplay, true);
+			if (pageData.speed != null)
+				pixelTextSpeed = 0.06 / pageData.speed;
+			else
+				pixelTextSpeed = 0.06;
+
+			pixelText.resetText(textToDisplay);
+			pixelText.start(pixelTextSpeed, true);
 		}
 
 		// change speed
@@ -445,6 +454,8 @@ class DialogueBox extends FlxSpriteGroup
 						alphabetText.beginPath = 'assets/images/dialogue/portraits/$curCharacter/';
 
 					alphabetText.soundChoices = portraitData.sounds;
+
+					pixelText.sounds = [FlxG.sound.load(alphabetText.beginPath + portraitData.sounds[0] + "." + Paths.SOUND_EXT, 0.6)];
 
 					if (portraitData.soundChance != null)
 						alphabetText.soundChance = portraitData.soundChance;
