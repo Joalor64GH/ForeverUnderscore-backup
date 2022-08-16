@@ -179,6 +179,7 @@ class DialogueBox extends FlxSpriteGroup
 		handSelect.loadGraphic(Paths.image('dialogue/arrows/hand_select'));
 		handSelect.setGraphicSize(Std.int(handSelect.width * PlayState.daPixelZoom * 0.9));
 		handSelect.updateHitbox();
+		handSelect.visible = false;
 
 		updateDialog(true);
 
@@ -236,7 +237,10 @@ class DialogueBox extends FlxSpriteGroup
 			pixelText.resetText(textToDisplay);
 			pixelText.start(pixelTextSpeed, true);
 			pixelText.completeCallback = function()
+			{
 				alphabetText.finishedLine = true;
+				handSelect.visible = true;
+			}
 		}
 
 		// change speed

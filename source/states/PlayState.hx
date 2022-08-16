@@ -637,7 +637,10 @@ class PlayState extends MusicBeatState
 
 				// for custom fonts
 				if (dialogueBox.boxData.textType == 'custom')
+				{
 					dialogueBox.alphabetText.finishedLine = false;
+					dialogueBox.handSelect.visible = false;
+				}
 			}
 		}
 
