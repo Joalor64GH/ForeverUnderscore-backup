@@ -236,9 +236,7 @@ class DialogueBox extends FlxSpriteGroup
 			pixelText.resetText(textToDisplay);
 			pixelText.start(pixelTextSpeed, true);
 			pixelText.completeCallback = function()
-			{
 				alphabetText.finishedLine = true;
-			}
 		}
 
 		// change speed
@@ -459,12 +457,16 @@ class DialogueBox extends FlxSpriteGroup
 
 					alphabetText.soundChoices = portraitData.sounds;
 
-					pixelText.sounds = [FlxG.sound.load(alphabetText.beginPath + portraitData.sounds[0] + "." + Paths.SOUND_EXT, 0.6)];
-
 					if (portraitData.soundChance != null)
 						alphabetText.soundChance = portraitData.soundChance;
 					else
 						alphabetText.soundChance = 40;
+
+					for (blep in 0...portraitData.sounds.length)
+					{
+						pixelText.sounds = [];
+						pixelText.sounds.push(FlxG.sound.load(alphabetText.beginPath + portraitData.sounds[blep] + "." + Paths.SOUND_EXT, 0.6));
+					}
 				}
 				else
 					alphabetText.soundChance = 0;

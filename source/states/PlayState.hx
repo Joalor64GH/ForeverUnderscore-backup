@@ -631,9 +631,13 @@ class PlayState extends MusicBeatState
 				dialogueBox.curPage += 1;
 
 				if (dialogueBox.curPage == dialogueBox.dialogueData.dialogue.length)
-					dialogueBox.closeDialog()
+					dialogueBox.closeDialog();
 				else
 					dialogueBox.updateDialog();
+
+				// for custom fonts
+				if (dialogueBox.boxData.textType == 'custom')
+					dialogueBox.alphabetText.finishedLine = false;
 			}
 		}
 
