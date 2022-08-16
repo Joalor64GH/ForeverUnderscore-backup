@@ -121,10 +121,14 @@ class ChartingState extends MusicBeatState
 	var eventTxt:FlxText;
 	var currentSelectedEvent:String;
 
-	// is this how it's supposed to work? idk.
-	public var speedList:Array<Int> = [4, 8, 12, 16, 20, 24, 32, 48, 64, 96, 192];
-	public var speedVal:Int = 8;
-	public var curSpeed = 1; // uh
+	public var snapList:Array<Int> = [4, 8, 12, 16, 20, 24, 32, 48, 64, 96, 192];
+	public var curSnap:Int = 8;
+	public var curSpeed = 1;
+
+	static final snaps:Array<FlxColor> = [
+		FlxColor.RED, FlxColor.BLUE, FlxColor.PURPLE, FlxColor.YELLOW, FlxColor.GRAY, FlxColor.PINK, FlxColor.ORANGE, FlxColor.CYAN, FlxColor.GREEN,
+		FlxColor.LIME, FlxColor.MAGENTA
+	];
 
 	override public function create()
 	{
@@ -445,15 +449,15 @@ class ChartingState extends MusicBeatState
 	{
 		curSpeed += newSpd;
 
-		if (curSpeed > speedList.length - 1)
+		if (curSpeed > snapList.length - 1)
 			curSpeed = 0;
 		if (curSpeed < 0)
-			curSpeed = speedList.length - 1;
+			curSpeed = snapList.length - 1;
 
-		speedVal = speedList[curSpeed];
+		curSnap = snapList[curSpeed];
 
-		quantL.animation.play('${speedVal}th');
-		quantR.animation.play('${speedVal}th');
+		quantL.color = snaps[curSpeed];
+		quantR.color = snaps[curSpeed];
 	}
 
 	function changeNoteSustain(value:Float):Void
@@ -1035,10 +1039,10 @@ class ChartingState extends MusicBeatState
 
 	function updateText()
 	{
-		bpmTxt.text = bpmTxt.text = Std.string('BEAT: ' + FlxMath.roundDecimal(decBeat, 2) + '  QUANT: ' + speedVal + '  MEASURE: ' + currentSection
+		bpmTxt.text = bpmTxt.text = Std.string('BEAT: ' + FlxMath.roundDecimal(decBeat, 2)
+			+ '  SNAP: ' + curSnap + '  MEASURE: ' + currentSection
 			+ '  TIME: ' + FlxMath.roundDecimal(Conductor.songPosition / 1000, 2))
-			+ '  BPM: '
-			+ _song.bpm;
+			+ '  BPM: ' + _song.bpm;
 	}
 
 	function generateIcons()
@@ -1070,43 +1074,14 @@ class ChartingState extends MusicBeatState
 		quantR = new FlxSprite();
 
 		// load animations
-		quantL.loadGraphic(Paths.image('UI/forever/base/chart editor/quants'), true, 25, 25);
-
-		quantL.animation.add('4th', [0]);
-		quantL.animation.add('8th', [1]);
-		quantL.animation.add('12th', [2]);
-		quantL.animation.add('16th', [3]);
-		quantL.animation.add('20th', [4]);
-		quantL.animation.add('24th', [5]);
-		quantL.animation.add('32th', [6]);
-		quantL.animation.add('48th', [7]);
-		quantL.animation.add('64th', [8]);
-		quantL.animation.add('96th', [9]);
-		quantL.animation.add('192th', [10]);
-
+		quantL.loadGraphic(Paths.image('UI/forever/base/chart editor/marker'));
 		quantL.updateHitbox();
 		quantL.antialiasing = true;
 
 		// RIGHT
-
-		quantR.loadGraphic(Paths.image('UI/forever/base/chart editor/quants'), true, 25, 25);
-
-		quantR.animation.add('4th', [0]);
-		quantR.animation.add('8th', [1]);
-		quantR.animation.add('12th', [2]);
-		quantR.animation.add('16th', [3]);
-		quantR.animation.add('20th', [4]);
-		quantR.animation.add('24th', [5]);
-		quantR.animation.add('32th', [6]);
-		quantR.animation.add('48th', [7]);
-		quantR.animation.add('64th', [8]);
-		quantR.animation.add('96th', [9]);
-		quantR.animation.add('192th', [10]);
-
+		quantR.loadGraphic(Paths.image('UI/forever/base/chart editor/marker'));
 		quantR.updateHitbox();
 		quantR.antialiasing = true;
-
-		//
 
 		quantL.scrollFactor.set(1, 1);
 		quantR.scrollFactor.set(1, 1);
@@ -1123,8 +1098,8 @@ class ChartingState extends MusicBeatState
 		quantR.setPosition(strumLine.x + 10, 30);
 		quantL.setPosition(strumLine.x + 490, quantR.y);
 
-		quantL.animation.play('${speedVal}th');
-		quantR.animation.play('${speedVal}th');
+		quantL.color = snaps[curSpeed];
+		quantR.color = snaps[curSpeed];
 	}
 
 	function adjustSide(noteData:Int, sectionTemp:Bool):Int
