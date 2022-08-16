@@ -366,6 +366,7 @@ class Stage extends FlxTypedGroup<FlxBasic>
 				var evilSnow:FNFSprite = new FNFSprite(-200, 700).loadGraphic(Paths.image("backgrounds/mall/evilSnow"));
 				evilSnow.antialiasing = true;
 				add(evilSnow);
+
 			case 'school':
 				curStage = 'school';
 
