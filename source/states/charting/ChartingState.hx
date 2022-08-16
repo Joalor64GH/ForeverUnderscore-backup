@@ -121,14 +121,15 @@ class ChartingState extends MusicBeatState
 	var eventTxt:FlxText;
 	var currentSelectedEvent:String;
 
-	public var snapList:Array<Int> = [4, 8, 12, 16, 20, 24, 32, 48, 64, 96, 192];
-	public var curSnap:Int = 8;
-	public var curSpeed = 1;
+	static final snapList:Array<Int> = [4, 8, 12, 16, 20, 24, 32, 48, 64, 96, 192];
 
-	static final snaps:Array<FlxColor> = [
+	static final snapColors:Array<FlxColor> = [
 		FlxColor.RED, FlxColor.BLUE, FlxColor.PURPLE, FlxColor.YELLOW, FlxColor.GRAY, FlxColor.PINK, FlxColor.ORANGE, FlxColor.CYAN, FlxColor.GREEN,
 		FlxColor.LIME, FlxColor.MAGENTA
 	];
+
+	static var curSnap:Int = 8;
+	static var curSpeed = 1;
 
 	override public function create()
 	{
@@ -340,7 +341,7 @@ class ChartingState extends MusicBeatState
 			if (!FlxG.mouse.overlaps(curRenderedNotes))
 			{
 				// add note funny
-				var noteStrum = getStrumTime(mouseIndicator.y);
+				var noteStrum = getStrumTime(mouseIndicator.y) + sectionStartTime();
 
 				var notesSection = Math.floor(noteStrum / (Conductor.stepCrochet * 16));
 				var noteData = adjustSide(Math.floor((mouseIndicator.x - baseGrid.x) / gridSize), _song.notes[notesSection].mustHitSection);
@@ -456,8 +457,8 @@ class ChartingState extends MusicBeatState
 
 		curSnap = snapList[curSpeed];
 
-		quantL.color = snaps[curSpeed];
-		quantR.color = snaps[curSpeed];
+		quantL.color = snapColors[curSpeed];
+		quantR.color = snapColors[curSpeed];
 	}
 
 	function changeNoteSustain(value:Float):Void
@@ -827,7 +828,7 @@ class ChartingState extends MusicBeatState
 
 		if (daSus > 0)
 		{
-			var sustainVis:FlxSprite = new FlxSprite(note.x + (gridSize / 2),
+			var sustainVis:FlxSprite = new FlxSprite(note.x + (gridSize / 2 - 3),
 				note.y + gridSize).makeGraphic(8, Math.floor(FlxMath.remapToRange(daSus, 0, Conductor.stepCrochet * 16, 0, baseGrid.height)));
 			sustainVis.color = (note.sustainType == ROLL ? FlxColor.BLUE : FlxColor.WHITE);
 			curRenderedSustains.add(sustainVis);
@@ -1098,8 +1099,8 @@ class ChartingState extends MusicBeatState
 		quantR.setPosition(strumLine.x + 10, 30);
 		quantL.setPosition(strumLine.x + 490, quantR.y);
 
-		quantL.color = snaps[curSpeed];
-		quantR.color = snaps[curSpeed];
+		quantL.color = snapColors[curSpeed];
+		quantR.color = snapColors[curSpeed];
 	}
 
 	function adjustSide(noteData:Int, sectionTemp:Bool):Int
