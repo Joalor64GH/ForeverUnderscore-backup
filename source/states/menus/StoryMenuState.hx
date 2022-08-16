@@ -262,7 +262,9 @@ class StoryMenuState extends MusicBeatState
 				FlxG.sound.play(Paths.sound('confirmMenu'));
 
 				grpWeekText.members[curWeek].startFlashing();
-				grpWeekCharacters.members[1].animation.play('hey');
+				for (char in grpWeekCharacters.members)
+					if (char.character != "" && char.charJson.heyAnim != null)
+						char.animation.play('hey');
 				stopspamming = true;
 			}
 

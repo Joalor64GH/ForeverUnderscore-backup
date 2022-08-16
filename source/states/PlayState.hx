@@ -2131,11 +2131,11 @@ class PlayState extends MusicBeatState
 		#if VIDEO_PLUGIN
 		inCutscene = true;
 
-		var path = Paths.video(name);
+		var file = Paths.video(name);
 		#if sys
-		if (!FileSystem.exists(path))
+		if (!FileSystem.exists(file))
 		#else
-		if (!OpenFlAssets.exists(path))
+		if (!OpenFlAssets.exists(file))
 		#end
 		{
 			FlxG.log.warn('Couldnt find video file: ' + name);
@@ -2144,7 +2144,7 @@ class PlayState extends MusicBeatState
 		}
 
 		var video:VideoHandler = new VideoHandler();
-		video.playVideo(path);
+		video.playVideo(file);
 		video.finishCallback = function()
 		{
 			startAndEnd();

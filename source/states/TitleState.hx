@@ -336,42 +336,48 @@ class TitleState extends MusicBeatState
 
 		switch (curBeat)
 		{
-			case 1:
-				createCoolText(['Yoshubs', 'Neolixn', 'Gedehari', 'Tsuraran', 'FlopDoodle', '']);
-			case 3:
-				addMoreText('PRESENT');
-			case 4:
-				deleteCoolText();
-			case 5:
-				createCoolText(['Not associated', 'with']);
-			case 7:
-				addMoreText('newgrounds');
-				ngSpr.visible = true;
-			case 8:
-				deleteCoolText();
-				ngSpr.visible = false;
-			case 9:
-				createCoolText([curWacky[0]]);
-			case 11:
-				addMoreText(curWacky[1]);
-				if (curWacky[1] == 'vine boom sfx')
-					FlxG.sound.play(Paths.sound('psych'));
-			case 12:
-				deleteCoolText();
-			case 13:
-				addMoreText("Friday Night Funkin'");
-			case 14:
-				addMoreText('Forever Engine');
-			case 15:
-				addMoreText('Underscore');
 			case 16:
 				skipIntro();
 		}
+		//trace('Beat: ' + curBeat);
 	}
 
 	override function stepHit()
 	{
 		super.stepHit();
+		//trace('Step: ' + curStep);
+
+		switch (curStep)
+		{
+			case 4:
+				createCoolText(['Yoshubs', 'Neolixn', 'Gedehari', 'Tsuraran', 'FlopDoodle', '']);
+			case 12:
+				addMoreText('PRESENT');
+			case 16:
+				deleteCoolText();
+			case 20:
+				createCoolText(['Not associated', 'with']);
+			case 28:
+				addMoreText('newgrounds');
+				ngSpr.visible = true;
+			case 32:
+				deleteCoolText();
+				ngSpr.visible = false;
+			case 36:
+				createCoolText([curWacky[0]]);
+			case 44:
+				addMoreText(curWacky[1]);
+				if (curWacky[1] == 'vine boom sfx')
+					FlxG.sound.play(Paths.sound('psych'));
+			case 48:
+				deleteCoolText();
+			case 52:
+				addMoreText("Friday Night Funkin'");
+			case 56:
+				addMoreText('Forever Engine');
+			case 60:
+				addMoreText('Underscore');
+		}
 	}
 
 	var skippedIntro:Bool = false;
