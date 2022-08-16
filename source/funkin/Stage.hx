@@ -676,7 +676,7 @@ class Stage extends FlxTypedGroup<FlxBasic>
 	var trainCooldown:Int = 0;
 	var startedMoving:Bool = false;
 
-	public function stageUpdate(curBeat:Int, boyfriend:Boyfriend, gf:Character, dadOpponent:Character)
+	public function stageUpdate(curBeat:Int, boyfriend:Character, gf:Character, dadOpponent:Character)
 	{
 		// trace('update backgrounds');
 		switch (PlayState.curStage)
@@ -764,7 +764,7 @@ class Stage extends FlxTypedGroup<FlxBasic>
 			stageScript.get('onUpdate')(curBeat);
 	}
 
-	public function stageUpdateConstant(elapsed:Float, boyfriend:Boyfriend, gf:Character, dadOpponent:Character)
+	public function stageUpdateConstant(elapsed:Float, boyfriend:Character, gf:Character, dadOpponent:Character)
 	{
 		switch (PlayState.curStage)
 		{

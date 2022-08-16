@@ -67,7 +67,7 @@ class PlayState extends MusicBeatState
 
 	public static var dadOpponent:Character;
 	public static var gf:Character;
-	public static var boyfriend:Boyfriend;
+	public static var boyfriend:Character;
 
 	public static var assetModifier:String = 'base';
 	public static var changeableSkin:String = 'default';
@@ -292,7 +292,7 @@ class PlayState extends MusicBeatState
 
 		dadOpponent = new Character(100, 100, false, SONG.player2);
 
-		boyfriend = new Boyfriend(770, 450, SONG.player1);
+		boyfriend = new Character(770, 450, true, SONG.player1);
 		boyfriend.dance(true);
 
 		var camPos:FlxPoint = new FlxPoint(gf.getMidpoint().x - 100, boyfriend.getMidpoint().y - 100);
@@ -603,8 +603,8 @@ class PlayState extends MusicBeatState
 	{
 		super.update(elapsed);
 
-		callFunc('onUpdate', elapsed);
-		callFunc('update', elapsed);
+		callFunc('onUpdate', [elapsed]);
+		callFunc('update', [elapsed]);
 
 		if (Init.trueSettings.get('Stage Opacity') > 0)
 			stageBuild.stageUpdateConstant(elapsed, boyfriend, gf, dadOpponent);
@@ -1264,7 +1264,7 @@ class PlayState extends MusicBeatState
 				FlxG.sound.play(Paths.sound('hitsounds/$changeableSound/hit'), Init.trueSettings.get('Hitsound Volume'));
 			}
 
-			callFunc('goodNoteHit', null);
+			callFunc('goodNoteHit', [coolNote, character]);
 
 			coolNote.wasGoodHit = true;
 			Conductor.songVocals.volume = 1;
@@ -1842,16 +1842,30 @@ class PlayState extends MusicBeatState
 
 		Conductor.resyncBySteps();
 
-		callFunc('onStepHit', curStep);
-		callFunc('stepHit', curStep);
+		callFunc('onStepHit', [curStep]);
+		callFunc('stepHit', [curStep]);
 	}
+
+	public var characterArray:Array<Character> = [];
 
 	function charactersDance(curBeat:Int)
 	{
+		for (char in characterArray)
+		{
+			if (curBeat % 2 == 0
+				&& char.animation.curAnim != null
+				&& !char.animation.curAnim.name.startsWith('sing')
+				&& !char.stunned)
+			{
+				char.dance();
+			}
+		}
+
 		if (gf != null && curBeat % gfSpeed == 0 && gf.animation.curAnim != null && !gf.animation.curAnim.name.startsWith("sing"))
 		{
 			gf.dance();
 		}
+
 		if (curBeat % 2 == 0
 			&& boyfriend.animation.curAnim != null
 			&& !boyfriend.animation.curAnim.name.startsWith('sing')
@@ -1859,6 +1873,7 @@ class PlayState extends MusicBeatState
 		{
 			boyfriend.dance();
 		}
+
 		if (curBeat % 2 == 0 && dadOpponent.animation.curAnim != null && !dadOpponent.animation.curAnim.name.startsWith('sing'))
 		{
 			dadOpponent.dance();
@@ -1954,8 +1969,8 @@ class PlayState extends MusicBeatState
 		if (Init.trueSettings.get('Stage Opacity') > 0)
 			stageBuild.stageUpdate(curBeat, boyfriend, gf, dadOpponent);
 
-		callFunc('onBeatHit', curBeat);
-		callFunc('beatHit', curBeat);
+		callFunc('onBeatHit', [curBeat]);
+		callFunc('beatHit', [curBeat]);
 	}
 
 	//
@@ -2425,9 +2440,8 @@ class PlayState extends MusicBeatState
 					}
 			}
 
-			callFunc('onCountdownTick', swagCounter);
+			callFunc('onCountdownTick', [swagCounter]);
 			swagCounter += 1;
-			// generateSong('fresh');
 		}, 5);
 	}
 
@@ -2438,7 +2452,7 @@ class PlayState extends MusicBeatState
 		return super.add(Object);
 	}
 
-	public function callFunc(key:String, value:Dynamic)
+	public function callFunc(key:String, value:Array<Dynamic>)
 	{
 		for (i in scriptArray)
 		{
@@ -2448,7 +2462,7 @@ class PlayState extends MusicBeatState
 
 		if (generatedMusic)
 		{
-			callBaseVars();
+			ScriptHandler.ScriptFuncs.callBaseVars();
 			callPlayStateVars();
 		}
 
@@ -2509,279 +2523,6 @@ class PlayState extends MusicBeatState
 				}
 			}
 		}
-	}
-
-	/**
-	 * base variables for scripts
-	 * will move these to a separate class later
-	**/
-	function callBaseVars()
-	{
-		setVar('gameVersion', Application.current.meta.get('version'));
-		setVar('subVersion', Main.underscoreVersion);
-
-		// Timings.hx values
-		setVar('comboRating', Timings.comboDisplay);
-		setVar('getAccuracy', Math.floor(Timings.getAccuracy() * 100) / 100);
-		setVar('getRank', Timings.returnScoreRating().toUpperCase());
-
-		setVar('Paths', Paths);
-		setVar('Controls', Controls);
-		setVar('PlayState', PlayState);
-		setVar('Note', Note);
-		setVar('Strumline', Strumline);
-		setVar('Timings', Timings);
-		setVar('Conductor', Conductor);
-
-		setVar('makeGraphic',
-			function(spriteID:String, graphicCol:Dynamic, x:Int = 0, y:Int = 0, scrollX:Float = null, scrollY:Float = null, alpha:Float = 1, size:Float = 1)
-			{
-				var sprite = new FNFSprite(x, y);
-				sprite.makeGraphic(x, y, graphicCol);
-				sprite.scrollFactor.set(scrollX, scrollY);
-				sprite.setGraphicSize(Std.int(sprite.width * size));
-				sprite.alpha = alpha;
-				sprite.antialiasing = true;
-				GraphicMap.set(spriteID, sprite);
-				setVar('$spriteID', sprite);
-				add(sprite);
-			});
-
-		setVar('loadGraphic',
-			function(spriteID:String, key:String, x:Int = 0, y:Int = 0, scrollX:Float = null, scrollY:Float = null, alpha:Float = 1, size:Float = 1,
-					scaleX:Float = 1, scaleY:Float = 1)
-			{
-				var sprite = new FNFSprite(x, y);
-				sprite.loadGraphic(Paths.image(key));
-				sprite.scrollFactor.set(scrollX, scrollY);
-				sprite.setGraphicSize(Std.int(sprite.width * size));
-				sprite.alpha = alpha;
-				sprite.scale.set(scaleX, scaleY);
-				sprite.antialiasing = true;
-				GraphicMap.set(spriteID, sprite);
-				setVar('$spriteID', sprite);
-				add(sprite);
-			});
-
-		setVar('loadAnimatedGraphic',
-			function(spriteID:String, key:String, path:String = null, spriteType:String, anims:Array<Array<Dynamic>>, defaultAnim:String, x:Float = 0,
-					y:Float = 0, scrollX:Float = 0, scrollY:Float = 0, alpha:Float = 1, size:Float = 1, scaleX:Float = 1, scaleY:Float = 1)
-			{
-				var sprite:FNFSprite = new FNFSprite(x, y);
-
-				switch (spriteType)
-				{
-					case "packer":
-						sprite.frames = Paths.getPackerAtlas(key, (path != null ? 'assets' : ''), path);
-					case "sparrow":
-						sprite.frames = Paths.getSparrowAtlas(key, (path != null ? 'assets' : ''), path);
-					case "sparrow-hash":
-						sprite.frames = Paths.getSparrowHashAtlas(key, (path != null ? 'assets' : ''), path);
-				}
-
-				for (anim in anims)
-				{
-					sprite.animation.addByPrefix(anim[0], anim[1], anim[2], anim[3]);
-				}
-
-				sprite.setGraphicSize(Std.int(sprite.width * size));
-				sprite.scrollFactor.set(scrollX, scrollY);
-				sprite.updateHitbox();
-				sprite.animation.play(defaultAnim);
-				sprite.antialiasing = true;
-				sprite.alpha = alpha;
-				sprite.scale.set(scaleX, scaleY);
-				GraphicMap.set(spriteID, sprite);
-				setVar('$spriteID', sprite);
-				add(sprite);
-			});
-
-		setVar('createCharacter', function(key:String, x:Float, y:Float, alpha:Float, isPlayer:Bool = false)
-		{
-			var newChar:Character;
-			newChar = new Character(x, y, isPlayer, key);
-			newChar.alpha = alpha;
-			newChar.dance();
-			add(newChar);
-		});
-
-		setVar('changeCharacter', function(key:String, target:String, x:Float, y:Float)
-		{
-			changeCharacter(key, target, x, y);
-		});
-
-		setVar('castShader', function(shaderID:String, key:String, camera:String = 'camGame', startEnabled:Bool = true)
-		{
-			if (Init.trueSettings.get('Disable Shaders'))
-			{
-				return null;
-			}
-			else
-			{
-				if (key != null || key != '')
-				{
-					var shader:GraphicsShader = new GraphicsShader("", File.getContent(Paths.shader(key)));
-					ShaderMap.set(shaderID, shader);
-
-					switch (camera)
-					{
-						case 'camhud' | 'camHUD' | 'hud' | 'ui':
-							camHUD.setFilters([new ShaderFilter(shader)]);
-						case 'camgame' | 'camGame' | 'game' | 'world':
-							camGame.setFilters([new ShaderFilter(shader)]);
-						case 'strumhud' | 'strumHUD' | 'strum' | 'strumlines':
-							for (lines in 0...strumHUD.length)
-								strumHUD[lines].setFilters([new ShaderFilter(shader)]);
-					}
-
-					if (!startEnabled)
-						FlxG.camera.filtersEnabled = false;
-				}
-				else
-				{
-					return;
-				}
-			}
-		});
-
-		setVar('trace', function(text:String, color:Array<Int> = null)
-		{
-			if (color == null)
-				color = [255, 255, 255];
-
-			trace(text);
-			uiHUD.traceBar.text += '$text\n';
-			uiHUD.traceBar.color = FlxColor.fromRGB(color[0], color[1], color[2]);
-			FlxTween.tween(uiHUD.traceBar, {alpha: 1}, 0.5, {ease: FlxEase.circOut});
-
-			new FlxTimer().start(6, function(tmr:FlxTimer)
-			{
-				FlxTween.tween(uiHUD.traceBar, {alpha: 0}, 0.5, {ease: FlxEase.circOut});
-			});
-		});
-
-		setVar('playSound', function(sound:String)
-		{
-			FlxG.sound.play(Paths.sound(sound));
-		});
-
-		// functions
-		setVar('setProperty', function(key:String, value:Dynamic)
-		{
-			var dotList:Array<String> = key.split('.');
-
-			if (dotList.length > 1)
-			{
-				var reflector:Dynamic = Reflect.getProperty(this, dotList[0]);
-
-				for (i in 1...dotList.length - 1)
-					reflector = Reflect.getProperty(reflector, dotList[i]);
-
-				Reflect.setProperty(reflector, dotList[dotList.length - 1], value);
-				return true;
-			}
-
-			Reflect.setProperty(this, key, value);
-			return true;
-		});
-
-		setVar('getProperty', function(variable:String)
-		{
-			var dotList:Array<String> = variable.split('.');
-
-			if (dotList.length > 1)
-			{
-				var reflector:Dynamic = Reflect.getProperty(this, dotList[0]);
-
-				for (i in 1...dotList.length - 1)
-					reflector = Reflect.getProperty(reflector, dotList[i]);
-
-				return Reflect.getProperty(reflector, dotList[dotList.length - 1]);
-			}
-
-			return Reflect.getProperty(this, variable);
-		});
-
-		setVar('getSetting', function(key:String)
-		{
-			Init.trueSettings.get(key);
-		});
-
-		setVar('setSetting', function(key:String, value:Dynamic)
-		{
-			Init.trueSettings.set(key, value);
-		});
-
-		setVar('getColor', function(color:String)
-		{
-			ForeverTools.getColorFromString(color);
-		});
-
-		setVar('doTweenX', function(tweenID:String, object:Dynamic, value:Float, time:Float, ease:String)
-		{
-			FlxTween.tween(object, {x: value}, time, {
-				ease: ForeverTools.getEaseFromString(ease),
-				onComplete: function(tween:FlxTween)
-				{
-					completeTween(tweenID);
-				}
-			});
-		});
-
-		setVar('doTweenY', function(tweenID:String, object:Dynamic, value:Float, time:Float, ease:String)
-		{
-			FlxTween.tween(object, {y: value}, time, {
-				ease: ForeverTools.getEaseFromString(ease),
-				onComplete: function(tween:FlxTween)
-				{
-					completeTween(tweenID);
-				}
-			});
-		});
-
-		setVar('doTweenAlpha', function(tweenID:String, object:Dynamic, value:Float, time:Float, ease:String)
-		{
-			FlxTween.tween(object, {alpha: value}, time, {
-				ease: ForeverTools.getEaseFromString(ease),
-				onComplete: function(tween:FlxTween)
-				{
-					completeTween(tweenID);
-				}
-			});
-		});
-
-		setVar('doTweenAngle', function(tweenID:String, object:Dynamic, value:Float, time:Float, ease:String)
-		{
-			FlxTween.tween(object, {angle: value}, time, {
-				ease: ForeverTools.getEaseFromString(ease),
-				onComplete: function(tween:FlxTween)
-				{
-					completeTween(tweenID);
-				}
-			});
-		});
-
-		setVar('doTweenZoom', function(tweenID:String, object:Dynamic, value:Float, time:Float, ease:String)
-		{
-			FlxTween.tween(object, {zoom: value}, time, {
-				ease: ForeverTools.getEaseFromString(ease),
-				onComplete: function(tween:FlxTween)
-				{
-					completeTween(tweenID);
-				}
-			});
-		});
-
-		setVar('doTweenColor', function(tweenID:String, object:Dynamic, value:Float, time:Float, ease:String)
-		{
-			FlxTween.tween(object, {alpha: value}, time, {
-				ease: ForeverTools.getEaseFromString(ease),
-				onComplete: function(tween:FlxTween)
-				{
-					completeTween(tweenID);
-				}
-			});
-		});
 	}
 
 	function completeTween(id:String)
@@ -2858,6 +2599,42 @@ class PlayState extends MusicBeatState
 		setVar('spawnVideoSprite', function(key:String, x:Float, y:Float, cam:Dynamic)
 		{
 			spawnVideoSprite(key, x, y, cam);
+		});
+
+		setVar('setProperty', function(key:String, value:Dynamic)
+		{
+			var dotList:Array<String> = key.split('.');
+
+			if (dotList.length > 1)
+			{
+				var reflector:Dynamic = Reflect.getProperty(this, dotList[0]);
+
+				for (i in 1...dotList.length - 1)
+					reflector = Reflect.getProperty(reflector, dotList[i]);
+
+				Reflect.setProperty(reflector, dotList[dotList.length - 1], value);
+				return true;
+			}
+
+			Reflect.setProperty(this, key, value);
+			return true;
+		});
+
+		setVar('getProperty', function(variable:String)
+		{
+			var dotList:Array<String> = variable.split('.');
+
+			if (dotList.length > 1)
+			{
+				var reflector:Dynamic = Reflect.getProperty(this, dotList[0]);
+
+				for (i in 1...dotList.length - 1)
+					reflector = Reflect.getProperty(reflector, dotList[i]);
+
+				return Reflect.getProperty(reflector, dotList[dotList.length - 1]);
+			}
+
+			return Reflect.getProperty(this, variable);
 		});
 	}
 }

@@ -17,7 +17,6 @@ import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.text.FlxText;
 import flixel.util.FlxColor;
 import flixel.util.FlxGradient;
-import funkin.Boyfriend;
 import funkin.Character;
 import funkin.Stage;
 import openfl.events.Event;
@@ -345,7 +344,7 @@ class CharacterDebug extends MusicBeatState
 				No animations found
 				\nplease make sure your ${curCharacter}.$fileExt script
 				has the offsets properly set up
-				\n\nHINT: addOffset(\'animationName\', offsetX, offsetY);
+				\n\nTry: addOffset(\'animationName\', offsetX, offsetY);
 				', 15);
 			text.setFormat(Paths.font('vcr.ttf'), 18, FlxColor.WHITE);
 			text.setBorderStyle(OUTLINE, FlxColor.BLACK, 1.5);

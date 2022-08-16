@@ -7,14 +7,14 @@ import flixel.FlxObject;
 import flixel.math.FlxPoint;
 import flixel.util.FlxColor;
 import flixel.util.FlxTimer;
-import funkin.Boyfriend;
+import funkin.Character;
 import states.*;
 import states.menus.*;
 
 class GameOverSubstate extends MusicBeatSubstate
 {
 	//
-	var bf:Boyfriend;
+	var bf:Character;
 	var camFollow:FlxObject;
 	var volume:Float = 1;
 
@@ -39,7 +39,7 @@ class GameOverSubstate extends MusicBeatSubstate
 
 		Conductor.songPosition = 0;
 
-		bf = new Boyfriend(x, y, character);
+		bf = new Character(x, y, character);
 		add(bf);
 
 		PlayState.boyfriend.destroy();

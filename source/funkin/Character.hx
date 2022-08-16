@@ -82,6 +82,8 @@ class Character extends FNFSprite
 
 	public var idleSuffix:String = '';
 
+	public var stunned:Bool = false;
+
 	// FOR PSYCH COMPATIBILITY
 	public var danceIdle:Bool = false; // Character use "danceLeft" and "danceRight" instead of "idle"
 	public var skipDance:Bool = false;
@@ -182,6 +184,25 @@ class Character extends FNFSprite
 			{
 				dance();
 				holdTimer = 0;
+			}
+		}
+		else if (!debugMode && !specialAnim && animation.curAnim != null)
+		{
+			if (animation.curAnim.name.startsWith('sing'))
+			{
+				holdTimer += elapsed;
+			}
+			else
+				holdTimer = 0;
+
+			if (animation.curAnim.name.endsWith('miss') && animation.curAnim.finished && !debugMode)
+			{
+				playAnim('idle', true, false, 10);
+			}
+
+			if (animation.curAnim.name == 'firstDeath' && animation.curAnim.finished)
+			{
+				playAnim('deathLoop');
 			}
 		}
 
