@@ -7,6 +7,7 @@ import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.FlxState;
 import flixel.group.FlxGroup.FlxTypedGroup;
+import flixel.group.FlxSpriteGroup;
 import flixel.math.FlxMath;
 import flixel.math.FlxRect;
 import flixel.tweens.FlxEase;
@@ -132,47 +133,44 @@ class UIStaticArrow extends FlxSprite
 				stringSect = 'red';
 		}
 		return stringSect;
-		//
 	}
 }
 
-class Strumline extends FlxTypedGroup<FlxBasic>
+class Strumline extends FlxSpriteGroup // changing this to a sprite group for testing purposes;
 {
-	//
-	public var receptors:FlxTypedGroup<UIStaticArrow>;
-	public var splashNotes:FlxTypedGroup<NoteSplash>;
-	public var notesGroup:FlxTypedGroup<Note>;
-	public var holdsGroup:FlxTypedGroup<Note>;
-	public var allNotes:FlxTypedGroup<Note>;
+	public var receptors:FlxTypedSpriteGroup<UIStaticArrow>;
+	public var splashNotes:FlxTypedSpriteGroup<NoteSplash>;
+	public var notesGroup:FlxTypedSpriteGroup<Note>;
+	public var holdsGroup:FlxTypedSpriteGroup<Note>;
+	public var allNotes:FlxTypedSpriteGroup<Note>;
 
 	public var autoplay:Bool = true;
 	public var character:Character;
 	public var playState:PlayState;
 	public var displayJudgements:Bool = false;
 
-	public function new(x:Float = 0, playState:PlayState, ?character:Character, ?displayJudgements:Bool = true, ?autoplay:Bool = true,
-			?noteSplashes:Bool = false, ?keyAmount:Int = 4, ?downscroll:Bool = false, ?parent:Strumline)
+	public function new(xPos:Float = 0, yPos:Float = 0, playState:PlayState, ?character:Character, ?displayJudgements:Bool = true, ?autoplay:Bool = true,
+			?noteSplashes:Bool = false, ?keyAmount:Int = 4, ?parent:Strumline)
 	{
 		super();
-
-		receptors = new FlxTypedGroup<UIStaticArrow>();
-		splashNotes = new FlxTypedGroup<NoteSplash>();
-		notesGroup = new FlxTypedGroup<Note>();
-		holdsGroup = new FlxTypedGroup<Note>();
-
-		allNotes = new FlxTypedGroup<Note>();
 
 		this.autoplay = autoplay;
 		this.character = character;
 		this.playState = playState;
 		this.displayJudgements = displayJudgements;
 
+		receptors = new FlxTypedSpriteGroup<UIStaticArrow>();
+		splashNotes = new FlxTypedSpriteGroup<NoteSplash>();
+		notesGroup = new FlxTypedSpriteGroup<Note>();
+		holdsGroup = new FlxTypedSpriteGroup<Note>();
+		allNotes = new FlxTypedSpriteGroup<Note>();
+
 		for (i in 0...keyAmount)
 		{
-			var receptor:UIStaticArrow = ForeverAssets.generateUIArrows(-25 + x, 25 + (downscroll ? FlxG.height - 200 : 0), i, PlayState.assetModifier);
+			var receptor:UIStaticArrow = ForeverAssets.generateUIArrows(-25 + xPos, 25 + yPos, i, PlayState.assetModifier);
 			receptor.ID = i;
 
-			receptor.x -= ((keyAmount / 2) * UIStaticArrow.swagWidth);
+			receptor.x -= ((keyAmount - 2) * UIStaticArrow.swagWidth);
 			receptor.x += (UIStaticArrow.swagWidth * i);
 			receptors.add(receptor);
 
@@ -211,7 +209,6 @@ class Strumline extends FlxTypedGroup<FlxBasic>
 
 	public function push(newNote:Note)
 	{
-		//
 		var chosenGroup = (newNote.isSustainNote ? holdsGroup : notesGroup);
 		chosenGroup.add(newNote);
 		allNotes.add(newNote);

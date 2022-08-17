@@ -5,7 +5,7 @@ function loadAnimations()
     addByPrefix('deathConfirm', "BF Dead confirm", 24, false);
 
     if (isPlayer)
-        set('flipX', false);
-    else
         set('flipX', true);
+    else
+        set('flipX', false);
 }

@@ -15,6 +15,7 @@ import flixel.FlxSubState;
 import flixel.OverlayShader;
 import flixel.addons.transition.FlxTransitionableState;
 import flixel.group.FlxGroup.FlxTypedGroup;
+import flixel.group.FlxSpriteGroup.FlxTypedSpriteGroup;
 import flixel.input.keyboard.FlxKey;
 import flixel.math.FlxMath;
 import flixel.math.FlxPoint;
@@ -371,23 +372,27 @@ class PlayState extends MusicBeatState
 
 		FlxG.worldBounds.set(0, 0, FlxG.width, FlxG.height);
 
-		// initialize ui elements
 		startingSong = true;
 		startedCountdown = true;
 
-		//
-		var placement = (FlxG.width / 2);
-		dadStrums = new Strumline(placement - (FlxG.width / 4), this, dadOpponent, false, true, false, 4, Init.trueSettings.get('Downscroll'));
+		// initialize ui elements
+		var bfPlacement = FlxG.width / 2 + (!Init.trueSettings.get('Centered Notefield') ? FlxG.width / 4 : 0);
+		var dadPlacement = (FlxG.width / 2) - FlxG.width / 4;
+
+		var strumVertPos = (Init.trueSettings.get('Downscroll') ? FlxG.height - 200 : 0);
+
+		dadStrums = new Strumline(dadPlacement, strumVertPos, this, dadOpponent, false, true, false, 4);
+		bfStrums = new Strumline(bfPlacement, strumVertPos, this, boyfriend, true, false, true, 4);
+
 		dadStrums.visible = !Init.trueSettings.get('Centered Notefield');
-		bfStrums = new Strumline(placement + (!Init.trueSettings.get('Centered Notefield') ? (FlxG.width / 4) : 0), this, boyfriend, true, false, true, 4,
-			Init.trueSettings.get('Downscroll'));
 
 		strumLines.add(dadStrums);
 		strumLines.add(bfStrums);
 
 		// strumline camera setup
 		strumHUD = [];
-		for (i in 0...strumLines.length)
+
+		/*for (i in 0...strumLines.length)
 		{
 			// generate a new strum camera
 			strumHUD[i] = new FlxCamera();
@@ -398,7 +403,9 @@ class PlayState extends MusicBeatState
 			FlxG.cameras.add(strumHUD[i], false);
 			// set this strumline's camera to the designated camera
 			strumLines.members[i].cameras = [strumHUD[i]];
-		}
+		}*/
+
+		strumLines.cameras = [camHUD];
 
 		add(strumLines);
 
@@ -1476,7 +1483,7 @@ class PlayState extends MusicBeatState
 		}
 	}
 
-	function strumCameraRoll(cStrum:FlxTypedGroup<UIStaticArrow>, mustHit:Bool)
+	function strumCameraRoll(cStrum:FlxTypedSpriteGroup<UIStaticArrow>, mustHit:Bool)
 	{
 		if (!Init.trueSettings.get('No Camera Note Movement'))
 		{
@@ -2586,10 +2593,6 @@ class PlayState extends MusicBeatState
 		setVar('camHUD', camHUD);
 		setVar('strumHUD', strumHUD);
 		setVar('dialogueHUD', dialogueHUD);
-
-		setVar('scriptDebugMode', scriptDebugMode);
-		setVar('debugMode', scriptDebugMode);
-		setVar('haxeDebugMode', scriptDebugMode);
 
 		setVar('playVideo', function(key:String)
 		{

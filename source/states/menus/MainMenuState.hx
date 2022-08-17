@@ -127,84 +127,87 @@ class MainMenuState extends MusicBeatState
 
 	override function update(elapsed:Float)
 	{
-		if (controls.BACK || FlxG.mouse.justPressedRight)
+		if (!selectedSomethin)
 		{
-			FlxG.sound.play(Paths.sound('cancelMenu'), 0.4);
-			Main.switchState(this, new TitleState());
-		}
-
-		#if MODS_ALLOWED
-		if (controls.RESET)
-		{
-			FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
-			Main.switchState(this, new ModsMenuState());
-		}
-		#end
-
-		var controlArray:Array<Bool> = [
-			controls.UI_UP,
-			controls.UI_DOWN,
-			controls.UI_UP_P,
-			controls.UI_DOWN_P,
-			FlxG.mouse.wheel == 1,
-			FlxG.mouse.wheel == -1
-		];
-		if ((controlArray.contains(true)) && (!selectedSomethin) && (tweenFinished))
-		{
-			for (i in 0...controlArray.length)
+			if (controls.BACK || FlxG.mouse.justPressedRight)
 			{
-				if (controlArray[i] == true)
-				{
-					if (i > 1)
-					{
-						if (i == 2 || i == 4)
-							curSelected--;
-						else if (i == 3 || i == 5)
-							curSelected++;
+				FlxG.sound.play(Paths.sound('cancelMenu'), 0.4);
+				Main.switchState(this, new TitleState());
+			}
 
-						FlxG.sound.play(Paths.sound('scrollMenu'));
+			#if MODS_ALLOWED
+			if (controls.RESET)
+			{
+				FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
+				Main.switchState(this, new ModsMenuState());
+			}
+			#end
+
+			var controlArray:Array<Bool> = [
+				controls.UI_UP,
+				controls.UI_DOWN,
+				controls.UI_UP_P,
+				controls.UI_DOWN_P,
+				FlxG.mouse.wheel == 1,
+				FlxG.mouse.wheel == -1
+			];
+			if ((controlArray.contains(true)) && (tweenFinished))
+			{
+				for (i in 0...controlArray.length)
+				{
+					if (controlArray[i] == true)
+					{
+						if (i > 1)
+						{
+							if (i == 2 || i == 4)
+								curSelected--;
+							else if (i == 3 || i == 5)
+								curSelected++;
+
+							FlxG.sound.play(Paths.sound('scrollMenu'));
+						}
+						if (curSelected < 0)
+							curSelected = optionShit.length - 1;
+						else if (curSelected >= optionShit.length)
+							curSelected = 0;
 					}
-					if (curSelected < 0)
-						curSelected = optionShit.length - 1;
-					else if (curSelected >= optionShit.length)
-						curSelected = 0;
 				}
 			}
-		}
 
-		if ((!selectedSomethin) && (tweenFinished) && (controls.ACCEPT || FlxG.mouse.justPressed))
-		{
-			//
-			selectedSomethin = true;
-			FlxG.sound.play(Paths.sound('confirmMenu'));
-
-			var flickerVal:Float = 0.06;
-
-			if (Init.trueSettings.get('Disable Flashing Lights'))
-				flickerVal = 1;
-			if (!Init.trueSettings.get('Disable Flashing Lights'))
-				FlxFlicker.flicker(magenta, 0.8, 0.1, false);
-
-			menuItems.forEach(function(spr:FlxSprite)
+			if ((tweenFinished) && (controls.ACCEPT || FlxG.mouse.justPressed))
 			{
-				if (curSelected != spr.ID)
+				//
+				selectedSomethin = true;
+				FlxG.sound.play(Paths.sound('confirmMenu'));
+
+				var flickerVal:Float = 0.06;
+
+				if (Init.trueSettings.get('Disable Flashing Lights'))
+					flickerVal = 1;
+				if (!Init.trueSettings.get('Disable Flashing Lights'))
+					FlxFlicker.flicker(magenta, 0.8, 0.1, false);
+
+				menuItems.forEach(function(spr:FlxSprite)
 				{
-					FlxTween.tween(spr, {alpha: 0, x: FlxG.width * 2}, 0.4, {
-						ease: FlxEase.quadOut,
-						onComplete: function(twn:FlxTween)
-						{
-							spr.kill();
-						}
-					});
-				}
-				else
-				{
-					FlxFlicker.flicker(spr, 1, flickerVal, false, false, function(flick:FlxFlicker)
+					if (curSelected != spr.ID)
 					{
-						confirmSelection(optionShit[Math.floor(curSelected)]);
-					});
-				}
-			});
+						FlxTween.tween(spr, {alpha: 0, x: FlxG.width * 2}, 0.4, {
+							ease: FlxEase.quadOut,
+							onComplete: function(twn:FlxTween)
+							{
+								spr.kill();
+							}
+						});
+					}
+					else
+					{
+						FlxFlicker.flicker(spr, 1, flickerVal, false, false, function(flick:FlxFlicker)
+						{
+							confirmSelection(optionShit[Math.floor(curSelected)]);
+						});
+					}
+				});
+			}
 		}
 
 		if (Math.floor(curSelected) != lastCurSelected)
