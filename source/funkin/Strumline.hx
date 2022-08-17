@@ -170,7 +170,7 @@ class Strumline extends FlxSpriteGroup
 			var receptor:UIStaticArrow = ForeverAssets.generateUIArrows(-25 + xPos, 25 + yPos, i, PlayState.assetModifier);
 			receptor.ID = i;
 
-			receptor.x -= ((keyAmount - 2) * UIStaticArrow.swagWidth);
+			receptor.x -= ((keyAmount / 2) * UIStaticArrow.swagWidth);
 			receptor.x += (UIStaticArrow.swagWidth * i);
 			receptors.add(receptor);
 
