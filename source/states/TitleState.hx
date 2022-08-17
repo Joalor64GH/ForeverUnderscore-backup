@@ -238,7 +238,7 @@ class TitleState extends MusicBeatState
 				titleText.alpha = FlxMath.lerp(titleTextAlphas[0], titleTextAlphas[1], timer);
 			}
 
-			if (FlxG.keys.justPressed.ESCAPE)
+			if (FlxG.keys.justPressed.ESCAPE && !pressedEnter)
 			{
 				FlxG.sound.music.fadeOut(0.5);
 				FlxG.camera.fade(FlxColor.BLACK, 0.5, false, false);
