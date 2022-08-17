@@ -136,7 +136,7 @@ class UIStaticArrow extends FlxSprite
 	}
 }
 
-class Strumline extends FlxSpriteGroup // changing this to a sprite group for testing purposes;
+class Strumline extends FlxSpriteGroup
 {
 	public var receptors:FlxTypedSpriteGroup<UIStaticArrow>;
 	public var splashNotes:FlxTypedSpriteGroup<NoteSplash>;
