@@ -215,7 +215,6 @@ class PlayState extends MusicBeatState
 		Conductor.resetMusic();
 		if (FlxG.sound.music != null)
 			FlxG.sound.music.stop();
-		GameOverSubstate.resetGameOver();
 
 		// create the game camera
 		camGame = new FlxCamera();
@@ -244,9 +243,6 @@ class PlayState extends MusicBeatState
 		Conductor.mapBPMChanges(SONG);
 		Conductor.changeBPM(SONG.bpm);
 
-		//
-
-		// NOTE: scripts need to be moved over to a separate class for setting up and such
 		setupScripts();
 
 		callFunc('onCreate', null);
@@ -255,7 +251,8 @@ class PlayState extends MusicBeatState
 		// cache shit
 		displayRating('sick', 'early', true);
 		popUpCombo(true);
-		//
+
+		GameOverSubstate.resetGameOver();
 
 		// set up a class for the stage type in here afterwards
 		curStage = "";
@@ -543,7 +540,7 @@ class PlayState extends MusicBeatState
 				else
 				{ // else just call bad notes
 					ghostMisses++;
-					if (!Init.trueSettings.get('Ghost Tapping'))
+					if (!Init.trueSettings.get('Ghost Tapping') && canMiss)
 						missNoteCheck(true, key, boyfriend, true);
 				}
 
@@ -913,7 +910,6 @@ class PlayState extends MusicBeatState
 	function controllerInput()
 	{
 		var justPressArray:Array<Bool> = [controls.LEFT_P, controls.DOWN_P, controls.UP_P, controls.RIGHT_P];
-
 		var justReleaseArray:Array<Bool> = [controls.LEFT_R, controls.DOWN_R, controls.UP_R, controls.RIGHT_R];
 
 		if (justPressArray.contains(true))
@@ -1061,7 +1057,8 @@ class PlayState extends MusicBeatState
 									note.tooLate = true;
 
 								Conductor.songVocals.volume = 0;
-								missNoteCheck((Init.trueSettings.get('Ghost Tapping')) ? true : false, daNote.noteData, boyfriend, true);
+								if (canMiss)
+									missNoteCheck((Init.trueSettings.get('Ghost Tapping')) ? true : false, daNote.noteData, boyfriend, true);
 								// ambiguous name
 								Timings.updateAccuracy(0);
 							}
@@ -1080,7 +1077,8 @@ class PlayState extends MusicBeatState
 
 										if (!breakFromLate)
 										{
-											missNoteCheck((Init.trueSettings.get('Ghost Tapping')) ? true : false, daNote.noteData, boyfriend, true);
+											if (canMiss)
+												missNoteCheck((Init.trueSettings.get('Ghost Tapping')) ? true : false, daNote.noteData, boyfriend, true);
 											for (note in parentNote.childrenNotes)
 												note.tooLate = true;
 										}
@@ -1332,17 +1330,14 @@ class PlayState extends MusicBeatState
 	{
 		callFunc('missNoteCheck', null);
 
-		if (canMiss)
+		if (includeAnimation)
 		{
-			if (includeAnimation)
-			{
-				var stringDirection:String = UIStaticArrow.getArrowFromNumber(direction);
+			var stringDirection:String = UIStaticArrow.getArrowFromNumber(direction);
 
-				FlxG.sound.play(Paths.soundRandom('missnote', 1, 3), FlxG.random.float(0.1, 0.2));
-				character.playAnim('sing' + stringDirection.toUpperCase() + 'miss', lockMiss);
-			}
-			decreaseCombo(popMiss);
+			FlxG.sound.play(Paths.soundRandom('missnote', 1, 3), FlxG.random.float(0.1, 0.2));
+			character.playAnim('sing' + stringDirection.toUpperCase() + 'miss', lockMiss);
 		}
+		decreaseCombo(popMiss);
 	}
 
 	public function characterPlayAnimation(coolNote:Note, character:Character)
@@ -1701,7 +1696,7 @@ class PlayState extends MusicBeatState
 					combo = 0;
 				combo += 1;
 			}
-			else
+			else if (canMiss)
 				missNoteCheck(true, direction, character, false, true);
 		}
 	}
@@ -2044,9 +2039,6 @@ class PlayState extends MusicBeatState
 
 		// set ranking
 		rank = Timings.returnScoreRating().toUpperCase();
-
-		// FlxG.resizeWindow(1280, 720);
-		// FlxG.scaleMode = new RatioScaleMode();
 
 		canPause = false;
 		endingSong = true;

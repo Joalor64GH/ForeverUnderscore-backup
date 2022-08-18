@@ -6,7 +6,7 @@ function loadAnimations()
 
     addOffset('firstDeath', 0, 0);
     addOffset('deathLoop', -30, -10);
-    addOffset('deathConfirm', -30, -10);
+    addOffset('deathConfirm', 3, 0);
 
     setGraphicSize(get('width') * 6);
     set('antialiasing', false);
