@@ -1,3 +1,34 @@
+# [Forever Engine Underscore](https://github.com/BeastlyGhost/Forever-Engine-Underscore)
+
+A custom made Forever Engine Build which aims to make things a little bit easier
+----------------------------------------------
+
+----------------------------------------------
+Underscore tries to take on the challenge of making Forever Engine easy by adding tools such as a scripting system, it's currently on a solo development, but already contains features that can make anyone's life easier
+
+----------------------------------------------
+Underscore Features! -
+Custom Notetypes,
+Scripted Stages,
+Scripted Characters,
+Custom Credits Menu with Customizable Credits via JSON,
+Psych Engine Characters Support,
+Strumline Manipulation (positions, angles, etc),
+Custom Dialogue Text Support,
+Upcoming Revamped Chart Editor, Press SHIFT+7 on a Song or in Freeplay for a Preview!,
+and more to come in the future!
+
+----------------------------------------------
+if you got any questions as to how Underscore works, feel free to DM me on Discord or Comment on Twitter, this is mostly a solo project that I hope people will enjoy using
+
+----------------------------------------------
+Discord: [My DMs](discordapp.com/users/597124141530742805)
+Twitter: [My Profile](https://twitter.com/Fan_de_RPG)
+
+down here is the original Forever Engine readme, if you did read everything so far, I'd recommend also checking base forever out, it's what this project is based on after all!
+
+----------------------------------------------
+
 # [Forever Engine](https://github.com/Yoshubs/FunkinForever)
 An open-source, quality of life and performance driven [Friday Night Funkin'](https://www.newgrounds.com/portal/view/770371) mod engine!
 ----------------------------------------------
