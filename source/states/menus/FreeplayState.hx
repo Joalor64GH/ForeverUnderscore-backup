@@ -166,7 +166,6 @@ class FreeplayState extends MusicBeatState
 
 	public function addSong(songName:String, weekNum:Int, songCharacter:String, songColor:FlxColor)
 	{
-		///*
 		var coolDiffs = [];
 		for (i in CoolUtil.baseDifficulties)
 			if (FileSystem.exists(Paths.songJson(songName, songName + '-' + i))
@@ -174,7 +173,7 @@ class FreeplayState extends MusicBeatState
 				coolDiffs.push(i);
 
 		if (coolDiffs.length > 0)
-		{ //*/
+		{
 			songs.push(new SongMetadata(songName, weekNum, songCharacter, songColor));
 			existingDifficulties.push(coolDiffs);
 		}
