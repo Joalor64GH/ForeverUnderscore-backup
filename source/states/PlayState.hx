@@ -610,8 +610,8 @@ class PlayState extends MusicBeatState
 	{
 		super.update(elapsed);
 
-		callFunc('onUpdate', [elapsed]);
-		callFunc('update', [elapsed]);
+		callFunc('onUpdate', elapsed);
+		callFunc('update', elapsed);
 
 		if (Init.trueSettings.get('Stage Opacity') > 0)
 			stageBuild.stageUpdateConstant(elapsed, boyfriend, gf, dadOpponent);
@@ -1271,7 +1271,7 @@ class PlayState extends MusicBeatState
 				FlxG.sound.play(Paths.sound('hitsounds/$changeableSound/hit'), Init.trueSettings.get('Hitsound Volume'));
 			}
 
-			callFunc('goodNoteHit', [coolNote, character]);
+			callFunc('goodNoteHit', coolNote);
 
 			coolNote.wasGoodHit = true;
 			Conductor.songVocals.volume = 1;
@@ -1849,8 +1849,8 @@ class PlayState extends MusicBeatState
 
 		Conductor.resyncBySteps();
 
-		callFunc('onStepHit', [curStep]);
-		callFunc('stepHit', [curStep]);
+		callFunc('onStepHit', curStep);
+		callFunc('stepHit', curStep);
 	}
 
 	public var characterArray:Array<Character> = [];
@@ -1976,8 +1976,8 @@ class PlayState extends MusicBeatState
 		if (Init.trueSettings.get('Stage Opacity') > 0)
 			stageBuild.stageUpdate(curBeat, boyfriend, gf, dadOpponent);
 
-		callFunc('onBeatHit', [curBeat]);
-		callFunc('beatHit', [curBeat]);
+		callFunc('onBeatHit', curBeat);
+		callFunc('beatHit', curBeat);
 	}
 
 	//
@@ -2447,7 +2447,7 @@ class PlayState extends MusicBeatState
 					}
 			}
 
-			callFunc('onCountdownTick', [swagCounter]);
+			callFunc('onCountdownTick', swagCounter);
 			swagCounter += 1;
 		}, 5);
 	}
@@ -2459,7 +2459,7 @@ class PlayState extends MusicBeatState
 		return super.add(Object);
 	}
 
-	public function callFunc(key:String, value:Array<Dynamic>)
+	public function callFunc(key:String, value:Dynamic)
 	{
 		for (i in scriptArray)
 		{
@@ -2536,10 +2536,7 @@ class PlayState extends MusicBeatState
 	{
 		callFunc('onCompleteTween', null);
 		callFunc('completeTween', null);
-		
 		// add your custom actions for finishing a tween here;
-
-		return;
 	}
 
 	function callPlayStateVars()

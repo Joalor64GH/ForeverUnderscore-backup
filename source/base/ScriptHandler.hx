@@ -209,66 +209,84 @@ class ScriptFuncs extends PlayState
 
 		PlayState.contents.setVar('doTweenX', function(tweenID:String, object:Dynamic, value:Float, time:Float, ease:String)
 		{
-			FlxTween.tween(object, {x: value}, time, {
+			var leTween:FlxTween;
+			
+			leTween = FlxTween.tween(object, {x: value}, time, {
 				ease: ForeverTools.getEaseFromString(ease),
 				onComplete: function(tween:FlxTween)
 				{
 					PlayState.contents.completeTween(tweenID);
+					leTween = null;
 				}
 			});
 		});
 
 		PlayState.contents.setVar('doTweenY', function(tweenID:String, object:Dynamic, value:Float, time:Float, ease:String)
 		{
-			FlxTween.tween(object, {y: value}, time, {
+			var leTween:FlxTween;
+
+			leTween = FlxTween.tween(object, {y: value}, time, {
 				ease: ForeverTools.getEaseFromString(ease),
 				onComplete: function(tween:FlxTween)
 				{
 					PlayState.contents.completeTween(tweenID);
+					leTween = null;
 				}
 			});
 		});
 
 		PlayState.contents.setVar('doTweenAlpha', function(tweenID:String, object:Dynamic, value:Float, time:Float, ease:String)
 		{
-			FlxTween.tween(object, {alpha: value}, time, {
+			var leTween:FlxTween;
+
+			leTween = FlxTween.tween(object, {alpha: value}, time, {
 				ease: ForeverTools.getEaseFromString(ease),
 				onComplete: function(tween:FlxTween)
 				{
 					PlayState.contents.completeTween(tweenID);
+					leTween = null;
 				}
 			});
 		});
 
 		PlayState.contents.setVar('doTweenAngle', function(tweenID:String, object:Dynamic, value:Float, time:Float, ease:String)
 		{
-			FlxTween.tween(object, {angle: value}, time, {
+			var leTween:FlxTween;
+
+			leTween = FlxTween.tween(object, {angle: value}, time, {
 				ease: ForeverTools.getEaseFromString(ease),
 				onComplete: function(tween:FlxTween)
 				{
 					PlayState.contents.completeTween(tweenID);
+					leTween = null;
+				}
+			});
+		});
+
+		PlayState.contents.setVar('doTweenDirection', function(tweenID:String, object:Dynamic, value:Float, time:Float, ease:String)
+		{
+			var leTween:FlxTween;
+
+			leTween = FlxTween.tween(object, {direction: value}, time, {
+				ease: ForeverTools.getEaseFromString(ease),
+				onComplete: function(tween:FlxTween)
+				{
+					PlayState.contents.completeTween(tweenID);
+					leTween = null;
 				}
 			});
 		});
 
 		PlayState.contents.setVar('doTweenZoom', function(tweenID:String, object:Dynamic, value:Float, time:Float, ease:String)
 		{
-			FlxTween.tween(object, {zoom: value}, time, {
-				ease: ForeverTools.getEaseFromString(ease),
-				onComplete: function(tween:FlxTween)
-				{
-					PlayState.contents.completeTween(tweenID);
-				}
-			});
-		});
+			var leTween:FlxTween;
 
-		PlayState.contents.setVar('doTweenColor', function(tweenID:String, object:Dynamic, value:Float, time:Float, ease:String)
-		{
-			FlxTween.tween(object, {alpha: value}, time, {
+			leTween = FlxTween.tween(object, {zoom: value}, time, {
 				ease: ForeverTools.getEaseFromString(ease),
 				onComplete: function(tween:FlxTween)
 				{
 					PlayState.contents.completeTween(tweenID);
+					leTween = null;
 				}
 			});
 		});
