@@ -42,17 +42,6 @@ class StoryMenuState extends MusicBeatState
 		['tankman', 'bf', 'gf']
 	];
 
-	public static var weekImages:Array<Dynamic> = [
-		["week0"],
-		["week1"],
-		["week2"],
-		["week3"],
-		["week4"],
-		["week5"],
-		["week6"],
-		["week7"]
-	];
-
 	var txtWeekTitle:FlxText;
 
 	var curWeek:Int = 0;

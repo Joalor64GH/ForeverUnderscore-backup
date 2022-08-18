@@ -36,7 +36,7 @@ class WeekParser
 	public static var weekArray:Array<Dynamic> = [];
 
 	public static function loadWeeks(push:Bool = true)
-	{	
+	{
 		if (push)
 		{
 			parseJson();
