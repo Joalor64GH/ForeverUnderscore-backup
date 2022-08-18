@@ -29,7 +29,6 @@ import funkin.Note.NoteType;
 import funkin.Strumline.UIStaticArrow;
 import funkin.ui.*;
 import haxe.Json;
-import lime.app.Application;
 import openfl.events.Event;
 import openfl.events.IOErrorEvent;
 import openfl.geom.ColorTransform;
@@ -1016,7 +1015,7 @@ class ChartingState extends MusicBeatState
 			+ '\n';
 
 		// fallback text in case the game explodes idk
-		bpmTxt = new FlxText(5, FlxG.height - 30, 0, "FOREVER ENGINE v" + Application.current.meta.get('version'), 16);
+		bpmTxt = new FlxText(5, FlxG.height - 30, 0, "FE UNDERSCORE v" + Main.underscoreVersion, 16);
 		bpmTxt.setFormat(Paths.font("vcr.ttf"), 20, FlxColor.WHITE, LEFT);
 		bpmTxt.scrollFactor.set();
 		add(bpmTxt);

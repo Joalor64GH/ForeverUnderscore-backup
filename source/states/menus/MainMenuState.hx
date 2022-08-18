@@ -113,14 +113,15 @@ class MainMenuState extends MusicBeatState
 
 		updateSelection();
 
-		var versionShit:FlxText = new FlxText(5, FlxG.height
-			- 18, 0,
-			"Forever Engine v"
-			+ Application.current.meta.get('version')
-			+ '_'
-			+ Main.underscoreVersion.replace(".", ""), 12);
+		var versionShit:FlxText = new FlxText(5, FlxG.height - 38, 0, "Friday Night Funkin v" + Application.current.meta.get('version'), 12);
 		versionShit.scrollFactor.set();
-		versionShit.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		versionShit.setFormat(Paths.font('vcr.ttf'), 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		add(versionShit);
+
+		var versionShit:FlxText = new FlxText(5, FlxG.height - 18, 0, "Forever Engine v" + Main.foreverVersion + " - Underscore v" + Main.underscoreVersion,
+			12);
+		versionShit.scrollFactor.set();
+		versionShit.setFormat(Paths.font('vcr.ttf'), 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		add(versionShit);
 	}
 

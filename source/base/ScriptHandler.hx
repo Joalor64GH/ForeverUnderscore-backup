@@ -42,8 +42,9 @@ class ScriptFuncs extends PlayState
 {
 	public static function callBaseVars()
 	{
-		PlayState.contents.setVar('gameVersion', Application.current.meta.get('version'));
-		PlayState.contents.setVar('subVersion', Main.underscoreVersion);
+		PlayState.contents.setVar('fnfVer', Application.current.meta.get('version'));
+		PlayState.contents.setVar('foreverVer', Main.foreverVersion);
+		PlayState.contents.setVar('underscoreVer', Main.underscoreVersion);
 
 		// Timings.hx values
 		PlayState.contents.setVar('comboRating', Timings.comboDisplay);

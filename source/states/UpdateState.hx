@@ -35,7 +35,7 @@ class UpdateState extends MusicBeatState
 			\nPress ENTER to Update\nfrom "
 			+ Main.underscoreVersion
 			+ ' (FE v'
-			+ Application.current.meta.get('version')
+			+ Main.foreverVersion
 			+ ') to '
 			+ ForeverTools.updateVersion
 			+ '\nPress ESCAPE to ignore this message.

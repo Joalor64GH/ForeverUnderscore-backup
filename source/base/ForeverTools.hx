@@ -74,7 +74,7 @@ class ForeverTools
 			http.onData = function(data:String)
 			{
 				updateVersion = data.split('\n')[0].trim();
-				var curVersion:String = Main.underscoreVersion.trim() + ' (FE v' + Application.current.meta.get('version') + ')';
+				var curVersion:String = Main.underscoreVersion.trim() + ' (FE v' + Main.foreverVersion + ')';
 				trace('Your Version: ' + curVersion + ' - Latest Version: ' + updateVersion);
 
 				if (updateVersion != curVersion)

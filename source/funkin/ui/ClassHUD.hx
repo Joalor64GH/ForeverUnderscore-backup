@@ -52,7 +52,7 @@ class ClassHUD extends FlxTypedGroup<FlxBasic>
 
 	public var infoDisplay:String = CoolUtil.dashToSpace(PlayState.SONG.song);
 	public var diffDisplay:String = CoolUtil.difficultyFromNumber(PlayState.storyDifficulty);
-	public var engineDisplay:String = "FOREVER ENGINE v" + Application.current.meta.get('version') + '_' + Main.underscoreVersion.replace(".", "");
+	public var engineDisplay:String = "FE UNDERSCORE v" + Main.underscoreVersion;
 
 	public var autoplayMark:FlxText;
 	public var autoplaySine:Float = 0;

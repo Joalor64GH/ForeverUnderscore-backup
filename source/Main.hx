@@ -38,6 +38,7 @@ class Main extends Sprite
 	public static var mainClassState:Class<FlxState> = Init; // Determine the main class state of the game
 	public static var framerate:Int = 120; // How many frames per second the game should run at.
 
+	public static var foreverVersion:String = '0.3.1';
 	public static var underscoreVersion:String = '0.2.1';
 
 	var zoom:Float = -1; // If -1, zoom is automatically calculated to fit the window dimensions.
@@ -244,8 +245,8 @@ class Main extends Sprite
 
 		path = "crash/" + "FE_" + dateNow + ".txt";
 
-		errMsg = "Forever Version: " + Lib.application.meta["version"] + "\n";
-		errMsg += "Underscore Version: " + Main.underscoreVersion + "\n";
+		errMsg = "Friday Night Funkin' v" + Lib.application.meta["version"] + "\n";
+		errMsg += "Forever Engine Underscore v" + Main.underscoreVersion + "\n";
 
 		for (stackItem in callStack)
 		{
