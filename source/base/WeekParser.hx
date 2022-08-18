@@ -12,7 +12,7 @@ typedef WeekDataDef =
 {
 	var songs:Array<String>; // array of songs, song colors, song character icons, and week name [refer to the gameWeeks variable];
 	var icons:Array<String>; // character icons that will show up on freeplay (e.g: dad, spooky, tankman);
-	var colors:Array<Float>; // colors for your week on freeplay
+	var colors:Array<Array<Float>>; // colors for your week on freeplay
 	var name:Null<String>; // image graphic for the week (e.g: "week1");
 }
 
@@ -98,7 +98,8 @@ class WeekParser
 		for (icon in 0...weekData.icons.length)
 			iconArray.push(weekData.icons[icon]);
 
-		colorArray.push(FlxColor.fromRGB(weekData.colors[0], weekData.colors[1], weekData.colors[2]));
+		for (color in 0...weekData.colors.length)
+			colorArray.push(FlxColor.fromRGB(weekData.colors[color][0], weekData.colors[color][1], weekData.colors[color][2]));
 
 		weekArray.push(songArray);
 		weekArray.push(iconArray);

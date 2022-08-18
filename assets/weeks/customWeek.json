@@ -1,8 +1,8 @@
 {
-	"songs": ["Bopeebo", "Fresh", "Dadbattle"],
-	"icons": ["dad", "dad", "dad"],
-	"colors": [146, 113, 253],
-	"name": "vs. DADDY DEAREST",
+	"songs": ["Test"],
+	"icons": ["bf-pixel"],
+	"colors": [[123,214,246]],
+	"name": "Internal Testing.",
 
 	"characters": ["", "bf", "gf"],
 	"weekImage": "week1",
