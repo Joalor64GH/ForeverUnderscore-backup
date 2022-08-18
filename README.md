@@ -22,8 +22,8 @@ and more to come in the future!
 if you got any questions as to how Underscore works, feel free to DM me on Discord or Comment on Twitter, this is mostly a solo project that I hope people will enjoy using
 
 ----------------------------------------------
-Discord: [My DMs](discordapp.com/users/597124141530742805)
-Twitter: [My Profile](https://twitter.com/Fan_de_RPG)
+- Discord: [My DMs](discordapp.com/users/597124141530742805)
+- Twitter: [My Profile](https://twitter.com/Fan_de_RPG)
 
 down here is the original Forever Engine readme, if you did read everything so far, I'd recommend also checking base forever out, it's what this project is based on after all!
 
