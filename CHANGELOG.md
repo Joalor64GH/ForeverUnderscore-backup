@@ -4,7 +4,7 @@ All notable changes will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [0.2.1]
+## [0.2.1] - [AUG-8-2022 - PRESENT]
 ### Added
 - Song Metadata will now be injected via a separated file named `meta.json` on your Song's Folder;
 - Shaders can now be called via Scripts;
