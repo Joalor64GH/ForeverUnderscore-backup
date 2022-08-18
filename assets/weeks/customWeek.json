@@ -3,6 +3,7 @@
 	"icons": ["bf-pixel"],
 	"colors": [[123,214,246]],
 	"name": "Internal Testing.",
+	"shownOnStory": false,
 
 	"characters": ["", "bf", "gf"],
 	"weekImage": "week1",

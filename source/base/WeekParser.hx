@@ -14,6 +14,7 @@ typedef WeekDataDef =
 	var icons:Array<String>; // character icons that will show up on freeplay (e.g: dad, spooky, tankman);
 	var colors:Array<Array<Float>>; // colors for your week on freeplay
 	var name:Null<String>; // image graphic for the week (e.g: "week1");
+	var shownOnStory:Null<Bool>; // if the week can be shown on the story mode menu;
 }
 
 typedef WeekStoryDataDef =
@@ -32,15 +33,17 @@ class WeekParser
 	public static var songArray:Array<String> = [];
 	public static var iconArray:Array<String> = [];
 	public static var colorArray:Array<Float> = [];
-
 	public static var weekArray:Array<Dynamic> = [];
 
 	public static function loadWeeks(push:Bool = true)
-	{
-		parseJson();
+	{	
+		if (push)
+		{
+			parseJson();
 
-		if (push && parseJson()) // if we can add custom weeks, and parsing was successful;
-			pushWeeks(push);
+			if (parseJson()) // if parsing was successful;
+				pushWeeks(push);
+		}
 	}
 
 	public static function loadStoryData(push:Bool = true)
@@ -58,7 +61,7 @@ class WeekParser
 				StoryMenuState.weekUnlocked.push(storyData.unlocked);
 
 			if (storyData.weekImage == null)
-				storyData.weekImage = 'week1';
+				storyData.weekImage = '';
 		}
 	}
 
@@ -105,9 +108,11 @@ class WeekParser
 		weekArray.push(iconArray);
 		weekArray.push(colorArray);
 		weekArray.push(weekData.name);
+		weekArray.push(storyData.weekImage);
+		weekArray.push(weekData.shownOnStory);
 
 		Main.gameWeeks.push(weekArray);
-		trace(Main.gameWeeks);
+		#if DEBUG_TRACES trace(Main.gameWeeks); #end
 		loadStoryData(push);
 	}
 }

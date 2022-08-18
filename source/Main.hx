@@ -52,51 +52,72 @@ class Main extends Sprite
 		this system will eventually be overhauled in favor of using actual week folders within the 
 		assets.
 		Enough of that, here's how it works
-		[ [songs to use], [characters in songs], [color of week], name of week ]
+		[ [songs to use], [characters in songs], [color of week], name of week, week image file, shown from story mode ]
 	**/
 	public static var gameWeeks:Array<Dynamic> = [
-		[['Tutorial'], ['gf'], [FlxColor.fromRGB(129, 100, 223)], 'Funky Beginnings'],
+		[
+			['Tutorial'],
+			['gf'],
+			[FlxColor.fromRGB(129, 100, 223)],
+			'Funky Beginnings',
+			'week0',
+			true
+		],
 		[
 			['Bopeebo', 'Fresh', 'Dadbattle'],
 			['dad', 'dad', 'dad'],
 			[FlxColor.fromRGB(129, 100, 223)],
-			'vs. DADDY DEAREST'
+			'vs. DADDY DEAREST',
+			'week1',
+			true
 		],
 		[
 			['Spookeez', 'South', 'Monster'],
 			['spooky', 'spooky', 'monster'],
 			[FlxColor.fromRGB(30, 45, 60)],
-			'Spooky Month'
+			'Spooky Month',
+			'week2',
+			true
 		],
 		[
 			['Pico', 'Philly-Nice', 'Blammed'],
 			['pico'],
 			[FlxColor.fromRGB(111, 19, 60)],
-			'vs. Pico'
+			'vs. Pico',
+			'week3',
+			true
 		],
 		[
 			['Satin-Panties', 'High', 'Milf'],
 			['mom'],
 			[FlxColor.fromRGB(203, 113, 170)],
-			'MOMMY MUST MURDER'
+			'MOMMY MUST MURDER',
+			'week4',
+			true
 		],
 		[
 			['Cocoa', 'Eggnog', 'Winter-Horrorland'],
 			['parents-christmas', 'parents-christmas', 'monster-christmas'],
 			[FlxColor.fromRGB(141, 165, 206)],
-			'RED SNOW'
+			'RED SNOW',
+			'week5',
+			true
 		],
 		[
 			['Senpai', 'Roses', 'Thorns'],
 			['senpai', 'senpai', 'spirit'],
 			[FlxColor.fromRGB(206, 106, 169)],
-			"hating simulator ft. moawling"
+			"hating simulator ft. moawling",
+			'week6',
+			true
 		],
 		[
 			['Ugh', 'Guns', 'Stress'],
 			['tankman', 'tankman', 'tankman'],
 			[FlxColor.fromRGB(246, 182, 4)],
-			"Tankman"
+			"Tankman",
+			'week7',
+			true
 		],
 	];
 

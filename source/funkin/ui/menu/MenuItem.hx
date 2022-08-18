@@ -10,13 +10,14 @@ import flixel.util.FlxColor;
 class MenuItem extends FlxSpriteGroup
 {
 	public var targetY:Float = 0;
-	public var week:FlxSprite;
 	public var flashingInt:Int = 0;
+	public var week:FlxSprite;
 
-	public function new(x:Float, y:Float, weekNum:Int = 0)
+	public function new(x:Float, y:Float, weekName:String = '')
 	{
 		super(x, y);
-		week = new FlxSprite().loadGraphic(Paths.image('menus/base/storymenu/weeks/week' + weekNum));
+
+		week = new FlxSprite().loadGraphic(Paths.image('menus/base/storymenu/weeks/$weekName'));
 		add(week);
 	}
 

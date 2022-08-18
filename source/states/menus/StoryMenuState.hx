@@ -42,6 +42,17 @@ class StoryMenuState extends MusicBeatState
 		['tankman', 'bf', 'gf']
 	];
 
+	public static var weekImages:Array<Dynamic> = [
+		["week0"],
+		["week1"],
+		["week2"],
+		["week3"],
+		["week4"],
+		["week5"],
+		["week6"],
+		["week7"]
+	];
+
 	var txtWeekTitle:FlxText;
 
 	var curWeek:Int = 0;
@@ -103,7 +114,7 @@ class StoryMenuState extends MusicBeatState
 
 		for (i in 0...Main.gameWeeks.length)
 		{
-			var weekThing:MenuItem = new MenuItem(0, yellowBG.y + yellowBG.height + 10, i);
+			var weekThing:MenuItem = new MenuItem(0, yellowBG.y + yellowBG.height + 10, Main.gameWeeks[i][4]);
 			weekThing.y += ((weekThing.height + 20) * i);
 			weekThing.targetY = i;
 			grpWeekText.add(weekThing);
@@ -111,6 +122,7 @@ class StoryMenuState extends MusicBeatState
 			weekThing.screenCenter(X);
 			weekThing.antialiasing = true;
 			// weekThing.updateHitbox();
+			weekThing.visible = Main.gameWeeks[curWeek][5];
 
 			// Needs an offset thingie
 			if (!weekUnlocked[i])
