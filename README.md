@@ -17,6 +17,7 @@ The Forever Engine Underscore project is currently maintained by a **solo develo
 * Custom Dialogue Text Support;
 * (Upcoming) Revamped Chart Editor.
   * Press ``Shift + 7`` during a song (Freeplay only) for a preview
+
 and much more to come in the future!
 
 ----------------------------------------------
