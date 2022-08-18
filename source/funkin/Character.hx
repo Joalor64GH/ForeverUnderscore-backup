@@ -84,6 +84,8 @@ class Character extends FNFSprite
 
 	public var stunned:Bool = false;
 
+	public var bopSpeed:Int = 2;
+
 	// FOR PSYCH COMPATIBILITY
 	public var danceIdle:Bool = false; // Character use "danceLeft" and "danceRight" instead of "idle"
 	public var skipDance:Bool = false;
@@ -262,10 +264,10 @@ class Character extends FNFSprite
 					{
 						danced = !danced;
 
-						if (danced)
-							playAnim('danceRight', forced);
-						else
+						if (!danced)
 							playAnim('danceLeft', forced);
+						else
+							playAnim('danceRight', forced);
 					}
 				default:
 					// Left/right dancing, think Skid & Pump

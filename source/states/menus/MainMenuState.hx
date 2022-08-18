@@ -2,6 +2,7 @@ package states.menus;
 
 import base.ForeverTools;
 import base.MusicBeat.MusicBeatState;
+import base.WeekParser;
 import dependency.Discord;
 import flixel.FlxG;
 import flixel.FlxObject;

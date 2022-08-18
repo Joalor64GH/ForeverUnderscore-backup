@@ -1,46 +1,98 @@
-function onCreate()
+// PLAYSTATE FUNCTIONS
+
+function create()
 {
-    trace('at the beginning of PlayState (post script setup)');
+	// before characters are generated on PlayState
 }
 
-function onCreatePost()
+function postCreate()
 {
-    trace('Post Character Creation');
-}
-
-function onUpdate(elapsed)
-{
-    //trace('during PlayState\'s Update Function');
-}
-
-function onStepHit(curStep:Int)
-{
-    if (curStep == 15)
-        trace('on a Step Hit');
-}
-
-function onBeatHit(curBeat:Int)
-{
-    if (curBeat == 5)
-        trace('on a Beat Hit');
-}
-
-function onStartCountdown()
-{
-    trace('on Countdown Start');
-}
-
-function onSongStart()
-{
-    trace('on Song Start');
-}
-
-function onSongEnd()
-{
-    trace('Song Ended!');
+	// after characters are generated on PlayState
 }
 
 function destroy()
 {
-    trace('Script Destroyed!');
+	// after playstate ends
+}
+
+function update(elapsed)
+{
+	// during playstate's update function
+}
+
+function postUpdate()
+{
+	// after playstate's update function
+}
+
+function goodNoteHit(coolNote)
+{
+	// when you hit a note on PlayState
+}
+
+function noteMissCheck()
+{
+	// when you miss a note
+}
+
+function startCountdown()
+{
+	// when the countdown starts
+}
+
+function onCountdownTick(swagCounter)
+{
+	// when the countdown is ticking (e.g: three(0), two(1), one(2), go(3))
+}
+
+function startSong()
+{
+	// when the song starts
+}
+
+function stepHit(curStep)
+{
+	// when a song step is hit
+}
+
+function beatHit(curBeat)
+{
+	// when a song beat is hit
+}
+
+function doGameOverCheck()
+{
+	// on PlayState's game over check
+}
+
+function endSong()
+{
+	// when a song is ending or ended
+}
+
+function completeTween()
+{
+	// when a scripted tween is finished
+}
+
+// OTHER CLASS FUNCTIONS
+
+function pauseGame()
+{
+	// when you pause the game
+}
+
+function closeSubState()
+{
+	// when a substate (usually the pause menu) is closed
+}
+
+function gameOverBegins()
+{
+	// when you die and the game over substate begins
+}
+
+function resyncVocals()
+{
+	// when a song's vocal track is resynched on Conductor
 }

@@ -104,8 +104,6 @@ class PlayState extends MusicBeatState
 
 	var curSong:String = "";
 
-	public var gfSpeed:Int = 1;
-
 	public static var health:Float = 1; // mario
 	public static var combo:Int = 0;
 
@@ -245,7 +243,6 @@ class PlayState extends MusicBeatState
 
 		setupScripts();
 
-		callFunc('onCreate', null);
 		callFunc('create', null);
 
 		// cache shit
@@ -457,7 +454,6 @@ class PlayState extends MusicBeatState
 		precacheList.set('breakfast', 'music');
 		precacheList.set('UI/default/alphabet', 'image');
 
-		callFunc('onCreatePost', null);
 		callFunc('postCreate', null);
 	}
 
@@ -583,7 +579,6 @@ class PlayState extends MusicBeatState
 
 	override public function destroy()
 	{
-		callFunc('onDestroy', null);
 		callFunc('destroy', null);
 
 		if (!Init.trueSettings.get('Controller Mode'))
@@ -606,7 +601,6 @@ class PlayState extends MusicBeatState
 	{
 		super.update(elapsed);
 
-		callFunc('onUpdate', elapsed);
 		callFunc('update', elapsed);
 
 		if (Init.trueSettings.get('Stage Opacity') > 0)
@@ -902,7 +896,6 @@ class PlayState extends MusicBeatState
 			}
 		}
 
-		callFunc('onUpdatePost', null);
 		callFunc('postUpdate', null);
 	}
 
@@ -1191,7 +1184,7 @@ class PlayState extends MusicBeatState
 				var speed:Int = Std.parseInt(eventNote.val1);
 				if (Math.isNaN(speed) || speed < 1)
 					speed = 1;
-				gfSpeed = speed;
+				gf.bopSpeed = speed;
 
 			case 'Hey!':
 				var who:Int = -1;
@@ -1501,7 +1494,6 @@ class PlayState extends MusicBeatState
 
 	public function pauseGame()
 	{
-		callFunc('onPause', null);
 		callFunc('pauseGame', null);
 
 		// pause discord rpc
@@ -1772,8 +1764,6 @@ class PlayState extends MusicBeatState
 
 	function startSong():Void
 	{
-		callFunc('onSongStart', null);
-		callFunc('onStartSong', null);
 		callFunc('startSong', null);
 
 		startingSong = false;
@@ -1838,7 +1828,6 @@ class PlayState extends MusicBeatState
 
 		Conductor.resyncBySteps();
 
-		callFunc('onStepHit', curStep);
 		callFunc('stepHit', curStep);
 	}
 
@@ -1846,9 +1835,13 @@ class PlayState extends MusicBeatState
 
 	function charactersDance(curBeat:Int)
 	{
+		characterArray.push(boyfriend);
+		characterArray.push(dadOpponent);
+		characterArray.push(gf);
+
 		for (char in characterArray)
 		{
-			if (curBeat % 2 == 0
+			if (curBeat % char.bopSpeed == 0
 				&& char.animation.curAnim != null
 				&& !char.animation.curAnim.name.startsWith('sing')
 				&& !char.stunned)
@@ -1856,31 +1849,12 @@ class PlayState extends MusicBeatState
 				char.dance();
 			}
 		}
-
-		if (gf != null && curBeat % gfSpeed == 0 && gf.animation.curAnim != null && !gf.animation.curAnim.name.startsWith("sing"))
-		{
-			gf.dance();
-		}
-
-		if (curBeat % 2 == 0
-			&& boyfriend.animation.curAnim != null
-			&& !boyfriend.animation.curAnim.name.startsWith('sing')
-			&& !boyfriend.stunned)
-		{
-			boyfriend.dance();
-		}
-
-		if (curBeat % 2 == 0 && dadOpponent.animation.curAnim != null && !dadOpponent.animation.curAnim.name.startsWith('sing'))
-		{
-			dadOpponent.dance();
-		}
 	}
 
 	public var isDead:Bool = false;
 
 	function doGameOverCheck()
 	{
-		callFunc('onGameOver', null);
 		callFunc('doGameOverCheck', null);
 
 		if (!practiceMode && health <= 0 && !isDead)
@@ -1915,9 +1889,9 @@ class PlayState extends MusicBeatState
 				switch (curBeat)
 				{
 					case 16 | 80:
-						gfSpeed = 2;
+						gf.bopSpeed = 2;
 					case 48 | 112:
-						gfSpeed = 1;
+						gf.bopSpeed = 1;
 				}
 
 			case 'milf':
@@ -1965,7 +1939,6 @@ class PlayState extends MusicBeatState
 		if (Init.trueSettings.get('Stage Opacity') > 0)
 			stageBuild.stageUpdate(curBeat, boyfriend, gf, dadOpponent);
 
-		callFunc('onBeatHit', curBeat);
 		callFunc('beatHit', curBeat);
 	}
 
@@ -2016,7 +1989,6 @@ class PlayState extends MusicBeatState
 
 		Paths.clearUnusedMemory();
 
-		callFunc('onCloseSubState', null);
 		callFunc('closeSubState', null);
 
 		super.closeSubState();
@@ -2030,8 +2002,6 @@ class PlayState extends MusicBeatState
 
 	function endSong():Void
 	{
-		callFunc('onEndSong', null);
-		callFunc('onSongEnd', null);
 		callFunc('endSong', null);
 
 		if (!canMiss)
@@ -2339,7 +2309,6 @@ class PlayState extends MusicBeatState
 
 		camHUD.visible = true;
 
-		callFunc('onStartCountdown', null);
 		callFunc('startCountdown', null);
 
 		startTimer = new FlxTimer().start(Conductor.crochet / 1000, function(tmr:FlxTimer)
@@ -2520,7 +2489,6 @@ class PlayState extends MusicBeatState
 
 	function completeTween(id:String)
 	{
-		callFunc('onCompleteTween', null);
 		callFunc('completeTween', null);
 		// add your custom actions for finishing a tween here;
 	}
@@ -2565,7 +2533,9 @@ class PlayState extends MusicBeatState
 		setVar('gfName', gf.curCharacter);
 		setVar('dadName', dadOpponent.curCharacter);
 
-		setVar('gfSpeed', gfSpeed);
+		setVar('gfSpeed', gf.bopSpeed);
+		setVar('dadSpeed', dadOpponent.bopSpeed);
+		setVar('bfSpeed', boyfriend.bopSpeed);
 
 		setVar('difficultyString', uiHUD.diffDisplay);
 		setVar('songString', uiHUD.infoDisplay);

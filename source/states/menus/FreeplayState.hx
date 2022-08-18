@@ -67,14 +67,8 @@ class FreeplayState extends MusicBeatState
 	var existingDifficulties:Array<Array<String>> = [];
 
 	var leText:String;
-	var infoText:FlxText;
 
 	var shouldDraw:Bool = true;
-
-	var cyanMarkup:FlxTextFormat = new FlxTextFormat(FlxColor.CYAN);
-	var yellowMarkup:FlxTextFormat = new FlxTextFormat(FlxColor.YELLOW);
-	var redMarkup:FlxTextFormat = new FlxTextFormat(FlxColor.RED);
-	var grayMarkup:FlxTextFormat = new FlxTextFormat(FlxColor.GRAY);
 
 	override function create()
 	{
@@ -168,16 +162,6 @@ class FreeplayState extends MusicBeatState
 		changeSelection();
 		changeDiff();
 		resetScore(true);
-
-		/*infoText = new FlxText(5, FlxG.height - 24, 0, '', 32);
-			infoText.setFormat("VCR OSD Mono", 20, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
-			infoText.textField.background = true;
-			infoText.textField.backgroundColor = FlxColor.BLACK;
-			add(infoText);
-
-			infoText.applyMarkup(
-				"- **(SHIFT+)** ALT = Open **(NEW)** Charting State. - RESET = Reset Score and Ranking. -",
-				[new FlxTextFormatMarkerPair(cyanMarkup, '**')]); */
 	}
 
 	public function addSong(songName:String, weekNum:Int, songCharacter:String, songColor:FlxColor)
@@ -296,9 +280,6 @@ class FreeplayState extends MusicBeatState
 			if (presses > 0)
 			{
 				FlxG.sound.play(Paths.sound('confirmMenu'), 0.4);
-				/*infoText.applyMarkup(
-					"- **Data Destruction was Interrupted!** -",
-					[new FlxTextFormatMarkerPair(cyanMarkup, '**')]); */
 				endBullshit();
 			}
 		}
@@ -501,25 +482,14 @@ class FreeplayState extends MusicBeatState
 		if (presses < 0 || presses > 3)
 			presses = 0;
 
-		/*if (presses == 1)
-			infoText.applyMarkup(
-				"- ;;Are you Sure?;; -",
-				[new FlxTextFormatMarkerPair(grayMarkup, ';;')]); */
-
 		if (presses == 2)
 		{
-			/*infoText.applyMarkup(
-				"- ^^Really Sure?^^ -",
-				[new FlxTextFormatMarkerPair(yellowMarkup, '^^')]); */
 			FlxG.sound.music.volume = 0.3;
 		}
 
 		if (presses == 3)
 		{
 			noSound = true;
-			/*infoText.applyMarkup(
-				"- ++Data Destroyed!++ -",
-				[new FlxTextFormatMarkerPair(redMarkup, '++')]); */
 			FlxG.sound.play(Paths.sound('resetScore_sfx'), 0.4);
 			iconArray[curSelected].animation.play('losing');
 			Highscore.clearData(songs[curSelected].songName, curDifficulty);
@@ -532,9 +502,6 @@ class FreeplayState extends MusicBeatState
 	{
 		new FlxTimer().start(1, function(resetText:FlxTimer)
 		{
-			/*infoText.applyMarkup(
-				"- ALT **(+SHIFT)** = Open **(NEW)** Charting State. - RESET = Reset Score and Ranking. -",
-				[new FlxTextFormatMarkerPair(cyanMarkup, '**')]); */
 			presses = 0;
 			iconArray[curSelected].animation.play('static');
 			FlxG.sound.music.fadeIn(1.0, 0.3, 1.0);

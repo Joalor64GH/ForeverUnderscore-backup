@@ -1,4 +1,5 @@
 import base.CoolUtil;
+import base.WeekParser;
 import base.debug.Overlay;
 import flixel.FlxG;
 import flixel.FlxState;
@@ -298,6 +299,8 @@ class Init extends FlxState
 		FlxG.mouse.useSystemCursor = true; // Use system cursor because it's prettier
 		FlxG.mouse.visible = false; // Hide mouse on start
 		FlxGraphic.defaultPersist = true; // make sure we control all of the memory
+
+		WeekParser.loadWeeks(); // load any custom weeks you might have;
 
 		goToInitialDestination();
 	}

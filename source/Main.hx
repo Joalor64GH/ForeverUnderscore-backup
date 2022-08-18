@@ -26,20 +26,6 @@ import sys.FileSystem;
 import sys.io.File;
 import sys.io.Process;
 
-/**
- * mod week stuffs that will be added later!
- * gonna try to make it as compatible with psych as possible
-**/
-typedef WeekDataDef =
-{
-	var weekSongs:Array<Dynamic>; // array of songs, song colors, song character icons, and week name [refer to the gameWeeks variable];
-	var weekCharacters:Array<String>; // characters that will show up on the story menu (e.g: dad, bf, gf);
-	var difficulties:String; // week difficulties (e.g "EASY, NORMAL, HARD");
-	var weekName:String; // image graphic for the week (e.g: "week1");
-	var weekBefore:String; // week before this one;
-	var startUnlocked:Bool; // whether the week starts off unlocked or not;
-}
-
 // Here we actually import the states and metadata, and just the metadata.
 // It's nice to have modularity so that we don't have ALL elements loaded at the same time.
 // at least that's how I think it works. I could be stupid!

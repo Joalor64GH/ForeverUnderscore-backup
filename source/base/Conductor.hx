@@ -153,7 +153,6 @@ class Conductor
 
 	public static function resyncVocals():Void
 	{
-		PlayState.contents.callFunc('onResyncVocals', null);
 		PlayState.contents.callFunc('resyncVocals', null);
 
 		#if DEBUG_TRACES trace('resyncing vocal time ${songVocals.time}'); #end

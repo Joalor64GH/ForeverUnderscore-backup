@@ -1,0 +1,11 @@
+{
+	"songs": ["Bopeebo", "Fresh", "Dadbattle"],
+	"icons": ["dad", "dad", "dad"],
+	"colors": [146, 113, 253],
+	"name": "vs. DADDY DEAREST",
+
+	"characters": ["", "bf", "gf"],
+	"weekImage": "week1",
+	"before": "tutorial",
+	"unlocked": true
+}
