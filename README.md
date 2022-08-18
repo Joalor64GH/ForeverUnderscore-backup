@@ -15,7 +15,7 @@ Custom Credits Menu with Customizable Credits via JSON,
 Psych Engine Characters Support,
 Strumline Manipulation (positions, angles, etc),
 Custom Dialogue Text Support,
-Upcoming Revamped Chart Editor - Press SHIFT+7 on a Song or in Freeplay for a Preview!,
+Upcoming Revamped Chart Editor - Press SHIFT+7 on a Song or in Freeplay for a Preview,
 and more to come in the future!
 
 ----------------------------------------------
