@@ -140,7 +140,8 @@ class Character extends FNFSprite
 			default:
 				if (psychChar)
 					generatePsychChar(character);
-				generateBaseChar(character);
+				else
+					generateBaseChar(character);
 		}
 
 		dance();

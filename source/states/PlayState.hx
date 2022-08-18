@@ -529,12 +529,11 @@ class PlayState extends MusicBeatState
 								eligable = false;
 						}
 
-						var gfNote = coolNote.noteType == GF;
-						var gfSec = PlayState.SONG.notes[curSection].gfSection;
+						var gfSec = (SONG.notes[Math.floor(curStep / 16)] != null) && (SONG.notes[Math.floor(curStep / 16)].gfSection);
 
 						if (eligable)
 						{
-							goodNoteHit(coolNote, (!gfNote || !gfSec ? boyfriend : gf), bfStrums, firstNote); // then hit the note
+							goodNoteHit(coolNote, (coolNote.gfNote || gfSec ? gf : boyfriend), bfStrums, firstNote); // then hit the note
 							pressedNotes.push(coolNote);
 						}
 						// end of this little check
@@ -544,7 +543,7 @@ class PlayState extends MusicBeatState
 				else
 				{ // else just call bad notes
 					ghostMisses++;
-					if (!Init.trueSettings.get('Ghost Tapping') && canMiss)
+					if (!Init.trueSettings.get('Ghost Tapping'))
 						missNoteCheck(true, key, boyfriend, true);
 				}
 
@@ -1062,8 +1061,7 @@ class PlayState extends MusicBeatState
 									note.tooLate = true;
 
 								Conductor.songVocals.volume = 0;
-								if(canMiss)
-									missNoteCheck((Init.trueSettings.get('Ghost Tapping')) ? true : false, daNote.noteData, boyfriend, true);
+								missNoteCheck((Init.trueSettings.get('Ghost Tapping')) ? true : false, daNote.noteData, boyfriend, true);
 								// ambiguous name
 								Timings.updateAccuracy(0);
 							}
@@ -1082,8 +1080,7 @@ class PlayState extends MusicBeatState
 
 										if (!breakFromLate)
 										{
-											if (canMiss)
-												missNoteCheck((Init.trueSettings.get('Ghost Tapping')) ? true : false, daNote.noteData, boyfriend, true);
+											missNoteCheck((Init.trueSettings.get('Ghost Tapping')) ? true : false, daNote.noteData, boyfriend, true);
 											for (note in parentNote.childrenNotes)
 												note.tooLate = true;
 										}
@@ -1266,11 +1263,6 @@ class PlayState extends MusicBeatState
 	{
 		if (!coolNote.wasGoodHit)
 		{
-			if (Init.trueSettings.get('Hitsound Volume') > 0 && coolNote.canBeHit && !coolNote.isSustainNote)
-			{
-				FlxG.sound.play(Paths.sound('hitsounds/$changeableSound/hit'), Init.trueSettings.get('Hitsound Volume'));
-			}
-
 			callFunc('goodNoteHit', coolNote);
 
 			coolNote.wasGoodHit = true;
@@ -1307,23 +1299,26 @@ class PlayState extends MusicBeatState
 					}
 				}
 
-				if (!coolNote.isSustainNote && !coolNote.badNote)
+				if (!coolNote.badNote)
 				{
-					increaseCombo(foundRating, coolNote.noteData, character);
-					popUpScore(foundRating, ratingTiming, characterStrums, coolNote);
-
-					if (coolNote.childrenNotes.length > 0)
-						Timings.notesHit++;
-
-					healthCall(Timings.judgementsMap.get(foundRating)[3]);
-				}
-				else if (coolNote.isSustainNote && !coolNote.badNote)
-				{
-					// call updated accuracy stuffs
-					if (coolNote.parentNote != null)
+					if (!coolNote.isSustainNote)
 					{
-						Timings.updateAccuracy(100, true, coolNote.parentNote.childrenNotes.length);
-						healthCall(100 / coolNote.parentNote.childrenNotes.length);
+						increaseCombo(foundRating, coolNote.noteData, character);
+						popUpScore(foundRating, ratingTiming, characterStrums, coolNote);
+
+						if (coolNote.childrenNotes.length > 0)
+							Timings.notesHit++;
+
+						healthCall(Timings.judgementsMap.get(foundRating)[3]);
+					}
+					else
+					{
+						// call updated accuracy stuffs
+						if (coolNote.parentNote != null)
+						{
+							Timings.updateAccuracy(100, true, coolNote.parentNote.childrenNotes.length);
+							healthCall(100 / coolNote.parentNote.childrenNotes.length);
+						}
 					}
 				}
 			}
@@ -1337,14 +1332,17 @@ class PlayState extends MusicBeatState
 	{
 		callFunc('missNoteCheck', null);
 
-		if (includeAnimation)
+		if (canMiss)
 		{
-			var stringDirection:String = UIStaticArrow.getArrowFromNumber(direction);
+			if (includeAnimation)
+			{
+				var stringDirection:String = UIStaticArrow.getArrowFromNumber(direction);
 
-			FlxG.sound.play(Paths.soundRandom('missnote', 1, 3), FlxG.random.float(0.1, 0.2));
-			character.playAnim('sing' + stringDirection.toUpperCase() + 'miss', lockMiss);
+				FlxG.sound.play(Paths.soundRandom('missnote', 1, 3), FlxG.random.float(0.1, 0.2));
+				character.playAnim('sing' + stringDirection.toUpperCase() + 'miss', lockMiss);
+			}
+			decreaseCombo(popMiss);
 		}
-		decreaseCombo(popMiss);
 	}
 
 	public function characterPlayAnimation(coolNote:Note, character:Character)
@@ -1369,21 +1367,18 @@ class PlayState extends MusicBeatState
 				altString = '';
 		}
 
-		// custom strings go here idk, WIP;
+		if (coolNote.fullString != null)
+			stringArrow = coolNote.fullString;
+		altString = coolNote.altString;
 
 		switch (coolNote.noteType)
 		{
-			case ALT:
-				altString = '-alt';
-
 			case HEY:
-				stringArrow = 'hey';
 				character.specialAnim = true;
 				character.heyTimer = 0.6;
-
 			case NO_ANIM:
 				stringArrow = '';
-
+				altString = '';
 			case MINE:
 				if (character.curCharacter == 'bf-psych')
 					stringArrow = 'hurt';
@@ -1451,10 +1446,9 @@ class PlayState extends MusicBeatState
 
 				var curSection = Std.int(curStep / 16);
 
-				var gfNote = daNote.noteType == GF;
-				var gfSec = PlayState.SONG.notes[curSection].gfSection;
+				var gfSec = (SONG.notes[Math.floor(curStep / 16)] != null) && (SONG.notes[Math.floor(curStep / 16)].gfSection);
 
-				if (gfNote || gfSec)
+				if (daNote.gfNote || gfSec)
 					char = gf;
 
 				goodNoteHit(daNote, char, strumline, canDisplayJudgement);
@@ -1707,7 +1701,7 @@ class PlayState extends MusicBeatState
 					combo = 0;
 				combo += 1;
 			}
-			else if (canMiss)
+			else
 				missNoteCheck(true, direction, character, false, true);
 		}
 	}

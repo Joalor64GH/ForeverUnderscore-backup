@@ -2,6 +2,7 @@ package funkin;
 
 import base.*;
 import dependency.FNFSprite;
+import flixel.FlxG;
 import flixel.FlxSprite;
 import funkin.Strumline.UIStaticArrow;
 import states.PlayState;
@@ -80,7 +81,14 @@ class Note extends FNFSprite
 
 	public var healthGain:Float = 0.023;
 	public var healthLoss:Float = 0.0475;
+
+	public var hitSounds:Bool = true;
 	public var badNote:Bool = false;
+	public var gfNote:Bool = false;
+
+	public var fullString = '';
+	public var altString = '';
+	public var hitsoundSuffix = '';
 
 	static var noteColorID:Array<String> = ['purple', 'blue', 'green', 'red'];
 	static var pixelNoteID:Array<Int> = [4, 5, 6, 7];
@@ -134,11 +142,19 @@ class Note extends FNFSprite
 
 		switch (type)
 		{
+			case ALT:
+				altString = '-alt';
+			case HEY:
+				fullString = 'hey';
+			case GF:
+				gfNote = true;
 			case MINE:
 				healthLoss = 0.065;
 				badNote = true;
 			default:
+				hitSounds = true;
 				badNote = false;
+				gfNote = false;
 		}
 
 		// oh okay I know why this exists now
@@ -437,13 +453,18 @@ class Note extends FNFSprite
 	**/
 	public function goodNoteHit(newNote:Note)
 	{
+		var hitsound = Init.trueSettings.get('Hitsound Type');
 		switch (newNote.noteType)
 		{
 			case MINE:
 				PlayState.contents.decreaseCombo(true);
 				PlayState.health -= healthLoss;	
 			default:
-				// do NOTHING!
+				if (newNote.hitSounds)
+				{
+					if (Init.trueSettings.get('Hitsound Volume') > 0 && newNote.canBeHit && !newNote.isSustainNote)
+						FlxG.sound.play(Paths.sound('hitsounds/$hitsound/hit$hitsoundSuffix'), Init.trueSettings.get('Hitsound Volume'));
+				}
 		}
 	}
 }
