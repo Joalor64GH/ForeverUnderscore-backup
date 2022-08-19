@@ -229,6 +229,12 @@ class Init extends FlxState
 			NOT_FORCED
 		],
 		'Scroll Speed' => [1, Selector, 'Set the scroll speed for the Notes.', NOT_FORCED],
+		'Splash Opacity' => [
+			0.6,
+			Selector,
+			"Set the notesplashes' opacity for hitting a \"Sick\" Judgement on Notes",
+			NOT_FORCED
+		],
 	];
 
 	public static var trueSettings:Map<String, Dynamic> = [];

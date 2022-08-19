@@ -121,6 +121,7 @@ class OptionsMenuState extends MusicBeatState
 					['Reduced Movements', getFromOption],
 					['Filter', getFromOption],
 					["Stage Opacity", getFromOption],
+					["Splash Opacity", getFromOption],
 					["Opacity Type", getFromOption],
 				]
 			]
@@ -447,7 +448,8 @@ class OptionsMenuState extends MusicBeatState
 							(letter.text == 'Stage Opacity') ? true : false,
 							(letter.text == 'Hitsound Volume') ? true : false,
 							(letter.text == 'Score Bar Size') ? true : false,
-							(letter.text == 'Scroll Speed' ? true : false)
+							(letter.text == 'Scroll Speed') ? true : false,
+							(letter.text == 'Splash Opacity' ? true : false)
 						]);
 
 						extrasMap.set(letter, selector);
@@ -533,6 +535,7 @@ class OptionsMenuState extends MusicBeatState
 		var hitVol = selector.optionBooleans[2];
 		var scoreSize = selector.optionBooleans[3];
 		var scrollspeed = selector.optionBooleans[4];
+		var notesplash = selector.optionBooleans[5];
 
 		/**
 			* not too lazy now i guess?
@@ -549,7 +552,9 @@ class OptionsMenuState extends MusicBeatState
 			generateSelector(10, 30, 1, updateBy, selector);
 		else if (scrollspeed)
 			generateSelector(1, 6, 0.1, updateBy, selector);
-		if (!fps && !bgdark && !hitVol && !scoreSize && !scrollspeed)
+		else if (notesplash)
+			generateSelector(0.1, 1, 0.1, updateBy, selector);
+		if (!fps && !bgdark && !hitVol && !scoreSize && !scrollspeed && !notesplash)
 		{
 			// get the current option as a number
 			var storedNumber:Int = 0;
