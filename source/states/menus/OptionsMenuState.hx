@@ -107,8 +107,8 @@ class OptionsMenuState extends MusicBeatState
 					//
 					["Note Skin", getFromOption],
 					["Clip Style", getFromOption],
+					["Splash Opacity", getFromOption],
 					['No Camera Note Movement', getFromOption],
-					['Disable Note Splashes', getFromOption],
 					['Opaque Arrows', getFromOption],
 					['Opaque Holds', getFromOption],
 					['', null],
@@ -121,7 +121,6 @@ class OptionsMenuState extends MusicBeatState
 					['Reduced Movements', getFromOption],
 					['Filter', getFromOption],
 					["Stage Opacity", getFromOption],
-					["Splash Opacity", getFromOption],
 					["Opacity Type", getFromOption],
 				]
 			]
@@ -538,22 +537,17 @@ class OptionsMenuState extends MusicBeatState
 		var notesplash = selector.optionBooleans[5];
 
 		/**
-			* not too lazy now i guess?
-			* won't do a switch because it can somehow break stuff??, will figure it out later -gabi(Ghost)
-			========
 			* left to right, minimum value, maximum value, change value
 			* rest is default stuff that I needed to keep
 		**/
 		if (fps)
 			generateSelector(30, 360, 15, updateBy, selector);
-		else if (bgdark || hitVol)
+		else if (bgdark || hitVol || notesplash)
 			generateSelector(0, 100, 5, updateBy, selector);
 		else if (scoreSize)
 			generateSelector(10, 30, 1, updateBy, selector);
 		else if (scrollspeed)
 			generateSelector(1, 6, 0.1, updateBy, selector);
-		else if (notesplash)
-			generateSelector(0.1, 1, 0.1, updateBy, selector);
 		if (!fps && !bgdark && !hitVol && !scoreSize && !scrollspeed && !notesplash)
 		{
 			// get the current option as a number
@@ -652,8 +646,10 @@ class OptionsMenuState extends MusicBeatState
 			}
 			else
 			{
+				lockedMovement = true;
 				playSound('scrollMenu');
 				openSubState(new OptionsSubstate());
+				lockedMovement = false;
 			}
 		}
 	}

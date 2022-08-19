@@ -22,10 +22,8 @@ class FlashingState extends MusicBeatState
 		super.create();
 
 		// reset volume
-		FlxG.sound.volume = 1;
-
-		// bind save
-		FlxG.save.bind('forever-secrets', 'BeastlyGhost');
+		if (FlxG.save.data.volume == null)
+			FlxG.sound.volume = 1;
 
 		// set up state save, this ensures that you did leave this state once BACK or ACCEPT was pressed
 		if (FlxG.save.data.leftFlashing == null)

@@ -11,7 +11,7 @@ class NoteSplash extends FNFSprite
 	{
 		super(x, y);
 		visible = false;
-		alpha = Init.trueSettings.get('Splash Opacity');
+		alpha = (100 - Init.trueSettings.get('Splash Opacity')) / 100;
 	}
 
 	override function update(elapsed:Float)
@@ -31,7 +31,7 @@ class NoteSplash extends FNFSprite
 	override public function playAnim(AnimName:String, Force:Bool = false, Reversed:Bool = false, Frame:Int = 0)
 	{
 		// make sure the animation is visible
-		if (!Init.trueSettings.get('Disable Note Splashes'))
+		if (Init.trueSettings.get('Splash Opacity') >= 0)
 			visible = true;
 
 		super.playAnim(AnimName, Force, Reversed, Frame);

@@ -42,22 +42,59 @@ class Init extends FlxState
 	public static var NOT_FORCED = 'not forced';
 
 	public static var gameSettings:Map<String, Dynamic> = [
-		'Downscroll' => [
-			false,
-			Checkmark,
-			'Whether to have the strumline vertically flipped in gameplay.',
-			NOT_FORCED
-		],
+
+		// GAMEPLAY;
 		'Controller Mode' => [
 			false,
 			Checkmark,
 			'Whether to use a controller instead of the keyboard to play.',
 			NOT_FORCED
 		],
+		'Downscroll' => [
+			false,
+			Checkmark,
+			'Whether to have the strumline vertically flipped in gameplay.',
+			NOT_FORCED
+		],
+		'Centered Notefield' => [false, Checkmark, "Center the notes, disables the enemy's notes.", NOT_FORCED],
+		"Hitsound Type" => ['default', Selector, 'Choose the Note Hitsound you prefer.', NOT_FORCED, ''],
+		'Hitsound Volume' => [Checkmark, Selector, 'The volume for your Note Hitsounds.', NOT_FORCED],
+		'Ghost Tapping' => [
+			false,
+			Checkmark,
+			"Enables Ghost Tapping, allowing you to press inputs without missing.",
+			NOT_FORCED
+		],
+		'Use Set Scroll Speed' => [
+			false,
+			Checkmark,
+			"Whether to override the song's scroll speed to use your own.",
+			NOT_FORCED
+		],
+		'Scroll Speed' => [1, Selector, 'Set the scroll speed for the Notes.', NOT_FORCED],
+
+		// TEXT;
+		'Display Accuracy' => [true, Checkmark, 'Whether to display your accuracy on screen.', NOT_FORCED],
+		'Score Bar Size' => [18, Selector, 'Set the text size for the Score Bar.', NOT_FORCED],
+		'Skip Text' => [
+			'freeplay only',
+			Selector,
+			'Decides whether to skip cutscenes and dialogue in gameplay. May be always, only in freeplay, or never.',
+			NOT_FORCED,
+			['never', 'freeplay only', 'always']
+		],
+
+		// META;
 		'Auto Pause' => [
 			true,
 			Checkmark,
 			'Whether to pause the game automatically if the window is unfocused.',
+			NOT_FORCED
+		],
+		'Check for Updates' => [
+			true,
+			Checkmark,
+			"Whether to check for updates when opening the game.",
 			NOT_FORCED
 		],
 		'Hardware Caching' => [
@@ -66,6 +103,14 @@ class Init extends FlxState
 			"Whether the game should upload images to the GPU, takes effect after restart.",
 			NOT_FORCED
 		],
+		'Menu Song' => [
+			'foreverMenu',
+			Selector,
+			'Which song should we use for the Main Menu? takes effect upon switching states or restarting the game.',
+			NOT_FORCED,
+			['foreverMenu', 'freakyMenu']
+		],
+		"Framerate Cap" => [120, Selector, 'Define your maximum FPS.', NOT_FORCED, ['']],
 		'FPS Counter' => [true, Checkmark, 'Whether to display the FPS counter.', NOT_FORCED],
 		'Memory Counter' => [
 			true,
@@ -79,11 +124,107 @@ class Init extends FlxState
 			'Whether to display information like your game state.',
 			NOT_FORCED
 		],
+
+		// USER INTERFACE;
+		"UI Skin" => [
+			'default',
+			Selector,
+			'Choose a UI Skin for judgements, combo, etc.',
+			NOT_FORCED,
+			''
+		],
+		'Fixed Judgements' => [
+			false,
+			Checkmark,
+			"Fixes the judgements to the camera instead of to the world itself, making them easier to read.",
+			NOT_FORCED
+		],
+		'Simply Judgements' => [
+			false,
+			Checkmark,
+			"Simplifies the judgement animations, displaying only one judgement / rating sprite at a time.",
+			NOT_FORCED
+		],
+		'Colored Health Bar' => [
+			false,
+			Checkmark,
+			"Whether the Health Bar should follow the Character Icon colors.",
+			NOT_FORCED
+		],
+		'Counter' => [
+			'None',
+			Selector,
+			'Choose whether you want somewhere to display your judgements, and where you want it.',
+			NOT_FORCED,
+			['None', 'Left', 'Right']
+		],
+
+		// NOTES AND HOLDS;
+		"Note Skin" => ['default', Selector, 'Choose a note skin.', NOT_FORCED, ''],
+		"Clip Style" => [
+			'stepmania',
+			Selector,
+			"Chooses a style for hold note clippings; StepMania: Holds under Receptors; FNF: Holds over receptors",
+			NOT_FORCED,
+			['StepMania', 'FNF']
+		],
+		'Splash Opacity' => [
+			35,
+			Selector,
+			"Set the opacity for your notesplashes, usually shown when hit a \"Sick!\" Judgement on Notes",
+			NOT_FORCED
+		],
+		'No Camera Note Movement' => [
+			false,
+			Checkmark,
+			'When enabled, left and right notes no longer move the camera.',
+			NOT_FORCED
+		],
+		"Opaque Arrows" => [
+			false,
+			Checkmark,
+			"Makes the arrows at the top of the screen opaque again.",
+			NOT_FORCED
+		],
+		"Opaque Holds" => [false, Checkmark, "Huh, why isnt the trail cut off?", NOT_FORCED],
+
+		// ACCESSIBILITY;
+		'Disable Antialiasing' => [
+			false,
+			Checkmark,
+			'Whether to disable Anti-aliasing. Helps improve performance in FPS.',
+			NOT_FORCED
+		],
+		'Disable Button Flickering' => [
+			false,
+			Checkmark,
+			"Whether to disable button flickering when interacting with the items on the Options Menu.",
+			NOT_FORCED
+		],
+		'Disable Flashing Lights' => [
+			false,
+			Checkmark,
+			"Whether flashing elements on the menus should be disabled.",
+			NOT_FORCED
+		],
+		'Disable Shaders' => [
+			false,
+			Checkmark,
+			"Whether to disable Fragment Shader effects during gameplay, can improve performance.",
+			NOT_FORCED
+		],
 		'Reduced Movements' => [
 			false,
 			Checkmark,
 			'Whether to reduce movements, like icons bouncing or beat zooms in gameplay.',
 			NOT_FORCED
+		],
+		'Filter' => [
+			'none',
+			Selector,
+			'Choose a filter for colorblindness.',
+			NOT_FORCED,
+			['none', 'Deuteranopia', 'Protanopia', 'Tritanopia']
 		],
 		'Stage Opacity' => [
 			Checkmark,
@@ -98,143 +239,9 @@ class Init extends FlxState
 			NOT_FORCED,
 			['UI', 'Notes']
 		],
-		'Counter' => [
-			'None',
-			Selector,
-			'Choose whether you want somewhere to display your judgements, and where you want it.',
-			NOT_FORCED,
-			['None', 'Left', 'Right']
-		],
-		'Display Accuracy' => [true, Checkmark, 'Whether to display your accuracy on screen.', NOT_FORCED],
-		'Disable Antialiasing' => [
-			false,
-			Checkmark,
-			'Whether to disable Anti-aliasing. Helps improve performance in FPS.',
-			NOT_FORCED
-		],
-		'No Camera Note Movement' => [
-			false,
-			Checkmark,
-			'When enabled, left and right notes no longer move the camera.',
-			NOT_FORCED
-		],
-		'Disable Note Splashes' => [
-			false,
-			Checkmark,
-			'Whether to disable note splashes in gameplay. Useful if you find them distracting.',
-			NOT_FORCED
-		],
+
 		// custom ones lol
 		'Offset' => [Checkmark, 3],
-		'Filter' => [
-			'none',
-			Selector,
-			'Choose a filter for colorblindness.',
-			NOT_FORCED,
-			['none', 'Deuteranopia', 'Protanopia', 'Tritanopia']
-		],
-		"Clip Style" => [
-			'stepmania',
-			Selector,
-			"Chooses a style for hold note clippings; StepMania: Holds under Receptors; FNF: Holds over receptors",
-			NOT_FORCED,
-			['StepMania', 'FNF']
-		],
-		"UI Skin" => [
-			'default',
-			Selector,
-			'Choose a UI Skin for judgements, combo, etc.',
-			NOT_FORCED,
-			''
-		],
-		"Note Skin" => ['default', Selector, 'Choose a note skin.', NOT_FORCED, ''],
-		"Framerate Cap" => [120, Selector, 'Define your maximum FPS.', NOT_FORCED, ['']],
-		"Opaque Arrows" => [
-			false,
-			Checkmark,
-			"Makes the arrows at the top of the screen opaque again.",
-			NOT_FORCED
-		],
-		"Opaque Holds" => [false, Checkmark, "Huh, why isnt the trail cut off?", NOT_FORCED],
-		'Ghost Tapping' => [
-			false,
-			Checkmark,
-			"Enables Ghost Tapping, allowing you to press inputs without missing.",
-			NOT_FORCED
-		],
-		'Centered Notefield' => [false, Checkmark, "Center the notes, disables the enemy's notes.", NOT_FORCED],
-		'Skip Text' => [
-			'freeplay only',
-			Selector,
-			'Decides whether to skip cutscenes and dialogue in gameplay. May be always, only in freeplay, or never.',
-			NOT_FORCED,
-			['never', 'freeplay only', 'always']
-		],
-		'Fixed Judgements' => [
-			false,
-			Checkmark,
-			"Fixes the judgements to the camera instead of to the world itself, making them easier to read.",
-			NOT_FORCED
-		],
-		'Simply Judgements' => [
-			false,
-			Checkmark,
-			"Simplifies the judgement animations, displaying only one judgement / rating sprite at a time.",
-			NOT_FORCED
-		],
-		"Hitsound Type" => ['default', Selector, 'Choose the Note Hitsound you prefer.', NOT_FORCED, ''],
-		'Hitsound Volume' => [Checkmark, Selector, 'The volume for your Note Hitsounds.', NOT_FORCED],
-		'Colored Health Bar' => [
-			false,
-			Checkmark,
-			"Whether the Health Bar should follow the Character Icon colors.",
-			NOT_FORCED
-		],
-		'Disable Flashing Lights' => [
-			false,
-			Checkmark,
-			"Whether flashing elements on the menus should be disabled.",
-			NOT_FORCED
-		],
-		'Check for Updates' => [
-			true,
-			Checkmark,
-			"Whether to check for updates when opening the game.",
-			NOT_FORCED
-		],
-		'Score Bar Size' => [18, Selector, 'Set the text size for the Score Bar.', NOT_FORCED],
-		'Disable Button Flickering' => [
-			false,
-			Checkmark,
-			"Whether to disable button flickering when interacting with the items on the Options Menu.",
-			NOT_FORCED
-		],
-		'Disable Shaders' => [
-			false,
-			Checkmark,
-			"Whether to disable Fragment Shader effects during gameplay, can improve performance.",
-			NOT_FORCED
-		],
-		'Menu Song' => [
-			'foreverMenu',
-			Selector,
-			'Which song should we use for the Main Menu? takes effect upon switching states or restarting the game.',
-			NOT_FORCED,
-			['foreverMenu', 'freakyMenu']
-		],
-		'Use Set Scroll Speed' => [
-			false,
-			Checkmark,
-			"Whether to override the song's scroll speed to use your own.",
-			NOT_FORCED
-		],
-		'Scroll Speed' => [1, Selector, 'Set the scroll speed for the Notes.', NOT_FORCED],
-		'Splash Opacity' => [
-			0.6,
-			Selector,
-			"Set the notesplashes' opacity for hitting a \"Sick\" Judgement on Notes",
-			NOT_FORCED
-		],
 	];
 
 	public static var trueSettings:Map<String, Dynamic> = [];
@@ -338,15 +345,25 @@ class Init extends FlxState
 			|| trueSettings.get("Framerate Cap") > 360)
 			trueSettings.set("Framerate Cap", 30);
 
-		if (!Std.isOfType(trueSettings.get("Stage Opacity"), Int)
-			|| trueSettings.get("Stage Opacity") < 0
-			|| trueSettings.get("Stage Opacity") > 100)
-			trueSettings.set("Stage Opacity", 100);
+		var similarSettings:Array<String> = ["Stage Opacity", "Hitsound Volume", "Splash Opacity"];
 
-		if (!Std.isOfType(trueSettings.get("Hitsound Volume"), Int)
-			|| trueSettings.get("Hitsound Volume") < 0
-			|| trueSettings.get("Hitsound Volume") > 100)
-			trueSettings.set("Hitsound Volume", 0);
+		for (i in similarSettings)
+		{
+			var defaultValue = 100;
+			switch (i)
+			{
+				case 'Stage Opacity':
+					defaultValue = 100;
+				case "Hitsound Volume":
+					defaultValue = 0;
+				case "Splash Opacity":
+					defaultValue = 35;
+			}
+			if (!Std.isOfType(trueSettings.get(i), Int)
+				|| trueSettings.get(i) < 0
+				|| trueSettings.get(i) > 100)
+				trueSettings.set(i, defaultValue);
+		}
 
 		// 'hardcoded' ui skins
 		gameSettings.get("UI Skin")[4] = CoolUtil.returnAssetsLibrary('UI');
@@ -372,19 +389,10 @@ class Init extends FlxState
 
 	function goToInitialDestination()
 	{
-		// binding save to secrets so we can check your flashing lights state
-		FlxG.save.bind('forever-secrets', 'BeastlyGhost');
-
 		if (!FlxG.save.data.leftFlashing)
-		{
 			Main.switchState(this, new FlashingState());
-		}
 		else
-		{
-			// bind save back to settings
-			FlxG.save.bind('forever-settings', 'BeastlyGhost');
 			Main.switchState(this, new TitleState());
-		}
 	}
 
 	public static function saveSettings():Void
