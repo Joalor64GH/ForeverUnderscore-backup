@@ -432,7 +432,7 @@ class FreeplayState extends MusicBeatState
 						{
 							#if DEBUG_TRACES trace("Loading index " + index); #end
 
-							var inst:Sound = Paths.inst(songs[curSelected].songName);
+							var inst:Sound = Paths.songSounds(songs[curSelected].songName, 'Inst');
 
 							if (index == curSelected && threadActive)
 							{

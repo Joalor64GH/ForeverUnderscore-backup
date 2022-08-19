@@ -96,14 +96,13 @@ class Conductor
 		songMusic = new FlxSound();
 		songVocals = new FlxSound();
 
-		songMusic.loadEmbedded(Paths.inst(songData.song), false, true);
+		songMusic.loadEmbedded(Paths.songSounds(songData.song, 'Inst'), false, true);
 
 		if (songData.needsVoices)
-			songVocals.loadEmbedded(Paths.voices(songData.song), false, true);
+			songVocals.loadEmbedded(Paths.songSounds(songData.song, 'Voices'), false, true);
 
 		FlxG.sound.list.add(songMusic);
 		FlxG.sound.list.add(songVocals);
-
 		vocalArray.push(songVocals);
 	}
 

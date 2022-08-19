@@ -379,23 +379,16 @@ class Paths
 		return file;
 	}
 
-	inline static public function voices(song:String):Any
-	{
-		var songKey:String = '${CoolUtil.swapSpaceDash(song.toLowerCase())}/Voices';
-		var voices = returnSound('songs', songKey);
-		return voices;
-	}
-
 	inline static public function songPath(path:String)
 	{
 		return CoolUtil.swapSpaceDash(path);
 	}
 
-	inline static public function inst(song:String):Any
+	inline static public function songSounds(song:String, songFile:String)
 	{
-		var songKey:String = '${CoolUtil.swapSpaceDash(song.toLowerCase())}/Inst';
-		var inst = returnSound('songs', songKey);
-		return inst;
+		var songKey:String = '${CoolUtil.swapSpaceDash(song.toLowerCase())}/$songFile';
+		var sound = returnSound('songs', songKey);
+		return sound;
 	}
 
 	inline static public function image(key:String, folder:String = 'images', ?library:String, ?textureCompression:Bool)
