@@ -13,7 +13,7 @@ import funkin.Alphabet;
 
 using StringTools;
 
-class OptionsSubstate extends MusicBeatSubstate
+class ControlsSubstate extends MusicBeatSubstate
 {
 	var curSelection = -1;
 	var submenuGroup:FlxTypedGroup<FlxBasic>;

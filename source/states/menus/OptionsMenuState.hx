@@ -17,7 +17,7 @@ import flixel.util.FlxTimer;
 import funkin.Alphabet;
 import funkin.ui.menu.Checkmark;
 import funkin.ui.menu.Selector;
-import states.substates.OptionsSubstate;
+import states.substates.ControlsSubstate;
 import states.substates.PauseSubstate;
 
 /**
@@ -644,14 +644,14 @@ class OptionsMenuState extends MusicBeatState
 				lockedMovement = true;
 				FlxFlicker.flicker(activeSubgroup.members[curSelection], 0.5, 0.06 * 2, true, false, function(flick:FlxFlicker)
 				{
-					openSubState(new OptionsSubstate());
+					openSubState(new ControlsSubstate());
 					lockedMovement = false;
 				});
 			}
 			else
 			{
 				playSound('scrollMenu');
-				openSubState(new OptionsSubstate());
+				openSubState(new ControlsSubstate());
 			}
 		}
 	}
