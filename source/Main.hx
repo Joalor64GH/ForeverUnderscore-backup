@@ -41,6 +41,8 @@ class Main extends Sprite
 	public static var foreverVersion:String = '0.3.1';
 	public static var underscoreVersion:String = '0.2.1';
 
+	public static var showCommitHash:Bool = true;
+
 	var zoom:Float = -1; // If -1, zoom is automatically calculated to fit the window dimensions.
 	var skipSplash:Bool = true; // Whether to skip the flixel splash screen that appears in release mode.
 
@@ -246,7 +248,7 @@ class Main extends Sprite
 		path = "crash/" + "FE_" + dateNow + ".txt";
 
 		errMsg = "Friday Night Funkin' v" + Lib.application.meta["version"] + "\n";
-		errMsg += "Forever Engine Underscore v" + Main.underscoreVersion + "\n";
+		errMsg += "Forever Engine Underscore v" + Main.underscoreVersion + (showCommitHash ? ' (${getGitCommitHash()})' : '') + "\n";
 
 		for (stackItem in callStack)
 		{
@@ -297,5 +299,17 @@ class Main extends Sprite
 	public static function changeInfoAlpha(value:Float)
 	{
 		infoCounter.alpha = value;
+	}
+
+	public static function getGitCommitHash()
+	{
+		var process = new sys.io.Process('git', ['rev-parse', 'HEAD']);
+
+		// read the output of the process
+		var commitHash:String = process.stdout.readLine();
+		var trimmedCommitHash:String = commitHash.substr(0, 7);
+
+		// Generates a string expression
+		return trimmedCommitHash;
 	}
 }
