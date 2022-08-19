@@ -11,7 +11,7 @@ class NoteSplash extends FNFSprite
 	{
 		super(x, y);
 		visible = false;
-		alpha = (100 - Init.trueSettings.get('Splash Opacity')) / 100;
+		alpha = (Init.trueSettings.get('Splash Opacity') * 0.01);
 	}
 
 	override function update(elapsed:Float)

@@ -40,7 +40,7 @@ class UIStaticArrow extends FlxSprite
 	public var yTo:Float;
 	public var angleTo:Float;
 
-	public var setAlpha:Float = (Init.trueSettings.get('Opaque Arrows')) ? 1 : 0.8;
+	public var setAlpha:Float = (Init.trueSettings.get('Arrow Opacity') * 0.01);
 
 	public var resetAnim:Float = 0;
 

@@ -107,9 +107,9 @@ class OptionsMenuState extends MusicBeatState
 					//
 					["Note Skin", getFromOption],
 					["Clip Style", getFromOption],
-					["Splash Opacity", getFromOption],
 					['No Camera Note Movement', getFromOption],
-					['Opaque Arrows', getFromOption],
+					['Arrow Opacity', getFromOption],
+					["Splash Opacity", getFromOption],
 					['Opaque Holds', getFromOption],
 					['', null],
 					['Accessibility Settings', null],
@@ -121,7 +121,6 @@ class OptionsMenuState extends MusicBeatState
 					['Reduced Movements', getFromOption],
 					['Filter', getFromOption],
 					["Stage Opacity", getFromOption],
-					["Opacity Type", getFromOption],
 				]
 			]
 		];
@@ -443,11 +442,13 @@ class OptionsMenuState extends MusicBeatState
 					case Init.SettingTypes.Selector:
 						// selector
 						var selector:Selector = new Selector(10, letter.y, letter.text, Init.gameSettings.get(letter.text)[4], [
+							// wow this SUCKS, I need to rewrite this already;
 							(letter.text == 'Framerate Cap') ? true : false,
 							(letter.text == 'Stage Opacity') ? true : false,
 							(letter.text == 'Hitsound Volume') ? true : false,
 							(letter.text == 'Score Bar Size') ? true : false,
 							(letter.text == 'Scroll Speed') ? true : false,
+							(letter.text == 'Arrow Opacity') ? true : false,
 							(letter.text == 'Splash Opacity' ? true : false)
 						]);
 
@@ -534,7 +535,8 @@ class OptionsMenuState extends MusicBeatState
 		var hitVol = selector.optionBooleans[2];
 		var scoreSize = selector.optionBooleans[3];
 		var scrollspeed = selector.optionBooleans[4];
-		var notesplash = selector.optionBooleans[5];
+		var strumlineOp = selector.optionBooleans[5];
+		var notesplashOp = selector.optionBooleans[6];
 
 		/**
 			* left to right, minimum value, maximum value, change value
@@ -542,13 +544,15 @@ class OptionsMenuState extends MusicBeatState
 		**/
 		if (fps)
 			generateSelector(30, 360, 15, updateBy, selector);
-		else if (bgdark || hitVol || notesplash)
+		else if (bgdark || hitVol)
 			generateSelector(0, 100, 5, updateBy, selector);
 		else if (scoreSize)
 			generateSelector(10, 30, 1, updateBy, selector);
 		else if (scrollspeed)
 			generateSelector(1, 6, 0.1, updateBy, selector);
-		if (!fps && !bgdark && !hitVol && !scoreSize && !scrollspeed && !notesplash)
+		else if (strumlineOp || notesplashOp)
+			generateSelector(0, 100, 10, updateBy, selector);
+		if (!fps && !bgdark && !hitVol && !scoreSize && !scrollspeed && !strumlineOp && !notesplashOp)
 		{
 			// get the current option as a number
 			var storedNumber:Int = 0;
@@ -646,10 +650,8 @@ class OptionsMenuState extends MusicBeatState
 			}
 			else
 			{
-				lockedMovement = true;
 				playSound('scrollMenu');
 				openSubState(new OptionsSubstate());
-				lockedMovement = false;
 			}
 		}
 	}
