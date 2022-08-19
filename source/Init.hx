@@ -352,7 +352,7 @@ class Init extends FlxState
 				case "Arrow Opacity":
 					defaultValue = 80;
 				case "Splash Opacity":
-					defaultValue = 35;
+					defaultValue = 50;
 			}
 			if (!Std.isOfType(trueSettings.get(i), Int)
 				|| trueSettings.get(i) < 0
