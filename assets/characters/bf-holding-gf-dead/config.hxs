@@ -8,7 +8,7 @@ function loadAnimations()
     addOffset('deathLoop', 37, -3);
     addOffset('deathConfirm', 37, 28);
     if (isPlayer)
-        set('flipX', false);
-    else
         set('flipX', true);
+    else
+        set('flipX', false);
 }
