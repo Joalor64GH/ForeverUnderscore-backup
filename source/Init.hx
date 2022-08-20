@@ -290,8 +290,8 @@ class Init extends FlxState
 	override public function create():Void
 	{
 		Highscore.load();
-		loadSettings();
 		loadControls();
+		loadSettings();
 
 		#if !html5
 		Main.updateFramerate(trueSettings.get("Framerate Cap"));
@@ -375,13 +375,13 @@ class Init extends FlxState
 		if (!gameSettings.get("Hitsound Type")[4].contains(trueSettings.get("Hitsound Type")))
 			trueSettings.set("Hitsound Type", 'default');
 
-		saveSettings();
-		updateAll();
-
 		if (FlxG.save.data.volume != null)
 			FlxG.sound.volume = FlxG.save.data.volume;
 		if (FlxG.save.data.mute != null)
 			FlxG.sound.muted = FlxG.save.data.mute;
+
+		saveSettings();
+		updateAll();
 	}
 
 	function goToInitialDestination()

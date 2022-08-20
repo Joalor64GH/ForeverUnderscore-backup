@@ -175,7 +175,6 @@ class PlayState extends MusicBeatState
 	public static var chartingMode:Bool = false;
 	public static var practiceMode:Bool = false;
 	public static var scriptDebugMode:Bool = false;
-	public static var resetKey:Bool = false;
 
 	public static var prevCharter:Int = 0;
 
@@ -640,23 +639,6 @@ class PlayState extends MusicBeatState
 					dialogueBox.handSelect.visible = false;
 				}
 			}
-		}
-
-		if (FlxG.keys.justPressed.F5 && resetKey)
-		{
-			// pause game
-			paused = true;
-
-			// skip transition
-			FlxTransitionableState.skipNextTransIn = true;
-			FlxTransitionableState.skipNextTransOut = true;
-
-			// reset state
-			Main.switchState(this, new PlayState());
-
-			// turn skips off
-			FlxTransitionableState.skipNextTransIn = false;
-			FlxTransitionableState.skipNextTransOut = false;
 		}
 
 		if (!inCutscene)

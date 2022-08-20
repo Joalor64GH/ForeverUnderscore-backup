@@ -930,11 +930,17 @@ class Stage extends FlxTypedGroup<FlxBasic>
 			FlxG.sound.list.add(sound);
 		});
 
-		stageScript.set('curStage', curStage);
-		stageScript.set('stageZoom', PlayState.defaultCamZoom);
-		stageScript.set('conductorStepCrochet', Conductor.stepCrochet);
-		stageScript.set('resetKey', PlayState.resetKey);
-		stageScript.set('spawnGirlfriend', spawnGirlfriend);
+		stageScript.set('setStageZoom', function(newZoom:Float = 0.9)
+		{
+			PlayState.defaultCamZoom = newZoom;
+		});
+		stageScript.set('spawnGirlfriend', function(bool:Bool = true)
+		{
+			spawnGirlfriend = bool;
+		});
+
+		stageScript.set('stageName', curStage);
+		stageScript.set('Conductor', Conductor);
 
 		if (stageScript.exists('generateStage'))
 			stageScript.get('generateStage')();
