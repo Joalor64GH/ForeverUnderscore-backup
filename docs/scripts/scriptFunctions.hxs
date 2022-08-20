@@ -1,5 +1,3 @@
-// PLAYSTATE FUNCTIONS
-
 function create()
 {
 	// before characters are generated on PlayState
@@ -74,8 +72,6 @@ function completeTween()
 {
 	// when a scripted tween is finished
 }
-
-// OTHER CLASS FUNCTIONS
 
 function pauseGame()
 {
