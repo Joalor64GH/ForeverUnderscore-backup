@@ -1,8 +1,0 @@
-{
-    "name": "Base Game",
-    "description": "It's the Base Game.",
-    "tags": ["Unmodded", "Base", "Forever"],
-    "authors": ["ninjamuffin99", "PhantomArcade", "evilsk8r", "KawaiSprite"],
-    "loadingImage": "images/base/title/funkay",
-    "loadingBarColor": [255, 255, 255]
-}
