@@ -1,0 +1,10 @@
+function beatHit(curBeat)
+{
+    switch (curBeat)
+    {
+        case 16 | 80:
+		    gf.bopSpeed = 2;
+	    case 48 | 112:
+    	    gf.bopSpeed = 1;
+    }
+}

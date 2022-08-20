@@ -189,7 +189,7 @@ class Character extends FNFSprite
 				holdTimer = 0;
 			}
 		}
-		else if (!debugMode && !specialAnim && animation.curAnim != null)
+		else if (!debugMode && !skipDance && !specialAnim && animation.curAnim != null)
 		{
 			if (animation.curAnim.name.startsWith('sing'))
 			{

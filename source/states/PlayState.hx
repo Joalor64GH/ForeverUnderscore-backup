@@ -1883,33 +1883,6 @@ class PlayState extends MusicBeatState
 		return false;
 	}
 
-	function onBeatEvents(curBeat:Int)
-	{
-		switch (SONG.song.toLowerCase())
-		{
-			case 'fresh':
-				switch (curBeat)
-				{
-					case 16 | 80:
-						gf.bopSpeed = 2;
-					case 48 | 112:
-						gf.bopSpeed = 1;
-				}
-
-			case 'milf':
-				if (curSong.toLowerCase() == 'milf'
-					&& curBeat >= 168
-					&& curBeat < 200
-					&& !Init.trueSettings.get('Reduced Movements')
-					&& FlxG.camera.zoom < 1.35)
-				{
-					FlxG.camera.zoom += 0.015;
-					for (hud in allUIs)
-						hud.zoom += 0.03;
-				}
-		}
-	}
-
 	override function beatHit()
 	{
 		super.beatHit();
@@ -1932,10 +1905,7 @@ class PlayState extends MusicBeatState
 
 		uiHUD.beatHit();
 
-		//
 		charactersDance(curBeat);
-
-		onBeatEvents(curBeat);
 
 		// stage stuffs
 		if (Init.trueSettings.get('Stage Opacity') > 0)
@@ -2445,35 +2415,14 @@ class PlayState extends MusicBeatState
 
 	function setupScripts()
 	{
-		var scripts:Array<String> = [
-			Paths.getPreloadPath('songs/${SONG.song.toLowerCase().replace(' ', '-')}/script.hxs'),
-			Paths.getPreloadPath('songs/${SONG.song.toLowerCase().replace(' ', '-')}/events.hxs'),
-		];
-		var fools:Array<String> = [Paths.getPreloadPath('scripts/')];
+		var fools:Array<String> = [Paths.getPreloadPath('scripts/'), Paths.getPreloadPath('songs/${SONG.song.toLowerCase().replace(' ', '-')}/')];
 		var pushedScripts:Array<String> = [];
 
 		#if MODS_ALLOWED
 		fools.insert(0, Paths.getModPath('scripts', '', ''));
-		scripts.insert(0, Paths.getModPath('songs/${SONG.song.toLowerCase().replace(' ', '-')}', 'script', 'hxs'));
-		scripts.insert(0, Paths.getModPath('songs/${SONG.song.toLowerCase().replace(' ', '-')}', 'events', 'hxs'));
+		fools.insert(0, Paths.getModPath('songs/${SONG.song.toLowerCase().replace(' ', '-')}', '', ''));
+		fools.insert(0, Paths.getModPath('songs/${SONG.song.toLowerCase().replace(' ', '-')}', '', ''));
 		#end
-
-		for (i in scripts)
-		{
-			if (FileSystem.exists(i) && !pushedScripts.contains(i))
-			{
-				var script:ScriptHandler = new ScriptHandler(i);
-
-				if (script.interp == null)
-				{
-					trace("Something terrible occured! Skipping.");
-					continue;
-				}
-
-				scriptArray.push(script);
-				pushedScripts.push(i);
-			}
-		}
 
 		for (fool in fools)
 		{

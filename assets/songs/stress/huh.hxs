@@ -1,4 +1,4 @@
-function onStepHit(curStep)
+function stepHit(curStep)
 {
     switch (curStep)
     {
