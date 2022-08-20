@@ -46,10 +46,12 @@ using StringTools;
 import sys.FileSystem;
 import sys.io.File;
 #end
+/*
 #if VIDEO_PLUGIN
 import vlc.VideoHandler;
 import vlc.VideoSprite;
 #end
+*/
 
 class PlayState extends MusicBeatState
 {
@@ -2104,6 +2106,7 @@ class PlayState extends MusicBeatState
 		FlxG.switchState(new PlayState());
 	}
 
+	/*
 	function startCutscene(name:String)
 	{
 		#if VIDEO_PLUGIN
@@ -2161,6 +2164,7 @@ class PlayState extends MusicBeatState
 		return;
 		#end
 	}
+	*/
 
 	function startAndEnd()
 	{
@@ -2547,6 +2551,7 @@ class PlayState extends MusicBeatState
 		setVar('strumHUD', strumHUD);
 		setVar('dialogueHUD', dialogueHUD);
 
+		/*
 		setVar('playVideo', function(key:String)
 		{
 			startCutscene(key);
@@ -2556,6 +2561,7 @@ class PlayState extends MusicBeatState
 		{
 			spawnVideoSprite(key, x, y, cam);
 		});
+		*/
 
 		setVar('setProperty', function(key:String, value:Dynamic)
 		{
