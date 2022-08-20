@@ -3,7 +3,7 @@ function generateStage()
     /**
     * hello, just wanna make it clear that you need to add your stage images to the
     * assets/backgrounds/<stageName> folder for it to appear on the chart editor
-    * the stagename should be `curStage`, which in this case us `exampleStage`
+    * the stagename should be `curStage`, which in this case is `exampleStage`
     * so my folder would be `assets/backgrounds/exampleStage/`
     **/
 
