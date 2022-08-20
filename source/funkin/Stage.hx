@@ -760,8 +760,8 @@ class Stage extends FlxTypedGroup<FlxBasic>
 			}
 		}
 
-		if (stageScript.exists('onUpdate'))
-			stageScript.get('onUpdate')(curBeat);
+		if (stageScript.exists('updateStage'))
+			stageScript.get('updateStage')(curBeat);
 	}
 
 	public function stageUpdateConstant(elapsed:Float, boyfriend:Character, gf:Character, dadOpponent:Character)
@@ -783,8 +783,8 @@ class Stage extends FlxTypedGroup<FlxBasic>
 				moveTank();
 		}
 
-		if (stageScript.exists('onUpdateConst'))
-			stageScript.get('onUpdateConst')(elapsed);
+		if (stageScript.exists('updateStageConst'))
+			stageScript.get('updateStageConst')(elapsed);
 	}
 
 	// PHILLY STUFFS!
@@ -923,7 +923,7 @@ class Stage extends FlxTypedGroup<FlxBasic>
 			PlayState.defaultCamZoom = desiredZoom;
 		});
 
-		stageScript.set('addEmbeddedSound', function(sndString:String = '')
+		stageScript.set('addSound', function(sndString:String = '')
 		{
 			var sound:FlxSound;
 			sound = new FlxSound().loadEmbedded(Paths.sound(sndString));
@@ -931,20 +931,12 @@ class Stage extends FlxTypedGroup<FlxBasic>
 		});
 
 		stageScript.set('curStage', curStage);
-
+		stageScript.set('stageZoom', PlayState.defaultCamZoom);
 		stageScript.set('conductorStepCrochet', Conductor.stepCrochet);
+		stageScript.set('resetKey', PlayState.resetKey);
+		stageScript.set('spawnGirlfriend', spawnGirlfriend);
 
-		stageScript.set('resetKey', function(button:Bool)
-		{
-			PlayState.resetKey = button;
-		});
-
-		stageScript.set('spawnGirlfriend', function(button:Bool)
-		{
-			spawnGirlfriend = button;
-		});
-
-		if (stageScript.exists('onCreate'))
-			stageScript.get('onCreate')();
+		if (stageScript.exists('generateStage'))
+			stageScript.get('generateStage')();
 	}
 }

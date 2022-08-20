@@ -1,27 +1,16 @@
-function onCreate()
+function generateStage()
 {
     /**
     * hello, just wanna make it clear that you need to add your stage images to the
     * assets/backgrounds/<stageName> folder for it to appear on the chart editor
-    * then while adding a new graphic, the image path must be
-    * `'backgrounds/' + curStage + '/file'`
+    * the stagename should be `curStage`, which in this case us `exampleStage`
+    * so my folder would be `assets/backgrounds/exampleStage/`
     **/
-    
-    configStage('exampleStage', 0.9); // set the stage name and default zoom (ZOOM IS OPTIONAL)
-    resetKey(false); // makes it so F5 restarts the song, useful for debugging (OPTIONAL)
-    spawnGirlfriend(true); // whether to spawn girlfriend, usually true (OPTIONAL)
 
-    /**
-        Stage Scale Modes
-                = AVAILABLE SCALE MODES =
-                    "fill"
-                    "fixed"
-                    "fixed-adjust"
-                    "pixel-perfect"
-                    "relative"
-                    "stage"
-                    "ratio"
-    **/
+    curStage = 'exampleStage'; // stage name
+    stageZoom = 0.9; // stage zoom
+    resetKey = false; // makes it so F5 restarts the song, useful for debugging (OPTIONAL)
+    spawnGirlfriend = true; // whether to spawn girlfriend, usually true (OPTIONAL)
 
     /**
         Blend Modes, for all your image effect needs
@@ -83,12 +72,12 @@ function repositionPlayers(boyfriend, dad, gf) // function used to reposition ch
     //dad.y += 0;
 }
 
-function onUpdate(curBeat:Int) // stage updates
+function updateStage(curBeat) // stage updates
 {
     //
 }
 
-function onUpdateConst(elapsed:Float) // stage constant updates
+function updateStageConst(elapsed) // stage constant updates
 {
     //
 }
