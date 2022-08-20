@@ -33,6 +33,7 @@ using StringTools;
 
 	notes to take:
 	* offsets are currently broken, as characters never spawn at their in-game idle position
+	* some animations can`t move
 	* ghost characters don't properly work
  */
 class CharacterDebug extends MusicBeatState
