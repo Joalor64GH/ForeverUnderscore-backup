@@ -66,6 +66,7 @@ class CharacterDebug extends MusicBeatState
 	{
 		super();
 		this.curCharacter = curCharacter;
+		this.curStage = curStage;
 	}
 
 	override public function create()

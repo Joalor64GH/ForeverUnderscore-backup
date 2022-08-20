@@ -675,7 +675,7 @@ class PlayState extends MusicBeatState
 					var holdingAlt = FlxG.keys.pressed.ALT;
 
 					Conductor.resetMusic();
-					Main.switchState(this, new CharacterDebug(holdingShift ? SONG.player1 : holdingAlt ? SONG.gfVersion : SONG.player2, curStage));
+					Main.switchState(this, new CharacterDebug(holdingShift ? SONG.player1 : holdingAlt ? SONG.gfVersion : SONG.player2, PlayState.curStage));
 				}
 
 				if (FlxG.keys.justPressed.FIVE)
@@ -708,9 +708,7 @@ class PlayState extends MusicBeatState
 			}
 			else
 			{
-				// Conductor.songPosition = FlxG.sound.music.time;
 				Conductor.songPosition += elapsed * 1000;
-
 				if (!paused)
 				{
 					songTime += FlxG.game.ticks - previousFrameTime;
@@ -721,17 +719,9 @@ class PlayState extends MusicBeatState
 					{
 						songTime = (songTime + Conductor.songPosition) / 2;
 						Conductor.lastSongPos = Conductor.songPosition;
-						// Conductor.songPosition += FlxG.elapsed * 1000;
-						// trace('MISSED FRAME');
 					}
 				}
-
-				// Conductor.lastSongPos = FlxG.sound.music.time;
-				// song shit for testing lols
 			}
-
-			// boyfriend.playAnim('singLEFT', true);
-			// */
 
 			if (generatedMusic && PlayState.SONG.notes[Std.int(curStep / 16)] != null)
 			{
