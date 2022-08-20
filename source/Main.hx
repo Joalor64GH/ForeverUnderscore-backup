@@ -40,6 +40,7 @@ class Main extends Sprite
 
 	public static var foreverVersion:String = '0.3.1';
 	public static var underscoreVersion:String = '0.2.1';
+	public static var commitHash:String;
 
 	public static var showCommitHash:Bool = true;
 
@@ -248,7 +249,7 @@ class Main extends Sprite
 		path = "crash/" + "FE_" + dateNow + ".txt";
 
 		errMsg = "Friday Night Funkin' v" + Lib.application.meta["version"] + "\n";
-		errMsg += "Forever Engine Underscore v" + Main.underscoreVersion + (showCommitHash ? ' (${getGitCommitHash()})' : '') + "\n";
+		errMsg += "Forever Engine Underscore v" + Main.underscoreVersion + (showCommitHash ? ' (${commitHash})' : '') + "\n";
 
 		for (stackItem in callStack)
 		{

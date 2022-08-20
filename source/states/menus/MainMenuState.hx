@@ -124,7 +124,7 @@ class MainMenuState extends MusicBeatState
 			+ Main.foreverVersion
 			+ " - Underscore v"
 			+ Main.underscoreVersion
-			+ (Main.showCommitHash ? ' (${Main.getGitCommitHash()})' : ''),
+			+ (Main.showCommitHash ? ' (${Main.commitHash})' : ''),
 			12);
 		versionShit.scrollFactor.set();
 		versionShit.setFormat(Paths.font('vcr.ttf'), 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);

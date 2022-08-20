@@ -306,6 +306,8 @@ class Init extends FlxState
 		FlxG.mouse.visible = false; // Hide mouse on start
 		FlxGraphic.defaultPersist = true; // make sure we control all of the memory
 
+		Main.commitHash = Main.getGitCommitHash(); // get the commit hash for use on menu texts and such;
+
 		WeekParser.loadWeeks(); // load any custom weeks you might have;
 
 		goToInitialDestination();
