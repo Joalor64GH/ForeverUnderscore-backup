@@ -41,16 +41,18 @@ typedef SwagSong =
 	var assetModifier:String;
 	var validScore:Bool;
 	var ?offset:Int;
+	var ?color:Array<Int>;
 }
 
 /**
- * Song Meta Information, such as author, asset modifier and offset;
+ * Song Meta Information, such as author, asset modifier, offset, song color, etc;
 **/
 typedef SwagMeta =
 {
 	var author:String;
 	var assetModifier:String;
 	var ?offset:Int;
+	var ?color:Array<Int>;
 }
 
 /**
@@ -327,7 +329,8 @@ class Song
 			rawMeta = '{
 				"author": "???",
 				"assetModifier": "base",
-				"offset": 0
+				"offset": 0,
+				"color": [255, 255, 255]
 			}';
 		}
 
@@ -363,6 +366,13 @@ class Song
 			swagShit.offset = swagShit.offset;
 		else
 			swagShit.offset = 0;
+
+		if (swagMeta.color != null)
+			swagShit.color = swagMeta.color;
+		else if (swagMeta.color == null)
+			swagShit.color = swagShit.color;
+		else
+			swagShit.color = [255, 255, 255];
 
 		return swagShit;
 	}

@@ -1,5 +1,6 @@
 package states.menus;
 
+import base.ChartParser;
 import base.ChartParser.Song;
 import base.ChartParser.SwagSong;
 import base.CoolUtil;
@@ -101,12 +102,18 @@ class FreeplayState extends MusicBeatState
 			if (!existingSongs.contains(i.toLowerCase()))
 			{
 				var icon:String = 'gf';
+				var color:FlxColor = FlxColor.WHITE;
+				var colorArray:Array<Int> = [255, 255, 255];
 				var chartExists:Bool = FileSystem.exists(Paths.songJson(i, i));
 				if (chartExists)
 				{
 					var castSong:SwagSong = Song.loadSong(i, i);
 					icon = (castSong != null) ? castSong.player2 : 'gf';
-					addSong(CoolUtil.spaceToDash(castSong.song), 1, icon, FlxColor.WHITE);
+
+					colorArray = castSong.color;
+					color = FlxColor.fromRGB(colorArray[0], colorArray[1], colorArray[2]);
+
+					addSong(CoolUtil.spaceToDash(castSong.song), 1, icon, color);
 				}
 			}
 		}
