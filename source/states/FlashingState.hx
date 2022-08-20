@@ -22,8 +22,10 @@ class FlashingState extends MusicBeatState
 		super.create();
 
 		// reset volume
-		if (FlxG.save.data.volume == null)
-			FlxG.sound.volume = 1;
+		if (FlxG.save.data.volume != null)
+			FlxG.sound.volume = FlxG.save.data.volume;
+		if (FlxG.save.data.mute != null)
+			FlxG.sound.muted = FlxG.save.data.mute;
 
 		// set up state save, this ensures that you did leave this state once BACK or ACCEPT was pressed
 		if (FlxG.save.data.leftFlashing == null)

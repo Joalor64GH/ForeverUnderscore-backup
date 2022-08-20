@@ -233,7 +233,6 @@ class PlayState extends MusicBeatState
 
 		allUIs.push(camHUD);
 
-		// FlxCamera.defaultCameras = [camGame];
 		FlxG.cameras.setDefaultDrawTarget(camGame, true);
 
 		// default song
@@ -694,7 +693,7 @@ class PlayState extends MusicBeatState
 					var holdingAlt = FlxG.keys.pressed.ALT;
 
 					Conductor.resetMusic();
-					Main.switchState(this, new CharacterDebug(holdingShift ? SONG.player1 : holdingAlt ? SONG.gfVersion : SONG.player2));
+					Main.switchState(this, new CharacterDebug(holdingShift ? SONG.player1 : holdingAlt ? SONG.gfVersion : SONG.player2, curStage));
 				}
 
 				if (FlxG.keys.justPressed.FIVE)

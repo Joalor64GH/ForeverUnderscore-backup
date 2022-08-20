@@ -15,6 +15,7 @@ import flixel.addons.ui.FlxUITabMenu;
 import flixel.animation.FlxAnimation;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.text.FlxText;
+import flixel.ui.FlxButton;
 import flixel.util.FlxColor;
 import flixel.util.FlxGradient;
 import funkin.Character;
@@ -22,6 +23,7 @@ import funkin.Stage;
 import openfl.events.Event;
 import openfl.events.IOErrorEvent;
 import openfl.net.FileReference;
+import states.menus.FreeplayState;
 
 using StringTools;
 
@@ -31,10 +33,8 @@ using StringTools;
 	with some tweaking here and there to make it work on forever engine
 	and some other additional features
 
-	notes to take:
-	* offsets are currently broken, as characters never spawn at their in-game idle position
+	[BUGS]:
 	* some animations can`t move
-	* ghost characters don't properly work
  */
 class CharacterDebug extends MusicBeatState
 {
@@ -61,9 +61,8 @@ class CharacterDebug extends MusicBeatState
 	var camHUD:FlxCamera;
 
 	var UI_box:FlxUITabMenu;
-	var fileExt:String = 'hxs';
 
-	public function new(curCharacter:String = 'dad')
+	public function new(curCharacter:String = 'dad', curStage:String = 'stage')
 	{
 		super();
 		this.curCharacter = curCharacter;
@@ -74,7 +73,6 @@ class CharacterDebug extends MusicBeatState
 		super.create();
 
 		FlxG.sound.music.stop();
-
 		FlxG.mouse.visible = true;
 
 		camGame = new FlxCamera();
@@ -84,7 +82,6 @@ class CharacterDebug extends MusicBeatState
 		FlxG.cameras.reset(camGame);
 		FlxG.cameras.add(camHUD, false);
 
-		// FlxCamera.defaultCameras = [camGame];
 		FlxG.cameras.setDefaultDrawTarget(camGame, true);
 
 		// set up camera
@@ -95,12 +92,14 @@ class CharacterDebug extends MusicBeatState
 		FlxG.camera.follow(camFollow);
 
 		// add stage
-		generateBackground();
+		stageBuild = new Stage(curStage);
+		add(stageBuild);
 
 		// add characters
 		ghost = new Character(0, 0, curCharacter);
 		ghost.debugMode = true;
 		ghost.visible = false;
+		ghost.color = 0xFF666688;
 		add(ghost);
 
 		generateCharacter(!curCharacter.startsWith('bf'));
@@ -134,27 +133,6 @@ class CharacterDebug extends MusicBeatState
 		add(UI_box);
 
 		addPreferencesUI();
-
-		ghostAnimDropDown.selectedLabel = '';
-	}
-
-	var coolGrid:FlxBackdrop;
-	var coolGradient:FlxSprite;
-
-	function generateBackground()
-	{
-		coolGrid = new FlxBackdrop(null, 1, 1, true, true, 1, 1);
-		coolGrid.loadGraphic(Paths.image('UI/forever/base/chart editor/grid'));
-		coolGrid.screenCenter();
-		coolGrid.alpha = (32 / 255);
-		add(coolGrid);
-
-		// gradient
-		coolGradient = FlxGradient.createGradientFlxSprite(FlxG.width, FlxG.height,
-			FlxColor.gradient(FlxColor.fromRGB(188, 158, 255, 200), FlxColor.fromRGB(80, 12, 108, 255), 16));
-		coolGradient.alpha = (32 / 255);
-		coolGradient.screenCenter();
-		add(coolGradient);
 	}
 
 	var ghostAnimDropDown:FlxUIDropDownMenu;
@@ -166,7 +144,12 @@ class CharacterDebug extends MusicBeatState
 		tab_group.name = "Preferences";
 
 		check_offset = new FlxUICheckBox(10, 60, null, null, "Offset Mode", 100);
-		check_offset.checked = false;
+		check_offset.checked = true;
+
+		var saveButton:FlxButton = new FlxButton(140, 30, "Save", function()
+		{
+			saveCharOffsets();
+		});
 
 		ghostAnimDropDown = new FlxUIDropDownMenu(10, 30, FlxUIDropDownMenu.makeStrIdLabelArray(animList, true), function(animation:String)
 		{
@@ -174,7 +157,7 @@ class CharacterDebug extends MusicBeatState
 			{
 				ghost.visible = true;
 				ghost.alpha = 0.85;
-				ghost.playAnim('idle', true);
+				ghost.playAnim(animList[Std.parseInt(animation)], true);
 			}
 			else
 			{
@@ -185,6 +168,7 @@ class CharacterDebug extends MusicBeatState
 		tab_group.add(new FlxText(ghostAnimDropDown.x, ghostAnimDropDown.y - 18, 0, 'Ghost Animation:'));
 		tab_group.add(check_offset);
 		tab_group.add(ghostAnimDropDown);
+		tab_group.add(saveButton);
 		UI_box.addGroup(tab_group);
 	}
 
@@ -200,8 +184,13 @@ class CharacterDebug extends MusicBeatState
 			Main.switchState(this, new PlayState());
 		}
 
-		// camera controls
+		if (FlxG.keys.justPressed.BACKSPACE)
+		{
+			FlxG.mouse.visible = false;
+			Main.switchState(this, new FreeplayState());
+		}
 
+		// camera controls
 		if (FlxG.keys.justPressed.R)
 		{
 			FlxG.camera.zoom = 1;
@@ -238,7 +227,6 @@ class CharacterDebug extends MusicBeatState
 		}
 
 		// character controls
-
 		if (FlxG.keys.justPressed.F)
 		{
 			char.flipX = !char.flipX;
@@ -284,14 +272,21 @@ class CharacterDebug extends MusicBeatState
 
 					updateTexts();
 					genCharOffsets(false);
-					// ghost.setPosition(char.x, char.y);
 					char.playAnim(animList[curAnim], false);
+					if (ghost.animation.curAnim != null
+						&& char.animation.curAnim != null
+						&& char.animation.curAnim.name == ghost.animation.curAnim.name)
+					{
+						ghost.playAnim(char.animation.curAnim.name, false);
+					}
 				}
 			}
 		}
 
 		if (FlxG.keys.pressed.CONTROL && FlxG.keys.justPressed.S)
 			saveCharOffsets();
+
+		ghost.setPosition(char.x, char.y);
 
 		super.update(elapsed);
 	}
@@ -339,11 +334,11 @@ class CharacterDebug extends MusicBeatState
 
 		if (dumbTexts.length < 1)
 		{
-			animList = ['[NONE]'];
+			animList = ['[ERROR]'];
 
 			var text:FlxText = new FlxText(10, 38, 0, '
 				No animations found
-				\nplease make sure your ${curCharacter}.$fileExt script
+				\nplease make sure your ${curCharacter}.hxs script
 				has the offsets properly set up
 				\n\nTry: addOffset(\'animationName\', offsetX, offsetY);
 				', 15);
@@ -372,7 +367,7 @@ class CharacterDebug extends MusicBeatState
 			_file.addEventListener(Event.COMPLETE, onSaveComplete);
 			_file.addEventListener(Event.CANCEL, onSaveCancel);
 			_file.addEventListener(IOErrorEvent.IO_ERROR, onSaveError);
-			_file.save(result.trim(), curCharacter + "Offsets." + fileExt);
+			_file.save(result.trim(), curCharacter + "Offsets.hxs");
 		}
 	}
 
