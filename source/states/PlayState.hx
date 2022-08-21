@@ -1855,6 +1855,7 @@ class PlayState extends MusicBeatState
 		{
 			FlxG.camera.zoom += 0.015;
 			camHUD.zoom += 0.05;
+			strumHUD.zoom += 0.05;
 		}
 
 		if (SONG.notes[Math.floor(curStep / 16)] != null)
