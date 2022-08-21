@@ -49,7 +49,8 @@ function generateStage()
     * addSpriteOffset('spriteID', 'animationPrefix', xOffset, yOffset);
     * spritePlayAnimation('spriteID', 'animationPrefix');
     * setSpriteBlend('spriteID', 'blendModeString');
-    * setSpriteSize('spriteID', newSize); //newSize is a float value
+    * setSpriteSize('spriteID', newSize); // newSize is a float value
+    * setSpriteAlpha('spriteID', newOpacityValue); // newOpacityValue is a float value
     **/
 }
 
