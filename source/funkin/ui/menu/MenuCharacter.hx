@@ -43,7 +43,7 @@ class MenuCharacter extends FlxSprite
 		var rawJson = null;
 		var path:String = Paths.getPreloadPath('images/menus/base/storymenu/characters/' + newCharacter + '.json');
 
-		#if MODS_ALLOWED
+		#if MOD_HANDLER
 		if (!FileSystem.exists(path))
 		{
 			path = Paths.getPreloadPath('images/menus/base/storymenu/characters/none.json');

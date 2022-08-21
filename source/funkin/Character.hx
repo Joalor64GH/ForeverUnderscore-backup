@@ -337,7 +337,7 @@ class Character extends FNFSprite
 		var path:String = Paths.getPreloadPath('characters/$char/config.hxs');
 		var scripts:Array<String> = [path];
 
-		#if MODS_ALLOWED
+		#if MOD_HANDLER
 		scripts.insert(0, Paths.getModPath('characters/$char', 'config', 'hxs'));
 		#end
 
@@ -362,7 +362,7 @@ class Character extends FNFSprite
 
 		var spriteType = "sparrow";
 
-		#if MODS_ALLOWED
+		#if MOD_HANDLER
 		var modTxtToFind:String = Paths.getModPath('characters/$char', char, 'txt');
 		var txtToFind:String = Paths.getPath('characters/$char/$char.txt', TEXT);
 
@@ -512,7 +512,7 @@ class Character extends FNFSprite
 		 */
 		var path = Paths.getPreloadPath('characters/$char/' + character + '.json');
 
-		#if MODS_ALLOWED
+		#if MOD_HANDLER
 		var rawJson = File.getContent(path);
 		#else
 		var rawJson = Assets.getText(path);
@@ -521,7 +521,7 @@ class Character extends FNFSprite
 		var json:PsychEngineChar = cast Json.parse(rawJson);
 		var spriteType = "sparrow";
 
-		#if MODS_ALLOWED
+		#if MOD_HANDLER
 		var modTxtToFind:String = Paths.getModPath('characters/$char', json.image, 'txt');
 		var txtToFind:String = Paths.getPath('characters/$char/${json.image}.txt', TEXT);
 

@@ -147,7 +147,7 @@ class Paths
 	{
 		textureCompression = Init.trueSettings.get('Hardware Caching');
 
-		#if MODS_ALLOWED
+		#if MOD_HANDLER
 		var modPath:String = modImages(key);
 		if (FileSystem.exists(modPath))
 		{
@@ -212,7 +212,7 @@ class Paths
 
 	static public function getTextFromFile(key:String, ignoreMods:Bool = false):String
 	{
-		#if MODS_ALLOWED
+		#if MOD_HANDLER
 		if (!ignoreMods && FileSystem.exists(getModPath('', key, '')))
 			return File.getContent(getModPath('', key, ''));
 		#end
@@ -231,7 +231,7 @@ class Paths
 
 	public static function returnSound(path:String, key:String, ?library:String)
 	{
-		#if MODS_ALLOWED
+		#if MOD_HANDLER
 		var file:String = modSounds(path, key);
 		if (FileSystem.exists(file))
 		{
@@ -248,7 +248,7 @@ class Paths
 		gottenPath = gottenPath.substring(gottenPath.indexOf(':') + 1, gottenPath.length);
 		// trace(gottenPath);
 		if (!currentTrackedSounds.exists(gottenPath))
-			#if MODS_ALLOWED
+			#if MOD_HANDLER
 			currentTrackedSounds.set(gottenPath, Sound.fromFile('./' + gottenPath));
 			#else
 			{
@@ -421,7 +421,7 @@ class Paths
 
 	inline static public function video(key:String)
 	{
-		#if MODS_ALLOWED
+		#if MOD_HANDLER
 		var file:String = modVideos(key);
 		if (FileSystem.exists(file))
 		{
@@ -433,7 +433,7 @@ class Paths
 
 	inline static public function shader(key:String)
 	{
-		#if MODS_ALLOWED
+		#if MOD_HANDLER
 		var file:String = getModPath('shaders', key, 'frag');
 		if (FileSystem.exists(file))
 		{
@@ -447,7 +447,7 @@ class Paths
 	 * MOD PATHS AND ANYTHING RELATED TO MODS
 	 * something that i'm gonna work on soon! -gabi
 	**/
-	#if MODS_ALLOWED
+	#if MOD_HANDLER
 	inline static public function getModpack(key:String = '')
 	{
 		return 'mods/' + key;
