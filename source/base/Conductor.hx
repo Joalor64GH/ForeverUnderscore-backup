@@ -9,6 +9,7 @@ import haxe.Json;
 import haxe.format.JsonParser;
 import lime.utils.Assets;
 import states.PlayState;
+import sys.FileSystem;
 import sys.io.File;
 
 using StringTools;

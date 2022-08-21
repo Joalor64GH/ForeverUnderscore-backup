@@ -28,7 +28,7 @@ import flixel.util.FlxColor;
 import flixel.util.FlxTimer;
 import funkin.Alphabet;
 import lime.app.Application;
-import openfl.utils.Assets;
+import openfl.Assets;
 import states.menus.*;
 
 using StringTools;

@@ -16,6 +16,7 @@ import openfl.media.Sound;
 import openfl.system.System;
 import openfl.utils.AssetType;
 import openfl.utils.Assets as OpenFlAssets;
+import sys.FileSystem;
 import sys.io.File;
 
 using StringTools;
@@ -89,9 +90,9 @@ class Paths
 						currentTrackedTextures.remove(key);
 					}
 					@:privateAccess
-					if (openfl.utils.Assets.cache.hasBitmapData(key))
+					if (openfl.Assets.cache.hasBitmapData(key))
 					{
-						openfl.utils.Assets.cache.removeBitmapData(key);
+						openfl.Assets.cache.removeBitmapData(key);
 						FlxG.bitmap._cache.remove(key);
 					}
 					#if DEBUG_TRACES trace('removed $key, ' + (isTexture ? 'is a texture' : 'is not a texture')); #end
@@ -118,7 +119,7 @@ class Paths
 			var obj = FlxG.bitmap._cache.get(key);
 			if (obj != null && !currentTrackedAssets.exists(key))
 			{
-				openfl.utils.Assets.cache.removeBitmapData(key);
+				openfl.Assets.cache.removeBitmapData(key);
 				FlxG.bitmap._cache.remove(key);
 				obj.destroy();
 			}
@@ -142,7 +143,7 @@ class Paths
 		textureCompression = Init.trueSettings.get('Hardware Caching');
 		var path = getPath('$folder/$key.png', IMAGE, library);
 
-		if (openfl.utils.Assets.exists(path))
+		if (FileSystem.exists(path))
 		{
 			if (!currentTrackedAssets.exists(key))
 			{
@@ -175,14 +176,14 @@ class Paths
 
 	static public function getTextFromFile(key:String, ignoreMods:Bool = false):String
 	{
-		if (openfl.utils.Assets.exists(getPreloadPath(key)))
+		if (FileSystem.exists(getPreloadPath(key)))
 			return File.getContent(getPreloadPath(key));
 
 		if (currentLevel != null)
 		{
 			var levelPath:String = '';
 			levelPath = getLibraryPathForce(key, '');
-			if (openfl.utils.Assets.exists(levelPath))
+			if (FileSystem.exists(levelPath))
 				return File.getContent(levelPath);
 		}
 		return Assets.getText(getPath(key, TEXT));
@@ -264,7 +265,7 @@ class Paths
 	public inline static function getPreloadPath(file:String)
 	{
 		var returnPath:String = 'assets/$file';
-		if (!openfl.utils.Assets.exists(returnPath))
+		if (!FileSystem.exists(returnPath))
 			returnPath = CoolUtil.swapSpaceDash(returnPath);
 		return returnPath;
 	}

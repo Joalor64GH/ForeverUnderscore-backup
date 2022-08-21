@@ -16,12 +16,12 @@ import haxe.CallStack.StackItem;
 import haxe.CallStack;
 import haxe.io.Path;
 import lime.app.Application;
+import openfl.Assets;
 import openfl.Lib;
 import openfl.display.FPS;
 import openfl.display.Sprite;
 import openfl.events.Event;
 import openfl.events.UncaughtErrorEvent;
-import openfl.utils.Assets;
 import sys.FileSystem;
 import sys.io.File;
 import sys.io.Process;
@@ -267,8 +267,8 @@ class Main extends Sprite
 			+
 			"\nPlease report this error to the GitHub page: https://github.com/BeastlyGhost/Forever-Engine-Underscore\non the \"master\" branch\n\n>Crash Handler written by: sqirra-rng\n\n";
 
-		if (!openfl.utils.Assets.exists("/crash/"))
-			FileSystem.createDirectory("/crash/");
+		if (!FileSystem.exists(";/crash/"))
+			FileSystem.createDirectory("./crash/");
 
 		File.saveContent(path, errMsg + "\n");
 
@@ -283,7 +283,7 @@ class Main extends Sprite
 		crashDialoguePath = "./FE-CrashDialog";
 		#end
 
-		if (openfl.utils.Assets.exists(crashDialoguePath))
+		if (FileSystem.exists(crashDialoguePath))
 		{
 			Sys.println("Found crash dialog: " + crashDialoguePath);
 			new Process(crashDialoguePath, [path]);

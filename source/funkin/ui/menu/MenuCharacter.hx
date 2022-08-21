@@ -4,6 +4,7 @@ import flixel.FlxSprite;
 import flixel.graphics.frames.FlxAtlasFrames;
 import haxe.Json;
 import lime.utils.Assets;
+import sys.FileSystem;
 import sys.io.File;
 
 typedef WeekCharacterDef =
@@ -43,7 +44,7 @@ class MenuCharacter extends FlxSprite
 		var path:String = Paths.getPreloadPath('images/menus/base/storymenu/characters/' + newCharacter + '.json');
 
 		#if MODS_ALLOWED
-		if (!openfl.utils.Assets.exists(path))
+		if (!FileSystem.exists(path))
 		{
 			path = Paths.getPreloadPath('images/menus/base/storymenu/characters/none.json');
 		}
