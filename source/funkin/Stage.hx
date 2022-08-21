@@ -859,68 +859,89 @@ class Stage extends FlxTypedGroup<FlxBasic>
 	{
 		stageScript = new ScriptHandler(Paths.getPreloadPath('stages/$curStage.hxs'));
 
-		stageScript.set('createGraphic',
-			function(id:String, x:Float, y:Float, size:Float = 1, scrollX:Float, scrollY:Float, alphaValue:Float = 1, scaleX:Float = 1, scaleY:Float = 1,
-					image:String, fore:Bool = false, blendString:String = 'normal')
+		stageScript.set('createSprite',
+			function(spriteID:String, image:String, x:Float, y:Float, onForeground:Bool = false)
 			{
-				var madeGraphic:FNFSprite = new FNFSprite(x, y).loadGraphic(Paths.image(image));
-				madeGraphic.setGraphicSize(Std.int(madeGraphic.width * size));
-				madeGraphic.scrollFactor.set(scrollX, scrollY);
-				madeGraphic.updateHitbox();
-				madeGraphic.antialiasing = true;
-				madeGraphic.blend = ForeverTools.getBlendFromString(blendString);
-				madeGraphic.alpha = alphaValue;
-				PlayState.GraphicMap.set(id, madeGraphic);
+				var newSprite:FNFSprite = new FNFSprite(x, y).loadGraphic(Paths.image(image));
+				newSprite.updateHitbox();
+				newSprite.antialiasing = true;
+				PlayState.GraphicMap.set(spriteID, newSprite);
+				PlayState.contents.setVar('$spriteID', newSprite);
 
-				if (fore)
-					foreground.add(madeGraphic);
+				if (onForeground)
+					foreground.add(newSprite);
 				else
-					add(madeGraphic);
+					add(newSprite);
 			});
 
-		stageScript.set('createAnimatedGraphic',
-			function(id:String, x:Float, y:Float, size:Float, scrollX:Float, scrollY:Float, alphaValue:Float = 1, scaleX:Float = 1, scaleY:Float = 1,
-					image:String, anims:Array<Array<Dynamic>>, defaultAnim:String, fore:Bool = false, blendString:String = 'normal')
+		stageScript.set('createAnimatedSprite',
+			function(spriteID:String, key:String, spriteType:String, x:Float = 0, y:Float = 0, spriteAnims:Array<Array<Dynamic>>, defAnim:String,
+					onForeground:Bool = false)
 			{
-				var madeGraphic:FNFSprite = new FNFSprite(x, y);
-				madeGraphic.frames = Paths.getSparrowAtlas(image);
+				var newSprite:FNFSprite = new FNFSprite(x, y);
 
-				for (anim in anims)
+				switch (spriteType)
 				{
-					madeGraphic.animation.addByPrefix(anim[0], anim[1], anim[2], anim[3]);
+					case "packer":
+						newSprite.frames = Paths.getPackerAtlas(key);
+					case "sparrow":
+						newSprite.frames = Paths.getSparrowAtlas(key);
+					case "sparrow-hash":
+						newSprite.frames = Paths.getSparrowHashAtlas(key);
 				}
 
-				madeGraphic.setGraphicSize(Std.int(madeGraphic.width * size));
-				madeGraphic.scrollFactor.set(scrollX, scrollY);
-				madeGraphic.updateHitbox();
-				madeGraphic.animation.play(defaultAnim);
-				madeGraphic.antialiasing = true;
-				madeGraphic.blend = ForeverTools.getBlendFromString(blendString);
-				madeGraphic.alpha = alphaValue;
-				madeGraphic.scale.set(scaleX, scaleY);
-				PlayState.GraphicMap.set(id, madeGraphic);
-				if (fore)
-					foreground.add(madeGraphic);
+				for (anim in spriteAnims)
+				{
+					newSprite.animation.addByPrefix(anim[0], anim[1], anim[2], anim[3]);
+				}
+				newSprite.updateHitbox();
+				newSprite.antialiasing = true;
+				newSprite.animation.play(defAnim);
+				PlayState.GraphicMap.set(spriteID, newSprite);
+				PlayState.contents.setVar('$spriteID', newSprite);
+				if (onForeground)
+					foreground.add(newSprite);
 				else
-					add(madeGraphic);
+					add(newSprite);
 			});
 
-		stageScript.set('addOffsetByID', function(id:String, anim:String, x:Float, y:Float)
+		stageScript.set('addSpriteAnimation', function(spriteID:String, newAnims:Array<Array<Dynamic>>)
 		{
-			var getSprite:FNFSprite = PlayState.GraphicMap.get(id);
-			getSprite.addOffset(anim, x, y);
+			var gottenSprite:FNFSprite = PlayState.GraphicMap.get(spriteID);
+			for (anim in newAnims)
+			{
+				gottenSprite.animation.addByPrefix(anim[0], anim[1], anim[2], anim[3]);
+			}
 		});
 
-		stageScript.set('applyBlendByID', function(id:String, blendString:String)
+		stageScript.set('addSpriteOffset', function(spriteID:String, anim:String, x:Float, y:Float)
 		{
-			var getSprite:FNFSprite = PlayState.GraphicMap.get(id);
-			getSprite.blend = ForeverTools.getBlendFromString(blendString);
+			var gottenSprite:FNFSprite = PlayState.GraphicMap.get(spriteID);
+			gottenSprite.addOffset(anim, x, y);
 		});
 
-		stageScript.set('configStage', function(daStage:String = 'stage', desiredZoom:Float = 1.05)
+		stageScript.set('spritePlayAnimation', function(spriteID:String, animToPlay:String, forced:Bool = true)
 		{
-			curStage = daStage;
-			PlayState.defaultCamZoom = desiredZoom;
+			var gottenSprite:FNFSprite = PlayState.GraphicMap.get(spriteID);
+			gottenSprite.animation.play(animToPlay, forced);
+		});
+
+		stageScript.set('setSpriteBlend', function(spriteID:String, blendString:String)
+		{
+			var gottenSprite:FNFSprite = PlayState.GraphicMap.get(spriteID);
+			gottenSprite.blend = ForeverTools.getBlendFromString(blendString);
+		});
+
+		stageScript.set('setSpriteScrollFactor', function(spriteID:String, x:Float, y:Float)
+		{
+			var gottenSprite:FNFSprite = PlayState.GraphicMap.get(spriteID);
+			gottenSprite.scrollFactor.set(x, y);
+		});
+
+		stageScript.set('setSpriteSize', function(spriteID:String, newSize:Float)
+		{
+			var gottenSprite:FNFSprite = PlayState.GraphicMap.get(spriteID);
+			gottenSprite.setGraphicSize(Std.int(gottenSprite.width * newSize));
 		});
 
 		stageScript.set('addSound', function(sndString:String = '')

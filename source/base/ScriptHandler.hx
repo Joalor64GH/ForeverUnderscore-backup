@@ -59,68 +59,91 @@ class ScriptFuncs extends PlayState
 		PlayState.contents.setVar('Timings', Timings);
 		PlayState.contents.setVar('Conductor', Conductor);
 
-		PlayState.contents.setVar('makeGraphic',
-			function(spriteID:String, graphicCol:Dynamic, x:Int = 0, y:Int = 0, scrollX:Float = null, scrollY:Float = null, alpha:Float = 1, size:Float = 1)
-			{
-				var sprite = new FNFSprite(x, y);
-				sprite.makeGraphic(x, y, graphicCol);
-				sprite.scrollFactor.set(scrollX, scrollY);
-				sprite.setGraphicSize(Std.int(sprite.width * size));
-				sprite.alpha = alpha;
-				sprite.antialiasing = true;
-				PlayState.GraphicMap.set(spriteID, sprite);
-				PlayState.contents.setVar('$spriteID', sprite);
-				PlayState.contents.add(sprite);
-			});
+		PlayState.contents.setVar('makeSprite', function(spriteID:String, x:Int = 0, y:Int = 0, graphicCol:Dynamic)
+		{
+			var newSprite = new FNFSprite();
+			newSprite.makeGraphic(x, y, graphicCol);
+			newSprite.antialiasing = true;
+			PlayState.GraphicMap.set(spriteID, newSprite);
+			PlayState.contents.setVar('$spriteID', newSprite);
+			PlayState.contents.add(newSprite);
+		});
 
-		PlayState.contents.setVar('loadGraphic',
-			function(spriteID:String, key:String, x:Int = 0, y:Int = 0, scrollX:Float = null, scrollY:Float = null, alpha:Float = 1, size:Float = 1,
-					scaleX:Float = 1, scaleY:Float = 1)
-			{
-				var sprite = new FNFSprite(x, y);
-				sprite.loadGraphic(Paths.image(key));
-				sprite.scrollFactor.set(scrollX, scrollY);
-				sprite.setGraphicSize(Std.int(sprite.width * size));
-				sprite.alpha = alpha;
-				sprite.scale.set(scaleX, scaleY);
-				sprite.antialiasing = true;
-				PlayState.GraphicMap.set(spriteID, sprite);
-				PlayState.contents.setVar('$spriteID', sprite);
-				PlayState.contents.add(sprite);
-			});
+		PlayState.contents.setVar('loadSprite', function(spriteID:String, key:String, x:Float, y:Float)
+		{
+			var newSprite:FNFSprite = new FNFSprite(x, y).loadGraphic(Paths.image(key));
+			newSprite.updateHitbox();
+			newSprite.antialiasing = true;
+			PlayState.GraphicMap.set(spriteID, newSprite);
+			PlayState.contents.setVar('$spriteID', newSprite);
+			PlayState.contents.add(newSprite);
+		});
 
-		PlayState.contents.setVar('loadAnimatedGraphic',
-			function(spriteID:String, key:String, path:String = null, spriteType:String, anims:Array<Array<Dynamic>>, defaultAnim:String, x:Float = 0,
-					y:Float = 0, scrollX:Float = 0, scrollY:Float = 0, alpha:Float = 1, size:Float = 1, scaleX:Float = 1, scaleY:Float = 1)
+		PlayState.contents.setVar('loadAnimatedSprite',
+			function(spriteID:String, key:String, spriteType:String, x:Float = 0, y:Float = 0, spriteAnims:Array<Dynamic>, defAnim:String)
 			{
-				var sprite:FNFSprite = new FNFSprite(x, y);
+				var newSprite:FNFSprite = new FNFSprite(x, y);
 
 				switch (spriteType)
 				{
 					case "packer":
-						sprite.frames = Paths.getPackerAtlas(key, path);
+						newSprite.frames = Paths.getPackerAtlas(key);
 					case "sparrow":
-						sprite.frames = Paths.getSparrowAtlas(key, path);
+						newSprite.frames = Paths.getSparrowAtlas(key);
 					case "sparrow-hash":
-						sprite.frames = Paths.getSparrowHashAtlas(key, path);
+						newSprite.frames = Paths.getSparrowHashAtlas(key);
 				}
 
-				for (anim in anims)
+				for (anim in spriteAnims)
 				{
-					sprite.animation.addByPrefix(anim[0], anim[1], anim[2], anim[3]);
+					newSprite.animation.addByPrefix(anim[0], anim[1], anim[2], anim[3]);
 				}
-
-				sprite.setGraphicSize(Std.int(sprite.width * size));
-				sprite.scrollFactor.set(scrollX, scrollY);
-				sprite.updateHitbox();
-				sprite.animation.play(defaultAnim);
-				sprite.antialiasing = true;
-				sprite.alpha = alpha;
-				sprite.scale.set(scaleX, scaleY);
-				PlayState.GraphicMap.set(spriteID, sprite);
-				PlayState.contents.setVar('$spriteID', sprite);
-				PlayState.contents.add(sprite);
+				newSprite.updateHitbox();
+				newSprite.antialiasing = true;
+				newSprite.animation.play(defAnim);
+				PlayState.GraphicMap.set(spriteID, newSprite);
+				PlayState.contents.setVar('$spriteID', newSprite);
+				PlayState.contents.add(newSprite);
 			});
+			
+		PlayState.contents.setVar('addSpriteAnimation', function(spriteID:String, newAnims:Array<Dynamic>)
+		{
+			var gottenSprite:FNFSprite = PlayState.GraphicMap.get(spriteID);
+			for (anim in newAnims)
+			{
+				gottenSprite.animation.addByPrefix(anim[0], anim[1], anim[2], anim[3]);
+			}
+		});
+
+		PlayState.contents.setVar('addSpriteOffset', function(spriteID:String, anim:String, x:Float, y:Float)
+		{
+			var gottenSprite:FNFSprite = PlayState.GraphicMap.get(spriteID);
+			gottenSprite.addOffset(anim, x, y);
+		});
+		
+		PlayState.contents.setVar('spritePlayAnimation', function(spriteID:String, animToPlay:String, forced:Bool = true)
+		{
+			var gottenSprite:FNFSprite = PlayState.GraphicMap.get(spriteID);
+			gottenSprite.animation.play(animToPlay, forced);
+		});
+
+		PlayState.contents.setVar('setSpriteBlend', function(spriteID:String, blendString:String)
+		{
+			var gottenSprite:FNFSprite = PlayState.GraphicMap.get(spriteID);
+			gottenSprite.blend = ForeverTools.getBlendFromString(blendString);
+		});
+
+		PlayState.contents.setVar('setSpriteScrollFactor', function(spriteID:String, x:Float, y:Float)
+		{
+			var gottenSprite:FNFSprite = PlayState.GraphicMap.get(spriteID);
+			gottenSprite.scrollFactor.set(x, y);
+		});
+
+		PlayState.contents.setVar('setSpriteSize', function(spriteID:String, newSize:Float)
+		{
+			var gottenSprite:FNFSprite = PlayState.GraphicMap.get(spriteID);
+			gottenSprite.setGraphicSize(Std.int(gottenSprite.width * newSize));
+		});
 
 		PlayState.contents.setVar('createCharacter', function(charID:String, key:String, x:Float, y:Float, alpha:Float, isPlayer:Bool = false)
 		{
