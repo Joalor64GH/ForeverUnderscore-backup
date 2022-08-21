@@ -310,9 +310,7 @@ class Init extends FlxState
 		if(Main.showCommitHash)
 			Main.commitHash = Main.getGitCommitHash(); // get the commit hash for use on menu texts and such;
 
-		#if MODS_ALLOWED
 		ModHandler.loadModHandler(); // load mod handler and any mods you might have;
-		#end
 
 		WeekParser.loadWeeks(); // load any custom weeks you might have;
 
