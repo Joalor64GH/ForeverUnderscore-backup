@@ -145,6 +145,12 @@ class ScriptFuncs extends PlayState
 			gottenSprite.setGraphicSize(Std.int(gottenSprite.width * newSize));
 		});
 
+		PlayState.contents.setVar('setSpriteAlpha', function(spriteID:String, newAlpha:Float)
+		{
+			var gottenSprite:FNFSprite = PlayState.GraphicMap.get(spriteID);
+			gottenSprite.alpha = newAlpha;
+		});
+
 		PlayState.contents.setVar('createCharacter', function(charID:String, key:String, x:Float, y:Float, alpha:Float, isPlayer:Bool = false)
 		{
 			var newChar:Character;

@@ -944,6 +944,12 @@ class Stage extends FlxTypedGroup<FlxBasic>
 			gottenSprite.setGraphicSize(Std.int(gottenSprite.width * newSize));
 		});
 
+		stageScript.set('setSpriteAlpha', function(spriteID:String, newAlpha:Float)
+		{
+			var gottenSprite:FNFSprite = PlayState.GraphicMap.get(spriteID);
+			gottenSprite.alpha = newAlpha;
+		});
+
 		stageScript.set('addSound', function(sndString:String = '')
 		{
 			var sound:FlxSound;
