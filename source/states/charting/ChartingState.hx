@@ -419,6 +419,12 @@ class ChartingState extends MusicBeatState
 
 		if (FlxG.keys.justPressed.Q || FlxG.keys.justPressed.E)
 			changeNoteSustain(FlxG.keys.justPressed.Q ? -Conductor.stepCrochet : Conductor.stepCrochet);
+
+		if (FlxG.keys.pressed.CONTROL && FlxG.keys.justPressed.S)
+		{
+			autosaveSong();
+			saveLevel();
+		}
 		
 		var left = FlxG.keys.justPressed.LEFT;
 		var right = FlxG.keys.justPressed.RIGHT;

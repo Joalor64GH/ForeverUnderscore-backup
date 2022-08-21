@@ -38,7 +38,7 @@ class ClassHUD extends FlxTypedGroup<FlxBasic>
 	var scoreDisplay:String = 'beep bop bo skdkdkdbebedeoop brrapadop';
 
 	var cornerMark:FlxText; // engine mark at the upper right corner
-	var centerMark:FlxText; // song display name and difficulty or timer at the center
+	var centerMark:FlxText; // song display name and difficulty at the center
 
 	var healthBarBG:FlxSprite;
 	var healthBar:FlxBar;
@@ -110,32 +110,23 @@ class ClassHUD extends FlxTypedGroup<FlxBasic>
 		cornerMark = new FlxText(0, 0, 0, engineDisplay);
 		cornerMark.setFormat(Paths.font('vcr.ttf'), 18, FlxColor.WHITE);
 		cornerMark.setBorderStyle(OUTLINE, FlxColor.BLACK, 2);
-		add(cornerMark);
 		cornerMark.setPosition(FlxG.width - (cornerMark.width + 5), 5);
 		cornerMark.antialiasing = true;
+		add(cornerMark);
 
-		centerMark = new FlxText(0, 0, 0, '- $infoDisplay [$diffDisplay] -');
+		centerMark = new FlxText(0, (Init.trueSettings.get('Downscroll') ? FlxG.height - 45 : 20), 0, '- $infoDisplay [$diffDisplay] -');
 		centerMark.setFormat(Paths.font('vcr.ttf'), 24, FlxColor.WHITE);
 		centerMark.setBorderStyle(OUTLINE, FlxColor.BLACK, 2);
-		add(centerMark);
-		if (Init.trueSettings.get('Downscroll'))
-			centerMark.y = (FlxG.height - centerMark.height / 2) - 30;
-		else
-			centerMark.y = (FlxG.height / 24) - 10;
-		centerMark.screenCenter(X);
 		centerMark.antialiasing = true;
+		centerMark.screenCenter(X);
+		add(centerMark);
 
-		autoplayMark = new FlxText(0, centerMark.y + 60, FlxG.width - 800, "AUTOPLAY\n", 32);
+		autoplayMark = new FlxText(-5, (Init.trueSettings.get('Downscroll') ? centerMark.y - 60 : centerMark.y + 60), FlxG.width - 800, "AUTOPLAY\n", 32);
 		autoplayMark.screenCenter(X);
 		autoplayMark.setFormat(Paths.font("vcr.ttf"), 32, FlxColor.WHITE, CENTER);
 		autoplayMark.setBorderStyle(OUTLINE, FlxColor.BLACK, 1.25);
-		autoplayMark.scrollFactor.set();
 		autoplayMark.visible = PlayState.contents.bfStrums.autoplay;
-		autoplayMark.x -= 5;
 		add(autoplayMark);
-
-		if (Init.trueSettings.get('Downscroll'))
-			autoplayMark.y = centerMark.y - 60;
 
 		traceBar = new FlxText(10, 20, 0, '', 16);
 		traceBar.setFormat(Paths.font('vcr.ttf'), 24, FlxColor.WHITE);
