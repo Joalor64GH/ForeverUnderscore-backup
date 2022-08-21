@@ -14,7 +14,6 @@ import flixel.util.FlxColor;
 import flixel.util.FlxTimer;
 import funkin.Alphabet;
 import haxe.Json;
-import sys.FileSystem;
 import sys.io.File;
 
 typedef CreditsDataDef =

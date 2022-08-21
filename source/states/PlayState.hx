@@ -42,10 +42,6 @@ import states.substates.*;
 
 using StringTools;
 
-#if sys
-import sys.FileSystem;
-import sys.io.File;
-#end
 /*
 #if VIDEO_PLUGIN
 import vlc.VideoHandler;
@@ -2046,11 +2042,7 @@ class PlayState extends MusicBeatState
 		inCutscene = true;
 
 		var file = Paths.video(name);
-		#if sys
-		if (!FileSystem.exists(file))
-		#else
-		if (!OpenFlAssets.exists(file))
-		#end
+		if (!openfl.utils.Assets.exists(file))
 		{
 			FlxG.log.warn('Couldnt find video file: ' + name);
 			startAndEnd();
@@ -2075,11 +2067,7 @@ class PlayState extends MusicBeatState
 	{
 		#if VIDEO_PLUGIN
 		var path = Paths.video(name);
-		#if sys
-		if (!FileSystem.exists(path))
-		#else
-		if (!OpenFlAssets.exists(path))
-		#end
+		if (!openfl.utils.Assets.exists(path))
 		{
 			FlxG.log.warn('Couldnt find video file: ' + name);
 			return;
@@ -2201,7 +2189,7 @@ class PlayState extends MusicBeatState
 	function callTextbox()
 	{
 		var dialogPath = Paths.json(SONG.song.toLowerCase() + '/dialogue');
-		if (sys.FileSystem.exists(dialogPath))
+		if (openfl.utils.Assets.exists(dialogPath))
 		{
 			startedCountdown = false;
 
@@ -2383,9 +2371,9 @@ class PlayState extends MusicBeatState
 
 		for (fool in fools)
 		{
-			if (FileSystem.exists(fool))
+			if (openfl.utils.Assets.exists(fool))
 			{
-				for (file in FileSystem.readDirectory(fool))
+				for (file in openfl.utils.Assets.list(TEXT))
 				{
 					if (file.endsWith('.hxs') && !pushedScripts.contains(file))
 					{

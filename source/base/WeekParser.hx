@@ -3,7 +3,6 @@ package base;
 import flixel.util.FlxColor;
 import haxe.Json;
 import states.menus.StoryMenuState;
-import sys.FileSystem;
 import sys.io.File;
 
 using StringTools;
@@ -74,9 +73,9 @@ class WeekParser
 
 		for (folders in dataFolders)
 		{
-			if (FileSystem.exists(folders))
+			if (openfl.utils.Assets.exists(folders))
 			{
-				for (file in FileSystem.readDirectory(folders))
+				for (file in openfl.utils.Assets.list(TEXT))
 				{
 					// quick file check to prevent crashes with non-json files;
 					if (file.endsWith('.json'))

@@ -9,7 +9,6 @@ import lime.app.Application;
 import openfl.display.BlendMode;
 import openfl.display.BlendModeEffect;
 import openfl.utils.Assets;
-import sys.FileSystem;
 
 using StringTools;
 
@@ -43,10 +42,10 @@ class ForeverTools
 			?defaultChangeableSkin:String = 'default', ?defaultBaseAsset:String = 'base'):String
 	{
 		var realAsset = '$baseLibrary/$changeableSkin/$assetModifier/$asset';
-		if (!FileSystem.exists(Paths.getPath('images/' + realAsset + '.png', IMAGE)))
+		if (!openfl.utils.Assets.exists(Paths.getPath('images/' + realAsset + '.png', IMAGE)))
 		{
 			realAsset = '$baseLibrary/$defaultChangeableSkin/$assetModifier/$asset';
-			if (!FileSystem.exists(Paths.getPath('images/' + realAsset + '.png', IMAGE)))
+			if (!openfl.utils.Assets.exists(Paths.getPath('images/' + realAsset + '.png', IMAGE)))
 				realAsset = '$baseLibrary/$defaultChangeableSkin/$defaultBaseAsset/$asset';
 		}
 

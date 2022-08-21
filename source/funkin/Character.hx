@@ -17,11 +17,10 @@ import flixel.util.FlxSort;
 import funkin.background.TankmenBG;
 import funkin.ui.HealthIcon;
 import haxe.Json;
-import openfl.Assets;
 import openfl.utils.Assets as OpenFlAssets;
+import openfl.utils.Assets;
 import states.PlayState;
 import states.substates.GameOverSubstate;
-import sys.FileSystem;
 import sys.io.File;
 
 using StringTools;
@@ -114,7 +113,7 @@ class Character extends FNFSprite
 				playAnim("shoot1");
 		}
 
-		var psychChar = FileSystem.exists(Paths.getPreloadPath('characters/$character/' + character + '.json'));
+		var psychChar = openfl.utils.Assets.exists(Paths.getPreloadPath('characters/$character/' + character + '.json'));
 
 		switch (curCharacter)
 		{
@@ -341,7 +340,7 @@ class Character extends FNFSprite
 
 		for (i in scripts)
 		{
-			if (FileSystem.exists(i) && !pushedScripts.contains(i))
+			if (openfl.utils.Assets.exists(i) && !pushedScripts.contains(i))
 			{
 				var script:ScriptHandler = new ScriptHandler(i);
 

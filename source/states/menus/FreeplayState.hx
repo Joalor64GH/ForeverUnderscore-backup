@@ -25,7 +25,6 @@ import funkin.ui.HealthIcon;
 import lime.utils.Assets;
 import openfl.media.Sound;
 import states.charting.*;
-import sys.FileSystem;
 import sys.thread.Mutex;
 import sys.thread.Thread;
 
@@ -104,7 +103,7 @@ class FreeplayState extends MusicBeatState
 				var icon:String = 'gf';
 				var color:FlxColor = FlxColor.WHITE;
 				var colorArray:Array<Int> = [255, 255, 255];
-				var chartExists:Bool = FileSystem.exists(Paths.songJson(i, i));
+				var chartExists:Bool = openfl.utils.Assets.exists(Paths.songJson(i, i));
 				if (chartExists)
 				{
 					var castSong:SwagSong = Song.loadSong(i, i);
@@ -177,8 +176,8 @@ class FreeplayState extends MusicBeatState
 	{
 		var coolDiffs = [];
 		for (i in CoolUtil.baseDifficulties)
-			if (FileSystem.exists(Paths.songJson(songName, songName + '-' + i))
-				|| (FileSystem.exists(Paths.songJson(songName, songName)) && i == "NORMAL"))
+			if (openfl.utils.Assets.exists(Paths.songJson(songName, songName + '-' + i))
+				|| (openfl.utils.Assets.exists(Paths.songJson(songName, songName)) && i == "NORMAL"))
 				coolDiffs.push(i);
 
 		if (coolDiffs.length > 0)
