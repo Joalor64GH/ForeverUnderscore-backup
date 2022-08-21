@@ -1,8 +1,8 @@
 package states.menus;
 
-import base.ChartParser;
 import base.ChartParser.Song;
 import base.ChartParser.SwagSong;
+import base.ChartParser;
 import base.CoolUtil;
 import base.MusicBeat.MusicBeatState;
 import dependency.Discord;
@@ -111,7 +111,9 @@ class FreeplayState extends MusicBeatState
 					icon = (castSong != null) ? castSong.player2 : 'gf';
 
 					colorArray = castSong.color;
-					color = FlxColor.fromRGB(colorArray[0], colorArray[1], colorArray[2]);
+
+					if (colorArray != null)
+						color = FlxColor.fromRGB(colorArray[0], colorArray[1], colorArray[2]);
 
 					addSong(CoolUtil.spaceToDash(castSong.song), 1, icon, color);
 				}
