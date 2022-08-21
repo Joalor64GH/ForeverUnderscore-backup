@@ -337,10 +337,6 @@ class Character extends FNFSprite
 		var path:String = Paths.getPreloadPath('characters/$char/config.hxs');
 		var scripts:Array<String> = [path];
 
-		#if MODS_ALLOWED
-		scripts.insert(0, Paths.getModPath('characters/$char', 'config', 'hxs'));
-		#end
-
 		var pushedScripts:Array<String> = [];
 
 		for (i in scripts)
@@ -362,14 +358,7 @@ class Character extends FNFSprite
 
 		var spriteType = "sparrow";
 
-		#if MODS_ALLOWED
-		var modTxtToFind:String = Paths.getModPath('characters/$char', char, 'txt');
-		var txtToFind:String = Paths.getPath('characters/$char/$char.txt', TEXT);
-
-		if (FileSystem.exists(modTxtToFind) || FileSystem.exists(txtToFind) || Assets.exists(txtToFind))
-		#else
 		if (Assets.exists(Paths.getPath('characters/$char/$char.txt', TEXT)))
-		#end
 		{
 			spriteType = "packer";
 		}
@@ -521,14 +510,7 @@ class Character extends FNFSprite
 		var json:PsychEngineChar = cast Json.parse(rawJson);
 		var spriteType = "sparrow";
 
-		#if MODS_ALLOWED
-		var modTxtToFind:String = Paths.getModPath('characters/$char', json.image, 'txt');
-		var txtToFind:String = Paths.getPath('characters/$char/${json.image}.txt', TEXT);
-
-		if (FileSystem.exists(modTxtToFind) || FileSystem.exists(txtToFind) || Assets.exists(txtToFind))
-		#else
 		if (Assets.exists(Paths.getPath('characters/$char/${json.image}.txt', TEXT)))
-		#end
 		{
 			spriteType = "packer";
 		}
