@@ -162,7 +162,7 @@ class PlayState extends MusicBeatState
 	public var bfStrums:Strumline;
 
 	public static var strumLines:FlxTypedGroup<Strumline>;
-	public static var strumHUD:Array<FlxCamera> = [];
+	public static var strumHUD:FlxCamera;
 
 	var allUIs:Array<FlxCamera> = [];
 
@@ -383,23 +383,16 @@ class PlayState extends MusicBeatState
 		strumLines.add(dadStrums);
 		strumLines.add(bfStrums);
 
-		// strumline camera setup
-		strumHUD = [];
+		// generate a new strum camera
+		strumHUD = new FlxCamera();
+		strumHUD.bgColor.alpha = 0;
+		strumHUD.cameras = [camHUD];
+		allUIs.push(strumHUD);
 
-		/*for (i in 0...strumLines.length)
-		{
-			// generate a new strum camera
-			strumHUD[i] = new FlxCamera();
-			strumHUD[i].bgColor.alpha = 0;
+		FlxG.cameras.add(strumHUD, false);
 
-			strumHUD[i].cameras = [camHUD];
-			allUIs.push(strumHUD[i]);
-			FlxG.cameras.add(strumHUD[i], false);
-			// set this strumline's camera to the designated camera
-			strumLines.members[i].cameras = [strumHUD[i]];
-		}*/
-
-		strumLines.cameras = [camHUD];
+		// set this strumline's camera to the designated camera
+		strumLines.cameras = [strumHUD];
 
 		add(strumLines);
 
@@ -1862,8 +1855,6 @@ class PlayState extends MusicBeatState
 		{
 			FlxG.camera.zoom += 0.015;
 			camHUD.zoom += 0.05;
-			for (hud in strumHUD)
-				hud.zoom += 0.05;
 		}
 
 		if (SONG.notes[Math.floor(curStep / 16)] != null)

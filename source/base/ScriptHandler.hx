@@ -187,8 +187,7 @@ class ScriptFuncs extends PlayState
 						case 'camgame' | 'camGame' | 'game' | 'world':
 							PlayState.camGame.setFilters([new ShaderFilter(shader)]);
 						case 'strumhud' | 'strumHUD' | 'strum' | 'strumlines':
-							for (lines in 0...PlayState.strumHUD.length)
-								PlayState.strumHUD[lines].setFilters([new ShaderFilter(shader)]);
+							PlayState.strumHUD.setFilters([new ShaderFilter(shader)]);
 					}
 
 					if (!startEnabled)
