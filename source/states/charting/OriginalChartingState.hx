@@ -34,8 +34,6 @@ import flixel.ui.FlxButton;
 import flixel.ui.FlxSpriteButton;
 import flixel.util.FlxColor;
 import funkin.*;
-import funkin.Note.NoteType;
-import funkin.Note.SustainType;
 import funkin.Strumline.UIStaticArrow;
 import funkin.ui.*;
 import haxe.Json;
@@ -64,6 +62,10 @@ class OriginalChartingState extends MusicBeatState
 	 * Usually rounded up??
 	 */
 	var curSection:Int = 0;
+
+	var curNoteType:Int = 0;
+
+	var curNoteName:Array<String> = ['Normal Note', 'Alt Animation', 'Hey!', 'GF Note', 'No Animation', 'Mine Note'];
 
 	public static var lastSection:Int = 0;
 
@@ -466,11 +468,7 @@ class OriginalChartingState extends MusicBeatState
 	}
 
 	var stepperSusLength:FlxUINumericStepper;
-	var stepperSusType:FlxUINumericStepper;
-	var noteTypeDropDown:PsychDropDown;
-	var noteSustainDropDown:PsychDropDown;
-	var currentType:NoteType = NORMAL;
-	var lnType:SustainType = NORMAL;
+	var stepperType:FlxUINumericStepper;
 	var key:Int = 0;
 
 	function addNoteUI():Void
@@ -486,27 +484,17 @@ class OriginalChartingState extends MusicBeatState
 		showStrumlineNotes = new FlxUICheckBox(stepperSusLength.x + 60, stepperSusLength.y, null, null, 'Show Strumline Notes', 100);
 		showStrumlineNotes.checked = false;
 
-		// sustain types
-		noteSustainDropDown = new PsychDropDown(160, 65, PsychDropDown.makeStrIdLabelArray(Note.sustainTypeList, false), function(type:String)
-		{
-			lnType = Note.sustainTypeMap[type];
-		});
-
 		// note types
-		noteTypeDropDown = new PsychDropDown(10, 65, PsychDropDown.makeStrIdLabelArray(Note.noteTypeList, false), function(type:String)
-		{
-			currentType = Note.noteTypeMap[type];
-		});
-
-		blockPressWhileScrolling.push(noteTypeDropDown);
+		stepperType = new FlxUINumericStepper(10, 85, Conductor.stepCrochet / 125, 0, 0, (Conductor.stepCrochet / 125) + 10);
+		stepperType.value = 0;
+		stepperType.name = 'note_type';
+		blockPressWhileTypingOnStepper.push(stepperType);
 
 		tab_group_note.add(new FlxText(10, 10, 0, 'Sustain length:'));
-		tab_group_note.add(new FlxText(10, noteTypeDropDown.y - 15, 0, 'Note Type:'));
+		//tab_group_note.add(new FlxText(10, stepperType.y - 15, 0, 'Note Type:'));
 		tab_group_note.add(showStrumlineNotes);
-		// tab_group_note.add(new FlxText(160, noteSustainDropDown.y - 15, 0, 'Sustain Type:'));
 		tab_group_note.add(stepperSusLength);
-		tab_group_note.add(noteTypeDropDown);
-		// tab_group_note.add(noteSustainDropDown);
+		//tab_group_note.add(stepperType);
 
 		UI_box.addGroup(tab_group_note);
 		// I'm genuinely tempted to go around and remove every instance of the word "sus" it is genuinely killing me inside
@@ -615,6 +603,8 @@ class OriginalChartingState extends MusicBeatState
 				case 'note_susLength': // STOP POSTING ABOUT AMONG US
 					curSelectedNote[2] = nums.value; // change the currently selected note's length
 					updateGrid(); // oh btw I know sus stands for sustain it just bothers me
+				case 'note_type':
+					curNoteType = Std.int(nums.value);
 				case 'section_bpm':
 					_song.notes[curSection].bpm = Std.int(nums.value); // redefine the section's bpm
 					updateGrid(); // update the note grid
@@ -810,6 +800,21 @@ class OriginalChartingState extends MusicBeatState
 				}
 			}
 
+			// temporary note type controls until I make a new dropdown or something
+			if (FlxG.keys.justPressed.ONE)
+				curNoteType = 0;
+			if (FlxG.keys.justPressed.TWO)
+				curNoteType = 1;
+			if (FlxG.keys.justPressed.THREE)
+				curNoteType = 2;
+			if (FlxG.keys.justPressed.FOUR)
+				curNoteType = 3;
+			if (FlxG.keys.justPressed.FIVE)
+				curNoteType = 4;
+			if (FlxG.keys.justPressed.SIX)
+				curNoteType = 5;
+			// I know this is a lot of duplicated code, but then again, it's temporary;
+
 			if (!typingShit.hasFocus)
 			{
 				if (FlxG.keys.justPressed.SPACE)
@@ -915,7 +920,9 @@ class OriginalChartingState extends MusicBeatState
 			+ " / " + Std.string(FlxMath.roundDecimal(songMusic.length / 1000, 2))
 			+ "\nSection: " + curSection
 			+ "\nBeat: " + curBeat
-			+ "\nStep: " + curStep;
+			+ "\nStep: " + curStep
+			+ "\nNote: " + curNoteName[curNoteType]
+			+ "\n1-5 to change Notetypes";
 		super.update(elapsed);
 
 		var playedSound:Array<Bool> = [];
@@ -1199,15 +1206,13 @@ class OriginalChartingState extends MusicBeatState
 			var daStrumTime = i[0];
 			var daNoteInfo = i[1];
 			var daSus = i[2];
-			var daNoteType:NoteType = i[3];
-			var daLNType = lnType;
+			var daNoteType:Int = i[3];
 
 			trace('Current note type is $daNoteType.');
 			
-			var note:Note = ForeverAssets.generateArrow(PlayState.assetModifier, daStrumTime, daNoteInfo % 4, 0, null, null, daNoteType, daLNType);
+			var note:Note = ForeverAssets.generateArrow(PlayState.assetModifier, daStrumTime, daNoteInfo % 4, 0, null, null, daNoteType);
 			note.sustainLength = daSus;
 			note.noteType = daNoteType;
-			note.sustainType = daLNType;
 			note.setGraphicSize(GRID_SIZE, GRID_SIZE);
 			note.updateHitbox();
 			note.x = Math.floor(daNoteInfo * GRID_SIZE);
@@ -1223,7 +1228,6 @@ class OriginalChartingState extends MusicBeatState
 			{
 				var sustainVis:FlxSprite = new FlxSprite(note.x + (GRID_SIZE / 2 - 3),
 					note.y + GRID_SIZE).makeGraphic(8, Math.floor(FlxMath.remapToRange(daSus, 0, Conductor.stepCrochet * 16, 0, gridBG.height)));
-				sustainVis.color = (note.sustainType == ROLL ? FlxColor.BLUE : FlxColor.WHITE);
 				curRenderedSustains.add(sustainVis);
 			}
 		}
@@ -1307,17 +1311,16 @@ class OriginalChartingState extends MusicBeatState
 	{
 		var noteStrum = getStrumTime(dummyArrow.y) + sectionStartTime();
 		var noteData = Math.floor(FlxG.mouse.x / GRID_SIZE);
-		var noteType = currentType; // define notes as the current type
+		var noteType = curNoteType; // define notes as the current type
 		var noteSus = 0; // ninja you will NOT get away with this
-		var noteLNType = lnType;
 
-		_song.notes[curSection].sectionNotes.push([noteStrum, noteData, noteSus, noteType, noteLNType]);
+		_song.notes[curSection].sectionNotes.push([noteStrum, noteData, noteSus, noteType]);
 
 		curSelectedNote = _song.notes[curSection].sectionNotes[_song.notes[curSection].sectionNotes.length - 1];
 
 		if (FlxG.keys.pressed.CONTROL)
 		{
-			_song.notes[curSection].sectionNotes.push([noteStrum, (noteData + 4) % 8, noteSus, noteType, noteLNType]);
+			_song.notes[curSection].sectionNotes.push([noteStrum, (noteData + 4) % 8, noteSus, noteType]);
 		}
 
 		#if debug

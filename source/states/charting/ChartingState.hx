@@ -25,7 +25,6 @@ import flixel.util.FlxAxes;
 import flixel.util.FlxColor;
 import flixel.util.FlxGradient;
 import funkin.*;
-import funkin.Note.NoteType;
 import funkin.Strumline.UIStaticArrow;
 import funkin.ui.*;
 import haxe.Json;
@@ -336,7 +335,7 @@ class ChartingState extends MusicBeatState
 				});
 			}
 
-			var currentType:NoteType = NORMAL;
+			var currentType:Int = 0;
 			if (!FlxG.mouse.overlaps(curRenderedNotes))
 			{
 				// add note funny
@@ -636,7 +635,7 @@ class ChartingState extends MusicBeatState
 			var daNoteInfo = i[1];
 			var daStrumTime = i[0];
 			var daSus = i[2];
-			var daNoteType:NoteType = i[3];
+			var daNoteType:Int = i[3];
 
 			// trace('Current note type is $daNoteType.');
 
@@ -752,7 +751,7 @@ class ChartingState extends MusicBeatState
 				if (i.length > 2)
 					daNoteAlt = i[3];
 
-				var daNoteType:NoteType = NORMAL;
+				var daNoteType:Int = 0;
 				if (i.length > 2)
 					daNoteType = i[3];
 
@@ -810,7 +809,7 @@ class ChartingState extends MusicBeatState
 		};
 	}
 
-	function generateChartNote(daNoteInfo, daStrumTime, daSus, daNoteAlt:Float, daNoteType:NoteType, noteSection, ?shouldPush:Bool = true)
+	function generateChartNote(daNoteInfo, daStrumTime, daSus, daNoteAlt:Float, daNoteType:Int, noteSection, ?shouldPush:Bool = true)
 	{
 		// trace(daNoteInfo);
 
@@ -826,7 +825,7 @@ class ChartingState extends MusicBeatState
 
 		if (shouldPush)
 		{
-			_song.notes[noteSection].sectionNotes.push([daStrumTime, (daNoteInfo + 4) % 8, daSus, NORMAL]);
+			_song.notes[noteSection].sectionNotes.push([daStrumTime, (daNoteInfo + 4) % 8, daSus, '']);
 			curSelectedNote = note;
 		}
 
@@ -836,7 +835,6 @@ class ChartingState extends MusicBeatState
 		{
 			var sustainVis:FlxSprite = new FlxSprite(note.x + (gridSize / 2 - 3),
 				note.y + gridSize).makeGraphic(8, Math.floor(FlxMath.remapToRange(daSus, 0, Conductor.stepCrochet * 16, 0, baseGrid.height)));
-			sustainVis.color = (note.sustainType == ROLL ? FlxColor.BLUE : FlxColor.WHITE);
 			curRenderedSustains.add(sustainVis);
 		}
 		
@@ -861,7 +859,7 @@ class ChartingState extends MusicBeatState
 		curRenderedEvents.add(eventNote);
 	}
 
-	function generateSustain(daStrumTime:Float = 0, daNoteInfo:Int = 0, daSus:Float = 0, daNoteAlt:Float = 0, daNoteType:NoteType = NORMAL, note:Note)
+	function generateSustain(daStrumTime:Float = 0, daNoteInfo:Int = 0, daSus:Float = 0, daNoteAlt:Float = 0, danoteType:Int = 0, note:Note)
 	{
 		/*
 		if (daSus > 0)

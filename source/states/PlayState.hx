@@ -1334,13 +1334,13 @@ class PlayState extends MusicBeatState
 
 		switch (coolNote.noteType)
 		{
-			case HEY:
+			case 3:
 				character.specialAnim = true;
 				character.heyTimer = 0.6;
-			case NO_ANIM:
+			case 4:
 				stringArrow = '';
 				altString = '';
-			case MINE:
+			case 5:
 				if (character.curCharacter == 'bf-psych')
 					stringArrow = 'hurt';
 				else

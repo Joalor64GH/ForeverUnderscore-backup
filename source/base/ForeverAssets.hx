@@ -9,8 +9,6 @@ import flixel.util.FlxColor;
 import funkin.*;
 import funkin.ColorSwap.ColorSwapShader;
 import funkin.ColorSwap;
-import funkin.Note.NoteType;
-import funkin.Note.SustainType;
 import funkin.Strumline.UIStaticArrow;
 import funkin.Timings;
 import funkin.ui.menu.*;
@@ -242,15 +240,15 @@ class ForeverAssets
 		Notes!
 	**/
 	public static function generateArrow(assetModifier, strumTime, noteData, noteAlt, ?isSustainNote:Bool = false, ?prevNote:Note = null,
-			noteType:NoteType = NORMAL, susType:SustainType = NORMAL):Note
+			noteType:Int = 0):Note
 	{
 		var newNote:Note;
 		var changeableSkin:String = Init.trueSettings.get("Note Skin");
 		// gonna improve the system eventually
 		if (changeableSkin.startsWith('quant'))
-			newNote = Note.returnQuantNote(assetModifier, strumTime, noteData, noteAlt, isSustainNote, prevNote, noteType, susType);
+			newNote = Note.returnQuantNote(assetModifier, strumTime, noteData, noteAlt, isSustainNote, prevNote, noteType);
 		else
-			newNote = Note.returnDefaultNote(assetModifier, strumTime, noteData, noteAlt, isSustainNote, prevNote, noteType, susType);
+			newNote = Note.returnDefaultNote(assetModifier, strumTime, noteData, noteAlt, isSustainNote, prevNote, noteType);
 
 		// hold note shit
 		if (isSustainNote && prevNote != null)

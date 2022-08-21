@@ -9,22 +9,6 @@ import states.PlayState;
 
 using StringTools;
 
-enum NoteType
-{
-	NORMAL; // Normal Notes
-	ALT; // Alt Animation Notes
-	NO_ANIM; // No Animation Notes
-	GF; // GF Notes
-	HEY; // Hey Notes
-	MINE; // Mines - Hit causes miss, deals damage
-}
-
-enum SustainType
-{
-	NORMAL; // Normal Holds, Hold to get them right
-	ROLL; // Roll Holds, press rapidly to get them right
-}
-
 class Note extends FNFSprite
 {
 	public var strumTime:Float = 0;
@@ -32,8 +16,7 @@ class Note extends FNFSprite
 	public var mustPress:Bool = false;
 	public var noteData:Int = 0;
 	public var noteAlt:Float = 0;
-	public var noteType:NoteType = NORMAL;
-	public var noteString:String = "";
+	public var noteType:Int = 0;
 
 	public var canBeHit:Bool = false;
 	public var tooLate:Bool = false;
@@ -42,7 +25,6 @@ class Note extends FNFSprite
 
 	public var sustainLength:Float = 0;
 	public var isSustainNote:Bool = false;
-	public var sustainType:SustainType = NORMAL;
 
 	// only useful for charting stuffs
 	public var chartSustain:FlxSprite = null;
@@ -59,25 +41,6 @@ class Note extends FNFSprite
 
 	// it has come to this.
 	public var endHoldOffset:Float = Math.NEGATIVE_INFINITY;
-
-	public static var noteTypeMap:Map<String, NoteType> = [
-		'' => NORMAL,
-		'Alt Animation' => ALT,
-		'No Animation' => NO_ANIM,
-		'Girlfriend Note' => GF,
-		'Hey!' => HEY,
-		'Mine Note' => MINE,
-	];
-
-	public static var sustainTypeMap:Map<String, SustainType> = ['' => NORMAL, 'Roll' => ROLL,];
-
-	// for the Chart Editor, and later on for Psych Engine Notetypes Conversion
-	public static var noteTypeList:Array<String> = ['', 'Alt Animation', 'No Animation', 'Girlfriend Note', 'Hey!', 'Mine Note'];
-
-	/**
-	 * WIP AND NOT REALLY WORKING RIGHT NOW!!
-	**/
-	public static var sustainTypeList:Array<String> = ['', 'Roll'];
 
 	public var healthGain:Float = 0.023;
 	public var healthLoss:Float = 0.0475;
@@ -96,31 +59,7 @@ class Note extends FNFSprite
 	// quants
 	static var directionID:Array<String> = ['left', 'down', 'up', 'right'];
 
-	public static function convertNotetypes(noteType:NoteType, epicNote:Note = null):NoteType
-	{
-		// psych notetype compatibility
-		var string = '';
-		switch (string)
-		{
-			case 'No Animation':
-				noteType = NO_ANIM;
-			case 'Hey!':
-				noteType = HEY;
-			case 'Hurt Note':
-				noteType = MINE; // tex is gonna be a grey disc rather than a fire note, wacky.
-			case 'GF Note':
-				noteType = GF;
-			case 'Alt Animation':
-				noteType = ALT;
-			default:
-				noteType = NORMAL;
-		}
-
-		return noteType;
-	}
-
-	public function new(strumTime:Float, noteData:Int, noteAlt:Float, ?prevNote:Note, ?sustainNote:Bool = false, type:NoteType = NORMAL,
-			susType:SustainType = NORMAL)
+	public function new(strumTime:Float, noteData:Int, noteAlt:Float, ?prevNote:Note, ?sustainNote:Bool = false, ?noteType:Int = 0)
 	{
 		super(x, y);
 
@@ -128,27 +67,21 @@ class Note extends FNFSprite
 			prevNote = this;
 
 		this.prevNote = prevNote;
+		this.noteType = noteType;
 		isSustainNote = sustainNote;
 
-		if (susType != null)
-			sustainType = susType;
-		else
-			sustainType = NORMAL;
+		if (noteType == null)
+			noteType = 0;
 
-		if (type != null)
-			noteType = type;
-		else
-			noteType = NORMAL;
-
-		switch (type)
+		switch (noteType)
 		{
-			case ALT:
+			case 1:
 				altString = '-alt';
-			case HEY:
+			case 2:
 				fullString = 'hey';
-			case GF:
+			case 3:
 				gfNote = true;
-			case MINE:
+			case 5:
 				healthLoss = 0.065;
 				badNote = true;
 			default:
@@ -202,10 +135,9 @@ class Note extends FNFSprite
 		at the very bottom of this file you can find the function
 		for setting up custom note behavior when hit and such
 	**/
-	public static function returnDefaultNote(assetModifier, strumTime, noteData, noteAlt, ?isSustainNote:Bool = false, ?prevNote:Note, type:NoteType = NORMAL,
-			susType:SustainType = NORMAL):Note
+	public static function returnDefaultNote(assetModifier, strumTime, noteData, noteAlt, ?isSustainNote:Bool = false, ?prevNote:Note, noteType:Int = 0):Note
 	{
-		var newNote:Note = new Note(strumTime, noteData, noteAlt, prevNote, isSustainNote, type, susType);
+		var newNote:Note = new Note(strumTime, noteData, noteAlt, prevNote, isSustainNote, noteType);
 
 		// frames originally go here
 		switch (assetModifier)
@@ -213,9 +145,9 @@ class Note extends FNFSprite
 			case 'pixel':
 				if (isSustainNote)
 				{
-					switch (type)
+					switch (noteType)
 					{
-						case MINE:
+						case 5:
 							newNote.kill();
 						default: // pixel holds default
 							newNote.loadGraphic(Paths.image(ForeverTools.returnSkinAsset('arrowEnds', assetModifier, Init.trueSettings.get("Note Skin"),
@@ -227,9 +159,9 @@ class Note extends FNFSprite
 				}
 				else
 				{
-					switch (type)
+					switch (noteType)
 					{
-						case MINE: // pixel mines
+						case 5: // pixel mines
 							newNote.loadGraphic(Paths.image(ForeverTools.returnSkinAsset('mines', assetModifier, '', 'noteskins/mines')), true, 17, 17);
 							newNote.animation.add(noteColorID[noteData] + 'Scroll', [0, 1, 2, 3, 4, 5, 6, 7]);
 
@@ -245,9 +177,9 @@ class Note extends FNFSprite
 				newNote.updateHitbox();
 
 			default: // base game arrows for no reason whatsoever
-				switch (type)
+				switch (noteType)
 				{
-					case MINE: // mines
+					case 5: // mines
 						newNote.loadGraphic(Paths.image(ForeverTools.returnSkinAsset('mines', assetModifier, '', 'noteskins/mines')), true, 133, 128);
 						newNote.animation.add(noteColorID[noteData] + 'Scroll', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]);
 
@@ -283,14 +215,12 @@ class Note extends FNFSprite
 			newNote.noteSpeed = prevNote.noteSpeed;
 			newNote.alpha = (Init.trueSettings.get('Opaque Holds')) ? 1 : 0.6;
 
-			var sustainPrefix:String = (susType == ROLL ? 'roll' : 'hold');
-
-			newNote.animation.play(UIStaticArrow.getColorFromNumber(noteData) + '${sustainPrefix}end');
+			newNote.animation.play(UIStaticArrow.getColorFromNumber(noteData) + 'holdend');
 
 			newNote.updateHitbox();
 			if (prevNote.isSustainNote)
 			{
-				prevNote.animation.play(UIStaticArrow.getColorFromNumber(prevNote.noteData) + sustainPrefix);
+				prevNote.animation.play(UIStaticArrow.getColorFromNumber(prevNote.noteData) + 'hold');
 
 				prevNote.scale.y *= Conductor.stepCrochet / 100 * 1.5 * prevNote.noteSpeed;
 				prevNote.updateHitbox();
@@ -301,10 +231,9 @@ class Note extends FNFSprite
 		return newNote;
 	}
 
-	public static function returnQuantNote(assetModifier, strumTime, noteData, noteAlt, ?isSustainNote:Bool = false, ?prevNote:Note = null,
-			type:NoteType = NORMAL, susType:SustainType = NORMAL):Note
+	public static function returnQuantNote(assetModifier, strumTime, noteData, noteAlt, ?isSustainNote:Bool = false, ?prevNote:Note = null, noteType:Int = 0):Note
 	{
-		var newNote:Note = new Note(strumTime, noteData, noteAlt, prevNote, isSustainNote, type, susType);
+		var newNote:Note = new Note(strumTime, noteData, noteAlt, prevNote, isSustainNote, noteType);
 
 		// actually determine the quant of the note
 		if (newNote.noteQuant == -1)
@@ -357,9 +286,9 @@ class Note extends FNFSprite
 				// base quant notes
 				if (!isSustainNote)
 				{
-					switch (type)
+					switch (noteType)
 					{
-						case MINE: // pixel mines
+						case 5: // pixel mines
 							if (assetModifier == 'pixel')
 							{
 								newNote.loadGraphic(Paths.image(ForeverTools.returnSkinAsset('mines', assetModifier, '', 'noteskins/mines')), true, 17, 17);
@@ -387,7 +316,7 @@ class Note extends FNFSprite
 				}
 				else
 				{
-					switch (type)
+					switch (noteType)
 					{
 						default:
 							// quant holds
@@ -402,7 +331,7 @@ class Note extends FNFSprite
 				}
 
 				var sizeThing = 0.7;
-				if (type == MINE)
+				if (noteType == 5)
 					sizeThing = 0.8;
 
 				if (assetModifier == 'pixel')
@@ -430,14 +359,12 @@ class Note extends FNFSprite
 			newNote.noteSpeed = prevNote.noteSpeed;
 			newNote.alpha = (Init.trueSettings.get('Opaque Holds')) ? 1 : 0.6;
 
-			var sustainPrefix:String = (susType == ROLL ? 'roll' : 'hold');
-
-			newNote.animation.play('${sustainPrefix}end');
+			newNote.animation.play('holdend');
 			newNote.updateHitbox();
 
 			if (prevNote.isSustainNote)
 			{
-				prevNote.animation.play(sustainPrefix);
+				prevNote.animation.play('hold');
 
 				prevNote.scale.y *= Conductor.stepCrochet / 100 * (43 / 52) * 1.5 * prevNote.noteSpeed;
 				prevNote.updateHitbox();
@@ -456,7 +383,7 @@ class Note extends FNFSprite
 		var hitsound = Init.trueSettings.get('Hitsound Type');
 		switch (newNote.noteType)
 		{
-			case MINE:
+			case 5:
 				PlayState.contents.decreaseCombo(true);
 				PlayState.health -= healthLoss;	
 			default:

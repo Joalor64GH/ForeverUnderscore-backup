@@ -2,8 +2,6 @@ package base;
 
 import Paths.ChartType;
 import funkin.EventNote;
-import funkin.Note.NoteType;
-import funkin.Note.SustainType;
 import funkin.Note;
 import funkin.Strumline;
 import haxe.Json;
@@ -185,23 +183,12 @@ class ChartParser
 						var daStrumTime:Float = songNotes[0]#if !neko - Init.trueSettings['Offset'] #end; // - | late, + | early
 						var daNoteData:Int = Std.int(songNotes[1] % 4);
 						var daNoteAlt:Float = 0;
-						var daNoteType:NoteType = NORMAL; // define the note's type
-						var daSusType:SustainType = NORMAL;
+						var daNoteType:Int = 0; // define the note's type
 
 						if (songNotes.length > 2)
 						{
 							daNoteType = songNotes[3];
 						}
-						if (songNotes.length > 3)
-						{
-							daSusType = songNotes[4];
-						}
-						// doesn't work????
-						if (songNotes.length > 2 && Std.isOfType(songNotes[3], String))
-						{
-							daNoteType = Note.convertNotetypes(songNotes[3]);
-						}
-
 						var gottaHitNote:Bool = section.mustHitSection;
 						if (songNotes[1] > 3)
 							gottaHitNote = !section.mustHitSection;
@@ -216,7 +203,6 @@ class ChartParser
 						swagNote.noteSpeed = songData.speed;
 
 						swagNote.sustainLength = songNotes[2];
-						swagNote.sustainType = songNotes[4];
 						swagNote.scrollFactor.set(0, 0);
 
 						var susLength:Float = swagNote.sustainLength;
@@ -227,8 +213,7 @@ class ChartParser
 						{
 							oldNote = unspawnNotes[Std.int(unspawnNotes.length - 1)];
 							var sustainNote:Note = ForeverAssets.generateArrow(PlayState.assetModifier,
-								daStrumTime + (Conductor.stepCrochet * susNote) + Conductor.stepCrochet, daNoteData, daNoteAlt, true, oldNote, daNoteType,
-								daSusType);
+								daStrumTime + (Conductor.stepCrochet * susNote) + Conductor.stepCrochet, daNoteData, daNoteAlt, true, oldNote, daNoteType);
 							sustainNote.scrollFactor.set();
 
 							unspawnNotes.push(sustainNote);
