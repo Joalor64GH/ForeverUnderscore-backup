@@ -42,7 +42,7 @@ class Main extends Sprite
 	public static var underscoreVersion:String = '0.2.1';
 	public static var commitHash:String;
 
-	public static var showCommitHash:Bool = true;
+	public static var showCommitHash:Bool = false;
 
 	var zoom:Float = -1; // If -1, zoom is automatically calculated to fit the window dimensions.
 	var skipSplash:Bool = true; // Whether to skip the flixel splash screen that appears in release mode.
