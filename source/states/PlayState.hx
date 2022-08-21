@@ -211,7 +211,7 @@ class PlayState extends MusicBeatState
 		changeableSound = 'default';
 
 		// stop any existing music tracks playing
-		Conductor.resetMusic();
+		Conductor.stopMusic();
 		if (FlxG.sound.music != null)
 			FlxG.sound.music.stop();
 
@@ -648,7 +648,7 @@ class PlayState extends MusicBeatState
 				// charting state (more on that later)
 				if (FlxG.keys.justPressed.SEVEN)
 				{
-					Conductor.resetMusic();
+					Conductor.stopMusic();
 					chartingMode = true;
 					preventScoring = true;
 					if (FlxG.keys.pressed.SHIFT)
@@ -667,7 +667,7 @@ class PlayState extends MusicBeatState
 					var holdingShift = FlxG.keys.pressed.SHIFT;
 					var holdingAlt = FlxG.keys.pressed.ALT;
 
-					Conductor.resetMusic();
+					Conductor.stopMusic();
 					Main.switchState(this, new CharacterDebug(holdingShift ? SONG.player1 : holdingAlt ? SONG.gfVersion : SONG.player2, PlayState.curStage));
 				}
 
@@ -1830,7 +1830,7 @@ class PlayState extends MusicBeatState
 			persistentUpdate = false;
 			persistentDraw = false;
 
-			Conductor.resetMusic();
+			Conductor.stopMusic();
 
 			deaths += 1;
 

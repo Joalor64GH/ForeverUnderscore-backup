@@ -351,7 +351,7 @@ class OptionsMenuState extends MusicBeatState
 			}
 			else if (PauseSubstate.toOptions)
 			{
-				Conductor.resetMusic();
+				Conductor.stopMusic();
 				Main.switchState(this, new PlayState());
 			}
 			else
@@ -676,7 +676,7 @@ class OptionsMenuState extends MusicBeatState
 				{
 					if (PauseSubstate.toOptions)
 					{
-						Conductor.resetMusic();
+						Conductor.stopMusic();
 						Main.switchState(this, new PlayState());
 					}
 					else
@@ -691,7 +691,7 @@ class OptionsMenuState extends MusicBeatState
 				playSound('scrollMenu');
 				if (PauseSubstate.toOptions)
 				{
-					Conductor.resetMusic();
+					Conductor.stopMusic();
 					Main.switchState(this, new PlayState());
 				}
 				else
