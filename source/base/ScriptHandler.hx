@@ -172,20 +172,24 @@ class ScriptFuncs extends PlayState
 			}
 		});
 
-		PlayState.contents.setVar('trace', function(text:String, color:Array<Int> = null)
+		PlayState.contents.setVar('trace', function(text:String, printOnHud:Bool = true, color:Array<Int> = null)
 		{
 			if (color == null)
 				color = [255, 255, 255];
 
 			trace(text);
-			PlayState.uiHUD.traceBar.text += '$text\n';
-			PlayState.uiHUD.traceBar.color = FlxColor.fromRGB(color[0], color[1], color[2]);
-			FlxTween.tween(PlayState.uiHUD.traceBar, {alpha: 1}, 0.5, {ease: FlxEase.circOut});
 
-			new FlxTimer().start(6, function(tmr:FlxTimer)
+			if (printOnHud)
 			{
-				FlxTween.tween(PlayState.uiHUD.traceBar, {alpha: 0}, 0.5, {ease: FlxEase.circOut});
-			});
+				PlayState.uiHUD.traceBar.text += '$text\n';
+				PlayState.uiHUD.traceBar.color = FlxColor.fromRGB(color[0], color[1], color[2]);
+				FlxTween.tween(PlayState.uiHUD.traceBar, {alpha: 1}, 0.5, {ease: FlxEase.circOut});
+
+				new FlxTimer().start(6, function(tmr:FlxTimer)
+				{
+					FlxTween.tween(PlayState.uiHUD.traceBar, {alpha: 0}, 0.5, {ease: FlxEase.circOut});
+				});
+			}
 		});
 
 		PlayState.contents.setVar('playSound', function(sound:String)
