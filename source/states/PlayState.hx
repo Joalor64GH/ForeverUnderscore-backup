@@ -282,6 +282,7 @@ class PlayState extends MusicBeatState
 			default:
 				// blah
 		}
+		gf.adjustPos = false;
 		gf.dance(true);
 		gf.scrollFactor.set(0.95, 0.95);
 

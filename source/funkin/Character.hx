@@ -66,11 +66,15 @@ class Character extends FNFSprite
 
 	public var holdTimer:Float = 0;
 
+	public var adjustPos:Bool = true;
+
 	public var icon:String;
 
+	public var barColor:Array<Float> = [];
 	public var animationNotes:Array<Dynamic> = [];
 	public var idlePos:Array<Float> = [0, 0];
-	public var barColor:Array<Float> = [];
+
+	public var offsets:Array<Float> = [0, 0];
 	public var camOffsets:Array<Float> = [0, 0];
 	public var scales:Array<Float> = [0, 0];
 
@@ -477,6 +481,13 @@ class Character extends FNFSprite
 
 		if (icon == null)
 			icon = char;
+
+		if (adjustPos)
+		{
+			x += offsets[0];
+			trace('character ${curCharacter} scale ${scale.y}');
+			y += (offsets[1] - (frameHeight * scale.y));
+		}
 
 		if (animation.getByName('danceLeft') != null)
 			playAnim('danceLeft');
