@@ -260,12 +260,6 @@ class ForeverAssets
 				newNote.noteVisualOffset = ((prevNote.width / 2) - (newNote.width / 2));
 		}
 
-		/*var colorSwap:ColorSwap = new ColorSwap();
-			colorSwap.hue = Note.arrowColors[noteData][0] / 360;
-			colorSwap.saturation = Note.arrowColors[noteData][1] / 100;
-			colorSwap.brightness = Note.arrowColors[noteData][2] / 100;
-			newNote.shader = colorSwap.shader; */
-
 		return newNote;
 	}
 
