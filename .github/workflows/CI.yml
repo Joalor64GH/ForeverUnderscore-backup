@@ -48,6 +48,7 @@ jobs:
           haxelib install flixel-tools
           haxelib install flixel-addons
           haxelib install hscript
+          haxelib install hxCodec
           haxelib git SScript https://github.com/TheWorldMachine/SScript
           haxelib git polymod https://github.com/larsiusprime/polymod.git
           haxelib git discord_rpc https://github.com/Aidan63/linc_discord-rpc
@@ -84,6 +85,7 @@ jobs:
           haxelib install flixel-tools
           haxelib install flixel-addons
           haxelib install hscript
+          haxelib install hxCodec
           haxelib git polymod https://github.com/larsiusprime/polymod.git
           haxelib git discord_rpc https://github.com/Aidan63/linc_discord-rpc
           haxelib git SScript https://github.com/TheWorldMachine/SScript
@@ -121,6 +123,7 @@ jobs:
           haxelib install flixel-tools
           haxelib install flixel-addons
           haxelib install hscript
+          haxelib install hxCodec
           haxelib git polymod https://github.com/larsiusprime/polymod.git
           haxelib git discord_rpc https://github.com/Aidan63/linc_discord-rpc
           haxelib git SScript https://github.com/TheWorldMachine/SScript

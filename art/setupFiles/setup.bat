@@ -10,6 +10,7 @@ haxelib install flixel
 haxelib install flixel-ui
 haxelib install flixel-tools
 haxelib install hscript
+haxelib install hxCodec
 haxelib install newgrounds
 haxelib install hxcpp-debug-server
 haxelib git flixel-addons https://github.com/HaxeFlixel/flixel-addons

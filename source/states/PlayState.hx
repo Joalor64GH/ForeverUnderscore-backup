@@ -40,18 +40,16 @@ import states.charting.*;
 import states.menus.*;
 import states.substates.*;
 
-using StringTools;
-
 #if sys
 import sys.FileSystem;
 import sys.io.File;
 #end
-/*
+
 #if VIDEO_PLUGIN
-import vlc.VideoHandler;
-import vlc.VideoSprite;
+import vlc.MP4Handler;
 #end
-*/
+
+using StringTools;
 
 class PlayState extends MusicBeatState
 {
@@ -1524,7 +1522,7 @@ class PlayState extends MusicBeatState
 
 	override public function onFocusLost():Void
 	{
-		if (canPause && !paused && !bfStrums.autoplay && !Init.trueSettings.get('Auto Pause'))
+		if (canPause && !paused && !inCutscene && !bfStrums.autoplay && !Init.trueSettings.get('Auto Pause'))
 			pauseGame();
 		super.onFocusLost();
 	}
@@ -2076,17 +2074,16 @@ class PlayState extends MusicBeatState
 		FlxG.switchState(new PlayState());
 	}
 
-	/*
-	function startCutscene(name:String)
+	public function playVideo(name:String)
 	{
 		#if VIDEO_PLUGIN
 		inCutscene = true;
 
-		var file = Paths.video(name);
+		var filepath:String = Paths.video(name);
 		#if sys
-		if (!FileSystem.exists(file))
+		if(!FileSystem.exists(filepath))
 		#else
-		if (!OpenFlAssets.exists(file))
+		if(!OpenFlAssets.exists(filepath))
 		#end
 		{
 			FlxG.log.warn('Couldnt find video file: ' + name);
@@ -2094,8 +2091,8 @@ class PlayState extends MusicBeatState
 			return;
 		}
 
-		var video:VideoHandler = new VideoHandler();
-		video.playVideo(file);
+		var video:MP4Handler = new MP4Handler();
+		video.playVideo(filepath);
 		video.finishCallback = function()
 		{
 			startAndEnd();
@@ -2107,34 +2104,6 @@ class PlayState extends MusicBeatState
 		return;
 		#end
 	}
-
-	function spawnVideoSprite(name:String, x:Float, y:Float, cam:Dynamic)
-	{
-		#if VIDEO_PLUGIN
-		var path = Paths.video(name);
-		#if sys
-		if (!FileSystem.exists(path))
-		#else
-		if (!OpenFlAssets.exists(path))
-		#end
-		{
-			FlxG.log.warn('Couldnt find video file: ' + name);
-			return;
-		}
-
-		var videoSprite:VideoSprite = new VideoSprite(x, y);
-		videoSprite.cameras = [cam];
-		videoSprite.playVideo(path);
-		videoSprite.finishCallback = function()
-		{
-			return;
-		}
-		#else
-		FlxG.log.warn('Platform not supported!');
-		return;
-		#end
-	}
-	*/
 
 	function startAndEnd()
 	{
@@ -2228,6 +2197,9 @@ class PlayState extends MusicBeatState
 						});
 					}
 				});
+
+			case 'bopeebo':
+				playVideo('test');
 
 			default:
 				callTextbox();
@@ -2500,17 +2472,10 @@ class PlayState extends MusicBeatState
 		setVar('strumHUD', strumHUD);
 		setVar('dialogueHUD', dialogueHUD);
 
-		/*
 		setVar('playVideo', function(key:String)
 		{
-			startCutscene(key);
+			playVideo(key);
 		});
-
-		setVar('spawnVideoSprite', function(key:String, x:Float, y:Float, cam:Dynamic)
-		{
-			spawnVideoSprite(key, x, y, cam);
-		});
-		*/
 
 		setVar('setProperty', function(key:String, value:Dynamic)
 		{
