@@ -7,8 +7,6 @@ import flixel.FlxSprite;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.util.FlxColor;
 import funkin.*;
-import funkin.ColorSwap.ColorSwapShader;
-import funkin.ColorSwap;
 import funkin.Strumline.UIStaticArrow;
 import funkin.Timings;
 import funkin.ui.menu.*;
