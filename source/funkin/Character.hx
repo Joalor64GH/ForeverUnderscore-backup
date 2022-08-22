@@ -490,7 +490,7 @@ class Character extends FNFSprite
 		if (adjustPos)
 		{
 			x += offsets[0];
-			trace('character ${curCharacter} scale ${scale.y}');
+			#if DEBUG_TRACES trace('character ${curCharacter} scale ${scale.y}'); #end
 			y += (offsets[1] - (frameHeight * scale.y));
 		}
 

@@ -1204,7 +1204,7 @@ class OriginalChartingState extends MusicBeatState
 			var daSus = i[2];
 			var daNoteType:Int = i[3];
 
-			trace('Current note type is $daNoteType.');
+			#if DEBUG_TRACES trace('Current note type is ' + curNoteName[daNoteType] + '.'); #end
 			
 			var note:Note = ForeverAssets.generateArrow(PlayState.assetModifier, daStrumTime, daNoteInfo % 4, 0, null, null, daNoteType);
 			note.sustainLength = daSus;
