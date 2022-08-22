@@ -415,6 +415,11 @@ class Character extends FNFSprite
 			singDuration = amount;
 		});
 
+		setVar('setOffsets', function(?x:Float = 0, ?y:Float = 0)
+		{
+			offsets = [x, y];
+		});
+
 		setVar('setCamOffsets', function(?x:Float = 0, ?y:Float = 0)
 		{
 			camOffsets = [x, y];
