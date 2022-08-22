@@ -66,6 +66,7 @@ typedef BoxDataDef =
 	var singleFrame:Null<Bool>;
 	var doFlip:Null<Bool>;
 	var bgColor:Null<Array<Int>>;
+	var boxType:Null<String>;
 	var textType:Null<String>;
 	var showArrow:Null<Bool>;
 

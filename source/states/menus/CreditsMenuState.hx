@@ -82,6 +82,7 @@ class CreditsMenuState extends MusicBeatState
 			var alphabet:Alphabet = new Alphabet(0, 70 * i, creditsData.data[i][0], !selectableItem(i));
 			alphabet.isMenuItem = true;
 			alphabet.screenCenter(X);
+			alphabet.disableX = true;
 			alphabet.targetY = i;
 			alfabe.add(alphabet);
 

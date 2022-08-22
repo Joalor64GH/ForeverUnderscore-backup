@@ -577,6 +577,7 @@ class Character extends FNFSprite
 		}
 		flipX = json.flip_x;
 		antialiasing = !json.no_antialiasing;
+		offsets = json.position;
 
 		if (isPlayer) // fuck you ninjamuffin lmao
 		{
