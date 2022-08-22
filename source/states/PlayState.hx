@@ -2198,13 +2198,9 @@ class PlayState extends MusicBeatState
 					}
 				});
 
-			case 'bopeebo':
-				playVideo('test');
-
 			default:
 				callTextbox();
 		}
-		//
 	}
 
 	function callTextbox()
