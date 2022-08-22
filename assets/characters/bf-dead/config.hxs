@@ -8,4 +8,6 @@ function loadAnimations()
         set('flipX', true);
     else
         set('flipX', false);
+
+    setOffsets(5, 510);
 }

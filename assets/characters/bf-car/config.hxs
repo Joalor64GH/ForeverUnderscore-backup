@@ -25,6 +25,7 @@ function loadAnimations()
     playAnim('idle');
 
     setBarColor([49,176,209]);
+    setOffsets(80, 410);
     if (isPlayer)
         set('flipX', false);
     else

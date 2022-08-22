@@ -283,8 +283,8 @@ class PlayState extends MusicBeatState
 				// blah
 		}
 		gf.adjustPos = false;
-		gf.dance(true);
 		gf.scrollFactor.set(0.95, 0.95);
+		gf.dance(true);
 
 		dadOpponent = new Character(100, 100, false, SONG.player2);
 
@@ -1058,6 +1058,8 @@ class PlayState extends MusicBeatState
 
 				// unoptimised asf camera control based on strums
 				strumCameraRoll(strumline.receptors, (strumline == bfStrums));
+
+				searchUnspawnEvents();
 			}
 		}
 
@@ -1127,12 +1129,35 @@ class PlayState extends MusicBeatState
 		daNote.destroy();
 	}
 
-	function eventNoteHit(eventNote:EventNote)
+	public function searchUnspawnEvents()
+	{
+		while (unspawnEvents.length > 0)
+		{
+			var strumTime:Float = unspawnEvents[0].strumTime;
+			if (Conductor.songPosition < strumTime)
+			{
+				break;
+			}
+
+			var value1:String = '';
+			if (unspawnEvents[0].val1 != null)
+				value1 = unspawnEvents[0].val1;
+
+			var value2:String = '';
+			if (unspawnEvents[0].val1 != null)
+				value2 = unspawnEvents[0].val1;
+
+			eventNoteHit(unspawnEvents[0].eventName, value1, value2);
+			unspawnEvents.shift();
+		}
+	}
+
+	function eventNoteHit(name:String, val1:String, val2:String, ?eventNote:EventNote)
 	{
 		if (!eventNote.shouldExecute)
 			return;
 
-		switch (eventNote.id)
+		switch (eventNote.eventName)
 		{
 			case 'Change Character':
 				var ogPosition:Array<Float> = [770, 450];
@@ -1778,8 +1803,12 @@ class PlayState extends MusicBeatState
 		unspawnEvents = ChartParser.loadEvents(SONG, ChartParser.songType);
 
 		unspawnNotes.sort(sortByShit);
-		unspawnEvents.sort(sortByEvent);
 
+		if (unspawnEvents.length > 1)
+		{
+			unspawnEvents.sort(sortByEvent);
+		}
+		searchUnspawnEvents();
 		generatedMusic = true;
 	}
 

@@ -11,5 +11,6 @@ function loadAnimations()
 
     playAnim('danceRight');
 
+    setOffsets(10, 630);
     setBarColor([165,0,77]);
 }
