@@ -1626,6 +1626,13 @@ class PlayState extends MusicBeatState
 				numScore.x -= ((comboString.length - 1) * 22);
 				lastCombo.push(numScore);
 				FlxTween.tween(numScore, {y: numScore.y + 20}, 0.1, {type: FlxTweenType.BACKWARD, ease: FlxEase.circOut});
+				/*FlxTween.tween(numScore, {"scale.x": 0, "scale.y": 0}, 0.1, {
+				onComplete: function(tween:FlxTween)
+				{
+					numScore.kill();
+				},*/
+				startDelay: Conductor.crochet * 0.00125
+			});
 			}
 			// hardcoded lmao
 			if (Init.trueSettings.get('Fixed Judgements'))
