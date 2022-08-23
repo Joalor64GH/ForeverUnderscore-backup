@@ -162,91 +162,81 @@ class Character extends FNFSprite
 		 * Special Animations Code.
 		 * @author: Shadow_Mario_
 		**/
-		if (heyTimer > 0)
+
+		if (!debugMode && animation.curAnim != null)
 		{
-			heyTimer -= elapsed;
-			if (heyTimer <= 0)
+			if (heyTimer > 0)
 			{
-				if (specialAnim && animation.curAnim.name == 'hey' || animation.curAnim.name == 'cheer')
+				heyTimer -= elapsed;
+				if (heyTimer <= 0)
 				{
-					specialAnim = false;
-					dance();
+					if (specialAnim && animation.curAnim.name == 'hey' || animation.curAnim.name == 'cheer')
+					{
+						specialAnim = false;
+						dance();
+					}
+					heyTimer = 0;
 				}
-				heyTimer = 0;
 			}
-		}
-		else if (specialAnim && animation.curAnim.finished)
-		{
-			specialAnim = false;
-			dance();
-		}
-
-		if (!isPlayer)
-		{
-			if (animation.curAnim != null && animation.curAnim.name.startsWith('sing'))
+			else if (specialAnim && animation.curAnim.finished)
 			{
-				holdTimer += elapsed;
-			}
-
-			if (holdTimer >= Conductor.stepCrochet * 0.0011 * singDuration)
-			{
+				specialAnim = false;
 				dance();
-				holdTimer = 0;
-			}
-		}
-		else if (!debugMode && !skipDance && !specialAnim && animation.curAnim != null)
-		{
-			if (animation.curAnim.name.startsWith('sing'))
-			{
-				holdTimer += elapsed;
-			}
-			else
-				holdTimer = 0;
-
-			if (animation.curAnim.name.endsWith('miss') && animation.curAnim.finished && !debugMode)
-			{
-				playAnim('idle', true, false, 10);
 			}
 
-			if (animation.curAnim.name == 'firstDeath' && animation.curAnim.finished)
+			if (!isPlayer)
 			{
-				playAnim('deathLoop');
-			}
-		}
-
-		switch (curCharacter)
-		{
-			case 'pico-speaker':
-				if (animationNotes.length > 0 && Conductor.songPosition > animationNotes[0][0])
+				if (animation.curAnim != null && animation.curAnim.name.startsWith('sing'))
 				{
-					var noteData:Int = 1;
-					if (animationNotes[0][1] > 2)
-						noteData = 3;
-
-					noteData += FlxG.random.int(0, 1);
-					playAnim('shoot' + noteData, true);
-					animationNotes.shift();
+					holdTimer += elapsed;
 				}
-				if (animation.curAnim.finished)
-					playAnim(animation.curAnim.name, false, false, animation.curAnim.frames.length - 3);
-		}
 
-		var curCharSimplified:String = simplifyCharacter();
-
-		if (animation.curAnim != null)
-			switch (curCharSimplified)
-			{
-				case 'gf':
-					if (animation.curAnim.name == 'hairFall' && animation.curAnim.finished)
-						playAnim('danceRight');
-					if ((animation.curAnim.name.startsWith('sad')) && (animation.curAnim.finished))
-						playAnim('danceLeft');
+				if (holdTimer >= Conductor.stepCrochet * 0.0011 * singDuration)
+				{
+					dance();
+					holdTimer = 0;
+				}
 			}
 
-		if (animation.curAnim != null && animation.curAnim.finished && animation.curAnim.name == 'idle')
-		{
-			if (animation.getByName('idlePost') != null)
-				animation.play('idlePost', true, false, 0);
+			if (animation.curAnim.finished && animation.getByName(animation.curAnim.name + '-loop') != null)
+			{
+				playAnim(animation.curAnim.name + '-loop');
+			}
+
+			switch (curCharacter)
+			{
+				case 'pico-speaker':
+					if (animationNotes.length > 0 && Conductor.songPosition > animationNotes[0][0])
+					{
+						var noteData:Int = 1;
+						if (animationNotes[0][1] > 2)
+							noteData = 3;
+
+						noteData += FlxG.random.int(0, 1);
+						playAnim('shoot' + noteData, true);
+						animationNotes.shift();
+					}
+					if (animation.curAnim.finished)
+						playAnim(animation.curAnim.name, false, false, animation.curAnim.frames.length - 3);
+			}
+
+			var curCharSimplified:String = simplifyCharacter();
+
+			if (animation.curAnim != null)
+				switch (curCharSimplified)
+				{
+					case 'gf':
+						if (animation.curAnim.name == 'hairFall' && animation.curAnim.finished)
+							playAnim('danceRight');
+						if ((animation.curAnim.name.startsWith('sad')) && (animation.curAnim.finished))
+							playAnim('danceLeft');
+				}
+
+			if (animation.curAnim != null && animation.curAnim.finished && animation.curAnim.name == 'idle')
+			{
+				if (animation.getByName('idlePost') != null)
+					animation.play('idlePost', true, false, 0);
+			}
 		}
 
 		super.update(elapsed);
