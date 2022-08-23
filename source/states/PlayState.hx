@@ -2419,7 +2419,7 @@ class PlayState extends MusicBeatState
 			{
 				for (file in FileSystem.readDirectory(fool))
 				{
-					if (file.endsWith('.hxs') && !pushedScripts.contains(file))
+					if (file.endsWith('.hx') && !pushedScripts.contains(file))
 					{
 						scriptArray.push(new ScriptHandler(fool.replace('.', '') + file));
 						pushedScripts.push(file);

@@ -7,7 +7,7 @@ function loadAnimations()
     * first off, as long as your sparrow/packer atlas file and image file is in the folder containing this script
     * you should be good to go, furthermore, they need to be named with your character's internal name
     * for example, if the character folder name is `bf`, then his internal name is `bf`, and so, files need to be named `bf.png` and `bf.(ext)` (ext being either xml, json or txt);
-    * along with this script, which should be named `config.hxs`, and of course the character icon, which should be named `icon.png`
+    * along with this script, which should be named `config.hx`, and of course the character icon, which should be named `icon.png`
     **/
 
     /* ===== ANIMATION PREFIXES ===== */
