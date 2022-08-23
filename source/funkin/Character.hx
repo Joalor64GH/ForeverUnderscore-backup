@@ -93,9 +93,9 @@ class Character extends FNFSprite
 	// FOR PSYCH COMPATIBILITY
 	public var danceIdle:Bool = false; // Character use "danceLeft" and "danceRight" instead of "idle"
 	public var skipDance:Bool = false;
-	public var heyTimer:Float = 0;
 	public var specialAnim:Bool = false;
 	public var singDuration:Float = 4; // Multiplier of how long a character holds the sing pose
+	public var heyTimer:Float = 0;
 
 	public function new(?x:Float = 0, ?y:Float = 0, ?isPlayer:Bool = false, ?character:String = 'bf')
 	{
@@ -150,6 +150,7 @@ class Character extends FNFSprite
 					generateBaseChar(character);
 		}
 
+		recalcDance();
 		dance();
 
 		return this;
@@ -269,19 +270,20 @@ class Character extends FNFSprite
 						danced = !danced;
 
 						if (!danced)
-							playAnim('danceLeft', forced);
+							playAnim('danceLeft$idleSuffix', forced);
 						else
-							playAnim('danceRight', forced);
+							playAnim('danceRight$idleSuffix', forced);
 					}
 				default:
 					// Left/right dancing, think Skid & Pump
-					if (animation.getByName('danceLeft') != null && animation.getByName('danceRight') != null || danceIdle)
+					if (animation.getByName('danceLeft$idleSuffix') != null
+						&& animation.getByName('danceRight$idleSuffix') != null || danceIdle)
 					{
 						danced = !danced;
 						if (danced)
-							playAnim('danceRight', forced);
+							playAnim('danceRight$idleSuffix', forced);
 						else
-							playAnim('danceLeft', forced);
+							playAnim('danceLeft$idleSuffix', forced);
 					}
 					else
 						playAnim('idle$idleSuffix', forced);
@@ -334,6 +336,34 @@ class Character extends FNFSprite
 	function sortAnims(Obj1:Array<Dynamic>, Obj2:Array<Dynamic>):Int
 	{
 		return FlxSort.byValues(FlxSort.ASCENDING, Obj1[0], Obj2[0]);
+	}
+
+	private var settingCharacterUp:Bool = true;
+
+	/**
+	* for Psych Engine Characters;
+	* @author Shadow_Mario_
+	**/
+	public function recalcDance()
+	{
+		var lastDanceIdle:Bool = danceIdle;
+		danceIdle = (animation.getByName('danceLeft' + idleSuffix) != null && animation.getByName('danceRight' + idleSuffix) != null);
+
+		if (settingCharacterUp)
+		{
+			bopSpeed = (danceIdle ? 1 : 2);
+		}
+		else if (lastDanceIdle != danceIdle)
+		{
+			var calc:Float = bopSpeed;
+			if (danceIdle)
+				calc /= 2;
+			else
+				calc *= 2;
+
+			bopSpeed = Math.round(Math.max(calc, 1));
+		}
+		settingCharacterUp = false;
 	}
 
 	function generateBaseChar(char:String = 'bf')

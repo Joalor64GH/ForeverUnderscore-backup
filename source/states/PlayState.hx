@@ -40,6 +40,7 @@ import states.charting.*;
 import states.menus.*;
 import states.substates.*;
 
+using StringTools;
 #if sys
 import sys.FileSystem;
 import sys.io.File;
@@ -49,7 +50,6 @@ import sys.io.File;
 import vlc.MP4Handler;
 #end
 
-using StringTools;
 
 class PlayState extends MusicBeatState
 {
@@ -103,6 +103,7 @@ class PlayState extends MusicBeatState
 	static var prevCamFollow:FlxObject;
 
 	var curSong:String = "";
+	var gfSpeed:Int = 1;
 
 	public static var health:Float = 1; // mario
 	public static var combo:Int = 0;
@@ -688,7 +689,6 @@ class PlayState extends MusicBeatState
 				}
 			}
 
-			///*
 			if (startingSong)
 			{
 				if (startedCountdown)
@@ -1174,7 +1174,7 @@ class PlayState extends MusicBeatState
 				var speed:Int = Std.parseInt(eventNote.val1);
 				if (Math.isNaN(speed) || speed < 1)
 					speed = 1;
-				gf.bopSpeed = speed;
+				gfSpeed = speed;
 
 			case 'Hey!':
 				var who:Int = -1;
@@ -1833,22 +1833,38 @@ class PlayState extends MusicBeatState
 	}
 
 	public var characterArray:Array<Character> = [];
-
 	function charactersDance(curBeat:Int)
 	{
-		characterArray.push(boyfriend);
-		characterArray.push(dadOpponent);
-		characterArray.push(gf);
+		if (curBeat % Math.round(gfSpeed * gf.bopSpeed) == 0
+			&& gf.animation.curAnim != null
+			&& !gf.animation.curAnim.name.startsWith('sing')
+			&& gf.animation.curAnim.name.startsWith("idle")
+			|| gf.animation.curAnim.name.startsWith("dance")
+			&& !gf.stunned)
+			gf.dance();
+
+		if (!boyfriend.animation.curAnim.name.startsWith('sing')
+			&& boyfriend.animation.curAnim.name.startsWith("idle")
+			|| boyfriend.animation.curAnim.name.startsWith("dance")
+			&& curBeat % dadOpponent.bopSpeed == 0
+			|| boyfriend.quickDancer)
+			boyfriend.dance();
+
+		if (!dadOpponent.animation.curAnim.name.startsWith('sing')
+			&& dadOpponent.animation.curAnim.name.startsWith("idle")
+			|| dadOpponent.animation.curAnim.name.startsWith("dance")
+			&& curBeat % dadOpponent.bopSpeed == 0
+			|| dadOpponent.quickDancer)
+			dadOpponent.dance();
 
 		for (char in characterArray)
 		{
-			if (curBeat % char.bopSpeed == 0
-				&& char.animation.curAnim != null
-				&& !char.animation.curAnim.name.startsWith('sing')
-				&& !char.stunned)
-			{
+			if (!char.animation.curAnim.name.startsWith('sing')
+				&& char.animation.curAnim.name.startsWith("idle")
+				|| char.animation.curAnim.name.startsWith("dance")
+				&& curBeat % dadOpponent.bopSpeed == 0
+				|| char.quickDancer)
 				char.dance();
-			}
 		}
 	}
 
@@ -2453,10 +2469,6 @@ class PlayState extends MusicBeatState
 		setVar('bfName', boyfriend.curCharacter);
 		setVar('gfName', gf.curCharacter);
 		setVar('dadName', dadOpponent.curCharacter);
-
-		setVar('gfSpeed', gf.bopSpeed);
-		setVar('dadSpeed', dadOpponent.bopSpeed);
-		setVar('bfSpeed', boyfriend.bopSpeed);
 
 		setVar('difficultyString', uiHUD.diffDisplay);
 		setVar('songString', uiHUD.infoDisplay);
