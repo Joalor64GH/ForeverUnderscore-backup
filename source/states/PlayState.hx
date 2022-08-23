@@ -286,6 +286,7 @@ class PlayState extends MusicBeatState
 		gf.dance(true);
 
 		dadOpponent = new Character(100, 100, false, SONG.player2);
+		dadOpponent.dance(true);
 
 		boyfriend = new Character(770, 450, true, SONG.player1);
 		boyfriend.dance(true);
@@ -1843,18 +1844,22 @@ class PlayState extends MusicBeatState
 			&& !gf.stunned)
 			gf.dance();
 
-		if (!boyfriend.animation.curAnim.name.startsWith('sing')
+		if (curBeat % boyfriend.bopSpeed == 0
+			&& boyfriend.animation.curAnim != null
+			&& !boyfriend.animation.curAnim.name.startsWith('sing')
 			&& boyfriend.animation.curAnim.name.startsWith("idle")
 			|| boyfriend.animation.curAnim.name.startsWith("dance")
-			&& curBeat % dadOpponent.bopSpeed == 0
-			|| boyfriend.quickDancer)
+			|| boyfriend.quickDancer
+			&& !boyfriend.stunned)
 			boyfriend.dance();
 
-		if (!dadOpponent.animation.curAnim.name.startsWith('sing')
+		if (curBeat % boyfriend.bopSpeed == 0
+			&& dadOpponent.animation.curAnim != null
+			&& !dadOpponent.animation.curAnim.name.startsWith('sing')
 			&& dadOpponent.animation.curAnim.name.startsWith("idle")
 			|| dadOpponent.animation.curAnim.name.startsWith("dance")
-			&& curBeat % dadOpponent.bopSpeed == 0
-			|| dadOpponent.quickDancer)
+			|| dadOpponent.quickDancer
+			&& !dadOpponent.stunned)
 			dadOpponent.dance();
 
 		for (char in characterArray)
