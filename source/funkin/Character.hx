@@ -197,6 +197,25 @@ class Character extends FNFSprite
 					holdTimer = 0;
 				}
 			}
+			else if (isPlayer && !skipDance && !specialAnim)
+			{
+				if (animation.curAnim.name.startsWith('sing'))
+				{
+					holdTimer += elapsed;
+				}
+				else
+					holdTimer = 0;
+
+				if (animation.curAnim.name.endsWith('miss') && animation.curAnim.finished && !debugMode)
+				{
+					playAnim('idle', true, false, 10);
+				}
+
+				if (animation.curAnim.name == 'firstDeath' && animation.curAnim.finished)
+				{
+					playAnim('deathLoop');
+				}
+			}
 
 			if (animation.curAnim.finished && animation.getByName(animation.curAnim.name + '-loop') != null)
 			{
