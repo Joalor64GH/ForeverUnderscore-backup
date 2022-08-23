@@ -45,8 +45,6 @@
 	<assets path="assets" />
 	<!-- <assets path="mods" if="MOD_HANDLER" /> -->
 
-	<assets path="art/dependencies/FE-CrashDialog.exe" rename="FE-CrashDialog.exe" type="template" if="windows release" />
-
 	<!-- _______________________________ Libraries ______________________________ -->
 
 	<haxelib name="flixel" />
@@ -58,7 +56,7 @@
 	<haxelib name="hxCodec" if="VIDEO_PLUGIN" />
 
 	<haxelib name="SScript" if="HAXE_EXTENSION" />
-	<haxelib name="hscript" if="HAXE_EXTENSION" /> <!-- if i ever need it -gabi -->
+	<haxelib name="hscript" if="HAXE_EXTENSION" />
 	<haxelib name="polymod" if="MOD_HANDLER" />
 	<haxeflag name="-dce no" />
 
@@ -78,6 +76,9 @@
 	<!-- Always enable Null Object Reference check for crash dialog -->
 	<haxedef name="HXCPP_CHECK_POINTER" if="release" />
 	<haxedef name="HXCPP_STACK_LINE" if="release" />
+
+	<!-- Make's the game use less ram -->
+	<haxedef name="HXCPP_GC_BIG_BLOCKS" />
 
 	<!-- _________________________________ Custom _______________________________ -->
 
