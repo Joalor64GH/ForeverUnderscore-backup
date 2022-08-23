@@ -68,9 +68,10 @@ class WeekParser
 	public static function parseJson():Bool
 	{
 		var dataFolders = [];
-		dataFolders.push(Paths.getPreloadPath('weeks/'));
-
 		var pushedWeeks:Array<String> = [];
+
+		if (FileSystem.exists(Paths.getPreloadPath('weeks/')))
+			dataFolders.push(Paths.getPreloadPath('weeks/'));
 
 		for (folders in dataFolders)
 		{
@@ -88,7 +89,6 @@ class WeekParser
 				}
 			}
 		}
-
 		return false;
 	}
 

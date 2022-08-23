@@ -292,8 +292,7 @@ class Init extends FlxState
 		if(Main.showCommitHash)
 			Main.commitHash = Main.getGitCommitHash(); // get the commit hash for use on menu texts and such;
 
-		if (FileSystem.exists(Paths.getPreloadPath('weeks/')))
-			WeekParser.loadWeeks(); // load any custom weeks you might have;
+		WeekParser.loadWeeks(); // load any custom weeks you might have;
 
 		goToInitialDestination();
 	}
