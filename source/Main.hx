@@ -37,7 +37,7 @@ class Main extends Sprite
 	public static var foreverVersion:String = '0.3.1';
 	public static var underscoreVersion:String = '0.2.1';
 	public static var commitHash:String;
-	public static var showCommitHash:Bool = false;
+	public static var showCommitHash:Bool = true;
 
 	static var infoCounter:Overlay; // initialize the heads up display that shows information before creating it.
 
@@ -253,11 +253,19 @@ class Main extends Sprite
 	{
 		var process = new sys.io.Process('git', ['rev-parse', 'HEAD']);
 
-		// read the output of the process
-		var commitHash:String = process.stdout.readLine();
+		var commitHash:String;
+
+		try // read the output of the process
+		{
+			commitHash = process.stdout.readLine();
+		}
+		catch (e) // leave it as null in the event of an error
+		{
+			commitHash = null;
+		}
 		var trimmedCommitHash:String = commitHash.substr(0, 7);
 
 		// Generates a string expression
-		return trimmedCommitHash;
+		return commitHash != null ? trimmedCommitHash : 'UNKNOWN';
 	}
 }
