@@ -216,11 +216,23 @@ class Character extends FNFSprite
 					holdTimer = 0;
 				}
 			}
+			else if (isPlayer && !skipDance && !specialAnim && !debugMode)
+			{
+				if (animation.curAnim.name.startsWith('sing'))
+				{
+					holdTimer += elapsed;
+				}
+				else
+					holdTimer = 0;
+			}
 
-			if (animation.curAnim.name.startsWith('sad')
-				|| animation.curAnim.name.endsWith('miss')
-				|| animation.curAnim.name == 'hairFall' && animation.curAnim.finished)
+			if (animation.curAnim.name.endsWith('miss') && animation.curAnim != null && animation.curAnim.finished)
 				dance();
+
+			if (animation.curAnim.name == 'hairFall' && animation.curAnim.finished)
+				playAnim('danceRight');
+			if ((animation.curAnim.name.startsWith('sad')) && (animation.curAnim.finished))
+				playAnim('danceLeft');
 
 			if (animation.curAnim.finished && animation.getByName(animation.curAnim.name + '-loop') != null)
 			{
@@ -249,16 +261,13 @@ class Character extends FNFSprite
 			if (danceIdle)
 			{
 				danced = !danced;
-
 				if (danced)
-					playAnim('danceRight' + idleSuffix, forced);
+					playAnim('danceRight$idleSuffix', forced);
 				else
-					playAnim('danceLeft' + idleSuffix, forced);
+					playAnim('danceLeft$idleSuffix', forced);
 			}
-			else if (animation.getByName('idle' + idleSuffix) != null)
-			{
-				playAnim('idle' + idleSuffix , forced);
-			}
+			else
+				playAnim('idle$idleSuffix', forced);
 		}
 	}
 
