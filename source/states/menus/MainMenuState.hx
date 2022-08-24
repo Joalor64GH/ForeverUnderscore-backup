@@ -33,7 +33,7 @@ class MainMenuState extends MusicBeatState
 	var magenta:FlxSprite;
 	var camFollow:FlxObject;
 
-	var optionShit:Array<String> = ['story mode', 'freeplay', 'donate', 'options'];
+	final optionShit:Array<String> = ['story mode', 'freeplay', 'donate', 'options'];
 	var canSnap:Array<Float> = [];
 
 	static var tweenFinished:Bool = true;
@@ -87,7 +87,7 @@ class MainMenuState extends MusicBeatState
 
 			menuItems.add(menuItem);
 			menuItem.scrollFactor.set();
-			menuItem.antialiasing = true;
+			menuItem.antialiasing = !Init.trueSettings.get('Disable Antialiasing');
 			menuItem.updateHitbox();
 
 			/*if (!tweenFinished)
@@ -237,7 +237,7 @@ class MainMenuState extends MusicBeatState
 		bg.setGraphicSize(Std.int(bg.width * 1.1));
 		bg.updateHitbox();
 		bg.screenCenter();
-		bg.antialiasing = true;
+		bg.antialiasing = !Init.trueSettings.get('Disable Antialiasing');
 		add(bg);
 
 		magenta = new FlxSprite(-80).loadGraphic(Paths.image('menus/base/menuDesat'));
@@ -246,7 +246,7 @@ class MainMenuState extends MusicBeatState
 		magenta.updateHitbox();
 		magenta.screenCenter();
 		magenta.visible = false;
-		magenta.antialiasing = true;
+		magenta.antialiasing = !Init.trueSettings.get('Disable Antialiasing');
 		magenta.color = 0xFFfd719b;
 		add(magenta);
 	}

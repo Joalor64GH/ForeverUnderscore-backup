@@ -56,7 +56,7 @@ class ForeverAssets
 			newSprite.setGraphicSize(Std.int(newSprite.width * PlayState.daPixelZoom));
 		else
 		{
-			newSprite.antialiasing = true;
+			newSprite.antialiasing = !Init.trueSettings.get('Disable Antialiasing');
 			newSprite.setGraphicSize(Std.int(newSprite.width * 0.5));
 		}
 		newSprite.updateHitbox();
@@ -105,7 +105,7 @@ class ForeverAssets
 			rating.setGraphicSize(Std.int(rating.width * PlayState.daPixelZoom * 0.7));
 		else
 		{
-			rating.antialiasing = true;
+			rating.antialiasing = !Init.trueSettings.get('Disable Antialiasing');
 			rating.setGraphicSize(Std.int(rating.width * 0.7));
 		}
 
@@ -206,7 +206,7 @@ class ForeverAssets
 				newStaticArrow.animation.addByPrefix('pressed', stringSect + ' press', 24, false);
 				newStaticArrow.animation.addByPrefix('confirm', stringSect + ' confirm', 24, false);
 
-				newStaticArrow.antialiasing = true;
+				newStaticArrow.antialiasing = !Init.trueSettings.get('Disable Antialiasing');
 				newStaticArrow.setGraphicSize(Std.int(newStaticArrow.width * 0.7));
 
 				// set little offsets per note!
@@ -268,38 +268,19 @@ class ForeverAssets
 			baseLibrary:String)
 	{
 		var newCheckmark:Checkmark = new Checkmark(x, y);
-		switch (assetModifier)
-		{
-			default:
-				newCheckmark.frames = Paths.getSparrowAtlas(ForeverTools.returnSkinAsset(asset, assetModifier, changeableSkin, baseLibrary));
-				newCheckmark.antialiasing = true;
+		newCheckmark.frames = Paths.getSparrowAtlas(ForeverTools.returnSkinAsset(asset, assetModifier, changeableSkin, baseLibrary));
+		newCheckmark.antialiasing = !Init.trueSettings.get('Disable Antialiasing');
 
-				newCheckmark.animation.addByPrefix('false finished', 'uncheckFinished');
-				newCheckmark.animation.addByPrefix('false', 'uncheck', 12, false);
-				newCheckmark.animation.addByPrefix('true finished', 'checkFinished');
-				newCheckmark.animation.addByPrefix('true', 'check', 12, false);
-
-				// for week 7 assets when they decide to exist
-				// animation.addByPrefix('false', 'Check Box unselected', 24, true);
-				// animation.addByPrefix('false finished', 'Check Box unselected', 24, true);
-				// animation.addByPrefix('true finished', 'Check Box Selected Static', 24, true);
-				// animation.addByPrefix('true', 'Check Box selecting animation', 24, false);
-				newCheckmark.setGraphicSize(Std.int(newCheckmark.width * 0.7));
-				newCheckmark.updateHitbox();
-
-				///*
-				var offsetByX = 45;
-				var offsetByY = 5;
-				newCheckmark.addOffset('false', offsetByX, offsetByY);
-				newCheckmark.addOffset('true', offsetByX, offsetByY);
-				newCheckmark.addOffset('true finished', offsetByX, offsetByY);
-				newCheckmark.addOffset('false finished', offsetByX, offsetByY);
-				// */
-
-				// addOffset('true finished', 17, 37);
-				// addOffset('true', 25, 57);
-				// addOffset('false', 2, -30);
-		}
+		newCheckmark.animation.addByPrefix('false finished', 'uncheckFinished');
+		newCheckmark.animation.addByPrefix('false', 'uncheck', 12, false);
+		newCheckmark.animation.addByPrefix('true finished', 'checkFinished');
+		newCheckmark.animation.addByPrefix('true', 'check', 12, false);
+		newCheckmark.setGraphicSize(Std.int(newCheckmark.width * 0.7));
+		newCheckmark.updateHitbox();
+		newCheckmark.addOffset('false', 45, 5);
+		newCheckmark.addOffset('true', 45, 5);
+		newCheckmark.addOffset('true finished', 45, 5);
+		newCheckmark.addOffset('false finished', 45, 5);
 		return newCheckmark;
 	}
 }

@@ -167,7 +167,7 @@ class Note extends FNFSprite
 
 						newNote.setGraphicSize(Std.int(newNote.width * 0.8));
 						newNote.updateHitbox();
-						newNote.antialiasing = true;
+						newNote.antialiasing = !Init.trueSettings.get('Disable Antialiasing');
 
 					default: // anything else
 						newNote.frames = Paths.getSparrowAtlas(ForeverTools.returnSkinAsset('NOTE_assets', assetModifier, Init.trueSettings.get("Note Skin"),
@@ -182,13 +182,13 @@ class Note extends FNFSprite
 
 						newNote.setGraphicSize(Std.int(newNote.width * 0.7));
 						newNote.updateHitbox();
-						newNote.antialiasing = true;
+						newNote.antialiasing = !Init.trueSettings.get('Disable Antialiasing');
 				}
 		}
 		//
 		if (!isSustainNote)
 			newNote.animation.play(UIStaticArrow.getColorFromNumber(noteData) + 'Scroll');
-		// trace(prevNote);
+
 		if (isSustainNote && prevNote != null)
 		{
 			newNote.noteSpeed = prevNote.noteSpeed;
@@ -203,7 +203,6 @@ class Note extends FNFSprite
 
 				prevNote.scale.y *= Conductor.stepCrochet / 100 * 1.5 * prevNote.noteSpeed;
 				prevNote.updateHitbox();
-				// prevNote.setGraphicSize();
 			}
 		}
 
@@ -323,15 +322,12 @@ class Note extends FNFSprite
 				{
 					newNote.setGraphicSize(Std.int(newNote.width * sizeThing));
 					newNote.updateHitbox();
-					newNote.antialiasing = true;
+					newNote.antialiasing = !Init.trueSettings.get('Disable Antialiasing');
 				}
 		}
 
-		//
 		if (!isSustainNote)
 			newNote.animation.play(UIStaticArrow.getArrowFromNumber(noteData) + 'Scroll');
-
-		// trace(prevNote);
 
 		if (isSustainNote && prevNote != null)
 		{
@@ -347,7 +343,6 @@ class Note extends FNFSprite
 
 				prevNote.scale.y *= Conductor.stepCrochet / 100 * (43 / 52) * 1.5 * prevNote.noteSpeed;
 				prevNote.updateHitbox();
-				// prevNote.setGraphicSize();
 			}
 		}
 
