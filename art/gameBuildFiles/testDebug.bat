@@ -6,5 +6,5 @@ cd ..
 echo BUILDING...
 lime test windows -debug
 echo.
-echo DONE.
+echo DONE
 pause
