@@ -1,8 +1,11 @@
 @echo off
+color 0a
 title FNF: Forever Engine - Running Game (DEBUG MODE)
-echo LOADING...
 cd ..
-lime test windows -debug
-pause >nul
-cls
-exit
+echo BUILDING...
+lime build windows -debug
+echo.
+echo DONE.
+pause
+pwd
+explorer.exe export\release\windows\bin
