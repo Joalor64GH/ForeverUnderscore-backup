@@ -205,7 +205,7 @@ class Character extends FNFSprite
 
 			if (!isPlayer)
 			{
-				if (animation.curAnim.name.startsWith('sing') && animation.curAnim != null)
+				if (animation.curAnim.name.startsWith('sing'))
 				{
 					holdTimer += elapsed;
 				}
@@ -216,7 +216,7 @@ class Character extends FNFSprite
 					holdTimer = 0;
 				}
 			}
-			else if (isPlayer && !skipDance && !specialAnim && !debugMode && animation.curAnim != null)
+			else if (isPlayer && !skipDance && !specialAnim && !debugMode)
 			{
 				if (animation.curAnim.name.startsWith('sing'))
 				{
@@ -226,7 +226,7 @@ class Character extends FNFSprite
 					holdTimer = 0;
 			}
 
-			if (animation.curAnim.name.endsWith('miss') && animation.curAnim != null && animation.curAnim.finished)
+			if (animation.curAnim.name.endsWith('miss') && animation.curAnim.finished)
 				dance();
 
 			if (animation.curAnim.name == 'hairFall' && animation.curAnim.finished)
@@ -239,7 +239,7 @@ class Character extends FNFSprite
 				playAnim(animation.curAnim.name + '-loop');
 			}
 
-			if (animation.curAnim != null && animation.curAnim.finished && animation.curAnim.name == 'idle')
+			if (animation.curAnim.finished && animation.curAnim.name == 'idle')
 			{
 				if (animation.getByName('idlePost') != null)
 					animation.play('idlePost', true, false, 0);
