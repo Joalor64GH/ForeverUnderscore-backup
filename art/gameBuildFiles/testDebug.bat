@@ -3,9 +3,7 @@ color 0a
 title FNF: Forever Engine - Running Game (DEBUG MODE)
 cd ..
 echo BUILDING...
-lime build windows -debug
+lime test windows -debug
 echo.
 echo DONE.
 pause
-pwd
-explorer.exe export\debug\windows\bin
