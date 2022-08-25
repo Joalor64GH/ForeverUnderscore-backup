@@ -57,6 +57,7 @@ typedef SwagMeta =
 typedef SwagSection =
 {
 	var sectionNotes:Array<Dynamic>;
+	var sectionBeats:Float;
 	var lengthInSteps:Int;
 	var typeOfSection:Int;
 	var mustHitSection:Bool;
@@ -362,6 +363,8 @@ class Section
 {
 	public var sectionNotes:Array<Dynamic> = [];
 
+	public var sectionBeats:Null<Int> = 4;
+	public var gfSection:Bool = false;
 	public var lengthInSteps:Int = 16;
 	public var typeOfSection:Int = 0;
 	public var mustHitSection:Bool = true;
@@ -373,6 +376,11 @@ class Section
 
 	public function new(lengthInSteps:Int = 16)
 	{
+		if (sectionBeats != null)
+		{
+			sectionBeats = 16;
+			lengthInSteps = sectionBeats;
+		}
 		this.lengthInSteps = lengthInSteps;
 	}
 }

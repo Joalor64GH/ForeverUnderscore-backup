@@ -1240,6 +1240,7 @@ class OriginalChartingState extends MusicBeatState
 			gfSection: false,
 			sectionNotes: [],
 			typeOfSection: 0,
+			sectionBeats: 0,
 			altAnim: false
 		};
 

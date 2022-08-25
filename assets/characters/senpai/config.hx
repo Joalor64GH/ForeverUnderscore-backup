@@ -2,11 +2,11 @@ function loadAnimations()
 {
     if (song == 'roses')
     {
-        addByPrefix('idle', 'Angry Senpai Idle', 24, false);
-        addByPrefix('singUP', 'Angry Senpai UP NOTE', 24, false);
-        addByPrefix('singLEFT', 'Angry Senpai LEFT NOTE', 24, false);
-        addByPrefix('singRIGHT', 'Angry Senpai RIGHT NOTE', 24, false);
-        addByPrefix('singDOWN', 'Angry Senpai DOWN NOTE', 24, false);
+        addByPrefix('idle', 'Angry Idle', 24, false);
+        addByPrefix('singUP', 'Angry Up', 24, false);
+        addByPrefix('singLEFT', 'Angry Left', 24, false);
+        addByPrefix('singRIGHT', 'Angry Right', 24, false);
+        addByPrefix('singDOWN', 'Angry Down', 24, false);
 
         addOffset('idle', 110, 280);
         addOffset('singUP', 115, 282);
@@ -16,11 +16,11 @@ function loadAnimations()
     }
     else
     {
-        addByPrefix('idle', 'Senpai Idle', 24, false);
-        addByPrefix('singUP', 'SENPAI UP NOTE', 24, false);
-        addByPrefix('singLEFT', 'SENPAI LEFT NOTE', 24, false);
-        addByPrefix('singRIGHT', 'SENPAI RIGHT NOTE', 24, false);
-        addByPrefix('singDOWN', 'SENPAI DOWN NOTE', 24, false);
+        addByPrefix('idle', 'Idle', 24, false);
+        addByPrefix('singUP', 'Up', 24, false);
+        addByPrefix('singLEFT', 'Left', 24, false);
+        addByPrefix('singRIGHT', 'Right', 24, false);
+        addByPrefix('singDOWN', 'Down', 24, false);
 
         addOffset('idle', 110, 280);
         addOffset('singUP', 115, 282);
@@ -37,5 +37,5 @@ function loadAnimations()
     setOffsets(-30, 950);
     setCamOffsets(-230, -590);
     setBarColor([255,170,111]);
-    quickDancer(true);
+    quickDancer(false);
 }
