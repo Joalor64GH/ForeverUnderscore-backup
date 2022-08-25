@@ -8,4 +8,4 @@ echo.
 echo DONE.
 pause
 pwd
-explorer.exe export\release\windows\bin
+explorer.exe export\debug\windows\bin
