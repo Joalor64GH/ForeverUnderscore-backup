@@ -669,24 +669,21 @@ class PlayState extends MusicBeatState
 					Main.switchState(this, new CharacterDebug(holdingShift ? SONG.player1 : holdingAlt ? SONG.gfVersion : SONG.player2, PlayState.curStage));
 				}
 
-				if (!chartingMode)
+				if (FlxG.keys.pressed.SHIFT && FlxG.keys.justPressed.FIVE)
 				{
-					if (FlxG.keys.pressed.SHIFT && FlxG.keys.justPressed.FIVE)
-					{
-						preventScoring = true;
-						FlxG.sound.play(Paths.sound('scrollMenu'));
-						practiceMode = !practiceMode;
-					}
+					preventScoring = true;
+					FlxG.sound.play(Paths.sound('scrollMenu'));
+					practiceMode = !practiceMode;
+				}
 
-					if (FlxG.keys.pressed.SHIFT && FlxG.keys.justPressed.SIX)
-					{
-						preventScoring = true;
-						FlxG.sound.play(Paths.sound('scrollMenu'));
-						bfStrums.autoplay = !bfStrums.autoplay;
-						uiHUD.autoplayMark.visible = bfStrums.autoplay;
-						uiHUD.autoplayMark.alpha = 1;
-						uiHUD.autoplaySine = 0;
-					}
+				if (FlxG.keys.pressed.SHIFT && FlxG.keys.justPressed.SIX)
+				{
+					preventScoring = true;
+					FlxG.sound.play(Paths.sound('scrollMenu'));
+					bfStrums.autoplay = !bfStrums.autoplay;
+					uiHUD.autoplayMark.visible = bfStrums.autoplay;
+					uiHUD.autoplayMark.alpha = 1;
+					uiHUD.autoplaySine = 0;
 				}
 			}
 
