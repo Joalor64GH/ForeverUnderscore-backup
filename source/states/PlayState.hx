@@ -1342,7 +1342,7 @@ class PlayState extends MusicBeatState
 			altString = '-alt';
 
 		if (((SONG.notes[Math.floor(curStep / 16)] != null) && (SONG.notes[Math.floor(curStep / 16)].altAnim))
-			&& (character.animOffsets.exists(baseString + '-alt')))
+			&& (character.animOffsets.exists(baseString + '-alt')) || (coolNote.noteType == 1))
 		{
 			if (altString != '-alt')
 				altString = '-alt';
@@ -1350,51 +1350,42 @@ class PlayState extends MusicBeatState
 				altString = '';
 		}
 
-		switch (coolNote.noteType)
+		// this is stupid, i know it is;
+		if (coolNote.noteType == 2 &&  character.animOffsets.exists('hey'))
 		{
-			case 1: // alt animations notes
-				altString = '-alt'; // sets the animation string for this note;
+			stringArrow = 'hey';
+			character.specialAnim = true;
+			character.heyTimer = 0.6;
+		}
 
-				// note parameters;
-				coolNote.hitSounds = true;
-				coolNote.badNote = false;
-				coolNote.gfNote = false;
-			case 2: // hey notes
-				stringArrow = 'hey';
-				character.specialAnim = true;
-				character.heyTimer = 0.6;
+		if (coolNote.noteType == 3)
+			coolNote.gfNote = true;
 
-				coolNote.hitSounds = true;
-				coolNote.badNote = false;
-				coolNote.gfNote = false;
-			case 3: // gf notes
-				coolNote.gfNote = true;
-			case 4: // no animation notes
-				stringArrow = '';
-				altString = '';
+		if (coolNote.noteType == 4)
+		{
+			stringArrow = '';
+			altString = '';
+			coolNote.hitSounds = false;
+		}
 
-				coolNote.hitSounds = false;
-				coolNote.badNote = false;
-				coolNote.gfNote = false;
-			case 5: // mines
-				if (character.curCharacter == 'bf-psych')
-					stringArrow = 'hurt';
-				else
-					stringArrow = baseString + 'miss';
-				character.specialAnim = true;
-				character.heyTimer = 0.6;
+		if (coolNote.noteType == 5)
+		{
+			if (character.animOffsets.exists('hurt'))
+				stringArrow = 'hurt';
+			else
+				stringArrow = baseString + 'miss';
+			character.specialAnim = true;
+			character.heyTimer = 0.6;
 
-				coolNote.healthLoss = 0.065;
-				coolNote.badNote = true;
-				coolNote.hitSounds = false;
-				coolNote.gfNote = false;
-			default: // anything else
-				stringArrow = baseString + altString;
+			coolNote.healthLoss = 0.065;
+			coolNote.badNote = true;
+			coolNote.hitSounds = false;
+		}
 
-				character.specialAnim = false;
-				coolNote.hitSounds = true;
-				coolNote.badNote = false;
-				coolNote.gfNote = false;
+		if (coolNote.noteType <= 1)
+		{
+			stringArrow = baseString + altString;
+			altString = '';
 		}
 
 		character.playAnim(stringArrow, true);

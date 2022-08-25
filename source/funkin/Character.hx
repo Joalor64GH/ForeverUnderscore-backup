@@ -205,7 +205,7 @@ class Character extends FNFSprite
 
 			if (!isPlayer)
 			{
-				if (animation.curAnim.name.startsWith('sing'))
+				if (animation.curAnim.name.startsWith('sing') && animation.curAnim != null)
 				{
 					holdTimer += elapsed;
 				}
@@ -216,7 +216,7 @@ class Character extends FNFSprite
 					holdTimer = 0;
 				}
 			}
-			else if (isPlayer && !skipDance && !specialAnim && !debugMode)
+			else if (isPlayer && !skipDance && !specialAnim && !debugMode && animation.curAnim != null)
 			{
 				if (animation.curAnim.name.startsWith('sing'))
 				{
@@ -273,7 +273,6 @@ class Character extends FNFSprite
 
 	override public function playAnim(AnimName:String, Force:Bool = false, Reversed:Bool = false, Frame:Int = 0):Void
 	{
-		specialAnim = false;
 		if (animation.getByName(AnimName) != null)
 			super.playAnim(AnimName, Force, Reversed, Frame);
 
