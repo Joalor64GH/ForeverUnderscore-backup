@@ -424,16 +424,10 @@ class PlayState extends MusicBeatState
 			// trace('Key $key is type $type');
 			switch (type)
 			{
-				case 'image':
-					Paths.image(key);
 				case 'sound':
 					Paths.sound(key);
 				case 'music':
 					Paths.music(key);
-				case 'sparrow':
-					Paths.getSparrowAtlas(key);
-				case 'packer':
-					Paths.getPackerAtlas(key);
 			}
 		}
 		Paths.clearUnusedMemory();
@@ -450,7 +444,6 @@ class PlayState extends MusicBeatState
 		precacheList.set('missnote2', 'sound');
 		precacheList.set('missnote3', 'sound');
 		precacheList.set('breakfast', 'music');
-		precacheList.set('UI/default/alphabet', 'image');
 
 		callFunc('postCreate', null);
 	}
@@ -676,21 +669,24 @@ class PlayState extends MusicBeatState
 					Main.switchState(this, new CharacterDebug(holdingShift ? SONG.player1 : holdingAlt ? SONG.gfVersion : SONG.player2, PlayState.curStage));
 				}
 
-				if (FlxG.keys.pressed.SHIFT && FlxG.keys.justPressed.FIVE)
+				if (!chartingMode)
 				{
-					preventScoring = true;
-					FlxG.sound.play(Paths.sound('scrollMenu'));
-					practiceMode = !practiceMode;
-				}
+					if (FlxG.keys.pressed.SHIFT && FlxG.keys.justPressed.FIVE)
+					{
+						preventScoring = true;
+						FlxG.sound.play(Paths.sound('scrollMenu'));
+						practiceMode = !practiceMode;
+					}
 
-				if (FlxG.keys.pressed.SHIFT && FlxG.keys.justPressed.SIX)
-				{
-					preventScoring = true;
-					FlxG.sound.play(Paths.sound('scrollMenu'));
-					bfStrums.autoplay = !bfStrums.autoplay;
-					uiHUD.autoplayMark.visible = bfStrums.autoplay;
-					uiHUD.autoplayMark.alpha = 1;
-					uiHUD.autoplaySine = 0;
+					if (FlxG.keys.pressed.SHIFT && FlxG.keys.justPressed.SIX)
+					{
+						preventScoring = true;
+						FlxG.sound.play(Paths.sound('scrollMenu'));
+						bfStrums.autoplay = !bfStrums.autoplay;
+						uiHUD.autoplayMark.visible = bfStrums.autoplay;
+						uiHUD.autoplayMark.alpha = 1;
+						uiHUD.autoplaySine = 0;
+					}
 				}
 			}
 
