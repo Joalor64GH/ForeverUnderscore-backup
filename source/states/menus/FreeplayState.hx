@@ -48,8 +48,6 @@ class FreeplayState extends MusicBeatState
 	var lerpScore:Int = 0;
 	var intendedScore:Int = 0;
 
-	var intendedRank:String = 'N/A';
-
 	var songThread:Thread;
 	var threadActive:Bool = true;
 	var mutex:Mutex;
@@ -176,7 +174,7 @@ class FreeplayState extends MusicBeatState
 	public function addSong(songName:String, weekNum:Int, songCharacter:String, songColor:FlxColor)
 	{
 		var coolDiffs = [];
-		for (i in CoolUtil.baseDifficulties)
+		for (i in CoolUtil.difficulties)
 			if (FileSystem.exists(Paths.songJson(songName, songName + '-' + i))
 				|| (FileSystem.exists(Paths.songJson(songName, songName)) && i == "NORMAL"))
 				coolDiffs.push(i);
@@ -329,7 +327,7 @@ class FreeplayState extends MusicBeatState
 	function loadSong(go:Bool = true, stopThread:Bool = true)
 	{
 		var poop:String = Highscore.formatSong(songs[curSelected].songName.toLowerCase(),
-			CoolUtil.baseDifficulties.indexOf(existingDifficulties[curSelected][curDifficulty]));
+			CoolUtil.difficulties.indexOf(existingDifficulties[curSelected][curDifficulty]));
 
 		PlayState.SONG = Song.loadSong(poop, songs[curSelected].songName.toLowerCase());
 		PlayState.isStoryMode = false;
@@ -363,9 +361,8 @@ class FreeplayState extends MusicBeatState
 			curDifficulty = 0;
 
 		intendedScore = Highscore.getScore(songs[curSelected].songName, curDifficulty);
-		intendedRank = Highscore.getRank(songs[curSelected].songName, curDifficulty);
 
-		diffText.text = '< ' + existingDifficulties[curSelected][curDifficulty] + ' - ' + intendedRank + ' >';
+		diffText.text = '< ' + existingDifficulties[curSelected][curDifficulty] + ' >';
 		lastDifficulty = existingDifficulties[curSelected][curDifficulty];
 	}
 
@@ -381,7 +378,6 @@ class FreeplayState extends MusicBeatState
 			curSelected = 0;
 
 		intendedScore = Highscore.getScore(songs[curSelected].songName, curDifficulty);
-		intendedRank = Highscore.getRank(songs[curSelected].songName, curDifficulty);
 
 		// set up color stuffs
 		mainColor = songs[curSelected].songColor;

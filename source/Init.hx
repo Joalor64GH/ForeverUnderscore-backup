@@ -294,6 +294,10 @@ class Init extends FlxState
 
 		WeekParser.loadWeeks(); // load any custom weeks you might have;
 
+		// push difficulties to the new difficulty array, this is because I'm gonna make a different system for them, hopefully more customizable;
+		for (d in CoolUtil.baseDifficulties)
+			CoolUtil.difficulties.push(d);
+
 		goToInitialDestination();
 	}
 
