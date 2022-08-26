@@ -290,6 +290,12 @@ class ChartingState extends MusicBeatState
 
 		updateText();
 
+		FlxG.watch.addQuick('daBeat', curBeat);
+		FlxG.watch.addQuick('daStep', curStep);
+
+		FlxG.watch.addQuick('daDecBeat', decBeat);
+		FlxG.watch.addQuick('daDecStep', decStep);
+
 		if (FlxG.keys.justPressed.R)
 		{
 			if (FlxG.keys.pressed.SHIFT)

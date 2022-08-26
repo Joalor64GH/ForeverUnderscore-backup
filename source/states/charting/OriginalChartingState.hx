@@ -908,7 +908,9 @@ class OriginalChartingState extends MusicBeatState
 		if (FlxG.keys.justPressed.LEFT || FlxG.keys.justPressed.A)
 			changeSection(curSection - shiftThing);
 
-		bpmTxt.text = bpmTxt.text = Std.string(FlxMath.roundDecimal(Conductor.songPosition / 1000, 2))
+		bpmTxt.text = bpmTxt.text = "Song: " + _song.song
+			+ ' [${CoolUtil.difficultyFromNumber(PlayState.storyDifficulty)}]\n'
+			+ Std.string(FlxMath.roundDecimal(Conductor.songPosition / 1000, 2))
 			+ " / " + Std.string(FlxMath.roundDecimal(songMusic.length / 1000, 2))
 			+ "\nSection: " + curSection
 			+ "\nBeat: " + curBeat
