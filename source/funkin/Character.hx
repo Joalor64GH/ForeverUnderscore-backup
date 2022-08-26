@@ -112,8 +112,6 @@ class Character extends FNFSprite
 		if (icon == null)
 			icon = character;
 
-		antialiasing = (!character.endsWith('-pixel') || !Init.trueSettings.get('Disable Antialiasing'));
-
 		var psychChar = FileSystem.exists(Paths.getPreloadPath('characters/$character/' + character + '.json'));
 
 		switch (character)
@@ -491,6 +489,8 @@ class Character extends FNFSprite
 		{
 			flipX = !!flipX;
 		}
+
+		antialiasing = (!character.endsWith('-pixel') || !Init.trueSettings.get('Disable Antialiasing'));
 
 		if (animation.getByName('danceLeft') != null)
 			playAnim('danceLeft');
