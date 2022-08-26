@@ -1180,7 +1180,7 @@ class OriginalChartingState extends MusicBeatState
 
 			#if DEBUG_TRACES trace('Current note type is ' + curNoteName[daNoteType] + '.'); #end
 			
-			var note:Note = ForeverAssets.generateArrow(PlayState.assetModifier, daStrumTime, daNoteInfo % 4, 0, null, null, daNoteType);
+			var note:Note = ForeverAssets.generateArrow(_song.assetModifier, daStrumTime, daNoteInfo % 4, 0, null, null, daNoteType);
 			note.sustainLength = daSus;
 			note.noteType = daNoteType;
 			note.setGraphicSize(GRID_SIZE, GRID_SIZE);

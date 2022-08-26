@@ -902,7 +902,7 @@ class ChartingState extends MusicBeatState
 
 	function generateChartNote(daNoteInfo, daStrumTime, daSustainNote, daNoteAlt:Float, daNoteType:Int, noteSection, ?shouldPush:Bool = true)
 	{
-		var note:Note = ForeverAssets.generateArrow(PlayState.assetModifier, daStrumTime, daNoteInfo % 4, 0, false, null);
+		var note:Note = ForeverAssets.generateArrow(_song.assetModifier, daStrumTime, daNoteInfo % 4, 0, false, null);
 		note.rawNoteData = daNoteInfo;
 		note.sustainLength = daSustainNote;
 		note.setGraphicSize(gridSize, gridSize);
