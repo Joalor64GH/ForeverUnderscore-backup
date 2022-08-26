@@ -154,9 +154,9 @@ class Main extends Sprite
 		addChild(infoCounter);
 	}
 
-	public static function framerateAdjust(input:Float, frameRate:Int = 60)
+	public static function framerateAdjust(input:Float)
 	{
-		return input * (frameRate / FlxG.drawFramerate);
+		return input * (60 / FlxG.drawFramerate);
 	}
 
 	/*  This is used to switch "rooms," to put it basically. Imagine you are in the main menu, and press the freeplay button.
