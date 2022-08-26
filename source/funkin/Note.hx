@@ -177,8 +177,7 @@ class Note extends FNFSprite
 						newNote.animation.addByPrefix(noteColorID[noteData] + 'holdend', noteColorID[noteData] + ' hold end');
 						newNote.animation.addByPrefix(noteColorID[noteData] + 'hold', noteColorID[noteData] + ' hold piece');
 
-						if (noteData == 0)
-							newNote.animation.addByPrefix('purpleholdend', 'pruple end hold'); // uh?
+						newNote.animation.addByPrefix('purpleholdend', 'pruple end hold'); // PA god dammit.
 
 						newNote.setGraphicSize(Std.int(newNote.width * 0.7));
 						newNote.updateHitbox();
