@@ -421,13 +421,7 @@ class OriginalChartingState extends MusicBeatState
 			{
 				var note = _song.notes[curSection].sectionNotes[i];
 
-				// must press
-				var keys = 4;
-
-				// in total
-				var tolKeys = 8;
-
-				note[1] = (note[1] + keys) % tolKeys;
+				note[1] = (note[1] + 4) % 8;
 				_song.notes[curSection].sectionNotes[i] = note;
 				updateGrid();
 				updateHeads();
