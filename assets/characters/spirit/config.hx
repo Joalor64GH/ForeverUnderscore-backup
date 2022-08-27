@@ -13,7 +13,6 @@ function loadAnimations()
     addOffset('singDOWN', -200, -220);
         
     setGraphicSize(get('width') * 6);
-    set('antialiasing', false);
 
     playAnim('idle');
 

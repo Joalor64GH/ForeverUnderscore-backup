@@ -30,7 +30,6 @@ function loadAnimations()
     }
 
     setGraphicSize(get('width') * 6);
-    set('antialiasing', false);
 
     playAnim('idle');
 
