@@ -667,7 +667,7 @@ class Stage extends FlxTypedGroup<FlxBasic>
 				}
 		}
 
-		if (stageScript.exists('repositionPlayers'))
+		if (stageScript.exists('repositionPlayers') && canCall())
 			stageScript.get('repositionPlayers')(boyfriend, dad, gf);
 	}
 
@@ -764,7 +764,7 @@ class Stage extends FlxTypedGroup<FlxBasic>
 			}
 		}
 
-		if (stageScript.exists('updateStage'))
+		if (stageScript.exists('updateStage') && canCall())
 			stageScript.get('updateStage')(curBeat);
 	}
 
@@ -787,7 +787,7 @@ class Stage extends FlxTypedGroup<FlxBasic>
 				moveTank();
 		}
 
-		if (stageScript.exists('updateStageConst'))
+		if (stageScript.exists('updateStageConst') && canCall())
 			stageScript.get('updateStageConst')(elapsed);
 	}
 
@@ -973,7 +973,7 @@ class Stage extends FlxTypedGroup<FlxBasic>
 		stageScript.set('stageName', curStage);
 		stageScript.set('Conductor', Conductor);
 
-		if (stageScript.exists('generateStage'))
+		if (stageScript.exists('generateStage') && canCall())
 			stageScript.get('generateStage')();
 	}
 
