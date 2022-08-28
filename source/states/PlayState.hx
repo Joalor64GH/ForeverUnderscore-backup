@@ -1273,7 +1273,7 @@ class PlayState extends MusicBeatState
 	{
 		if (!coolNote.wasGoodHit)
 		{
-			callFunc('goodNoteHit', []);
+			callFunc('goodNoteHit', [coolNote, character]);
 
 			coolNote.wasGoodHit = true;
 			Conductor.songVocals.volume = 1;
