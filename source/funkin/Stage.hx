@@ -19,7 +19,6 @@ import flixel.system.scaleModes.*;
 import flixel.text.FlxText;
 import flixel.tweens.FlxTween;
 import funkin.background.*;
-import openfl.Assets;
 import openfl.display.BlendMode;
 import openfl.display.BlendModeEffect;
 import openfl.display.GraphicsShader;
@@ -91,8 +90,6 @@ class Stage extends FlxTypedGroup<FlxBasic>
 	{
 		super();
 		this.curStage = curStage;
-
-		canCall();
 
 		switch (ChartParser.songType)
 		{
@@ -567,8 +564,7 @@ class Stage extends FlxTypedGroup<FlxBasic>
 				PlayState.defaultCamZoom = 0.9;
 		}
 
-		if (canCall())
-			callStageScript();
+		callStageScript();
 	}
 
 	// return the girlfriend's type
@@ -667,7 +663,7 @@ class Stage extends FlxTypedGroup<FlxBasic>
 				}
 		}
 
-		if (stageScript.exists('repositionPlayers') && canCall())
+		if (stageScript.exists('repositionPlayers'))
 			stageScript.get('repositionPlayers')(boyfriend, dad, gf);
 	}
 
@@ -764,7 +760,7 @@ class Stage extends FlxTypedGroup<FlxBasic>
 			}
 		}
 
-		if (stageScript.exists('updateStage') && canCall())
+		if (stageScript.exists('updateStage'))
 			stageScript.get('updateStage')(curBeat);
 	}
 
@@ -787,7 +783,7 @@ class Stage extends FlxTypedGroup<FlxBasic>
 				moveTank();
 		}
 
-		if (stageScript.exists('updateStageConst') && canCall())
+		if (stageScript.exists('updateStageConst'))
 			stageScript.get('updateStageConst')(elapsed);
 	}
 
@@ -973,15 +969,7 @@ class Stage extends FlxTypedGroup<FlxBasic>
 		stageScript.set('stageName', curStage);
 		stageScript.set('Conductor', Conductor);
 
-		if (stageScript.exists('generateStage') && canCall())
+		if (stageScript.exists('generateStage'))
 			stageScript.get('generateStage')();
-	}
-
-	function canCall():Bool
-	{
-		if (Assets.exists(Paths.getPreloadPath('stages/$curStage.hx')))
-			return true;
-		else
-			return false;
 	}
 }
