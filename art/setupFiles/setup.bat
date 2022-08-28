@@ -25,7 +25,7 @@ pause >nul
 title FNF Setup - Installing libraries
 haxelib git polymod https://github.com/larsiusprime/polymod.git
 haxelib git discord_rpc https://github.com/Aidan63/linc_discord-rpc
-haxelib git SScript https://github.com/TheWorldMachine/SScript
+haxelib git SScript https://github.com/BeastlyGhost/SScript-OpenFL
 cls
 goto CommunitySetup
 
