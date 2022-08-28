@@ -11,8 +11,9 @@ function loadAnimations()
     addOffset('singRIGHT', -220, -280);
     addOffset('singLEFT', -200, -280);
     addOffset('singDOWN', -200, -220);
-        
+
     setGraphicSize(get('width') * 6);
+    set('antialiasing', false);
 
     playAnim('idle');
 

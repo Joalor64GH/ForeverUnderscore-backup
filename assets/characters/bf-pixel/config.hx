@@ -23,6 +23,7 @@ function loadAnimations()
     playAnim('idle');
 
     setGraphicSize(get('width') * 6);
+    set('antialiasing', false);
 
     setBarColor([123,214,246]);
 
