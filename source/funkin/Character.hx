@@ -477,7 +477,7 @@ class Character extends FNFSprite
 		setVar('song', PlayState.SONG.song.toLowerCase());
 
 		for (i in scriptArray)
-			call('loadAnimations', []);
+			i.call('loadAnimations', []);
 
 		if (adjustPos)
 		{
