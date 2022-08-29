@@ -337,8 +337,7 @@ class Character extends FNFSprite
 
 	function generateBaseChar(char:String = 'bf')
 	{
-		var path:String = Paths.getPreloadPath('characters/$char/config.hx');
-		var scripts:Array<String> = [path];
+		var scripts:Array<String> = [Paths.getPreloadPath('characters/$char/config.hx')];
 
 		#if MOD_HANDLER
 		scripts.insert(0, Paths.getModPath('characters/$char', 'config', 'hxs'));
