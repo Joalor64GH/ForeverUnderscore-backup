@@ -263,7 +263,7 @@ final class Paths
 	}
 
 	//
-	inline public static function getPath(file:String, type:AssetType, ?library:Null<String>)
+	inline public static function getPath(file:String, ?type:AssetType, ?library:Null<String>)
 	{
 		/*
 				Okay so, from what I understand, this loads in the current path based on the level
