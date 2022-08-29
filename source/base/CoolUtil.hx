@@ -129,13 +129,10 @@ class CoolUtil
 		var fileArray:Array<String> = CoolUtil.absoluteDirectory('scripts');
 		trace(fileArray); -> ['mods/scripts/modchart.hx', 'assets/scripts/script.hx']
 	**/
-	public static function absoluteDirectory(file:String, endsWith:String = 'hx'):Array<String>
+	public static function absoluteDirectory(file:String):Array<String>
 	{
 		if (!file.endsWith('/'))
 			file = '$file/';
-		
-		if (!endsWith.startsWith('.'))
-			endsWith = '.' + endsWith;
 
 		var path:String = Paths.getModpack(file);
 		if (!FileSystem.exists(path))
@@ -150,9 +147,6 @@ class CoolUtil
 
 			for (i in dirCopy)
 			{
-				if (!i.endsWith(endsWith))
-					continue;
-				
 				var index:Int = dirCopy.indexOf(i);
 				var file:String = '$path$i';
 				dirCopy.remove(i);

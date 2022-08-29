@@ -2442,7 +2442,7 @@ class PlayState extends MusicBeatState
 		for (fool in fools)
 			for (shit in fool)
 				if (fool.length > 0)
-					if (shit.length > 0)
+					if (shit.length > 0 && shit.endsWith('.hx'))
 						scriptArray.push(new ScriptHandler(shit));
 	}
 
