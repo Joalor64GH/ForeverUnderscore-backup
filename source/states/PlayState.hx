@@ -2434,7 +2434,10 @@ class PlayState extends MusicBeatState
 
 	function setupScripts()
 	{
-		var fools:Array<Array<String>> = [CoolUtil.absolutePath('scripts'), CoolUtil.absolutePath('songs/${SONG.song.toLowerCase().replace(' ', '-')}')]; 
+		var fools:Array<Array<String>> = [
+			CoolUtil.absoluteDirectory('scripts'),
+			CoolUtil.absoluteDirectory('songs/${SONG.song.toLowerCase().replace(' ', '-')}')
+		]; 
 		
 		for (fool in fools)
 			for (shit in fool)
