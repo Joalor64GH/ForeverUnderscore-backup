@@ -137,7 +137,7 @@ class CoolUtil
 		if (!endsWith.startsWith('.'))
 			endsWith = '.' + endsWith;
 
-		var path:String = Paths.mods(file);
+		var path:String = Paths.getModpack(file);
 		if (!FileSystem.exists(path))
 			path = Paths.getPath(file);
 
