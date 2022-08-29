@@ -25,7 +25,7 @@ using StringTools;
 	future chart types support (unfinished!)
 	code taken from: FNF-Forever-Engine, https://github.com/Yoshubs/FNF-Forever-Engine
 **/
-@:enum abstract ChartType(String) to String
+enum abstract ChartType(String) to String
 {
 	var FNF;
 	var FNF_LEGACY;
@@ -34,7 +34,7 @@ using StringTools;
 	var PSYCH;
 }
 
-class Paths
+final class Paths
 {
 	// Here we set up the paths class. This will be used to
 	// Return the paths of assets and call on those assets as well.

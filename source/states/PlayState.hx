@@ -2434,29 +2434,18 @@ class PlayState extends MusicBeatState
 
 	function setupScripts()
 	{
-		var fools:Array<String> = [Paths.getPreloadPath('scripts/'), Paths.getPreloadPath('songs/${SONG.song.toLowerCase().replace(' ', '-')}/')];
-		var pushedScripts:Array<String> = [];
+		var fools:Array<Array<String>> = [CoolUtil.absolutePath('scripts'), CoolUtil.absolutePath('songs/${SONG.song.toLowerCase().replace(' ', '-')}')]; 
 
 		#if MOD_HANDLER
-		fools.insert(0, Paths.getModPath('scripts', '', ''));
-		fools.insert(0, Paths.getModPath('songs/${SONG.song.toLowerCase().replace(' ', '-')}', '', ''));
-		fools.insert(0, Paths.getModPath('songs/${SONG.song.toLowerCase().replace(' ', '-')}', '', ''));
+		fools.insert(0, CoolUtil.absolutePath(Paths.getModPath('scripts', '', '')));
+		fools.insert(0, CoolUtil.absolutePath(Paths.getModPath('songs/${SONG.song.toLowerCase().replace(' ', '-')}', '', '')));
 		#end
 
 		for (fool in fools)
-		{
-			if (FileSystem.exists(fool))
-			{
-				for (file in FileSystem.readDirectory(fool))
-				{
-					if (file.endsWith('.hx') && !pushedScripts.contains(file))
-					{
-						scriptArray.push(new ScriptHandler(fool.replace('.', '') + file));
-						pushedScripts.push(file);
-					}
-				}
-			}
-		}
+			for (shit in fool)
+				if (fool.length > 0)
+					if (shit.length > 0)
+						scriptArray.push(new ScriptHandler(shit));
 	}
 
 	function completeTween(id:String)
