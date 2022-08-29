@@ -126,10 +126,10 @@ class CoolUtil
 
 		Example usage:
 
-		var fileArray:Array<String> = CoolUtil.absolutePath('scripts');
+		var fileArray:Array<String> = CoolUtil.absoluteDirectory('scripts');
 		trace(fileArray); -> ['mods/scripts/modchart.hx', 'assets/scripts/script.hx']
 	**/
-	public static function absolutePath(file:String, endsWith:String = 'hx'):Array<String>
+	public static function absoluteDirectory(file:String, endsWith:String = 'hx'):Array<String>
 	{
 		if (!file.endsWith('/'))
 			file = '$file/';
@@ -137,7 +137,7 @@ class CoolUtil
 		if (!endsWith.startsWith('.'))
 			endsWith = '.' + endsWith;
 
-		var path:String = Paths.getModpack(file);
+		var path:String = Paths.mods(file);
 		if (!FileSystem.exists(path))
 			path = Paths.getPath(file);
 
