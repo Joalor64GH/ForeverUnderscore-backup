@@ -971,12 +971,12 @@ class Stage extends FlxTypedGroup<FlxBasic>
 		callFunc('generateStage', []);
 	}
 
-	public function callFunc(key:String, args:Array<Dynamic>)
+	public function callFunc(key:String, args:Array<Dynamic>):Dynamic
 	{
 		if (stageScript == null)
-            return;
-
-		return stageScript.call(key, args);
+            return null;
+		else
+			return stageScript.call(key, args);
 	}
 
 	public function setVar(key:String, value:Dynamic):Void

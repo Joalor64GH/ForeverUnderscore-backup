@@ -2413,16 +2413,23 @@ class PlayState extends MusicBeatState
 			ScriptHandler.ScriptFuncs.setBaseVars();
 			setPlayStateVars();
 		}
-
-		return key;
 	}
 
-	public function setVar(key:String, value:Dynamic):Bool
+	public function setVar(key:String, value:Dynamic)
 	{
+		var allSucceed:Bool = true;
 		for (i in scriptArray)
+		{
 			i.set(key, value);
 
-		return true;
+			if (!i.exists(key))
+			{
+				trace('${i.scriptFile} failed to set $key for its interpreter, continuing.');
+				allSucceed = false;
+				continue;
+			}
+		}
+		return allSucceed; 
 	}
 
 	function setupScripts()
