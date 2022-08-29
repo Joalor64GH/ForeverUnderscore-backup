@@ -615,7 +615,6 @@ class PlayState extends MusicBeatState
 		ShaderMap.clear();
 
 		// clear scripts;
-		stageBuild.allScripts = [];
 		scriptArray = [];
 
 		// just to be sure;
