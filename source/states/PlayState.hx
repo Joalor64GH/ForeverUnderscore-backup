@@ -614,6 +614,15 @@ class PlayState extends MusicBeatState
 		GraphicMap.clear();
 		ShaderMap.clear();
 
+		// clear scripts;
+		stageBuild.allScripts = [];
+		scriptArray = [];
+
+		// just to be sure;
+		gf.charScripts = [];
+		boyfriend.charScripts = [];
+		dadOpponent.charScripts = [];
+
 		super.destroy();
 	}
 
@@ -1048,9 +1057,11 @@ class PlayState extends MusicBeatState
 
 								Conductor.songVocals.volume = 0;
 								if (canMiss)
+								{
 									missNoteCheck((Init.trueSettings.get('Ghost Tapping')) ? true : false, daNote.noteData, boyfriend, true);
-								// ambiguous name
-								Timings.updateAccuracy(0);
+									// ambiguous name
+									Timings.updateAccuracy(0);
+								}
 							}
 							else if (daNote.isSustainNote)
 							{
@@ -1450,9 +1461,7 @@ class PlayState extends MusicBeatState
 
 				var curSection = Std.int(curStep / 16);
 
-				var gfSec = (SONG.notes[Math.floor(curStep / 16)] != null) && (SONG.notes[Math.floor(curStep / 16)].gfSection);
-
-				if (daNote.gfNote || gfSec)
+				if (daNote.gfNote || (SONG.notes[curSection] != null) && (SONG.notes[curSection].gfSection))
 					char = gf;
 
 				goodNoteHit(daNote, char, strumline, canDisplayJudgement);
