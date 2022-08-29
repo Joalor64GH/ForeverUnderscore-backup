@@ -83,7 +83,7 @@ class Stage extends FlxTypedGroup<FlxBasic>
 
 	public var spawnGirlfriend:Bool = true;
 
-	public var allScripts:Array<ScriptHandler> = [];
+	public var stageScript:ScriptHandler;
 
 	public function new(curStage)
 	{
@@ -853,25 +853,10 @@ class Stage extends FlxTypedGroup<FlxBasic>
 
 	function callStageScript()
 	{
-		var dirs:Array<String> = [Paths.getPreloadPath('stages/$curStage.hx')];
-		var pushedScripts:Array<String> = [];
+		var path:String = Paths.getPreloadPath('stages/$curStage.hx');
 
-		for (stage in dirs)
-		{
-			if (Assets.exists(stage) && !pushedScripts.contains(stage))
-			{
-				var newStage:ScriptHandler = new ScriptHandler(stage);
-
-				if (newStage.interp == null)
-				{
-					trace("Something terrible occured! Skipping.");
-					continue;
-				}
-
-				allScripts.push(newStage);
-				pushedScripts.push(stage);
-			}
-		}
+        if (Assets.exists(path))
+            stageScript = new ScriptHandler(path);
 
 		setVar('createSprite',
 			function(spriteID:String, image:String, x:Float, y:Float, onForeground:Bool = false)
@@ -988,17 +973,17 @@ class Stage extends FlxTypedGroup<FlxBasic>
 
 	public function callFunc(key:String, args:Array<Dynamic>)
 	{
-		for (i in allScripts)
-			i.call(key, args);
+		if (stageScript == null)
+            return;
 
-		return key;
+		return stageScript.call(key, args);
 	}
 
-	public function setVar(key:String, value:Dynamic):Bool
+	public function setVar(key:String, value:Dynamic):Void
 	{
-		for (i in allScripts)
-			i.set(key, value);
+        if (stageScript == null)
+            return;
 
-		return true;
+		return stageScript.set(key, value);
 	}
 }
