@@ -369,7 +369,7 @@ class PlayState extends MusicBeatState
 		startedCountdown = true;
 
 		// initialize ui elements
-		var bfPlacement = FlxG.width / 2 + (!Init.trueSettings.get('Centered Notefield') ? FlxG.width / 4 : 0);
+		var bfPlacement = FlxG.width / 2 + (!Init.trueSettings.get('Centered Strumline') ? FlxG.width / 4 : 0);
 		var dadPlacement = (FlxG.width / 2) - FlxG.width / 4;
 
 		var strumVertPos = (Init.trueSettings.get('Downscroll') ? FlxG.height - 200 : 0);
@@ -377,7 +377,25 @@ class PlayState extends MusicBeatState
 		dadStrums = new Strumline(dadPlacement, strumVertPos, this, dadOpponent, false, true, false, 4);
 		bfStrums = new Strumline(bfPlacement, strumVertPos, this, boyfriend, true, false, true, 4);
 
-		dadStrums.visible = !Init.trueSettings.get('Centered Notefield');
+		if (Init.trueSettings.get('Centered Strumline'))
+		{
+			// psych-like Opponent Strumlines;
+			for (i in 0...dadStrums.receptors.members.length)
+		    {
+		        if (i > 1)
+		        {
+		            dadStrums.receptors.members[i].x += FlxG.width / 2 + 25;
+		        }
+
+		        dadStrums.members[i].alpha = 0.35; // notes, splashes, etc;
+		        dadStrums.receptors.members[i].setAlpha = 0.35; // strumline, in case it still follows the settings alpha;
+				dadStrums.receptors.members[i].lightConfirms = false;
+		    }
+
+			// have fun messing with these on scripts now;
+		}
+
+		dadStrums.visible = !Init.trueSettings.get('Hide Opponent Strumline');
 
 		strumLines.add(dadStrums);
 		strumLines.add(bfStrums);
@@ -550,7 +568,7 @@ class PlayState extends MusicBeatState
 
 						if (eligable)
 						{
-							goodNoteHit(coolNote, (coolNote.gfNote || gfSec ? gf : boyfriend), bfStrums, firstNote); // then hit the note
+							goodNoteHit(coolNote, (coolNote.gfNote || gfSec ? gf : bfStrums.character), bfStrums, firstNote); // then hit the note
 							pressedNotes.push(coolNote);
 						}
 						// end of this little check
@@ -2030,7 +2048,10 @@ class PlayState extends MusicBeatState
 		callFunc('endSong', []);
 
 		if (!canMiss)
+		{
 			health = 0;
+			return;
+		}
 
 		// set ranking
 		rank = Timings.returnScoreRating().toUpperCase();

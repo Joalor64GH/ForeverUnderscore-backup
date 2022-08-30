@@ -64,7 +64,8 @@ class Init extends FlxState
 			'Whether to have the strumline vertically flipped in gameplay.',
 			NOT_FORCED
 		],
-		'Centered Notefield' => [false, Checkmark, "Center the notes, disables the enemy's notes.", NOT_FORCED],
+		'Centered Strumline' => [false, Checkmark, "Center your notes, and pushes the enemy's notes to the side.", NOT_FORCED],
+		'Hide Opponent Strumline' => [false, Checkmark, "Whether to hide the Opponent's Notes during gameplay.", NOT_FORCED],
 		'Ghost Tapping' => [
 			false,
 			Checkmark,

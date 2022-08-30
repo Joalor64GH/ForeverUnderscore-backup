@@ -68,7 +68,8 @@ class OptionsMenuState extends MusicBeatState
 
 					['Controller Mode', getFromOption],
 					['Downscroll', getFromOption],
-					['Centered Notefield', getFromOption],
+					['Centered Strumline', getFromOption],
+					['Hide Opponent Strumline', getFromOption],
 					['Ghost Tapping', getFromOption],
 					['Hitsound Type', getFromOption],
 					['Hitsound Volume', getFromOption],

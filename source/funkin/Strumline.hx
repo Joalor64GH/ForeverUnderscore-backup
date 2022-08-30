@@ -42,6 +42,9 @@ class UIStaticArrow extends FlxSprite
 
 	public var setAlpha:Float = (Init.trueSettings.get('Arrow Opacity') * 0.01);
 
+	public var doReceptorTween:Bool = true;
+	public var lightConfirms:Bool = true;
+
 	public var resetAnim:Float = 0;
 
 	public function new(x:Float, y:Float, ?babyArrowType:Int = 0)
@@ -77,7 +80,7 @@ class UIStaticArrow extends FlxSprite
 	// literally just character code
 	public function playAnim(AnimName:String, Force:Bool = false, Reversed:Bool = false, Frame:Int = 0):Void
 	{
-		if (AnimName == 'confirm')
+		if (AnimName == 'confirm' && lightConfirms)
 			alpha = 1;
 		else
 			alpha = setAlpha;
@@ -144,9 +147,10 @@ class Strumline extends FlxSpriteGroup
 	public var holdsGroup:FlxTypedSpriteGroup<Note>;
 	public var allNotes:FlxTypedSpriteGroup<Note>;
 
-	public var autoplay:Bool = true;
-	public var character:Character;
 	public var playState:PlayState;
+	public var character:Character;
+
+	public var autoplay:Bool = true;
 	public var displayJudgements:Bool = false;
 
 	public function new(xPos:Float = 0, yPos:Float = 0, playState:PlayState, ?character:Character, ?displayJudgements:Bool = true, ?autoplay:Bool = true,
@@ -180,8 +184,11 @@ class Strumline extends FlxSpriteGroup
 			receptor.y -= 10;
 			receptor.playAnim('static');
 
-			receptor.alpha = 0;
-			FlxTween.tween(receptor, {y: receptor.initialY, alpha: receptor.setAlpha}, 1, {ease: FlxEase.circOut, startDelay: 0.5 + (0.2 * i)});
+			if (receptor.doReceptorTween)
+			{
+				receptor.alpha = 0;
+				FlxTween.tween(receptor, {y: receptor.initialY, alpha: receptor.setAlpha}, 1, {ease: FlxEase.circOut, startDelay: 0.5 + (0.2 * i)});
+			}
 
 			if (noteSplashes)
 			{
