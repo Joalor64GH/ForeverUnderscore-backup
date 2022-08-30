@@ -443,9 +443,6 @@ class PlayState extends MusicBeatState
 		else
 			startCountdown();
 
-		precacheImages();
-		precacheSounds();
-
 		callFunc('postCreate', []);
 	}
 
@@ -2329,6 +2326,9 @@ class PlayState extends MusicBeatState
 		swagCounter = 0;
 
 		camHUD.visible = true;
+
+		precacheImages();
+		precacheSounds();
 
 		callFunc('startCountdown', []);
 
