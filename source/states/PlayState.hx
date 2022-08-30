@@ -464,7 +464,8 @@ class PlayState extends MusicBeatState
 		missArray.push('missnote3');
 
 		// push your sound paths to this array
-		soundArray.push('hitsounds/$changeableSound/hit');
+		if (Init.trueSettings.get('Hitsound Volume') > 0)
+			soundArray.push('hitsounds/$changeableSound/hit');
 
 		for (i in soundArray)
 		{
