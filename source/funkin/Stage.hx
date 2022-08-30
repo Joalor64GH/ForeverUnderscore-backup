@@ -25,6 +25,7 @@ import openfl.display.BlendModeEffect;
 import openfl.display.GraphicsShader;
 import openfl.filters.ShaderFilter;
 import states.PlayState;
+import sys.FileSystem;
 
 using StringTools;
 
@@ -855,7 +856,7 @@ class Stage extends FlxTypedGroup<FlxBasic>
 	{
 		var path:String = Paths.getPreloadPath('stages/$curStage.hx');
 
-        if (Assets.exists(path))
+        if (FileSystem.exists(path))
             stageScript = new ScriptHandler(path);
 
 		setVar('createSprite',

@@ -9,8 +9,6 @@ The Forever Engine Underscore project is currently maintained by a **solo develo
 
 ----------------------------------------------
 # Current Goals:
-* Implement Customizable Weeks via JSON Files;
-* Implement Polymod to allow for Custom Mods and Modpacks to be created, see [Unstable Branch](https://github.com/BeastlyGhost/Forever-Engine-Underscore/tree/unstable);
 * Finish the Chart Editor **(HIGH PRIORITY)**;
 
 help would be extremely appreciated!

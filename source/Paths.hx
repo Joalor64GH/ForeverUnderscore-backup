@@ -453,7 +453,7 @@ final class Paths
 	#if MOD_HANDLER
 	inline static public function getModpack(key:String = '')
 	{
-		if (Assets.exists('mods/$currentPack/$key'))
+		if (FileSystem.exists('mods/$currentPack/$key'))
 			return 'mods/$currentPack/$key';
 		
 		return 'mods/' + key;

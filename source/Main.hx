@@ -230,7 +230,7 @@ class Main extends Sprite
 
 		try // to make the game to not crash if it can't save the crash file
 		{
-			if (!Assets.exists("crash"))
+			if (!FileSystem.exists("crash"))
 				FileSystem.createDirectory("crash");
 
 			File.saveContent(path, errMsg + "\n");
