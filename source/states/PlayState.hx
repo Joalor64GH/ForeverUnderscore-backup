@@ -722,6 +722,7 @@ class PlayState extends MusicBeatState
 					preventScoring = true;
 					FlxG.sound.play(Paths.sound('scrollMenu'));
 					bfStrums.autoplay = !bfStrums.autoplay;
+					canMiss = !canMiss;
 					uiHUD.autoplayMark.visible = bfStrums.autoplay;
 					uiHUD.autoplayMark.alpha = 1;
 					uiHUD.autoplaySine = 0;
