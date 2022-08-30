@@ -369,7 +369,7 @@ class PlayState extends MusicBeatState
 		startedCountdown = true;
 
 		// initialize ui elements
-		var bfPlacement = FlxG.width / 2 + (!Init.trueSettings.get('Centered Strumline') ? FlxG.width / 4 : 0);
+		var bfPlacement = FlxG.width / 2 + (!Init.trueSettings.get('Centered Receptors') ? FlxG.width / 4 : 0);
 		var dadPlacement = (FlxG.width / 2) - FlxG.width / 4;
 
 		var strumVertPos = (Init.trueSettings.get('Downscroll') ? FlxG.height - 200 : 0);
@@ -377,7 +377,7 @@ class PlayState extends MusicBeatState
 		dadStrums = new Strumline(dadPlacement, strumVertPos, this, dadOpponent, false, true, false, 4);
 		bfStrums = new Strumline(bfPlacement, strumVertPos, this, boyfriend, true, false, true, 4);
 
-		if (Init.trueSettings.get('Centered Strumline'))
+		if (Init.trueSettings.get('Centered Receptors'))
 		{
 			// psych-like Opponent Strumlines;
 			for (i in 0...dadStrums.receptors.members.length)
@@ -395,7 +395,7 @@ class PlayState extends MusicBeatState
 			// have fun messing with these on scripts now;
 		}
 
-		dadStrums.visible = !Init.trueSettings.get('Hide Opponent Strumline');
+		dadStrums.visible = !Init.trueSettings.get('Hide Opponent Receptors');
 
 		strumLines.add(dadStrums);
 		strumLines.add(bfStrums);

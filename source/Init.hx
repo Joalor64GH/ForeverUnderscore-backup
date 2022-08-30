@@ -61,11 +61,11 @@ class Init extends FlxState
 		'Downscroll' => [
 			false,
 			Checkmark,
-			'Whether to have the strumline vertically flipped in gameplay.',
+			'Whether to have the receptors vertically flipped in gameplay.',
 			NOT_FORCED
 		],
-		'Centered Strumline' => [false, Checkmark, "Center your notes, and repositions the enemy's notes to the sides of the screen.", NOT_FORCED],
-		'Hide Opponent Strumline' => [false, Checkmark, "Whether to hide the Opponent's Notes during gameplay.", NOT_FORCED],
+		'Centered Receptors' => [false, Checkmark, "Center your notes, and repositions the enemy's notes to the sides of the screen.", NOT_FORCED],
+		'Hide Opponent Receptors' => [false, Checkmark, "Whether to hide the Opponent's Notes during gameplay.", NOT_FORCED],
 		'Ghost Tapping' => [
 			false,
 			Checkmark,
