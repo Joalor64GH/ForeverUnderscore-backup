@@ -1889,38 +1889,40 @@ class PlayState extends MusicBeatState
 	function charactersDance(curBeat:Int)
 	{
 		if (curBeat % Math.round(gfSpeed * gf.bopSpeed) == 0
-			&& gf.animation.curAnim != null
-			&& !gf.animation.curAnim.name.startsWith('sing')
-			&& gf.animation.curAnim.name.startsWith("idle")
+			&& (gf.animation.curAnim != null
+			&& !gf.animation.curAnim.name.startsWith('sing'))
+			&& (gf.animation.curAnim.name.startsWith("idle")
 			|| gf.animation.curAnim.name.startsWith("dance")
+			|| gf.quickDancer)
 			&& !gf.stunned)
 			gf.dance();
 
 		if (curBeat % boyfriend.bopSpeed == 0
-			&& boyfriend.animation.curAnim != null
-			&& !boyfriend.animation.curAnim.name.startsWith('sing')
-			&& boyfriend.animation.curAnim.name.startsWith("idle")
+			&& (boyfriend.animation.curAnim != null
+			&& !boyfriend.animation.curAnim.name.startsWith('sing'))
+			&& (boyfriend.animation.curAnim.name.startsWith("idle")
 			|| boyfriend.animation.curAnim.name.startsWith("dance")
-			|| boyfriend.quickDancer
+			|| boyfriend.quickDancer)
 			&& !boyfriend.stunned)
 			boyfriend.dance();
 
-		if (curBeat % boyfriend.bopSpeed == 0
-			&& dadOpponent.animation.curAnim != null
-			&& !dadOpponent.animation.curAnim.name.startsWith('sing')
-			&& dadOpponent.animation.curAnim.name.startsWith("idle")
+		if (curBeat % dadOpponent.bopSpeed == 0
+			&& (dadOpponent.animation.curAnim != null
+			&& !dadOpponent.animation.curAnim.name.startsWith('sing'))
+			&& (dadOpponent.animation.curAnim.name.startsWith("idle")
 			|| dadOpponent.animation.curAnim.name.startsWith("dance")
-			|| dadOpponent.quickDancer
+			|| dadOpponent.quickDancer)
 			&& !dadOpponent.stunned)
 			dadOpponent.dance();
 
 		for (char in characterArray)
 		{
-			if (!char.animation.curAnim.name.startsWith('sing')
-				&& char.animation.curAnim.name.startsWith("idle")
+			if (curBeat % char.bopSpeed == 0
+				&& (char.animation.curAnim != null
+				&& !char.animation.curAnim.name.startsWith('sing'))
+				&& (char.animation.curAnim.name.startsWith("idle")
 				|| char.animation.curAnim.name.startsWith("dance")
-				&& curBeat % dadOpponent.bopSpeed == 0
-				|| char.quickDancer)
+				|| char.quickDancer))
 				char.dance();
 		}
 	}

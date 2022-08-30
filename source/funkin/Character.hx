@@ -368,22 +368,17 @@ class Character extends FNFSprite
 		var modTxtToFind:String = Paths.getModPath('characters/$char', char, 'txt');
 		var txtToFind:String = Paths.getPath('characters/$char/$char.txt', TEXT);
 
-		if (FileSystem.exists(modTxtToFind) || FileSystem.exists(txtToFind) || Assets.exists(txtToFind))
+		if (FileSystem.exists(modTxtToFind) || (FileSystem.exists(txtToFind) || Assets.exists(txtToFind)))
 		#else
 		if (Assets.exists(Paths.getPath('characters/$char/$char.txt', TEXT)))
 		#end
 		{
 			spriteType = "packer";
 		}
-		switch (spriteType)
-		{
-			case "packer":
-				frames = Paths.getPackerAtlas(char, 'characters/$char');
-			case "sparrow":
-				frames = Paths.getSparrowAtlas(char, 'characters/$char');
-			case "sparrow-hash":
-				frames = Paths.getSparrowHashAtlas(char, 'characters/$char');
-		}
+		if (spriteType == "packer")
+			frames = Paths.getPackerAtlas(char, 'characters/$char');
+		else
+			frames = Paths.getSparrowAtlas(char, 'characters/$char');
 
 		// trace(interp, script);
 		setVar('addByPrefix', function(name:String, prefix:String, ?frames:Int = 24, ?loop:Bool = false)
@@ -526,23 +521,17 @@ class Character extends FNFSprite
 		var modTxtToFind:String = Paths.getModPath('characters/$char', json.image, 'txt');
 		var txtToFind:String = Paths.getPath('characters/$char/${json.image}.txt', TEXT);
 
-		if (FileSystem.exists(modTxtToFind) || FileSystem.exists(txtToFind) || Assets.exists(txtToFind))
+		if (FileSystem.exists(modTxtToFind) || (FileSystem.exists(txtToFind) || Assets.exists(txtToFind)))
 		#else
 		if (Assets.exists(Paths.getPath('characters/$char/${json.image}.txt', TEXT)))
 		#end
 		{
 			spriteType = "packer";
 		}
-
-		switch (spriteType)
-		{
-			case "packer":
-				frames = Paths.getPackerAtlas(json.image.replace('characters/', ''), 'characters/$char');
-			case "sparrow":
-				frames = Paths.getSparrowAtlas(json.image.replace('characters/', ''), 'characters/$char');
-			case "sparrow-hash":
-				frames = Paths.getSparrowHashAtlas(json.image.replace('characters/', ''), 'characters/$char');
-		}
+		if (spriteType == "packer")
+			frames = Paths.getPackerAtlas(json.image.replace('characters/', ''), 'characters/$char');
+		else
+			frames = Paths.getSparrowAtlas(json.image.replace('characters/', ''), 'characters/$char');
 
 		psychAnimationsArray = json.animations;
 		for (anim in psychAnimationsArray)
