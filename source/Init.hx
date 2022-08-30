@@ -64,7 +64,7 @@ class Init extends FlxState
 			'Whether to have the strumline vertically flipped in gameplay.',
 			NOT_FORCED
 		],
-		'Centered Strumline' => [false, Checkmark, "Center your notes, and pushes the enemy's notes to the side.", NOT_FORCED],
+		'Centered Strumline' => [false, Checkmark, "Center your notes, and repositions the enemy's notes to the sides of the screen.", NOT_FORCED],
 		'Hide Opponent Strumline' => [false, Checkmark, "Whether to hide the Opponent's Notes during gameplay.", NOT_FORCED],
 		'Ghost Tapping' => [
 			false,
@@ -80,9 +80,9 @@ class Init extends FlxState
 			"Whether to override the song's scroll speed to use your own.",
 			NOT_FORCED
 		],
-		'Scroll Speed' => [1, Selector, 'Set the scroll speed for the Notes.', NOT_FORCED],
+		'Scroll Speed' => [1, Selector, 'Set your custom scroll speed for the Notes (NEEDS "Use Set Scroll Speed" ENABLED).', NOT_FORCED],
 		// TEXT;
-		'Display Accuracy' => [true, Checkmark, 'Whether to display your accuracy on screen.', NOT_FORCED],
+		'Display Accuracy' => [true, Checkmark, 'Whether to display your accuracy on the score bar during gameplay.', NOT_FORCED],
 		'Score Bar Size' => [18, Selector, 'Set the text size for the Score Bar.', NOT_FORCED],
 		'Skip Text' => [
 			'freeplay only',
