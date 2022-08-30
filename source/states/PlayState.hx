@@ -497,6 +497,7 @@ class PlayState extends MusicBeatState
 	private function precacheImages()
 	{
 		Paths.image('UI/default/base/alphabet');
+		Paths.getSparrowAtlas(GameOverSubstate.character, 'characters/' + GameOverSubstate.character);
 	}
 
 	public static function copyKey(arrayToCopy:Array<FlxKey>):Array<FlxKey>
