@@ -500,9 +500,14 @@ class ChartingState extends MusicBeatState
 		Paths.clearUnusedMemory();
 
 		if (State == 'PlayState')
+		{
 			Main.switchState(this, new PlayState());
+		}
 		else
+		{
+			PlayState.chartingMode = false;
 			Main.switchState(this, new FreeplayState());
+		}
 	}
 
 	function deleteNote(note:Note)

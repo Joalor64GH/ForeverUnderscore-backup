@@ -62,6 +62,8 @@ class StoryMenuState extends MusicBeatState
 	{
 		super.create();
 
+		PlayState.chartingMode = false;
+
 		transIn = FlxTransitionableState.defaultTransIn;
 		transOut = FlxTransitionableState.defaultTransOut;
 

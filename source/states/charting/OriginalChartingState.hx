@@ -977,9 +977,14 @@ class OriginalChartingState extends MusicBeatState
 		FlxG.mouse.visible = false;
 
 		if (State == 'PlayState')
+		{
 			Main.switchState(this, new PlayState());
+		}
 		else
+		{
+			PlayState.chartingMode = false;
 			Main.switchState(this, new FreeplayState());
+		}
 	}
 
 	function recalculateSteps():Int
