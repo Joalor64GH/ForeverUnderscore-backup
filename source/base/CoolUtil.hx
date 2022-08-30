@@ -136,7 +136,7 @@ class CoolUtil
 
 		var path:String = Paths.getModpack(file);
 		if (!FileSystem.exists(path))
-			path = Paths.getPath(file);
+			path = Paths.rawPath(file);
 
 		var absolutePath:String = FileSystem.absolutePath(path);
 		var directory:Array<String> = FileSystem.readDirectory(absolutePath);

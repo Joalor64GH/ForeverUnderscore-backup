@@ -331,6 +331,11 @@ final class Paths
 		return returnPath;
 	}
 
+	public static function rawPath(file:String)
+	{
+		return 'assets/$file';
+	}
+
 	inline static public function file(file:String, type:AssetType = TEXT, ?library:String)
 	{
 		return getPath(file, type, library);
