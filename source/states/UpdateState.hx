@@ -34,9 +34,7 @@ class UpdateState extends MusicBeatState
 			\nit looks like your Game Version is outdated!
 			\nPress ENTER to Update\nfrom "
 			+ Main.underscoreVersion
-			+ ' (FE v'
-			+ Main.foreverVersion
-			+ ') to '
+			+ 'to '
 			+ ForeverTools.updateVersion
 			+ '\nPress ESCAPE to ignore this message.
 			\nif you wish to disable this, Uncheck "Check for Updates" on the Options Menu', 32);
