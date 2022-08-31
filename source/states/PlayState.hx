@@ -1298,9 +1298,9 @@ class PlayState extends MusicBeatState
 			coolNote.wasGoodHit = true;
 			Conductor.songVocals.volume = 1;
 
-			characterPlayAnimation(coolNote, character);
+			coolNote.goodNoteHit(coolNote, ratingTiming);
 
-			coolNote.goodNoteHit(coolNote);
+			characterPlayAnimation(coolNote, character);
 
 			if (characterStrums.receptors.members[coolNote.noteData] != null)
 				characterStrums.receptors.members[coolNote.noteData].playAnim('confirm', true);
