@@ -167,6 +167,8 @@ class PlayState extends MusicBeatState
 
 	// stores the last judgement object
 	public static var lastRating:FlxSprite;
+	// stores the last timing object
+	public static var lastTiming:FlxSprite;
 	// stores the last combo objects in an array
 	public static var lastCombo:Array<FlxSprite>;
 
@@ -1784,8 +1786,13 @@ class PlayState extends MusicBeatState
 			{
 				lastRating.kill();
 			}
+			if (lastTiming != null)
+			{
+				lastTiming.kill();
+			}
 			add(rating);
 			lastRating = rating;
+			lastTiming = timingSpr;
 			FlxTween.tween(rating, {y: rating.y + 20}, 0.2, {type: FlxTweenType.BACKWARD, ease: FlxEase.circOut});
 			FlxTween.tween(rating, {"scale.x": 0, "scale.y": 0}, 0.1, {
 				onComplete: function(tween:FlxTween)
