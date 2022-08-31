@@ -165,7 +165,7 @@ class ChartingState extends MusicBeatState
 			'Charting: '
 			+ _song.song
 			+ ' [${CoolUtil.difficultyFromNumber(PlayState.storyDifficulty)}] - by '
-			+ _song.author, true);
+			+ _song.author, null, null, null, true);
 		#end
 
 		gridGroup = new FlxTypedGroup<FlxObject>();
