@@ -13,6 +13,7 @@ function loadAnimations()
 
     playAnim('shoot1');
 
+    set('antialiasing', true);
     setBarColor([183,216,85]);
     setOffsets(0, 710);
 }

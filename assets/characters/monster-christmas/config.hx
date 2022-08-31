@@ -14,6 +14,7 @@ function loadAnimations()
 
     playAnim('idle');
 
+    set('antialiasing', true);
     setBarColor([243,255,110]);
     setCamOffsets(50, 80);
     setOffsets(-200, 730);

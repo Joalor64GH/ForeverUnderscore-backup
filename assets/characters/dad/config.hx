@@ -13,6 +13,7 @@ function loadAnimations()
     addOffset('singRIGHT', 0, 27);
 
     playAnim('idle');
+    set('antialiasing', true);
     setBarColor([175,102,206]);
     setOffsets(-120, 690);
 }

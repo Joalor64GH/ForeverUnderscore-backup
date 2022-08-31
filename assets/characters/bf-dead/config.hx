@@ -4,6 +4,8 @@ function loadAnimations()
     addByPrefix('deathLoop', "BF Dead Loop", 24, true);
     addByPrefix('deathConfirm', "BF Dead confirm", 24, false);
 
+    set('antialiasing', true);
+
     if (isPlayer)
         set('flipX', true);
     else

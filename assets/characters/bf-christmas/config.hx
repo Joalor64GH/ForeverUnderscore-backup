@@ -25,6 +25,8 @@ function loadAnimations()
 
     playAnim('idle');
 
+    set('antialiasing', true);
+
     setBarColor([49,176,209]);
     setOffsets(0, 430);
     if (isPlayer)

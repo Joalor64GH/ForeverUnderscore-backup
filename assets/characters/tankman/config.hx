@@ -45,6 +45,7 @@ function loadAnimations()
     /* ===== MISC CONFIGURATIONS ===== */
 
     set('flipX', true);
+    set('antialiasing', true);
     setBarColor([255, 255, 255]);
     setCamOffsets(0, 150);
     setOffsets(0, 490);
