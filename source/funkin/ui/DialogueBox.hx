@@ -455,10 +455,15 @@ class DialogueBox extends FlxSpriteGroup
 					else
 						alphabetText.soundChance = 40;
 
-					for (blep in 0...portraitData.sounds.length)
+					if (alphabetText.playSounds)
 					{
+						var cur = FlxG.random.int(0, alphabetText.soundChoices.length - 1);
+						var daSound:String = alphabetText.beginPath + portraitData.sounds[cur] + "." + Paths.SOUND_EXT;
+
 						pixelText.sounds = [];
-						pixelText.sounds.push(FlxG.sound.load(alphabetText.beginPath + portraitData.sounds[blep] + "." + Paths.SOUND_EXT, 0.6));
+
+						if (daSound.endsWith(Paths.SOUND_EXT) && daSound != null)
+							pixelText.sounds.push(FlxG.sound.load(daSound, 0.6));
 					}
 				}
 				else
