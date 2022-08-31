@@ -537,8 +537,6 @@ class PlayState extends MusicBeatState
 				var possibleNoteList:Array<Note> = [];
 				var pressedNotes:Array<Note> = [];
 
-				var coolNote:Note;
-
 				bfStrums.allNotes.forEachAlive(function(daNote:Note)
 				{
 					if ((daNote.noteData == key) && daNote.canBeHit && !daNote.isSustainNote && !daNote.tooLate && !daNote.wasGoodHit)
@@ -1073,6 +1071,8 @@ class PlayState extends MusicBeatState
 									note.tooLate = true;
 
 								Conductor.songVocals.volume = 0;
+								daNote.noteMissActions(daNote);
+
 								if (canMiss)
 								{
 									missNoteCheck((Init.trueSettings.get('Ghost Tapping')) ? true : false, daNote.noteData, boyfriend, true);
@@ -1100,7 +1100,6 @@ class PlayState extends MusicBeatState
 											for (note in parentNote.childrenNotes)
 												note.tooLate = true;
 										}
-										//
 									}
 								}
 							}
@@ -1299,9 +1298,9 @@ class PlayState extends MusicBeatState
 			coolNote.wasGoodHit = true;
 			Conductor.songVocals.volume = 1;
 
-			coolNote.goodNoteHit(coolNote);
-
 			characterPlayAnimation(coolNote, character);
+
+			coolNote.goodNoteHit(coolNote);
 
 			if (characterStrums.receptors.members[coolNote.noteData] != null)
 				characterStrums.receptors.members[coolNote.noteData].playAnim('confirm', true);
@@ -1345,7 +1344,7 @@ class PlayState extends MusicBeatState
 					else
 					{
 						// call updated accuracy stuffs
-						if (coolNote.parentNote != null)
+						if (coolNote.parentNote != null && coolNote.updateAccuracy)
 						{
 							Timings.updateAccuracy(100, true, coolNote.parentNote.childrenNotes.length);
 							healthCall(100 / coolNote.parentNote.childrenNotes.length);

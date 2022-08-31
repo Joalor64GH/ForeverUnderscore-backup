@@ -47,8 +47,8 @@ class Note extends FNFSprite
 
 	public var hitSounds:Bool = true;
 	public var badNote:Bool = false;
-	public var cpuPress:Bool = false;
 	public var gfNote:Bool = false;
+	public var updateAccuracy:Bool = true;
 
 	public var hitsoundSuffix = '';
 
@@ -73,23 +73,27 @@ class Note extends FNFSprite
 		switch (noteType)
 		{
 			case 2: // hey notes
+				updateAccuracy = true;
 				hitSounds = true;
 				badNote = false;
 				gfNote = false;
 			case 3: // gf notes
+				updateAccuracy = true;
 				gfNote = true;
 			case 4: // no animation notes
+				updateAccuracy = true;
 				hitSounds = false;
 				badNote = false;
 				gfNote = false;
 			case 5: // mines
 				healthLoss = 0.065;
+				updateAccuracy = true;
 				hitSounds = false;
 				badNote = true;
 				gfNote = false;
-				cpuPress = true;
 			default: // anything else
 				hitSounds = true;
+				updateAccuracy = true;
 				badNote = false;
 				gfNote = false;
 		}
@@ -320,6 +324,8 @@ class Note extends FNFSprite
 				{
 					switch (noteType)
 					{
+						case 5:
+							newNote.kill();
 						default:
 							// quant holds
 							newNote.loadGraphic(Paths.image(ForeverTools.returnSkinAsset('HOLD_quants', assetModifier, Init.trueSettings.get("Note Skin"),
@@ -376,20 +382,37 @@ class Note extends FNFSprite
 	/**
 	* Custom Note Functions (for when you hit a note), this should execute in PlayState;
 	**/
-	public function goodNoteHit(newNote:Note)
+	public function goodNoteHit(newNote:Note, ?ratingTiming:String)
 	{
 		var hitsound = Init.trueSettings.get('Hitsound Type');
 		switch (newNote.noteType)
 		{
 			case 5:
 				PlayState.contents.decreaseCombo(true);
-				PlayState.health -= healthLoss;	
+				PlayState.health -= healthLoss;
 			default:
 				if (newNote.hitSounds)
 				{
 					if (Init.trueSettings.get('Hitsound Volume') > 0 && newNote.canBeHit && !newNote.isSustainNote)
 						FlxG.sound.play(Paths.sound('hitsounds/$hitsound/hit$hitsoundSuffix'), Init.trueSettings.get('Hitsound Volume'));
 				}
+		}
+	}
+
+	/**
+	 * [Specify what to do when a note is missed];
+	 */
+	public function noteMissActions(?coolNote:Note)
+	{
+		switch (coolNote.noteType)
+		{
+			/*case 1:
+				trace('MISSED ${coolNote.noteType}');
+				PlayState.dadOpponent.playAnim('singUP');
+				PlayState.dadOpponent.specialAnim = true;
+				PlayState.dadOpponent.heyTimer = 0.6;*/
+			default:
+				// do nothing;
 		}
 	}
 }
