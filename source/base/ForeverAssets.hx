@@ -24,7 +24,16 @@ class ForeverAssets
 	public static function generateCombo(asset:String, number:String, allSicks:Bool, assetModifier:String = 'base', changeableSkin:String = 'default',
 			baseLibrary:String, negative:Bool, createdColor:FlxColor, scoreInt:Int):FlxSprite
 	{
-		var newSprite:FlxSprite = new FlxSprite().loadGraphic(Paths.image(ForeverTools.returnSkinAsset('combo/' + asset + number, assetModifier, changeableSkin, baseLibrary)));
+		var width = 100;
+		var height = 140;
+
+		if (assetModifier == 'pixel')
+		{
+			width = 10;
+			height = 12;
+		}
+		var newSprite:FlxSprite = new FlxSprite().loadGraphic(Paths.image(ForeverTools.returnSkinAsset(asset, assetModifier, changeableSkin, baseLibrary)),
+			true, width, height);
 		switch (assetModifier)
 		{
 			default:
@@ -36,6 +45,11 @@ class ForeverAssets
 				newSprite.color = FlxColor.WHITE;
 				if (negative)
 					newSprite.color = createdColor;
+
+				newSprite.animation.add('base', [
+					(Std.parseInt(number) != null ? Std.parseInt(number) + 1 : 0) + (!allSicks ? 0 : 11)
+				], 0, false);
+				newSprite.animation.play('base');
 		}
 
 		if (assetModifier == 'pixel')
@@ -56,7 +70,7 @@ class ForeverAssets
 		return newSprite;
 	}
 
-	public static function generateRating(asset:String, perfectSick:Bool, timing:String, assetModifier:String = 'base', changeableSkin:String = 'default',
+	public static function generateRating(asset:String, perfectSick:Bool, assetModifier:String = 'base', changeableSkin:String = 'default',
 			baseLibrary:String):FlxSprite
 	{
 		var perfectString = (perfectSick ? '-perfect' : '');

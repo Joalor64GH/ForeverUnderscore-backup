@@ -1587,9 +1587,9 @@ class PlayState extends MusicBeatState
 		if (health > 0)
 		{
 			if (Conductor.songPosition > 0 && !pausedRPC)
-				Discord.changePresence(displayRPC, detailsSub, iconRPC, true, songLength - Conductor.songPosition);
+				Discord.changePresence(displayRPC, detailsSub, null, null, iconRPC, true, songLength - Conductor.songPosition);
 			else
-				Discord.changePresence(displayRPC, detailsSub, iconRPC);
+				Discord.changePresence(displayRPC, detailsSub, null, null, iconRPC);
 		}
 		#end
 	}
@@ -1651,9 +1651,7 @@ class PlayState extends MusicBeatState
 		for (scoreInt in 0...stringArray.length)
 		{
 			// numScore.loadGraphic(Paths.image('UI/' + pixelModifier + 'num' + stringArray[scoreInt]));
-			var perfectString = (allSicks && !negative ? 'perfect-' : '');
-
-			var numScore = ForeverAssets.generateCombo(perfectString + 'num', stringArray[scoreInt], (!negative ? allSicks : false), assetModifier, changeableSkin, 'UI',
+			var numScore = ForeverAssets.generateCombo('combo', stringArray[scoreInt], (!negative ? allSicks : false), assetModifier, changeableSkin, 'UI',
 				negative, createdColor, scoreInt);
 			add(numScore);
 			// hardcoded lmao
@@ -1749,7 +1747,7 @@ class PlayState extends MusicBeatState
 			"oh but if the rating isn't sick why not just reset it"
 			because miss judgements can pop, and they dont mess with your sick combo
 		 */
-		var rating = ForeverAssets.generateRating('$daRating', (daRating == 'sick' ? allSicks : false), timing, assetModifier, changeableSkin, 'UI');
+		var rating = ForeverAssets.generateRating('$daRating', (daRating == 'sick' ? allSicks : false), assetModifier, changeableSkin, 'UI');
 		add(rating);
 
 		// for ratings that have no timings to them, this is PAINFUL to look at, I know;
@@ -1982,7 +1980,7 @@ class PlayState extends MusicBeatState
 			FlxG.sound.play(Paths.sound(GameOverSubstate.deathSound));
 
 			#if DISCORD_RPC
-			Discord.changePresence("Game Over - " + songDetails, detailsSub, iconRPC);
+			Discord.changePresence("Game Over - " + songDetails, detailsSub, null, null, iconRPC);
 			#end
 			isDead = true;
 			return true;

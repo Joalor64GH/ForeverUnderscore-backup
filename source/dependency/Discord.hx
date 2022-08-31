@@ -49,7 +49,8 @@ class Discord
 
 	//
 
-	public static function changePresence(details:String = '', state:Null<String> = '', ?smallImageKey:String, ?hasStartTimestamp:Bool, ?endTimestamp:Float)
+	public static function changePresence(details:String = '', state:Null<String> = '', ?largeImageKey:Null<String> = 'iconog',
+			?largeImageText:Null<String> = 'Forever Engine', ?smallImageKey:String, ?hasStartTimestamp:Bool, ?endTimestamp:Float)
 	{
 		var startTimestamp:Float = (hasStartTimestamp) ? Date.now().getTime() : 0;
 
@@ -59,8 +60,10 @@ class Discord
 		DiscordRpc.presence({
 			details: details,
 			state: state,
-			largeImageKey: 'iconog',
-			largeImageText: "Forever Engine",
+			// changed these so they can be changed by the user;
+			// scripted ones should also come along sooner or later;
+			largeImageKey: largeImageKey,
+			largeImageText: largeImageText,
 			smallImageKey: smallImageKey,
 			// Obtained times are in milliseconds so they are divided so Discord can use it
 			startTimestamp: Std.int(startTimestamp / 1000),
