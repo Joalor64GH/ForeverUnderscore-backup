@@ -1651,10 +1651,11 @@ class PlayState extends MusicBeatState
 		for (scoreInt in 0...stringArray.length)
 		{
 			// numScore.loadGraphic(Paths.image('UI/' + pixelModifier + 'num' + stringArray[scoreInt]));
-			var numScore = ForeverAssets.generateCombo('combo', stringArray[scoreInt], (!negative ? allSicks : false), assetModifier, changeableSkin, 'UI',
+			var perfectString = (allSicks && !negative ? 'perfect-' : '');
+
+			var numScore = ForeverAssets.generateCombo(perfectString + 'num', stringArray[scoreInt], (!negative ? allSicks : false), assetModifier, changeableSkin, 'UI',
 				negative, createdColor, scoreInt);
 			add(numScore);
-			setVar('numScore', numScore);
 			// hardcoded lmao
 			if (!Init.trueSettings.get('Simply Judgements'))
 			{
@@ -1750,7 +1751,22 @@ class PlayState extends MusicBeatState
 		 */
 		var rating = ForeverAssets.generateRating('$daRating', (daRating == 'sick' ? allSicks : false), timing, assetModifier, changeableSkin, 'UI');
 		add(rating);
-		setVar('rating', rating);
+
+		// for ratings that have no timings to them, this is PAINFUL to look at, I know;
+		var noTiming = (timing == null || timing == '' || allSicks || daRating == 'sick' || daRating == 'miss');
+
+		var timingSpr = ForeverAssets.generateRatingTimings('$daRating-timings', timing, assetModifier, changeableSkin, 'UI');
+		timingSpr.visible = !noTiming;
+		add(timingSpr);
+
+		// actually painful;
+		timingSpr.x = rating.x;
+		timingSpr.y = rating.y;
+		timingSpr.acceleration.y = rating.acceleration.y;
+		timingSpr.velocity.y = rating.velocity.y;
+		timingSpr.velocity.x = rating.velocity.x;
+
+		// i'm kinda afraid that this can impact on performance a little bit, but it makes things easier at the same time;
 
 		if (!Init.trueSettings.get('Simply Judgements'))
 		{
@@ -1760,6 +1776,14 @@ class PlayState extends MusicBeatState
 				onComplete: function(tween:FlxTween)
 				{
 					rating.kill();
+				},
+				startDelay: Conductor.crochet * 0.00125
+			});
+
+			FlxTween.tween(timingSpr, {alpha: 0}, 0.2, {
+				onComplete: function(tween:FlxTween)
+				{
+					timingSpr.kill();
 				},
 				startDelay: Conductor.crochet * 0.00125
 			});
@@ -1780,8 +1804,16 @@ class PlayState extends MusicBeatState
 				},
 				startDelay: Conductor.crochet * 0.00125
 			});
+
+			FlxTween.tween(timingSpr, {y: timingSpr.y + 20}, 0.2, {type: FlxTweenType.BACKWARD, ease: FlxEase.circOut});
+			FlxTween.tween(timingSpr, {"scale.x": 0, "scale.y": 0}, 0.1, {
+				onComplete: function(tween:FlxTween)
+				{
+					timingSpr.kill();
+				},
+				startDelay: Conductor.crochet * 0.00125
+			});
 		}
-		// */
 
 		if (!cache)
 		{
@@ -1789,7 +1821,9 @@ class PlayState extends MusicBeatState
 			{
 				// bound to camera
 				rating.cameras = [camHUD];
+				timingSpr.cameras = [camHUD];
 				rating.screenCenter();
+				timingSpr.screenCenter();
 			}
 
 			// return the actual rating to the array of judgements

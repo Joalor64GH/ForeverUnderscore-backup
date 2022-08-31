@@ -24,16 +24,7 @@ class ForeverAssets
 	public static function generateCombo(asset:String, number:String, allSicks:Bool, assetModifier:String = 'base', changeableSkin:String = 'default',
 			baseLibrary:String, negative:Bool, createdColor:FlxColor, scoreInt:Int):FlxSprite
 	{
-		var width = 100;
-		var height = 140;
-
-		if (assetModifier == 'pixel')
-		{
-			width = 10;
-			height = 12;
-		}
-		var newSprite:FlxSprite = new FlxSprite().loadGraphic(Paths.image(ForeverTools.returnSkinAsset(asset, assetModifier, changeableSkin, baseLibrary)),
-			true, width, height);
+		var newSprite:FlxSprite = new FlxSprite().loadGraphic(Paths.image(ForeverTools.returnSkinAsset('combo/' + asset + number, assetModifier, changeableSkin, baseLibrary)));
 		switch (assetModifier)
 		{
 			default:
@@ -45,11 +36,6 @@ class ForeverAssets
 				newSprite.color = FlxColor.WHITE;
 				if (negative)
 					newSprite.color = createdColor;
-
-				newSprite.animation.add('base', [
-					(Std.parseInt(number) != null ? Std.parseInt(number) + 1 : 0) + (!allSicks ? 0 : 11)
-				], 0, false);
-				newSprite.animation.play('base');
 		}
 
 		if (assetModifier == 'pixel')
@@ -73,15 +59,9 @@ class ForeverAssets
 	public static function generateRating(asset:String, perfectSick:Bool, timing:String, assetModifier:String = 'base', changeableSkin:String = 'default',
 			baseLibrary:String):FlxSprite
 	{
-		var width = 500;
-		var height = 163;
-		if (assetModifier == 'pixel')
-		{
-			width = 72;
-			height = 32;
-		}
-		var rating:FlxSprite = new FlxSprite().loadGraphic(Paths.image(ForeverTools.returnSkinAsset('judgements', assetModifier, changeableSkin,
-			baseLibrary)), true, width, height);
+		var perfectString = (perfectSick ? '-perfect' : '');
+
+		var rating:FlxSprite = new FlxSprite().loadGraphic(Paths.image(ForeverTools.returnSkinAsset('ratings/' + asset + perfectString, assetModifier, changeableSkin, baseLibrary)));
 		switch (assetModifier)
 		{
 			default:
@@ -95,10 +75,6 @@ class ForeverAssets
 					rating.velocity.y = -FlxG.random.int(140, 175);
 					rating.velocity.x = -FlxG.random.int(0, 10);
 				}
-				rating.animation.add('base', [
-					Std.int((Timings.judgementsMap.get(asset)[0] * 2) + (perfectSick ? 0 : 2) + (timing == 'late' ? 1 : 0))
-				], 24, false);
-				rating.animation.play('base');
 		}
 
 		if (assetModifier == 'pixel')
@@ -110,6 +86,40 @@ class ForeverAssets
 		}
 
 		return rating;
+	}
+
+	/**
+	 * [Literally copy and pasted from the above, fu-];
+	 */
+	public static function generateRatingTimings(asset:String, ratingTiming:String, assetModifier:String = 'base', changeableSkin:String = 'default',
+			baseLibrary:String):FlxSprite
+	{
+		var newWidth = 166;
+		if (assetModifier == 'pixel')
+			newWidth = 26;
+
+		var timing:FlxSprite = new FlxSprite().loadGraphic(Paths.image(ForeverTools.returnSkinAsset('ratings/' + asset, assetModifier, changeableSkin,
+			baseLibrary)), true, newWidth);
+
+		timing.animation.add('early', [0]);
+		timing.animation.add('late', [1]);
+		timing.animation.play(ratingTiming);
+
+		switch (assetModifier)
+		{
+			case 'pixel':
+				timing.x += (newWidth / 2) * PlayState.daPixelZoom;
+				timing.setGraphicSize(Std.int(timing.width * PlayState.daPixelZoom * 0.7));
+				if (ratingTiming != 'late')
+					timing.x -= newWidth * 0.5 * PlayState.daPixelZoom;
+			default:
+				timing.antialiasing = true;
+				timing.setGraphicSize(Std.int(timing.width * 0.7));
+				if (ratingTiming == 'late')
+					timing.x += newWidth * 0.5;
+		}
+
+		return timing;
 	}
 
 	public static function generateNoteSplashes(asset:String, assetModifier:String = 'base', changeableSkin:String = 'default', baseLibrary:String,
