@@ -406,11 +406,6 @@ class Note extends FNFSprite
 	{
 		switch (coolNote.noteType)
 		{
-			/*case 1:
-				trace('MISSED ${coolNote.noteType}');
-				PlayState.dadOpponent.playAnim('singUP');
-				PlayState.dadOpponent.specialAnim = true;
-				PlayState.dadOpponent.heyTimer = 0.6;*/
 			default:
 				// do nothing;
 		}
