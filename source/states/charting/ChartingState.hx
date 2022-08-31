@@ -534,23 +534,14 @@ class ChartingState extends MusicBeatState
 		}
 	}
 
-	function deleteEvent(event:EventNote)
+	function deleteEvent(event:EventNote):Void
 	{
-		for (i in _song.events)
+		for (i in _song.events[currentSection])
 		{
 			if (i[0] == event.strumTime)
 			{
-				FlxG.log.add('FOUND EVIL EVENT');
-
-				if (i == curSelectedNote)
-					curSelectedNote = null;
-
-				// delete it;
-				_song.events.remove(i);
-				event.kill();
-				curRenderedEvents.remove(event, true);
-				_song.events.remove(i);
-				event.destroy();
+				_song.events[currentSection].remove(i);
+				updateGrid();
 				break;
 			}
 		}
@@ -967,20 +958,20 @@ class ChartingState extends MusicBeatState
 
 	function generateEvent(strumTime:Float, val1:String, val2:String, id:String, ?shouldPush:Bool = false):Void
 	{
-		var event:Array<Dynamic> = [strumTime, val1, val2, id];
-
-		var eventNote:EventNote = new EventNote(strumTime, val1, val2, id);
-		eventNote.setGraphicSize(gridSize, gridSize);
-		eventNote.updateHitbox();
-		eventNote.x += 418;
-		eventNote.y = getYfromStrumNotes(event[0] - sectionStartTime(), getSectionBeats());
-
-		if (shouldPush)
+		if (_song.events != null
+			&& _song.events.length > 0
+			&& _song.events[currentSection] != null
+			&& _song.events[currentSection].length > 0)
 		{
-			_song.events.push(event);
+			for (i in _song.events[currentSection])
+			{
+				var event:EventNote = new EventNote(i[1], i[0], i[2], i[3]);
+				event.y = Math.floor(getYfromStrum((event.strumTime - sectionStartTime()) % (Conductor.stepCrochet * getSectionBeats())));
+				event.setGraphicSize(gridSize, gridSize);
+				event.updateHitbox();
+				curRenderedEvents.add(event);
+			}
 		}
-
-		curRenderedEvents.add(eventNote);
 	}
 
 	var coolGrid:FlxBackdrop;

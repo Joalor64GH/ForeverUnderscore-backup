@@ -111,7 +111,7 @@ class Init extends FlxState
 			NOT_FORCED
 		],
 		'Menu Song' => [
-			'foreverMenu',
+			'freakyMenu',
 			Selector,
 			'Which song should we use for the Main Menu? takes effect upon switching states or restarting the game.',
 			NOT_FORCED,

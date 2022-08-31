@@ -28,7 +28,7 @@ class ForeverTools
 		// make sure the music is playing
 		if (((FlxG.sound.music != null) && (!FlxG.sound.music.playing)) || (FlxG.sound.music == null))
 		{
-			var menuSong:String = 'foreverMenu';
+			var menuSong:String = 'freakyMenu';
 			menuSong = Init.trueSettings.get('Menu Song');
 
 			var song = Paths.music(menuSong);
@@ -89,6 +89,20 @@ class ForeverTools
 			}
 			http.request();
 		}
+	}
+
+	public static function beautifyEvents(event:Array<Array<Array<Dynamic>>>):Array<Array<Array<Dynamic>>>
+	{
+		for (i in event)
+			if (i == null)
+			{
+				var index:Int = event.indexOf(i);
+				event.remove(i);
+				i = [];
+				event.insert(index, i);
+			}
+
+		return event;
 	}
 
 	public static function getColorFromString(str:String):FlxColor

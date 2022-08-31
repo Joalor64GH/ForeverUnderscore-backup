@@ -38,3 +38,27 @@ class AbsoluteText extends FlxText
 		}
 	}
 }
+
+class EventText extends FlxText
+{
+	public var tracker:FlxSprite;
+	public var xAdd:Float = 0;
+	public var yAdd:Float = 0;
+
+	public function new(X:Float = 0, Y:Float = 0, FieldWidth:Float = 0, ?Text:String, Size:Int = 8, EmbeddedFont:Bool = true)
+	{
+		super(X, Y, FieldWidth, Text, Size, EmbeddedFont);
+	}
+
+	override function update(elapsed:Float)
+	{
+		super.update(elapsed);
+
+		if (tracker != null)
+		{
+			setPosition(tracker.x + xAdd, tracker.y + yAdd);
+			angle = tracker.angle;
+			alpha = tracker.alpha;
+		}
+	}
+}

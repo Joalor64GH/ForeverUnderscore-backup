@@ -23,7 +23,7 @@ typedef SwagSong =
 {
 	var song:String;
 	var notes:Array<SwagSection>;
-	var events:Array<Array<Dynamic>>;
+	var events:Array<Array<Array<Dynamic>>>;
 	var bpm:Float;
 	var needsVoices:Bool;
 	var speed:Float;
@@ -221,31 +221,6 @@ class ChartParser
 		}
 
 		return unspawnNotes;
-	}
-
-	public static function loadEvents(SONG:SwagSong, chartType:ChartType):Array<EventNote>
-	{
-		var allowedTypes:Array<ChartType> = [UNDERSCORE];
-		var eventData:Array<Array<Dynamic>> = SONG.events;
-		var unspawnEvents:Array<EventNote> = [];
-
-		if (allowedTypes.contains(chartType) && eventData != null)
-		{
-			for (event in eventData)
-			{
-				var strumTime:Float = event[0];
-				var val1:String = event[1];
-				var val2:String = event[2];
-				var onHit:String = event[3];
-
-				var eventNote:EventNote = new EventNote(strumTime, val1, val2, onHit);
-				eventNote.visible = false;
-
-				unspawnEvents.push(eventNote);
-			}
-		}
-
-		return unspawnEvents;
 	}
 }
 

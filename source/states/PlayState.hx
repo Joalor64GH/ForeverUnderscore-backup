@@ -869,14 +869,6 @@ class PlayState extends MusicBeatState
 				notes.add(dunceNote);
 			}
 
-			if (unspawnEvents[0] != null && unspawnEvents[0].strumTime - Conductor.songPosition < 3500)
-			{
-				var dunceEvent:EventNote = unspawnEvents[0];
-				dunceEvent.visible = false;
-				unspawnEvents.splice(unspawnEvents.indexOf(dunceEvent), 1);
-				events.add(dunceEvent);
-			}
-
 			noteCalls();
 
 			if (Init.trueSettings.get('Controller Mode'))
@@ -918,6 +910,14 @@ class PlayState extends MusicBeatState
 				});
 			}
 		}
+
+		events.forEachAlive(function(event:EventNote)
+		{
+			if (FlxG.sound.music.time == event.strumTime)
+			{
+				eventNoteHit(event);
+			}
+		});
 
 		callFunc('postUpdate', []);
 	}
@@ -1116,8 +1116,6 @@ class PlayState extends MusicBeatState
 
 				// unoptimised asf camera control based on strums
 				strumCameraRoll(strumline.receptors, (strumline == bfStrums));
-
-				searchUnspawnEvents();
 			}
 		}
 
@@ -1187,32 +1185,21 @@ class PlayState extends MusicBeatState
 		daNote.destroy();
 	}
 
-	public function searchUnspawnEvents()
+	function eventNoteHit(eventNote:EventNote, ?eventName:String, ?val1:String, ?val2:String)
 	{
-		while (unspawnEvents.length > 0)
-		{
-			var strumTime:Float = unspawnEvents[0].strumTime;
-			if (Conductor.songPosition < strumTime)
-			{
-				break;
-			}
+		if (eventNote == null)
+			eventNote = new EventNote('', 0, '', '');
 
-			var value1:String = '';
-			if (unspawnEvents[0].val1 != null)
-				value1 = unspawnEvents[0].val1;
+		var event:String = eventNote.event;
 
-			var value2:String = '';
-			if (unspawnEvents[0].val1 != null)
-				value2 = unspawnEvents[0].val1;
+		if (eventName != null)
+			event = eventName;
+		if (val1 != null)
+			eventNote.val1 = val1;
+		if (val2 != null)
+			eventNote.val2 = val2;
 
-			eventNoteHit(unspawnEvents[0].eventName, value1, value2);
-			unspawnEvents.shift();
-		}
-	}
-
-	function eventNoteHit(name:String, val1:String, val2:String)
-	{
-		switch (name)
+		switch (event)
 		{
 			case 'Change Character':
 				var ogPosition:Array<Float> = [770, 450];
@@ -1295,6 +1282,12 @@ class PlayState extends MusicBeatState
 					char.specialAnim = true;
 				}
 		}
+
+		callFunc('eventNoteHit', [eventNote.event, eventNote.val1, eventNote.val2]);
+
+		eventNote.kill();
+		events.remove(eventNote, true);
+		eventNote.destroy();
 	}
 
 	function goodNoteHit(coolNote:Note, character:Character, characterStrums:Strumline, ?canDisplayJudgement:Bool = true)
@@ -1889,15 +1882,28 @@ class PlayState extends MusicBeatState
 
 		// generate the chart and sort through notes
 		unspawnNotes = ChartParser.loadChart(SONG, ChartParser.songType);
-		unspawnEvents = ChartParser.loadEvents(SONG, ChartParser.songType);
-
 		unspawnNotes.sort(sortByShit);
 
-		if (unspawnEvents.length > 1)
+		// moving this to chartparser later;
+		if (SONG.events != null && SONG.events.length > 0)
 		{
-			unspawnEvents.sort(sortByEvent);
+			for (i in 0...SONG.events.length)
+			{
+				if (SONG.events[i] != null && SONG.events[i].length > 0)
+				{
+					for (event in SONG.events[i])
+					{
+						var eventNote:EventNote = new EventNote(event[1], event[0], event[2], event[3]);
+						eventNote.visible = false;
+						events.add(eventNote);
+					}
+				}
+			}
 		}
-		searchUnspawnEvents();
+
+		if (events.members.length > 1)
+			events.members.sort(sortByEvent);
+
 		generatedMusic = true;
 	}
 
