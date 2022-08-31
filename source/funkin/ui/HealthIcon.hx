@@ -58,7 +58,7 @@ class HealthIcon extends FlxSprite
 				path = Paths.image('$trimmedIcon/icon', 'characters');
 			else
 				path = Paths.image('credits/face');
-			trace('$icon icon is invalid, trying $trimmedIcon instead you fuck');
+			//trace('$icon icon is invalid, trying $trimmedIcon instead you fuck');
 		}
 
 		if (sparrowIcon)
