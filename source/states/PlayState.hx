@@ -913,7 +913,7 @@ class PlayState extends MusicBeatState
 
 		events.forEachAlive(function(event:EventNote)
 		{
-			if (FlxG.sound.music.time == event.strumTime)
+			if (Conductor.songMusic.time == event.strumTime)
 			{
 				eventNoteHit(event);
 			}
