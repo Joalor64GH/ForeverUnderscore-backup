@@ -105,7 +105,7 @@ class ForeverAssets
 	/**
 	 * [Literally copy and pasted from the above, fu-];
 	 */
-	public static function generateRatingTimings(asset:String, ratingTiming:String, assetModifier:String = 'base', changeableSkin:String = 'default',
+	public static function generateRatingTimings(asset:String, ratingTiming:String, parentSprite:FlxSprite, assetModifier:String = 'base', changeableSkin:String = 'default',
 			baseLibrary:String):FlxSprite
 	{
 		var newWidth = 166;
@@ -132,6 +132,13 @@ class ForeverAssets
 				if (ratingTiming == 'late')
 					timing.x += newWidth * 0.5;
 		}
+
+		// actually painful;
+		timing.x = parentSprite.x;
+		timing.y = parentSprite.y;
+		timing.acceleration.y = parentSprite.acceleration.y;
+		timing.velocity.y = parentSprite.velocity.y;
+		timing.velocity.x = parentSprite.velocity.x;
 
 		return timing;
 	}

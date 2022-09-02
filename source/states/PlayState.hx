@@ -240,10 +240,6 @@ class PlayState extends MusicBeatState
 		Conductor.mapBPMChanges(SONG);
 		Conductor.changeBPM(SONG.bpm);
 
-		setupScripts();
-
-		callFunc('create', []);
-
 		// cache shit
 		displayRating('sick', 'early', true);
 		popUpCombo(true);
@@ -258,6 +254,9 @@ class PlayState extends MusicBeatState
 			curStage = SONG.stage;
 		else
 			curStage = 'unknown';
+
+		setupScripts();
+		callFunc('create', []);
 
 		if (Init.trueSettings.get('Stage Opacity') > 0)
 		{
@@ -458,7 +457,7 @@ class PlayState extends MusicBeatState
 		var missArray:Array<String> = [];
 
 		var pauseMusic:FlxSound = new FlxSound().loadEmbedded(Paths.music('breakfast'), true, true);
-		pauseMusic.volume = 0.00000001;
+		pauseMusic.volume = 0.000001;
 		pauseMusic.play();
 
 		missArray.push('missnote1');
@@ -472,14 +471,14 @@ class PlayState extends MusicBeatState
 		for (i in soundArray)
 		{
 			var allSounds:FlxSound = new FlxSound().loadEmbedded(Paths.sound(i));
-			allSounds.volume = 0.00000001;
+			allSounds.volume = 0.000001;
 			allSounds.play();
 		}
 
 		for (i in missArray)
 		{
 			var missSounds:FlxSound = new FlxSound().loadEmbedded(Paths.sound(i));
-			missSounds.volume = 0.00000001;
+			missSounds.volume = 0.000001;
 			missSounds.play();
 
 			// stopping the pause music once these are done;
@@ -1680,7 +1679,9 @@ class PlayState extends MusicBeatState
 			// hardcoded lmao
 			if (Init.trueSettings.get('Fixed Judgements'))
 			{
-				if (!cache)
+				if (cache)
+					numScore.alpha = 0.000001;
+				else
 					numScore.cameras = [camHUD];
 				numScore.y += 50;
 			}
@@ -1745,18 +1746,11 @@ class PlayState extends MusicBeatState
 		add(rating);
 
 		// for ratings that have no timings to them, this is PAINFUL to look at, I know;
-		var noTiming = (timing == null || timing == '' || allSicks || daRating == 'sick' || daRating == 'miss');
+		var noTiming = (timing == null || timing == '' || daRating == 'sick-perfect' || daRating == 'sick' || daRating == 'miss');
 
-		var timingSpr = ForeverAssets.generateRatingTimings('$daRating-timings', timing, assetModifier, changeableSkin, 'UI');
+		var timingSpr = ForeverAssets.generateRatingTimings('$daRating-timings', timing, rating, assetModifier, changeableSkin, 'UI');
 		timingSpr.visible = !noTiming;
 		add(timingSpr);
-
-		// actually painful;
-		timingSpr.x = rating.x;
-		timingSpr.y = rating.y;
-		timingSpr.acceleration.y = rating.acceleration.y;
-		timingSpr.velocity.y = rating.velocity.y;
-		timingSpr.velocity.x = rating.velocity.x;
 
 		// i'm kinda afraid that this can impact on performance a little bit, but it makes things easier at the same time;
 
@@ -1783,13 +1777,9 @@ class PlayState extends MusicBeatState
 		else
 		{
 			if (lastRating != null)
-			{
 				lastRating.kill();
-			}
 			if (lastTiming != null)
-			{
 				lastTiming.kill();
-			}
 			add(rating);
 			lastRating = rating;
 			lastTiming = timingSpr;
@@ -1812,7 +1802,12 @@ class PlayState extends MusicBeatState
 			});
 		}
 
-		if (!cache)
+		if (cache)
+		{
+			rating.alpha = 0.000001;
+			timingSpr.alpha = 0.000001;
+		}
+		else
 		{
 			if (Init.trueSettings.get('Fixed Judgements'))
 			{
