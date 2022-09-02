@@ -1746,7 +1746,7 @@ class PlayState extends MusicBeatState
 		add(rating);
 
 		// for ratings that have no timings to them, this is PAINFUL to look at, I know;
-		var noTiming = (timing == null || timing == '' || daRating == 'sick-perfect' || daRating == 'sick' || daRating == 'miss');
+		var noTiming = (timing == null || timing == '' || daRating == 'sick' || daRating == 'miss');
 
 		var timingSpr = ForeverAssets.generateRatingTimings('$daRating-timings', timing, rating, assetModifier, changeableSkin, 'UI');
 		timingSpr.visible = !noTiming;
