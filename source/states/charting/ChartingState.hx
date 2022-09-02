@@ -64,6 +64,8 @@ class ChartingState extends MusicBeatState
 {
 	var _song:SwagSong;
 
+	var _file:FileReference;
+
 	var songMusic:FlxSound;
 	var vocals:FlxSound;
 	private var keysTotal = 8;
@@ -300,6 +302,12 @@ class ChartingState extends MusicBeatState
 			}
 		}
 
+		if (FlxG.keys.pressed.CONTROL && FlxG.keys.justPressed.S)
+		{
+			autosaveSong();
+			saveLevel();
+		}
+
 		if (FlxG.keys.justPressed.ESCAPE)
 		{
 			songPosition = songMusic.time;
@@ -312,7 +320,7 @@ class ChartingState extends MusicBeatState
 			Main.switchState(this, new PlayState());
 		}
 
-		if (FlxG.keys.justPressed.BACKSPACE)
+		if (FlxG.keys.pressed.SHIFT && FlxG.keys.justPressed.ESCAPE)
 		{
 			FlxG.mouse.visible = false;
 			ForeverTools.killMusic([songMusic, vocals]);
@@ -557,48 +565,48 @@ class ChartingState extends MusicBeatState
 
 		curRenderedNotes.add(note);
 
-		/*if (daSus > 0)
+		if (daSus > 0)
 		{
 			var sustainVis:FlxSprite = new FlxSprite(note.x + (gridSize / 2 - 3),
-				note.y + gridSize).makeGraphic(8, Math.floor(FlxMath.remapToRange(daSus, 0, Conductor.stepCrochet * 16, 0, fullGrid.height)));
+				note.y + gridSize).makeGraphic(8, Math.floor(FlxMath.remapToRange(daSus, 0, Conductor.stepCrochet * 16, 0, note.sustainLength))); // risky move
 			curRenderedSustains.add(sustainVis);
-		}*/
-		//generateSustain(daStrumTime, daNoteInfo, daSus, daNoteAlt, note);
+		}
+		//generateSustain(daStrumTime, daNoteInfo, daSus, daNoteAlt, daNoteType, note);
 	}
 
-	private function generateSustain(daStrumTime:Float = 0, daNoteInfo:Int = 0, daSus:Float = 0, daNoteAlt:Float = 0, note:Note)
+	private function generateSustain(daStrumTime:Float = 0, daNoteInfo:Int = 0, daSus:Float = 0, daNoteAlt:Float = 0, daNoteType:Int = 0, note:Note)
 	{
-		/*
-			if (daSus > 0)
-			{
-				//prevNote = note;
-				var constSize = Std.int(gridSize / 3);
+		if (daSus > 0)
+		{
+			var prevNote:Null<Note>;
+			var constSize = Std.int(gridSize / 3);
+			var vertSize = Std.int(gridSize / 2);
 
-				var sustainVis:Note = new Note(daStrumTime + (Conductor.stepCrochet * daSus) + Conductor.stepCrochet, daNoteInfo % 4, daNoteAlt, prevNote, true);
-				sustainVis.setGraphicSize(constSize,
-					Math.floor(FlxMath.remapToRange((daSus / 2) - constSize, 0, Conductor.stepCrochet * verticalSize, 0, gridSize * verticalSize)));
-				sustainVis.updateHitbox();
-				sustainVis.x = note.x + constSize;
-				sustainVis.y = note.y + (gridSize / 2);
+			prevNote = note;
 
-				var sustainEnd:Note = new Note(daStrumTime + (Conductor.stepCrochet * daSus) + Conductor.stepCrochet, daNoteInfo % 4, daNoteAlt, sustainVis, true);
-				sustainEnd.setGraphicSize(constSize, constSize);
-				sustainEnd.updateHitbox();
-				sustainEnd.x = sustainVis.x;
-				sustainEnd.y = note.y + (sustainVis.height) + (gridSize / 2);
+			var sustainVis:Note = new Note(daStrumTime + (Conductor.stepCrochet * daSus) + Conductor.stepCrochet, daNoteInfo % 4, daNoteAlt, prevNote, true);
+			sustainVis.setGraphicSize(constSize,
+				Math.floor(FlxMath.remapToRange((daSus / 2) - constSize, 0, Conductor.stepCrochet * vertSize, 0, gridSize * vertSize)));
+			sustainVis.updateHitbox();
+			sustainVis.x = note.x + constSize;
+			sustainVis.y = note.y + (gridSize / 2);
 
-				// loll for later
-				sustainVis.rawNoteData = daNoteInfo;
-				sustainEnd.rawNoteData = daNoteInfo;
+			var sustainEnd:Note = new Note(daStrumTime + (Conductor.stepCrochet * daSus) + Conductor.stepCrochet, daNoteInfo % 4, daNoteAlt, sustainVis, true);
+			sustainEnd.setGraphicSize(constSize, constSize);
+			sustainEnd.updateHitbox();
+			sustainEnd.x = sustainVis.x;
+			sustainEnd.y = note.y + (sustainVis.height) + (gridSize / 2);
 
-				curRenderedSustains.add(sustainVis);
-				curRenderedSustains.add(sustainEnd);
-				//
+			// loll for later
+			sustainVis.rawNoteData = daNoteInfo;
+			sustainEnd.rawNoteData = daNoteInfo;
 
-				// set the note at the current note map
-				curNoteMap.set(note, [sustainVis, sustainEnd]);
-			}
-		 */
+			curRenderedSustains.add(sustainVis);
+			curRenderedSustains.add(sustainEnd);
+
+			// set the note at the current note map
+			//curNoteMap.set(note, [sustainVis, sustainEnd]);
+		}
 	}
 
 	var coolGrid:FlxBackdrop;
@@ -696,6 +704,57 @@ class ChartingState extends MusicBeatState
 			"song": _song
 		});
 		FlxG.save.flush();
+	}
+
+	// save things
+	function saveLevel()
+	{
+		var json = {
+			"song": _song
+		};
+
+		var data:String = Json.stringify(json, "\t");
+
+		if ((data != null) && (data.length > 0))
+		{
+			_file = new FileReference();
+			_file.addEventListener(Event.COMPLETE, onSaveComplete);
+			_file.addEventListener(Event.CANCEL, onSaveCancel);
+			_file.addEventListener(IOErrorEvent.IO_ERROR, onSaveError);
+			_file.save(data.trim(), _song.song.toLowerCase() + ".json");
+		}
+	}
+
+	function onSaveComplete(_):Void
+	{
+		_file.removeEventListener(Event.COMPLETE, onSaveComplete);
+		_file.removeEventListener(Event.CANCEL, onSaveCancel);
+		_file.removeEventListener(IOErrorEvent.IO_ERROR, onSaveError);
+		_file = null;
+		FlxG.log.notice("Successfully saved LEVEL DATA.");
+	}
+
+	/**
+	 * Called when the save file dialog is cancelled.
+	 */
+	function onSaveCancel(_):Void
+	{
+		_file.removeEventListener(Event.COMPLETE, onSaveComplete);
+		_file.removeEventListener(Event.CANCEL, onSaveCancel);
+		_file.removeEventListener(IOErrorEvent.IO_ERROR, onSaveError);
+		_file = null;
+	}
+
+	/**
+	 * Called if there is an error while saving the gameplay recording.
+	 */
+	function onSaveError(_):Void
+	{
+		_file.removeEventListener(Event.COMPLETE, onSaveComplete);
+		_file.removeEventListener(Event.CANCEL, onSaveCancel);
+		_file.removeEventListener(IOErrorEvent.IO_ERROR, onSaveError);
+		_file = null;
+		FlxG.log.error("Problem saving Level data");
 	}
 
 	function pauseMusic()
