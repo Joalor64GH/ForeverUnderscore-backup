@@ -1,6 +1,6 @@
 package;
 
-import base.debug.Overlay;
+import base.debug.*;
 import dependency.Discord;
 import dependency.FNFTransition;
 import dependency.FNFUIState;
@@ -18,6 +18,8 @@ import haxe.io.Path;
 import lime.app.Application;
 import openfl.Assets;
 import openfl.Lib;
+import openfl.display.Bitmap;
+import openfl.display.BitmapData;
 import openfl.display.FPS;
 import openfl.display.Sprite;
 import openfl.events.Event;
@@ -40,6 +42,8 @@ class Main extends Sprite
 	public static var showCommitHash:Bool = false;
 
 	static var infoCounter:Overlay; // initialize the heads up display that shows information before creating it.
+	public static var infoOutline:Bitmap;
+	public static var instance:Main;
 
 	// heres gameweeks set up!
 
@@ -122,6 +126,8 @@ class Main extends Sprite
 	{
 		super();
 
+		instance = this;
+
 		/**
 			ok so, haxe html5 CANNOT do 120 fps. it just cannot.
 			so here i just set the framerate to 60 if its complied in html5.
@@ -137,9 +143,6 @@ class Main extends Sprite
 		addChild(new FlxGame(0, 0, mainClassState, 1, #if (html5 || neko) 60 #else 120 #end, #if (html5 || neko) 60 #else 120 #end,
 			true)); // and create it afterwards
 
-		// default game FPS settings, I'll probably comment over them later.
-		// addChild(new FPS(10, 3, 0xFFFFFF));
-
 		// begin the discord rich presence
 		#if DISCORD_RPC
 		Discord.initializeRPC();
@@ -150,7 +153,9 @@ class Main extends Sprite
 		PlayerSettings.init();
 
 		infoCounter = new Overlay(0, 0);
-		changeInfoAlpha(1);
+		/*infoOutline = OverlayOutline.renderImage(infoCounter, 1, 0x000000, true);
+		infoOutline.smoothing = true;*/
+		changeInfoParams(1);
 		addChild(infoCounter);
 	}
 
@@ -244,9 +249,10 @@ class Main extends Sprite
 		Sys.exit(1);
 	}
 
-	public static function changeInfoAlpha(value:Float)
+	public static function changeInfoParams(newAlpha:Float)
 	{
-		infoCounter.alpha = value;
+		infoCounter.alpha = newAlpha;
+		//infoOutline.alpha = newAlpha;
 	}
 
 	public static function getGitCommitHash()

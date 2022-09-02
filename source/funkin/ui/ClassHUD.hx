@@ -37,7 +37,6 @@ class ClassHUD extends FlxTypedGroup<FlxBasic>
 	// fnf mods
 	var scoreDisplay:String = 'beep bop bo skdkdkdbebedeoop brrapadop';
 
-	var cornerMark:FlxText; // engine mark at the upper right corner
 	var centerMark:FlxText; // song display name and difficulty at the center
 
 	var healthBarBG:FlxSprite;
@@ -106,13 +105,6 @@ class ClassHUD extends FlxTypedGroup<FlxBasic>
 		scoreBar.setBorderStyle(OUTLINE, FlxColor.BLACK, 1.5);
 		scoreBar.antialiasing = !Init.trueSettings.get('Disable Antialiasing');
 		add(scoreBar);
-
-		cornerMark = new FlxText(0, 0, 0, engineDisplay);
-		cornerMark.setFormat(Paths.font('vcr.ttf'), 18, FlxColor.WHITE);
-		cornerMark.setBorderStyle(OUTLINE, FlxColor.BLACK, 2);
-		cornerMark.setPosition(FlxG.width - (cornerMark.width + 5), 5);
-		cornerMark.antialiasing = !Init.trueSettings.get('Disable Antialiasing');
-		add(cornerMark);
 
 		centerMark = new FlxText(0, (Init.trueSettings.get('Downscroll') ? FlxG.height - 45 : 20), 0, '- $infoDisplay [$diffDisplay] -');
 		centerMark.setFormat(Paths.font('vcr.ttf'), 24, FlxColor.WHITE);

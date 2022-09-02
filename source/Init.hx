@@ -131,6 +131,12 @@ class Init extends FlxState
 			'Whether to display information like your game state.',
 			NOT_FORCED
 		],
+		'Forever Mark' => [
+			true,
+			Checkmark,
+			'Whether to display a Engine Watermark on the Info Counter',
+			NOT_FORCED
+		],
 		// USER INTERFACE;
 		"UI Skin" => [
 			'default',
@@ -425,7 +431,8 @@ class Init extends FlxState
 	{
 		FlxG.autoPause = trueSettings.get('Auto Pause');
 
-		Overlay.updateDisplayInfo(trueSettings.get('FPS Counter'), trueSettings.get('Debug Info'), trueSettings.get('Memory Counter'));
+		Overlay.updateDisplayInfo(trueSettings.get('FPS Counter'), trueSettings.get('Debug Info'), trueSettings.get('Memory Counter'),
+			trueSettings.get('Forever Mark'));
 
 		#if !html5
 		Main.updateFramerate(trueSettings.get("Framerate Cap"));

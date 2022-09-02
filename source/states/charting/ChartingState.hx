@@ -103,6 +103,8 @@ class ChartingState extends MusicBeatState
 
 		generateBackground();
 
+		Main.changeInfoParams(0.6);
+
 		if (PlayState.SONG != null)
 			_song = PlayState.SONG;
 		else
@@ -315,7 +317,9 @@ class ChartingState extends MusicBeatState
 			FlxG.mouse.visible = false;
 
 			ForeverTools.killMusic([songMusic, vocals]);
+
 			Paths.clearUnusedMemory();
+			Main.changeInfoParams(1);
 
 			Main.switchState(this, new PlayState());
 		}
@@ -326,6 +330,8 @@ class ChartingState extends MusicBeatState
 			ForeverTools.killMusic([songMusic, vocals]);
 
 			Paths.clearUnusedMemory();
+			Main.changeInfoParams(1);
+
 			Main.switchState(this, new FreeplayState());
 		}
 	}
