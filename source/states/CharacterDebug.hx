@@ -152,15 +152,26 @@ class CharacterDebug extends MusicBeatState
 			saveCharOffsets();
 		});
 
+		var characters:Array<String> = CoolUtil.returnAssetsLibrary('characters', 'assets');
+
 		ghostAnimDropDown = new PsychDropDown(10, 30, PsychDropDown.makeStrIdLabelArray(ghostAnimList, true), function(animation:String)
 		{
 			if (ghostAnimList[0] != '' || ghostAnimList[0] != null)
 				ghost.playAnim(ghostAnimList[Std.parseInt(animation)], true);
 		});
 
+		var characterDropDown = new PsychDropDown(-350, 30, PsychDropDown.makeStrIdLabelArray(characters, true), function(character:String)
+		{
+			curCharacter = characters[Std.parseInt(character)];
+			generateCharacter(!curCharacter.startsWith('bf'));
+			genCharOffsets();
+		});
+		characterDropDown.selectedLabel = curCharacter;
+
 		tab_group.add(new FlxText(ghostAnimDropDown.x, ghostAnimDropDown.y - 18, 0, 'Ghost Animation:'));
 		tab_group.add(check_offset);
 		tab_group.add(ghostAnimDropDown);
+		tab_group.add(characterDropDown);
 		tab_group.add(saveButton);
 		UI_box.addGroup(tab_group);
 	}
@@ -299,8 +310,17 @@ class CharacterDebug extends MusicBeatState
 
 	function generateCharacter(isDad:Bool = true)
 	{
+		var genOffset:Array<Int> = [100, 100];
+
+		if (!isDad)
+			genOffset = [770, 450];
+
+		if (curCharacter.startsWith('gf'))
+			genOffset = [300, 100];
+
+		remove(char);
 		char = new Character(!isDad, curCharacter);
-		char.screenCenter();
+		char.setPosition(genOffset[0], genOffset[1]);
 		char.debugMode = true;
 		add(char);
 	}
