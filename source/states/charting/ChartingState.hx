@@ -189,6 +189,8 @@ class ChartingState extends MusicBeatState
 
 	override public function update(elapsed:Float)
 	{
+		curStep = recalculateSteps();
+
 		if (FlxG.keys.justPressed.SPACE)
 		{
 			if (songMusic.playing)
@@ -355,6 +357,20 @@ class ChartingState extends MusicBeatState
 			}
 		});
 
+		if (_song.notes[curSection].changeBPM && _song.notes[curSection].bpm > 0)
+		{
+			Conductor.changeBPM(_song.notes[curSection].bpm);
+		}
+		else
+		{
+			// get last bpm
+			var daBPM:Float = _song.bpm;
+			for (i in 0...curSection)
+				if (_song.notes[i].changeBPM)
+					daBPM = _song.notes[i].bpm;
+			Conductor.changeBPM(daBPM);
+		}
+
 		super.stepHit();
 	}
 
@@ -394,7 +410,6 @@ class ChartingState extends MusicBeatState
 
 		// fullgrid height
 		fullGrid.height = (songMusic.length / Conductor.stepCrochet) * gridSize;
-
 		add(fullGrid);
 	}
 
@@ -654,6 +669,25 @@ class ChartingState extends MusicBeatState
 	function adjustSide(noteData:Int, sectionTemp:Bool)
 	{
 		return (sectionTemp ? ((noteData + 4) % 8) : noteData);
+	}
+
+	function recalculateSteps():Int
+	{
+		var lastChange:BPMChangeEvent = {
+			stepTime: 0,
+			songTime: 0,
+			bpm: 0
+		}
+		for (i in 0...Conductor.bpmChangeMap.length)
+		{
+			if (songMusic.time > Conductor.bpmChangeMap[i].songTime)
+				lastChange = Conductor.bpmChangeMap[i];
+		}
+
+		curStep = lastChange.stepTime + Math.floor((songMusic.time - lastChange.songTime) / Conductor.stepCrochet);
+		updateBeat();
+
+		return curStep;
 	}
 
 	function autosaveSong():Void
