@@ -219,6 +219,45 @@ class ChartingState extends MusicBeatState
 			}
 		}
 
+		if (!FlxG.keys.pressed.SHIFT)
+		{
+			if (FlxG.keys.pressed.W || FlxG.keys.pressed.S)
+			{
+				songMusic.pause();
+				vocals.pause();
+
+				var daTime:Float = 700 * FlxG.elapsed;
+
+				if (FlxG.keys.pressed.W)
+				{
+					songMusic.time -= daTime;
+				}
+				else
+					songMusic.time += daTime;
+
+				vocals.time = songMusic.time;
+			}
+		}
+		else
+		{
+			if (FlxG.keys.justPressed.W || FlxG.keys.justPressed.S)
+			{
+				songMusic.pause();
+				vocals.pause();
+
+				var daTime:Float = Conductor.stepCrochet * 2;
+
+				if (FlxG.keys.justPressed.W)
+				{
+					songMusic.time -= daTime;
+				}
+				else
+					songMusic.time += daTime;
+
+				vocals.time = songMusic.time;
+			}
+		}
+
 		var scrollSpeed:Float = 0.75;
 		if (FlxG.mouse.wheel != 0)
 		{
@@ -243,10 +282,10 @@ class ChartingState extends MusicBeatState
 		_song.bpm = tempBpm;
 
 		// there's probably a better way to do this;
-		bpmTxt.text = bpmTxt.text = Std.string('BEAT: ' + FlxMath.roundDecimal(decBeat, 2) + '  STEP: ' + curStep + '  TIME: '
-			+ FlxMath.roundDecimal(Conductor.songPosition / 1000, 2))
-			+ '  BPM: '
-			+ _song.bpm;
+		bpmTxt.text = Std.string('BEAT: ' + FlxMath.roundDecimal(decBeat, 2)
+			+ '\nSTEP: ' + FlxMath.roundDecimal(decStep, 2)
+			+ '\nTIME: ' + Std.string(FlxMath.roundDecimal(Conductor.songPosition / 1000, 2)) + " / " + Std.string(FlxMath.roundDecimal(songMusic.length / 1000, 2))
+			+ '\nBPM: ' + _song.bpm);
 
 		super.update(elapsed);
 
@@ -635,7 +674,6 @@ class ChartingState extends MusicBeatState
 		add(coolGradient);
 	}
 
-	var editorTxt:FlxText;
 	var songTxt:FlxText;
 	var helpTxt:FlxText;
 	var prefTxt:FlxText;
@@ -643,30 +681,23 @@ class ChartingState extends MusicBeatState
 
 	private function generateText()
 	{
-		// text stuffs
-		editorTxt = new FlxText(10, 20, 0, "", 16);
-		editorTxt.setFormat(Paths.font("vcr.ttf"), 20, FlxColor.WHITE, LEFT);
-		editorTxt.scrollFactor.set();
-		add(editorTxt);
-
-		songTxt = new FlxText(10, 45, 0, "", 16);
+		songTxt = new FlxText(0, 20, 0, "", 16);
 		songTxt.setFormat(Paths.font("vcr.ttf"), 20, FlxColor.WHITE, LEFT);
 		songTxt.scrollFactor.set();
 		add(songTxt);
 
-		editorTxt.text = 'CHART EDITOR\n';
 		songTxt.text = _song.song.toUpperCase()
 			+ ' <${CoolUtil.difficultyFromNumber(PlayState.storyDifficulty)}> '
 			+ 'BY '
 			+ _song.author.toUpperCase()
 			+ '\n';
 
-		bpmTxt = new FlxText(5, FlxG.height - 30, 0, "BPM: N/A", 16);
+		bpmTxt = new FlxText(0, FlxG.height - 80, 0, "BEAT: 0.00\nSTEP: 0.00\nTIME: 0.00 / 0.00\nBPM: 0", 16);
 		bpmTxt.setFormat(Paths.font("vcr.ttf"), 20, FlxColor.WHITE, LEFT);
 		bpmTxt.scrollFactor.set();
 		add(bpmTxt);
 
-		helpTxt = new FlxText(0, 0, 0, "", 16);
+		/*helpTxt = new FlxText(0, 0, 0, "", 16);
 		helpTxt.setFormat(Paths.font("vcr.ttf"), 20, FlxColor.WHITE, LEFT);
 		helpTxt.scrollFactor.set();
 		add(helpTxt);
@@ -680,7 +711,7 @@ class ChartingState extends MusicBeatState
 		prefTxt.text = 'PRESS ENTER FOR PREFERENCES';
 
 		helpTxt.setPosition(FlxG.width - (helpTxt.width + 5), FlxG.height - 55);
-		prefTxt.setPosition(FlxG.width - (prefTxt.width + 5), FlxG.height - 30);
+		prefTxt.setPosition(FlxG.width - (prefTxt.width + 5), FlxG.height - 30);*/
 	}
 
 	function adjustSide(noteData:Int, sectionTemp:Bool)
