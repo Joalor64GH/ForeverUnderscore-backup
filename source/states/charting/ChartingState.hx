@@ -90,6 +90,8 @@ class ChartingState extends MusicBeatState
 
 	var curNoteType:Int = 0;
 
+	var tempBpm:Float = 0;
+
 	private var dummyArrow:FlxSprite;
 	private var curRenderedNotes:FlxTypedGroup<Note>;
 	private var curRenderedSustains:FlxTypedGroup<FlxSprite>;
@@ -109,10 +111,6 @@ class ChartingState extends MusicBeatState
 			_song = PlayState.SONG;
 		else
 			_song = Song.loadSong('test', 'test');
-
-		loadSong(_song.song);
-		Conductor.changeBPM(_song.bpm);
-		Conductor.mapBPMChanges(_song);
 		
 		#if DISCORD_RPC
 		Discord.changePresence('CHART EDITOR',
@@ -121,6 +119,12 @@ class ChartingState extends MusicBeatState
 			+ ' [${CoolUtil.difficultyFromNumber(PlayState.storyDifficulty)}] - by '
 			+ _song.author, null, null, null, true);
 		#end
+
+		loadSong(_song.song);
+		Conductor.changeBPM(_song.bpm);
+		Conductor.mapBPMChanges(_song);
+
+		tempBpm = _song.bpm;
 
 		generateGrid();
 
@@ -236,13 +240,38 @@ class ChartingState extends MusicBeatState
 		coolGradient.y = strumLineCam.y - (FlxG.height / 2);
 		coolGrid.y = strumLineCam.y - (FlxG.height / 2);
 
+		_song.bpm = tempBpm;
+
 		// there's probably a better way to do this;
 		bpmTxt.text = bpmTxt.text = Std.string('BEAT: ' + FlxMath.roundDecimal(decBeat, 2) + '  STEP: ' + curStep + '  TIME: '
 			+ FlxMath.roundDecimal(Conductor.songPosition / 1000, 2))
 			+ '  BPM: '
-			+ _song.notes[curSection].bpm;
+			+ _song.bpm;
 
 		super.update(elapsed);
+
+		curRenderedNotes.forEachAlive(function(epicNote:Note)
+		{
+			var songCrochet = (Math.floor(Conductor.songPosition / Conductor.stepCrochet));
+
+			// do epic note calls for strum stuffs
+			if (songCrochet == Math.floor(epicNote.strumTime / Conductor.stepCrochet))
+			{
+				var data:Null<Int> = epicNote.noteData;
+
+				if (data > -1 && epicNote.mustPress != _song.notes[curSection].mustHitSection)
+					data += 4;
+
+				arrowGroup.members[data].playAnim('confirm', true);
+				arrowGroup.members[data].resetAnim = (epicNote.sustainLength / 1000) + 0.2;
+
+				if (!hitSoundsPlayed.contains(epicNote))
+				{
+					FlxG.sound.play(Paths.sound('hitsounds/${Init.trueSettings.get('Hitsound Type').toLowerCase()}/hit'));
+					hitSoundsPlayed.push(epicNote);
+				}
+			}
+		});
 
 		if (FlxG.mouse.x > (fullGrid.x)
 			&& FlxG.mouse.x < (fullGrid.x + fullGrid.width)
@@ -346,23 +375,6 @@ class ChartingState extends MusicBeatState
 			{
 				epicNote.alive = true;
 				epicNote.visible = true;
-
-				var pain = (Math.floor(Conductor.songPosition / Conductor.stepCrochet));
-
-				// do epic note calls for strum stuffs
-				if (pain == Math.floor(epicNote.strumTime / Conductor.stepCrochet))
-				{
-					var data:Null<Int> = epicNote.noteData;
-
-					arrowGroup.members[data % 8].playAnim('confirm', true);
-					arrowGroup.members[data % 8].resetAnim = (epicNote.sustainLength / 1000) + 0.2;
-
-					if (!hitSoundsPlayed.contains(epicNote))
-					{
-						FlxG.sound.play(Paths.sound('hitsounds/${Init.trueSettings.get('Hitsound Type').toLowerCase()}/hit'));
-						hitSoundsPlayed.push(epicNote);
-					}
-				}
 			}
 			else
 			{
@@ -370,20 +382,6 @@ class ChartingState extends MusicBeatState
 				epicNote.visible = false;
 			}
 		});
-
-		if (_song.notes[curSection].changeBPM && _song.notes[curSection].bpm > 0)
-		{
-			Conductor.changeBPM(_song.notes[curSection].bpm);
-		}
-		else
-		{
-			// get last bpm
-			var daBPM:Float = _song.bpm;
-			for (i in 0...curSection)
-				if (_song.notes[i].changeBPM)
-					daBPM = _song.notes[i].bpm;
-			Conductor.changeBPM(daBPM);
-		}
 
 		super.stepHit();
 	}
@@ -492,6 +490,7 @@ class ChartingState extends MusicBeatState
 			sectionsMax = section;
 			curSection = section;
 			regenerateSection(section, 16 * gridSize * section);
+			setNewBPM(section);
 			for (i in _song.notes[section].sectionNotes)
 			{
 				// note stuffs
@@ -565,6 +564,10 @@ class ChartingState extends MusicBeatState
 		note.x += Math.floor(adjustSide(daNoteInfo, _song.notes[noteSection].mustHitSection) * gridSize);
 
 		note.y = Math.floor(getYfromStrum(daStrumTime));
+
+		note.mustPress = !_song.notes[curSection].mustHitSection;
+		if (daNoteInfo > 3)
+			note.mustPress = !note.mustPress;
 
 		if (pushNote)
 			_song.notes[noteSection].sectionNotes.push([daStrumTime, daNoteInfo % 8, daSus, '']);
@@ -683,6 +686,23 @@ class ChartingState extends MusicBeatState
 	function adjustSide(noteData:Int, sectionTemp:Bool)
 	{
 		return (sectionTemp ? ((noteData + 4) % 8) : noteData);
+	}
+
+	function setNewBPM(section:Int)
+	{
+		if (_song.notes[curSection].changeBPM && _song.notes[curSection].bpm > 0)
+		{
+			Conductor.changeBPM(_song.notes[curSection].bpm);
+		}
+		else
+		{
+			// get last bpm
+			var daBPM:Float = _song.bpm;
+			for (i in 0...curSection)
+				if (_song.notes[i].changeBPM)
+					daBPM = _song.notes[i].bpm;
+			Conductor.changeBPM(daBPM);
+		}
 	}
 
 	function recalculateSteps():Int
