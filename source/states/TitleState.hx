@@ -64,7 +64,7 @@ class TitleState extends MusicBeatState
 	var titleText:FlxSprite;
 	var gameLogo:FlxSprite;
 	var gfDance:FlxSprite;
-	var backdrop:FlxSprite;
+	//var backdrop:FlxSprite;
 	var blackScreen:FlxSprite;
 	var ngSpr:FlxSprite;
 
@@ -95,11 +95,11 @@ class TitleState extends MusicBeatState
 		add(bg);
 
 		// cool bg
-		backdrop = new FlxBackdrop(Paths.image('menus/base/title/grid'), 1, 1, true, true, 1, 1);
+		/*backdrop = new FlxBackdrop(Paths.image('menus/base/title/grid'), 1, 1, true, true, 1, 1);
 		backdrop.velocity.set(300, 0);
 		backdrop.screenCenter(X);
 		backdrop.alpha = (32 / 255);
-		add(backdrop);
+		add(backdrop);*/
 
 		gfDance = new FlxSprite(FlxG.width * 0.4, FlxG.height * 0.07);
 		gfDance.frames = Paths.getSparrowAtlas('menus/base/title/gfDanceTitle');
@@ -380,11 +380,11 @@ class TitleState extends MusicBeatState
 			case 48:
 				deleteCoolText();
 			case 52:
-				addMoreText("Friday Night Funkin'");
+				addMoreText("Friday");
 			case 56:
-				addMoreText('Forever Engine');
+				addMoreText('Night');
 			case 60:
-				addMoreText('Underscore');
+				addMoreText("Funkin'");
 		}
 	}
 

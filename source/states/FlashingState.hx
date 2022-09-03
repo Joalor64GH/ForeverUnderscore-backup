@@ -33,7 +33,7 @@ class FlashingState extends MusicBeatState
 
 		bg = new FlxSprite();
 		bg.loadGraphic(Paths.image('menus/base/menuDesat'));
-		bg.alpha = 0.4;
+		bg.alpha = 0.2;
 		bg.color = 0xFFFF56B3;
 		bg.setGraphicSize(Std.int(bg.width * 1.1));
 		bg.updateHitbox();

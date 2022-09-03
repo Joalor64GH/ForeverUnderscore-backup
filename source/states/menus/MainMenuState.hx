@@ -2,7 +2,6 @@ package states.menus;
 
 import base.ForeverTools;
 import base.MusicBeat.MusicBeatState;
-import base.WeekParser;
 import dependency.Discord;
 import flixel.FlxG;
 import flixel.FlxObject;
@@ -38,6 +37,8 @@ class MainMenuState extends MusicBeatState
 
 	static var tweenFinished:Bool = true;
 
+	var menuItemScale:Int = 1;
+
 	override function create()
 	{
 		super.create();
@@ -57,23 +58,38 @@ class MainMenuState extends MusicBeatState
 		// uh
 		persistentUpdate = persistentDraw = true;
 
-		generateBackground();
+		var vertScroll:Float = Math.max(0.25 - (0.05 * (optionShit.length - 4)), 0.1);
+
+		bg = new FlxSprite(-80).loadGraphic(Paths.image('menus/base/menuBG'));
+		bg.scrollFactor.set(0, vertScroll);
+		bg.setGraphicSize(Std.int(bg.width * 1.175));
+		bg.updateHitbox();
+		bg.screenCenter();
+		bg.antialiasing = !Init.trueSettings.get('Disable Antialiasing');
+		add(bg);
 
 		camFollow = new FlxObject(0, 0, 1, 1);
 		add(camFollow);
 
+		magenta = new FlxSprite(-80).loadGraphic(Paths.image('menus/base/menuDesat'));
+		magenta.scrollFactor.set(0, vertScroll);
+		magenta.setGraphicSize(Std.int(magenta.width * 1.175));
+		magenta.updateHitbox();
+		magenta.screenCenter();
+		magenta.visible = false;
+		magenta.antialiasing = !Init.trueSettings.get('Disable Antialiasing');
+		magenta.color = 0xFFfd719b;
+		add(magenta);
+
 		menuItems = new FlxTypedGroup<FlxSprite>();
 		add(menuItems);
-
-		var menuItemScale:Int = 1;
 
 		for (i in 0...optionShit.length)
 		{
 			var menuItem:FlxSprite = new FlxSprite(0, FlxG.height * 1.1);
 			menuItem.frames = Paths.getSparrowAtlas('menus/base/menuItems/' + optionShit[i]);
 
-			menuItem.scale.x = menuItemScale;
-			menuItem.scale.y = menuItemScale;
+			menuItem.scale.set(menuItemScale, menuItemScale);
 
 			menuItem.animation.addByPrefix('idle', optionShit[i] + " basic", 24);
 			menuItem.animation.addByPrefix('selected', optionShit[i] + " white", 24);
@@ -111,7 +127,8 @@ class MainMenuState extends MusicBeatState
 				}
 				else */
 			{
-				menuItem.y = 60 + (i * 160);
+				var vertLimit:Float = (Math.max(optionShit.length, 4) - 4) * 80;
+				menuItem.y = 60 + (i * 160)  + vertLimit;
 			}
 		}
 
@@ -125,14 +142,7 @@ class MainMenuState extends MusicBeatState
 		versionShit.setFormat(Paths.font('vcr.ttf'), 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		add(versionShit);
 
-		var versionShit:FlxText = new FlxText(5, FlxG.height
-			- 18, 0,
-			"Forever Engine v"
-			+ Main.foreverVersion
-			+ " - Underscore v"
-			+ Main.underscoreVersion
-			+ (Main.showCommitHash ? ' (${Main.commitHash})' : ''),
-			12);
+		var versionShit:FlxText = new FlxText(5, FlxG.height - 18, 0, "Forever Engine v" + Main.foreverVersion + " - Underscore v" + Main.underscoreVersion + (Main.showCommitHash ? ' (${Main.commitHash})' : ''), 12);
 		versionShit.scrollFactor.set();
 		versionShit.setFormat(Paths.font('vcr.ttf'), 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		add(versionShit);
@@ -218,7 +228,20 @@ class MainMenuState extends MusicBeatState
 					{
 						FlxFlicker.flicker(spr, 1, flickerVal, false, false, function(flick:FlxFlicker)
 						{
-							confirmSelection(optionShit[Math.floor(curSelected)]);
+							switch (optionShit[Math.floor(curSelected)])
+							{
+								case 'story mode':
+									Main.switchState(this, new StoryMenuState());
+								case 'freeplay':
+									Main.switchState(this, new FreeplayState());
+								case 'donate':
+									Main.switchState(this, new CreditsState());
+								case 'options':
+									PauseSubstate.toOptions = false;
+									transIn = FlxTransitionableState.defaultTransIn;
+									transOut = FlxTransitionableState.defaultTransOut;
+									Main.switchState(this, new OptionsMenuState());
+							}
 						});
 					}
 				});
@@ -236,28 +259,6 @@ class MainMenuState extends MusicBeatState
 		});
 	}
 
-	function generateBackground()
-	{
-		bg = new FlxSprite(-80);
-		bg.loadGraphic(Paths.image('menus/base/menuBG'));
-		bg.scrollFactor.set(0, 0.08);
-		bg.setGraphicSize(Std.int(bg.width * 1.1));
-		bg.updateHitbox();
-		bg.screenCenter();
-		bg.antialiasing = !Init.trueSettings.get('Disable Antialiasing');
-		add(bg);
-
-		magenta = new FlxSprite(-80).loadGraphic(Paths.image('menus/base/menuDesat'));
-		magenta.scrollFactor.set(0, 0.08);
-		magenta.setGraphicSize(Std.int(magenta.width * 1.1));
-		magenta.updateHitbox();
-		magenta.screenCenter();
-		magenta.visible = false;
-		magenta.antialiasing = !Init.trueSettings.get('Disable Antialiasing');
-		magenta.color = 0xFFfd719b;
-		add(magenta);
-	}
-
 	var lastCurSelected:Int = 0;
 
 	function updateSelection()
@@ -267,11 +268,17 @@ class MainMenuState extends MusicBeatState
 		{
 			spr.animation.play('idle');
 			spr.updateHitbox();
+
+			menuItems.members[Math.floor(curSelected)].scale.set(menuItemScale, menuItemScale);
 		});
+
+		var itemLength:Float = 0;
+		if(menuItems.length > 4)
+			itemLength = menuItems.length * 8;
 
 		// set the sprites and all of the current selection
 		camFollow.setPosition(menuItems.members[Math.floor(curSelected)].getGraphicMidpoint().x,
-			menuItems.members[Math.floor(curSelected)].getGraphicMidpoint().y);
+			menuItems.members[Math.floor(curSelected)].getGraphicMidpoint().y - itemLength);
 
 		if (menuItems.members[Math.floor(curSelected)].animation.curAnim.name == 'idle')
 			menuItems.members[Math.floor(curSelected)].animation.play('selected');
@@ -279,23 +286,5 @@ class MainMenuState extends MusicBeatState
 		menuItems.members[Math.floor(curSelected)].updateHitbox();
 
 		lastCurSelected = Math.floor(curSelected);
-	}
-
-	function confirmSelection(opt:String)
-	{
-		switch (opt)
-		{
-			case 'story mode':
-				Main.switchState(this, new StoryMenuState());
-			case 'freeplay':
-				Main.switchState(this, new FreeplayState());
-			case 'donate':
-				Main.switchState(this, new CreditsState());
-			case 'options':
-				PauseSubstate.toOptions = false;
-				transIn = FlxTransitionableState.defaultTransIn;
-				transOut = FlxTransitionableState.defaultTransOut;
-				Main.switchState(this, new OptionsMenuState());
-		}
 	}
 }

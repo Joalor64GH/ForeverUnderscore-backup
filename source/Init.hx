@@ -1,5 +1,4 @@
 import base.CoolUtil;
-import base.WeekParser;
 import base.debug.Overlay;
 import flixel.FlxG;
 import flixel.FlxState;
@@ -306,8 +305,6 @@ class Init extends FlxState
 
 		if(Main.showCommitHash)
 			Main.commitHash = Main.getGitCommitHash(); // get the commit hash for use on menu texts and such;
-
-		WeekParser.loadWeeks(); // load any custom weeks you might have;
 
 		// push difficulties to the new difficulty array, this is because I'm gonna make a different system for them, hopefully more customizable;
 		for (d in CoolUtil.baseDifficulties)
