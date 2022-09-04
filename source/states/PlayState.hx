@@ -1334,12 +1334,11 @@ class PlayState extends MusicBeatState
 			coolNote.wasGoodHit = true;
 			Conductor.songVocals.volume = 1;
 
-			coolNote.goodNoteHit(coolNote, ratingTiming);
-
-			characterPlayAnimation(coolNote, character);
-
 			if (characterStrums.receptors.members[coolNote.noteData] != null)
-				characterStrums.receptors.members[coolNote.noteData].playAnim('confirm', true);
+				characterStrums.receptors.members[coolNote.noteData].playAnim('confirm');
+
+			coolNote.goodNoteHit(coolNote, ratingTiming);
+			characterPlayAnimation(coolNote, character);
 
 			// special thanks to sam, they gave me the original system which kinda inspired my idea for this new one
 			if (canDisplayJudgement)

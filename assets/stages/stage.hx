@@ -1,4 +1,4 @@
-function generateStage(stageName = 'stage')
+function generateStage()
 {
 	stageName = 'stage';
 	setStageZoom(0.9);
