@@ -160,55 +160,6 @@ class Stage extends FlxTypedGroup<FlxBasic>
 		//
 		switch (curStage)
 		{
-			case 'stage':
-				PlayState.defaultCamZoom = 0.9;
-				curStage = 'stage';
-				var bg:FNFSprite = new FNFSprite(-600, -200).loadGraphic(Paths.image('backgrounds/' + curStage + '/stageback'));
-				bg.antialiasing = !Init.trueSettings.get('Disable Antialiasing');
-				bg.scrollFactor.set(0.9, 0.9);
-				bg.active = false;
-
-				// add to the final array
-				add(bg);
-
-				var stageFront:FNFSprite = new FNFSprite(-650, 600).loadGraphic(Paths.image('backgrounds/' + curStage + '/stagefront'));
-				stageFront.setGraphicSize(Std.int(stageFront.width * 1.1));
-				stageFront.updateHitbox();
-				stageFront.antialiasing = !Init.trueSettings.get('Disable Antialiasing');
-				stageFront.scrollFactor.set(0.9, 0.9);
-				stageFront.active = false;
-
-				// add to the final array
-				add(stageFront);
-
-				var stageCurtains:FNFSprite = new FNFSprite(-500, -300).loadGraphic(Paths.image('backgrounds/' + curStage + '/stagecurtains'));
-				stageCurtains.setGraphicSize(Std.int(stageCurtains.width * 0.9));
-				stageCurtains.updateHitbox();
-				stageCurtains.antialiasing = !Init.trueSettings.get('Disable Antialiasing');
-				stageCurtains.scrollFactor.set(1.3, 1.3);
-				stageCurtains.active = false;
-
-				// add to the final array
-				add(stageCurtains);
-
-				if (PlayState.SONG.song.toLowerCase() == 'tutorial')
-					spawnGirlfriend = false;
-
-			case 'spooky':
-				curStage = 'spooky';
-				// halloweenLevel = true;
-
-				var hallowTex = Paths.getSparrowAtlas('backgrounds/' + curStage + '/halloween_bg');
-
-				halloweenBG = new FNFSprite(-200, -100);
-				halloweenBG.frames = hallowTex;
-				halloweenBG.animation.addByPrefix('idle', 'halloweem bg0');
-				halloweenBG.animation.addByPrefix('lightning', 'halloweem bg lightning strike', 24, false);
-				halloweenBG.animation.play('idle');
-				halloweenBG.antialiasing = !Init.trueSettings.get('Disable Antialiasing');
-				add(halloweenBG);
-
-			// isHalloween = true;
 			case 'philly':
 				curStage = 'philly';
 
@@ -275,16 +226,6 @@ class Stage extends FlxTypedGroup<FlxBasic>
 					grpLimoDancers.add(dancer);
 				}
 
-				var overlayShit:FNFSprite = new FNFSprite(-500, -600).loadGraphic(Paths.image('backgrounds/' + curStage + '/limoOverlay'));
-				overlayShit.alpha = 0.5;
-				// add(overlayShit);
-
-				// var shaderBullshit = new BlendModeEffect(new OverlayShader(), FlxColor.RED);
-
-				// FlxG.camera.setFilters([new ShaderFilter(cast shaderBullshit.shader)]);
-
-				// overlayShit.shader = shaderBullshit;
-
 				var limoTex = Paths.getSparrowAtlas('backgrounds/' + curStage + '/limoDrive');
 
 				limo = new FNFSprite(-120, 550);
@@ -350,25 +291,6 @@ class Stage extends FlxTypedGroup<FlxBasic>
 				santa.animation.addByPrefix('idle', 'santa idle in fear', 24, false);
 				santa.antialiasing = !Init.trueSettings.get('Disable Antialiasing');
 				add(santa);
-
-			case 'mallEvil':
-				curStage = 'mallEvil';
-				var bg:FNFSprite = new FNFSprite(-400, -500).loadGraphic(Paths.image('backgrounds/mall/evilBG'));
-				bg.antialiasing = !Init.trueSettings.get('Disable Antialiasing');
-				bg.scrollFactor.set(0.2, 0.2);
-				bg.active = false;
-				bg.setGraphicSize(Std.int(bg.width * 0.8));
-				bg.updateHitbox();
-				add(bg);
-
-				var evilTree:FNFSprite = new FNFSprite(300, -300).loadGraphic(Paths.image('backgrounds/mall/evilTree'));
-				evilTree.antialiasing = !Init.trueSettings.get('Disable Antialiasing');
-				evilTree.scrollFactor.set(0.2, 0.2);
-				add(evilTree);
-
-				var evilSnow:FNFSprite = new FNFSprite(-200, 700).loadGraphic(Paths.image("backgrounds/mall/evilSnow"));
-				evilSnow.antialiasing = !Init.trueSettings.get('Disable Antialiasing');
-				add(evilSnow);
 
 			case 'school':
 				curStage = 'school';
@@ -632,9 +554,6 @@ class Stage extends FlxTypedGroup<FlxBasic>
 				boyfriend.x += 200;
 				dad.x -= 400;
 				dad.y += 20;
-
-			case 'mallEvil':
-				boyfriend.x += 320;
 			case 'school':
 				boyfriend.x += 200;
 				boyfriend.y += 220;
@@ -760,7 +679,7 @@ class Stage extends FlxTypedGroup<FlxBasic>
 			}
 		}
 
-		callFunc('updateStage', [curBeat]);
+		callFunc('updateStage', [curBeat, boyfriend, gf, dadOpponent]);
 	}
 
 	public function stageUpdateConstant(elapsed:Float, boyfriend:Character, gf:Character, dadOpponent:Character)
@@ -861,7 +780,7 @@ class Stage extends FlxTypedGroup<FlxBasic>
             stageScript = new ScriptHandler(path);
 
 		setVar('createSprite',
-			function(spriteID:String, image:String, x:Float, y:Float, onForeground:Bool = false)
+			function(spriteID:String, image:String, x:Float, y:Float, onForeground:Bool = false, abovegf:Bool = false)
 			{
 				var newSprite:FNFSprite = new FNFSprite(x, y).loadGraphic(Paths.image(image));
 				newSprite.updateHitbox();
@@ -871,13 +790,15 @@ class Stage extends FlxTypedGroup<FlxBasic>
 
 				if (onForeground)
 					foreground.add(newSprite);
+				else if (abovegf)
+					layers.add(newSprite);
 				else
 					add(newSprite);
 			});
 
 		setVar('createAnimatedSprite',
 			function(spriteID:String, key:String, spriteType:String, x:Float = 0, y:Float = 0, spriteAnims:Array<Array<Dynamic>>, defAnim:String,
-					onForeground:Bool = false)
+					onForeground:Bool = false, abovegf:Bool = false)
 			{
 				var newSprite:FNFSprite = new FNFSprite(x, y);
 
@@ -902,6 +823,8 @@ class Stage extends FlxTypedGroup<FlxBasic>
 				PlayState.contents.setVar('$spriteID', newSprite);
 				if (onForeground)
 					foreground.add(newSprite);
+				else if (abovegf)
+					layers.add(newSprite);
 				else
 					add(newSprite);
 			});
@@ -951,11 +874,20 @@ class Stage extends FlxTypedGroup<FlxBasic>
 			gottenSprite.alpha = newAlpha;
 		});
 
-		setVar('addSound', function(sndString:String = '')
+		setVar('addSound', function(id:String, sndString:String = '')
 		{
 			var sound:FlxSound;
 			sound = new FlxSound().loadEmbedded(Paths.sound(sndString));
 			FlxG.sound.list.add(sound);
+			setVar(id, sound);
+		});
+
+		setVar('addRandomSound', function(id:String, sndString:String = '', min:Int, max:Int)
+		{
+			var sound:FlxSound;
+			sound = new FlxSound().loadEmbedded(Paths.soundRandom(sndString, min, max));
+			FlxG.sound.list.add(sound);
+			setVar(id, sound);
 		});
 
 		setVar('setStageZoom', function(newZoom:Float = 0.9)
@@ -969,6 +901,7 @@ class Stage extends FlxTypedGroup<FlxBasic>
 
 		setVar('stageName', curStage);
 		setVar('Conductor', Conductor);
+		setVar('song', PlayState.SONG.song.toLowerCase());
 
 		callFunc('generateStage', []);
 	}

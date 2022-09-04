@@ -1,47 +1,47 @@
 function loadAnimations()
 {
-    if (StringTools.startsWith(song, 'roses'))
-        getMad();
-    else
-        setupAnims();
+	if (StringTools.startsWith(song, 'roses'))
+		getMad();
+	else
+		setupAnims();
 
-    setGraphicSize(get('width') * 6);
-    set('antialiasing', false);
+	setGraphicSize(get('width') * 6);
+	set('antialiasing', false);
 
-    playAnim('idle');
+	playAnim('idle');
 
-    setOffsets(-30, 950);
-    setCamOffsets(-230, -590);
-    setBarColor([255,170,111]);
-    quickDancer(false);
+	setOffsets(-30, 950);
+	setCamOffsets(-230, -590);
+	setBarColor([255, 170, 111]);
+	quickDancer(false);
 }
 
 function setupAnims()
 {
-    addByPrefix('idle', 'Idle', 24, false);
-    addByPrefix('singUP', 'Up', 24, false);
-    addByPrefix('singLEFT', 'Left', 24, false);
-    addByPrefix('singRIGHT', 'Right', 24, false);
-    addByPrefix('singDOWN', 'Down', 24, false);
+	addByPrefix('idle', 'Idle', 24, false);
+	addByPrefix('singUP', 'Up', 24, false);
+	addByPrefix('singLEFT', 'Left', 24, false);
+	addByPrefix('singRIGHT', 'Right', 24, false);
+	addByPrefix('singDOWN', 'Down', 24, false);
 
-    addOffset('idle', 110, 280);
-    addOffset('singUP', 115, 282);
-    addOffset('singRIGHT', 110, 280);
-    addOffset('singLEFT', 150, 280);
-    addOffset('singDOWN', 124, 280);
+	addOffset('idle', 110, 280);
+	addOffset('singUP', 115, 282);
+	addOffset('singRIGHT', 110, 280);
+	addOffset('singLEFT', 150, 280);
+	addOffset('singDOWN', 124, 280);
 }
 
 function getMad() // cope;
 {
-    addByPrefix('idle', 'Angry Idle', 24, false);
-    addByPrefix('singUP', 'Angry Up', 24, false);
-    addByPrefix('singLEFT', 'Angry Left', 24, false);
-    addByPrefix('singRIGHT', 'Angry Right', 24, false);
-    addByPrefix('singDOWN', 'Angry Down', 24, false);
+	addByPrefix('idle', 'Angry Idle', 24, false);
+	addByPrefix('singUP', 'Angry Up', 24, false);
+	addByPrefix('singLEFT', 'Angry Left', 24, false);
+	addByPrefix('singRIGHT', 'Angry Right', 24, false);
+	addByPrefix('singDOWN', 'Angry Down', 24, false);
 
-    addOffset('idle', 110, 280);
-    addOffset('singUP', 115, 282);
-    addOffset('singRIGHT', 110, 280);
-    addOffset('singLEFT', 150, 280);
-    addOffset('singDOWN', 124, 280);
+	addOffset('idle', 110, 280);
+	addOffset('singUP', 115, 282);
+	addOffset('singRIGHT', 110, 280);
+	addOffset('singLEFT', 150, 280);
+	addOffset('singDOWN', 124, 280);
 }

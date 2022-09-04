@@ -986,10 +986,8 @@ class PlayState extends MusicBeatState
 
 	function noteCalls()
 	{
-		// reset strums
 		for (strumline in strumLines)
 		{
-			// handle strumline stuffs
 			for (uiNote in strumline.receptors)
 			{
 				if (strumline.autoplay)
@@ -1004,20 +1002,18 @@ class PlayState extends MusicBeatState
 				}
 		}
 
-		// if the song is generated
 		if (generatedMusic && startedCountdown)
 		{
 			for (strumline in strumLines)
 			{
 				// set the notes x and y
-				var downscrollMultiplier = 1;
-				if (Init.trueSettings.get('Downscroll'))
-					downscrollMultiplier = -1;
+				var downscrollMultiplier = Init.trueSettings.get('Downscroll') ? -1 : 1;
 
 				strumline.allNotes.forEachAlive(function(daNote:Note)
 				{
 					var roundedSpeed = FlxMath.roundDecimal(daNote.noteSpeed, 2);
-					var receptorPosY:Float = strumline.receptors.members[Math.floor(daNote.noteData)].y + UIStaticArrow.swagWidth / 6;
+					var receptorPosX:Float = strumline.receptors.members[Math.floor(daNote.noteData)].x;
+					var receptorPosY:Float = strumline.receptors.members[Math.floor(daNote.noteData)].y;
 					var psuedoY:Float = (downscrollMultiplier * -((Conductor.songPosition - daNote.strumTime) * (0.45 * roundedSpeed)));
 					var psuedoX = 25 + daNote.noteVisualOffset;
 
@@ -1025,7 +1021,7 @@ class PlayState extends MusicBeatState
 						+ (Math.cos(flixel.math.FlxAngle.asRadians(daNote.noteDirection)) * psuedoY)
 						+ (Math.sin(flixel.math.FlxAngle.asRadians(daNote.noteDirection)) * psuedoX);
 					// painful math equation
-					daNote.x = strumline.receptors.members[Math.floor(daNote.noteData)].x
+					daNote.x = receptorPosX
 						+ (Math.cos(flixel.math.FlxAngle.asRadians(daNote.noteDirection)) * psuedoX)
 						+ (Math.sin(flixel.math.FlxAngle.asRadians(daNote.noteDirection)) * psuedoY);
 
@@ -1041,23 +1037,24 @@ class PlayState extends MusicBeatState
 							&& (daNote.prevNote != null))
 						{
 							daNote.y -= ((daNote.prevNote.height / 2) * downscrollMultiplier);
-							if (Init.trueSettings.get('Downscroll'))
+							if (downscrollMultiplier < 0) // downscroll;
 							{
 								daNote.y += (daNote.height * 2);
 								if (daNote.endHoldOffset == Math.NEGATIVE_INFINITY)
 								{
 									// set the end hold offset yeah I hate that I fix this like this
-									daNote.endHoldOffset = (daNote.prevNote.y - (daNote.y + daNote.height));
+									daNote.endHoldOffset = (daNote.prevNote.y - (daNote.y + daNote.height - 0.33 - 0.03));
 									// trace(daNote.endHoldOffset);
 								}
 								else
 									daNote.y += daNote.endHoldOffset;
 							}
-							else // this system is funny like that
-								daNote.y += ((daNote.height / 2) * downscrollMultiplier);
+							else if (downscrollMultiplier > 0) // upscroll;
+								daNote.y += ((daNote.height / 2) * downscrollMultiplier - 0.21 - 0.03);
+							 // this system is funny like that
 						}
 
-						if (Init.trueSettings.get('Downscroll'))
+						if (downscrollMultiplier < 0)
 						{
 							daNote.flipY = true;
 							if ((daNote.parentNote != null && daNote.parentNote.wasGoodHit)
@@ -1070,7 +1067,7 @@ class PlayState extends MusicBeatState
 								daNote.clipRect = swagRect;
 							}
 						}
-						else
+						else if (downscrollMultiplier > 0)
 						{
 							if ((daNote.parentNote != null && daNote.parentNote.wasGoodHit)
 								&& daNote.y + daNote.offset.y * daNote.scale.y <= center

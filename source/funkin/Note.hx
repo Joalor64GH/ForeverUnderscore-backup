@@ -112,6 +112,8 @@ class Note extends FNFSprite
 			while (parentNote.parentNote != null)
 				parentNote = parentNote.parentNote;
 			parentNote.childrenNotes.push(this);
+
+			hitSounds = false;
 		}
 		else if (!isSustainNote)
 			parentNote = null;
@@ -208,9 +210,9 @@ class Note extends FNFSprite
 
 						newNote.animation.addByPrefix('purpleholdend', 'pruple end hold'); // PA god dammit.
 
+						newNote.antialiasing = !Init.trueSettings.get('Disable Antialiasing');
 						newNote.setGraphicSize(Std.int(newNote.width * 0.7));
 						newNote.updateHitbox();
-						newNote.antialiasing = !Init.trueSettings.get('Disable Antialiasing');
 				}
 		}
 		//
@@ -393,7 +395,7 @@ class Note extends FNFSprite
 			default:
 				if (newNote.hitSounds)
 				{
-					if (Init.trueSettings.get('Hitsound Volume') > 0 && newNote.canBeHit && !newNote.isSustainNote)
+					if (Init.trueSettings.get('Hitsound Volume') > 0 && newNote.canBeHit)
 						FlxG.sound.play(Paths.sound('hitsounds/$hitsound/hit$hitsoundSuffix'), Init.trueSettings.get('Hitsound Volume'));
 				}
 		}
