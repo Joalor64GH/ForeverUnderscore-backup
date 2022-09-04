@@ -164,8 +164,8 @@ class Conductor
 
 	public static function resyncBySteps()
 	{
-		if (Math.abs(songMusic.time - (songPosition - offset + songPlaybackRate)) > 20
-			|| (PlayState.SONG.needsVoices && Math.abs(songVocals.time - (songPosition - offset + songPlaybackRate)) > 20))
+		if (Math.abs(songMusic.time - (songPosition - offset/* + songPlaybackRate */)) > 20
+			|| (PlayState.SONG.needsVoices && Math.abs(songVocals.time - (songPosition - offset/* + songPlaybackRate */)) > 20))
 		{
 			resyncVocals();
 		}
