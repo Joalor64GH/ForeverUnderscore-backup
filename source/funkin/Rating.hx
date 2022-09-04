@@ -1,24 +1,29 @@
 package funkin;
 
-import flixel.FlxG;
 import dependency.FNFSprite;
+import flixel.FlxG;
+import flixel.util.FlxColor;
 import states.PlayState;
 
+using StringTools;
+
 /**
- * Class for Hadling Rating Sprites;
+ * Class for Handling Rating, Combo and Timing Sprites;
+ * will be used for more stuff later;
  * WIP;
  */
 class Rating extends FNFSprite
 {
 	public var daRating:String;
 
-    public function new(daRating:String)
-    {
-        super(x, y);
+	public function new(daRating:String)
+	{
+		super(x, y);
 
 		this.daRating = daRating;
 
 		screenCenter();
+
 		x = (FlxG.width * 0.55) - 40;
 		y -= 60;
 		if (!Init.trueSettings.get('Simply Judgements'))
@@ -27,43 +32,50 @@ class Rating extends FNFSprite
 			velocity.y = -FlxG.random.int(140, 175);
 			velocity.x = -FlxG.random.int(0, 10);
 		}
-    }
-
-	override function update(elapsed:Float)
-	{
-		super.update(elapsed);
+		// x += Init.comboPosition[0][0];
+		// y -= Init.comboPosition[0][1];
 	}
 }
 
-/**
- * Class for Hadling Rating Timing Sprites;
- * WIP;
- */
 class Timing extends FNFSprite
 {
 	public var hitTiming:String;
 	public var daRating:String;
 
-    public function new(hitTiming:String, ?daRating:String)
-    {
-        super(x, y);
+	public function new(hitTiming:String, ?daRating:String)
+	{
+		super(x, y);
 
 		this.hitTiming = hitTiming;
 		this.daRating = daRating;
 
 		// positions should be here;
-    }
-
-	override function update(elapsed:Float)
-	{
-		super.update(elapsed);
-	}
-
-	override public function playAnim(AnimName:String, Force:Bool = false, Reversed:Bool = false, Frame:Int = 0)
-	{
-		super.playAnim(AnimName, Force, Reversed, Frame);
 	}
 }
 
 class Combo extends FNFSprite
-{}
+{
+	public var scoreInt:Int;
+
+	public function new(scoreInt:Int)
+	{
+		super(x, y);
+
+		this.scoreInt = scoreInt;
+
+		screenCenter();
+		updateHitbox();
+		alpha = 1;
+
+		x += (43 * scoreInt) + 20;
+		y += 60;
+		if (!Init.trueSettings.get('Simply Judgements'))
+		{
+			acceleration.y = FlxG.random.int(200, 300);
+			velocity.y = -FlxG.random.int(140, 160);
+			velocity.x = FlxG.random.float(-5, 5);
+		}
+		// x += Init.comboPosition[1][0];
+		// y -= Init.comboPosition[1][1];
+	}
+}

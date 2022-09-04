@@ -8,10 +8,10 @@ import flixel.FlxSprite;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.util.FlxColor;
 import funkin.*;
+import funkin.Rating.Combo;
+import funkin.Rating.Timing;
 import funkin.Strumline.UIStaticArrow;
 import funkin.Timings;
-import funkin.Rating;
-import funkin.Rating.Timing;
 import funkin.ui.menu.*;
 import states.PlayState;
 
@@ -25,38 +25,22 @@ class ForeverAssets
 {
 	//
 	public static function generateCombo(asset:String, number:String, allSicks:Bool, assetModifier:String = 'base', changeableSkin:String = 'default',
-			baseLibrary:String, negative:Bool, createdColor:FlxColor, scoreInt:Int):FlxSprite
+			baseLibrary:String, negative:Bool, createdColor:FlxColor, scoreInt:Int):Combo
 	{
-		var width = 100;
-		var height = 140;
+		var width = assetModifier == 'pixel' ? 10 : 100;
+		var height = assetModifier == 'pixel' ? 12 : 140;
 
-		if (assetModifier == 'pixel')
-		{
-			width = 10;
-			height = 12;
-		}
-		var newSprite:FlxSprite = new FlxSprite().loadGraphic(Paths.image(ForeverTools.returnSkinAsset(asset, assetModifier, changeableSkin, baseLibrary)),
-			true, width, height);
-		switch (assetModifier)
-		{
-			default:
-				newSprite.alpha = 1;
-				newSprite.screenCenter();
-				newSprite.x += (43 * scoreInt) + 20;
-				newSprite.y += 60;
+		var newSprite:Combo = new Combo(scoreInt);
+		newSprite.loadGraphic(Paths.image(ForeverTools.returnSkinAsset(asset, assetModifier, changeableSkin, baseLibrary)), true, width, height);
 
-				//newSprite.x += Init.comboPosition[1][0];
-				//newSprite.y -= Init.comboPosition[1][1];
+		//newSprite.scoreInt = scoreInt;
 
-				newSprite.color = FlxColor.WHITE;
-				if (negative)
-					newSprite.color = createdColor;
+		newSprite.color = FlxColor.WHITE;
+		if (negative)
+			newSprite.color = createdColor;
 
-				newSprite.animation.add('base', [
-					(Std.parseInt(number) != null ? Std.parseInt(number) + 1 : 0) + (!allSicks ? 0 : 11)
-				], 0, false);
-				newSprite.animation.play('base');
-		}
+		newSprite.animation.add('base', [(Std.parseInt(number) != null ? Std.parseInt(number) + 1 : 0) + (!allSicks ? 0 : 11)], 0, false);
+		newSprite.animation.play('base');
 
 		if (assetModifier == 'pixel')
 			newSprite.setGraphicSize(Std.int(newSprite.width * PlayState.daPixelZoom));
@@ -64,14 +48,6 @@ class ForeverAssets
 		{
 			newSprite.antialiasing = !Init.trueSettings.get('Disable Antialiasing');
 			newSprite.setGraphicSize(Std.int(newSprite.width * 0.5));
-			newSprite.y += 60;
-		}
-		newSprite.updateHitbox();
-		if (!Init.trueSettings.get('Simply Judgements'))
-		{
-			newSprite.acceleration.y = FlxG.random.int(200, 300);
-			newSprite.velocity.y = -FlxG.random.int(140, 160);
-			newSprite.velocity.x = FlxG.random.float(-5, 5);
 		}
 
 		return newSprite;
@@ -86,8 +62,6 @@ class ForeverAssets
 		rating.loadGraphic(Paths.image(ForeverTools.returnSkinAsset('ratings/' + asset + perfectString, assetModifier, changeableSkin, baseLibrary)));
 
 		//rating.daRating = asset;
-		//rating.x += Init.comboPosition[0][0];
-		//rating.y -= Init.comboPosition[0][1];
 
         if (assetModifier == 'pixel')
 			rating.setGraphicSize(Std.int(rating.width * PlayState.daPixelZoom * 0.7));
@@ -118,7 +92,7 @@ class ForeverAssets
 		switch (assetModifier)
 		{
 			case 'pixel':
-				timing.x += (assetModifier == 'pixel' ? 26 : 166 / 2) * PlayState.daPixelZoom;
+				timing.x += (newWidth / 2) * PlayState.daPixelZoom;
 				timing.setGraphicSize(Std.int(timing.width * PlayState.daPixelZoom * 0.7));
 				if (hitTiming != 'late')
 					timing.x -= newWidth * 0.5 * PlayState.daPixelZoom;
