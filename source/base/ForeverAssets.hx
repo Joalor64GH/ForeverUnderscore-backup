@@ -2,6 +2,7 @@ package base;
 
 import base.ChartParser.SwagSection;
 import base.Conductor;
+import dependency.FNFSprite;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.group.FlxGroup.FlxTypedGroup;
@@ -9,6 +10,8 @@ import flixel.util.FlxColor;
 import funkin.*;
 import funkin.Strumline.UIStaticArrow;
 import funkin.Timings;
+import funkin.Rating;
+import funkin.Rating.Timing;
 import funkin.ui.menu.*;
 import states.PlayState;
 
@@ -42,6 +45,9 @@ class ForeverAssets
 				newSprite.x += (43 * scoreInt) + 20;
 				newSprite.y += 60;
 
+				//newSprite.x += Init.comboPosition[1][0];
+				//newSprite.y -= Init.comboPosition[1][1];
+
 				newSprite.color = FlxColor.WHITE;
 				if (negative)
 					newSprite.color = createdColor;
@@ -58,6 +64,7 @@ class ForeverAssets
 		{
 			newSprite.antialiasing = !Init.trueSettings.get('Disable Antialiasing');
 			newSprite.setGraphicSize(Std.int(newSprite.width * 0.5));
+			newSprite.y += 60;
 		}
 		newSprite.updateHitbox();
 		if (!Init.trueSettings.get('Simply Judgements'))
@@ -70,28 +77,19 @@ class ForeverAssets
 		return newSprite;
 	}
 
-	public static function generateRating(asset:String, perfectSick:Bool, parentGroup:FlxTypedGroup<FlxSprite>, assetModifier:String = 'base', changeableSkin:String = 'default',
-			baseLibrary:String):FlxSprite
+	public static function generateRating(asset:String, perfectSick:Bool, parentGroup:FlxTypedGroup<Rating>, assetModifier:String = 'base', changeableSkin:String = 'default',
+			baseLibrary:String):Rating
 	{
 		var perfectString = (perfectSick ? '-perfect' : '');
 
-		var rating:FlxSprite = new FlxSprite().loadGraphic(Paths.image(ForeverTools.returnSkinAsset('ratings/' + asset + perfectString, assetModifier, changeableSkin, baseLibrary)));
-		switch (assetModifier)
-		{
-			default:
-				rating.alpha = 1;
-				rating.screenCenter();
-				rating.x = (FlxG.width * 0.55) - 40;
-				rating.y -= 60;
-				if (!Init.trueSettings.get('Simply Judgements'))
-				{
-					rating.acceleration.y = 550;
-					rating.velocity.y = -FlxG.random.int(140, 175);
-					rating.velocity.x = -FlxG.random.int(0, 10);
-				}
-		}
+		var rating:Rating = new Rating(asset); /*parentGroup.recycle(Rating);*/
+		rating.loadGraphic(Paths.image(ForeverTools.returnSkinAsset('ratings/' + asset + perfectString, assetModifier, changeableSkin, baseLibrary)));
 
-		if (assetModifier == 'pixel')
+		//rating.daRating = asset;
+		//rating.x += Init.comboPosition[0][0];
+		//rating.y -= Init.comboPosition[0][1];
+
+        if (assetModifier == 'pixel')
 			rating.setGraphicSize(Std.int(rating.width * PlayState.daPixelZoom * 0.7));
 		else
 		{
@@ -107,31 +105,27 @@ class ForeverAssets
 	/**
 	 * [Literally copy and pasted from the above, fu-];
 	 */
-	public static function generateRatingTimings(asset:String, ratingTiming:String, parentGroup:FlxTypedGroup<FlxSprite>, parentSprite:FlxSprite, assetModifier:String = 'base', changeableSkin:String = 'default',
-			baseLibrary:String):FlxSprite
+	public static function generateRatingTimings(asset:String, hitTiming:String, parentGroup:FlxTypedGroup<Timing>, parentSprite:FNFSprite, assetModifier:String = 'base', changeableSkin:String = 'default',
+			baseLibrary:String):Timing
 	{
-		var newWidth = 166;
-		if (assetModifier == 'pixel')
-			newWidth = 26;
+		var newWidth = assetModifier == 'pixel' ? 26 : 166;
 
-		var timing:FlxSprite = new FlxSprite().loadGraphic(Paths.image(ForeverTools.returnSkinAsset('ratings/' + asset, assetModifier, changeableSkin,
-			baseLibrary)), true, newWidth);
+		var timing:Timing = new Timing(hitTiming); /*parentGroup.recycle(Timing);*/
+		timing.loadGraphic(Paths.image(ForeverTools.returnSkinAsset('ratings/' + asset, assetModifier, changeableSkin, baseLibrary)), true, newWidth);
 
-		timing.animation.add('early', [0]);
-		timing.animation.add('late', [1]);
-		timing.animation.play(ratingTiming);
+		//timing.hitTiming = hitTiming;
 
 		switch (assetModifier)
 		{
 			case 'pixel':
-				timing.x += (newWidth / 2) * PlayState.daPixelZoom;
+				timing.x += (assetModifier == 'pixel' ? 26 : 166 / 2) * PlayState.daPixelZoom;
 				timing.setGraphicSize(Std.int(timing.width * PlayState.daPixelZoom * 0.7));
-				if (ratingTiming != 'late')
+				if (hitTiming != 'late')
 					timing.x -= newWidth * 0.5 * PlayState.daPixelZoom;
 			default:
 				timing.antialiasing = true;
 				timing.setGraphicSize(Std.int(timing.width * 0.7));
-				if (ratingTiming == 'late')
+				if (hitTiming == 'late')
 					timing.x += newWidth * 0.5;
 		}
 
@@ -142,16 +136,22 @@ class ForeverAssets
 		timing.velocity.y = parentSprite.velocity.y;
 		timing.velocity.x = parentSprite.velocity.x;
 
+		timing.animation.add('early', [0]);
+		timing.animation.add('late', [1]);
+		timing.animation.play(hitTiming);
+
 		parentGroup.add(timing);
 
 		return timing;
 	}
 
-	public static function generateNoteSplashes(asset:String, assetModifier:String = 'base', changeableSkin:String = 'default', baseLibrary:String,
+	public static function generateNoteSplashes(asset:String, parentGroup:FlxTypedGroup<NoteSplash>, assetModifier:String = 'base', changeableSkin:String = 'default', baseLibrary:String,
 			noteData:Int):NoteSplash
 	{
 		//
-		var tempSplash:NoteSplash = new NoteSplash(noteData);
+		var tempSplash:NoteSplash = parentGroup.recycle(NoteSplash);
+		tempSplash.noteData = noteData;
+
 		switch (assetModifier)
 		{
 			case 'pixel':

@@ -145,6 +145,7 @@ class Strumline extends FlxSpriteGroup
 	public var splashNotes:FlxTypedSpriteGroup<NoteSplash>;
 	public var notesGroup:FlxTypedSpriteGroup<Note>;
 	public var holdsGroup:FlxTypedSpriteGroup<Note>;
+	public var splashGroup:FlxTypedGroup<NoteSplash>;
 	public var allNotes:FlxTypedSpriteGroup<Note>;
 
 	public var playState:PlayState;
@@ -167,6 +168,7 @@ class Strumline extends FlxSpriteGroup
 		splashNotes = new FlxTypedSpriteGroup<NoteSplash>();
 		notesGroup = new FlxTypedSpriteGroup<Note>();
 		holdsGroup = new FlxTypedSpriteGroup<Note>();
+		splashGroup = new FlxTypedGroup<NoteSplash>();
 		allNotes = new FlxTypedSpriteGroup<Note>();
 
 		for (i in 0...keyAmount)
@@ -192,7 +194,7 @@ class Strumline extends FlxSpriteGroup
 
 			if (noteSplashes)
 			{
-				var noteSplash:NoteSplash = ForeverAssets.generateNoteSplashes('noteSplashes', PlayState.assetModifier, PlayState.changeableSkin, 'UI', i);
+				var noteSplash:NoteSplash = ForeverAssets.generateNoteSplashes('noteSplashes', splashGroup, PlayState.assetModifier, PlayState.changeableSkin, 'UI', i);
 				splashNotes.add(noteSplash);
 			}
 		}

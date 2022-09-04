@@ -28,6 +28,7 @@ import flixel.util.FlxColor;
 import flixel.util.FlxSort;
 import flixel.util.FlxTimer;
 import funkin.*;
+import funkin.Rating.Timing;
 import funkin.Strumline.UIStaticArrow;
 import funkin.ui.*;
 import lime.app.Application;
@@ -181,8 +182,8 @@ class PlayState extends MusicBeatState
 
 	var canMiss:Bool = true;
 
-	public var ratingsGroup:FlxTypedGroup<FlxSprite> = new FlxTypedGroup<FlxSprite>();
-	public var timingsGroup:FlxTypedGroup<FlxSprite> = new FlxTypedGroup<FlxSprite>();
+	public var ratingsGroup:FlxTypedGroup<Rating> = new FlxTypedGroup<Rating>();
+	public var timingsGroup:FlxTypedGroup<Timing> = new FlxTypedGroup<Timing>();
 
 	// at the beginning of the playstate
 	override public function create()
@@ -1780,6 +1781,7 @@ class PlayState extends MusicBeatState
 
 		var timingSpr = ForeverAssets.generateRatingTimings('$daRating-timings', timing, timingsGroup, rating, assetModifier, changeableSkin, 'UI');
 		timingSpr.visible = !noTiming;
+		timingSpr.daRating = daRating;
 		add(timingSpr);
 
 		// i'm kinda afraid that this can impact on performance a little bit, but it makes things easier at the same time;
