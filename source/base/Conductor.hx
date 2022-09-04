@@ -43,7 +43,7 @@ class Conductor
 	public static var songMusic:FlxSound;
 	public static var songVocals:FlxSound;
 	public static var vocalArray:Array<FlxSound> = [];
-	public static var songPlaybackRate:Float;
+	public static var songPlaybackRate:Float = 1;
 	public static var bpmChangeMap:Array<BPMChangeEvent> = [];
 
 	public static function mapBPMChanges(song:SwagSong)
