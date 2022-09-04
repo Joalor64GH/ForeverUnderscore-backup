@@ -43,6 +43,7 @@ class Conductor
 	public static var songMusic:FlxSound;
 	public static var songVocals:FlxSound;
 	public static var vocalArray:Array<FlxSound> = [];
+	public static var songPlaybackRate:Float;
 	public static var bpmChangeMap:Array<BPMChangeEvent> = [];
 
 	public static function mapBPMChanges(song:SwagSong)
@@ -111,12 +112,12 @@ class Conductor
 		vocalArray.push(songVocals);
 	}
 
-	public static function startMusic(completeFunc:Dynamic)
+	public static function startMusic(endFunc:Dynamic)
 	{
 		songMusic.play();
 		songVocals.play();
 
-		songMusic.onComplete = completeFunc;
+		songMusic.onComplete = endFunc;
 
 		resyncVocals();
 	}
@@ -152,19 +153,19 @@ class Conductor
 
 		#if DEBUG_TRACES trace('resyncing vocal time ${songVocals.time}'); #end
 		songVocals.pause();
-
 		songMusic.play();
+		//songMusic.time = songPosition;
 		songPosition = songMusic.time;
 		if (songVocals != null && songPosition <= songVocals.length)
 			songVocals.time = songPosition;
 		songVocals.play();
-		#if DEBUG_TRACES trace('new vocal time ${songPosition}'); #end
+		#if DEBUG_TRACES trace('new vocal time ${songPosition}, new vocal speed ${songPlaybackRate}'); #end
 	}
 
 	public static function resyncBySteps()
 	{
-		if (Math.abs(songMusic.time - (Conductor.songPosition - Conductor.offset)) > 20
-			|| (PlayState.SONG.needsVoices && Math.abs(songVocals.time - (Conductor.songPosition - Conductor.offset)) > 20))
+		if (Math.abs(songMusic.time - (songPosition - offset + songPlaybackRate)) > 20
+			|| (PlayState.SONG.needsVoices && Math.abs(songVocals.time - (songPosition - offset + songPlaybackRate)) > 20))
 		{
 			resyncVocals();
 		}

@@ -70,7 +70,7 @@ class ForeverAssets
 		return newSprite;
 	}
 
-	public static function generateRating(asset:String, perfectSick:Bool, assetModifier:String = 'base', changeableSkin:String = 'default',
+	public static function generateRating(asset:String, perfectSick:Bool, parentGroup:FlxTypedGroup<FlxSprite>, assetModifier:String = 'base', changeableSkin:String = 'default',
 			baseLibrary:String):FlxSprite
 	{
 		var perfectString = (perfectSick ? '-perfect' : '');
@@ -99,13 +99,15 @@ class ForeverAssets
 			rating.setGraphicSize(Std.int(rating.width * 0.7));
 		}
 
+		parentGroup.add(rating);
+
 		return rating;
 	}
 
 	/**
 	 * [Literally copy and pasted from the above, fu-];
 	 */
-	public static function generateRatingTimings(asset:String, ratingTiming:String, parentSprite:FlxSprite, assetModifier:String = 'base', changeableSkin:String = 'default',
+	public static function generateRatingTimings(asset:String, ratingTiming:String, parentGroup:FlxTypedGroup<FlxSprite>, parentSprite:FlxSprite, assetModifier:String = 'base', changeableSkin:String = 'default',
 			baseLibrary:String):FlxSprite
 	{
 		var newWidth = 166;
@@ -139,6 +141,8 @@ class ForeverAssets
 		timing.acceleration.y = parentSprite.acceleration.y;
 		timing.velocity.y = parentSprite.velocity.y;
 		timing.velocity.x = parentSprite.velocity.x;
+
+		parentGroup.add(timing);
 
 		return timing;
 	}

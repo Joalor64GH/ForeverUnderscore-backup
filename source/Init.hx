@@ -82,7 +82,6 @@ class Init extends FlxState
 		'Scroll Speed' => [1, Selector, 'Set your custom scroll speed for the Notes (NEEDS "Use Set Scroll Speed" ENABLED).', NOT_FORCED],
 		// TEXT;
 		'Display Accuracy' => [true, Checkmark, 'Whether to display your accuracy on the score bar during gameplay.', NOT_FORCED],
-		'Score Bar Size' => [18, Selector, 'Set the text size for the Score Bar.', NOT_FORCED],
 		'Skip Text' => [
 			'freeplay only',
 			Selector,
@@ -97,12 +96,14 @@ class Init extends FlxState
 			'Whether to pause the game automatically if the window is unfocused.',
 			NOT_FORCED
 		],
+		#if GAME_UPDATER
 		'Check for Updates' => [
 			true,
 			Checkmark,
 			"Whether to check for updates when opening the game.",
 			NOT_FORCED
 		],
+		#end
 		'Hardware Caching' => [
 			false,
 			Checkmark,

@@ -27,6 +27,7 @@
 
 	<define name="DISCORD_RPC" if="desktop" unless="web || neko" />
 	<define name="VIDEO_PLUGIN" if="windows" unless="32bits || neko" />
+	<define name="GAME_UPDATER" if="officialBuild" /> <!-- thanks shadowmario -->
 	<define name="HAXE_EXTENSION" unless="web" />
 	<define name="MOD_HANDLER" unless="web" />
 	<define name="DEBUG_TRACES" if="debug" />

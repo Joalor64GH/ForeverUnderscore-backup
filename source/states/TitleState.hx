@@ -176,7 +176,9 @@ class TitleState extends MusicBeatState
 		else
 			initialized = true;
 
+		#if GAME_UPDATER
 		ForeverTools.checkUpdates();
+		#end
 
 		// credGroup.add(credTextShit);
 	}

@@ -90,7 +90,7 @@ class ChartParser
 				{
 					for (songNotes in section.sectionNotes)
 					{
-						var daStrumTime:Float = #if !neko songNotes[0] - Init.trueSettings['Offset'] /* - | late, + | early*/ #else songNotes[0] #end;
+						var daStrumTime:Float = #if !neko songNotes[0] - Init.trueSettings['Offset'] / Conductor.songPlaybackRate /* - | late, + | early*/ #else songNotes[0] / Conductor.songPlaybackRate #end;
 						var daNoteData:Int = Std.int(songNotes[1] % 4);
 						// define the note's animation (in accordance to the original game)!
 						var daNoteAlt:Float = 0;
@@ -127,7 +127,7 @@ class ChartParser
 						swagNote.noteSpeed = songData.speed;
 
 						// set the note's length (sustain note)
-						swagNote.sustainLength = songNotes[2];
+						swagNote.sustainLength = songNotes[2] / Conductor.songPlaybackRate;
 						swagNote.scrollFactor.set(0, 0);
 						var susLength:Float = swagNote.sustainLength; // sus amogus
 

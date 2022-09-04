@@ -1,6 +1,6 @@
-sourceUnstable/
 source/states/menus/AchievementsMenuState.hx
 source/states/charting/OriginalWIP.hx
+art/gameBuildFiles/
 export/
 crash-dialog/
 build-crash-dialog.bat

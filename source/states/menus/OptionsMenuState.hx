@@ -79,13 +79,12 @@ class OptionsMenuState extends MusicBeatState
 					['Text Settings', null],
 
 					['Display Accuracy', getFromOption],
-					['Score Bar Size', getFromOption],
 					['Skip Text', getFromOption],
 					['', null],
 					['Meta Settings', null],
 
 					['Auto Pause', getFromOption],
-					['Check for Updates', getFromOption],
+					#if GAME_UPDATER ['Check for Updates', getFromOption], #end
 					['Hardware Caching', getFromOption],
 					['Menu Song', getFromOption],
 					#if !neko ["Framerate Cap", getFromOption], #end
@@ -447,7 +446,6 @@ class OptionsMenuState extends MusicBeatState
 							(letter.text == 'Framerate Cap') ? true : false,
 							(letter.text == 'Stage Opacity') ? true : false,
 							(letter.text == 'Hitsound Volume') ? true : false,
-							(letter.text == 'Score Bar Size') ? true : false,
 							(letter.text == 'Scroll Speed') ? true : false,
 							(letter.text == 'Arrow Opacity') ? true : false,
 							(letter.text == 'Splash Opacity' ? true : false)
@@ -526,10 +524,9 @@ class OptionsMenuState extends MusicBeatState
 		var fps = selector.optionBooleans[0];
 		var bgdark = selector.optionBooleans[1];
 		var hitVol = selector.optionBooleans[2];
-		var scoreSize = selector.optionBooleans[3];
-		var scrollspeed = selector.optionBooleans[4];
-		var strumlineOp = selector.optionBooleans[5];
-		var notesplashOp = selector.optionBooleans[6];
+		var scrollspeed = selector.optionBooleans[3];
+		var strumlineOp = selector.optionBooleans[4];
+		var notesplashOp = selector.optionBooleans[5];
 
 		/**
 			* left to right, minimum value, maximum value, change value
@@ -539,13 +536,11 @@ class OptionsMenuState extends MusicBeatState
 			generateSelector(30, 360, 15, updateBy, selector);
 		else if (bgdark || hitVol)
 			generateSelector(0, 100, 5, updateBy, selector);
-		else if (scoreSize)
-			generateSelector(10, 30, 1, updateBy, selector);
 		else if (scrollspeed)
 			generateSelector(1, 6, 0.1, updateBy, selector);
 		else if (strumlineOp || notesplashOp)
 			generateSelector(0, 100, 10, updateBy, selector);
-		if (!fps && !bgdark && !hitVol && !scoreSize && !scrollspeed && !strumlineOp && !notesplashOp)
+		if (!fps && !bgdark && !hitVol && !scrollspeed && !strumlineOp && !notesplashOp)
 		{
 			// get the current option as a number
 			var storedNumber:Int = 0;

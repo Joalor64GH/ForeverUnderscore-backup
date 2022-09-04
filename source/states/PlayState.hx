@@ -181,6 +181,9 @@ class PlayState extends MusicBeatState
 
 	var canMiss:Bool = true;
 
+	public var ratingsGroup:FlxTypedGroup<FlxSprite> = new FlxTypedGroup<FlxSprite>();
+	public var timingsGroup:FlxTypedGroup<FlxSprite> = new FlxTypedGroup<FlxSprite>();
+
 	// at the beginning of the playstate
 	override public function create()
 	{
@@ -878,7 +881,7 @@ class PlayState extends MusicBeatState
 		{ // Go 10 seconds into the future, @author Shadow_Mario_
 			if (Conductor.songPosition + 10000 < Conductor.songMusic.length)
 			{
-				canMiss = false;
+				canMiss = true;
 				preventScoring = true;
 				Conductor.songMusic.pause();
 				Conductor.songVocals.pause();
@@ -903,12 +906,39 @@ class PlayState extends MusicBeatState
 				Conductor.songMusic.play();
 				Conductor.songVocals.play();
 
-				new FlxTimer().start(0.6, function(timer:FlxTimer)
+				new FlxTimer().start(1, function(timer:FlxTimer)
 				{
-					canMiss = true;
+					if (!bfStrums.autoplay)
+						canMiss = false;
 				});
 			}
 		}
+
+		/*
+		if (!isStoryMode && !startingSong && !endingSong && scriptDebugMode)
+		{
+			if (FlxG.keys.pressed.CONTROL && FlxG.keys.justPressed.Z)
+			{
+				Conductor.songPlaybackRate += 0.1;
+				Conductor.songMusic.pitch += 0.1;
+				Conductor.songVocals.pitch += 0.1;
+			}
+
+			if (FlxG.keys.pressed.CONTROL && FlxG.keys.justPressed.X)
+			{
+				Conductor.songPlaybackRate -= 0.1;
+				Conductor.songMusic.pitch -= 0.1;
+				Conductor.songVocals.pitch -= 0.1;
+			}
+
+			if (FlxG.keys.pressed.CONTROL && FlxG.keys.justPressed.C)
+			{
+				Conductor.songPlaybackRate = 1;
+				Conductor.songMusic.pitch = 1;
+				Conductor.songVocals.pitch = 1;
+			}
+		}
+		*/
 
 		events.forEachAlive(function(event:EventNote)
 		{
@@ -1742,13 +1772,13 @@ class PlayState extends MusicBeatState
 			"oh but if the rating isn't sick why not just reset it"
 			because miss judgements can pop, and they dont mess with your sick combo
 		 */
-		var rating = ForeverAssets.generateRating('$daRating', (daRating == 'sick' ? allSicks : false), assetModifier, changeableSkin, 'UI');
+		var rating = ForeverAssets.generateRating('$daRating', (daRating == 'sick' ? allSicks : false), ratingsGroup, assetModifier, changeableSkin, 'UI');
 		add(rating);
 
 		// for ratings that have no timings to them, this is PAINFUL to look at, I know;
 		var noTiming = (timing == null || timing == '' || daRating == 'sick' || daRating == 'miss');
 
-		var timingSpr = ForeverAssets.generateRatingTimings('$daRating-timings', timing, rating, assetModifier, changeableSkin, 'UI');
+		var timingSpr = ForeverAssets.generateRatingTimings('$daRating-timings', timing, timingsGroup, rating, assetModifier, changeableSkin, 'UI');
 		timingSpr.visible = !noTiming;
 		add(timingSpr);
 
@@ -2086,12 +2116,6 @@ class PlayState extends MusicBeatState
 	function endSong():Void
 	{
 		callFunc('endSong', []);
-
-		if (!canMiss)
-		{
-			health = 0;
-			return;
-		}
 
 		// set ranking
 		rank = Timings.returnScoreRating().toUpperCase();

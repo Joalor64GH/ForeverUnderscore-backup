@@ -18,7 +18,7 @@ class Selector extends FlxTypedSpriteGroup<FlxSprite>
 	public var options:Array<String>;
 
 	// will make this better in the future, adding everything related to selectors right here from the git go;
-	public var optionBooleans:Array<Bool> = [false, false, false, false, false, false, false];
+	public var optionBooleans:Array<Bool> = [false, false, false, false, false, false];
 
 	public function new(x:Float = 0, y:Float = 0, word:String, options:Array<String>, optionBooleans:Array<Bool>)
 	{

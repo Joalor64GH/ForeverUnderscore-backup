@@ -281,6 +281,27 @@ class ChartingState extends MusicBeatState
 
 		_song.bpm = tempBpm;
 
+		if (songMusic.playing)
+		{
+			if (FlxG.keys.pressed.CONTROL && FlxG.keys.justPressed.Z)
+			{
+				songMusic.pitch += 0.1;
+				vocals.pitch += 0.1;
+			}
+
+			if (FlxG.keys.pressed.CONTROL && FlxG.keys.justPressed.X)
+			{
+				songMusic.pitch -= 0.1;
+				vocals.pitch -= 0.1;
+			}
+
+			if (FlxG.keys.pressed.CONTROL && FlxG.keys.justPressed.C)
+			{
+				songMusic.pitch = 1;
+				vocals.pitch = 1;
+			}
+		}
+
 		// there's probably a better way to do this;
 		bpmTxt.text = Std.string('BEAT: ' + FlxMath.roundDecimal(decBeat, 2)
 			+ '\nSTEP: ' + FlxMath.roundDecimal(decStep, 2)
@@ -294,7 +315,7 @@ class ChartingState extends MusicBeatState
 			var songCrochet = (Math.floor(Conductor.songPosition / Conductor.stepCrochet));
 
 			// do epic note calls for strum stuffs
-			if (songCrochet == Math.floor(epicNote.strumTime / Conductor.stepCrochet))
+			if (songCrochet == Math.floor(epicNote.strumTime / Conductor.stepCrochet) && songMusic.playing)
 			{
 				var data:Null<Int> = epicNote.noteData;
 
