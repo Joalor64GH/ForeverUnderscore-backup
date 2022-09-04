@@ -158,8 +158,8 @@ class PlayState extends MusicBeatState
 	public static var daPixelZoom:Float = 6;
 
 	// strumlines
-	public var dadStrums:Strumline;
-	public var bfStrums:Strumline;
+	public static var dadStrums:Strumline;
+	public static var bfStrums:Strumline;
 
 	public static var strumLines:FlxTypedGroup<Strumline>;
 	public static var strumHUD:FlxCamera;

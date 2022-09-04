@@ -117,7 +117,7 @@ class ClassHUD extends FlxTypedGroup<FlxBasic>
 		autoplayMark.screenCenter(X);
 		autoplayMark.setFormat(Paths.font("vcr.ttf"), 32, FlxColor.WHITE, CENTER);
 		autoplayMark.setBorderStyle(OUTLINE, FlxColor.BLACK, 1.25);
-		autoplayMark.visible = PlayState.contents.bfStrums.autoplay;
+		autoplayMark.visible = PlayState.bfStrums.autoplay;
 		add(autoplayMark);
 
 		traceBar = new FlxText(10, 20, 0, '', 16);

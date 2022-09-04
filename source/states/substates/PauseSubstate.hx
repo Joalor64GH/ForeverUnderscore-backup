@@ -254,7 +254,7 @@ class PauseSubstate extends MusicBeatSubstate
 	public static function disableCheats(scoringToo:Bool = false)
 	{
 		PlayState.practiceMode = false;
-		PlayState.contents.bfStrums.autoplay = false;
+		PlayState.bfStrums.autoplay = false;
 		PlayState.uiHUD.autoplayMark.visible = false;
 
 		if (scoringToo)

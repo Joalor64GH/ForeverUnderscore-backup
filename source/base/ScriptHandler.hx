@@ -238,11 +238,19 @@ class ScriptFuncs extends PlayState
 			ForeverTools.getColorFromString(color);
 		});
 
-		PlayState.contents.setVar('doTweenX', function(tweenID:String, object:Dynamic, value:Float, time:Float, ease:String)
+		PlayState.contents.setVar('doTween', function(tweenID:String, tweenProperty:String, object:Dynamic, value:Dynamic, time:Float, ease:String)
 		{
 			var leTween:FlxTween;
-			
-			leTween = FlxTween.tween(object, {x: value}, time, {
+			var tweenType = {};
+
+			/**
+			 * originally made for psych engine as a pull request
+			 * https://github.com/ShadowMario/FNF-PsychEngine/pull/10433
+			 * credits to Cherri#0815
+			 */
+			Reflect.setField(tweenType, tweenProperty, value);
+
+			leTween = FlxTween.tween(object, tweenType, time, {
 				ease: ForeverTools.getEaseFromString(ease),
 				onComplete: function(tween:FlxTween)
 				{
@@ -252,11 +260,29 @@ class ScriptFuncs extends PlayState
 			});
 		});
 
-		PlayState.contents.setVar('doTweenY', function(tweenID:String, object:Dynamic, value:Float, time:Float, ease:String)
+		PlayState.contents.setVar('doStrumTween', function(tweenID:String, tweenProperty:String, strumline:String, newNote:Int, value:Dynamic, time:Float, ease:String)
 		{
 			var leTween:FlxTween;
+			var tweenType = {};
 
-			leTween = FlxTween.tween(object, {y: value}, time, {
+			var epicNote = PlayState.bfStrums.receptors.members[newNote];
+
+			switch (strumline)
+			{
+				case 'dadStrums' | 'dadOpponentStrums' | 'dad' | 'opponentStrums':
+					epicNote = PlayState.dadStrums.receptors.members[newNote];
+				default:
+					epicNote = PlayState.bfStrums.receptors.members[newNote];
+			}
+
+			/**
+			 * originally made for psych engine as a pull request
+			 * https://github.com/ShadowMario/FNF-PsychEngine/pull/10433
+			 * credits to Cherri#0815
+			 */
+			Reflect.setField(tweenType, tweenProperty, value);
+
+			leTween = FlxTween.tween(epicNote, tweenType, time, {
 				ease: ForeverTools.getEaseFromString(ease),
 				onComplete: function(tween:FlxTween)
 				{
@@ -266,81 +292,21 @@ class ScriptFuncs extends PlayState
 			});
 		});
 
-		PlayState.contents.setVar('doTweenAlpha', function(tweenID:String, object:Dynamic, value:Float, time:Float, ease:String)
+		PlayState.contents.setVar('doDadStrumTween', function(tweenID:String, tweenProperty:String, newNote:Int, value:Dynamic, time:Float, ease:String)
 		{
 			var leTween:FlxTween;
+			var tweenType = {};
 
-			leTween = FlxTween.tween(object, {alpha: value}, time, {
-				ease: ForeverTools.getEaseFromString(ease),
-				onComplete: function(tween:FlxTween)
-				{
-					PlayState.contents.completeTween(tweenID);
-					leTween = null;
-				}
-			});
-		});
+			/**
+			 * originally made for psych engine as a pull request
+			 * https://github.com/ShadowMario/FNF-PsychEngine/pull/10433
+			 * credits to Cherri#0815
+			 */
+			Reflect.setField(tweenType, tweenProperty, value);
 
-		PlayState.contents.setVar('doTweenAngle', function(tweenID:String, object:Dynamic, value:Float, time:Float, ease:String)
-		{
-			var leTween:FlxTween;
+			var epicNote:Strumline = PlayState.strumLines.members[newNote % PlayState.dadStrums.receptors.members.length];
 
-			leTween = FlxTween.tween(object, {angle: value}, time, {
-				ease: ForeverTools.getEaseFromString(ease),
-				onComplete: function(tween:FlxTween)
-				{
-					PlayState.contents.completeTween(tweenID);
-					leTween = null;
-				}
-			});
-		});
-
-		PlayState.contents.setVar('doTweenDirection', function(tweenID:String, object:Dynamic, value:Float, time:Float, ease:String)
-		{
-			var leTween:FlxTween;
-
-			leTween = FlxTween.tween(object, {direction: value}, time, {
-				ease: ForeverTools.getEaseFromString(ease),
-				onComplete: function(tween:FlxTween)
-				{
-					PlayState.contents.completeTween(tweenID);
-					leTween = null;
-				}
-			});
-		});
-
-		PlayState.contents.setVar('doTweenZoom', function(tweenID:String, object:Dynamic, value:Float, time:Float, ease:String)
-		{
-			var leTween:FlxTween;
-
-			leTween = FlxTween.tween(object, {zoom: value}, time, {
-				ease: ForeverTools.getEaseFromString(ease),
-				onComplete: function(tween:FlxTween)
-				{
-					PlayState.contents.completeTween(tweenID);
-					leTween = null;
-				}
-			});
-		});
-
-		PlayState.contents.setVar('doTweenScaleX', function(tweenID:String, object:Dynamic, value:Float, time:Float, ease:String)
-		{
-			var leTween:FlxTween;
-
-			leTween = FlxTween.tween(object, {"scale.x": value}, time, {
-				ease: ForeverTools.getEaseFromString(ease),
-				onComplete: function(tween:FlxTween)
-				{
-					PlayState.contents.completeTween(tweenID);
-					leTween = null;
-				}
-			});
-		});
-
-		PlayState.contents.setVar('doTweenScaleY', function(tweenID:String, object:Dynamic, value:Float, time:Float, ease:String)
-		{
-			var leTween:FlxTween;
-
-			leTween = FlxTween.tween(object, {"scale.y": value}, time, {
+			leTween = FlxTween.tween(epicNote, tweenType, time, {
 				ease: ForeverTools.getEaseFromString(ease),
 				onComplete: function(tween:FlxTween)
 				{
