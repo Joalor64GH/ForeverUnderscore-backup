@@ -143,8 +143,12 @@ class Conductor
 	public static function killMusic()
 	{
 		for (vocals in vocalArray)
+		{
 			if (vocals != null)
 				ForeverTools.killMusic([songMusic, vocals]);
+			else
+				ForeverTools.killMusic([songMusic]);
+		}
 	}
 
 	public static function resyncVocals():Void

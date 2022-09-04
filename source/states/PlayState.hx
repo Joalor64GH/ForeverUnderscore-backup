@@ -2123,8 +2123,7 @@ class PlayState extends MusicBeatState
 		canPause = false;
 		endingSong = true;
 
-		Conductor.songMusic.volume = 0;
-		Conductor.songVocals.volume = 0;
+		Conductor.stopMusic();
 
 		deaths = 0;
 
