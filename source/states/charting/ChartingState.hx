@@ -159,14 +159,20 @@ class ChartingState extends MusicBeatState
 			if (typeReal > 3)
 				typeReal -= 4;
 
-			var newArrow:UIStaticArrow = ForeverAssets.generateUIArrows(((FlxG.width / 2) - ((keysTotal / 2) * gridSize)) + ((i - 1) * gridSize), -76,
-				typeReal, 'chart editor');
+			var assetType = 'base';
+			assetType = (_song.assetModifier == 'base' ? 'chart editor' : _song.assetModifier);
+
+			var newArrow:UIStaticArrow = ForeverAssets.generateUIArrows(((FlxG.width / 2) - ((keysTotal / 2) * gridSize)) + ((i - 1) * gridSize), assetType == 'pixel' ? -55 : -75,
+				typeReal, assetType);
 
 			newArrow.ID = i;
 			newArrow.setGraphicSize(gridSize);
 			newArrow.updateHitbox();
 			newArrow.alpha = 0.9;
-			newArrow.antialiasing = true;
+			if (_song.assetModifier == 'pixel')
+				newArrow.antialiasing = false;
+			else
+				newArrow.antialiasing = !Init.trueSettings.get('Disable Antialiasing');
 
 			// lol silly idiot
 			newArrow.playAnim('static');
@@ -506,7 +512,7 @@ class ChartingState extends MusicBeatState
 		var sectionCamera:FlxSprite = new FlxSprite(FlxG.width / 2 - (gridSize * (keysTotal / 2)) + (sectionExtend), placement);
 		sectionCamera.frames = sectionCameraGraphic.imageFrame;
 		sectionCamera.alpha = (88 / 255);
-		curRenderedSections.add(sectionCamera);
+		//curRenderedSections.add(sectionCamera);
 
 		// set up section numbers
 		for (i in 0...2)

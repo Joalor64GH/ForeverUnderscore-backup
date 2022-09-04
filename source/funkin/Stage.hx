@@ -191,6 +191,9 @@ class Stage extends FlxTypedGroup<FlxBasic>
 				// add to the final array
 				add(stageCurtains);
 
+				if (PlayState.SONG.song.toLowerCase() == 'tutorial')
+					spawnGirlfriend = false;
+
 			case 'spooky':
 				curStage = 'spooky';
 				// halloweenLevel = true;
@@ -608,12 +611,10 @@ class Stage extends FlxTypedGroup<FlxBasic>
 							camPos.x += 600;
 							tweenCamIn();
 					}*/
-					/*
-						case 'spirit':
-							var evilTrail = new FlxTrail(char, null, 4, 24, 0.3, 0.069);
-							evilTrail.changeValuesEnabled(false, false, false, false);
-							add(evilTrail);
-					 */
+					case 'spirit':
+						var evilTrail = new FlxTrail(char, null, 4, 24, 0.3, 0.069);
+						evilTrail.changeValuesEnabled(false, false, false, false);
+						add(evilTrail);
 			}
 		}
 	}

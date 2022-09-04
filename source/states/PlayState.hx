@@ -311,6 +311,13 @@ class PlayState extends MusicBeatState
 		if ((curStage.startsWith("school")) && (ChartParser.songType == FNF_LEGACY))
 			assetModifier = 'pixel';
 
+		// dad is girlfriend, spawn him on her position;
+		if (dadOpponent.curCharacter.startsWith('gf'))
+		{
+			dadOpponent.x = 300;
+			dadOpponent.y = 100;
+		}
+
 		// add characters
 		if (Init.trueSettings.get('Stage Opacity') > 0)
 		{

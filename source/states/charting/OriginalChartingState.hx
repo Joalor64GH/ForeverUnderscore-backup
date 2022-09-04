@@ -227,18 +227,22 @@ class OriginalChartingState extends MusicBeatState
 			if (typeReal > 3)
 				typeReal -= 4;
 
-			var newArrow:UIStaticArrow = ForeverAssets.generateUIArrows(GRID_SIZE * (keys + 1) - 98, 0, typeReal, 'chart editor');
+			var assetType = 'base';
+			assetType = (_song.assetModifier == 'base' ? 'chart editor' : _song.assetModifier);
+
+			var newArrow:UIStaticArrow = ForeverAssets.generateUIArrows(GRID_SIZE * (keys + 1) - 98, 0, typeReal, assetType);
 
 			newArrow.ID = keys;
 			newArrow.setGraphicSize(GRID_SIZE, GRID_SIZE);
 			newArrow.updateHitbox();
 			newArrow.alpha = 0.8;
-			newArrow.antialiasing = !Init.trueSettings.get('Disable Antialiasing');
+
+			if (_song.assetModifier == 'pixel')
+				newArrow.antialiasing = false;
+			else
+				newArrow.antialiasing = !Init.trueSettings.get('Disable Antialiasing');
 
 			newArrow.playAnim('static');
-
-			if (newArrow.animation.curAnim.name == 'confirm')
-				newArrow.alpha = 1;
 
 			arrowGroup.add(newArrow);
 		}
