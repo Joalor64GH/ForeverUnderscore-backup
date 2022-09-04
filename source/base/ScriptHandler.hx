@@ -255,7 +255,7 @@ class ScriptFuncs extends PlayState
 				onComplete: function(tween:FlxTween)
 				{
 					PlayState.contents.completeTween(tweenID);
-					leTween = null;
+					//leTween = null;
 				}
 			});
 		});
@@ -287,31 +287,7 @@ class ScriptFuncs extends PlayState
 				onComplete: function(tween:FlxTween)
 				{
 					PlayState.contents.completeTween(tweenID);
-					leTween = null;
-				}
-			});
-		});
-
-		PlayState.contents.setVar('doDadStrumTween', function(tweenID:String, tweenProperty:String, newNote:Int, value:Dynamic, time:Float, ease:String)
-		{
-			var leTween:FlxTween;
-			var tweenType = {};
-
-			/**
-			 * originally made for psych engine as a pull request
-			 * https://github.com/ShadowMario/FNF-PsychEngine/pull/10433
-			 * credits to Cherri#0815
-			 */
-			Reflect.setField(tweenType, tweenProperty, value);
-
-			var epicNote:Strumline = PlayState.strumLines.members[newNote % PlayState.dadStrums.receptors.members.length];
-
-			leTween = FlxTween.tween(epicNote, tweenType, time, {
-				ease: ForeverTools.getEaseFromString(ease),
-				onComplete: function(tween:FlxTween)
-				{
-					PlayState.contents.completeTween(tweenID);
-					leTween = null;
+					//leTween = null;
 				}
 			});
 		});

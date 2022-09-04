@@ -2534,7 +2534,7 @@ class PlayState extends MusicBeatState
 
 	function completeTween(id:String)
 	{
-		callFunc('completeTween', []);
+		callFunc('completeTween', [id]);
 		// add your custom actions for finishing a tween here;
 	}
 
