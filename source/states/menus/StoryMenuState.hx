@@ -63,6 +63,7 @@ class StoryMenuState extends MusicBeatState
 		super.create();
 
 		PlayState.chartingMode = false;
+		CoolUtil.difficulties = CoolUtil.baseDifficulties;
 
 		transIn = FlxTransitionableState.defaultTransIn;
 		transOut = FlxTransitionableState.defaultTransOut;

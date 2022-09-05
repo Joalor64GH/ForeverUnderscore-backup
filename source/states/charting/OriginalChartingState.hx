@@ -1106,6 +1106,7 @@ class OriginalChartingState extends MusicBeatState
 	{
 		autosaveSong();
 		lastSection = curSection;
+		CoolUtil.difficulties = CoolUtil.baseDifficulties;
 
 		PlayState.SONG = _song;
 		ForeverTools.killMusic([songMusic, vocals]);

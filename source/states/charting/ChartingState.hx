@@ -427,6 +427,8 @@ class ChartingState extends MusicBeatState
 			Paths.clearUnusedMemory();
 			Main.changeInfoParams(1);
 
+			CoolUtil.difficulties = CoolUtil.baseDifficulties;
+
 			Main.switchState(this, new FreeplayState());
 		}
 	}
