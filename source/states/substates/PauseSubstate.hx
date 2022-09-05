@@ -229,6 +229,8 @@ class PauseSubstate extends MusicBeatSubstate
 					PlayState.deaths = 0;
 					disableCheats(true);
 
+					CoolUtil.difficulties = CoolUtil.baseDifficulties;
+
 					if (PlayState.isStoryMode)
 						Main.switchState(this, new StoryMenuState());
 					else
