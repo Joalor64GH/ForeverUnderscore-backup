@@ -260,13 +260,13 @@ class ClassHUD extends FlxTypedGroup<FlxBasic>
 
 			switch (Std.string(Timings.returnScoreRating().toUpperCase()))
 			{
-				case 'S': rankColor = FlxColor.YELLOW;
+				case 'S': rankColor = FlxColor.CYAN;
 				case 'A': rankColor = FlxColor.LIME;
 				case 'B': rankColor = FlxColor.GREEN;
 				case 'C': rankColor = FlxColor.PURPLE;
-				case 'D' | 'E': rankColor = FlxColor.GRAY;
-				case 'F': rankColor = FlxColor.RED;
-				default: rankColor = FlxColor.CYAN;
+				case 'D' | 'E': rankColor = FlxColor.RED;
+				case 'F': rankColor = FlxColor.GRAY;
+				default: rankColor = FlxColor.fromString('#FFB81C');
 			}
 
 			scoreColorTween = FlxTween.color(scoreBar, 0.005, scoreBar.color, noteMiss ? FlxColor.RED : rankColor,
