@@ -26,6 +26,8 @@ class GameOverSubstate extends MusicBeatSubstate
 	public static var deathConfirm:String = 'gameOverEnd';
 	public static var deathBPM:Int = 100;
 
+	public static var contents:GameOverSubstate;
+
 	public static function resetGameOver()
 	{
 		character = 'bf-dead';
@@ -45,6 +47,8 @@ class GameOverSubstate extends MusicBeatSubstate
 	public function new(x:Float, y:Float)
 	{
 		super();
+
+		contents = this;
 
 		Conductor.songPosition = 0;
 

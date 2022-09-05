@@ -213,6 +213,7 @@ class ScriptFuncs extends PlayState
 
 				new FlxTimer().start(6, function(tmr:FlxTimer)
 				{
+					PlayState.uiHUD.traceBar.text = '';
 					FlxTween.tween(PlayState.uiHUD.traceBar, {alpha: 0}, 0.5, {ease: FlxEase.circOut});
 				});
 			}
@@ -240,7 +241,7 @@ class ScriptFuncs extends PlayState
 
 		PlayState.contents.setVar('doTween', function(tweenID:String, tweenProperty:String, object:Dynamic, value:Dynamic, time:Float, ease:String)
 		{
-			var leTween:FlxTween;
+			endTween(tweenID);
 			var tweenType = {};
 
 			/**
@@ -250,21 +251,19 @@ class ScriptFuncs extends PlayState
 			 */
 			Reflect.setField(tweenType, tweenProperty, value);
 
-			leTween = FlxTween.tween(object, tweenType, time, {
+			PlayState.ScriptedTweens.set(tweenID, FlxTween.tween(object, tweenType, time, {
 				ease: ForeverTools.getEaseFromString(ease),
 				onComplete: function(tween:FlxTween)
 				{
-					PlayState.contents.completeTween(tweenID);
-					//leTween = null;
+					completeTween(tweenID);
 				}
-			});
+			}));
 		});
 
 		PlayState.contents.setVar('doStrumTween', function(tweenID:String, tweenProperty:String, strumline:String, newNote:Int, value:Dynamic, time:Float, ease:String)
 		{
-			var leTween:FlxTween;
+			endTween(tweenID);
 			var tweenType = {};
-
 			var epicNote = PlayState.bfStrums.receptors.members[newNote];
 
 			switch (strumline)
@@ -282,14 +281,29 @@ class ScriptFuncs extends PlayState
 			 */
 			Reflect.setField(tweenType, tweenProperty, value);
 
-			leTween = FlxTween.tween(epicNote, tweenType, time, {
+			PlayState.ScriptedTweens.set(tweenID, FlxTween.tween(epicNote, tweenType, time, {
 				ease: ForeverTools.getEaseFromString(ease),
 				onComplete: function(tween:FlxTween)
 				{
-					PlayState.contents.completeTween(tweenID);
-					//leTween = null;
+					completeTween(tweenID);
 				}
-			});
+			}));
 		});
 	}
+
+	public static function completeTween(tweenID:String)
+	{
+		PlayState.contents.callFunc('completeTween', [tweenID]);
+		endTween(tweenID);
+	}
+
+	public static function endTween(tweenID:String)
+	{
+		if(PlayState.ScriptedTweens.exists(tweenID))
+		{
+			PlayState.ScriptedTweens.get(tweenID).cancel();
+			PlayState.ScriptedTweens.get(tweenID).destroy();
+			PlayState.ScriptedTweens.remove(tweenID);
+		}
+	}	
 }

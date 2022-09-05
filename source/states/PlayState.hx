@@ -54,6 +54,11 @@ import vlc.MP4Handler;
 
 class PlayState extends MusicBeatState
 {
+	// FOR SCRIPTS;
+	public static var GraphicMap:Map<String, FNFSprite> = new Map<String, FNFSprite>();
+	public static var ShaderMap:Map<String, GraphicsShader> = new Map<String, GraphicsShader>();
+	public static var ScriptedTweens:Map<String, Dynamic> = new Map<String, Dynamic>();
+
 	public static var startTimer:FlxTimer;
 
 	public static var curStage:String = '';
@@ -74,9 +79,6 @@ class PlayState extends MusicBeatState
 	public static var assetModifier:String = 'base';
 	public static var changeableSkin:String = 'default';
 	public static var changeableSound:String = 'default';
-
-	public static var GraphicMap:Map<String, FNFSprite> = new Map<String, FNFSprite>();
-	public static var ShaderMap:Map<String, GraphicsShader> = new Map<String, GraphicsShader>();
 
 	public var events:FlxTypedGroup<EventNote> = new FlxTypedGroup<EventNote>();
 	public var unspawnEvents:Array<EventNote> = [];
@@ -2530,12 +2532,6 @@ class PlayState extends MusicBeatState
 				if (fool.length > 0)
 					if (shit.length > 0 && shit.endsWith('.hx'))
 						scriptArray.push(new ScriptHandler(shit));
-	}
-
-	function completeTween(id:String)
-	{
-		callFunc('completeTween', [id]);
-		// add your custom actions for finishing a tween here;
 	}
 
 	function setPlayStateVars()
