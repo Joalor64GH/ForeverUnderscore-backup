@@ -125,7 +125,6 @@ class OriginalChartingState extends MusicBeatState
 	var curSelectedNote:Array<Dynamic>;
 
 	var gridGroup:FlxTypedGroup<FlxObject>;
-	var arrowGroup:FlxTypedSpriteGroup<UIStaticArrow>;
 
 	var tempBpm:Float = 0;
 
@@ -136,8 +135,6 @@ class OriginalChartingState extends MusicBeatState
 
 	var playTicksBf:FlxUICheckBox = null;
 	var playTicksDad:FlxUICheckBox = null;
-
-	var showStrumlineNotes:FlxUICheckBox = null;
 
 	// was annoying.
 	var blockPressWhileTypingOn:Array<FlxUIInputText> = [];
@@ -216,38 +213,6 @@ class OriginalChartingState extends MusicBeatState
 		//addEventsUI();
 		addNoteUI();
 
-		// don't mind me, just adding the arrow group
-		// from the new charting state since i'm not going to work on it for a while
-
-		arrowGroup = new FlxTypedSpriteGroup<UIStaticArrow>(0, 0);
-		for (keys in 0...8)
-		{
-			var typeReal:Int = 0;
-			typeReal = keys;
-			if (typeReal > 3)
-				typeReal -= 4;
-
-			var assetType = 'base';
-			assetType = (_song.assetModifier == 'base' ? 'chart editor' : _song.assetModifier);
-
-			var newArrow:UIStaticArrow = ForeverAssets.generateUIArrows(GRID_SIZE * (keys + 1) - 98, 0, typeReal, assetType);
-
-			newArrow.ID = keys;
-			newArrow.setGraphicSize(GRID_SIZE, GRID_SIZE);
-			newArrow.updateHitbox();
-			newArrow.alpha = 0.8;
-
-			if (_song.assetModifier == 'pixel')
-				newArrow.antialiasing = false;
-			else
-				newArrow.antialiasing = !Init.trueSettings.get('Disable Antialiasing');
-
-			newArrow.playAnim('static');
-
-			arrowGroup.add(newArrow);
-		}
-
-		add(arrowGroup);
 		add(curRenderedNotes);
 		add(curRenderedSustains);
 		add(curRenderedEvents);
@@ -553,6 +518,7 @@ class OriginalChartingState extends MusicBeatState
 	}
 
 	var stepperSusLength:FlxUINumericStepper;
+	var strumTimeText:FlxUIInputText;
 	var noteTypeDropDown:PsychDropDown;
 	var key:Int = 0;
 
@@ -566,15 +532,16 @@ class OriginalChartingState extends MusicBeatState
 		stepperSusLength.name = 'note_susLength';
 		blockPressWhileTypingOnStepper.push(stepperSusLength);
 
-		showStrumlineNotes = new FlxUICheckBox(stepperSusLength.x + 60, stepperSusLength.y, null, null, 'Show Strumline Notes', 100);
-		showStrumlineNotes.checked = false;
+		strumTimeText = new FlxUIInputText(10, 65, 180, "0");
+		tab_group_note.add(strumTimeText);
+		blockPressWhileTypingOn.push(strumTimeText);
 
 		// note types
 		for (i in 0...curNoteName.length)
 		{
 			curNoteName[i] = i + '. ' + curNoteName[i];
 		}
-		noteTypeDropDown = new PsychDropDown(10, 65, PsychDropDown.makeStrIdLabelArray(curNoteName, false), function(type:String)
+		noteTypeDropDown = new PsychDropDown(10, 105, PsychDropDown.makeStrIdLabelArray(curNoteName, false), function(type:String)
 		{
 			curNoteType = Std.parseInt(type);
 			if (curSelectedNote != null && curSelectedNote[1] > -1)
@@ -587,9 +554,10 @@ class OriginalChartingState extends MusicBeatState
 		blockPressWhileScrolling.push(noteTypeDropDown);
 
 		tab_group_note.add(new FlxText(10, 10, 0, 'Sustain length:'));
-		tab_group_note.add(new FlxText(10, noteTypeDropDown.y - 15, 0, 'Note Type:'));
-		tab_group_note.add(showStrumlineNotes);
+		tab_group_note.add(new FlxText(10, 50, 0, 'Strum time (in miliseconds):'));
+		tab_group_note.add(new FlxText(10, 90, 0, 'Note Type:'));
 		tab_group_note.add(stepperSusLength);
+		tab_group_note.add(strumTimeText);
 		tab_group_note.add(noteTypeDropDown);
 
 		UI_box.addGroup(tab_group_note);
@@ -706,6 +674,18 @@ class OriginalChartingState extends MusicBeatState
 					updateGrid(); // update the note grid
 			}
 		}
+		else if (id == FlxUIInputText.CHANGE_EVENT && (sender is FlxUIInputText) && curSelectedNote != null)
+		{
+			switch (sender)
+			{
+				case strumTimeText:
+					var value:Float = Std.parseFloat(strumTimeText.text);
+					if (Math.isNaN(value))
+						value = 0;
+					curSelectedNote[0] = value;
+					updateGrid();
+			}
+		}
 
 		// FlxG.log.add(id + " WEED " + sender + " WEED " + data + " WEED " + params);
 	}
@@ -744,8 +724,6 @@ class OriginalChartingState extends MusicBeatState
 	{
 		curStep = recalculateSteps();
 
-		arrowGroup.visible = showStrumlineNotes.checked;
-
 		Conductor.songPosition = songMusic.time;
 
 		gridBlackLine.x = gridBG.x + gridBG.width / 2;
@@ -757,8 +735,6 @@ class OriginalChartingState extends MusicBeatState
 
 		strumLine.y = getYfromStrum((Conductor.songPosition - sectionStartTime()) % (Conductor.stepCrochet * 16)) / (getSectionBeats() / 4);
 		camPos.y = strumLine.y;
-
-		arrowGroup.y = camPos.y - 60;
 
 		if (curBeat % 4 == 0 && curStep >= 16 * (curSection + 1))
 		{
@@ -1059,19 +1035,6 @@ class OriginalChartingState extends MusicBeatState
 			if ((note.strumTime < songMusic.time))
 			{
 				var data:Int = note.noteData % 4;
-
-				var pain = (Math.floor(Conductor.songPosition / Conductor.stepCrochet));
-
-				if (pain == Math.floor(note.strumTime / Conductor.stepCrochet))
-				{
-					var data:Null<Int> = note.noteData;
-					if (data > -1 && note.mustPress != _song.notes[curSection].mustHitSection)
-						data += 4;
-
-					arrowGroup.members[data].playAnim('confirm', true);
-					arrowGroup.members[data].resetAnim = (note.sustainLength / 1000) + 0.2;
-				}
-
 				// check if the song is playing and if the sound was not played once;
 				if (songMusic.playing && !playedSound[data] && note.noteData > -1 && note.strumTime >= lastSongPos)
 				{
@@ -1279,6 +1242,7 @@ class OriginalChartingState extends MusicBeatState
 					curNoteType = Std.parseInt(noteTypeDropDown.selectedLabel);
 					noteTypeDropDown.selectedLabel = (curNoteType <= 0 ? '' : curNoteType + '. ' + curNoteName[curNoteType]);
 				}
+				strumTimeText.text = curSelectedNote[0];
 			}
 		}
 		else
@@ -1348,17 +1312,28 @@ class OriginalChartingState extends MusicBeatState
 			note.updateHitbox();
 			curRenderedNotes.add(note);
 
-			note.mustPress = _song.notes[curSection].mustHitSection;
-
-			if (i[1] > 3)
-				note.mustPress = !note.mustPress;
-
 			if (daSus > 0)
 			{
 				var sustainVis:FlxSprite = new FlxSprite(note.x + (GRID_SIZE / 2 - 3),
 					note.y + GRID_SIZE).makeGraphic(8, Math.floor(FlxMath.remapToRange(daSus, 0, Conductor.stepCrochet * 16, 0, gridBG.height)));
 				curRenderedSustains.add(sustainVis);
 			}
+
+			// attach a text to their respective notetypes;
+			if (daNoteType != 0)
+			{
+				var noteTypeNum:EventText = new EventText(0, 0, 100, Std.string(daNoteType), 24);
+				noteTypeNum.setFormat(Paths.font("vcr.ttf"), 24, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+				noteTypeNum.xAdd = -32;
+				noteTypeNum.yAdd = 6;
+				noteTypeNum.borderSize = 1;
+				curRenderedTexts.add(noteTypeNum);
+				noteTypeNum.tracker = note;
+			}
+
+			note.mustPress = _song.notes[curSection].mustHitSection;
+			if (i[1] > 3)
+				note.mustPress = !note.mustPress;
 		}
 
 		if (_song.events != null
@@ -1374,22 +1349,17 @@ class OriginalChartingState extends MusicBeatState
 				event.updateHitbox();
 				curRenderedEvents.add(event);
 
-				var daText:EventText = new EventText(0, 0, 400,
-					'Event: '
-					+ event.event
-					+ ' ('
-					+ Math.floor(event.strumTime)
-					+ ' ms)'
-					+ '\nValue 1: '
-					+ event.val1
-					+ '\nValue 2: '
-					+ event.val2, 12);
-				daText.setFormat(Paths.font("vcr.ttf"), 12, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
-				daText.xAdd = -410;
-				daText.borderSize = 1;
-				curRenderedTexts.add(daText);
-				daText.tracker = event;
-				event.child = daText;
+				var eventText:EventText = new EventText(0, 0, 400,
+					'Event: ' + event.event
+					+ ' (' + Math.floor(event.strumTime) + ' ms)'
+					+ '\nValue 1: ' + event.val1
+					+ '\nValue 2: ' + event.val2, 12);
+				eventText.setFormat(Paths.font("vcr.ttf"), 12, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+				eventText.xAdd = -410;
+				eventText.borderSize = 1;
+				curRenderedTexts.add(eventText);
+				eventText.tracker = event;
+				event.child = eventText;
 			}
 		}
 	}
@@ -1513,10 +1483,7 @@ class OriginalChartingState extends MusicBeatState
 			_song.notes[curSection].sectionNotes.push([noteStrum, (noteData + 4) % 8, noteSus, noteType]);
 		}
 
-		#if debug
-		trace(noteStrum);
-		trace(curSection);
-		#end
+		strumTimeText.text = curSelectedNote[0];
 
 		updateGrid();
 		updateNoteUI();
