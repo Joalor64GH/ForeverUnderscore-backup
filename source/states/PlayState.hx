@@ -1110,6 +1110,7 @@ class PlayState extends MusicBeatState
 
 								Conductor.songVocals.volume = 0;
 								daNote.noteMissActions(daNote);
+								uiHUD.tweenScoreColor(true);
 
 								if (canMiss)
 								{
@@ -1372,6 +1373,7 @@ class PlayState extends MusicBeatState
 					{
 						increaseCombo(foundRating, coolNote.noteData, character);
 						popUpScore(foundRating, ratingTiming, characterStrums, coolNote);
+						uiHUD.tweenScoreColor(false);
 
 						if (coolNote.childrenNotes.length > 0)
 							Timings.notesHit++;

@@ -31,6 +31,7 @@ class ClassHUD extends FlxTypedGroup<FlxBasic>
 	// set up variables and stuff here
 	var scoreBar:FlxText;
 	var scoreLast:Float = -1;
+	var scoreColorTween:FlxTween;
 
 	public var traceBar:FlxText;
 
@@ -245,6 +246,36 @@ class ClassHUD extends FlxTypedGroup<FlxBasic>
 
 			iconP1.updateHitbox();
 			iconP2.updateHitbox();
+		}
+	}
+
+	public function tweenScoreColor(noteMiss:Bool)
+	{
+		if (Init.trueSettings.get('Animated Score Color'))
+		{
+			if(scoreColorTween != null)
+				scoreColorTween.cancel();
+
+			var rankColor = FlxColor.CYAN;
+
+			switch (Std.string(Timings.returnScoreRating().toUpperCase()))
+			{
+				case 'A': rankColor = FlxColor.YELLOW;
+				case 'B': rankColor = FlxColor.GREEN;
+				case 'C': rankColor = FlxColor.PURPLE;
+				case 'D' | 'E': rankColor = FlxColor.GRAY;
+				case 'F': rankColor = FlxColor.RED;
+				default: rankColor = FlxColor.CYAN;
+			}
+
+			scoreColorTween = FlxTween.color(scoreBar, 0.005, scoreBar.color, noteMiss ? FlxColor.RED : rankColor,
+			{
+				onComplete: function(twn:FlxTween)
+				{
+					FlxTween.color(scoreBar, 0.75, scoreBar.color, FlxColor.WHITE);
+					scoreColorTween = null;
+				}
+			});
 		}
 	}
 }

@@ -312,7 +312,8 @@ class ChartingState extends MusicBeatState
 		bpmTxt.text = Std.string('BEAT: ' + FlxMath.roundDecimal(decBeat, 2)
 			+ '\nSTEP: ' + FlxMath.roundDecimal(decStep, 2)
 			+ '\nTIME: ' + Std.string(FlxMath.roundDecimal(Conductor.songPosition / 1000, 2)) + " / " + Std.string(FlxMath.roundDecimal(songMusic.length / 1000, 2))
-			+ '\nBPM: ' + _song.bpm);
+			+ '\nBPM: ' + _song.bpm
+			+ '\n\nRate: ' + songMusic.pitch);
 
 		super.update(elapsed);
 
@@ -605,7 +606,7 @@ class ChartingState extends MusicBeatState
 		vocals.play();
 
 		if (curSong == _song)
-			songMusic.time = songPosition;
+			songMusic.time = songPosition * songMusic.pitch;
 		curSong = _song;
 		songPosition = 0;
 
@@ -721,7 +722,7 @@ class ChartingState extends MusicBeatState
 			+ _song.author.toUpperCase()
 			+ '\n';
 
-		bpmTxt = new FlxText(0, FlxG.height - 80, 0, "BEAT: 0.00\nSTEP: 0.00\nTIME: 0.00 / 0.00\nBPM: 0", 16);
+		bpmTxt = new FlxText(0, FlxG.height - 120, 0, "BEAT: 0.00\nSTEP: 0.00\nTIME: 0.00 / 0.00\nBPM: 0\n\nRate: 0", 16);
 		bpmTxt.setFormat(Paths.font("vcr.ttf"), 20, FlxColor.WHITE, LEFT);
 		bpmTxt.scrollFactor.set();
 		add(bpmTxt);

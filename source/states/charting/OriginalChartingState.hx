@@ -95,7 +95,6 @@ class OriginalChartingState extends MusicBeatState
 
 	var camPos:FlxObject;
 	var strumLine:FlxSprite;
-	var curSong:String = 'Dadbattle';
 	var amountSteps:Int = 0;
 	var bullshitUI:FlxGroup;
 
@@ -106,6 +105,9 @@ class OriginalChartingState extends MusicBeatState
 	var CAM_OFFSET:Int = 360;
 
 	var dummyArrow:FlxSprite;
+
+	public static var songPosition:Float = 0;
+	public static var curSong:SwagSong;
 
 	var curRenderedNotes:FlxTypedGroup<Note>;
 	var curRenderedSustains:FlxTypedGroup<FlxSprite>;
@@ -588,6 +590,10 @@ class OriginalChartingState extends MusicBeatState
 		songMusic.play();
 		vocals.play();
 
+		curSong = _song;
+		if (curSong == _song)
+			songMusic.time = songPosition * songMusic.pitch;
+
 		pauseMusic();
 
 		songMusic.onComplete = function()
@@ -595,6 +601,8 @@ class OriginalChartingState extends MusicBeatState
 			ForeverTools.killMusic([songMusic, vocals]);
 			loadSong(daSong);
 			changeSection();
+			songPosition = 0;
+			songMusic.time = 0;
 		};
 		//
 	}
@@ -1014,13 +1022,14 @@ class OriginalChartingState extends MusicBeatState
 			}
 		}
 
-		bpmTxt.text = bpmTxt.text = "Song: " + _song.song
+		bpmTxt.text = "Song: " + _song.song
 			+ ' [${CoolUtil.difficultyFromNumber(PlayState.storyDifficulty)}]\n'
 			+ Std.string(FlxMath.roundDecimal(Conductor.songPosition / 1000, 2))
 			+ " / " + Std.string(FlxMath.roundDecimal(songMusic.length / 1000, 2))
 			+ "\nSection: " + curSection
 			+ "\nBeat: " + curBeat
-			+ "\nStep: " + curStep;
+			+ "\nStep: " + curStep
+			+ "\nRate: " + songMusic.pitch;
 		super.update(elapsed);
 
 		var playedSound:Array<Bool> = [];

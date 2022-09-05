@@ -155,6 +155,12 @@ class Init extends FlxState
 			"Whether the Health Bar should follow the Character Icon colors.",
 			NOT_FORCED
 		],
+		'Animated Score Color' => [
+			true,
+			Checkmark,
+			"Whether the Score Bar should have an Animation for Hitting and Missing Notes, based on your current ranking.",
+			NOT_FORCED
+		],
 		'Counter' => [
 			'None',
 			Selector,
