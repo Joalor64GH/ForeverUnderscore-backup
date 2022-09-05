@@ -334,7 +334,7 @@ class Song
 				if (i != null && i.length > 1 && !CoolUtil.difficulties.contains(i))
 				{
 					// clear previous difficulties;
-					CoolUtil.difficulties = [];
+					// CoolUtil.difficulties = [];
 					// add new ones;
 					CoolUtil.difficulties.push(i);
 				}
