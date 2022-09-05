@@ -260,7 +260,8 @@ class ClassHUD extends FlxTypedGroup<FlxBasic>
 
 			switch (Std.string(Timings.returnScoreRating().toUpperCase()))
 			{
-				case 'A': rankColor = FlxColor.YELLOW;
+				case 'S': rankColor = FlxColor.YELLOW;
+				case 'A': rankColor = FlxColor.LIME;
 				case 'B': rankColor = FlxColor.GREEN;
 				case 'C': rankColor = FlxColor.PURPLE;
 				case 'D' | 'E': rankColor = FlxColor.GRAY;
