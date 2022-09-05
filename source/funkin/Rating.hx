@@ -32,8 +32,6 @@ class Rating extends FNFSprite
 			velocity.y = -FlxG.random.int(140, 175);
 			velocity.x = -FlxG.random.int(0, 10);
 		}
-		// x += Init.comboPosition[0][0];
-		// y -= Init.comboPosition[0][1];
 	}
 }
 
@@ -75,7 +73,5 @@ class Combo extends FNFSprite
 			velocity.y = -FlxG.random.int(140, 160);
 			velocity.x = FlxG.random.float(-5, 5);
 		}
-		// x += Init.comboPosition[1][0];
-		// y -= Init.comboPosition[1][1];
 	}
 }

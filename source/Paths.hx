@@ -41,7 +41,7 @@ final class Paths
 	inline public static var SOUND_EXT = "ogg";
 	inline public static var VIDEO_EXT = "mp4";
 
-	public static var currentPack:String = '';
+	public static var currentPack:Null<String>;
 
 	// in case anything goes wrong with your mods
 	public static var defaultPack:String = 'default';

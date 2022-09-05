@@ -160,26 +160,19 @@ class Note extends FNFSprite
 						case 5:
 							newNote.kill();
 						default: // pixel holds default
-							newNote.loadGraphic(Paths.image(ForeverTools.returnSkinAsset('arrowEnds', assetModifier, Init.trueSettings.get("Note Skin"),
-								'noteskins/notes')),
-								true, 7, 6);
-							newNote.animation.add(noteColorID[noteData] + 'holdend', [pixelNoteID[noteData]]);
-							newNote.animation.add(noteColorID[noteData] + 'hold', [pixelNoteID[noteData] - 4]);
+							reloadPrefixes('arrowEnds', 'noteskins/notes', true, assetModifier, newNote);
 					}
 				}
 				else
 				{
 					switch (noteType)
 					{
-						case 5: // pixel mines
+						case 5: // pixel mines;
 							newNote.loadGraphic(Paths.image(ForeverTools.returnSkinAsset('mines', assetModifier, '', 'noteskins/mines')), true, 17, 17);
 							newNote.animation.add(noteColorID[noteData] + 'Scroll', [0, 1, 2, 3, 4, 5, 6, 7], 12);
 
 						default: // pixel notes default
-							newNote.loadGraphic(Paths.image(ForeverTools.returnSkinAsset('arrows-pixels', assetModifier, Init.trueSettings.get("Note Skin"),
-								'noteskins/notes')),
-								true, 17, 17);
-							newNote.animation.add(noteColorID[noteData] + 'Scroll', [pixelNoteID[noteData]], 12);
+							reloadPrefixes('arrows-pixels', 'noteskins/notes', true, assetModifier, newNote);
 					}
 				}
 				newNote.antialiasing = false;
@@ -199,20 +192,8 @@ class Note extends FNFSprite
 						newNote.setGraphicSize(Std.int(newNote.width * 0.8));
 						newNote.updateHitbox();
 						newNote.antialiasing = !Init.trueSettings.get('Disable Antialiasing');
-
 					default: // anything else
-						newNote.frames = Paths.getSparrowAtlas(ForeverTools.returnSkinAsset('NOTE_assets', assetModifier, Init.trueSettings.get("Note Skin"),
-							'noteskins/notes'));
-
-						newNote.animation.addByPrefix(noteColorID[noteData] + 'Scroll', noteColorID[noteData] + '0');
-						newNote.animation.addByPrefix(noteColorID[noteData] + 'holdend', noteColorID[noteData] + ' hold end');
-						newNote.animation.addByPrefix(noteColorID[noteData] + 'hold', noteColorID[noteData] + ' hold piece');
-
-						newNote.animation.addByPrefix('purpleholdend', 'pruple end hold'); // PA god dammit.
-
-						newNote.antialiasing = !Init.trueSettings.get('Disable Antialiasing');
-						newNote.setGraphicSize(Std.int(newNote.width * 0.7));
-						newNote.updateHitbox();
+						reloadPrefixes("NOTE_assets", 'noteskins/notes', true, assetModifier, newNote);
 				}
 		}
 		//
@@ -380,6 +361,48 @@ class Note extends FNFSprite
 
 		return newNote;
 	}
+
+	/**
+	 * [reloads default note prefixes, useful for notetypes that use those same animation prefixes and such]
+	 * @param texture [the texture we should use for your notes];
+	 * @param texturePath [the directory that the texture is located in];
+	 * @param changeable [whether the noteskin option should affect `this` note];
+	 * @param assetModifier [the note's current asset modifier, usually just grabs from `returnDefaultNote` rather than specifying one];
+	 * @param newNote [specifies the current note];
+	 */
+	static function reloadPrefixes(texture:String, texturePath:String, changeable:Bool = true, assetModifier:String, newNote:Note)
+	{
+		if (assetModifier != 'pixel')
+		{
+			newNote.frames = Paths.getSparrowAtlas(ForeverTools.returnSkinAsset(texture, assetModifier, (changeable ? Init.trueSettings.get("Note Skin") : ''), texturePath));
+
+			newNote.animation.addByPrefix(noteColorID[newNote.noteData] + 'Scroll', noteColorID[newNote.noteData] + '0');
+			newNote.animation.addByPrefix(noteColorID[newNote.noteData] + 'holdend', noteColorID[newNote.noteData] + ' hold end');
+			newNote.animation.addByPrefix(noteColorID[newNote.noteData] + 'hold', noteColorID[newNote.noteData] + ' hold piece');
+
+			newNote.animation.addByPrefix('purpleholdend', 'pruple end hold'); // PA god dammit.
+
+			newNote.antialiasing = !Init.trueSettings.get('Disable Antialiasing');
+			newNote.setGraphicSize(Std.int(newNote.width * 0.7));
+			newNote.updateHitbox();
+		}
+		else
+		{
+			if (newNote.isSustainNote)
+			{
+				newNote.loadGraphic(Paths.image(ForeverTools.returnSkinAsset(texture, assetModifier, (changeable ? Init.trueSettings.get("Note Skin") : ''), texturePath)), true, 7, 6);
+				newNote.animation.add(noteColorID[newNote.noteData] + 'holdend', [pixelNoteID[newNote.noteData]]);
+				newNote.animation.add(noteColorID[newNote.noteData] + 'hold', [pixelNoteID[newNote.noteData] - 4]);
+			}
+			else
+			{
+				newNote.loadGraphic(Paths.image(ForeverTools.returnSkinAsset(texture, assetModifier, (changeable ? Init.trueSettings.get("Note Skin") : ''), texturePath)), true, 17, 17);
+				newNote.animation.add(noteColorID[newNote.noteData] + 'Scroll', [pixelNoteID[newNote.noteData]], 12);
+			}
+		}
+	}
+
+	// will be later replacing this function in favor of an actual scripted notetype system;
 
 	/**
 	* Custom Note Functions (for when you hit a note), this should execute in PlayState;

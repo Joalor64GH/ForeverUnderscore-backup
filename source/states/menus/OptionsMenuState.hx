@@ -17,8 +17,7 @@ import flixel.util.FlxTimer;
 import funkin.Alphabet;
 import funkin.ui.menu.Checkmark;
 import funkin.ui.menu.Selector;
-import states.substates.ControlsSubstate;
-import states.substates.PauseSubstate;
+import states.substates.*;
 
 /**
 	Options menu rewrite because I'm unhappy with how it was done previously
