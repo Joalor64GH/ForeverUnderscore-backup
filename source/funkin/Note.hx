@@ -77,19 +77,19 @@ class Note extends FNFSprite
 				hitSounds = true;
 				badNote = false;
 				gfNote = false;
-			case 3: // gf notes
-				updateAccuracy = true;
-				gfNote = true;
-			case 4: // no animation notes
-				updateAccuracy = true;
-				hitSounds = false;
-				badNote = false;
-				gfNote = false;
-			case 5: // mines
+			case 3: // mines
 				healthLoss = 0.065;
 				updateAccuracy = true;
 				hitSounds = false;
 				badNote = true;
+				gfNote = false;
+			case 4: // gf notes
+				updateAccuracy = true;
+				gfNote = true;
+			case 5: // no animation notes
+				updateAccuracy = true;
+				hitSounds = false;
+				badNote = false;
 				gfNote = false;
 			default: // anything else
 				hitSounds = true;
@@ -157,7 +157,7 @@ class Note extends FNFSprite
 				{
 					switch (noteType)
 					{
-						case 5:
+						case 3:
 							newNote.kill();
 						default: // pixel holds default
 							reloadPrefixes('arrowEnds', 'noteskins/notes', true, assetModifier, newNote);
@@ -167,7 +167,7 @@ class Note extends FNFSprite
 				{
 					switch (noteType)
 					{
-						case 5: // pixel mines;
+						case 3: // pixel mines;
 							newNote.loadGraphic(Paths.image(ForeverTools.returnSkinAsset('mines', assetModifier, '', 'noteskins/mines')), true, 17, 17);
 							newNote.animation.add(noteColorID[noteData] + 'Scroll', [0, 1, 2, 3, 4, 5, 6, 7], 12);
 
@@ -182,7 +182,7 @@ class Note extends FNFSprite
 			default: // base game arrows for no reason whatsoever
 				switch (noteType)
 				{
-					case 5: // mines
+					case 3: // mines
 						newNote.loadGraphic(Paths.image(ForeverTools.returnSkinAsset('mines', assetModifier, '', 'noteskins/mines')), true, 133, 128);
 						newNote.animation.add(noteColorID[noteData] + 'Scroll', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]);
 
@@ -277,7 +277,7 @@ class Note extends FNFSprite
 				{
 					switch (noteType)
 					{
-						case 5: // pixel mines
+						case 3: // pixel mines
 							if (assetModifier == 'pixel')
 							{
 								newNote.loadGraphic(Paths.image(ForeverTools.returnSkinAsset('mines', assetModifier, '', 'noteskins/mines')), true, 17, 17);
@@ -307,7 +307,7 @@ class Note extends FNFSprite
 				{
 					switch (noteType)
 					{
-						case 5:
+						case 3:
 							newNote.kill();
 						default:
 							// quant holds
@@ -412,7 +412,7 @@ class Note extends FNFSprite
 		var hitsound = Init.trueSettings.get('Hitsound Type');
 		switch (newNote.noteType)
 		{
-			case 5:
+			case 3:
 				PlayState.contents.decreaseCombo(true);
 				PlayState.health -= healthLoss;
 			default:

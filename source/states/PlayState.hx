@@ -1439,16 +1439,16 @@ class PlayState extends MusicBeatState
 				stringArrow = 'hey'; // sets the animation string for this note;
 				character.specialAnim = true;
 				character.heyTimer = 0.6;
-			case 4: // no animation notes
-				stringArrow = '';
-				altString = '';
-			case 5: // mines
+			case 3: // mines
 				if (character.curCharacter == 'bf-psych')
 					stringArrow = 'hurt';
 				else
 					stringArrow = baseString + 'miss';
 				character.specialAnim = true;
 				character.heyTimer = 0.6;
+			case 5: // no animation notes
+				stringArrow = '';
+				altString = '';
 			default: // anything else
 				stringArrow = baseString + altString;
 				character.specialAnim = false;

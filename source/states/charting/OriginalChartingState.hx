@@ -66,7 +66,7 @@ class OriginalChartingState extends MusicBeatState
 
 	var curNoteType:Int = 0;
 
-	var curNoteName:Array<String> = ['Normal Note', 'Alt Animation', 'Hey!', 'GF Note', 'No Animation', 'Mine Note'];
+	var curNoteName:Array<String> = ['Normal Note', 'Alt Animation', 'Hey!', 'Mine Note', 'GF Note', 'No Animation'];
 
 	// event name - desciption
 	var eventArray:Array<Array<String>> = [

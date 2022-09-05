@@ -158,7 +158,7 @@ class Init extends FlxState
 		'Animated Score Color' => [
 			true,
 			Checkmark,
-			"Whether the Score Bar should have an Animation for Hitting and Missing Notes, based on your current ranking.",
+			"Whether the Score Bar should have an Animation for Hitting, based on your current ranking.",
 			NOT_FORCED
 		],
 		'Counter' => [
