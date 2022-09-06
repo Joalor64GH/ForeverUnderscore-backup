@@ -246,6 +246,7 @@ class ScriptFuncs extends PlayState
 		{
 			endTween(tweenID);
 			var tweenType = {};
+			var newTween:FlxTween;
 
 			/**
 			 * originally made for psych engine as a pull request
@@ -254,11 +255,13 @@ class ScriptFuncs extends PlayState
 			 */
 			Reflect.setField(tweenType, tweenProperty, value);
 
-			PlayState.ScriptedTweens.set(tweenID, FlxTween.tween(object, tweenType, time, {
+			PlayState.ScriptedTweens.set(tweenID, newTween = FlxTween.tween(object, tweenType, time, {
 				ease: ForeverTools.getEaseFromString(ease),
 				onComplete: function(tween:FlxTween)
 				{
+					newTween.cancel();
 					completeTween(tweenID);
+					newTween = null;
 				}
 			}));
 		});
@@ -268,6 +271,7 @@ class ScriptFuncs extends PlayState
 			endTween(tweenID);
 			var tweenType = {};
 			var epicNote = PlayState.bfStrums.receptors.members[newNote];
+			var newTween:FlxTween;
 
 			switch (strumline)
 			{
@@ -284,11 +288,13 @@ class ScriptFuncs extends PlayState
 			 */
 			Reflect.setField(tweenType, tweenProperty, value);
 
-			PlayState.ScriptedTweens.set(tweenID, FlxTween.tween(epicNote, tweenType, time, {
+			PlayState.ScriptedTweens.set(tweenID, newTween = FlxTween.tween(epicNote, tweenType, time, {
 				ease: ForeverTools.getEaseFromString(ease),
 				onComplete: function(tween:FlxTween)
 				{
+					newTween.cancel();
 					completeTween(tweenID);
+					newTween = null;
 				}
 			}));
 		});
