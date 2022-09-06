@@ -23,7 +23,7 @@ function postUpdate()
 	// after playstate's update function
 }
 
-function goodNoteHit(coolNote)
+function goodNoteHit(coolNote, character)
 {
 	// when you hit a note on PlayState
 }
