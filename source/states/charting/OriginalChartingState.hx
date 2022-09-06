@@ -1020,6 +1020,18 @@ class OriginalChartingState extends MusicBeatState
 				songMusic.pitch = 1;
 				vocals.pitch = 1;
 			}
+
+			if (songMusic.pitch >= 6)
+			{
+				songMusic.pitch = 6;
+				vocals.pitch = 6;
+			}
+
+			if (songMusic.pitch <= 0.1)
+			{
+				songMusic.pitch = 0.1;
+				vocals.pitch = 0.1;
+			}
 		}
 
 		bpmTxt.text = "Song: " + _song.song
