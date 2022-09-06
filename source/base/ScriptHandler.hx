@@ -49,8 +49,11 @@ class ScriptFuncs extends PlayState
 
 		// Timings.hx values
 		PlayState.contents.setVar('comboRating', Timings.comboDisplay);
-		PlayState.contents.setVar('accuracy', Math.floor(Timings.getAccuracy() * 100) / 100);
-		PlayState.contents.setVar('rank', Timings.returnScoreRating().toUpperCase());
+		PlayState.contents.setVar('accuracy', Timings.accuracy);
+		PlayState.contents.setVar('ratingFinal', Timings.ratingFinal);
+		PlayState.contents.setVar('trueAccuracy', Timings.trueAccuracy);
+		PlayState.contents.setVar('formattedAccuracy', Math.floor(Timings.getAccuracy() * 100) / 100);
+		PlayState.contents.setVar('formattedRanking', Timings.returnScoreRating().toUpperCase());
 
 		PlayState.contents.setVar('Paths', Paths);
 		PlayState.contents.setVar('Controls', Controls);

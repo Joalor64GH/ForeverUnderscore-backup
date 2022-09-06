@@ -30,11 +30,11 @@ class Timings
 		"S+" => 100,
 		"S" => 95,
 		"A" => 90,
-		"b" => 85,
-		"c" => 80,
-		"d" => 75,
-		"e" => 70,
-		"f" => 65,
+		"B" => 85,
+		"C" => 80,
+		"D" => 75,
+		"E" => 70,
+		"F" => 65,
 	];
 
 	public static var ratingFinal:String = "N/A";
