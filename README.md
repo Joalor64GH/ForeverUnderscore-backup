@@ -5,18 +5,20 @@ A custom-made Forever Engine build which aims to make things a little easier.
 ----------------------------------------------
 Forever Engine Underscore attempts to take on the challenge of making Forever Engine a lot easier by adding tools, such as a scripting system and more. 
 
-The Forever Engine Underscore project is currently maintained by a **solo developer** and [GitHub Contributors](https://github.com/BeastlyGhost/Forever-Engine-Underscore/pulls), but already contains features that can make anyone's life easier.
+The Forever Engine Underscore project is currently on it's **final** state, meaning that very soon, it will be **deprecated**, but already contains features that can make anyone's life easier.
 
 ----------------------------------------------
 # Current Goals:
+* make Notes and Notetypes Scripted, allowing for no source code interaction while messing with them;
 * Finish the Chart Editor **(HIGH PRIORITY)**;
 
 help would be extremely appreciated!
 
 # Features:
+* a Full Scripting System, SScript! which uses hscript as a basis;
 * Custom Notetypes;
-* Scripted Stages
-* Custom Credits Menu with Customizable Credits via JSON files;
+* Scripted Stages;
+* Custom Credits Menu with Customizable Credit Entries via JSON files;
 * Psych Engine Character Support;
 * Strumline Manipulation (position, angle, etc.);
 * Custom Dialogue Text Support;
