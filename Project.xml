@@ -57,7 +57,7 @@
 	<haxelib name="hscript" if="HAXE_EXTENSION" />
 	<haxelib name="polymod" if="MOD_HANDLER" />
 
-	<haxelib name="hxcpp-debug-server" if="desktop" />
+	<haxelib name="hxcpp-debug-server" if="debug" />
 
 	<!-- ______________________________ Haxedefines _____________________________ -->
 
