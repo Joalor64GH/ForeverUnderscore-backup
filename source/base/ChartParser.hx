@@ -90,7 +90,7 @@ class ChartParser
 				{
 					for (songNotes in section.sectionNotes)
 					{
-						var daStrumTime:Float = #if !neko songNotes[0] - Init.trueSettings['Offset']/*/ Conductor.songPlaybackRate*/ /* - | late, + | early*/ #else songNotes[0] /*/ Conductor.songPlaybackRate*/ #end;
+						var daStrumTime:Float = #if !neko songNotes[0] - Init.trueSettings['Offset'] /*/ Conductor.songPlaybackRate*/ /* - | late, + | early*/ #else songNotes[0] /*/ Conductor.songPlaybackRate*/ #end;
 						var daNoteData:Int = Std.int(songNotes[1] % 4);
 						// define the note's animation (in accordance to the original game)!
 						var daNoteAlt:Float = 0;
@@ -127,7 +127,7 @@ class ChartParser
 						swagNote.noteSpeed = songData.speed;
 
 						// set the note's length (sustain note)
-						swagNote.sustainLength = songNotes[2]/*/ Conductor.songPlaybackRate*/;
+						swagNote.sustainLength = songNotes[2] /*/ Conductor.songPlaybackRate*/;
 						swagNote.scrollFactor.set(0, 0);
 						var susLength:Float = swagNote.sustainLength; // sus amogus
 
@@ -155,7 +155,7 @@ class ChartParser
 				}
 
 			case FOREVER:
-				// placeholder
+			// placeholder
 
 			case UNDERSCORE:
 				/**
@@ -221,6 +221,28 @@ class ChartParser
 		}
 
 		return unspawnNotes;
+	}
+
+	public static function loadEvents(eventData:SwagSong, songType:ChartType = FNF_LEGACY):Array<EventNote>
+	{
+		var unspawnEvents:Array<EventNote> = [];
+
+		if (eventData.events != null && eventData.events.length > 0)
+		{
+			for (i in 0...eventData.events.length)
+			{
+				if (eventData.events[i] != null && eventData.events[i].length > 0)
+				{
+					for (event in eventData.events[i])
+					{
+						var eventNote:EventNote = new EventNote(event[1], event[0], event[2], event[3]);
+						eventNote.visible = false;
+						unspawnEvents.push(eventNote);
+					}
+				}
+			}
+		}
+		return unspawnEvents;
 	}
 }
 

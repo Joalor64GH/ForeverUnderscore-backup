@@ -42,15 +42,14 @@ import states.menus.*;
 import states.substates.*;
 
 using StringTools;
+
 #if sys
 import sys.FileSystem;
 import sys.io.File;
 #end
-
 #if VIDEO_PLUGIN
 import vlc.MP4Handler;
 #end
-
 
 class PlayState extends MusicBeatState
 {
@@ -85,7 +84,7 @@ class PlayState extends MusicBeatState
 
 	public var notes:FlxTypedGroup<Note> = new FlxTypedGroup<Note>();
 	public var unspawnNotes:Array<Note> = [];
-	
+
 	var ratingArray:Array<String> = [];
 	var allSicks:Bool = true;
 
@@ -395,16 +394,16 @@ class PlayState extends MusicBeatState
 		{
 			// psych-like Opponent Strumlines;
 			for (i in 0...dadStrums.receptors.members.length)
-		    {
-		        if (i > 1)
-		        {
-		            dadStrums.receptors.members[i].x += FlxG.width / 2 + 25;
-		        }
+			{
+				if (i > 1)
+				{
+					dadStrums.receptors.members[i].x += FlxG.width / 2 + 25;
+				}
 
-		        dadStrums.members[i].alpha = 0.35; // notes, splashes, etc;
-		        dadStrums.receptors.members[i].setAlpha = 0.35; // strumline, in case it still follows the settings alpha;
+				dadStrums.members[i].alpha = 0.35; // notes, splashes, etc;
+				dadStrums.receptors.members[i].setAlpha = 0.35; // strumline, in case it still follows the settings alpha;
 				dadStrums.receptors.members[i].lightConfirms = false;
-		    }
+			}
 
 			// have fun messing with these on scripts now;
 		}
@@ -500,7 +499,7 @@ class PlayState extends MusicBeatState
 				pauseMusic.stop();
 				pauseMusic.destroy();
 			}
-		}	
+		}
 	}
 
 	/**
@@ -684,7 +683,7 @@ class PlayState extends MusicBeatState
 
 				if (dialogueBox.portraitData.confirmSound != null)
 					sound = dialogueBox.portraitData.confirmSound;
-				
+
 				FlxG.sound.play(Paths.sound(sound));
 				dialogueBox.curPage += 1;
 
@@ -925,30 +924,30 @@ class PlayState extends MusicBeatState
 		}
 
 		/*
-		if (!isStoryMode && !startingSong && !endingSong && scriptDebugMode)
-		{
-			if (FlxG.keys.pressed.CONTROL && FlxG.keys.justPressed.Z)
+			if (!isStoryMode && !startingSong && !endingSong && scriptDebugMode)
 			{
-				Conductor.songPlaybackRate += 0.1;
-				Conductor.songMusic.pitch += 0.1;
-				Conductor.songVocals.pitch += 0.1;
-			}
+				if (FlxG.keys.pressed.CONTROL && FlxG.keys.justPressed.Z)
+				{
+					Conductor.songPlaybackRate += 0.1;
+					Conductor.songMusic.pitch += 0.1;
+					Conductor.songVocals.pitch += 0.1;
+				}
 
-			if (FlxG.keys.pressed.CONTROL && FlxG.keys.justPressed.X)
-			{
-				Conductor.songPlaybackRate -= 0.1;
-				Conductor.songMusic.pitch -= 0.1;
-				Conductor.songVocals.pitch -= 0.1;
-			}
+				if (FlxG.keys.pressed.CONTROL && FlxG.keys.justPressed.X)
+				{
+					Conductor.songPlaybackRate -= 0.1;
+					Conductor.songMusic.pitch -= 0.1;
+					Conductor.songVocals.pitch -= 0.1;
+				}
 
-			if (FlxG.keys.pressed.CONTROL && FlxG.keys.justPressed.C)
-			{
-				Conductor.songPlaybackRate = 1;
-				Conductor.songMusic.pitch = 1;
-				Conductor.songVocals.pitch = 1;
+				if (FlxG.keys.pressed.CONTROL && FlxG.keys.justPressed.C)
+				{
+					Conductor.songPlaybackRate = 1;
+					Conductor.songMusic.pitch = 1;
+					Conductor.songVocals.pitch = 1;
+				}
 			}
-		}
-		*/
+		 */
 
 		events.forEachAlive(function(event:EventNote)
 		{
@@ -1053,7 +1052,7 @@ class PlayState extends MusicBeatState
 							}
 							else if (downscrollMultiplier > 0) // upscroll;
 								daNote.y += ((daNote.height / 2) * downscrollMultiplier - 0.21 - 0.03);
-							 // this system is funny like that
+							// this system is funny like that
 						}
 
 						if (downscrollMultiplier < 0)
@@ -1216,6 +1215,7 @@ class PlayState extends MusicBeatState
 		var chosenGroup = (daNote.isSustainNote ? strumline.holdsGroup : strumline.notesGroup);
 		// note damage here I guess
 		daNote.kill();
+		notes.remove(daNote);
 		if (strumline.allNotes.members.contains(daNote))
 			strumline.allNotes.remove(daNote, true);
 		if (chosenGroup.members.contains(daNote))
@@ -1425,7 +1425,8 @@ class PlayState extends MusicBeatState
 			altString = '-alt';
 
 		if (((SONG.notes[Math.floor(curStep / 16)] != null) && (SONG.notes[Math.floor(curStep / 16)].altAnim))
-			&& (character.animOffsets.exists(baseString + '-alt')) || (coolNote.noteType == 1))
+			&& (character.animOffsets.exists(baseString + '-alt'))
+			|| (coolNote.noteType == 1))
 		{
 			if (altString != '-alt')
 				altString = '-alt';
@@ -1917,25 +1918,10 @@ class PlayState extends MusicBeatState
 		unspawnNotes = ChartParser.loadChart(SONG, ChartParser.songType);
 		unspawnNotes.sort(sortByShit);
 
-		// moving this to chartparser later;
-		if (SONG.events != null && SONG.events.length > 0)
-		{
-			for (i in 0...SONG.events.length)
-			{
-				if (SONG.events[i] != null && SONG.events[i].length > 0)
-				{
-					for (event in SONG.events[i])
-					{
-						var eventNote:EventNote = new EventNote(event[1], event[0], event[2], event[3]);
-						eventNote.visible = false;
-						events.add(eventNote);
-					}
-				}
-			}
-		}
+		unspawnEvents = ChartParser.loadEvents(SONG);
 
 		if (events.members.length > 1)
-			events.members.sort(sortByEvent);
+			unspawnEvents.sort(sortByEvent);
 
 		generatedMusic = true;
 	}
@@ -1956,43 +1942,36 @@ class PlayState extends MusicBeatState
 	}
 
 	public var characterArray:Array<Character> = [];
+
 	function charactersDance(curBeat:Int)
 	{
 		if (curBeat % Math.round(gfSpeed * gf.bopSpeed) == 0
-			&& (gf.animation.curAnim != null
-			&& !gf.animation.curAnim.name.startsWith('sing'))
-			&& (gf.animation.curAnim.name.startsWith("idle")
-			|| gf.animation.curAnim.name.startsWith("dance")
-			|| gf.quickDancer)
+			&& (gf.animation.curAnim != null && !gf.animation.curAnim.name.startsWith('sing'))
+			&& (gf.animation.curAnim.name.startsWith("idle") || gf.animation.curAnim.name.startsWith("dance") || gf.quickDancer)
 			&& !gf.stunned)
 			gf.dance();
 
 		if (curBeat % boyfriend.bopSpeed == 0
-			&& (boyfriend.animation.curAnim != null
-			&& !boyfriend.animation.curAnim.name.startsWith('sing'))
+			&& (boyfriend.animation.curAnim != null && !boyfriend.animation.curAnim.name.startsWith('sing'))
 			&& (boyfriend.animation.curAnim.name.startsWith("idle")
-			|| boyfriend.animation.curAnim.name.startsWith("dance")
-			|| boyfriend.quickDancer)
+				|| boyfriend.animation.curAnim.name.startsWith("dance")
+				|| boyfriend.quickDancer)
 			&& !boyfriend.stunned)
 			boyfriend.dance();
 
 		if (curBeat % dadOpponent.bopSpeed == 0
-			&& (dadOpponent.animation.curAnim != null
-			&& !dadOpponent.animation.curAnim.name.startsWith('sing'))
+			&& (dadOpponent.animation.curAnim != null && !dadOpponent.animation.curAnim.name.startsWith('sing'))
 			&& (dadOpponent.animation.curAnim.name.startsWith("idle")
-			|| dadOpponent.animation.curAnim.name.startsWith("dance")
-			|| dadOpponent.quickDancer)
+				|| dadOpponent.animation.curAnim.name.startsWith("dance")
+				|| dadOpponent.quickDancer)
 			&& !dadOpponent.stunned)
 			dadOpponent.dance();
 
 		for (char in characterArray)
 		{
 			if (curBeat % char.bopSpeed == 0
-				&& (char.animation.curAnim != null
-				&& !char.animation.curAnim.name.startsWith('sing'))
-				&& (char.animation.curAnim.name.startsWith("idle")
-				|| char.animation.curAnim.name.startsWith("dance")
-				|| char.quickDancer))
+				&& (char.animation.curAnim != null && !char.animation.curAnim.name.startsWith('sing'))
+				&& (char.animation.curAnim.name.startsWith("idle") || char.animation.curAnim.name.startsWith("dance") || char.quickDancer))
 				char.dance();
 		}
 	}
@@ -2224,9 +2203,9 @@ class PlayState extends MusicBeatState
 
 		var filepath:String = Paths.video(name);
 		#if sys
-		if(!FileSystem.exists(filepath))
+		if (!FileSystem.exists(filepath))
 		#else
-		if(!OpenFlAssets.exists(filepath))
+		if (!OpenFlAssets.exists(filepath))
 		#end
 		{
 			FlxG.log.warn('Couldnt find video file: ' + name);
@@ -2499,7 +2478,7 @@ class PlayState extends MusicBeatState
 	{
 		for (i in scriptArray)
 			i.call(key, args);
-		
+
 		if (generatedMusic)
 		{
 			ScriptHandler.ScriptFuncs.setBaseVars();
@@ -2521,7 +2500,7 @@ class PlayState extends MusicBeatState
 				continue;
 			}
 		}
-		return allSucceed; 
+		return allSucceed;
 	}
 
 	function setupScripts()
@@ -2529,8 +2508,8 @@ class PlayState extends MusicBeatState
 		var fools:Array<Array<String>> = [
 			CoolUtil.absoluteDirectory('scripts'),
 			CoolUtil.absoluteDirectory('songs/${SONG.song.toLowerCase().replace(' ', '-')}')
-		]; 
-		
+		];
+
 		for (fool in fools)
 			for (shit in fool)
 				if (fool.length > 0)
