@@ -420,6 +420,7 @@ class ChartingState extends MusicBeatState
 
 		if (FlxG.keys.justPressed.ESCAPE)
 		{
+			autosaveSong();
 			songPosition = songMusic.time;
 			PlayState.SONG = _song;
 			FlxG.mouse.visible = false;
@@ -434,6 +435,7 @@ class ChartingState extends MusicBeatState
 
 		if (FlxG.keys.pressed.SHIFT && FlxG.keys.justPressed.ESCAPE)
 		{
+			autosaveSong();
 			FlxG.mouse.visible = false;
 			ForeverTools.killMusic([songMusic, vocals]);
 
@@ -799,10 +801,30 @@ class ChartingState extends MusicBeatState
 
 	function autosaveSong():Void
 	{
-		FlxG.save.data.autosave = Json.stringify({
+		var json = {
 			"song": _song
-		});
+		};
+
+		var data:String = Json.stringify(json, "\t");
+
+		if ((data != null) && data.length > 0)
+		{
+			FlxG.save.data.autosave = data;
+		}
 		FlxG.save.flush();
+	}
+
+	function loadAutosave():Void
+	{
+		try
+		{
+			PlayState.SONG = Song.parseSong(FlxG.save.data.autosave, null);
+			FlxG.resetState();
+		}
+		catch (e)
+		{
+			return;
+		}
 	}
 
 	// save things

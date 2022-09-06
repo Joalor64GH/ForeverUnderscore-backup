@@ -289,54 +289,57 @@ class Song
 		return parseSong(rawJson, rawMeta);
 	}
 
-	public static function parseSong(rawJson:String, rawMeta:String = 'meta'):SwagSong
+	public static function parseSong(rawJson:String, rawMeta:String):SwagSong
 	{
 		var swagShit:SwagSong = cast Json.parse(rawJson).song;
 		swagShit.validScore = true;
 
-		var swagMeta:SwagMeta = cast Json.parse(rawMeta);
-
-		// injecting info from the meta file if it's valid data, else get from the song data
-		// please spare me I know it looks weird.
-		if (swagMeta.assetModifier != null)
-			swagShit.assetModifier = swagMeta.assetModifier;
-		else if (swagMeta.assetModifier == null)
-			swagShit.assetModifier = swagShit.assetModifier;
-		else
-			swagShit.assetModifier == 'base';
-
-		if (swagMeta.author != null)
-			swagShit.author = swagMeta.author;
-		else if (swagMeta.author == null)
-			swagShit.author = swagShit.author;
-		else
-			swagShit.author = '???';
-
-		if (swagMeta.offset != null)
-			swagShit.offset = swagMeta.offset;
-		else if (swagMeta.offset == null)
-			swagShit.offset = swagShit.offset;
-		else
-			swagShit.offset = 0;
-
-		if (swagMeta.color != null)
-			swagShit.color = swagMeta.color;
-		else if (swagMeta.color == null)
-			swagShit.color = swagShit.color;
-		else
-			swagShit.color = [255, 255, 255];
-
-		// temporary custom difficulty things;
-		if (swagMeta.difficulties != null)
+		if (rawMeta != null)
 		{
-			for (i in swagMeta.difficulties)
+			var swagMeta:SwagMeta = cast Json.parse(rawMeta);
+
+			// injecting info from the meta file if it's valid data, else get from the song data
+			// please spare me I know it looks weird.
+			if (swagMeta.assetModifier != null)
+				swagShit.assetModifier = swagMeta.assetModifier;
+			else if (swagMeta.assetModifier == null)
+				swagShit.assetModifier = swagShit.assetModifier;
+			else
+				swagShit.assetModifier == 'base';
+
+			if (swagMeta.author != null)
+				swagShit.author = swagMeta.author;
+			else if (swagMeta.author == null)
+				swagShit.author = swagShit.author;
+			else
+				swagShit.author = '???';
+
+			if (swagMeta.offset != null)
+				swagShit.offset = swagMeta.offset;
+			else if (swagMeta.offset == null)
+				swagShit.offset = swagShit.offset;
+			else
+				swagShit.offset = 0;
+
+			if (swagMeta.color != null)
+				swagShit.color = swagMeta.color;
+			else if (swagMeta.color == null)
+				swagShit.color = swagShit.color;
+			else
+				swagShit.color = [255, 255, 255];
+
+			// temporary custom difficulty things;
+			if (swagMeta.difficulties != null)
 			{
-				if (i != null && i.length > 1 && !CoolUtil.difficulties.contains(i))
+				for (i in swagMeta.difficulties)
 				{
-					// clear previous difficulties;
-					// CoolUtil.difficulties = [];
-					// add new ones;
-					CoolUtil.difficulties.push(i);
+					if (i != null && i.length > 1 && !CoolUtil.difficulties.contains(i))
+					{
+						// clear previous difficulties;
+						// CoolUtil.difficulties = [];
+						// add new ones;
+						CoolUtil.difficulties.push(i);
+					}
 				}
 			}
 		}

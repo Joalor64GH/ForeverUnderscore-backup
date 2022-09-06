@@ -1576,18 +1576,32 @@ class OriginalChartingState extends MusicBeatState
 		FlxG.resetState();
 	}
 
-	function loadAutosave():Void
-	{
-		PlayState.SONG = Song.parseSong(FlxG.save.data.autosave);
-		FlxG.resetState();
-	}
-
 	function autosaveSong():Void
 	{
-		FlxG.save.data.autosave = Json.stringify({
+		var json = {
 			"song": _song
-		});
+		};
+
+		var data:String = Json.stringify(json, "\t");
+
+		if ((data != null) && data.length > 0)
+		{
+			FlxG.save.data.autosave = data;
+		}
 		FlxG.save.flush();
+	}
+
+	function loadAutosave():Void
+	{
+		try
+		{
+			PlayState.SONG = Song.parseSong(FlxG.save.data.autosave, null);
+			FlxG.resetState();
+		}
+		catch (e)
+		{
+			return;
+		}
 	}
 
 	function saveLevel()
