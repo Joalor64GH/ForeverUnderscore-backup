@@ -8,6 +8,7 @@ import base.Conductor;
 import base.ForeverAssets;
 import base.ForeverTools;
 import base.MusicBeat.MusicBeatState;
+import dependency.AbsoluteText.EventText;
 import dependency.Discord;
 import flixel.FlxBasic;
 import flixel.FlxCamera;
@@ -89,13 +90,13 @@ class ChartingState extends MusicBeatState
 	var curSelectedNote:Array<Dynamic>;
 
 	var curNoteType:Int = 0;
-
 	var tempBpm:Float = 0;
 
 	private var dummyArrow:FlxSprite;
 	private var curRenderedNotes:FlxTypedGroup<Note>;
 	private var curRenderedSustains:FlxTypedGroup<FlxSprite>;
 	private var curRenderedSections:FlxTypedGroup<FlxBasic>;
+	private var curRenderedTexts:FlxTypedGroup<EventText>;
 
 	private var arrowGroup:FlxTypedSpriteGroup<UIStaticArrow>;
 
@@ -131,12 +132,14 @@ class ChartingState extends MusicBeatState
 		curRenderedNotes = new FlxTypedGroup<Note>();
 		curRenderedSustains = new FlxTypedGroup<FlxSprite>();
 		curRenderedSections = new FlxTypedGroup<FlxBasic>();
+		curRenderedTexts = new FlxTypedGroup<EventText>();
 
 		generateNotes();
 
 		add(curRenderedSections);
 		add(curRenderedSustains);
 		add(curRenderedNotes);
+		add(curRenderedTexts);
 
 		strumLineCam = new FlxObject(0, 0);
 		strumLineCam.screenCenter(X);
@@ -418,6 +421,11 @@ class ChartingState extends MusicBeatState
 			saveLevel();
 		}
 
+		if (FlxG.keys.pressed.CONTROL && FlxG.keys.justPressed.R)
+		{
+			loadAutosave();
+		}
+
 		if (FlxG.keys.justPressed.ESCAPE)
 		{
 			autosaveSong();
@@ -565,6 +573,7 @@ class ChartingState extends MusicBeatState
 		// GENERATING THE GRID NOTES!
 		curRenderedNotes.clear();
 		curRenderedSustains.clear();
+		curRenderedTexts.clear();
 
 		// sectionsMax = 1;
 		generateSection();
@@ -648,10 +657,6 @@ class ChartingState extends MusicBeatState
 
 		note.y = Math.floor(getYfromStrum(daStrumTime));
 
-		note.mustPress = !_song.notes[curSection].mustHitSection;
-		if (daNoteInfo > 3)
-			note.mustPress = !note.mustPress;
-
 		if (pushNote)
 			_song.notes[noteSection].sectionNotes.push([daStrumTime, daNoteInfo % 8, daSus, '']);
 
@@ -664,6 +669,22 @@ class ChartingState extends MusicBeatState
 			curRenderedSustains.add(sustainVis);
 		}
 		//generateSustain(daStrumTime, daNoteInfo, daSus, daNoteAlt, daNoteType, note);
+
+		// attach a text to their respective notetype;
+		if (daNoteType != 0)
+		{
+			var noteTypeNum:EventText = new EventText(0, 0, 100, Std.string(daNoteType), 24);
+			noteTypeNum.setFormat(Paths.font("vcr.ttf"), 24, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+			noteTypeNum.xAdd = -26;
+			noteTypeNum.yAdd = 10;
+			noteTypeNum.borderSize = 1;
+			curRenderedTexts.add(noteTypeNum);
+			noteTypeNum.tracker = note;
+		}
+
+		note.mustPress = !_song.notes[curSection].mustHitSection;
+		if (daNoteInfo > 3)
+			note.mustPress = !note.mustPress;
 	}
 
 	private function generateSustain(daStrumTime:Float = 0, daNoteInfo:Int = 0, daSus:Float = 0, daNoteAlt:Float = 0, daNoteType:Int = 0, note:Note)

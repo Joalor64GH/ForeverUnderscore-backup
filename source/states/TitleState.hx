@@ -39,24 +39,11 @@ class TitleState extends MusicBeatState
 
 	var wackyImage:FlxSprite;
 
-	var swagShader:ColorSwap;
-
 	override public function create():Void
 	{
 		controls.setKeyboardScheme(None, false);
 		curWacky = FlxG.random.getObject(getIntroTextShit());
 		super.create();
-
-		try
-		{
-			swagShader = new ColorSwap();
-			trace('Initializing ColorSwap Shader');
-		}
-		catch (e)
-		{
-			swagShader = null;
-			trace('Uncaught Error: ' + e);
-		}
 
 		startIntro();
 	}
@@ -82,6 +69,10 @@ class TitleState extends MusicBeatState
 
 			transIn = FlxTransitionableState.defaultTransIn;
 			transOut = FlxTransitionableState.defaultTransOut;
+
+			#if GAME_UPDATER
+			ForeverTools.checkUpdates();
+			#end
 
 			ForeverTools.resetMenuMusic(true);
 		}
@@ -114,12 +105,6 @@ class TitleState extends MusicBeatState
 		initLogowidth = gameLogo.width;
 		newLogoScale = gameLogo.scale.x;
 		add(gameLogo);
-
-		if (swagShader != null)
-		{
-			gfDance.shader = swagShader.shader;
-			gameLogo.shader = swagShader.shader;
-		}
 
 		titleText = new FlxSprite(100, FlxG.height * 0.8);
 		titleText.frames = Paths.getSparrowAtlas('menus/base/title/titleEnter');
@@ -175,12 +160,6 @@ class TitleState extends MusicBeatState
 			skipIntro();
 		else
 			initialized = true;
-
-		#if GAME_UPDATER
-		ForeverTools.checkUpdates();
-		#end
-
-		// credGroup.add(credTextShit);
 	}
 
 	function getIntroTextShit():Array<Array<String>>
@@ -282,14 +261,6 @@ class TitleState extends MusicBeatState
 		if (pressedEnter && !skippedIntro && initialized)
 			skipIntro();
 
-		if(swagShader != null)
-		{
-			if(controls.UI_LEFT)
-				swagShader.hue -= elapsed * 0.1;
-			if(controls.UI_RIGHT)
-				swagShader.hue += elapsed * 0.1;
-		}
-
 		super.update(elapsed);
 	}
 
@@ -323,8 +294,6 @@ class TitleState extends MusicBeatState
 		}
 	}
 
-	var reverser = 1;
-
 	override function beatHit()
 	{
 		super.beatHit();
@@ -349,13 +318,11 @@ class TitleState extends MusicBeatState
 			case 16:
 				skipIntro();
 		}
-		//trace('Beat: ' + curBeat);
 	}
 
 	override function stepHit()
 	{
 		super.stepHit();
-		//trace('Step: ' + curStep);
 
 		switch (curStep)
 		{
@@ -386,7 +353,7 @@ class TitleState extends MusicBeatState
 			case 56:
 				addMoreText('Night');
 			case 60:
-				addMoreText("Funkin'");
+				addMoreText("Funkin");
 		}
 	}
 

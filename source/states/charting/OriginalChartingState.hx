@@ -112,8 +112,8 @@ class OriginalChartingState extends MusicBeatState
 	var curRenderedNotes:FlxTypedGroup<Note>;
 	var curRenderedSustains:FlxTypedGroup<FlxSprite>;
 
-	var curRenderedEvents:FlxTypedGroup<EventNote> = new FlxTypedGroup();
-	var curRenderedTexts:FlxTypedGroup<EventText> = new FlxTypedGroup();
+	var curRenderedEvents:FlxTypedGroup<EventNote> = new FlxTypedGroup<EventNote>();
+	var curRenderedTexts:FlxTypedGroup<EventText> = new FlxTypedGroup<EventText>();
 
 	var gridBG:FlxSprite;
 	var gridBlackLine:FlxSprite;
@@ -1340,7 +1340,7 @@ class OriginalChartingState extends MusicBeatState
 				curRenderedSustains.add(sustainVis);
 			}
 
-			// attach a text to their respective notetypes;
+			// attach a text to their respective notetype;
 			if (daNoteType != 0)
 			{
 				var noteTypeNum:EventText = new EventText(0, 0, 100, Std.string(daNoteType), 24);
