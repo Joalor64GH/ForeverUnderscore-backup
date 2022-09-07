@@ -1,5 +1,6 @@
 package states.substates;
 
+import base.ControlsFormatter;
 import base.MusicBeat.MusicBeatSubstate;
 import flixel.FlxBasic;
 import flixel.FlxG;
@@ -10,6 +11,7 @@ import flixel.input.keyboard.FlxKey;
 import flixel.text.FlxText;
 import flixel.util.FlxColor;
 import funkin.Alphabet;
+import states.menus.CreditsState;
 
 using StringTools;
 
@@ -173,11 +175,11 @@ class ControlsSubstate extends MusicBeatSubstate
 
 	function getStringKey(arrayThingy:Dynamic):String
 	{
-		var keyString:String = 'none';
+		var keyString:String = '---';
 		if (arrayThingy != null)
 		{
 			var keyDisplay:FlxKey = arrayThingy;
-			keyString = keyDisplay.toString();
+			keyString = ControlsFormatter.formatKeyName(keyDisplay.toString());
 		}
 
 		keyString = keyString.replace(" ", "");

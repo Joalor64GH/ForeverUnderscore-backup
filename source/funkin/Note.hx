@@ -27,8 +27,13 @@ class Note extends FNFSprite
 	public var isSustainNote:Bool = false;
 
 	// only useful for charting stuffs
-	public var chartSustain:FlxSprite = null;
 	public var rawNoteData:Int;
+
+	// offsets
+	public var offsetX:Float = 0;
+	public var offsetY:Float = 0;
+
+	public var useCustomSpeed:Bool = Init.trueSettings.get('Use Custom Note Speed');
 
 	// not set initially
 	public var noteQuant:Int = -1;

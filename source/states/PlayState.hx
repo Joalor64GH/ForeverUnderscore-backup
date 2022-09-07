@@ -270,7 +270,7 @@ class PlayState extends MusicBeatState
 		}
 
 		var setSpeed = Init.trueSettings.get('Scroll Speed');
-		if (Init.trueSettings.get('Use Set Scroll Speed'))
+		if (Init.trueSettings.get('Use Custom Note Speed'))
 			SONG.speed = setSpeed;
 
 		// set up characters here too
@@ -1012,17 +1012,23 @@ class PlayState extends MusicBeatState
 
 				strumline.allNotes.forEachAlive(function(daNote:Note)
 				{
+					// set custom note speeds and stuff;
+					if (daNote.useCustomSpeed)
+						daNote.noteSpeed = Init.trueSettings.get('Scroll Speed');
+					else
+						daNote.noteSpeed = Math.abs(SONG.speed);
+	 
 					var roundedSpeed = FlxMath.roundDecimal(daNote.noteSpeed, 2);
-					var receptorPosX:Float = strumline.receptors.members[Math.floor(daNote.noteData)].x;
-					var receptorPosY:Float = strumline.receptors.members[Math.floor(daNote.noteData)].y;
+					var receptorX:Float = strumline.receptors.members[Math.floor(daNote.noteData)].x;
+					var receptorY:Float = strumline.receptors.members[Math.floor(daNote.noteData)].y;
 					var psuedoY:Float = (downscrollMultiplier * -((Conductor.songPosition - daNote.strumTime) * (0.45 * roundedSpeed)));
 					var psuedoX = 25 + daNote.noteVisualOffset;
 
-					daNote.y = receptorPosY
+					daNote.y = receptorY
 						+ (Math.cos(flixel.math.FlxAngle.asRadians(daNote.noteDirection)) * psuedoY)
 						+ (Math.sin(flixel.math.FlxAngle.asRadians(daNote.noteDirection)) * psuedoX);
 					// painful math equation
-					daNote.x = receptorPosX
+					daNote.x = receptorX
 						+ (Math.cos(flixel.math.FlxAngle.asRadians(daNote.noteDirection)) * psuedoX)
 						+ (Math.sin(flixel.math.FlxAngle.asRadians(daNote.noteDirection)) * psuedoY);
 
@@ -1030,12 +1036,11 @@ class PlayState extends MusicBeatState
 					daNote.angle = -daNote.noteDirection;
 
 					// shitty note hack I hate it so much
-					var center:Float = receptorPosY + UIStaticArrow.swagWidth / 2;
+					var center:Float = receptorY + UIStaticArrow.swagWidth / 2;
 					if (daNote.isSustainNote)
 					{
 						daNote.y -= ((daNote.height / 2) * downscrollMultiplier);
-						if ((daNote.animation.curAnim.name.endsWith('holdend') || daNote.animation.curAnim.name.endsWith('rollend'))
-							&& (daNote.prevNote != null))
+						if ((daNote.animation.curAnim.name.endsWith('holdend') || daNote.animation.curAnim.name.endsWith('rollend')) && (daNote.prevNote != null))
 						{
 							daNote.y -= ((daNote.prevNote.height / 2) * downscrollMultiplier);
 							if (downscrollMultiplier < 0) // downscroll;
@@ -1044,14 +1049,14 @@ class PlayState extends MusicBeatState
 								if (daNote.endHoldOffset == Math.NEGATIVE_INFINITY)
 								{
 									// set the end hold offset yeah I hate that I fix this like this
-									daNote.endHoldOffset = (daNote.prevNote.y - (daNote.y + daNote.height - 0.33 - 0.03));
+									daNote.endHoldOffset = (daNote.prevNote.y - (daNote.y + daNote.height));
 									// trace(daNote.endHoldOffset);
 								}
 								else
 									daNote.y += daNote.endHoldOffset;
 							}
 							else if (downscrollMultiplier > 0) // upscroll;
-								daNote.y += ((daNote.height / 2) * downscrollMultiplier - 0.21 - 0.03);
+								daNote.y += ((daNote.height / 2) * downscrollMultiplier);
 							// this system is funny like that
 						}
 
@@ -1109,7 +1114,6 @@ class PlayState extends MusicBeatState
 
 								Conductor.songVocals.volume = 0;
 								daNote.noteMissActions(daNote);
-								uiHUD.tweenScoreColor(true);
 
 								if (canMiss)
 								{
@@ -1373,7 +1377,6 @@ class PlayState extends MusicBeatState
 					{
 						increaseCombo(foundRating, coolNote.noteData, character);
 						popUpScore(foundRating, ratingTiming, characterStrums, coolNote);
-						uiHUD.tweenScoreColor(false);
 
 						if (coolNote.childrenNotes.length > 0)
 							Timings.notesHit++;
@@ -1650,6 +1653,9 @@ class PlayState extends MusicBeatState
 		if (!practiceMode)
 			songScore += score;
 
+		// tween score color based on your rating;
+		uiHUD.tweenScoreColor(baseRating, allSicks);
+
 		popUpCombo();
 	}
 
@@ -1743,6 +1749,7 @@ class PlayState extends MusicBeatState
 		{
 			// doesnt matter miss ratings dont have timings
 			displayRating("miss", 'late');
+			uiHUD.tweenScoreColor("miss", false);
 			healthCall(Timings.judgementsMap.get("miss")[3]);
 		}
 
@@ -1781,11 +1788,12 @@ class PlayState extends MusicBeatState
 		var noTiming = (timing == null || timing == '' || daRating == 'sick' || daRating == 'miss');
 
 		var timingSpr = ForeverAssets.generateRatingTimings('$daRating-timings', timing, timingsGroup, rating, assetModifier, changeableSkin, 'UI');
-		timingSpr.visible = !noTiming;
-		timingSpr.daRating = daRating;
-		add(timingSpr);
 
-		// i'm kinda afraid that this can impact on performance a little bit, but it makes things easier at the same time;
+		if (!noTiming)
+		{
+			timingSpr.daRating = daRating;
+			add(timingSpr);
+		}
 
 		if (!Init.trueSettings.get('Simply Judgements'))
 		{
@@ -1899,8 +1907,7 @@ class PlayState extends MusicBeatState
 	{
 		// FlxG.log.add(ChartParser.parse());
 
-		var songData = SONG;
-		Conductor.changeBPM(songData.bpm);
+		Conductor.changeBPM(SONG.bpm);
 
 		songDetails = CoolUtil.dashToSpace(SONG.song) + ' [' + CoolUtil.difficultyFromNumber(storyDifficulty) + '] - by ' + SONG.author;
 
@@ -1909,7 +1916,7 @@ class PlayState extends MusicBeatState
 
 		updateRPC(false);
 
-		curSong = songData.song;
+		curSong = SONG.song;
 
 		// call song
 		Conductor.bindMusic();
@@ -2327,7 +2334,7 @@ class PlayState extends MusicBeatState
 
 	function callTextbox()
 	{
-		var dialogPath = Paths.json(SONG.song.toLowerCase() + '/dialogue');
+		var dialogPath = Paths.json('songs/' + SONG.song.toLowerCase() + '/dialogue');
 		if (sys.FileSystem.exists(dialogPath))
 		{
 			startedCountdown = false;

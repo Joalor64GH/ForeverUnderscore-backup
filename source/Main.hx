@@ -42,83 +42,11 @@ class Main extends Sprite
 	public static var showCommitHash:Bool = false;
 
 	static var infoCounter:Overlay; // initialize the heads up display that shows information before creating it.
-	public static var infoOutline:Bitmap;
-	public static var instance:Main;
-
-	// heres gameweeks set up!
-
-	/**
-		Small bit of documentation here, gameweeks are what control everything in my engine
-		this system will eventually be overhauled in favor of using actual week folders within the 
-		assets.
-		Enough of that, here's how it works
-		[ [songs to use], [characters in songs], [color of week], name of week, week image file ]
-	**/
-	public static final gameWeeks:Array<Dynamic> = [
-		[
-			['Tutorial'],
-			['gf'],
-			[FlxColor.fromRGB(129, 100, 223)],
-			'Funky Beginnings',
-			'week0'
-		],
-		[
-			['Bopeebo', 'Fresh', 'Dadbattle'],
-			['dad', 'dad', 'dad'],
-			[FlxColor.fromRGB(129, 100, 223)],
-			'vs. DADDY DEAREST',
-			'week1'
-		],
-		[
-			['Spookeez', 'South', 'Monster'],
-			['spooky', 'spooky', 'monster'],
-			[FlxColor.fromRGB(30, 45, 60)],
-			'Spooky Month',
-			'week2'
-		],
-		[
-			['Pico', 'Philly-Nice', 'Blammed'],
-			['pico'],
-			[FlxColor.fromRGB(111, 19, 60)],
-			'vs. Pico',
-			'week3'
-		],
-		[
-			['Satin-Panties', 'High', 'Milf'],
-			['mom'],
-			[FlxColor.fromRGB(203, 113, 170)],
-			'MOMMY MUST MURDER',
-			'week4'
-		],
-		[
-			['Cocoa', 'Eggnog', 'Winter-Horrorland'],
-			['parents-christmas', 'parents-christmas', 'monster-christmas'],
-			[FlxColor.fromRGB(141, 165, 206)],
-			'RED SNOW',
-			'week5'
-		],
-		[
-			['Senpai', 'Roses', 'Thorns'],
-			['senpai', 'senpai', 'spirit'],
-			[FlxColor.fromRGB(206, 106, 169)],
-			"hating simulator ft. moawling",
-			'week6'
-		],
-		[
-			['Ugh', 'Guns', 'Stress'],
-			['tankman', 'tankman', 'tankman'],
-			[FlxColor.fromRGB(246, 182, 4)],
-			"Tankman",
-			'week7'
-		],
-	];
 
 	// calls a function to set the game up
 	public function new()
 	{
 		super();
-
-		instance = this;
 
 		/**
 			ok so, haxe html5 CANNOT do 120 fps. it just cannot.
@@ -145,8 +73,6 @@ class Main extends Sprite
 		PlayerSettings.init();
 
 		infoCounter = new Overlay(0, 0);
-		/*infoOutline = OverlayOutline.renderImage(infoCounter, 1, 0x000000, true);
-		infoOutline.smoothing = true;*/
 		changeInfoParams(1);
 		addChild(infoCounter);
 	}
@@ -244,7 +170,6 @@ class Main extends Sprite
 	public static function changeInfoParams(newAlpha:Float)
 	{
 		infoCounter.alpha = newAlpha;
-		//infoOutline.alpha = newAlpha;
 	}
 
 	public static function getGitCommitHash()

@@ -4,9 +4,9 @@ import haxe.Json;
 import sys.FileSystem;
 import sys.io.File;
 
-typedef SwagWeek =
+typedef WeekDataDef =
 {
-    var songs:Array<SwagSongs>;
+    var songs:Array<WeekSongDef>;
     var locked:Bool;
     var weekCharacters:Array<String>;
     var weekName:String;
@@ -15,34 +15,34 @@ typedef SwagWeek =
     var hideFreeplay:Bool;
 }
 
-typedef SwagSongs =
+typedef WeekSongDef =
 {
     var name:String;
     var character:String;
     var colors:Array<Int>;
 }
 
-class Week
+class WeekParser
 {
-    public static var currentLoadedWeeks:Map<String, SwagWeek> = [];
+    public static var loadedWeeks:Map<String, WeekDataDef> = [];
     public static var weeksList:Array<String> = [];
 
     public static function loadJsons(isStoryMode:Bool = false)
     {
-        currentLoadedWeeks.clear();
+        loadedWeeks.clear();
         weeksList = [];
 
-        final list:Array<String> = CoolUtil.coolTextFile(Paths.txt('weeks/weekList'));
+        var list:Array<String> = CoolUtil.coolTextFile(Paths.txt('weeks/weekList'));
         for (i in 0...list.length)
         {
-            if(!currentLoadedWeeks.exists(list[i]))
+            if(!loadedWeeks.exists(list[i]))
             {
-                var week:SwagWeek = parseJson(Paths.json('weeks/' + list[i]));
+                var week:WeekDataDef = parseJson(Paths.json('weeks/' + list[i]));
                 if(week != null)
                 {
                     if(week != null && (isStoryMode && !week.hideStoryMode) || (!isStoryMode && !week.hideFreeplay))
                     {
-                        currentLoadedWeeks.set(list[i], week);
+                        loadedWeeks.set(list[i], week);
                         weeksList.push(list[i]);
                     }
                 }
@@ -50,7 +50,7 @@ class Week
         }
     }
 
-    public static function parseJson(path:String):SwagWeek
+    public static function parseJson(path:String):WeekDataDef
     {
         var rawJson:String = null;
 

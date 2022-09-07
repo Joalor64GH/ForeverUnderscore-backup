@@ -85,6 +85,11 @@ class UIStaticArrow extends FlxSprite
 		else
 			alpha = setAlpha;
 
+		if (AnimName == 'confirm' || AnimName == 'pressed')
+		{
+			centerOffsets();
+		}
+
 		animation.play(AnimName, Force, Reversed, Frame);
 		updateHitbox();
 

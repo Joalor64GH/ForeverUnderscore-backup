@@ -5,6 +5,7 @@ import base.ChartParser.SwagSong;
 import base.ChartParser;
 import base.CoolUtil;
 import base.MusicBeat.MusicBeatState;
+import base.WeekParser;
 import dependency.Discord;
 import flash.text.TextField;
 import flixel.FlxG;
@@ -77,23 +78,45 @@ class FreeplayState extends MusicBeatState
 
 		mutex = new Mutex();
 
-		/**
-			Wanna add songs? They're in the Main state now, you can just find the week array and add a song there to a specific week.
-			Alternatively, you can make a folder in the Songs folder and put your songs there, however, this gives you less
-			control over what you can display about the song (color, icon, etc) since it will be pregenerated for you instead.
-		**/
 		// load in all songs that exist in folder
 		var folderSongs:Array<String> = CoolUtil.returnAssetsLibrary('songs', 'assets');
 
-		///*
-		for (i in 0...Main.gameWeeks.length)
+		WeekParser.loadJsons(false);
+
+		for (i in 0...WeekParser.weeksList.length)
 		{
-			addWeek(Main.gameWeeks[i][0], i, Main.gameWeeks[i][1], Main.gameWeeks[i][2]);
-			for (j in cast(Main.gameWeeks[i][0], Array<Dynamic>))
+			// checking week's locked state before anything
+			if (checkLock(WeekParser.weeksList[i]))
+				continue;
+
+			var songs:Array<String> = [];
+			var chars:Array<String> = [];
+
+			if (!WeekParser.loadedWeeks.get(WeekParser.weeksList[i]).hideFreeplay) // no need to add week songs if they are hidden from the freeplay list;
+			{
+				var baseWeek = WeekParser.loadedWeeks.get(WeekParser.weeksList[i]);
+				var colorArray:Array<Int> = [255, 255, 255];
+				var songColor:Array<FlxColor> = [FlxColor.WHITE];
+
+				// push song names and characters;
+				for (i in 0...baseWeek.songs.length)
+				{
+					songs.push(baseWeek.songs[i].name);
+					chars.push(baseWeek.songs[i].character);
+					if (baseWeek.songs[i].colors != null)
+						colorArray = baseWeek.songs[i].colors;
+				}
+
+				if (colorArray != null)
+					songColor = [FlxColor.fromRGB(colorArray[0], colorArray[1], colorArray[2])];
+
+				addWeek(songs, i, chars, songColor);
+			}
+
+			// add songs to the existing songs array to avoid duplicates;
+			for (j in songs)
 				existingSongs.push(j.toLowerCase());
 		}
-
-		// */
 
 		for (i in folderSongs)
 		{
@@ -169,6 +192,12 @@ class FreeplayState extends MusicBeatState
 		changeSelection();
 		changeDiff();
 		resetScore(true);
+	}
+
+	function checkLock(week:String):Bool
+	{
+		var weekName = WeekParser.loadedWeeks.get(week);
+		return (weekName.locked);
 	}
 
 	public function addSong(songName:String, weekNum:Int, songCharacter:String, songColor:FlxColor)

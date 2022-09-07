@@ -29,13 +29,6 @@
 			"colors": [245, 108, 255]
 		},
 		{
-			"name": "Suok",
-			"iconData": [],
-			"textData": ["External Art and banger artist overhaul.", "wingblings"],
-			"urlData": [["Twitter", "https://twitter.com/SuokArts3"]],
-			"colors": [68, 68, 68]
-		},
-		{
 			"sectionName": "FE Underscore Team",
 
 			"name": "TheWorldMachine",

@@ -72,7 +72,7 @@ class OptionsMenuState extends MusicBeatState
 					['Ghost Tapping', getFromOption],
 					['Hitsound Type', getFromOption],
 					['Hitsound Volume', getFromOption],
-					['Use Set Scroll Speed', getFromOption],
+					['Use Custom Note Speed', getFromOption],
 					['Scroll Speed', getFromOption],
 					['', null],
 					['Text Settings', null],

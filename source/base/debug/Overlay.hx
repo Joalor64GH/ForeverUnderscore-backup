@@ -1,6 +1,5 @@
 package base.debug;
 
-import base.debug.OverlayOutline;
 import haxe.Timer;
 import openfl.Lib;
 import openfl.display.Bitmap;
@@ -43,9 +42,6 @@ class Overlay extends TextField
 		text = "";
 
 		addEventListener(Event.ENTER_FRAME, update);
-
-		/*overlayOutline = OverlayOutline.renderImage(this, 1, 0x000000, 1, true);
-		cast(Lib.current.getChildAt(0), Main).addChild(overlayOutline);*/
 	}
 
 	static final intervalArray:Array<String> = ['B', 'KB', 'MB', 'GB', 'TB'];
@@ -83,15 +79,6 @@ class Overlay extends TextField
 			+ (displayMemory ? '${getInterval(mem)} / ${getInterval(memPeak)}\n' : '') // Current and Total Memory Usage
 			+ (displayForever ? 'FE Underscore v' + Main.underscoreVersion : ''); // Engine Watermark Display
 		}
-
-		//addOutline();
-	}
-
-	function addOutline()
-	{
-		Main.instance.removeChild(overlayOutline);
-		overlayOutline = OverlayOutline.renderImage(this, 2, 0x000000, 1);
-		Main.instance.addChild(overlayOutline);
 	}
 
 	public static function updateDisplayInfo(shouldDisplayFps:Bool, shouldDisplayExtra:Bool, shouldDisplayMemory:Bool, shouldDisplayForever:Bool)

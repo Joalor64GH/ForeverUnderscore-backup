@@ -351,13 +351,9 @@ final class Paths
 		return getPath('data/$key.xml', TEXT, library);
 	}
 
-	/*inline static public function offsetTxt(key:String, ?library:String)
-		{
-			return getPath('images/characters/$key.txt', TEXT, library);
-	}*/
 	inline static public function json(key:String, ?library:String)
 	{
-		return getPath('songs/$key.json', TEXT, library);
+		return getPath('$key.json', TEXT, library);
 	}
 
 	inline static public function songJson(song:String, secondSong:String, ?library:String)

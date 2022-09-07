@@ -249,7 +249,7 @@ class ClassHUD extends FlxTypedGroup<FlxBasic>
 		}
 	}
 
-	public function tweenScoreColor(noteMiss:Bool)
+	public function tweenScoreColor(rating:String, allSicks:Bool)
 	{
 		if (Init.trueSettings.get('Animated Score Color'))
 		{
@@ -258,18 +258,16 @@ class ClassHUD extends FlxTypedGroup<FlxBasic>
 
 			var rankColor = FlxColor.CYAN;
 
-			switch (Std.string(Timings.returnScoreRating().toUpperCase()))
+			switch (rating)
 			{
-				case 'S': rankColor = FlxColor.CYAN;
-				case 'A': rankColor = FlxColor.LIME;
-				case 'B': rankColor = FlxColor.GREEN;
-				case 'C': rankColor = FlxColor.PURPLE;
-				case 'D' | 'E': rankColor = FlxColor.RED;
-				case 'F': rankColor = FlxColor.GRAY;
-				default: rankColor = FlxColor.fromString('#FFB81C');
+				case 'good': rankColor = FlxColor.LIME;
+				case 'bad': rankColor = FlxColor.ORANGE;
+				case 'shit': rankColor = FlxColor.PURPLE;
+				case 'miss': rankColor = FlxColor.RED;
+				default: rankColor = allSicks ? FlxColor.fromString('#F8D482') : FlxColor.CYAN;
 			}
 
-			scoreColorTween = FlxTween.color(scoreBar, 0.005, scoreBar.color, noteMiss ? FlxColor.RED : rankColor,
+			scoreColorTween = FlxTween.color(scoreBar, 0.005, scoreBar.color, rankColor,
 			{
 				onComplete: function(twn:FlxTween)
 				{

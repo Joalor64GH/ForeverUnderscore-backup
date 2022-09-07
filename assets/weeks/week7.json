@@ -4,17 +4,17 @@
         {
             "name": "Ugh",
             "character": "tankman",
-            "colors": [141, 165, 206]
+            "colors": [246, 182, 4]
         },
         {
             "name": "Guns",
             "character": "tankman",
-            "colors": [141, 165, 206]
+            "colors": [246, 182, 4]
         },
         {
             "name": "Stress",
             "character": "tankman",
-            "colors": [141, 165, 206]
+            "colors": [246, 182, 4]
         }
     ],
     "locked": false,
