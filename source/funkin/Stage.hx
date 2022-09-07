@@ -84,7 +84,7 @@ class Stage extends FlxTypedGroup<FlxBasic>
 
 	public var spawnGirlfriend:Bool = true;
 
-	public var stageScript:ScriptHandler;
+	public var stageScripts:Array<ScriptHandler> = [];
 
 	public function new(curStage)
 	{
@@ -774,10 +774,30 @@ class Stage extends FlxTypedGroup<FlxBasic>
 
 	function callStageScript()
 	{
-		var path:String = Paths.getPreloadPath('stages/$curStage.hx');
+		var stageScript:Array<String> = [Paths.getPreloadPath('stages/$curStage.hx')];
 
-        if (FileSystem.exists(path))
-            stageScript = new ScriptHandler(path);
+		#if MOD_HANDLER
+		stageScript.insert(0, Paths.getModPath('stages', '$curStage.hx'));
+		#end
+
+		var pushedScripts:Array<String> = [];
+
+		for (i in stageScript)
+		{
+			if (FileSystem.exists(i) && !pushedScripts.contains(i))
+			{
+				var stageScript:ScriptHandler = new ScriptHandler(i);
+
+				if (stageScript.interp == null)
+				{
+					trace("Something terrible occured! Skipping.");
+					continue;
+				}
+
+				stageScripts.push(stageScript);
+				pushedScripts.push(i);
+			}
+		}
 
 		setVar('createSprite',
 			function(spriteID:String, image:String, x:Float, y:Float, onForeground:Bool = false, abovegf:Bool = false)
@@ -906,19 +926,30 @@ class Stage extends FlxTypedGroup<FlxBasic>
 		callFunc('generateStage', []);
 	}
 
-	public function callFunc(key:String, args:Array<Dynamic>):Dynamic
+	public function callFunc(key:String, args:Array<Dynamic>)
 	{
-		if (stageScript == null)
-            return null;
-		else
-			return stageScript.call(key, args);
+		for (i in stageScripts)
+		{
+			if (i != null)
+				return i.call(key, args);
+		}
+		return null;
 	}
 
-	public function setVar(key:String, value:Dynamic):Void
+	public function setVar(key:String, value:Dynamic)
 	{
-        if (stageScript == null)
-            return;
+		var allSucceed:Bool = true;
+		for (i in stageScripts)
+		{
+			i.set(key, value);
 
-		return stageScript.set(key, value);
+			if (!i.exists(key))
+			{
+				trace('${i.scriptFile} failed to set $key for its interpreter, continuing.');
+				allSucceed = false;
+				continue;
+			}
+		}
+		return allSucceed;
 	}
 }

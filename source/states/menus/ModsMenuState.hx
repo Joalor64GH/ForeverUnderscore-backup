@@ -73,12 +73,12 @@ class ModsMenuState extends MusicBeatState
 		grpMenuMods = new FlxTypedGroup<Alphabet>();
 		add(grpMenuMods);
 
-		for (modFolders in Paths.getModDirs())
+		for (modFolders in ModHandler.modDirs)
 		{
 			modList.push(modFolders);
 		}
 
-		var mod:Int = modList.indexOf(Paths.currentPack);
+		var mod:Int = modList.indexOf(ModHandler.currentModDir);
 		if (mod > -1)
 			curSelection = mod;
 		for (i in 0...modList.length)
@@ -104,6 +104,7 @@ class ModsMenuState extends MusicBeatState
 
 		if (controls.BACK)
 		{
+			//ModHandler.saveModList();
 			Main.switchState(this, new MainMenuState());
 		}
 		if (controls.UI_UP_P)
@@ -143,12 +144,11 @@ class ModsMenuState extends MusicBeatState
 		if (modList[curSelection] == null || modList[curSelection].length < 1)
 		{
 			modList[curSelection] = 'NO MODS LOADED';
-			Paths.currentPack = Paths.defaultPack;
 		}
 		else
 		{
-			Paths.currentPack = modList[curSelection];
-			modList[curSelection] = Paths.currentPack;
+			ModHandler.currentModDir = modList[curSelection];
+			modList[curSelection] = ModHandler.currentModDir;
 		}
 	}
 	#end

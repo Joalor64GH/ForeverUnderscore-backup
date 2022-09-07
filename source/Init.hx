@@ -308,6 +308,12 @@ class Init extends FlxState
 		// set default difficulties to the new difficulty array;
 		CoolUtil.difficulties = CoolUtil.baseDifficulties;
 
+		#if MOD_HANDLER
+		ModHandler.loadModDirs();
+		ModHandler.loadModList();
+		ModHandler.loadFirst();
+		#end
+
 		goToInitialDestination();
 	}
 

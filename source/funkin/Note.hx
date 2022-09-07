@@ -29,10 +29,6 @@ class Note extends FNFSprite
 	// only useful for charting stuffs
 	public var rawNoteData:Int;
 
-	// offsets
-	public var offsetX:Float = 0;
-	public var offsetY:Float = 0;
-
 	public var useCustomSpeed:Bool = Init.trueSettings.get('Use Custom Note Speed');
 
 	// not set initially

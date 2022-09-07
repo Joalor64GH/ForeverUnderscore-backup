@@ -1009,123 +1009,128 @@ class PlayState extends MusicBeatState
 				// set the notes x and y
 				var downscrollMultiplier = Init.trueSettings.get('Downscroll') ? -1 : 1;
 
-				strumline.allNotes.forEachAlive(function(daNote:Note)
+				for (receptor in strumline.receptors)
+				{
+					if (strumline.autoplay && receptor.animation.finished)
+						receptor.playAnim('static');
+				}
+
+				strumline.allNotes.forEachAlive(function(strumNote:Note)
 				{
 					// set custom note speeds and stuff;
-					if (daNote.useCustomSpeed)
-						daNote.noteSpeed = Init.trueSettings.get('Scroll Speed');
+					if (strumNote.useCustomSpeed)
+						strumNote.noteSpeed = Init.trueSettings.get('Scroll Speed');
 					else
-						daNote.noteSpeed = Math.abs(SONG.speed);
+						strumNote.noteSpeed = Math.abs(SONG.speed);
 	 
-					var roundedSpeed = FlxMath.roundDecimal(daNote.noteSpeed, 2);
-					var receptorX:Float = strumline.receptors.members[Math.floor(daNote.noteData)].x;
-					var receptorY:Float = strumline.receptors.members[Math.floor(daNote.noteData)].y;
-					var psuedoY:Float = (downscrollMultiplier * -((Conductor.songPosition - daNote.strumTime) * (0.45 * roundedSpeed)));
-					var psuedoX = 25 + daNote.noteVisualOffset;
+					var roundedSpeed = FlxMath.roundDecimal(strumNote.noteSpeed, 2);
+					var receptorX:Float = strumline.receptors.members[Math.floor(strumNote.noteData)].x;
+					var receptorY:Float = strumline.receptors.members[Math.floor(strumNote.noteData)].y;
+					var psuedoY:Float = (downscrollMultiplier * -((Conductor.songPosition - strumNote.strumTime) * (0.45 * roundedSpeed)));
+					var psuedoX = 25 + strumNote.noteVisualOffset;
 
-					daNote.y = receptorY
-						+ (Math.cos(flixel.math.FlxAngle.asRadians(daNote.noteDirection)) * psuedoY)
-						+ (Math.sin(flixel.math.FlxAngle.asRadians(daNote.noteDirection)) * psuedoX);
+					strumNote.y = receptorY
+						+ (Math.cos(flixel.math.FlxAngle.asRadians(strumNote.noteDirection)) * psuedoY)
+						+ (Math.sin(flixel.math.FlxAngle.asRadians(strumNote.noteDirection)) * psuedoX);
 					// painful math equation
-					daNote.x = receptorX
-						+ (Math.cos(flixel.math.FlxAngle.asRadians(daNote.noteDirection)) * psuedoX)
-						+ (Math.sin(flixel.math.FlxAngle.asRadians(daNote.noteDirection)) * psuedoY);
+					strumNote.x = receptorX
+						+ (Math.cos(flixel.math.FlxAngle.asRadians(strumNote.noteDirection)) * psuedoX)
+						+ (Math.sin(flixel.math.FlxAngle.asRadians(strumNote.noteDirection)) * psuedoY);
 
 					// also set note rotation
-					daNote.angle = -daNote.noteDirection;
+					strumNote.angle = -strumNote.noteDirection;
 
 					// shitty note hack I hate it so much
 					var center:Float = receptorY + UIStaticArrow.swagWidth / 2;
-					if (daNote.isSustainNote)
+					if (strumNote.isSustainNote)
 					{
-						daNote.y -= ((daNote.height / 2) * downscrollMultiplier);
-						if ((daNote.animation.curAnim.name.endsWith('holdend') || daNote.animation.curAnim.name.endsWith('rollend')) && (daNote.prevNote != null))
+						strumNote.y -= ((strumNote.height / 2) * downscrollMultiplier);
+						if ((strumNote.animation.curAnim.name.endsWith('holdend') && (strumNote.prevNote != null)))
 						{
-							daNote.y -= ((daNote.prevNote.height / 2) * downscrollMultiplier);
+							strumNote.y -= ((strumNote.prevNote.height / 2) * downscrollMultiplier);
 							if (downscrollMultiplier < 0) // downscroll;
 							{
-								daNote.y += (daNote.height * 2);
-								if (daNote.endHoldOffset == Math.NEGATIVE_INFINITY)
+								strumNote.y += (strumNote.height * 2);
+								if (strumNote.endHoldOffset == Math.NEGATIVE_INFINITY)
 								{
-									// set the end hold offset yeah I hate that I fix this like this
-									daNote.endHoldOffset = (daNote.prevNote.y - (daNote.y + daNote.height));
-									// trace(daNote.endHoldOffset);
+									// GET OUT OF MY HEAD GET OUT OF MY HEAD AAAAAAAAAAAAAAAAAAAAAAA;
+									strumNote.endHoldOffset = strumNote.prevNote.y - (strumNote.y + strumNote.height) + 2;
 								}
 								else
-									daNote.y += daNote.endHoldOffset;
+									strumNote.y += strumNote.endHoldOffset;
 							}
 							else if (downscrollMultiplier > 0) // upscroll;
-								daNote.y += ((daNote.height / 2) * downscrollMultiplier);
+								strumNote.y += ((strumNote.height / 2) * downscrollMultiplier);
 							// this system is funny like that
 						}
 
 						if (downscrollMultiplier < 0)
 						{
-							daNote.flipY = true;
-							if ((daNote.parentNote != null && daNote.parentNote.wasGoodHit)
-								&& daNote.y - daNote.offset.y * daNote.scale.y + daNote.height >= center
-								&& (strumline.autoplay || (daNote.wasGoodHit || (daNote.prevNote.wasGoodHit && !daNote.canBeHit))))
+							strumNote.flipY = true;
+							if ((strumNote.parentNote != null && strumNote.parentNote.wasGoodHit)
+								&& strumNote.y - strumNote.offset.y * strumNote.scale.y + strumNote.height >= center
+								&& (strumline.autoplay || (strumNote.wasGoodHit || (strumNote.prevNote.wasGoodHit && !strumNote.canBeHit))))
 							{
-								var swagRect = new FlxRect(0, 0, daNote.frameWidth, daNote.frameHeight);
-								swagRect.height = (center - daNote.y) / daNote.scale.y;
-								swagRect.y = daNote.frameHeight - swagRect.height;
-								daNote.clipRect = swagRect;
+								var swagRect = new FlxRect(0, 0, strumNote.frameWidth, strumNote.frameHeight);
+								swagRect.height = (center - strumNote.y) / strumNote.scale.y;
+								swagRect.y = strumNote.frameHeight - swagRect.height;
+								strumNote.clipRect = swagRect;
 							}
 						}
 						else if (downscrollMultiplier > 0)
 						{
-							if ((daNote.parentNote != null && daNote.parentNote.wasGoodHit)
-								&& daNote.y + daNote.offset.y * daNote.scale.y <= center
-								&& (strumline.autoplay || (daNote.wasGoodHit || (daNote.prevNote.wasGoodHit && !daNote.canBeHit))))
+							if ((strumNote.parentNote != null && strumNote.parentNote.wasGoodHit)
+								&& strumNote.y + strumNote.offset.y * strumNote.scale.y <= center
+								&& (strumline.autoplay || (strumNote.wasGoodHit || (strumNote.prevNote.wasGoodHit && !strumNote.canBeHit))))
 							{
-								var swagRect = new FlxRect(0, 0, daNote.width / daNote.scale.x, daNote.height / daNote.scale.y);
-								swagRect.y = (center - daNote.y) / daNote.scale.y;
+								var swagRect = new FlxRect(0, 0, strumNote.width / strumNote.scale.x, strumNote.height / strumNote.scale.y);
+								swagRect.y = (center - strumNote.y) / strumNote.scale.y;
 								swagRect.height -= swagRect.y;
-								daNote.clipRect = swagRect;
+								strumNote.clipRect = swagRect;
 							}
 						}
 					}
 
 					// hell breaks loose here, we're using nested scripts!
-					mainControls(daNote, strumline.character, strumline, strumline.autoplay);
+					mainControls(strumNote, strumline.character, strumline, strumline.autoplay);
 
 					// check where the note is and make sure it is either active or inactive
-					if (daNote.y > FlxG.height)
+					if (strumNote.y > FlxG.height)
 					{
-						daNote.active = false;
-						daNote.visible = false;
+						strumNote.active = false;
+						strumNote.visible = false;
 					}
 					else
 					{
-						daNote.visible = true;
-						daNote.active = true;
+						strumNote.visible = true;
+						strumNote.active = true;
 					}
 
-					if (!daNote.tooLate && daNote.strumTime < Conductor.songPosition - (Timings.msThreshold) && !daNote.wasGoodHit)
+					if (!strumNote.tooLate && strumNote.strumTime < Conductor.songPosition - (Timings.msThreshold) && !strumNote.wasGoodHit)
 					{
-						if ((!daNote.tooLate) && (daNote.mustPress) && (!daNote.badNote))
+						if ((!strumNote.tooLate) && (strumNote.mustPress) && (!strumNote.badNote))
 						{
-							if (!daNote.isSustainNote)
+							if (!strumNote.isSustainNote)
 							{
-								daNote.tooLate = true;
-								for (note in daNote.childrenNotes)
+								strumNote.tooLate = true;
+								for (note in strumNote.childrenNotes)
 									note.tooLate = true;
 
 								Conductor.songVocals.volume = 0;
-								daNote.noteMissActions(daNote);
+								strumNote.noteMissActions(strumNote);
 
 								if (canMiss)
 								{
-									missNoteCheck((Init.trueSettings.get('Ghost Tapping')) ? true : false, daNote.noteData, boyfriend, true);
+									missNoteCheck((Init.trueSettings.get('Ghost Tapping')) ? true : false, strumNote.noteData, boyfriend, true);
 									// ambiguous name
 									Timings.updateAccuracy(0);
 								}
 							}
-							else if (daNote.isSustainNote)
+							else if (strumNote.isSustainNote)
 							{
-								if (daNote.parentNote != null)
+								if (strumNote.parentNote != null)
 								{
-									var parentNote = daNote.parentNote;
+									var parentNote = strumNote.parentNote;
 									if (!parentNote.tooLate)
 									{
 										var breakFromLate:Bool = false;
@@ -1137,7 +1142,7 @@ class PlayState extends MusicBeatState
 										if (!breakFromLate)
 										{
 											if (canMiss)
-												missNoteCheck((Init.trueSettings.get('Ghost Tapping')) ? true : false, daNote.noteData, boyfriend, true);
+												missNoteCheck((Init.trueSettings.get('Ghost Tapping')) ? true : false, strumNote.noteData, boyfriend, true);
 											for (note in parentNote.childrenNotes)
 												note.tooLate = true;
 										}
@@ -1148,10 +1153,10 @@ class PlayState extends MusicBeatState
 					}
 
 					// if the note is off screen (above)
-					if ((((!Init.trueSettings.get('Downscroll')) && (daNote.y < -daNote.height))
-						|| ((Init.trueSettings.get('Downscroll')) && (daNote.y > (FlxG.height + daNote.height))))
-						&& (daNote.tooLate || daNote.wasGoodHit))
-						destroyNote(strumline, daNote);
+					if ((((!Init.trueSettings.get('Downscroll')) && (strumNote.y < -strumNote.height))
+						|| ((Init.trueSettings.get('Downscroll')) && (strumNote.y > (FlxG.height + strumNote.height))))
+						&& (strumNote.tooLate || strumNote.wasGoodHit))
+						destroyNote(strumline, strumNote);
 				});
 
 				// unoptimised asf camera control based on strums
@@ -1210,20 +1215,20 @@ class PlayState extends MusicBeatState
 		}
 	}
 
-	function destroyNote(strumline:Strumline, daNote:Note)
+	function destroyNote(strumline:Strumline, strumNote:Note)
 	{
-		daNote.active = false;
-		daNote.exists = false;
+		strumNote.active = false;
+		strumNote.exists = false;
 
-		var chosenGroup = (daNote.isSustainNote ? strumline.holdsGroup : strumline.notesGroup);
+		var chosenGroup = (strumNote.isSustainNote ? strumline.holdsGroup : strumline.notesGroup);
 		// note damage here I guess
-		daNote.kill();
-		notes.remove(daNote);
-		if (strumline.allNotes.members.contains(daNote))
-			strumline.allNotes.remove(daNote, true);
-		if (chosenGroup.members.contains(daNote))
-			chosenGroup.remove(daNote, true);
-		daNote.destroy();
+		strumNote.kill();
+		notes.remove(strumNote);
+		if (strumline.allNotes.members.contains(strumNote))
+			strumline.allNotes.remove(strumNote, true);
+		if (chosenGroup.members.contains(strumNote))
+			chosenGroup.remove(strumNote, true);
+		strumNote.destroy();
 	}
 
 	function eventNoteHit(eventNote:EventNote, ?eventName:String, ?val1:String, ?val2:String)
@@ -1331,17 +1336,17 @@ class PlayState extends MusicBeatState
 		eventNote.destroy();
 	}
 
-	function goodNoteHit(coolNote:Note, character:Character, characterStrums:Strumline, ?canDisplayJudgement:Bool = true)
+	function goodNoteHit(coolNote:Note, character:Character, charReceptors:Strumline, ?canDisplayJudgement:Bool = true)
 	{
 		if (!coolNote.wasGoodHit)
 		{
-			callFunc('goodNoteHit', [coolNote, character]);
+			callFunc(coolNote.mustPress ? 'goodNoteHit' : 'opponentNoteHit', [coolNote, character, charReceptors]);
 
 			coolNote.wasGoodHit = true;
 			Conductor.songVocals.volume = 1;
 
-			if (characterStrums.receptors.members[coolNote.noteData] != null)
-				characterStrums.receptors.members[coolNote.noteData].playAnim('confirm');
+			if (charReceptors.receptors.members[coolNote.noteData] != null)
+				charReceptors.receptors.members[coolNote.noteData].playAnim('confirm', true);
 
 			coolNote.goodNoteHit(coolNote, ratingTiming);
 			characterPlayAnimation(coolNote, character);
@@ -1375,7 +1380,7 @@ class PlayState extends MusicBeatState
 					if (!coolNote.isSustainNote)
 					{
 						increaseCombo(foundRating, coolNote.noteData, character);
-						popUpScore(foundRating, ratingTiming, characterStrums, coolNote);
+						popUpScore(foundRating, ratingTiming, charReceptors, coolNote);
 
 						if (coolNote.childrenNotes.length > 0)
 							Timings.notesHit++;
@@ -1397,7 +1402,7 @@ class PlayState extends MusicBeatState
 			}
 
 			if (!coolNote.isSustainNote)
-				destroyNote(characterStrums, coolNote);
+				destroyNote(charReceptors, coolNote);
 		}
 	}
 
@@ -1463,7 +1468,7 @@ class PlayState extends MusicBeatState
 		character.holdTimer = 0;
 	}
 
-	function strumCallsAuto(cStrum:UIStaticArrow, ?callType:Int = 1, ?daNote:Note):Void
+	function strumCallsAuto(cStrum:UIStaticArrow, ?callType:Int = 1, ?strumNote:Note):Void
 	{
 		switch (callType)
 		{
@@ -1473,13 +1478,13 @@ class PlayState extends MusicBeatState
 					cStrum.playAnim('static');
 			default:
 				// check if it is the correct strum
-				if (daNote.noteData == cStrum.ID)
+				if (strumNote.noteData == cStrum.ID)
 				{
 					// if (cStrum.animation.curAnim.name != 'confirm')
 					cStrum.playAnim('confirm'); // play the correct strum's confirmation animation (haha rhymes)
 
 					// stuff for sustain notes
-					if ((daNote.isSustainNote) && (!daNote.animation.curAnim.name.endsWith('holdend')))
+					if ((strumNote.isSustainNote) && (!strumNote.animation.curAnim.name.endsWith('holdend')))
 						cStrum.canFinishAnimation = false; // basically, make it so the animation can't be finished if there's a sustain note below
 					else
 						cStrum.canFinishAnimation = true;
@@ -2519,10 +2524,16 @@ class PlayState extends MusicBeatState
 		];
 
 		for (fool in fools)
-			for (shit in fool)
+		{
+			for (script in fool)
+			{
 				if (fool.length > 0)
-					if (shit.length > 0 && shit.endsWith('.hx'))
-						scriptArray.push(new ScriptHandler(shit));
+				{
+					if (script.length > 0 && script.endsWith('.hx'))
+						scriptArray.push(new ScriptHandler(script));
+				}
+			}
+		}
 	}
 
 	function setPlayStateVars()

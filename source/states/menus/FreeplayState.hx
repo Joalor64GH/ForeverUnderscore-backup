@@ -78,7 +78,7 @@ class FreeplayState extends MusicBeatState
 
 		mutex = new Mutex();
 
-		// load in all songs that exist in folder
+		// load in all songs that exist in the songs folder
 		var folderSongs:Array<String> = CoolUtil.returnAssetsLibrary('songs', 'assets');
 
 		WeekParser.loadJsons(false);
@@ -129,7 +129,7 @@ class FreeplayState extends MusicBeatState
 				if (chartExists)
 				{
 					var castSong:SwagSong = Song.loadSong(i, i);
-					icon = (castSong != null) ? castSong.player2 : 'gf';
+					icon = (castSong.player2 != null) ? castSong.player2 : 'gf';
 
 					colorArray = castSong.color;
 
@@ -140,9 +140,6 @@ class FreeplayState extends MusicBeatState
 				}
 			}
 		}
-
-		// LOAD MUSIC
-		// ForeverTools.resetMenuMusic();
 
 		#if DISCORD_RPC
 		Discord.changePresence('CHOOSING A SONG', 'Freeplay Menu');

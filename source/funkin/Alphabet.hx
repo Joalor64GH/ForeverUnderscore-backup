@@ -466,7 +466,7 @@ class AlphaCharacter extends FlxSprite
 
 	public function createNumber(letter:String):Void
 	{
-		if (CreditsState.repositionNumbers)
+		if (CreditsState.repositionBoldSymbols)
 			y += 58;
 
 		animation.addByPrefix(letter, letter, 24);
@@ -516,6 +516,8 @@ class AlphaCharacter extends FlxSprite
 			default:
 				animation.addByPrefix(letter, letter, 24);
 				animation.play(letter);
+				if (CreditsState.repositionBoldSymbols)
+					y += 58;
 		}
 		updateHitbox();
 	}
