@@ -29,7 +29,7 @@
 	<define name="GAME_UPDATER" if="desktop officialBuild" /> <!-- thanks shadowmario -->
 	<define name="HAXE_EXTENSION" unless="web" />
 	<define name="MOD_HANDLER" unless="web" />
-	<define name="DEBUG_TRACES" if="debug" unless="64bits" />
+	<define name="DEBUG_TRACES" if="debug" />
 
 	<!-- _____________________________ Path Settings ____________________________ -->
 
