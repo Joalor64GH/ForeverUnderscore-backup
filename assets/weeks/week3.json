@@ -18,7 +18,7 @@
         }
     ],
     "locked": false,
-    "weekCharacters":["pico", "bf", "gf"],
+    "weekCharacters": ["pico", "bf", "gf"],
     "weekName": "vs. Pico",
     "weekImage": "week3",
     "hideStoryMode": false,

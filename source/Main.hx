@@ -162,7 +162,7 @@ class Main extends Sprite
 	public static var lastState:FlxState;
 
 	public static function switchState(curState:FlxState, target:FlxState)
-	{	
+	{
 		// Custom made Trans in
 		mainClassState = Type.getClass(target);
 		if (!FlxTransitionableState.skipNextTransIn)
