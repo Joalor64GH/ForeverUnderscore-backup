@@ -111,7 +111,7 @@ class PlayState extends MusicBeatState
 	public static var combo:Int = 0;
 
 	public static var misses:Int = 0;
-	public static var ghostMisses:Int = 0;
+	public static var hits:Int = 0;
 
 	public static var deaths:Int = 0;
 
@@ -200,7 +200,7 @@ class PlayState extends MusicBeatState
 		combo = 0;
 		health = 1;
 		misses = 0;
-		ghostMisses = 0;
+		hits = 0;
 		// sets up the combo object array
 		lastCombo = [];
 
@@ -587,7 +587,6 @@ class PlayState extends MusicBeatState
 				}
 				else
 				{ // else just call bad notes
-					ghostMisses++;
 					if (!Init.trueSettings.get('Ghost Tapping') && canMiss)
 						missNoteCheck(true, key, boyfriend, true);
 				}
@@ -1337,6 +1336,7 @@ class PlayState extends MusicBeatState
 		if (!coolNote.wasGoodHit)
 		{
 			callFunc('goodNoteHit', [coolNote, character]);
+			hits++;
 
 			coolNote.wasGoodHit = true;
 			Conductor.songVocals.volume = 1;
@@ -2543,7 +2543,7 @@ class PlayState extends MusicBeatState
 
 		setVar('score', songScore);
 		setVar('misses', misses);
-		setVar('ghostMisses', ghostMisses);
+		setVar('hits', hits);
 		setVar('health', health);
 		setVar('combo', combo);
 
