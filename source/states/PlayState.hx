@@ -1336,7 +1336,6 @@ class PlayState extends MusicBeatState
 		if (!coolNote.wasGoodHit)
 		{
 			callFunc('goodNoteHit', [coolNote, character]);
-			hits++;
 
 			coolNote.wasGoodHit = true;
 			Conductor.songVocals.volume = 1;
@@ -1393,6 +1392,8 @@ class PlayState extends MusicBeatState
 						}
 					}
 				}
+
+				hits++;
 			}
 
 			if (!coolNote.isSustainNote)
