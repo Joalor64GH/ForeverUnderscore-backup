@@ -114,7 +114,6 @@ class StoryMenuState extends MusicBeatState
 			weekThing.screenCenter(X);
 			weekThing.antialiasing = !Init.trueSettings.get('Disable Antialiasing');
 			// weekThing.updateHitbox();
-			weekThing.visible = Main.gameWeeks[curWeek][5];
 
 			// Needs an offset thingie
 			if (!weekUnlocked[i])

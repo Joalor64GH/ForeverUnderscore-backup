@@ -246,7 +246,7 @@ class ScriptFuncs extends PlayState
 		{
 			endTween(tweenID);
 			var tweenType = {};
-			var newTween:FlxTween;
+			var newTween:FlxTween = null;
 
 			/**
 			 * originally made for psych engine as a pull request
@@ -271,7 +271,7 @@ class ScriptFuncs extends PlayState
 			endTween(tweenID);
 			var tweenType = {};
 			var epicNote = PlayState.bfStrums.receptors.members[newNote];
-			var newTween:FlxTween;
+			var newTween:FlxTween = null;
 
 			switch (strumline)
 			{

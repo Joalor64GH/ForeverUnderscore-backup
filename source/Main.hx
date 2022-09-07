@@ -52,7 +52,7 @@ class Main extends Sprite
 		this system will eventually be overhauled in favor of using actual week folders within the 
 		assets.
 		Enough of that, here's how it works
-		[ [songs to use], [characters in songs], [color of week], name of week, week image file, shown from story mode ]
+		[ [songs to use], [characters in songs], [color of week], name of week, week image file ]
 	**/
 	public static final gameWeeks:Array<Dynamic> = [
 		[
@@ -60,64 +60,56 @@ class Main extends Sprite
 			['gf'],
 			[FlxColor.fromRGB(129, 100, 223)],
 			'Funky Beginnings',
-			'week0',
-			true
+			'week0'
 		],
 		[
 			['Bopeebo', 'Fresh', 'Dadbattle'],
 			['dad', 'dad', 'dad'],
 			[FlxColor.fromRGB(129, 100, 223)],
 			'vs. DADDY DEAREST',
-			'week1',
-			true
+			'week1'
 		],
 		[
 			['Spookeez', 'South', 'Monster'],
 			['spooky', 'spooky', 'monster'],
 			[FlxColor.fromRGB(30, 45, 60)],
 			'Spooky Month',
-			'week2',
-			true
+			'week2'
 		],
 		[
 			['Pico', 'Philly-Nice', 'Blammed'],
 			['pico'],
 			[FlxColor.fromRGB(111, 19, 60)],
 			'vs. Pico',
-			'week3',
-			true
+			'week3'
 		],
 		[
 			['Satin-Panties', 'High', 'Milf'],
 			['mom'],
 			[FlxColor.fromRGB(203, 113, 170)],
 			'MOMMY MUST MURDER',
-			'week4',
-			true
+			'week4'
 		],
 		[
 			['Cocoa', 'Eggnog', 'Winter-Horrorland'],
 			['parents-christmas', 'parents-christmas', 'monster-christmas'],
 			[FlxColor.fromRGB(141, 165, 206)],
 			'RED SNOW',
-			'week5',
-			true
+			'week5'
 		],
 		[
 			['Senpai', 'Roses', 'Thorns'],
 			['senpai', 'senpai', 'spirit'],
 			[FlxColor.fromRGB(206, 106, 169)],
 			"hating simulator ft. moawling",
-			'week6',
-			true
+			'week6'
 		],
 		[
 			['Ugh', 'Guns', 'Stress'],
 			['tankman', 'tankman', 'tankman'],
 			[FlxColor.fromRGB(246, 182, 4)],
 			"Tankman",
-			'week7',
-			true
+			'week7'
 		],
 	];
 
@@ -170,7 +162,7 @@ class Main extends Sprite
 	public static var lastState:FlxState;
 
 	public static function switchState(curState:FlxState, target:FlxState)
-	{
+	{	
 		// Custom made Trans in
 		mainClassState = Type.getClass(target);
 		if (!FlxTransitionableState.skipNextTransIn)

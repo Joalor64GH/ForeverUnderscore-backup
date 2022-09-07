@@ -1,0 +1,26 @@
+{
+    "songs":
+    [
+        {
+            "name": "Ugh",
+            "character": "tankman",
+            "colors": [141, 165, 206]
+        },
+        {
+            "name": "Guns",
+            "character": "tankman",
+            "colors": [141, 165, 206]
+        },
+        {
+            "name": "Stress",
+            "character": "tankman",
+            "colors": [141, 165, 206]
+        }
+    ],
+    "locked": false,
+    "weekCharacters":["tankman", "bf", "gf"],
+    "weekName": "vs. Tankman",
+    "weekImage": "week7",
+    "hideStoryMode": false,
+    "hideFreeplay": false
+}

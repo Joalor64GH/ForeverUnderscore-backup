@@ -56,6 +56,13 @@ using StringTools;
 import sys.thread.Thread;
 #end
 
+typedef ChartingSustain =
+{
+	var length:Float;
+	var body:FlxTiledSprite;
+	var tail:Note;
+}
+
 /**
 	As the name implies, this is the class where all of the charting state stuff happens, so when you press 7 the game
 	state switches to this one, where you get to chart songs and such. I'm planning on overhauling this entirely in the future
@@ -662,13 +669,7 @@ class ChartingState extends MusicBeatState
 
 		curRenderedNotes.add(note);
 
-		if (daSus > 0)
-		{
-			var sustainVis:FlxSprite = new FlxSprite(note.x + (gridSize / 2 - 3),
-				note.y + gridSize).makeGraphic(8, Math.floor(FlxMath.remapToRange(daSus, 0, Conductor.stepCrochet * 16, 0, note.sustainLength))); // risky move
-			curRenderedSustains.add(sustainVis);
-		}
-		//generateSustain(daStrumTime, daNoteInfo, daSus, daNoteAlt, daNoteType, note);
+		generateSustain(daStrumTime, daNoteInfo, daSus, daNoteAlt, daNoteType, note);
 
 		// attach a text to their respective notetype;
 		if (daNoteType != 0)
@@ -687,38 +688,33 @@ class ChartingState extends MusicBeatState
 			note.mustPress = !note.mustPress;
 	}
 
-	private function generateSustain(daStrumTime:Float = 0, daNoteInfo:Int = 0, daSus:Float = 0, daNoteAlt:Float = 0, daNoteType:Int = 0, note:Note)
+	private function generateSustain(daStrumTime:Float = 0, daNoteInfo:Int = 0, daSus:Float = 0, daNoteAlt:Float = 0, daNoteType:Int = 0, prevNote:Note)
 	{
 		if (daSus > 0)
 		{
-			var prevNote:Null<Note>;
-			var constSize = Std.int(gridSize / 3);
-			var vertSize = Std.int(gridSize / 2);
+			var constSize = Std.int(gridSize / 2 - 2);
 
-			prevNote = note;
-
-			var sustainVis:Note = new Note(daStrumTime + (Conductor.stepCrochet * daSus) + Conductor.stepCrochet, daNoteInfo % 4, daNoteAlt, prevNote, true);
-			sustainVis.setGraphicSize(constSize,
-				Math.floor(FlxMath.remapToRange((daSus / 2) - constSize, 0, Conductor.stepCrochet * vertSize, 0, gridSize * vertSize)));
+			var sustainVis:Note = ForeverAssets.generateArrow(_song.assetModifier, daStrumTime + Conductor.stepCrochet, daNoteInfo % 4, daNoteAlt, true, prevNote, daNoteType);
+			sustainVis.setGraphicSize(constSize, Math.floor(FlxMath.remapToRange(daSus, 0, Conductor.stepCrochet * 16, 0, gridSize * constSize)));
 			sustainVis.updateHitbox();
-			sustainVis.x = note.x + constSize;
-			sustainVis.y = note.y + (gridSize / 2);
+			sustainVis.x = prevNote.x + constSize;
+			sustainVis.y = prevNote.y + (gridSize / 2);
 
-			var sustainEnd:Note = new Note(daStrumTime + (Conductor.stepCrochet * daSus) + Conductor.stepCrochet, daNoteInfo % 4, daNoteAlt, sustainVis, true);
+			var sustainEnd:Note = ForeverAssets.generateArrow(_song.assetModifier, daStrumTime + Conductor.stepCrochet, daNoteInfo % 4, daNoteAlt, true, sustainVis, daNoteType);
 			sustainEnd.setGraphicSize(constSize, constSize);
 			sustainEnd.updateHitbox();
-			sustainEnd.x = sustainVis.x;
-			sustainEnd.y = note.y + (sustainVis.height) + (gridSize / 2);
+			sustainEnd.x = sustainVis.x - 15;
+			sustainEnd.y = sustainVis.y + (sustainVis.height) + (gridSize / 2);
 
-			// loll for later
 			sustainVis.rawNoteData = daNoteInfo;
 			sustainEnd.rawNoteData = daNoteInfo;
+			
+			trace(sustainVis);
+			trace(sustainVis.width);
+			trace(sustainVis.height);
 
 			curRenderedSustains.add(sustainVis);
 			curRenderedSustains.add(sustainEnd);
-
-			// set the note at the current note map
-			//curNoteMap.set(note, [sustainVis, sustainEnd]);
 		}
 	}
 
