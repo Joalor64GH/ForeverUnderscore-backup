@@ -360,9 +360,6 @@ class Character extends FNFSprite
 				charScripts.push(script);
 				pushedScripts.push(i);
 			}
-
-			if (!FileSystem.exists(i))
-				char = 'bf';
 		}
 
 		var spriteType = "sparrow";
