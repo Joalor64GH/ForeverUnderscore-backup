@@ -340,7 +340,7 @@ class Character extends FNFSprite
 		var scripts:Array<String> = [Paths.getPreloadPath('characters/$char/config.hx')];
 
 		#if MOD_HANDLER
-		scripts.insert(0, Paths.getModPath('characters/$char', 'config', 'hxs'));
+		scripts.insert(0, Paths.getModPath('characters/$char', 'config', 'gx'));
 		#end
 
 		var pushedScripts:Array<String> = [];
@@ -360,9 +360,6 @@ class Character extends FNFSprite
 				charScripts.push(script);
 				pushedScripts.push(i);
 			}
-
-			if (!FileSystem.exists(i))
-				char = 'bf';
 		}
 
 		var spriteType = "sparrow";

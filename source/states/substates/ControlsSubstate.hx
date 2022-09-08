@@ -1,6 +1,6 @@
 package states.substates;
 
-import base.ControlsFormatter;
+import base.KeyFormatter;
 import base.MusicBeat.MusicBeatSubstate;
 import flixel.FlxBasic;
 import flixel.FlxG;
@@ -179,7 +179,7 @@ class ControlsSubstate extends MusicBeatSubstate
 		if (arrayThingy != null)
 		{
 			var keyDisplay:FlxKey = arrayThingy;
-			keyString = ControlsFormatter.formatKeyName(keyDisplay.toString());
+			keyString = KeyFormatter.formatKeyName(keyDisplay.toString());
 		}
 
 		keyString = keyString.replace(" ", "");

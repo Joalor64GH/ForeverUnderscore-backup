@@ -5,7 +5,7 @@ import flixel.input.keyboard.FlxKey;
 
 using StringTools;
 
-class ControlsFormatter
+class KeyFormatter
 {
 	public static function formatKeyName(key:FlxKey):String
 	{
