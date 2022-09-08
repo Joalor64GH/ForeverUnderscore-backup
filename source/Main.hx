@@ -37,7 +37,7 @@ class Main extends Sprite
 	public static var mainClassState:Class<FlxState> = Init; // Determine the main class state of the game
 
 	public static var foreverVersion:String = '0.3.1';
-	public static var underscoreVersion:String = '0.2.1.1';
+	public static var underscoreVersion:String = '0.2.2';
 	public static var commitHash:String;
 	public static var showCommitHash:Bool = false;
 
