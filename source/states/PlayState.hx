@@ -734,7 +734,7 @@ class PlayState extends MusicBeatState
 					var holdingAlt = FlxG.keys.pressed.ALT;
 
 					Conductor.stopMusic();
-					Main.switchState(this, new CharacterDebug(holdingShift ? SONG.player1 : holdingAlt ? SONG.gfVersion : SONG.player2, PlayState.curStage));
+					Main.switchState(this, new CharacterDebug(holdingShift ? SONG.player1 : holdingAlt ? SONG.gfVersion : SONG.player2, holdingShift ? true : false, PlayState.curStage));
 				}
 
 				if (FlxG.keys.pressed.SHIFT && FlxG.keys.justPressed.FIVE)

@@ -43,6 +43,9 @@ class CharacterDebug extends MusicBeatState
 	var ghost:Character;
 
 	var curCharacter:String = 'dad';
+	var curGhost:String = 'dad';
+
+	var isPlayer:Bool = false;
 
 	var curAnim:Int = 0;
 
@@ -62,10 +65,12 @@ class CharacterDebug extends MusicBeatState
 
 	var UI_box:FlxUITabMenu;
 
-	public function new(curCharacter:String = 'dad', curStage:String = 'stage')
+	public function new(curCharacter:String = 'dad', isPlayer:Bool = false, curStage:String = 'stage')
 	{
 		super();
+		curGhost = curCharacter;
 		this.curCharacter = curCharacter;
+		this.isPlayer = isPlayer;
 		this.curStage = curStage;
 	}
 
@@ -96,13 +101,7 @@ class CharacterDebug extends MusicBeatState
 		stageBuild = new Stage(curStage);
 		add(stageBuild);
 
-		// add characters
-		ghost = new Character(0, 0, curCharacter);
-		ghost.debugMode = true;
-		ghost.visible = false;
-		ghost.color = 0xFF666688;
-		add(ghost);
-
+		generateGhost(!curCharacter.startsWith('bf'));
 		generateCharacter(!curCharacter.startsWith('bf'));
 
 		// add texts
@@ -123,17 +122,21 @@ class CharacterDebug extends MusicBeatState
 		#end
 
 		// add menu tabs
-		var tabs = [{name: 'Preferences', label: 'Preferences'},];
+		var tabs = [
+			{name: 'Preferences', label: 'Preferences'},
+			{name: 'Characters', label: 'Characters'},
+		];
 
 		UI_box = new FlxUITabMenu(null, tabs, true);
 		UI_box.cameras = [camHUD];
-		UI_box.resize(250, 120);
+		UI_box.resize(250, 125);
 		UI_box.x = FlxG.width - 275;
 		UI_box.y = 25;
 		UI_box.scrollFactor.set();
 		add(UI_box);
 
 		addPreferencesUI();
+		addCharactersUI();
 	}
 
 	var ghostAnimDropDown:PsychDropDown;
@@ -152,27 +155,92 @@ class CharacterDebug extends MusicBeatState
 			saveCharOffsets();
 		});
 
-		var characters:Array<String> = CoolUtil.returnAssetsLibrary('characters', 'assets');
-
 		ghostAnimDropDown = new PsychDropDown(10, 30, PsychDropDown.makeStrIdLabelArray(ghostAnimList, true), function(animation:String)
 		{
 			if (ghostAnimList[0] != '' || ghostAnimList[0] != null)
 				ghost.playAnim(ghostAnimList[Std.parseInt(animation)], true);
 		});
 
-		var characterDropDown = new PsychDropDown(-350, 30, PsychDropDown.makeStrIdLabelArray(characters, true), function(character:String)
-		{
-			curCharacter = characters[Std.parseInt(character)];
-			generateCharacter(!curCharacter.startsWith('bf'));
-			genCharOffsets();
-		});
-		characterDropDown.selectedLabel = curCharacter;
-
 		tab_group.add(new FlxText(ghostAnimDropDown.x, ghostAnimDropDown.y - 18, 0, 'Ghost Animation:'));
 		tab_group.add(check_offset);
 		tab_group.add(ghostAnimDropDown);
-		tab_group.add(characterDropDown);
 		tab_group.add(saveButton);
+		UI_box.addGroup(tab_group);
+	}
+
+	var showGhost:Bool = false;
+	var followCharOffset:Bool = true;
+
+	var showGhostBttn:FlxButton;
+	var followCharOffsetBttn:FlxButton;
+
+	function addCharactersUI()
+	{
+		var tab_group = new FlxUI(null, UI_box);
+		tab_group.name = "Characters";
+
+		var characters:Array<String> = CoolUtil.returnAssetsLibrary('characters', 'assets');
+
+		var resetBttn:FlxButton = new FlxButton(140, 30, "Reset Offsets", function()
+		{
+			Main.switchState(this, new CharacterDebug());
+		});
+
+		showGhostBttn = new FlxButton(140, 50, "Show Ghost", function()
+		{
+			if (!showGhost)
+			{
+				ghost.visible = true;
+				showGhostBttn.text = 'Hide Ghost';
+				showGhost = true;
+			}
+			else
+			{
+				ghost.visible = false;
+				showGhostBttn.text = 'Show Ghost';
+				showGhost = false;
+			}
+		});
+
+		followCharOffsetBttn = new FlxButton(140, 70, "Follow: ON", function()
+		{
+			if (followCharOffset)
+			{
+				followCharOffset = false;
+				followCharOffsetBttn.text = 'Follow: OFF';
+			}
+			else
+			{
+				followCharOffset = true;
+				followCharOffsetBttn.text = 'Follow: ON';
+			}
+		});
+
+		var characterDropDown = new PsychDropDown(10, 30, PsychDropDown.makeStrIdLabelArray(characters, true), function(character:String)
+		{
+			curCharacter = characters[Std.parseInt(character)];
+			generateCharacter(!curCharacter.startsWith('bf'));
+			genCharOffsets(true, false);
+		});
+		characterDropDown.selectedLabel = curCharacter;
+
+		var ghostCharacterDropDown = new PsychDropDown(10, characterDropDown.y + 40, PsychDropDown.makeStrIdLabelArray(characters, true), function(character:String)
+		{
+			curGhost = characters[Std.parseInt(character)];
+			generateGhost(!curCharacter.startsWith('bf'));
+			genCharOffsets(false, true);
+		});
+		ghostCharacterDropDown.selectedLabel = curGhost;
+
+		tab_group.add(resetBttn);
+		tab_group.add(showGhostBttn);
+		tab_group.add(followCharOffsetBttn);
+
+		tab_group.add(new FlxText(ghostCharacterDropDown.x, ghostCharacterDropDown.y - 18, 0, 'Ghost Character:'));
+		tab_group.add(ghostCharacterDropDown);
+		tab_group.add(new FlxText(characterDropDown.x, characterDropDown.y - 18, 0, 'Character:'));
+		tab_group.add(characterDropDown);
+
 		UI_box.addGroup(tab_group);
 	}
 
@@ -182,7 +250,7 @@ class CharacterDebug extends MusicBeatState
 		textAnim.text = char.animation.curAnim.name;
 		ghost.flipX = char.flipX;
 
-		ghost.visible = ghostAnimDropDown.selectedLabel != '';
+		ghost.visible = showGhost;
 		char.alpha = (ghost.visible ? 0.85 : 1);
 
 		if (FlxG.keys.justPressed.ESCAPE)
@@ -293,7 +361,8 @@ class CharacterDebug extends MusicBeatState
 		if (FlxG.keys.pressed.CONTROL && FlxG.keys.justPressed.S)
 			saveCharOffsets();
 
-		ghost.setPosition(char.x, char.y);
+		if (followCharOffset)
+			ghost.setPosition(char.x, char.y);
 
 		super.update(elapsed);
 	}
@@ -319,13 +388,32 @@ class CharacterDebug extends MusicBeatState
 			genOffset = [300, 100];
 
 		remove(char);
-		char = new Character(!isDad, curCharacter);
+		char = new Character(0, 0, !isDad, curCharacter);
 		char.setPosition(genOffset[0], genOffset[1]);
 		char.debugMode = true;
 		add(char);
 	}
 
-	function genCharOffsets(pushList:Bool = true):Void
+	function generateGhost(isDad:Bool = true)
+	{
+		var genOffset:Array<Int> = [100, 100];
+
+		if (!isDad)
+			genOffset = [770, 450];
+
+		if (curGhost.startsWith('gf'))
+			genOffset = [300, 100];
+
+		remove(ghost);
+		ghost = new Character(0, 0, !isDad, curGhost);
+		ghost.setPosition(genOffset[0], genOffset[1]);
+		ghost.debugMode = true;
+		ghost.visible = false;
+		ghost.color = 0xFF666688;
+		add(ghost);
+	}
+
+	function genCharOffsets(pushList:Bool = true, pushGhostList:Bool = true):Void
 	{
 		var daLoop:Int = 0;
 
@@ -353,10 +441,10 @@ class CharacterDebug extends MusicBeatState
 			dumbTexts.add(text);
 
 			if (pushList)
-			{
 				animList.push(anim);
+
+			if (pushGhostList)
 				ghostAnimList.push(anim);
-			}
 
 			daLoop++;
 		}
