@@ -23,11 +23,14 @@ class ModHandler
 
 	inline public static function getMod(key:String)
 	{
+		#if MOD_HANDLER
 		return '${modDirectory}/$key';
+		#end
 	}
 
 	public static function getModPath(key:String)
 	{
+		#if MOD_HANDLER
         if (currentModDir != null && currentModDir.length > 0)
         {
             var newModDir:String = getMod(currentModDir + '/' + key);
@@ -42,10 +45,12 @@ class ModHandler
         }
         #if DEBUG_TRACES trace('oh no, $path is returning null, NOOOOOOOOOO'); #end
         return null;
+		#end
     }
 
 	public static function saveModList()
 	{
+		#if MOD_HANDLER
 		var fileStr:String = '';
 		for (mod in modList.keys())
 		{
@@ -54,10 +59,12 @@ class ModHandler
 			fileStr += mod + '=' + (modList.get(mod) ? 'true' : 'false');
 		}
 		File.saveContent(modListPath, fileStr);
+		#end
 	}
 
 	public static function loadModList()
 	{
+		#if MOD_HANDLER
 		if (!FileSystem.exists(modListPath))
 			saveModList();
 		// first read the file
@@ -73,10 +80,12 @@ class ModHandler
 		for (directory in modDirs)
 			if (!modList.exists(directory))
 				modList.set(directory, false);
+		#end
 	}
 
 	public static function loadModDirs()
 	{
+		#if MOD_HANDLER
 		var dirs:Array<String> = FileSystem.readDirectory(modDirectory);
 		modDirs = [];
 		for (dir in dirs)
@@ -85,10 +94,12 @@ class ModHandler
 				modDirs.push(dir);
 		}
 		#if DEBUG_TRACES trace('MODS: ' + modDirs); #end
+		#end
 	}
 
 	public static function loadFirst()
 	{
+		#if MOD_HANDLER
 		currentModDir = 'default';
 		for (mod in modList.keys())
 		{
@@ -99,5 +110,6 @@ class ModHandler
 			}
 		}
 		#if DEBUG_TRACES trace('CURRENT MOD: ' + currentModDir); #end
+		#end
 	}
 }
