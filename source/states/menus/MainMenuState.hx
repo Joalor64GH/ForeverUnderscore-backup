@@ -43,7 +43,7 @@ class MainMenuState extends MusicBeatState
 	{
 		super.create();
 
-		CreditsState.repositionBoldSymbols = false;
+		CreditsState.repositionNumbers = false;
 
 		// make sure the music is playing
 		ForeverTools.resetMenuMusic();

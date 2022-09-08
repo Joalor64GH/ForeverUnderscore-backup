@@ -46,7 +46,7 @@ class HealthIcon extends FlxSprite
 	{
 		var path = Paths.image('$icon/icon', 'characters');
 		var iconExists = FileSystem.exists(Paths.getPath('characters/$icon/icon.png', IMAGE));
-		var sparrowExists = FileSystem.exists(Paths.getPath('characters/$icon/icon.xml', TEXT));
+		var sparrowIcon = FileSystem.exists(Paths.getPath('characters/$icon/icon.xml', TEXT));
 
 		var trimmedIcon:String = icon;
 		if (trimmedIcon.contains('-'))
@@ -57,11 +57,11 @@ class HealthIcon extends FlxSprite
 			if (icon != trimmedIcon)
 				path = Paths.image('$trimmedIcon/icon', 'characters');
 			else
-				path = Paths.image('characters/face');
+				path = Paths.image('credits/face');
 			//trace('$icon icon is invalid, trying $trimmedIcon instead you fuck');
 		}
 
-		if (sparrowExists)
+		if (sparrowIcon)
 		{
 			frames = Paths.getSparrowAtlas('icon', 'characters/$icon');
 
@@ -77,7 +77,7 @@ class HealthIcon extends FlxSprite
 			switch (iconGraphic.width)
 			{
 				case 450: iconWidth = 3;
-				default: iconWidth = 2;
+				case 300: iconWidth = 2;
 				case 150: iconWidth = 1;
 			}
 

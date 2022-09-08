@@ -1,6 +1,6 @@
 package states.substates;
 
-import base.KeyFormatter;
+import base.ControlsFormatter;
 import base.MusicBeat.MusicBeatSubstate;
 import flixel.FlxBasic;
 import flixel.FlxG;
@@ -40,8 +40,6 @@ class ControlsSubstate extends MusicBeatSubstate
 
 		super.create();
 
-		CreditsState.repositionBoldSymbols = true;
-
 		keyOptions = generateOptions();
 		updateSelection();
 
@@ -61,6 +59,11 @@ class ControlsSubstate extends MusicBeatSubstate
 		submenuText2.screenCenter();
 		submenuText2.y += 32;
 		submenuGroup.add(submenuText2);
+
+		var submenuText3 = new Alphabet(0, 0, "DEL to Delete Key", true, false);
+		submenuText3.screenCenter();
+		submenuText3.y += 92;
+		submenuGroup.add(submenuText3);
 
 		// submenuoffset group
 		// this code by codist
@@ -172,11 +175,11 @@ class ControlsSubstate extends MusicBeatSubstate
 
 	function getStringKey(arrayThingy:Dynamic):String
 	{
-		var keyString:String = 'none';
+		var keyString:String = '---';
 		if (arrayThingy != null)
 		{
 			var keyDisplay:FlxKey = arrayThingy;
-			keyString = KeyFormatter.formatKeyName(keyDisplay.toString());
+			keyString = ControlsFormatter.formatKeyName(keyDisplay.toString());
 		}
 
 		keyString = keyString.replace(" ", "");
@@ -300,7 +303,6 @@ class ControlsSubstate extends MusicBeatSubstate
 
 	override public function close()
 	{
-		CreditsState.repositionBoldSymbols = false;
 		Init.saveControls(); // for controls
 		Init.saveSettings(); // for offset
 		super.close();
@@ -345,6 +347,12 @@ class ControlsSubstate extends MusicBeatSubstate
 				// now check if its the key we want to change
 				Init.gameControls.get(keyOptions.members[curSelection].text)[0][curHorizontalSelection] = checkKey;
 				otherKeys.members[(curSelection * 2) + curHorizontalSelection].text = getStringKey(checkKey);
+
+				if (FlxG.keys.justPressed.DELETE)
+				{
+					Init.gameControls.get(keyOptions.members[curSelection].text)[0][curHorizontalSelection] = null;
+					otherKeys.members[(curSelection * 2) + curHorizontalSelection].text = getStringKey(null);
+				}
 
 				// refresh keys
 				controls.setKeyboardScheme(None, false);

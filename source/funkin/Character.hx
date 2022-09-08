@@ -340,7 +340,7 @@ class Character extends FNFSprite
 		var scripts:Array<String> = [Paths.getPreloadPath('characters/$char/config.hx')];
 
 		#if MOD_HANDLER
-		scripts.insert(0, Paths.getModPath('characters/$char', 'config.hx'));
+		scripts.insert(0, Paths.getModPath('characters/$char', 'config', 'hxs'));
 		#end
 
 		var pushedScripts:Array<String> = [];
@@ -365,7 +365,7 @@ class Character extends FNFSprite
 		var spriteType = "sparrow";
 
 		#if MOD_HANDLER
-		var modTxtToFind:String = Paths.getModPath('characters/$char', '$char.txt');
+		var modTxtToFind:String = Paths.getModPath('characters/$char', char, 'txt');
 		var txtToFind:String = Paths.getPath('characters/$char/$char.txt', TEXT);
 
 		if (FileSystem.exists(modTxtToFind) || (FileSystem.exists(txtToFind) || Assets.exists(txtToFind)))
@@ -518,7 +518,7 @@ class Character extends FNFSprite
 		var spriteType = "sparrow";
 
 		#if MOD_HANDLER
-		var modTxtToFind:String = Paths.getModPath('characters/$char', '${json.image}.txt');
+		var modTxtToFind:String = Paths.getModPath('characters/$char', json.image, 'txt');
 		var txtToFind:String = Paths.getPath('characters/$char/${json.image}.txt', TEXT);
 
 		if (FileSystem.exists(modTxtToFind) || (FileSystem.exists(txtToFind) || Assets.exists(txtToFind)))

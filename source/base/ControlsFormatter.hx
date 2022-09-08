@@ -5,27 +5,18 @@ import flixel.input.keyboard.FlxKey;
 
 using StringTools;
 
-/**
- * this is a class to format FlxKey outputs
- * it gets a key name and returns it as a string with the given return value
- * mainly used with `ControlsSubstate`;
- */
-
-class KeyFormatter
+class ControlsFormatter
 {
 	public static function formatKeyName(key:FlxKey):String
 	{
 		switch (key)
 		{
-			case BACKSPACE: return "BKSPC";
+			case BACKSPACE: return "BCKSPC";
 			case CONTROL: return "CTRL";
 			case ALT: return "ALT";
 			case CAPSLOCK: return "CAPS";
 			case PAGEUP: return "PGUP";
 			case PAGEDOWN: return "PGDOWN";
-			case DELETE: return "DEL";
-			case INSERT: return "INS";
-			case PRINTSCREEN: return "PRINT";
 			case ZERO: return "0";
 			case ONE: return "1";
 			case TWO: return "2";
@@ -36,20 +27,20 @@ class KeyFormatter
 			case SEVEN: return "7";
 			case EIGHT: return "8";
 			case NINE: return "9";
-			case NUMPADZERO: return "KP0";
-			case NUMPADONE: return "KP1";
-			case NUMPADTWO: return "KP2";
-			case NUMPADTHREE: return "KP3";
-			case NUMPADFOUR: return "KP4";
-			case NUMPADFIVE: return "KP5";
-			case NUMPADSIX: return "KP6";
-			case NUMPADSEVEN: return "KP7";
-			case NUMPADEIGHT: return "KP8";
-			case NUMPADNINE: return "KP9";
-			case NUMPADMULTIPLY: return "KP*";
-			case NUMPADPLUS: return "KP+";
-			case NUMPADMINUS: return "KP-";
-			case NUMPADPERIOD: return "KP.";
+			case NUMPADZERO: return "#0";
+			case NUMPADONE: return "#1";
+			case NUMPADTWO: return "#2";
+			case NUMPADTHREE: return "#3";
+			case NUMPADFOUR: return "#4";
+			case NUMPADFIVE: return "#5";
+			case NUMPADSIX: return "#6";
+			case NUMPADSEVEN: return "#7";
+			case NUMPADEIGHT: return "#8";
+			case NUMPADNINE: return "#9";
+			case NUMPADMULTIPLY: return "#*";
+			case NUMPADPLUS: return "#+";
+			case NUMPADMINUS: return "#-";
+			case NUMPADPERIOD: return "#.";
 			case SEMICOLON: return ";";
 			case COMMA: return ",";
 			case PERIOD: return ".";
@@ -59,11 +50,12 @@ class KeyFormatter
 			case BACKSLASH: return "\\";
 			case RBRACKET: return "]";
 			case QUOTE: return "'";
-			case NONE: return 'none';
+			case PRINTSCREEN: return "PRTSCRN";
+			case NONE: return '---';
 			default:
 				var label:String = '' + key;
 				if (label.toLowerCase() == 'null')
-					return 'none';
+					return '---';
 				return '' + label.charAt(0).toUpperCase() + label.substr(1).toUpperCase();
 		}
 	}

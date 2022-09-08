@@ -49,13 +49,13 @@ class CreditsState extends MusicBeatState
 
 	var iconArray:Array<AbsoluteSprite> = [];
 
-	public static var repositionBoldSymbols:Bool = false;
+	public static var repositionNumbers:Bool = false;
 
 	override function create()
 	{
 		super.create();
 
-		repositionBoldSymbols = true;
+		repositionNumbers = true;
 
 		credData = Json.parse(Paths.getTextFromFile('credits.json'));
 

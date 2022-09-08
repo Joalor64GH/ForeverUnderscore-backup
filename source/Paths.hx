@@ -41,6 +41,11 @@ final class Paths
 	inline public static var SOUND_EXT = "ogg";
 	inline public static var VIDEO_EXT = "mp4";
 
+	public static var currentPack:Null<String>;
+
+	// in case anything goes wrong with your mods
+	public static var defaultPack:String = 'default';
+
 	// level we're loading
 	static var currentLevel:String;
 
@@ -141,7 +146,7 @@ final class Paths
 		textureCompression = Init.trueSettings.get('Hardware Caching');
 
 		#if MOD_HANDLER
-		var modPath:String = modImages(key, folder);
+		var modPath:String = modImages(key);
 		if (FileSystem.exists(modPath))
 		{
 			if (!currentTrackedAssets.exists(modPath))
@@ -206,8 +211,8 @@ final class Paths
 	static public function getTextFromFile(key:String, ignoreMods:Bool = false):String
 	{
 		#if MOD_HANDLER
-		if (!ignoreMods && FileSystem.exists(getModPath('', key)))
-			return File.getContent(getModPath('', key));
+		if (!ignoreMods && FileSystem.exists(getModPath('', key, '')))
+			return File.getContent(getModPath('', key, ''));
 		#end
 		if (FileSystem.exists(getPreloadPath(key)))
 			return File.getContent(getPreloadPath(key));
@@ -348,25 +353,11 @@ final class Paths
 
 	inline static public function json(key:String, ?library:String)
 	{
-		#if MOD_HANDLER
-		var file:String = getModPath('', '$key.json');
-		if (FileSystem.exists(file))
-		{
-			return File.getContent(file);
-		}
-		#end
 		return getPath('$key.json', TEXT, library);
 	}
 
 	inline static public function songJson(song:String, secondSong:String, ?library:String)
 	{
-		#if MOD_HANDLER
-		var file:String = getModPath('songs', '${song.toLowerCase()}/${secondSong.toLowerCase()}.json');
-		if (FileSystem.exists(file))
-		{
-			return file;
-		}
-		#end
 		return getPath('songs/${song.toLowerCase()}/${secondSong.toLowerCase()}.json', TEXT, library);
 	}
 
@@ -408,7 +399,7 @@ final class Paths
 
 	inline static public function font(key:String)
 	{
-		return getPath('fonts/$key', TEXT);
+		return 'assets/fonts/$key';
 	}
 
 	inline static public function getSparrowAtlas(key:String, folder:String = 'images', ?library:String)
@@ -442,13 +433,13 @@ final class Paths
 	inline static public function shader(key:String)
 	{
 		#if MOD_HANDLER
-		var file:String = getModPath('shaders', '$key.frag');
+		var file:String = getModPath('shaders', key, 'frag');
 		if (FileSystem.exists(file))
 		{
 			return file;
 		}
 		#end
-		return getPath('shaders/$key.frag', TEXT);
+		return 'assets/shaders/$key.frag';
 	}
 
 	/**
@@ -456,27 +447,53 @@ final class Paths
 	 * something that i'm gonna work on soon! -gabi
 	**/
 	#if MOD_HANDLER
-	inline static public function modImages(key:String, path:String = 'images')
+	inline static public function getModpack(key:String = '')
 	{
-		return getModPath(path, '$key.png');
+		if (FileSystem.exists('mods/$currentPack/$key'))
+			return 'mods/$currentPack/$key';
+		
+		return 'mods/' + key;
+	}
+
+	inline static public function modImages(key:String)
+	{
+		return getModPath('images', key, 'png');
 	}
 
 	inline static public function modSounds(path:String, key:String)
 	{
-		return getModPath(path, '$key.$SOUND_EXT');
+		return getModPath(path, key, SOUND_EXT);
 	}
 
 	inline static public function modVideos(key:String)
 	{
-		return getModPath('videos', '$key.$VIDEO_EXT');
+		return getModPath('videos', key, VIDEO_EXT);
 	}
 
-	public inline static function getModPath(path:String, file:String)
+	public inline static function getModPath(path:String, file:String, extension:String)
 	{
-		var returnPath:String = 'mods/${ModHandler.currentModDir}/$path/$file';
+		var returnPath:String = 'mods/$currentPack/$path/$file.$extension';
 		if (!FileSystem.exists(returnPath))
 			returnPath = CoolUtil.swapSpaceDash(returnPath);
 		return returnPath;
+	}
+
+	public static function getModDirs():Array<String>
+	{
+		var modsList:Array<String> = [];
+		var modsFolder:String = getModpack();
+		if (FileSystem.exists(modsFolder))
+		{
+			for (folder in FileSystem.readDirectory(modsFolder))
+			{
+				var path = haxe.io.Path.join([modsFolder, folder]);
+				if (sys.FileSystem.isDirectory(path) && folder != 'default' && !modsList.contains(folder))
+				{
+					modsList.push(folder);
+				}
+			}
+		}
+		return modsList;
 	}
 	#end
 }
