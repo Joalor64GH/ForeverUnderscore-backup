@@ -31,20 +31,21 @@ function generateStage()
 	// create sprites for the stage
 
 	// left to right, sprite ID, path, x, y, and if it should spawn on the foreground (above characters);
-	createSprite('bgBack', 'backgrounds/' + stageName + '/stageback', -600, -300, false);
-
+	createSprite('bgBack', 'backgrounds/' + stageName + '/stageback', -600, -300);
 	setSpriteScrollFactor('bgBack', 0.9, 0.9);
+	addSprite('bgBack');
 
 	//
-	createSprite('bgFront', 'backgrounds/' + stageName + '/stageFront', -650, 600, false);
+	createSprite('bgFront', 'backgrounds/' + stageName + '/stageFront', -650, 600);
 	setSpriteScrollFactor('bgFront', 0.9, 0.9);
+	addSprite('bgFront');
 
 	//
-	createSprite('bgCurtains', 'backgrounds/' + stageName + '/stagecurtains', -500, -300, false);
+	createSprite('bgCurtains', 'backgrounds/' + stageName + '/stagecurtains', -500, -300);
 	setSpriteScrollFactor('bgCurtains', 0.9, 0.9);
+	addSprite('bgCurtains');
 
 	// extra functions for creating animated sprites, not used here because this is a stage with no animated graphics;
-
 	/**
 	 * createAnimatedSprite('spriteID', 'path', 'spriteType (can be sparrow or packer)', xPosition, yPosition [['animationPrefix', 'nameOnXML', fps, whether it loops or not]], defaultAnimation, spawnOnForeground);
 	 * addSpriteAnimation('spriteID', [['newAnimationPrefix', 'nameOnXML", fps, whether it loops or not]]);
@@ -54,6 +55,14 @@ function generateStage()
 	 * setSpriteSize('spriteID', newSize); // newSize is a float value
 	 * setSpriteAlpha('spriteID', newOpacityValue); // newOpacityValue is a float value
 	**/
+
+	// function for adding sprites;
+	/**
+	 * addSprite('spriteID'); // add the sprite;
+	 * addSpriteToLayers('spriteID'); // add the sprite above girlfriend;
+	 * addSpriteOnForeground('spriteID'); // add the sprite above the characters;
+	 * addSpriteToGroup('spriteID'); // add the sprite to a created sprite group;
+	 */
 }
 
 function repositionPlayers(boyfriend, dad, gf) // function used to reposition characters

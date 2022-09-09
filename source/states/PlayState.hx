@@ -16,6 +16,7 @@ import flixel.OverlayShader;
 import flixel.addons.transition.FlxTransitionableState;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.group.FlxSpriteGroup.FlxTypedSpriteGroup;
+import flixel.group.FlxSpriteGroup;
 import flixel.input.keyboard.FlxKey;
 import flixel.math.FlxMath;
 import flixel.math.FlxPoint;
@@ -28,7 +29,6 @@ import flixel.util.FlxColor;
 import flixel.util.FlxSort;
 import flixel.util.FlxTimer;
 import funkin.*;
-import funkin.Rating.Timing;
 import funkin.Strumline.UIStaticArrow;
 import funkin.ui.*;
 import lime.app.Application;
@@ -37,7 +37,7 @@ import openfl.display.BlendModeEffect;
 import openfl.display.GraphicsShader;
 import openfl.events.KeyboardEvent;
 import openfl.filters.ShaderFilter;
-import states.charting.*;
+import states.editors.*;
 import states.menus.*;
 import states.substates.*;
 
@@ -54,9 +54,10 @@ import vlc.MP4Handler;
 class PlayState extends MusicBeatState
 {
 	// FOR SCRIPTS;
-	public static var GraphicMap:Map<String, FNFSprite> = new Map<String, FNFSprite>();
-	public static var ShaderMap:Map<String, GraphicsShader> = new Map<String, GraphicsShader>();
+	public static var ScriptedGraphics:Map<String, FNFSprite> = new Map<String, FNFSprite>();
+	public static var ScriptedShaders:Map<String, GraphicsShader> = new Map<String, GraphicsShader>();
 	public static var ScriptedTweens:Map<String, Dynamic> = new Map<String, Dynamic>();
+	public static var ScriptedSpriteGroups:Map<String, Dynamic> = new Map<String, FlxSpriteGroup>();
 
 	public static var startTimer:FlxTimer;
 
@@ -85,7 +86,6 @@ class PlayState extends MusicBeatState
 	public var notes:FlxTypedGroup<Note> = new FlxTypedGroup<Note>();
 	public var unspawnNotes:Array<Note> = [];
 
-	var ratingArray:Array<String> = [];
 	var allSicks:Bool = true;
 
 	// if you ever wanna add more keys
@@ -169,7 +169,7 @@ class PlayState extends MusicBeatState
 
 	// stores the last judgement object
 	public static var lastRating:FlxSprite;
-	// stores the last timing object
+	// stores the last judgement timing object
 	public static var lastTiming:FlxSprite;
 	// stores the last combo objects in an array
 	public static var lastCombo:Array<FlxSprite>;
@@ -183,8 +183,8 @@ class PlayState extends MusicBeatState
 
 	var canMiss:Bool = true;
 
-	public var ratingsGroup:FlxTypedGroup<Rating> = new FlxTypedGroup<Rating>();
-	public var timingsGroup:FlxTypedGroup<Timing> = new FlxTypedGroup<Timing>();
+	public var ratingsGroup:FlxTypedGroup<FNFSprite> = new FlxTypedGroup<FNFSprite>();
+	public var comboGroup:FlxTypedGroup<FNFSprite> = new FlxTypedGroup<FNFSprite>();
 
 	// at the beginning of the playstate
 	override public function create()
@@ -207,6 +207,11 @@ class PlayState extends MusicBeatState
 		defaultCamZoom = 1.05;
 		cameraSpeed = 1;
 		forceZoom = [0, 0, 0, 0];
+
+		ratingsGroup = new FlxTypedGroup<FNFSprite>();
+		comboGroup = new FlxTypedGroup<FNFSprite>();
+		add(ratingsGroup);
+		add(comboGroup);
 
 		Timings.callAccuracy();
 
@@ -246,8 +251,8 @@ class PlayState extends MusicBeatState
 		Conductor.changeBPM(SONG.bpm);
 
 		// cache shit
-		displayRating('sick', 'early', true);
-		popUpCombo(true);
+		displayJudgement('sick', 'early', true);
+		displayCombo();
 
 		GameOverSubstate.resetGameOver();
 
@@ -555,8 +560,7 @@ class PlayState extends MusicBeatState
 					if ((daNote.noteData == key) && daNote.canBeHit && !daNote.isSustainNote && !daNote.tooLate && !daNote.wasGoodHit)
 						possibleNoteList.push(daNote);
 				});
-
-				possibleNoteList.sort((a, b) -> Std.int(a.strumTime - b.strumTime));
+				possibleNoteList.sort(sortHitNotes);
 
 				// if there is a list of notes that exists for that control
 				if (possibleNoteList.length > 0)
@@ -599,6 +603,19 @@ class PlayState extends MusicBeatState
 		}
 	}
 
+	/**
+	 * Sorts through possible notes, author @Shadow_Mario
+	 */
+	function sortHitNotes(a:Note, b:Note):Int
+	{
+		if (a.lowPriority && !b.lowPriority)
+			return 1;
+		else if (!a.lowPriority && b.lowPriority)
+			return -1;
+
+		return FlxSort.byValues(FlxSort.ASCENDING, Std.int(a.strumTime), Std.int(b.strumTime));
+	}
+
 	public function onKeyRelease(event:KeyboardEvent):Void
 	{
 		var eventKey:FlxKey = event.keyCode;
@@ -638,8 +655,10 @@ class PlayState extends MusicBeatState
 			FlxG.stage.removeEventListener(KeyboardEvent.KEY_UP, onKeyRelease);
 		}
 
-		GraphicMap.clear();
-		ShaderMap.clear();
+		ScriptedGraphics.clear();
+		ScriptedShaders.clear();
+		ScriptedSpriteGroups.clear();
+		ScriptedTweens.clear();
 
 		// clear scripts;
 		scriptArray = [];
@@ -720,12 +739,12 @@ class PlayState extends MusicBeatState
 					if (FlxG.keys.pressed.SHIFT)
 					{
 						prevCharter = 1;
-						Main.switchState(this, new ChartingState());
+						Main.switchState(this, new ChartEditor());
 					}
 					else
 					{
 						prevCharter = 0;
-						Main.switchState(this, new OriginalChartingState());
+						Main.switchState(this, new OriginalChartEditor());
 					}
 				}
 				if (FlxG.keys.justPressed.EIGHT)
@@ -734,7 +753,7 @@ class PlayState extends MusicBeatState
 					var holdingAlt = FlxG.keys.pressed.ALT;
 
 					Conductor.stopMusic();
-					Main.switchState(this, new CharacterDebug(holdingShift ? SONG.player1 : holdingAlt ? SONG.gfVersion : SONG.player2, holdingShift ? true : false, PlayState.curStage));
+					Main.switchState(this, new CharacterOffsetEditor(holdingShift ? SONG.player1 : holdingAlt ? SONG.gfVersion : SONG.player2, holdingShift ? true : false, PlayState.curStage));
 				}
 
 				if (FlxG.keys.pressed.SHIFT && FlxG.keys.justPressed.FIVE)
@@ -1001,14 +1020,13 @@ class PlayState extends MusicBeatState
 					strumline.splashNotes.members[i].y = strumline.receptors.members[i].y + (UIStaticArrow.swagWidth / 6) - 56;
 				}
 		}
-
+		
+		// set the notes x and y
+		var downscrollMultiplier = (Init.trueSettings.get('Downscroll') ? -1 : 1) * FlxMath.signOf(SONG.speed);
 		if (generatedMusic && startedCountdown)
 		{
 			for (strumline in strumLines)
 			{
-				// set the notes x and y
-				var downscrollMultiplier = Init.trueSettings.get('Downscroll') ? -1 : 1;
-
 				for (receptor in strumline.receptors)
 				{
 					if (strumline.autoplay && receptor.animation.finished)
@@ -1109,7 +1127,7 @@ class PlayState extends MusicBeatState
 
 					if (!strumNote.tooLate && strumNote.strumTime < Conductor.songPosition - (Timings.msThreshold) && !strumNote.wasGoodHit)
 					{
-						if ((!strumNote.tooLate) && (strumNote.mustPress) && (!strumNote.badNote))
+						if ((!strumNote.tooLate) && (strumNote.mustPress) && (!strumNote.canHurt))
 						{
 							if (!strumNote.isSustainNote)
 							{
@@ -1376,7 +1394,7 @@ class PlayState extends MusicBeatState
 					}
 				}
 
-				if (!coolNote.badNote)
+				if (!coolNote.canHurt)
 				{
 					if (!coolNote.isSustainNote)
 					{
@@ -1501,7 +1519,7 @@ class PlayState extends MusicBeatState
 		if (autoplay)
 		{
 			// check if the note was a good hit
-			if (daNote.strumTime <= Conductor.songPosition && !daNote.badNote)
+			if (daNote.strumTime <= Conductor.songPosition && !daNote.canHurt)
 			{
 				// kill the note, then remove it from the array
 				var canDisplayJudgement = false;
@@ -1653,7 +1671,8 @@ class PlayState extends MusicBeatState
 			if (allSicks)
 				allSicks = false;
 
-		displayRating(baseRating, timing);
+		displayCombo();
+		displayJudgement(baseRating, timing);
 		Timings.updateAccuracy(Timings.judgementsMap.get(baseRating)[3]);
 		score = Std.int(Timings.judgementsMap.get(baseRating)[2]);
 
@@ -1662,8 +1681,6 @@ class PlayState extends MusicBeatState
 
 		// tween score color based on your rating;
 		uiHUD.tweenScoreColor(baseRating, allSicks);
-
-		popUpCombo();
 	}
 
 	public function createSplash(coolNote:Note, strumline:Strumline)
@@ -1676,7 +1693,52 @@ class PlayState extends MusicBeatState
 
 	var createdColor = FlxColor.fromRGB(204, 66, 66);
 
-	function popUpCombo(?cache:Bool = false)
+	function displayJudgement(newRating:String, newRatingTiming:String, ?cache:Bool = false)
+	{
+		var rating = ForeverAssets.generateRating('$newRating', (newRating == 'sick' ? allSicks : false), newRatingTiming, ratingsGroup, assetModifier, changeableSkin, 'UI');
+
+		if (Init.trueSettings.get('Judgement Stacking'))
+		{
+			add(rating);
+
+			FlxTween.tween(rating, {alpha: 0}, (Conductor.stepCrochet) / 1000, {
+			onComplete: function(tween:FlxTween)
+			{
+				rating.kill();
+			}, startDelay: ((Conductor.crochet + Conductor.stepCrochet * 2) / 1000)});
+		}
+		else
+		{
+			if (lastRating != null)
+				lastRating.kill();
+			add(rating);
+			lastRating = rating;
+			FlxTween.tween(rating, {y: rating.y + 20}, 0.2, {type: FlxTweenType.BACKWARD, ease: FlxEase.circOut});
+			FlxTween.tween(rating, {"scale.x": 0, "scale.y": 0}, 0.1, {onComplete: function(tween:FlxTween)
+			{
+				rating.kill();
+			}, startDelay: Conductor.crochet * 0.00125});
+		}
+
+		if (Init.trueSettings.get('Fixed Judgements'))
+		{
+			// bound to camera
+			if (!cache)
+				rating.cameras = [camHUD];
+			rating.screenCenter();
+		}
+
+		Timings.gottenJudgements.set(newRating, Timings.gottenJudgements.get(newRating) + 1);
+		if (Timings.smallestRating != newRating)
+		{
+			if (Timings.judgementsMap.get(Timings.smallestRating)[0] < Timings.judgementsMap.get(newRating)[0])
+				Timings.smallestRating = newRating;
+		}
+
+		ratingsGroup.sort(FNFSprite.depthSorting, FlxSort.DESCENDING);
+	}
+	
+	function displayCombo(?cache:Bool = false)
 	{
 		var comboString:String = Std.string(combo);
 		var negative = false;
@@ -1689,49 +1751,46 @@ class PlayState extends MusicBeatState
 			while (lastCombo.length > 0)
 			{
 				lastCombo[0].kill();
-				lastCombo.remove(lastCombo[0]);
 			}
 		}
 
 		for (scoreInt in 0...stringArray.length)
 		{
-			// numScore.loadGraphic(Paths.image('UI/' + pixelModifier + 'num' + stringArray[scoreInt]));
-			var numScore = ForeverAssets.generateCombo('combo', stringArray[scoreInt], (!negative ? allSicks : false), assetModifier, changeableSkin, 'UI',
-				negative, createdColor, scoreInt);
-			add(numScore);
+			var comboNum = ForeverAssets.generateCombo('combo_numbers', stringArray[scoreInt], (!negative ? allSicks : false), comboGroup, assetModifier, changeableSkin, 'UI', negative, createdColor, scoreInt);
+			comboNum.animation.play(stringArray[scoreInt]);
+
 			// hardcoded lmao
-			if (!Init.trueSettings.get('Simply Judgements'))
+			if (Init.trueSettings.get('Judgement Stacking'))
 			{
-				add(numScore);
-				FlxTween.tween(numScore, {alpha: 0}, 0.2, {
+				add(comboNum);
+				FlxTween.tween(comboNum, {alpha: 0}, (Conductor.stepCrochet * 2) / 1000, {
 					onComplete: function(tween:FlxTween)
 					{
-						numScore.kill();
-					},
-					startDelay: Conductor.crochet * 0.002
-				});
+						comboNum.kill();
+					}, startDelay: (Conductor.crochet) / 1000});
 			}
 			else
 			{
-				add(numScore);
+				add(comboNum);
 				// centers combo
-				numScore.y += 10;
-				numScore.x -= 95;
-				numScore.x -= ((comboString.length - 1) * 22);
-				lastCombo.push(numScore);
-				FlxTween.tween(numScore, {y: numScore.y + 20}, 0.1, {type: FlxTweenType.BACKWARD, ease: FlxEase.circOut});
+				comboNum.y += 10;
+				comboNum.x -= 95;
+				comboNum.x -= ((comboString.length - 1) * 22);
+				lastCombo.push(comboNum);
+				FlxTween.tween(comboNum, {y: comboNum.y + 20}, 0.1, {type: FlxTweenType.BACKWARD, ease: FlxEase.circOut});
 			}
+
 			// hardcoded lmao
 			if (Init.trueSettings.get('Fixed Judgements'))
 			{
-				if (cache)
-					numScore.alpha = 0.000001;
-				else
-					numScore.cameras = [camHUD];
-				numScore.y += 50;
+				if (!cache)
+					comboNum.cameras = [camHUD];
+				comboNum.y += 50;
 			}
-			numScore.x += 100;
+			comboNum.x += 100;
 		}
+		
+		comboGroup.sort(FNFSprite.depthSorting, FlxSort.DESCENDING);
 	}
 
 	public function decreaseCombo(?popMiss:Bool = false)
@@ -1755,12 +1814,12 @@ class PlayState extends MusicBeatState
 		if (popMiss)
 		{
 			// doesnt matter miss ratings dont have timings
-			displayRating("miss", 'late');
+			displayJudgement("miss", 'late');
 			uiHUD.tweenScoreColor("miss", false);
 			healthCall(Timings.judgementsMap.get("miss")[3]);
 		}
 
-		popUpCombo();
+		displayCombo();
 
 		// gotta do it manually here lol
 		Timings.updateFCDisplay();
@@ -1779,102 +1838,6 @@ class PlayState extends MusicBeatState
 			}
 			else if (canMiss)
 				missNoteCheck(true, direction, character, false, true);
-		}
-	}
-
-	public function displayRating(daRating:String, timing:String, ?cache:Bool = false)
-	{
-		/* so you might be asking
-			"oh but if the rating isn't sick why not just reset it"
-			because miss judgements can pop, and they dont mess with your sick combo
-		 */
-		var rating = ForeverAssets.generateRating('$daRating', (daRating == 'sick' ? allSicks : false), ratingsGroup, assetModifier, changeableSkin, 'UI');
-		add(rating);
-
-		// for ratings that have no timings to them, this is PAINFUL to look at, I know;
-		var noTiming = (timing == null || timing == '' || daRating == 'sick' || daRating == 'miss');
-
-		var timingSpr = ForeverAssets.generateRatingTimings('$daRating-timings', timing, timingsGroup, rating, assetModifier, changeableSkin, 'UI');
-
-		if (!noTiming)
-		{
-			timingSpr.daRating = daRating;
-			add(timingSpr);
-		}
-
-		if (!Init.trueSettings.get('Simply Judgements'))
-		{
-			add(rating);
-
-			FlxTween.tween(rating, {alpha: 0}, 0.2, {
-				onComplete: function(tween:FlxTween)
-				{
-					rating.kill();
-				},
-				startDelay: Conductor.crochet * 0.00125
-			});
-
-			FlxTween.tween(timingSpr, {alpha: 0}, 0.2, {
-				onComplete: function(tween:FlxTween)
-				{
-					timingSpr.kill();
-				},
-				startDelay: Conductor.crochet * 0.00125
-			});
-		}
-		else
-		{
-			if (lastRating != null)
-				lastRating.kill();
-			if (lastTiming != null)
-				lastTiming.kill();
-			add(rating);
-			lastRating = rating;
-			lastTiming = timingSpr;
-			FlxTween.tween(rating, {y: rating.y + 20}, 0.2, {type: FlxTweenType.BACKWARD, ease: FlxEase.circOut});
-			FlxTween.tween(rating, {"scale.x": 0, "scale.y": 0}, 0.1, {
-				onComplete: function(tween:FlxTween)
-				{
-					rating.kill();
-				},
-				startDelay: Conductor.crochet * 0.00125
-			});
-
-			FlxTween.tween(timingSpr, {y: timingSpr.y + 20}, 0.2, {type: FlxTweenType.BACKWARD, ease: FlxEase.circOut});
-			FlxTween.tween(timingSpr, {"scale.x": 0, "scale.y": 0}, 0.1, {
-				onComplete: function(tween:FlxTween)
-				{
-					timingSpr.kill();
-				},
-				startDelay: Conductor.crochet * 0.00125
-			});
-		}
-
-		if (cache)
-		{
-			rating.alpha = 0.000001;
-			timingSpr.alpha = 0.000001;
-		}
-		else
-		{
-			if (Init.trueSettings.get('Fixed Judgements'))
-			{
-				// bound to camera
-				rating.cameras = [camHUD];
-				timingSpr.cameras = [camHUD];
-				rating.screenCenter();
-				timingSpr.screenCenter();
-			}
-
-			// return the actual rating to the array of judgements
-			Timings.gottenJudgements.set(daRating, Timings.gottenJudgements.get(daRating) + 1);
-
-			// set new smallest rating
-			if (Timings.smallestRating != daRating)
-			{
-				if (Timings.judgementsMap.get(Timings.smallestRating)[0] < Timings.judgementsMap.get(daRating)[0])
-					Timings.smallestRating = daRating;
-			}
 		}
 	}
 
@@ -2131,7 +2094,7 @@ class PlayState extends MusicBeatState
 		CoolUtil.difficulties = CoolUtil.baseDifficulties;
 
 		if (chartingMode)
-			Main.switchState(this, (prevCharter == 1 ? new ChartingState() : new OriginalChartingState()));
+			Main.switchState(this, (prevCharter == 1 ? new ChartEditor() : new OriginalChartEditor()));
 		else if (!isStoryMode)
 			Main.switchState(this, new FreeplayState());
 		else
@@ -2519,16 +2482,16 @@ class PlayState extends MusicBeatState
 
 	function setupScripts()
 	{
-		var fools:Array<Array<String>> = [
+		var dirs:Array<Array<String>> = [
 			CoolUtil.absoluteDirectory('scripts'),
 			CoolUtil.absoluteDirectory('songs/${SONG.song.toLowerCase().replace(' ', '-')}')
 		];
 
-		for (fool in fools)
-			for (shit in fool)
-				if (fool.length > 0)
-					if (shit.length > 0 && shit.endsWith('.hx'))
-						scriptArray.push(new ScriptHandler(shit));
+		for (dir in dirs)
+			for (script in dir)
+				if (dir.length > 0)
+					if (script.length > 0 && script.endsWith('.hx'))
+						scriptArray.push(new ScriptHandler(script));
 	}
 
 	function setPlayStateVars()

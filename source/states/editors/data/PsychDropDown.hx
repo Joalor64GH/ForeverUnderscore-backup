@@ -1,4 +1,4 @@
-package states.charting.data;
+package states.editors.data;
 
 import flash.geom.Rectangle;
 import flixel.FlxG;

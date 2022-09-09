@@ -88,7 +88,6 @@ class StoryMenuState extends MusicBeatState
 		rankText.size = scoreText.size;
 		rankText.screenCenter(X);
 
-		var ui_tex = Paths.getSparrowAtlas('menus/base/storymenu/campaign_menu_UI_assets');
 		var yellowBG:FlxSprite = new FlxSprite(0, 56).makeGraphic(FlxG.width, 400, 0xFFF9CF51);
 
 		grpWeekText = new FlxTypedGroup<MenuItem>();
@@ -128,7 +127,7 @@ class StoryMenuState extends MusicBeatState
 				if (lockedWeek)
 				{
 					var lock:FlxSprite = new FlxSprite(weekImageLabel.width + 10 + weekImageLabel.x);
-					lock.frames = ui_tex;
+					lock.frames = Paths.getSparrowAtlas('menus/base/storymenu/campaign_menu_UI_assets');
 					lock.animation.addByPrefix('lock', 'lock');
 					lock.animation.play('lock');
 					lock.ID = i;
@@ -155,7 +154,7 @@ class StoryMenuState extends MusicBeatState
 		#if DEBUG_TRACES trace("Line 124"); #end
 
 		leftArrow = new FlxSprite(grpWeekText.members[0].x + grpWeekText.members[0].width + 10, grpWeekText.members[0].y + 10);
-		leftArrow.frames = ui_tex;
+		leftArrow.frames = Paths.getSparrowAtlas('menus/base/storymenu/campaign_menu_UI_assets');
 		leftArrow.animation.addByPrefix('idle', "arrow left");
 		leftArrow.animation.addByPrefix('press', "arrow push left");
 		leftArrow.animation.play('idle');
@@ -173,7 +172,7 @@ class StoryMenuState extends MusicBeatState
 		difficultySelectors.add(sprDifficulty);
 
 		rightArrow = new FlxSprite(leftArrow.x + 376, leftArrow.y);
-		rightArrow.frames = ui_tex;
+		rightArrow.frames = Paths.getSparrowAtlas('menus/base/storymenu/campaign_menu_UI_assets');
 		rightArrow.animation.addByPrefix('idle', 'arrow right');
 		rightArrow.animation.addByPrefix('press', "arrow push right", 24, false);
 		rightArrow.animation.play('idle');
@@ -262,7 +261,9 @@ class StoryMenuState extends MusicBeatState
 
 	function selectWeek()
 	{
-		if (!checkLock(WeekParser.weeksList[curWeek]))
+		var locked = checkLock(WeekParser.weeksList[curWeek]);
+
+		if (!locked)
 		{
 			if (stopspamming == false)
 			{
@@ -360,8 +361,9 @@ class StoryMenuState extends MusicBeatState
 		if (curWeek < 0)
 			curWeek = allWeeks.length - 1;
 
-		var lockedWeek:Bool = checkLock(WeekParser.weeksList[curWeek]);
-		difficultySelectors.visible = !lockedWeek;
+		var locked:Bool = checkLock(WeekParser.weeksList[curWeek]);
+
+		difficultySelectors.visible = !locked;
 
 		var weekTitle = WeekParser.loadedWeeks.get(WeekParser.weeksList[curWeek]).weekName;
 		txtWeekTitle.text = weekTitle.toUpperCase();
@@ -372,8 +374,7 @@ class StoryMenuState extends MusicBeatState
 		for (item in grpWeekText.members)
 		{
 			item.targetY = bullShit - curWeek;
-			var lockedWeek:Bool = checkLock(WeekParser.weeksList[curWeek]);
-			if (item.targetY == Std.int(0) && !lockedWeek)
+			if (item.targetY == Std.int(0) && !locked)
 				item.alpha = 1;
 			else
 				item.alpha = 0.6;

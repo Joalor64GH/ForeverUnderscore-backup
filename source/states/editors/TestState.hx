@@ -1,4 +1,4 @@
-package states.charting;
+package states.editors;
 
 import base.MusicBeat.MusicBeatState;
 import flixel.FlxBasic;

@@ -10,6 +10,10 @@ function generateStage()
 	setSpriteScrollFactor('bg', 0.2, 0.2);
 	setSpriteScrollFactor('evilTree', 0.2, 0.2);
 	setSpriteSize('bg', 0.8);
+
+    addSprite('bg');
+    addSprite('evilTree');
+    addSprite('evilSnow');
 }
 
 function repositionPlayers(boyfriend, dad, gf)

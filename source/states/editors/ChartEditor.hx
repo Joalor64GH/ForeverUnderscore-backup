@@ -1,4 +1,4 @@
-package states.charting;
+package states.editors;
 
 import base.ChartParser.Section;
 import base.ChartParser.Song;
@@ -56,19 +56,12 @@ using StringTools;
 import sys.thread.Thread;
 #end
 
-typedef ChartingSustain =
-{
-	var length:Float;
-	var body:FlxTiledSprite;
-	var tail:Note;
-}
-
 /**
 	As the name implies, this is the class where all of the charting state stuff happens, so when you press 7 the game
 	state switches to this one, where you get to chart songs and such. I'm planning on overhauling this entirely in the future
 	and making it both more practical and more user friendly.
 **/
-class ChartingState extends MusicBeatState
+class ChartEditor extends MusicBeatState
 {
 	var _song:SwagSong;
 
@@ -690,7 +683,7 @@ class ChartingState extends MusicBeatState
 
 	private function generateSustain(daStrumTime:Float = 0, daNoteInfo:Int = 0, daSus:Float = 0, daNoteAlt:Float = 0, daNoteType:Int = 0, prevNote:Note)
 	{
-		if (daSus > 0)
+		if (daSus > 0 && prevNote != null)
 		{
 			var constSize = Std.int(gridSize / 2 - 2);
 
@@ -699,22 +692,19 @@ class ChartingState extends MusicBeatState
 			sustainVis.updateHitbox();
 			sustainVis.x = prevNote.x + constSize;
 			sustainVis.y = prevNote.y + (gridSize / 2);
-
-			var sustainEnd:Note = ForeverAssets.generateArrow(_song.assetModifier, daStrumTime + Conductor.stepCrochet, daNoteInfo % 4, daNoteAlt, true, sustainVis, daNoteType);
-			sustainEnd.setGraphicSize(constSize, constSize);
-			sustainEnd.updateHitbox();
-			sustainEnd.x = sustainVis.x - 15;
-			sustainEnd.y = sustainVis.y + (sustainVis.height) + (gridSize / 2);
-
 			sustainVis.rawNoteData = daNoteInfo;
-			sustainEnd.rawNoteData = daNoteInfo;
-			
-			trace(sustainVis);
-			trace(sustainVis.width);
-			trace(sustainVis.height);
-
 			curRenderedSustains.add(sustainVis);
-			curRenderedSustains.add(sustainEnd);
+
+			if (prevNote != null && prevNote.isSustainNote)
+			{
+				var sustainEnd:Note = ForeverAssets.generateArrow(_song.assetModifier, daStrumTime + Conductor.stepCrochet, daNoteInfo % 4, daNoteAlt, true, sustainVis, daNoteType);
+				sustainEnd.setGraphicSize(constSize, Math.floor(FlxMath.remapToRange(daSus, 0, Conductor.stepCrochet * 16, 0, gridSize * constSize)));
+				sustainEnd.updateHitbox();
+				sustainEnd.x = sustainVis.x - 15;
+				sustainEnd.y = sustainVis.y + (sustainVis.height) + (gridSize / 2);
+				sustainEnd.rawNoteData = daNoteInfo;
+				curRenderedSustains.add(sustainEnd);
+			}
 		}
 	}
 

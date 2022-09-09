@@ -143,10 +143,10 @@ class Init extends FlxState
 			"Fixes the judgements to the camera instead of to the world itself, making them easier to read.",
 			NOT_FORCED
 		],
-		'Simply Judgements' => [
-			false,
+		'Judgement Stacking' => [
+			true,
 			Checkmark,
-			"Simplifies the judgement animations, displaying only one judgement / rating sprite at a time.",
+			"Simplifies the judgement animations if disabled, displaying only one judgement at a time.",
 			NOT_FORCED
 		],
 		'Colored Health Bar' => [
@@ -231,6 +231,13 @@ class Init extends FlxState
 		],
 		// custom ones lol
 		'Offset' => [Checkmark, 3],
+	];
+
+	public static var gameModifiers:Map<String, Dynamic> = [
+		// GAMEPLAY;
+		'Scroll Speed' => [false, Selector, NOT_FORCED],
+		'Autoplay' => [false, Checkmark, NOT_FORCED],
+		'Practice Mode' => [false, Checkmark, NOT_FORCED],
 	];
 
 	public static var trueSettings:Map<String, Dynamic> = [];

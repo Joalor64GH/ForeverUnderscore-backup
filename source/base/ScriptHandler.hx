@@ -68,7 +68,7 @@ class ScriptFuncs extends PlayState
 			var newSprite = new FNFSprite();
 			newSprite.makeGraphic(x, y, graphicCol);
 			newSprite.antialiasing = !Init.trueSettings.get('Disable Antialiasing');
-			PlayState.GraphicMap.set(spriteID, newSprite);
+			PlayState.ScriptedGraphics.set(spriteID, newSprite);
 			PlayState.contents.setVar('$spriteID', newSprite);
 			PlayState.contents.add(newSprite);
 		});
@@ -78,7 +78,7 @@ class ScriptFuncs extends PlayState
 			var newSprite:FNFSprite = new FNFSprite(x, y).loadGraphic(Paths.image(key));
 			newSprite.updateHitbox();
 			newSprite.antialiasing = !Init.trueSettings.get('Disable Antialiasing');
-			PlayState.GraphicMap.set(spriteID, newSprite);
+			PlayState.ScriptedGraphics.set(spriteID, newSprite);
 			PlayState.contents.setVar('$spriteID', newSprite);
 			PlayState.contents.add(newSprite);
 		});
@@ -105,14 +105,14 @@ class ScriptFuncs extends PlayState
 				newSprite.updateHitbox();
 				newSprite.antialiasing = !Init.trueSettings.get('Disable Antialiasing');
 				newSprite.animation.play(defAnim);
-				PlayState.GraphicMap.set(spriteID, newSprite);
+				PlayState.ScriptedGraphics.set(spriteID, newSprite);
 				PlayState.contents.setVar('$spriteID', newSprite);
 				PlayState.contents.add(newSprite);
 			});
 			
 		PlayState.contents.setVar('addSpriteAnimation', function(spriteID:String, newAnims:Array<Dynamic>)
 		{
-			var gottenSprite:FNFSprite = PlayState.GraphicMap.get(spriteID);
+			var gottenSprite:FNFSprite = PlayState.ScriptedGraphics.get(spriteID);
 			for (anim in newAnims)
 			{
 				gottenSprite.animation.addByPrefix(anim[0], anim[1], anim[2], anim[3]);
@@ -121,37 +121,37 @@ class ScriptFuncs extends PlayState
 
 		PlayState.contents.setVar('addSpriteOffset', function(spriteID:String, anim:String, x:Float, y:Float)
 		{
-			var gottenSprite:FNFSprite = PlayState.GraphicMap.get(spriteID);
+			var gottenSprite:FNFSprite = PlayState.ScriptedGraphics.get(spriteID);
 			gottenSprite.addOffset(anim, x, y);
 		});
 		
 		PlayState.contents.setVar('spritePlayAnimation', function(spriteID:String, animToPlay:String, forced:Bool = true)
 		{
-			var gottenSprite:FNFSprite = PlayState.GraphicMap.get(spriteID);
+			var gottenSprite:FNFSprite = PlayState.ScriptedGraphics.get(spriteID);
 			gottenSprite.animation.play(animToPlay, forced);
 		});
 
 		PlayState.contents.setVar('setSpriteBlend', function(spriteID:String, blendString:String)
 		{
-			var gottenSprite:FNFSprite = PlayState.GraphicMap.get(spriteID);
+			var gottenSprite:FNFSprite = PlayState.ScriptedGraphics.get(spriteID);
 			gottenSprite.blend = ForeverTools.getBlendFromString(blendString);
 		});
 
 		PlayState.contents.setVar('setSpriteScrollFactor', function(spriteID:String, x:Float, y:Float)
 		{
-			var gottenSprite:FNFSprite = PlayState.GraphicMap.get(spriteID);
+			var gottenSprite:FNFSprite = PlayState.ScriptedGraphics.get(spriteID);
 			gottenSprite.scrollFactor.set(x, y);
 		});
 
 		PlayState.contents.setVar('setSpriteSize', function(spriteID:String, newSize:Float)
 		{
-			var gottenSprite:FNFSprite = PlayState.GraphicMap.get(spriteID);
+			var gottenSprite:FNFSprite = PlayState.ScriptedGraphics.get(spriteID);
 			gottenSprite.setGraphicSize(Std.int(gottenSprite.width * newSize));
 		});
 
 		PlayState.contents.setVar('setSpriteAlpha', function(spriteID:String, newAlpha:Float)
 		{
-			var gottenSprite:FNFSprite = PlayState.GraphicMap.get(spriteID);
+			var gottenSprite:FNFSprite = PlayState.ScriptedGraphics.get(spriteID);
 			gottenSprite.alpha = newAlpha;
 		});
 
@@ -182,7 +182,7 @@ class ScriptFuncs extends PlayState
 				if (key != null || key != '')
 				{
 					var shader:GraphicsShader = new GraphicsShader("", File.getContent(Paths.shader(key)));
-					PlayState.ShaderMap.set(shaderID, shader);
+					PlayState.ScriptedShaders.set(shaderID, shader);
 
 					switch (camera)
 					{

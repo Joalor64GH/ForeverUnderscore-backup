@@ -6,6 +6,8 @@ using StringTools;
 
 class Checkmark extends FNFSprite
 {
+	public var parent:Alphabet;
+
 	public function new(x:Float, y:Float)
 	{
 		super(x, y);
@@ -14,6 +16,9 @@ class Checkmark extends FNFSprite
 
 	override public function update(elapsed:Float)
 	{
+		if (parent != null)
+			setPosition(parent.x + parent.width + 10, parent.y - 35);
+
 		if (animation != null)
 		{
 			if ((animation.finished) && (animation.curAnim.name == 'true'))

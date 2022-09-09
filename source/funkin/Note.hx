@@ -33,6 +33,9 @@ class Note extends FNFSprite
 	public var offsetX:Float = 0;
 	public var offsetY:Float = 0;
 
+	public var lowPriority:Bool = false;
+	public var hitboxLength:Float = 1;
+
 	public var useCustomSpeed:Bool = Init.trueSettings.get('Use Custom Note Speed');
 
 	// not set initially
@@ -51,7 +54,7 @@ class Note extends FNFSprite
 	public var healthLoss:Float = 0.0475;
 
 	public var hitSounds:Bool = true;
-	public var badNote:Bool = false;
+	public var canHurt:Bool = false;
 	public var gfNote:Bool = false;
 	public var updateAccuracy:Bool = true;
 
@@ -80,13 +83,14 @@ class Note extends FNFSprite
 			case 2: // hey notes
 				updateAccuracy = true;
 				hitSounds = true;
-				badNote = false;
+				canHurt = false;
 				gfNote = false;
 			case 3: // mines
 				healthLoss = 0.065;
 				updateAccuracy = true;
 				hitSounds = false;
-				badNote = true;
+				canHurt = true;
+				lowPriority = true;
 				gfNote = false;
 			case 4: // gf notes
 				updateAccuracy = true;
@@ -94,13 +98,14 @@ class Note extends FNFSprite
 			case 5: // no animation notes
 				updateAccuracy = true;
 				hitSounds = false;
-				badNote = false;
+				canHurt = false;
 				gfNote = false;
 			default: // anything else
 				hitSounds = true;
 				updateAccuracy = true;
-				badNote = false;
+				canHurt = false;
 				gfNote = false;
+				lowPriority = false;
 		}
 
 		// oh okay I know why this exists now
@@ -130,7 +135,8 @@ class Note extends FNFSprite
 
 		if (mustPress)
 		{
-			if (strumTime > Conductor.songPosition - (Timings.msThreshold) && strumTime < Conductor.songPosition + (Timings.msThreshold))
+			if (strumTime > Conductor.songPosition - (Timings.msThreshold * hitboxLength)
+				&& strumTime < Conductor.songPosition + (Timings.msThreshold * hitboxLength))
 				canBeHit = true;
 			else
 				canBeHit = false;

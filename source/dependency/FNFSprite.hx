@@ -14,6 +14,15 @@ import flixel.system.FlxAssets.FlxGraphicAsset;
 class FNFSprite extends FlxSprite
 {
 	public var animOffsets:Map<String, Array<Float>>;
+	public var zDepth:Float = 0;
+
+	// depth sorting from forever 1.0;
+	public static inline function depthSorting(Order:Int, Obj1:FNFSprite, Obj2:FNFSprite)
+	{
+		if (Obj1.zDepth > Obj2.zDepth)
+			return -Order;
+		return Order;
+	}
 
 	public function new(x:Float = 0, y:Float = 0)
 	{

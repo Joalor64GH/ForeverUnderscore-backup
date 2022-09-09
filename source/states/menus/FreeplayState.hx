@@ -25,7 +25,8 @@ import funkin.Alphabet;
 import funkin.ui.HealthIcon;
 import lime.utils.Assets;
 import openfl.media.Sound;
-import states.charting.*;
+import states.editors.*;
+import states.substates.FreeplaySubstate;
 import sys.FileSystem;
 import sys.thread.Mutex;
 import sys.thread.Thread;
@@ -253,6 +254,7 @@ class FreeplayState extends MusicBeatState
 		var accepted = FlxG.keys.justPressed.ENTER;
 		var shiftP = FlxG.keys.pressed.SHIFT;
 		var seven = FlxG.keys.justPressed.SEVEN;
+		var ctrl = FlxG.keys.justPressed.CONTROL;
 
 		var shiftMult:Int = 1;
 		if (shiftP)
@@ -327,8 +329,12 @@ class FreeplayState extends MusicBeatState
 			loadSong(false, true);
 			PlayState.chartingMode = true;
 			PlayState.prevCharter == (shiftP ? 1 : 0);
-			Main.switchState(this, (shiftP ? new ChartingState() : new OriginalChartingState()));
+			Main.switchState(this, (shiftP ? new ChartEditor() : new OriginalChartEditor()));
 		}
+		/*
+		else if (ctrl)
+			openSubState(new FreeplaySubstate());
+		*/
 		else if (controls.RESET && presses < 3)
 		{
 			presses++;

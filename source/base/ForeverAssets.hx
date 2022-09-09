@@ -7,9 +7,8 @@ import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.util.FlxColor;
+import flixel.util.FlxSort;
 import funkin.*;
-import funkin.Rating.Combo;
-import funkin.Rating.Timing;
 import funkin.Strumline.UIStaticArrow;
 import funkin.Timings;
 import funkin.ui.menu.*;
@@ -24,99 +23,93 @@ using StringTools;
 class ForeverAssets
 {
 	//
-	public static function generateCombo(asset:String, number:String, allSicks:Bool, assetModifier:String = 'base', changeableSkin:String = 'default',
-			baseLibrary:String, negative:Bool, createdColor:FlxColor, scoreInt:Int):Combo
+	public static function generateCombo(asset:String, number:String, allSicks:Bool, parentGroup:FlxTypedGroup<FNFSprite>, assetModifier:String = 'base', changeableSkin:String = 'default',
+		baseLibrary:String, negative:Bool, createdColor:FlxColor, scoreInt:Int):FNFSprite
 	{
-		var width = assetModifier == 'pixel' ? 10 : 100;
-		var height = assetModifier == 'pixel' ? 12 : 140;
-
-		var newSprite:Combo = new Combo(scoreInt);
-		newSprite.loadGraphic(Paths.image(ForeverTools.returnSkinAsset(asset, assetModifier, changeableSkin, baseLibrary)), true, width, height);
-
-		//newSprite.scoreInt = scoreInt;
-
-		newSprite.color = FlxColor.WHITE;
-		if (negative)
-			newSprite.color = createdColor;
-
-		newSprite.animation.add('base', [(Std.parseInt(number) != null ? Std.parseInt(number) + 1 : 0) + (!allSicks ? 0 : 11)], 0, false);
-		newSprite.animation.play('base');
+		var width = 100;
+		var height = 140;
 
 		if (assetModifier == 'pixel')
-			newSprite.setGraphicSize(Std.int(newSprite.width * PlayState.daPixelZoom));
-		else
 		{
-			newSprite.antialiasing = !Init.trueSettings.get('Disable Antialiasing');
-			newSprite.setGraphicSize(Std.int(newSprite.width * 0.5));
+			width = 10;
+			height = 12;
 		}
 
-		return newSprite;
+		//var combo = parentGroup.recycle(FNFSprite);
+		var combo = new FNFSprite();
+		combo.loadGraphic(Paths.image(ForeverTools.returnSkinAsset(asset, assetModifier, changeableSkin, baseLibrary)), true, width, height);
+		combo.alpha = 1;
+		combo.zDepth = -Conductor.songPosition;
+		combo.animation.add('combo', [(Std.parseInt(number) != null ? Std.parseInt(number) + 1 : 0) + (!allSicks ? 0 : 11)], 0, false);
+		combo.animation.play('combo');
+
+		combo.screenCenter();
+		combo.x += (43 * scoreInt) + 20;
+		combo.y += 60;
+
+		combo.color = FlxColor.WHITE;
+		if (negative)
+			combo.color = createdColor;
+
+		if (assetModifier == 'pixel')
+			combo.setGraphicSize(Std.int(combo.frameWidth * PlayState.daPixelZoom));
+		else
+		{
+			combo.antialiasing = !Init.trueSettings.get('Disable Antialiasing');
+			combo.setGraphicSize(Std.int(combo.frameWidth * 0.5));
+		}
+		combo.updateHitbox();
+		if (Init.trueSettings.get('Judgement Stacking'))
+		{
+			combo.acceleration.y = FlxG.random.int(200, 300);
+			combo.velocity.y = -FlxG.random.int(140, 160);
+			combo.velocity.x = FlxG.random.float(-5, 5);
+		}
+
+		parentGroup.sort(FNFSprite.depthSorting, FlxSort.DESCENDING);
+
+		return combo;
 	}
 
-	public static function generateRating(asset:String, perfectSick:Bool, parentGroup:FlxTypedGroup<Rating>, assetModifier:String = 'base', changeableSkin:String = 'default',
-			baseLibrary:String):Rating
+	public static function generateRating(asset:String, perfectSick:Bool, timing:String, parentGroup:FlxTypedGroup<FNFSprite>, assetModifier:String = 'base', changeableSkin:String = 'default',
+			baseLibrary:String):FNFSprite
 	{
-		var perfectString = (perfectSick ? '-perfect' : '');
+		var width = 500;
+		var height = 163;
+		if (assetModifier == 'pixel')
+		{
+			width = 72;
+			height = 32;
+		}
 
-		var rating:Rating = new Rating(asset); /*parentGroup.recycle(Rating);*/
-		rating.loadGraphic(Paths.image(ForeverTools.returnSkinAsset('ratings/' + asset + perfectString, assetModifier, changeableSkin, baseLibrary)));
+		//var rating = parentGroup.recycle(FNFSprite);
+		var rating = new FNFSprite();
+		rating.loadGraphic(Paths.image(ForeverTools.returnSkinAsset('judgements', assetModifier, changeableSkin, baseLibrary)), true, width, height);
+		rating.alpha = 1;
+		rating.zDepth = -Conductor.songPosition;
 
-		//rating.daRating = asset;
+		rating.animation.add('rating', [Std.int((Timings.judgementsMap.get(asset)[0] * 2) + (perfectSick ? 0 : 2) + (timing == 'late' ? 1 : 0))], (assetModifier == 'pixel' ? 12 : 24), false);
+		rating.animation.play('rating');
 
-        if (assetModifier == 'pixel')
-			rating.setGraphicSize(Std.int(rating.width * PlayState.daPixelZoom * 0.7));
+		if (assetModifier == 'pixel')
+			rating.setGraphicSize(Std.int(rating.frameWidth * PlayState.daPixelZoom * 0.7));
 		else
 		{
 			rating.antialiasing = !Init.trueSettings.get('Disable Antialiasing');
-			rating.setGraphicSize(Std.int(rating.width * 0.7));
+			rating.setGraphicSize(Std.int(rating.frameWidth * 0.7));
 		}
 
-		parentGroup.add(rating);
+		rating.screenCenter();
+		rating.x = (FlxG.width * 0.55) - 40;
+		rating.y -= 60;
+		if (Init.trueSettings.get('Judgement Stacking'))
+		{
+			rating.acceleration.y = 550;
+			rating.velocity.y = -FlxG.random.int(140, 175);
+			rating.velocity.x = -FlxG.random.int(0, 10);
+		}
 
 		return rating;
-	}
-
-	/**
-	 * [Literally copy and pasted from the above, fu-];
-	 */
-	public static function generateRatingTimings(asset:String, hitTiming:String, parentGroup:FlxTypedGroup<Timing>, parentSprite:FNFSprite, assetModifier:String = 'base', changeableSkin:String = 'default',
-			baseLibrary:String):Timing
-	{
-		var newWidth = assetModifier == 'pixel' ? 26 : 166;
-
-		var timing:Timing = new Timing(hitTiming); /*parentGroup.recycle(Timing);*/
-		timing.loadGraphic(Paths.image(ForeverTools.returnSkinAsset('ratings/' + asset, assetModifier, changeableSkin, baseLibrary)), true, newWidth);
-
-		//timing.hitTiming = hitTiming;
-
-		switch (assetModifier)
-		{
-			case 'pixel':
-				timing.x += (newWidth / 2) * PlayState.daPixelZoom;
-				timing.setGraphicSize(Std.int(timing.width * PlayState.daPixelZoom * 0.7));
-				if (hitTiming != 'late')
-					timing.x -= newWidth * 0.5 * PlayState.daPixelZoom;
-			default:
-				timing.antialiasing = true;
-				timing.setGraphicSize(Std.int(timing.width * 0.7));
-				if (hitTiming == 'late')
-					timing.x += newWidth * 0.5;
-		}
-
-		// actually painful;
-		timing.x = parentSprite.x;
-		timing.y = parentSprite.y;
-		timing.acceleration.y = parentSprite.acceleration.y;
-		timing.velocity.y = parentSprite.velocity.y;
-		timing.velocity.x = parentSprite.velocity.x;
-
-		timing.animation.add('early', [0]);
-		timing.animation.add('late', [1]);
-		timing.animation.play(hitTiming);
-
-		parentGroup.add(timing);
-
-		return timing;
 	}
 
 	public static function generateNoteSplashes(asset:String, parentGroup:FlxTypedGroup<NoteSplash>, assetModifier:String = 'base', changeableSkin:String = 'default', baseLibrary:String,
@@ -161,6 +154,8 @@ class ForeverAssets
 				tempSplash.addOffset('anim1', -20, -10);
 				tempSplash.addOffset('anim2', -20, -10);
 		}
+		
+		parentGroup.sort(FNFSprite.depthSorting, FlxSort.DESCENDING);
 
 		return tempSplash;
 	}

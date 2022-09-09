@@ -1,4 +1,4 @@
-package states.substates.charting;
+package states.substates.editors;
 
 import base.MusicBeat.MusicBeatSubstate;
 import dependency.FNFSprite;

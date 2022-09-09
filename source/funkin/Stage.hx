@@ -17,6 +17,7 @@ import flixel.math.FlxPoint;
 import flixel.system.FlxSound;
 import flixel.system.scaleModes.*;
 import flixel.text.FlxText;
+import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 import funkin.background.*;
 import openfl.Assets;
@@ -71,6 +72,8 @@ class Stage extends FlxTypedGroup<FlxBasic>
 	var tankdude3:FNFSprite;
 	var tankdude4:FNFSprite;
 	var tankdude5:FNFSprite;
+
+	var groupDudes:FlxTypedGroup<FNFSprite>;
 
 	//
 	public var gfVersion:String = 'gf';
@@ -442,47 +445,51 @@ class Stage extends FlxTypedGroup<FlxBasic>
 				add(ground);
 				moveTank();
 
+				groupDudes = new FlxTypedGroup<FNFSprite>();
+
 				tankdude0 = new FNFSprite(-500, 650);
 				tankdude0.frames = Paths.getSparrowAtlas('backgrounds/' + curStage + '/tank0');
 				tankdude0.animation.addByPrefix('fg', 'fg');
 				tankdude0.antialiasing = !Init.trueSettings.get('Disable Antialiasing');
 				tankdude0.scrollFactor.set(1.7, 1.5);
-				foreground.add(tankdude0);
+				groupDudes.add(tankdude0);
 
 				tankdude1 = new FNFSprite(-300, 750);
 				tankdude1.frames = Paths.getSparrowAtlas('backgrounds/' + curStage + '/tank1');
 				tankdude1.animation.addByPrefix('fg', 'fg');
 				tankdude1.antialiasing = !Init.trueSettings.get('Disable Antialiasing');
 				tankdude1.scrollFactor.set(2, 0.2);
-				foreground.add(tankdude1);
+				groupDudes.add(tankdude1);
 
 				tankdude2 = new FNFSprite(450, 940);
 				tankdude2.frames = Paths.getSparrowAtlas('backgrounds/' + curStage + '/tank2');
-				tankdude2.animation.addByPrefix('fg', 'foreground');
+				tankdude2.animation.addByPrefix('fg', 'groupDudes');
 				tankdude2.antialiasing = !Init.trueSettings.get('Disable Antialiasing');
 				tankdude2.scrollFactor.set(1.5, 1.5);
-				foreground.add(tankdude2);
+				groupDudes.add(tankdude2);
 
 				tankdude4 = new FNFSprite(1300, 900);
 				tankdude4.frames = Paths.getSparrowAtlas('backgrounds/' + curStage + '/tank4');
 				tankdude4.animation.addByPrefix('fg', 'fg');
 				tankdude4.antialiasing = !Init.trueSettings.get('Disable Antialiasing');
 				tankdude4.scrollFactor.set(1.5, 1.5);
-				foreground.add(tankdude4);
+				groupDudes.add(tankdude4);
 
 				tankdude5 = new FNFSprite(1620, 700);
 				tankdude5.frames = Paths.getSparrowAtlas('backgrounds/' + curStage + '/tank5');
 				tankdude5.animation.addByPrefix('fg', 'fg');
 				tankdude5.antialiasing = !Init.trueSettings.get('Disable Antialiasing');
 				tankdude5.scrollFactor.set(1.5, 1.5);
-				foreground.add(tankdude5);
+				groupDudes.add(tankdude5);
 
 				tankdude3 = new FNFSprite(1300, 1200);
 				tankdude3.frames = Paths.getSparrowAtlas('backgrounds/' + curStage + '/tank3');
 				tankdude3.animation.addByPrefix('fg', 'fg');
 				tankdude3.antialiasing = !Init.trueSettings.get('Disable Antialiasing');
 				tankdude3.scrollFactor.set(3.5, 2.5);
-				foreground.add(tankdude3);
+				groupDudes.add(tankdude3);
+
+				foreground.add(groupDudes);
 
 			default:
 				curStage = 'unknown';
@@ -517,7 +524,7 @@ class Stage extends FlxTypedGroup<FlxBasic>
 	}
 
 	// get the dad's position
-	public function dadPosition(curStage, boyfriend:Character, dad:Character, gf:Character, camPos:FlxPoint):Void
+	public function dadPosition(curStage:String, boyfriend:Character, dad:Character, gf:Character, camPos:FlxPoint):Void
 	{
 		var characterArray:Array<Character> = [dad, boyfriend];
 		for (char in characterArray)
@@ -527,17 +534,31 @@ class Stage extends FlxTypedGroup<FlxBasic>
 				case 'gf':
 					char.setPosition(gf.x, gf.y);
 					gf.visible = false;
-					/*
-						if (isStoryMode)
-						{
-							camPos.x += 600;
-							tweenCamIn();
-					}*/
+
+					if (PlayState.isStoryMode)
+					{
+						camPos.x += 600;
+						tweenCamIn();
+					}
 					case 'spirit':
 						var evilTrail = new FlxTrail(char, null, 4, 24, 0.3, 0.069);
-						evilTrail.changeValuesEnabled(false, false, false, false);
 						add(evilTrail);
 			}
+		}
+	}
+
+	var cameraTwn:FlxTween;
+	function tweenCamIn()
+	{
+		if (PlayState.SONG.song.toLowerCase() == 'tutorial' && cameraTwn == null && FlxG.camera.zoom != 1.3)
+		{
+			cameraTwn = FlxTween.tween(FlxG.camera, {zoom: 1.1}, (Conductor.stepCrochet * 4 / 1000), {
+				ease: FlxEase.elasticInOut,
+				onComplete: function(twn:FlxTween)
+				{
+					cameraTwn = null;
+				}
+			});
 		}
 	}
 
@@ -650,15 +671,11 @@ class Stage extends FlxTypedGroup<FlxBasic>
 				}
 
 			case 'military':
-				smokeL.animation.play('smokeLeft');
-				smokeR.animation.play('smokeRight');
-				tankWatchtower.animation.play('watchtower');
-				tankdude0.animation.play('fg');
-				tankdude1.animation.play('fg');
-				tankdude2.animation.play('fg');
-				tankdude3.animation.play('fg');
-				tankdude4.animation.play('fg');
-				tankdude5.animation.play('fg');
+				smokeL.playAnim('smokeLeft');
+				smokeR.playAnim('smokeRight');
+				tankWatchtower.playAnim('watchtower');
+				for (i in 0...groupDudes.length)
+					groupDudes.members[i].playAnim('fg');
 		}
 
 		if (gfVersion == 'pico-speaker')
@@ -780,21 +797,21 @@ class Stage extends FlxTypedGroup<FlxBasic>
             stageScript = new ScriptHandler(path);
 
 		setVar('createSprite',
-			function(spriteID:String, image:String, x:Float, y:Float, onForeground:Bool = false, abovegf:Bool = false)
+			function(spriteID:String, image:String, x:Float, y:Float)
 			{
 				var newSprite:FNFSprite = new FNFSprite(x, y).loadGraphic(Paths.image(image));
 				newSprite.updateHitbox();
 				newSprite.antialiasing = !Init.trueSettings.get('Disable Antialiasing');
-				PlayState.GraphicMap.set(spriteID, newSprite);
+				PlayState.ScriptedGraphics.set(spriteID, newSprite);
 				PlayState.contents.setVar('$spriteID', newSprite);
-
-				if (onForeground)
-					foreground.add(newSprite);
-				else if (abovegf)
-					layers.add(newSprite);
-				else
-					add(newSprite);
 			});
+
+		setVar('createTypedSpriteGroup', function(spriteGroupID:String)
+		{
+			var newSpriteGroup:FlxTypedGroup<FNFSprite> = new FlxTypedGroup<FNFSprite>();
+			PlayState.ScriptedSpriteGroups.set(spriteGroupID, newSpriteGroup);
+			PlayState.contents.setVar('$spriteGroupID', newSpriteGroup);
+		});
 
 		setVar('createAnimatedSprite',
 			function(spriteID:String, key:String, spriteType:String, x:Float = 0, y:Float = 0, spriteAnims:Array<Array<Dynamic>>, defAnim:String,
@@ -819,19 +836,13 @@ class Stage extends FlxTypedGroup<FlxBasic>
 				newSprite.updateHitbox();
 				newSprite.antialiasing = !Init.trueSettings.get('Disable Antialiasing');
 				newSprite.animation.play(defAnim);
-				PlayState.GraphicMap.set(spriteID, newSprite);
+				PlayState.ScriptedGraphics.set(spriteID, newSprite);
 				PlayState.contents.setVar('$spriteID', newSprite);
-				if (onForeground)
-					foreground.add(newSprite);
-				else if (abovegf)
-					layers.add(newSprite);
-				else
-					add(newSprite);
 			});
 
 		setVar('addSpriteAnimation', function(spriteID:String, newAnims:Array<Array<Dynamic>>)
 		{
-			var gottenSprite:FNFSprite = PlayState.GraphicMap.get(spriteID);
+			var gottenSprite:FNFSprite = PlayState.ScriptedGraphics.get(spriteID);
 			for (anim in newAnims)
 			{
 				gottenSprite.animation.addByPrefix(anim[0], anim[1], anim[2], anim[3]);
@@ -840,38 +851,86 @@ class Stage extends FlxTypedGroup<FlxBasic>
 
 		setVar('addSpriteOffset', function(spriteID:String, anim:String, x:Float, y:Float)
 		{
-			var gottenSprite:FNFSprite = PlayState.GraphicMap.get(spriteID);
+			var gottenSprite:FNFSprite = PlayState.ScriptedGraphics.get(spriteID);
 			gottenSprite.addOffset(anim, x, y);
 		});
 
 		setVar('spritePlayAnimation', function(spriteID:String, animToPlay:String, forced:Bool = true)
 		{
-			var gottenSprite:FNFSprite = PlayState.GraphicMap.get(spriteID);
+			var gottenSprite:FNFSprite = PlayState.ScriptedGraphics.get(spriteID);
 			gottenSprite.animation.play(animToPlay, forced);
 		});
 
 		setVar('setSpriteBlend', function(spriteID:String, blendString:String)
 		{
-			var gottenSprite:FNFSprite = PlayState.GraphicMap.get(spriteID);
+			var gottenSprite:FNFSprite = PlayState.ScriptedGraphics.get(spriteID);
 			gottenSprite.blend = ForeverTools.getBlendFromString(blendString);
 		});
 
 		setVar('setSpriteScrollFactor', function(spriteID:String, x:Float, y:Float)
 		{
-			var gottenSprite:FNFSprite = PlayState.GraphicMap.get(spriteID);
+			var gottenSprite:FNFSprite = PlayState.ScriptedGraphics.get(spriteID);
 			gottenSprite.scrollFactor.set(x, y);
 		});
 
 		setVar('setSpriteSize', function(spriteID:String, newSize:Float)
 		{
-			var gottenSprite:FNFSprite = PlayState.GraphicMap.get(spriteID);
+			var gottenSprite:FNFSprite = PlayState.ScriptedGraphics.get(spriteID);
 			gottenSprite.setGraphicSize(Std.int(gottenSprite.width * newSize));
 		});
 
 		setVar('setSpriteAlpha', function(spriteID:String, newAlpha:Float)
 		{
-			var gottenSprite:FNFSprite = PlayState.GraphicMap.get(spriteID);
+			var gottenSprite:FNFSprite = PlayState.ScriptedGraphics.get(spriteID);
 			gottenSprite.alpha = newAlpha;
+		});
+
+		setVar('addSprite', function(spriteID:String)
+		{
+			var gottenSprite:FNFSprite = PlayState.ScriptedGraphics.get(spriteID);
+			add(gottenSprite);
+		});
+
+		setVar('addSpriteToLayers', function(spriteID:String)
+		{
+			var gottenSprite:FNFSprite = PlayState.ScriptedGraphics.get(spriteID);
+			layers.add(gottenSprite);
+		});
+
+		setVar('addSpriteOnForeground', function(spriteID:String)
+		{
+			var gottenSprite:FNFSprite = PlayState.ScriptedGraphics.get(spriteID);
+			foreground.add(gottenSprite);
+		});
+
+		setVar('addSpriteToGroup', function(spriteID:String)
+		{
+			var gottenSprite:FNFSprite = PlayState.ScriptedGraphics.get(spriteID);
+			foreground.add(gottenSprite);
+		});
+
+		setVar('addGroup', function(groupID:String)
+		{
+			var gottenGroup:FlxTypedGroup<FNFSprite> = PlayState.ScriptedSpriteGroups.get(groupID);
+			add(gottenGroup);
+		});
+
+		setVar('addGroup', function(groupID:String)
+		{
+			var gottenGroup:FlxTypedGroup<FNFSprite> = PlayState.ScriptedSpriteGroups.get(groupID);
+			add(gottenGroup);
+		});
+
+		setVar('addGroupOnForeground', function(groupID:String)
+		{
+			var gottenGroup:FlxTypedGroup<FNFSprite> = PlayState.ScriptedSpriteGroups.get(groupID);
+			foreground.add(gottenGroup);
+		});
+
+		setVar('addGroupToLayers', function(groupID:String)
+		{
+			var gottenGroup:FlxTypedGroup<FNFSprite> = PlayState.ScriptedSpriteGroups.get(groupID);
+			layers.add(gottenGroup);
 		});
 
 		setVar('addSound', function(id:String, sndString:String = '')

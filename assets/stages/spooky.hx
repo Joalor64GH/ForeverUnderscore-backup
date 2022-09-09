@@ -8,6 +8,7 @@ function generateStage()
 		[['idle', 'halloweem bg0', 'lightning', 'halloweem bg lightning strike']], 'idle');
 
 	addRandomSound('thunder', 'thunder_', 1, 2);
+	addSprite('halloweenBG');
 }
 
 var lightningBeat = 0;

@@ -1,4 +1,4 @@
-package states;
+package states.editors;
 
 import base.MusicBeat.MusicBeatState;
 import dependency.Discord;
@@ -23,7 +23,7 @@ import funkin.Stage;
 import openfl.events.Event;
 import openfl.events.IOErrorEvent;
 import openfl.net.FileReference;
-import states.charting.data.PsychDropDown;
+import states.editors.data.PsychDropDown;
 import states.menus.FreeplayState;
 
 using StringTools;
@@ -34,7 +34,7 @@ using StringTools;
 	with some tweaking here and there to make it work on forever engine
 	and some other additional features
  */
-class CharacterDebug extends MusicBeatState
+class CharacterOffsetEditor extends MusicBeatState
 {
 	var _file:FileReference;
 
@@ -183,7 +183,7 @@ class CharacterDebug extends MusicBeatState
 
 		var resetBttn:FlxButton = new FlxButton(140, 30, "Reset Offsets", function()
 		{
-			Main.switchState(this, new CharacterDebug());
+			Main.switchState(this, new CharacterOffsetEditor());
 		});
 
 		showGhostBttn = new FlxButton(140, 50, "Show Ghost", function()

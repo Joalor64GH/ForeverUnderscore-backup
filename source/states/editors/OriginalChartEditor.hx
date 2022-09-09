@@ -1,4 +1,4 @@
-package states.charting;
+package states.editors;
 
 import base.*;
 import base.ChartParser.Song;
@@ -44,7 +44,7 @@ import openfl.events.IOErrorEvent;
 import openfl.media.Sound;
 import openfl.net.FileReference;
 import openfl.utils.ByteArray;
-import states.charting.data.*;
+import states.editors.data.*;
 import states.menus.FreeplayState;
 
 using StringTools;
@@ -52,7 +52,7 @@ using StringTools;
 /**
 	In case you dont like the forever engine chart editor, here's the base game one instead.
 **/
-class OriginalChartingState extends MusicBeatState
+class OriginalChartEditor extends MusicBeatState
 {
 	var _file:FileReference;
 
