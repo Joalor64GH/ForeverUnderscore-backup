@@ -90,28 +90,27 @@ class FreeplayState extends MusicBeatState
 			if (checkLock(WeekParser.weeksList[i]))
 				continue;
 
+			var baseWeek = WeekParser.loadedWeeks.get(WeekParser.weeksList[i]);
+
 			var songs:Array<String> = [];
 			var chars:Array<String> = [];
+			var colors:Array<Int> = [255, 255, 255];
 
-			if (!WeekParser.loadedWeeks.get(WeekParser.weeksList[i]).hideFreeplay) // no need to add week songs if they are hidden from the freeplay list;
+			if (!baseWeek.hideFreeplay) // no need to add week songs if they are hidden from the freeplay list;
 			{
-				var baseWeek = WeekParser.loadedWeeks.get(WeekParser.weeksList[i]);
-				var colorArray:Array<Int> = [255, 255, 255];
-				var songColor:Array<FlxColor> = [FlxColor.WHITE];
-
 				// push song names and characters;
 				for (i in 0...baseWeek.songs.length)
 				{
 					songs.push(baseWeek.songs[i].name);
 					chars.push(baseWeek.songs[i].character);
-					if (baseWeek.songs[i].colors != null)
-						colorArray = baseWeek.songs[i].colors;
 				}
 
-				if (colorArray != null)
-					songColor = [FlxColor.fromRGB(colorArray[0], colorArray[1], colorArray[2])];
+				for (i in baseWeek.songs)
+				{
+					colors = i.colors;
+				}
 
-				addWeek(songs, i, chars, songColor);
+				addWeek(songs, i, chars, colors);
 			}
 
 			// add songs to the existing songs array to avoid duplicates;
@@ -216,17 +215,17 @@ class FreeplayState extends MusicBeatState
 		}
 	}
 
-	public function addWeek(songs:Array<String>, weekNum:Int, ?songCharacters:Array<String>, ?songColor:Array<FlxColor>)
+	public function addWeek(songs:Array<String>, weekNum:Int, ?songCharacters:Array<String>, ?songColor:Array<Int>)
 	{
 		if (songCharacters == null)
 			songCharacters = ['bf'];
 		if (songColor == null)
-			songColor = [FlxColor.WHITE];
+			songColor = [255, 255, 255];
 
 		var num:Array<Int> = [0, 0];
 		for (song in songs)
 		{
-			addSong(song, weekNum, songCharacters[num[0]], songColor[num[1]]);
+			addSong(song, weekNum, songCharacters[num[0]], FlxColor.fromRGB(songColor[num[0]], songColor[num[1]], songColor[num[2]]));
 
 			if (songCharacters.length != 1)
 				num[0]++;
