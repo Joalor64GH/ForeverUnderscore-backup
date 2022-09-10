@@ -126,7 +126,7 @@ class ClassHUD extends FlxTypedGroup<FlxBasic>
 		autoplayMark = new FlxText(-5, (Init.trueSettings.get('Downscroll') ? centerMark.y - 60 : centerMark.y + 60), FlxG.width - 800, "AUTOPLAY\n", 32);
 		autoplayMark.screenCenter(X);
 		autoplayMark.setFormat(Paths.font("vcr.ttf"), 32, FlxColor.WHITE, CENTER);
-		autoplayMark.setBorderStyle(OUTLINE, FlxColor.BLACK, 1.25);
+		autoplayMark.setBorderStyle(OUTLINE, FlxColor.BLACK, 2);
 		autoplayMark.visible = PlayState.bfStrums.autoplay;
 		add(autoplayMark);
 
