@@ -791,10 +791,16 @@ class Stage extends FlxTypedGroup<FlxBasic>
 
 	function callStageScript()
 	{
-		var path:String = Paths.getPreloadPath('stages/$curStage.hx');
+		var paths:Array<String> = [
+			Paths.getPreloadPath('stages/$curStage.hx'),
+			Paths.getPreloadPath('stages/$curStage.hxs')
+		];
 
-        if (FileSystem.exists(path))
-            stageScript = new ScriptHandler(path);
+		for (path in paths)
+		{
+        	if (FileSystem.exists(path))
+            	stageScript = new ScriptHandler(path);
+		}
 
 		setVar('createSprite',
 			function(spriteID:String, image:String, x:Float, y:Float)

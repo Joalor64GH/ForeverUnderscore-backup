@@ -89,8 +89,8 @@ class OptionsMenuState extends MusicBeatState
 					#if !neko ["Framerate Cap", getFromOption], #end
 					['FPS Counter', getFromOption],
 					['Memory Counter', getFromOption],
-					#if !neko ['Debug Info', getFromOption], #end
-					['Forever Mark', getFromOption],
+					#if !neko ['State Object Count', getFromOption], #end
+					['Engine Mark', getFromOption],
 				]
 			],
 			'appearance' => [
@@ -99,7 +99,6 @@ class OptionsMenuState extends MusicBeatState
 
 					["UI Skin", getFromOption],
 					['Fixed Judgements', getFromOption],
-					['Judgement Stacking', getFromOption],
 					['Colored Health Bar', getFromOption],
 					['Animated Score Color', getFromOption],
 					['Counter', getFromOption],

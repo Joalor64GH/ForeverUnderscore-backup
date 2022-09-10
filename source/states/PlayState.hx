@@ -86,8 +86,6 @@ class PlayState extends MusicBeatState
 	public var notes:FlxTypedGroup<Note> = new FlxTypedGroup<Note>();
 	public var unspawnNotes:Array<Note> = [];
 
-	var allSicks:Bool = true;
-
 	// if you ever wanna add more keys
 	var numberOfKeys:Int = 4;
 
@@ -167,13 +165,6 @@ class PlayState extends MusicBeatState
 
 	var allUIs:Array<FlxCamera> = [];
 
-	// stores the last judgement object
-	public static var lastRating:FlxSprite;
-	// stores the last judgement timing object
-	public static var lastTiming:FlxSprite;
-	// stores the last combo objects in an array
-	public static var lastCombo:Array<FlxSprite>;
-
 	public static var preventScoring:Bool = false;
 	public static var chartingMode:Bool = false;
 	public static var practiceMode:Bool = false;
@@ -181,10 +172,8 @@ class PlayState extends MusicBeatState
 
 	public static var prevCharter:Int = 0;
 
-	var canMiss:Bool = true;
-
-	public var ratingsGroup:FlxTypedGroup<FNFSprite> = new FlxTypedGroup<FNFSprite>();
-	public var comboGroup:FlxTypedGroup<FNFSprite> = new FlxTypedGroup<FNFSprite>();
+	public var ratingsGroup:FlxTypedGroup<FNFSprite>;
+	public var comboGroup:FlxTypedGroup<FNFSprite>;
 
 	// at the beginning of the playstate
 	override public function create()
@@ -201,8 +190,6 @@ class PlayState extends MusicBeatState
 		health = 1;
 		misses = 0;
 		hits = 0;
-		// sets up the combo object array
-		lastCombo = [];
 
 		defaultCamZoom = 1.05;
 		cameraSpeed = 1;
@@ -210,8 +197,8 @@ class PlayState extends MusicBeatState
 
 		ratingsGroup = new FlxTypedGroup<FNFSprite>();
 		comboGroup = new FlxTypedGroup<FNFSprite>();
-		add(ratingsGroup);
-		add(comboGroup);
+		//add(ratingsGroup);
+		//add(comboGroup);
 
 		Timings.callAccuracy();
 
@@ -250,9 +237,8 @@ class PlayState extends MusicBeatState
 		Conductor.mapBPMChanges(SONG);
 		Conductor.changeBPM(SONG.bpm);
 
-		// cache shit
-		displayJudgement('sick', 'early', true);
-		displayCombo();
+		// precaching judgements and combo;
+		popJudgement('sick', false, true);
 
 		GameOverSubstate.resetGameOver();
 
@@ -591,7 +577,7 @@ class PlayState extends MusicBeatState
 				}
 				else
 				{ // else just call bad notes
-					if (!Init.trueSettings.get('Ghost Tapping') && canMiss)
+					if (!Init.trueSettings.get('Ghost Tapping'))
 						missNoteCheck(true, key, boyfriend, true);
 				}
 
@@ -768,7 +754,6 @@ class PlayState extends MusicBeatState
 					preventScoring = true;
 					FlxG.sound.play(Paths.sound('scrollMenu'));
 					bfStrums.autoplay = !bfStrums.autoplay;
-					canMiss = !canMiss;
 					uiHUD.autoplayMark.visible = bfStrums.autoplay;
 					uiHUD.autoplayMark.alpha = 1;
 					uiHUD.autoplaySine = 0;
@@ -908,7 +893,6 @@ class PlayState extends MusicBeatState
 		{ // Go 10 seconds into the future, @author Shadow_Mario_
 			if (Conductor.songPosition + 10000 < Conductor.songMusic.length)
 			{
-				canMiss = true;
 				preventScoring = true;
 				Conductor.songMusic.pause();
 				Conductor.songVocals.pause();
@@ -932,12 +916,6 @@ class PlayState extends MusicBeatState
 
 				Conductor.songMusic.play();
 				Conductor.songVocals.play();
-
-				new FlxTimer().start(1, function(timer:FlxTimer)
-				{
-					if (!bfStrums.autoplay)
-						canMiss = false;
-				});
 			}
 		}
 
@@ -1138,12 +1116,9 @@ class PlayState extends MusicBeatState
 								Conductor.songVocals.volume = 0;
 								strumNote.noteMissActions(strumNote);
 
-								if (canMiss)
-								{
-									missNoteCheck((Init.trueSettings.get('Ghost Tapping')) ? true : false, strumNote.noteData, boyfriend, true);
-									// ambiguous name
-									Timings.updateAccuracy(0);
-								}
+								missNoteCheck((Init.trueSettings.get('Ghost Tapping')) ? true : false, strumNote.noteData, boyfriend, true);
+								// ambiguous name
+								Timings.updateAccuracy(0);
 							}
 							else if (strumNote.isSustainNote)
 							{
@@ -1160,8 +1135,7 @@ class PlayState extends MusicBeatState
 
 										if (!breakFromLate)
 										{
-											if (canMiss)
-												missNoteCheck((Init.trueSettings.get('Ghost Tapping')) ? true : false, strumNote.noteData, boyfriend, true);
+											missNoteCheck((Init.trueSettings.get('Ghost Tapping')) ? true : false, strumNote.noteData, boyfriend, true);
 											for (note in parentNote.childrenNotes)
 												note.tooLate = true;
 										}
@@ -1367,7 +1341,7 @@ class PlayState extends MusicBeatState
 			if (characterStrums.receptors.members[coolNote.noteData] != null)
 				characterStrums.receptors.members[coolNote.noteData].playAnim('confirm');
 
-			coolNote.goodNoteHit(coolNote, ratingTiming);
+			coolNote.goodNoteHit(coolNote, (coolNote.strumTime < Conductor.songPosition ? "late" : "early"));
 			characterPlayAnimation(coolNote, character);
 
 			// special thanks to sam, they gave me the original system which kinda inspired my idea for this new one
@@ -1375,11 +1349,6 @@ class PlayState extends MusicBeatState
 			{
 				// get the note ms timing
 				var noteDiff:Float = Math.abs(coolNote.strumTime - Conductor.songPosition);
-				// get the timing
-				if (coolNote.strumTime < Conductor.songPosition)
-					ratingTiming = "late";
-				else
-					ratingTiming = "early";
 
 				// loop through all avaliable judgements
 				var foundRating:String = 'miss';
@@ -1399,7 +1368,7 @@ class PlayState extends MusicBeatState
 					if (!coolNote.isSustainNote)
 					{
 						increaseCombo(foundRating, coolNote.noteData, character);
-						popUpScore(foundRating, ratingTiming, characterStrums, coolNote);
+						popUpScore(foundRating, coolNote.strumTime < Conductor.songPosition, Timings.curFC == 0, characterStrums, coolNote);
 
 						if (coolNote.childrenNotes.length > 0)
 							Timings.notesHit++;
@@ -1428,6 +1397,9 @@ class PlayState extends MusicBeatState
 	public function missNoteCheck(?includeAnimation:Bool = false, direction:Int = 0, character:Character, popMiss:Bool = false, lockMiss:Bool = false)
 	{
 		callFunc('missNoteCheck', []);
+
+		if (bfStrums.autoplay)
+			return;
 
 		if (includeAnimation)
 		{
@@ -1654,11 +1626,7 @@ class PlayState extends MusicBeatState
 		#end
 	}
 
-	var animationsPlay:Array<Note> = [];
-
-	var ratingTiming:String = "";
-
-	function popUpScore(baseRating:String, timing:String, strumline:Strumline, coolNote:Note)
+	function popUpScore(baseRating:String, timing:Bool, perfect:Bool, strumline:Strumline, coolNote:Note)
 	{
 		// set up the rating
 		var score:Int = 50;
@@ -1666,13 +1634,8 @@ class PlayState extends MusicBeatState
 		// create the note splash if you hit a sick
 		if (baseRating == "sick")
 			createSplash(coolNote, strumline);
-		else
-			// if it isn't a sick, and you had a sick combo, then it becomes not sick :(
-			if (allSicks)
-				allSicks = false;
 
-		displayCombo();
-		displayJudgement(baseRating, timing);
+		popJudgement(baseRating, timing, perfect);
 		Timings.updateAccuracy(Timings.judgementsMap.get(baseRating)[3]);
 		score = Std.int(Timings.judgementsMap.get(baseRating)[2]);
 
@@ -1680,7 +1643,7 @@ class PlayState extends MusicBeatState
 			songScore += score;
 
 		// tween score color based on your rating;
-		uiHUD.tweenScoreColor(baseRating, allSicks);
+		uiHUD.tweenScoreColor(baseRating, perfect);
 	}
 
 	public function createSplash(coolNote:Note, strumline:Strumline)
@@ -1693,38 +1656,23 @@ class PlayState extends MusicBeatState
 
 	var createdColor = FlxColor.fromRGB(204, 66, 66);
 
-	function displayJudgement(newRating:String, newRatingTiming:String, ?cache:Bool = false)
+	function popJudgement(newRating:String, lateHit:Bool, perfect:Bool)
 	{
-		var rating = ForeverAssets.generateRating('$newRating', (newRating == 'sick' ? allSicks : false), newRatingTiming, ratingsGroup, assetModifier, changeableSkin, 'UI');
+		var rating = ForeverAssets.generateRating('$newRating', perfect, lateHit, ratingsGroup, assetModifier, changeableSkin, 'UI');
+		add(rating);
 
-		if (Init.trueSettings.get('Judgement Stacking'))
-		{
-			add(rating);
-
-			FlxTween.tween(rating, {alpha: 0}, (Conductor.stepCrochet) / 1000, {
+		FlxTween.tween(rating, {alpha: 0}, Conductor.stepCrochet / 1000, {
 			onComplete: function(tween:FlxTween)
 			{
 				rating.kill();
-			}, startDelay: ((Conductor.crochet + Conductor.stepCrochet * 2) / 1000)});
-		}
-		else
-		{
-			if (lastRating != null)
-				lastRating.kill();
-			add(rating);
-			lastRating = rating;
-			FlxTween.tween(rating, {y: rating.y + 20}, 0.2, {type: FlxTweenType.BACKWARD, ease: FlxEase.circOut});
-			FlxTween.tween(rating, {"scale.x": 0, "scale.y": 0}, 0.1, {onComplete: function(tween:FlxTween)
-			{
-				rating.kill();
-			}, startDelay: Conductor.crochet * 0.00125});
-		}
+			},
+			startDelay: ((Conductor.crochet + Conductor.stepCrochet * 2) / 1000)
+		});
 
 		if (Init.trueSettings.get('Fixed Judgements'))
 		{
 			// bound to camera
-			if (!cache)
-				rating.cameras = [camHUD];
+			rating.cameras = [camHUD];
 			rating.screenCenter();
 		}
 
@@ -1735,62 +1683,35 @@ class PlayState extends MusicBeatState
 				Timings.smallestRating = newRating;
 		}
 
-		ratingsGroup.sort(FNFSprite.depthSorting, FlxSort.DESCENDING);
-	}
-	
-	function displayCombo(?cache:Bool = false)
-	{
 		var comboString:String = Std.string(combo);
 		var negative = false;
 		if ((comboString.startsWith('-')) || (combo == 0))
 			negative = true;
 		var stringArray:Array<String> = comboString.split("");
-		// deletes all combo sprites prior to initalizing new ones
-		if (lastCombo != null)
-		{
-			while (lastCombo.length > 0)
-			{
-				lastCombo[0].kill();
-			}
-		}
 
 		for (scoreInt in 0...stringArray.length)
 		{
-			var comboNum = ForeverAssets.generateCombo('combo_numbers', stringArray[scoreInt], (!negative ? allSicks : false), comboGroup, assetModifier, changeableSkin, 'UI', negative, createdColor, scoreInt);
-			comboNum.animation.play(stringArray[scoreInt]);
+			var comboNum = ForeverAssets.generateCombo('combo_numbers', stringArray[scoreInt], (!negative ? perfect : false), comboGroup, assetModifier, changeableSkin, 'UI', negative, createdColor, scoreInt);
+			add(comboNum);
 
-			// hardcoded lmao
-			if (Init.trueSettings.get('Judgement Stacking'))
-			{
-				add(comboNum);
-				FlxTween.tween(comboNum, {alpha: 0}, (Conductor.stepCrochet * 2) / 1000, {
-					onComplete: function(tween:FlxTween)
-					{
-						comboNum.kill();
-					}, startDelay: (Conductor.crochet) / 1000});
-			}
-			else
-			{
-				add(comboNum);
-				// centers combo
-				comboNum.y += 10;
-				comboNum.x -= 95;
-				comboNum.x -= ((comboString.length - 1) * 22);
-				lastCombo.push(comboNum);
-				FlxTween.tween(comboNum, {y: comboNum.y + 20}, 0.1, {type: FlxTweenType.BACKWARD, ease: FlxEase.circOut});
-			}
+			FlxTween.tween(comboNum, {alpha: 0}, (Conductor.stepCrochet * 2) / 1000, {
+				onComplete: function(tween:FlxTween)
+				{
+					comboNum.kill();
+				},
+				startDelay: (Conductor.crochet) / 1000
+			});
 
-			// hardcoded lmao
 			if (Init.trueSettings.get('Fixed Judgements'))
 			{
-				if (!cache)
-					comboNum.cameras = [camHUD];
+				comboNum.cameras = [camHUD];
 				comboNum.y += 50;
 			}
 			comboNum.x += 100;
 		}
 		
 		comboGroup.sort(FNFSprite.depthSorting, FlxSort.DESCENDING);
+		ratingsGroup.sort(FNFSprite.depthSorting, FlxSort.DESCENDING);
 	}
 
 	public function decreaseCombo(?popMiss:Bool = false)
@@ -1810,16 +1731,12 @@ class PlayState extends MusicBeatState
 		if (!endingSong)
 			misses++;
 
-		// display negative combo
 		if (popMiss)
 		{
-			// doesnt matter miss ratings dont have timings
-			displayJudgement("miss", 'late');
+			popJudgement("miss", true, Timings.curFC == 0);
 			uiHUD.tweenScoreColor("miss", false);
 			healthCall(Timings.judgementsMap.get("miss")[3]);
 		}
-
-		displayCombo();
 
 		// gotta do it manually here lol
 		Timings.updateFCDisplay();
@@ -1836,7 +1753,7 @@ class PlayState extends MusicBeatState
 					combo = 0;
 				combo += 1;
 			}
-			else if (canMiss)
+			else
 				missNoteCheck(true, direction, character, false, true);
 		}
 	}
@@ -2490,7 +2407,7 @@ class PlayState extends MusicBeatState
 		for (dir in dirs)
 			for (script in dir)
 				if (dir.length > 0)
-					if (script.length > 0 && script.endsWith('.hx'))
+					if (script.length > 0 && script.endsWith('.hx') || script.endsWith('.hxs'))
 						scriptArray.push(new ScriptHandler(script));
 	}
 

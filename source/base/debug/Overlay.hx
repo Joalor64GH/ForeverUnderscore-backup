@@ -1,9 +1,8 @@
 package base.debug;
 
+import flixel.FlxG;
 import haxe.Timer;
 import openfl.Lib;
-import openfl.display.Bitmap;
-import openfl.display.BitmapData;
 import openfl.events.Event;
 import openfl.system.System;
 import openfl.text.TextField;
@@ -19,8 +18,6 @@ class Overlay extends TextField
 {
 	var times:Array<Float> = [];
 	var memPeak:UInt = 0;
-
-	public var overlayOutline:Bitmap;
 
 	// display info
 	static var displayFps = true;
@@ -38,13 +35,13 @@ class Overlay extends TextField
 		autoSize = LEFT;
 		selectable = false;
 
-		defaultTextFormat = new TextFormat(Paths.font("vcr.ttf"), 18, 0xFFFFFF);
+		defaultTextFormat = new TextFormat(Paths.font("vcr.ttf"), 18, -1);
 		text = "";
 
 		addEventListener(Event.ENTER_FRAME, update);
 	}
 
-	static final intervalArray:Array<String> = ['B', 'KB', 'MB', 'GB', 'TB'];
+	static final intervalArray:Array<String> = ['B', 'KB', 'MB', 'GB', 'TB']; // tb support for the myth engine modders :)
 
 	public static function getInterval(num:UInt):String
 	{
@@ -75,9 +72,8 @@ class Overlay extends TextField
 		{
 			text = '' // set up the text itself
 				+ (displayFps ? times.length + " FPS\n" : '') // Framerate
-			#if !neko + (displayExtra ? Main.mainClassState + "\n" : '') #end // Current Game State
-			+ (displayMemory ? '${getInterval(mem)} / ${getInterval(memPeak)}\n' : '') // Current and Total Memory Usage
-			+ (displayForever ? 'FE Underscore v' + Main.underscoreVersion : ''); // Engine Watermark Display
+				+ (displayMemory ? '${getInterval(mem)} / ${getInterval(memPeak)}\n' : '') // Current and Total Memory Usage
+				+ (displayExtra ? 'State Object Count: ${FlxG.state.members.length}\n' : ''); // Current Game State Object Count
 		}
 	}
 

@@ -38,6 +38,7 @@ class ClassHUD extends FlxTypedGroup<FlxBasic>
 	// fnf mods
 	var scoreDisplay:String = 'beep bop bo skdkdkdbebedeoop brrapadop';
 
+	var cornerMark:FlxText; // engine mark at the upper right corner
 	var centerMark:FlxText; // song display name and difficulty at the center
 
 	var healthBarBG:FlxSprite;
@@ -106,6 +107,14 @@ class ClassHUD extends FlxTypedGroup<FlxBasic>
 		scoreBar.setBorderStyle(OUTLINE, FlxColor.BLACK, 1.5);
 		scoreBar.antialiasing = !Init.trueSettings.get('Disable Antialiasing');
 		add(scoreBar);
+
+		cornerMark = new FlxText(0, 0, 0, engineDisplay);
+		cornerMark.setFormat(Paths.font('vcr.ttf'), 18, FlxColor.WHITE);
+		cornerMark.setBorderStyle(OUTLINE, FlxColor.BLACK, 2);
+		cornerMark.setPosition(FlxG.width - (cornerMark.width + 5), 5);
+		cornerMark.antialiasing = true;
+		cornerMark.visible = Init.trueSettings.get('Engine Mark');
+		add(cornerMark);
 
 		centerMark = new FlxText(0, (Init.trueSettings.get('Downscroll') ? FlxG.height - 45 : 20), 0, '- $infoDisplay [$diffDisplay] -');
 		centerMark.setFormat(Paths.font('vcr.ttf'), 24, FlxColor.WHITE);
@@ -199,15 +208,19 @@ class ClassHUD extends FlxTypedGroup<FlxBasic>
 		var importSongScore = PlayState.songScore;
 		var importMisses = PlayState.misses;
 
+		var unrated = (Timings.comboDisplay == null || Timings.comboDisplay == '');
+
+		var comboDisplay = ' [' + Timings.comboDisplay + ']';
+
 		// testing purposes
 		var displayAccuracy:Bool = Init.trueSettings.get('Display Accuracy');
 
-		scoreBar.text = 'Score: ' + Std.string(importSongScore);
+		scoreBar.text = 'Score: $importSongScore';
 		if (displayAccuracy)
 		{
-			scoreBar.text += divider + 'Accuracy: ' + Std.string(Math.floor(Timings.getAccuracy() * 100) / 100) + '%' + Timings.comboDisplay;
-			scoreBar.text += divider + 'Combo Breaks: ' + Std.string(importMisses);
-			scoreBar.text += divider + 'Rank: ' + Std.string(Timings.returnScoreRating().toUpperCase());
+			scoreBar.text += divider + 'Accuracy: ${(Math.floor(Timings.getAccuracy() * 100) / 100)}%' + (!unrated ? comboDisplay : '');
+			scoreBar.text += divider + 'Combo Breaks: $importMisses';
+			scoreBar.text += divider + 'Rank: ${Timings.returnScoreRating().toUpperCase()}';
 		}
 		scoreBar.text += '\n';
 		scoreBar.x = Math.floor((FlxG.width / 2) - (scoreBar.width / 2));
@@ -249,7 +262,7 @@ class ClassHUD extends FlxTypedGroup<FlxBasic>
 		}
 	}
 
-	public function tweenScoreColor(rating:String, allSicks:Bool)
+	public function tweenScoreColor(rating:String, perfect:Bool)
 	{
 		if (Init.trueSettings.get('Animated Score Color'))
 		{
@@ -264,7 +277,7 @@ class ClassHUD extends FlxTypedGroup<FlxBasic>
 				case 'bad': rankColor = FlxColor.ORANGE;
 				case 'shit': rankColor = FlxColor.PURPLE;
 				case 'miss': rankColor = FlxColor.RED;
-				default: rankColor = allSicks ? FlxColor.fromString('#F8D482') : FlxColor.CYAN;
+				default: rankColor = perfect ? FlxColor.fromString('#F8D482') : FlxColor.CYAN;
 			}
 
 			scoreColorTween = FlxTween.color(scoreBar, 0.005, scoreBar.color, rankColor,

@@ -23,26 +23,34 @@ using StringTools;
 class ForeverAssets
 {
 	//
-	public static function generateCombo(asset:String, number:String, allSicks:Bool, parentGroup:FlxTypedGroup<FNFSprite>, assetModifier:String = 'base', changeableSkin:String = 'default',
+	public static function generateCombo(asset:String, number:String, allSicks:Bool, group:FlxTypedGroup<FNFSprite>, assetModifier:String = 'base', changeableSkin:String = 'default',
 		baseLibrary:String, negative:Bool, createdColor:FlxColor, scoreInt:Int):FNFSprite
 	{
 		var width = 100;
 		var height = 140;
-
 		if (assetModifier == 'pixel')
 		{
 			width = 10;
 			height = 12;
 		}
 
-		//var combo = parentGroup.recycle(FNFSprite);
-		var combo = new FNFSprite();
+		/*
+		var combo = group.recycle(FNFSprite, function()
+		{
+			var comboNum:FNFSprite = new FNFSprite();
+			comboNum.loadGraphic(Paths.image(ForeverTools.returnSkinAsset(asset, assetModifier, changeableSkin, baseLibrary)), true, width, height);
+			comboNum.animation.add('combo', [(Std.parseInt(number) != null ? Std.parseInt(number) + 1 : 0) + (!allSicks ? 0 : 11)], 0, false);
+			//
+			return comboNum;
+		});
+		*/
+
+		var combo:FNFSprite = new FNFSprite();
 		combo.loadGraphic(Paths.image(ForeverTools.returnSkinAsset(asset, assetModifier, changeableSkin, baseLibrary)), true, width, height);
+		combo.animation.add('combo', [(Std.parseInt(number) != null ? Std.parseInt(number) + 1 : 0) + (!allSicks ? 0 : 11)], 0, false);
+
 		combo.alpha = 1;
 		combo.zDepth = -Conductor.songPosition;
-		combo.animation.add('combo', [(Std.parseInt(number) != null ? Std.parseInt(number) + 1 : 0) + (!allSicks ? 0 : 11)], 0, false);
-		combo.animation.play('combo');
-
 		combo.screenCenter();
 		combo.x += (43 * scoreInt) + 20;
 		combo.y += 60;
@@ -52,47 +60,59 @@ class ForeverAssets
 			combo.color = createdColor;
 
 		if (assetModifier == 'pixel')
+		{
+			combo.antialiasing = false;
 			combo.setGraphicSize(Std.int(combo.frameWidth * PlayState.daPixelZoom));
+		}
 		else
 		{
 			combo.antialiasing = !Init.trueSettings.get('Disable Antialiasing');
 			combo.setGraphicSize(Std.int(combo.frameWidth * 0.5));
 		}
 		combo.updateHitbox();
-		if (Init.trueSettings.get('Judgement Stacking'))
-		{
-			combo.acceleration.y = FlxG.random.int(200, 300);
-			combo.velocity.y = -FlxG.random.int(140, 160);
-			combo.velocity.x = FlxG.random.float(-5, 5);
-		}
+		combo.acceleration.y = FlxG.random.int(100, 200);
+		combo.velocity.y = -FlxG.random.int(140, 160);
+		combo.velocity.x = FlxG.random.float(-5, 5);
 
-		parentGroup.sort(FNFSprite.depthSorting, FlxSort.DESCENDING);
+		combo.animation.play('combo');
 
 		return combo;
 	}
 
-	public static function generateRating(asset:String, perfectSick:Bool, timing:String, parentGroup:FlxTypedGroup<FNFSprite>, assetModifier:String = 'base', changeableSkin:String = 'default',
+	public static function generateRating(newRating:String, perfect:Bool, lateHit:Bool, group:FlxTypedGroup<FNFSprite>, assetModifier:String = 'base', changeableSkin:String = 'default',
 			baseLibrary:String):FNFSprite
 	{
-		var width = 500;
-		var height = 163;
-		if (assetModifier == 'pixel')
+		/*
+		var rating = group.recycle(FNFSprite, function()
 		{
-			width = 72;
-			height = 32;
-		}
+			var judge:FNFSprite = new FNFSprite();
+			judge.loadGraphic(Paths.image(ForeverTools.returnSkinAsset('judgements', assetModifier, changeableSkin, baseLibrary)), true,
+				assetModifier == 'pixel' ? 72 : 500, assetModifier == 'pixel' ? 32 : 163);
 
-		//var rating = parentGroup.recycle(FNFSprite);
-		var rating = new FNFSprite();
-		rating.loadGraphic(Paths.image(ForeverTools.returnSkinAsset('judgements', assetModifier, changeableSkin, baseLibrary)), true, width, height);
+			judge.animation.add(newRating, [
+				Std.int((Timings.judgementsMap.get(newRating)[0] * 2) + (perfect ? 0 : 2) + (lateHit ? 1 : 0))
+			], (assetModifier == 'pixel' ? 12 : 24), false);
+			//
+			return judge;
+		});
+		*/
+
+		var rating:FNFSprite = new FNFSprite();
+		rating.loadGraphic(Paths.image(ForeverTools.returnSkinAsset('judgements', assetModifier, changeableSkin, baseLibrary)), true,
+			assetModifier == 'pixel' ? 72 : 500, assetModifier == 'pixel' ? 32 : 163);
+
+		rating.animation.add(newRating, [
+			Std.int((Timings.judgementsMap.get(newRating)[0] * 2) + (perfect ? 0 : 2) + (lateHit ? 1 : 0))
+		], (assetModifier == 'pixel' ? 12 : 24), false);
+
 		rating.alpha = 1;
 		rating.zDepth = -Conductor.songPosition;
 
-		rating.animation.add('rating', [Std.int((Timings.judgementsMap.get(asset)[0] * 2) + (perfectSick ? 0 : 2) + (timing == 'late' ? 1 : 0))], (assetModifier == 'pixel' ? 12 : 24), false);
-		rating.animation.play('rating');
-
 		if (assetModifier == 'pixel')
+		{
+			rating.antialiasing = false;
 			rating.setGraphicSize(Std.int(rating.frameWidth * PlayState.daPixelZoom * 0.7));
+		}
 		else
 		{
 			rating.antialiasing = !Init.trueSettings.get('Disable Antialiasing');
@@ -102,12 +122,11 @@ class ForeverAssets
 		rating.screenCenter();
 		rating.x = (FlxG.width * 0.55) - 40;
 		rating.y -= 60;
-		if (Init.trueSettings.get('Judgement Stacking'))
-		{
-			rating.acceleration.y = 550;
-			rating.velocity.y = -FlxG.random.int(140, 175);
-			rating.velocity.x = -FlxG.random.int(0, 10);
-		}
+		rating.acceleration.y = 550;
+		rating.velocity.y = -FlxG.random.int(140, 175);
+		rating.velocity.x = -FlxG.random.int(0, 10);
+
+		rating.animation.play(newRating);
 
 		return rating;
 	}

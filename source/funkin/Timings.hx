@@ -11,14 +11,15 @@ class Timings
 	//
 	public static var accuracy:Float;
 	public static var trueAccuracy:Float;
-	public static var judgementRates:Array<Float>;
+
+	public static var curFC:Int = 0;
 
 	// from left to right
 	// judgement id, max milliseconds, score from it and percentage
 	public static var judgementsMap:Map<String, Array<Dynamic>> = [
-		"sick" => [0, 45, 350, 100, ' [MFC]'],
-		"good" => [1, 90, 150, 75, ' [GFC]'],
-		"bad" => [2, 135, 0, 25, ' [FC]'],
+		"sick" => [0, 45, 350, 100, 'MFC'],
+		"good" => [1, 90, 150, 75, 'GFC'],
+		"bad" => [2, 135, 0, 25, 'FC'],
 		"shit" => [3, 157.5, -50, -150],
 		"miss" => [4, 180, -100, -175],
 	];
@@ -50,7 +51,6 @@ class Timings
 		// reset the accuracy to 0%
 		accuracy = 0.001;
 		trueAccuracy = 0;
-		judgementRates = new Array<Float>();
 
 		// reset ms threshold
 		var biggestThreshold:Float = 0;
@@ -91,15 +91,28 @@ class Timings
 
 	public static function updateFCDisplay()
 	{
+		var gottenFC = judgementsMap.get(smallestRating)[4];
+
 		// update combo display
 		comboDisplay = '';
 
-		if (judgementsMap.get(smallestRating)[4] != null)
-			comboDisplay = judgementsMap.get(smallestRating)[4];
+		if (gottenFC != null)
+			comboDisplay = gottenFC;
+
+		if (gottenFC != null)
+			comboDisplay = gottenFC;
 		else
 		{
 			if (PlayState.misses < 10)
-				comboDisplay = ' [SDCB]';
+				comboDisplay = 'SDCB';
+		}
+
+		switch (comboDisplay)
+		{
+			case 'GFC': curFC = 1;
+			case 'FC': curFC = 2;
+			case 'SDCB': curFC = 3;
+			default: curFC = 0;
 		}
 
 		// this updates the most so uh

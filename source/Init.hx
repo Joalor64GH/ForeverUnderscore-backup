@@ -117,16 +117,16 @@ class Init extends FlxState
 			'Whether to display approximately how much memory is being used.',
 			NOT_FORCED
 		],
-		'Debug Info' => [
+		'State Object Count' => [
 			false,
 			Checkmark,
-			'Whether to display information like your game state.',
+			'Whether to display how many objects there are on a Class / State.',
 			NOT_FORCED
 		],
-		'Forever Mark' => [
+		'Engine Mark' => [
 			true,
 			Checkmark,
-			'Whether to display a Engine Watermark on the Info Counter',
+			'Whether to display the Engine Watermark during Gameplay',
 			NOT_FORCED
 		],
 		// USER INTERFACE;
@@ -141,12 +141,6 @@ class Init extends FlxState
 			false,
 			Checkmark,
 			"Fixes the judgements to the camera instead of to the world itself, making them easier to read.",
-			NOT_FORCED
-		],
-		'Judgement Stacking' => [
-			true,
-			Checkmark,
-			"Simplifies the judgement animations if disabled, displaying only one judgement at a time.",
 			NOT_FORCED
 		],
 		'Colored Health Bar' => [
@@ -433,7 +427,7 @@ class Init extends FlxState
 	{
 		FlxG.autoPause = trueSettings.get('Auto Pause');
 
-		Overlay.updateDisplayInfo(trueSettings.get('FPS Counter'), trueSettings.get('Debug Info'), trueSettings.get('Memory Counter'),
+		Overlay.updateDisplayInfo(trueSettings.get('FPS Counter'), trueSettings.get('State Object Count'), trueSettings.get('Memory Counter'),
 			trueSettings.get('Forever Mark'));
 
 		#if !html5

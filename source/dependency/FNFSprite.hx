@@ -16,7 +16,7 @@ class FNFSprite extends FlxSprite
 	public var animOffsets:Map<String, Array<Float>>;
 	public var zDepth:Float = 0;
 
-	// depth sorting from forever 1.0;
+	// credits fully go to yoshubs as she made the system for Forever Engine v1.0;
 	public static inline function depthSorting(Order:Int, Obj1:FNFSprite, Obj2:FNFSprite)
 	{
 		if (Obj1.zDepth > Obj2.zDepth)
