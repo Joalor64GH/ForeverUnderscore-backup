@@ -98,9 +98,6 @@ class Timings
 
 		if (gottenFC != null)
 			comboDisplay = gottenFC;
-
-		if (gottenFC != null)
-			comboDisplay = gottenFC;
 		else
 		{
 			if (PlayState.misses < 10)
