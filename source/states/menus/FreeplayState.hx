@@ -113,8 +113,6 @@ class FreeplayState extends MusicBeatState
 						colors.push(FlxColor.fromRGB(255, 255, 255));
 				}
 
-				trace(colors);
-
 				addWeek(songs, i, chars, colors);
 			}
 
