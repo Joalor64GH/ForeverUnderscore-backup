@@ -94,21 +94,26 @@ class FreeplayState extends MusicBeatState
 
 			var songs:Array<String> = [];
 			var chars:Array<String> = [];
-			var colors:Array<Int> = [255, 255, 255];
+			var colors:Array<FlxColor> = [];
 
 			if (!baseWeek.hideFreeplay) // no need to add week songs if they are hidden from the freeplay list;
 			{
 				// push song names and characters;
 				for (i in 0...baseWeek.songs.length)
 				{
-					songs.push(baseWeek.songs[i].name);
-					chars.push(baseWeek.songs[i].character);
+					var baseArray = baseWeek.songs[i];
+
+					songs.push(baseArray.name);
+					chars.push(baseArray.character);
+
+					// get out of my head get out of my head get out of my head GET OUT OF MY HEAD
+					if (baseArray.colors != null)
+						colors.push(FlxColor.fromRGB(baseArray.colors[0], baseArray.colors[1], baseArray.colors[2]));
+					else
+						colors.push(FlxColor.fromRGB(255, 255, 255));
 				}
 
-				for (i in baseWeek.songs)
-				{
-					colors = i.colors;
-				}
+				trace(colors);
 
 				addWeek(songs, i, chars, colors);
 			}
@@ -215,17 +220,17 @@ class FreeplayState extends MusicBeatState
 		}
 	}
 
-	public function addWeek(songs:Array<String>, weekNum:Int, ?songCharacters:Array<String>, ?songColor:Array<Int>)
+	public function addWeek(songs:Array<String>, weekNum:Int, ?songCharacters:Array<String>, ?songColor:Array<FlxColor>)
 	{
 		if (songCharacters == null)
 			songCharacters = ['bf'];
 		if (songColor == null)
-			songColor = [255, 255, 255];
+			songColor = [FlxColor.WHITE];
 
 		var num:Array<Int> = [0, 0];
 		for (song in songs)
 		{
-			addSong(song, weekNum, songCharacters[num[0]], FlxColor.fromRGB(songColor[num[0]], songColor[num[1]], songColor[num[2]]));
+			addSong(song, weekNum, songCharacters[num[0]], songColor[num[1]]);
 
 			if (songCharacters.length != 1)
 				num[0]++;
