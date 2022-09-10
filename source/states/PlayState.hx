@@ -237,9 +237,6 @@ class PlayState extends MusicBeatState
 		Conductor.mapBPMChanges(SONG);
 		Conductor.changeBPM(SONG.bpm);
 
-		// precaching judgements and combo;
-		popJudgement('sick', false, true);
-
 		GameOverSubstate.resetGameOver();
 
 		// set up a class for the stage type in here afterwards
@@ -1665,7 +1662,7 @@ class PlayState extends MusicBeatState
 		 */
 		insert(members.indexOf(strumLines), rating);
 
-		FlxTween.tween(rating, {alpha: 0}, Conductor.stepCrochet / 1000, {
+		FlxTween.tween(rating, {alpha: 0}, (Conductor.stepCrochet) / 1000, {
 			onComplete: function(tween:FlxTween)
 			{
 				rating.kill();
