@@ -277,7 +277,7 @@ class OriginalChartEditor extends MusicBeatState
 
 		var saveEvent:FlxButton = new FlxButton(saveButton.x, saveButton.y + 30, 'Save Events', function()
 		{
-			saveEvent();
+			saveEvents();
 		});
 
 		var clear_events:FlxButton = new FlxButton(320, 310, 'Clear events', function()
@@ -1662,6 +1662,17 @@ class OriginalChartEditor extends MusicBeatState
 		return noteData;
 	}
 
+	function getSectionBeats(?section:Null<Int> = null)
+	{
+		if (section == null)
+			section = curSection;
+		var val:Null<Float> = null;
+
+		if (_song.notes[section] != null)
+			val = _song.notes[section].sectionBeats;
+		return val != null ? val : 4;
+	}
+
 	function loadJson(song:String):Void
 	{
 		PlayState.SONG = Song.loadSong(song.toLowerCase(), song.toLowerCase());
@@ -1714,10 +1725,10 @@ class OriginalChartEditor extends MusicBeatState
 		}
 	}
 
-	function saveEvent()
+	function saveEvents()
 	{
 		var json = {
-			"events": ForeverTools.formatEvents(_song.events)
+			"events": _song.events
 		};
 
 		var data:String = Json.stringify(json, "\t");
@@ -1762,16 +1773,5 @@ class OriginalChartEditor extends MusicBeatState
 		_file.removeEventListener(IOErrorEvent.IO_ERROR, onSaveError);
 		_file = null;
 		FlxG.log.error("Problem saving Level data");
-	}
-
-	function getSectionBeats(?section:Null<Int> = null)
-	{
-		if (section == null)
-			section = curSection;
-		var val:Null<Float> = null;
-
-		if (_song.notes[section] != null)
-			val = _song.notes[section].sectionBeats;
-		return val != null ? val : 4;
 	}
 }

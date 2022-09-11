@@ -93,22 +93,6 @@ class ForeverTools
 		}
 	}
 
-	public static function formatEvents(event:Array<Array<Dynamic>>):Array<Array<Dynamic>>
-	{
-		for (i in event)
-		{
-			if (i == null)
-			{
-				var index:Int = event.indexOf(i);
-				event.remove(i);
-				i = [];
-				event.insert(index, i);
-			}
-		}
-
-		return event;
-	}
-
 	public static function getCameraFromString(cam:String)
 	{
 		switch (cam)
