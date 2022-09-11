@@ -223,7 +223,10 @@ class PauseSubstate extends MusicBeatSubstate
 				case "Exit to Options":
 					toOptions = true;
 					disableCheats(true);
-					Main.switchState(this, new OptionsMenuState());
+					if (FlxG.keys.pressed.SHIFT)
+						Main.switchState(this, new SettingsMenuState());
+					else
+						Main.switchState(this, new OptionsMenuState());
 				case "Exit to menu":
 					Conductor.stopMusic();
 					PlayState.deaths = 0;

@@ -14,20 +14,29 @@ import funkin.Alphabet;
 import funkin.ui.menu.Checkmark;
 import funkin.ui.menu.Selector;
 
+typedef GameModifier =
+{
+	var name:String;
+	var parentSetting:Dynamic;
+}
+
 class FreeplaySubstate extends MusicBeatSubstate
 {
-	var group:FlxTypedGroup<Alphabet>;
-    var checkmarkGroup:FlxTypedGroup<Checkmark>;
-	var items:Array<String> = ['Autoplay', 'Practice Mode', 'Scroll Speed'];
-    var curSelection:Int = 0;
+	var gameplayMods:Array<GameModifier> = [
+		{name: 'Enable Autoplay', parentSetting: Init.gameModifiers.get('Autoplay')},
+		{name: 'Disable Deaths', parentSetting: Init.gameModifiers.get('Practice Mode')}
+	];
 
-	var checkmark:Checkmark;
+	var group:FlxTypedGroup<Alphabet>;
+	var checkmarkGroup:FlxTypedGroup<Checkmark>;
+
+	var curSelection:Int = 0;
 
 	var lockedMovement = false;
 
-    override function create()
-    {
-        super.create();
+	override function create()
+	{
+		super.create();
 
 		cameras = [FlxG.cameras.list[FlxG.cameras.list.length - 1]];
 
@@ -43,26 +52,33 @@ class FreeplaySubstate extends MusicBeatSubstate
 		checkmarkGroup = new FlxTypedGroup<Checkmark>();
 		add(checkmarkGroup);
 
-		for (i in 0...items.length)
+		for (i in 0...gameplayMods.length)
 		{
-			var modifiers:Alphabet = new Alphabet(0, (70 * i) + 30, items[i], true, false);
+			var modifiers:Alphabet = new Alphabet(0, (70 * i) + 30, gameplayMods[i].name, true, false);
 			modifiers.isMenuItem = true;
-            modifiers.disableX = true;
+			modifiers.disableX = true;
 			modifiers.targetY = i;
 			group.add(modifiers);
 
-			checkmark = ForeverAssets.generateCheckmark(10, modifiers.y, 'checkboxThingie', 'base', 'default', 'UI');
-			checkmark.parent = modifiers;
-			checkmark.playAnim(Std.string('false') + ' finished');
-			checkmarkGroup.add(checkmark);
+			// generates an attached texture depending on the setting type
+			switch (Init.gameModifiers.get(gameplayMods[i].name)[1])
+			{
+				case Init.SettingTypes.Checkmark:
+					var checkmark:Checkmark = ForeverAssets.generateCheckmark(10, modifiers.y, 'checkboxThingie', 'base', 'default', 'UI');
+					checkmark.parent = modifiers;
+					checkmark.playAnim(Std.string(Init.gameModifiers.get(gameplayMods[i].name)) + ' finished');
+					checkmarkGroup.add(checkmark);
+				default:
+					// do nothing;
+			}
 		}
 
 		updateSelection();
-    }
+	}
 
 	override function update(elapsed:Float)
-    {
-        super.update(elapsed);
+	{
+		super.update(elapsed);
 
 		if (controls.UI_UP_P)
 		{
@@ -74,37 +90,37 @@ class FreeplaySubstate extends MusicBeatSubstate
 			updateSelection(1);
 			FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
 		}
-        
-        if (controls.ACCEPT)
-        {
+
+		if (controls.ACCEPT)
+		{
 			lockedMovement = true;
 			FlxG.sound.play(Paths.sound('confirmMenu'), 0.4);
 			FlxFlicker.flicker(group.members[curSelection], 0.5, 0.06 * 2, true, false, function(flick:FlxFlicker)
 			{
 				lockedMovement = false;
-				checkmarkBasics(checkmark);
+				updateOption();
 			});
-        }
+		}
 
-        if (controls.BACK)
-        {
-            close();
-        }
-    }
+		if (controls.BACK)
+		{
+			close();
+		}
+	}
 
-    override public function close()
-    {
-        //Init.saveModifiers();
-        super.close();
-    }
+	override public function close()
+	{
+		// Init.saveSettings();
+		super.close();
+	}
 
 	function updateSelection(newSelection:Int = 0):Void
 	{
 		curSelection += newSelection;
 
 		if (curSelection < 0)
-			curSelection = items.length - 1;
-		if (curSelection >= items.length)
+			curSelection = gameplayMods.length - 1;
+		if (curSelection >= gameplayMods.length)
 			curSelection = 0;
 
 		var bullShit:Int = 0;
@@ -121,19 +137,11 @@ class FreeplaySubstate extends MusicBeatSubstate
 		}
 	}
 
-	function checkmarkBasics(newCheckmark:Checkmark)
+	function updateOption()
 	{
-		// LMAO THIS IS HUGE
 		Init.gameModifiers.set(group.members[curSelection].text, !Init.gameModifiers.get(group.members[curSelection].text));
-		updateCheckmark(newCheckmark, Init.gameModifiers.get(group.members[curSelection].text));
 
-		// save the setting
-		//Init.saveSettings();
-	}
-
-	function updateCheckmark(checkmark:FNFSprite, animation:Bool)
-	{
-		if (checkmark != null)
-			checkmark.playAnim(Std.string(animation));
+		if (checkmarkGroup.members[curSelection] != null)
+			checkmarkGroup.members[curSelection].playAnim(Std.string(Init.gameModifiers.get(group.members[curSelection].text)));
 	}
 }

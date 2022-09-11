@@ -75,6 +75,8 @@ class FreeplayState extends MusicBeatState
 	{
 		super.create();
 
+		PlayState.practiceMode = Init.gameModifiers.get('Practice Mode');
+
 		presses = 0;
 
 		mutex = new Mutex();
@@ -333,10 +335,8 @@ class FreeplayState extends MusicBeatState
 			PlayState.prevCharter == (shiftP ? 1 : 0);
 			Main.switchState(this, (shiftP ? new ChartEditor() : new OriginalChartEditor()));
 		}
-		/*
 		else if (ctrl)
 			openSubState(new FreeplaySubstate());
-		*/
 		else if (controls.RESET && presses < 3)
 		{
 			presses++;

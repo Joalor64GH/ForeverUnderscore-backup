@@ -240,7 +240,10 @@ class MainMenuState extends MusicBeatState
 									PauseSubstate.toOptions = false;
 									transIn = FlxTransitionableState.defaultTransIn;
 									transOut = FlxTransitionableState.defaultTransOut;
-									Main.switchState(this, new OptionsMenuState());
+									if (FlxG.keys.pressed.SHIFT)
+										Main.switchState(this, new SettingsMenuState());
+									else
+										Main.switchState(this, new OptionsMenuState());
 							}
 						});
 					}
