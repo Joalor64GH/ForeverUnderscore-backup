@@ -194,11 +194,6 @@ class PlayState extends MusicBeatState
 		cameraSpeed = 1;
 		forceZoom = [0, 0, 0, 0];
 
-		ratingsGroup = new FlxTypedGroup<FNFSprite>();
-		comboGroup = new FlxTypedGroup<FNFSprite>();
-		//add(ratingsGroup);
-		//add(comboGroup);
-
 		Timings.callAccuracy();
 
 		assetModifier = 'base';
@@ -417,6 +412,14 @@ class PlayState extends MusicBeatState
 		uiHUD = new ClassHUD();
 		add(uiHUD);
 		uiHUD.cameras = [camHUD];
+
+		ratingsGroup = new FlxTypedGroup<FNFSprite>();
+		comboGroup = new FlxTypedGroup<FNFSprite>();
+		//add(ratingsGroup);
+		add(comboGroup);
+
+		// precache judgements and combo before using them;
+		popJudgement('sick', false, true, true);
 
 		// create a hud over the hud camera for dialogue
 		dialogueHUD = new FlxCamera();
@@ -1652,7 +1655,7 @@ class PlayState extends MusicBeatState
 
 	var createdColor = FlxColor.fromRGB(204, 66, 66);
 
-	function popJudgement(newRating:String, lateHit:Bool, perfect:Bool)
+	function popJudgement(newRating:String, lateHit:Bool, perfect:Bool, ?cached:Bool = false)
 	{
 		var rating = ForeverAssets.generateRating('$newRating', perfect, lateHit, ratingsGroup, assetModifier, changeableSkin, 'UI');
 
@@ -1672,16 +1675,23 @@ class PlayState extends MusicBeatState
 		if (Init.trueSettings.get('Fixed Judgements'))
 		{
 			// bound to camera
-			rating.cameras = [camHUD];
+			if (!cached)
+				rating.cameras = [camHUD];
 			rating.screenCenter();
 		}
 
-		Timings.gottenJudgements.set(newRating, Timings.gottenJudgements.get(newRating) + 1);
-		if (Timings.smallestRating != newRating)
+		if (!cached)
 		{
-			if (Timings.judgementsMap.get(Timings.smallestRating)[0] < Timings.judgementsMap.get(newRating)[0])
-				Timings.smallestRating = newRating;
+			Timings.gottenJudgements.set(newRating, Timings.gottenJudgements.get(newRating) + 1);
+			if (Timings.smallestRating != newRating)
+			{
+				if (Timings.judgementsMap.get(Timings.smallestRating)[0] < Timings.judgementsMap.get(newRating)[0])
+					Timings.smallestRating = newRating;
+			}
 		}
+
+		if (cached)
+			rating.alpha = 0.000001;
 
 		var comboString:String = Std.string(combo);
 		var negative = false;
@@ -1708,10 +1718,14 @@ class PlayState extends MusicBeatState
 
 			if (Init.trueSettings.get('Fixed Judgements'))
 			{
-				comboNum.cameras = [camHUD];
+				if (!cached)
+					comboNum.cameras = [camHUD];
 				comboNum.y += 50;
 			}
 			comboNum.x += 100;
+
+			if (cached)
+				comboNum.alpha = 0.000001;
 		}
 		
 		comboGroup.sort(FNFSprite.depthSorting, FlxSort.DESCENDING);
