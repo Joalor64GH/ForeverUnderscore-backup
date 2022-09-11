@@ -950,7 +950,7 @@ class PlayState extends MusicBeatState
 
 		checkSongEvents();
 
-		callFunc('postUpdate', []);
+		callFunc('postUpdate', [elapsed]);
 	}
 
 	// maybe theres a better place to put this, idk -saw
