@@ -28,17 +28,31 @@ function loadAnimations()
 	set('antialiasing', true);
 
 	var charX = 0;
+	var opponentX = 250;
 
 	if (curStage == 'mallEvil')
 	{
 		charX = 50;
+		opponentX = -155;
 		setCamOffsets(15, -15);
 	}
 
 	setBarColor([49, 176, 209]);
-	setOffsets(charX, 430);
 	if (isPlayer)
+	{
 		set('flipX', false);
+		setOffsets(charX, 430);
+	}
 	else
+	{
 		set('flipX', true);
+		setOffsets(opponentX, 750);
+		flipLeftRight();
+
+		if (curStage == 'mall')
+			setCamOffsets(15, -95);
+
+		if (curStage == 'mallEvil')
+			setCamOffsets(15, -45);
+	}
 }

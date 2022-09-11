@@ -50,5 +50,18 @@ function loadAnimations()
 	else
 	{
 		set('flipX', true);
+		flipLeftRight();
+
+		if (curStage == 'school')
+		{
+			setOffsets(-135, 400);
+			setCamOffsets(-80, -200);
+		}
+
+		if (curStage == 'schoolEvil')
+		{
+			setOffsets(150, 900);
+			setCamOffsets(0, -230);
+		}
 	}
 }

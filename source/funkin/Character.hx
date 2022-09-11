@@ -158,6 +158,27 @@ class Character extends FNFSprite
 		return this;
 	}
 
+	function flipLeftRight()
+	{
+		// get the old right sprite
+		var oldRight = animation.getByName('singRIGHT').frames;
+
+		// set the right to the left
+		animation.getByName('singRIGHT').frames = animation.getByName('singLEFT').frames;
+
+		// set the left to the old right
+		animation.getByName('singLEFT').frames = oldRight;
+
+		// insert ninjamuffin screaming I think idk I'm lazy as hell
+
+		if (animation.getByName('singRIGHTmiss') != null)
+		{
+			var oldMiss = animation.getByName('singRIGHTmiss').frames;
+			animation.getByName('singRIGHTmiss').frames = animation.getByName('singLEFTmiss').frames;
+			animation.getByName('singLEFTmiss').frames = oldMiss;
+		}
+	}
+
 	override function update(elapsed:Float)
 	{
 		/**
@@ -470,6 +491,7 @@ class Character extends FNFSprite
 		setVar('isPlayer', isPlayer);
 		setVar('curStage', PlayState.curStage);
 		setVar('song', PlayState.SONG.song.toLowerCase());
+		setVar('flipLeftRight', flipLeftRight);
 
 		for (i in charScripts)
 			i.call('loadAnimations', []);

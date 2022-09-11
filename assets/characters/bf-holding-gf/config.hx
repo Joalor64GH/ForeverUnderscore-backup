@@ -37,5 +37,8 @@ function loadAnimations()
 	else
 	{
 		set('flipX', true);
+		setOffsets(-90, 580);
+		setCamOffsets(130, 0);
+		flipLeftRight();
 	}
 }

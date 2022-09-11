@@ -20,9 +20,15 @@ function loadAnimations()
 
 	setBarColor([49, 176, 209]);
 	setCamOffsets(0, -50);
-	setOffsets(0, 430);
 	if (isPlayer)
+	{
+		setOffsets(0, 430);
 		set('flipX', false);
+	}
 	else
+	{
+		setOffsets(-135, 770);
 		set('flipX', true);
+		flipLeftRight();
+	}
 }

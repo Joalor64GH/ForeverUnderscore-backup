@@ -27,9 +27,15 @@ function loadAnimations()
 	set('antialiasing', true);
 
 	setBarColor([49, 176, 209]);
-	setOffsets(80, 410);
 	if (isPlayer)
+	{
+		setOffsets(80, 410);
 		set('flipX', false);
+	}
 	else
+	{
+		setOffsets(80, 810);
 		set('flipX', true);
+		flipLeftRight();
+	}
 }
