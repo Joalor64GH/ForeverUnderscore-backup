@@ -4,11 +4,13 @@ import base.*;
 import flixel.FlxG;
 import flixel.system.FlxSound;
 import flixel.tweens.FlxEase;
+import flixel.tweens.FlxTween.FlxTweenType;
 import flixel.util.FlxColor;
 import lime.app.Application;
 import openfl.display.BlendMode;
 import openfl.display.BlendModeEffect;
 import openfl.utils.Assets;
+import states.PlayState;
 import sys.FileSystem;
 
 using StringTools;
@@ -105,9 +107,23 @@ class ForeverTools
 		return event;
 	}
 
+	public static function getCameraFromString(cam:String)
+	{
+		switch (cam)
+		{
+			case 'camgame' | 'camGame' | 'game' | 'world':
+				return PlayState.camGame;
+			case 'camhud' | 'camHUD' | 'hud' | 'ui':
+				return PlayState.camHUD;
+			case 'strumhud' | 'strumHUD' | 'strum' | 'strumlines':
+				return PlayState.strumHUD;
+		}
+		return PlayState.camGame;
+	}
+
 	public static function getColorFromString(str:String):FlxColor
 	{
-		return switch (str)
+		switch (str.toLowerCase())
 		{
 			case "black": FlxColor.BLACK;
 			case "white": FlxColor.WHITE;
@@ -122,8 +138,22 @@ class ForeverTools
 			case "pink": FlxColor.PINK;
 			case "purple": FlxColor.PURPLE;
 			case "red": FlxColor.RED;
-			case "transparent" | _: FlxColor.TRANSPARENT;
+			case "transparent": FlxColor.TRANSPARENT;
 		}
+		return FlxColor.TRANSPARENT;
+	}
+
+	public static function getTweenTypeFromString(?type:String = ''):FlxTweenType
+	{
+		switch (type.toLowerCase())
+		{
+			case 'backward': return FlxTweenType.BACKWARD;
+			case 'looping': return FlxTweenType.LOOPING;
+			case 'oneshot': return FlxTweenType.ONESHOT;
+			case 'persist': return FlxTweenType.PERSIST;
+			case 'pingpong': return FlxTweenType.PINGPONG;
+		}
+		return FlxTweenType.PERSIST;
 	}
 
 	public static function getEaseFromString(?ease:String = '')

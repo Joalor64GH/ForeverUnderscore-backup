@@ -19,6 +19,7 @@ import flixel.system.scaleModes.*;
 import flixel.text.FlxText;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
+import flixel.util.FlxColor;
 import funkin.background.*;
 import openfl.Assets;
 import openfl.display.BlendMode;
@@ -802,6 +803,15 @@ class Stage extends FlxTypedGroup<FlxBasic>
             	stageScript = new ScriptHandler(path);
 		}
 
+		setVar('makeSprite', function(spriteID:String, color:String, width:Float, height:Float, x:Int, y:Int)
+		{
+			var newSprite = new FNFSprite(width, height);
+			newSprite.makeGraphic(x, y, FlxColor.fromString(color));
+			newSprite.antialiasing = !Init.trueSettings.get('Disable Antialiasing');
+			PlayState.ScriptedGraphics.set(spriteID, newSprite);
+			PlayState.contents.setVar('$spriteID', newSprite);
+		});
+
 		setVar('createSprite',
 			function(spriteID:String, image:String, x:Float, y:Float)
 			{
@@ -889,6 +899,12 @@ class Stage extends FlxTypedGroup<FlxBasic>
 		{
 			var gottenSprite:FNFSprite = PlayState.ScriptedGraphics.get(spriteID);
 			gottenSprite.alpha = newAlpha;
+		});
+
+		setVar('setSpriteCamera', function(spriteID:String, newCam:String)
+		{
+			var gottenSprite:FNFSprite = PlayState.ScriptedGraphics.get(spriteID);
+			gottenSprite.cameras = [ForeverTools.getCameraFromString(newCam)];
 		});
 
 		setVar('addSprite', function(spriteID:String)

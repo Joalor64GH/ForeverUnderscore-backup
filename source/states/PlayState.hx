@@ -54,7 +54,7 @@ import vlc.MP4Handler;
 class PlayState extends MusicBeatState
 {
 	// FOR SCRIPTS;
-	public static var ScriptedGraphics:Map<String, FNFSprite> = new Map<String, FNFSprite>();
+	public static var ScriptedGraphics:Map<String, Dynamic> = new Map<String, FNFSprite>();
 	public static var ScriptedShaders:Map<String, GraphicsShader> = new Map<String, GraphicsShader>();
 	public static var ScriptedTweens:Map<String, Dynamic> = new Map<String, Dynamic>();
 	public static var ScriptedSpriteGroups:Map<String, Dynamic> = new Map<String, FlxSpriteGroup>();
@@ -330,7 +330,8 @@ class PlayState extends MusicBeatState
 
 		// EVERYTHING SHOULD GO UNDER THIS, IF YOU PLAN ON SPAWNING SOMETHING LATER ADD IT TO STAGEBUILD OR FOREGROUND
 		// darken everything but the arrows and ui via a flxsprite
-		var darknessBG:FlxSprite = new FlxSprite(FlxG.width * -0.5, FlxG.height * -0.5).makeGraphic(FlxG.width * 2, FlxG.height * 2, FlxColor.BLACK);
+		var darknessBG:FNFSprite = new FNFSprite(FlxG.width * -0.5, FlxG.height * -0.5);
+		darknessBG.makeGraphic(FlxG.width * 2, FlxG.height * 2, FlxColor.BLACK);
 		darknessBG.alpha = (100 - Init.trueSettings.get('Stage Opacity')) / 100;
 		darknessBG.scrollFactor.set(0, 0);
 		add(darknessBG);

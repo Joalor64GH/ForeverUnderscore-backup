@@ -71,14 +71,13 @@ class ScriptFuncs extends PlayState
 		PlayState.contents.setVar('formattedAccuracy', Math.floor(Timings.getAccuracy() * 100) / 100);
 		PlayState.contents.setVar('formattedRanking', Timings.returnScoreRating().toUpperCase());
 
-		PlayState.contents.setVar('makeSprite', function(spriteID:String, x:Int = 0, y:Int = 0, graphicCol:Dynamic)
+		PlayState.contents.setVar('makeSprite', function(spriteID:String, color:String, width:Float, height:Float, x:Int, y:Int)
 		{
-			var newSprite = new FNFSprite();
-			newSprite.makeGraphic(x, y, graphicCol);
+			var newSprite = new FNFSprite(width, height);
+			newSprite.makeGraphic(x, y, FlxColor.fromString(color));
 			newSprite.antialiasing = !Init.trueSettings.get('Disable Antialiasing');
 			PlayState.ScriptedGraphics.set(spriteID, newSprite);
 			PlayState.contents.setVar('$spriteID', newSprite);
-			PlayState.contents.add(newSprite);
 		});
 
 		PlayState.contents.setVar('loadSprite', function(spriteID:String, key:String, x:Float, y:Float)
@@ -88,7 +87,6 @@ class ScriptFuncs extends PlayState
 			newSprite.antialiasing = !Init.trueSettings.get('Disable Antialiasing');
 			PlayState.ScriptedGraphics.set(spriteID, newSprite);
 			PlayState.contents.setVar('$spriteID', newSprite);
-			PlayState.contents.add(newSprite);
 		});
 
 		PlayState.contents.setVar('loadAnimatedSprite',
@@ -115,7 +113,6 @@ class ScriptFuncs extends PlayState
 				newSprite.animation.play(defAnim);
 				PlayState.ScriptedGraphics.set(spriteID, newSprite);
 				PlayState.contents.setVar('$spriteID', newSprite);
-				PlayState.contents.add(newSprite);
 			});
 
 		PlayState.contents.setVar('addSpriteAnimation', function(spriteID:String, newAnims:Array<Dynamic>)
@@ -161,6 +158,18 @@ class ScriptFuncs extends PlayState
 		{
 			var gottenSprite:FNFSprite = PlayState.ScriptedGraphics.get(spriteID);
 			gottenSprite.alpha = newAlpha;
+		});
+
+		PlayState.contents.setVar('addSprite', function(spriteID:String)
+		{
+			var gottenSprite:FNFSprite = PlayState.ScriptedGraphics.get(spriteID);
+			PlayState.contents.add(gottenSprite);
+		});
+
+		PlayState.contents.setVar('setSpriteCamera', function(spriteID:String, newCam:String)
+		{
+			var gottenSprite:FNFSprite = PlayState.ScriptedGraphics.get(spriteID);
+			gottenSprite.cameras = [ForeverTools.getCameraFromString(newCam)];
 		});
 
 		PlayState.contents.setVar('createCharacter', function(charID:String, key:String, x:Float, y:Float, alpha:Float, isPlayer:Bool = false)
@@ -240,10 +249,20 @@ class ScriptFuncs extends PlayState
 			ForeverTools.getColorFromString(color);
 		});
 
-		PlayState.contents.setVar('doTween', function(tweenID:String, tweenProperty:String, object:Dynamic, value:Dynamic, time:Float, ease:String)
+		PlayState.contents.setVar('getTweenEase', function(ease:String)
+		{
+			ForeverTools.getEaseFromString(ease);
+		});
+
+		PlayState.contents.setVar('getTweenType', function(type:String)
+		{
+			ForeverTools.getTweenTypeFromString(type);
+		});
+
+		PlayState.contents.setVar('doTween', function(tweenID:String, tweenProperty:Array<String>, object:Dynamic, value:Dynamic, time:Float)
 		{
 			endTween(tweenID);
-			var tweenType = {};
+			var parameter = {};
 			var newTween:FlxTween = null;
 
 			/**
@@ -251,10 +270,11 @@ class ScriptFuncs extends PlayState
 			 * https://github.com/ShadowMario/FNF-PsychEngine/pull/10433
 			 * credits to Cherri#0815
 			 */
-			Reflect.setField(tweenType, tweenProperty, value);
+			Reflect.setField(parameter, tweenProperty[0], value);
 
-			PlayState.ScriptedTweens.set(tweenID, newTween = FlxTween.tween(object, tweenType, time, {
-				ease: ForeverTools.getEaseFromString(ease),
+			PlayState.ScriptedTweens.set(tweenID, newTween = FlxTween.tween(object, parameter, time, {
+				ease: ForeverTools.getEaseFromString(tweenProperty[1]),
+				type: ForeverTools.getTweenTypeFromString(tweenProperty[2]),
 				onComplete: function(tween:FlxTween)
 				{
 					newTween.cancel();
@@ -265,19 +285,19 @@ class ScriptFuncs extends PlayState
 		});
 
 		PlayState.contents.setVar('doStrumTween',
-			function(tweenID:String, tweenProperty:String, strumline:String, newNote:Int, value:Dynamic, time:Float, ease:String)
+			function(tweenID:String, tweenProperty:Array<String>, strumline:String, newNote:Int, value:Dynamic, time:Float)
 			{
 				endTween(tweenID);
-				var tweenType = {};
-				var epicNote = PlayState.bfStrums.receptors.members[newNote];
+				var parameter = {};
+				var epicStrum = PlayState.bfStrums.receptors.members[newNote];
 				var newTween:FlxTween = null;
 
 				switch (strumline)
 				{
-					case 'dadStrums' | 'dadOpponentStrums' | 'dad' | 'opponentStrums':
-						epicNote = PlayState.dadStrums.receptors.members[newNote];
+					case 'dadStrums' | 'opponentStrums' | 'dad' | 'opponent':
+						epicStrum = PlayState.dadStrums.receptors.members[newNote];
 					default:
-						epicNote = PlayState.bfStrums.receptors.members[newNote];
+						epicStrum = PlayState.bfStrums.receptors.members[newNote];
 				}
 
 				/**
@@ -285,10 +305,11 @@ class ScriptFuncs extends PlayState
 				 * https://github.com/ShadowMario/FNF-PsychEngine/pull/10433
 				 * credits to Cherri#0815
 				 */
-				Reflect.setField(tweenType, tweenProperty, value);
+				Reflect.setField(parameter, tweenProperty[0], value);
 
-				PlayState.ScriptedTweens.set(tweenID, newTween = FlxTween.tween(epicNote, tweenType, time, {
-					ease: ForeverTools.getEaseFromString(ease),
+				PlayState.ScriptedTweens.set(tweenID, newTween = FlxTween.tween(epicStrum, parameter, time, {
+					ease: ForeverTools.getEaseFromString(tweenProperty[1]),
+					type: ForeverTools.getTweenTypeFromString(tweenProperty[2]),
 					onComplete: function(tween:FlxTween)
 					{
 						newTween.cancel();
