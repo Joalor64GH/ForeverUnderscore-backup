@@ -1239,7 +1239,7 @@ class OriginalChartEditor extends MusicBeatState
 		var dad:Character = new Character(0, 0, _song.player2);
 
 		var eventIcon:FlxSprite = new FlxSprite(-GRID_SIZE - 5, -90);
-		eventIcon.loadGraphic(Paths.image(ForeverTools.returnSkinAsset('eventNote', PlayState.assetModifier, PlayState.changeableSkin, 'UI')));
+		eventIcon.loadGraphic(Paths.image(ForeverTools.returnSkin('eventNote', PlayState.assetModifier, PlayState.changeableSkin, 'UI')));
 		leftIcon = new HealthIcon(bf.icon);
 		rightIcon = new HealthIcon(dad.icon);
 

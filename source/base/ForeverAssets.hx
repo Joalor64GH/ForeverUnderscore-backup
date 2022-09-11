@@ -38,7 +38,7 @@ class ForeverAssets
 		var parsedNumber = Std.parseInt(number);
 
 		var combo = group.recycle(FNFSprite);
-		combo.loadGraphic(Paths.image(ForeverTools.returnSkinAsset(asset, assetModifier, changeableSkin, baseLibrary)), true, width, height);
+		combo.loadGraphic(Paths.image(ForeverTools.returnSkin(asset, assetModifier, changeableSkin, baseLibrary)), true, width, height);
 		combo.animation.add('combo', [(parsedNumber != null ? parsedNumber + 1 : 0) + (!allSicks ? 0 : 11)], 0, false);
 
 		combo.alpha = 1;
@@ -84,7 +84,7 @@ class ForeverAssets
 			baseLibrary:String):FNFSprite
 	{
 		var rating = group.recycle(FNFSprite);
-		rating.loadGraphic(Paths.image(ForeverTools.returnSkinAsset('judgements', assetModifier, changeableSkin, baseLibrary)), true,
+		rating.loadGraphic(Paths.image(ForeverTools.returnSkin('judgements', assetModifier, changeableSkin, baseLibrary)), true,
 			assetModifier == 'pixel' ? 72 : 500, assetModifier == 'pixel' ? 32 : 163);
 
 		rating.animation.add(newRating, [
@@ -138,7 +138,7 @@ class ForeverAssets
 			case 'pixel':
 				asset = 'splash-pixel';
 
-				tempSplash.loadGraphic(Paths.image(ForeverTools.returnSkinAsset(asset, assetModifier, changeableSkin, baseLibrary)), true, 34, 34);
+				tempSplash.loadGraphic(Paths.image(ForeverTools.returnSkin(asset, assetModifier, changeableSkin, baseLibrary)), true, 34, 34);
 				tempSplash.animation.add('anim1', [noteData, 4 + noteData, 8 + noteData, 12 + noteData], 24, false);
 				tempSplash.animation.add('anim2', [16 + noteData, 20 + noteData, 24 + noteData, 28 + noteData], 24, false);
 				tempSplash.animation.play('anim1');
@@ -149,7 +149,7 @@ class ForeverAssets
 			default:
 				asset = 'noteSplashes';
 
-				tempSplash.loadGraphic(Paths.image(ForeverTools.returnSkinAsset(asset, assetModifier, changeableSkin, baseLibrary)), true, 210, 210);
+				tempSplash.loadGraphic(Paths.image(ForeverTools.returnSkin(asset, assetModifier, changeableSkin, baseLibrary)), true, 210, 210);
 				tempSplash.animation.add('anim1', [
 					(noteData * 2 + 1),
 					8 + (noteData * 2 + 1),
@@ -184,7 +184,7 @@ class ForeverAssets
 				// not even just a cleanliness thing it's just so annoying to tweak if something goes wrong like
 				// genuinely more programmers should make their code more modular
 				var framesArgument:String = "arrows-pixels";
-				newStaticArrow.loadGraphic(Paths.image(ForeverTools.returnSkinAsset('$framesArgument', assetModifier, Init.trueSettings.get("Note Skin"),
+				newStaticArrow.loadGraphic(Paths.image(ForeverTools.returnSkin('$framesArgument', assetModifier, Init.trueSettings.get("Note Skin"),
 					'noteskins/notes')), true,
 					17, 17);
 				newStaticArrow.animation.add('static', [staticArrowType]);
@@ -217,7 +217,7 @@ class ForeverAssets
 
 				var framesArgument:String = "NOTE_assets";
 
-				newStaticArrow.frames = Paths.getSparrowAtlas(ForeverTools.returnSkinAsset('$framesArgument', assetModifier,
+				newStaticArrow.frames = Paths.getSparrowAtlas(ForeverTools.returnSkin('$framesArgument', assetModifier,
 					Init.trueSettings.get("Note Skin"), 'noteskins/notes'));
 
 				newStaticArrow.animation.addByPrefix('static', 'arrow' + stringSect.toUpperCase());
@@ -286,7 +286,7 @@ class ForeverAssets
 			baseLibrary:String)
 	{
 		var newCheckmark:Checkmark = new Checkmark(x, y);
-		newCheckmark.frames = Paths.getSparrowAtlas(ForeverTools.returnSkinAsset(asset, assetModifier, changeableSkin, baseLibrary));
+		newCheckmark.frames = Paths.getSparrowAtlas(ForeverTools.returnSkin(asset, assetModifier, changeableSkin, baseLibrary));
 		newCheckmark.antialiasing = !Init.trueSettings.get('Disable Antialiasing');
 
 		newCheckmark.animation.addByPrefix('false finished', 'uncheckFinished');

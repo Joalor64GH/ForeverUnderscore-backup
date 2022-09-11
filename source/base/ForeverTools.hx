@@ -6,10 +6,7 @@ import flixel.system.FlxSound;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween.FlxTweenType;
 import flixel.util.FlxColor;
-import lime.app.Application;
 import openfl.display.BlendMode;
-import openfl.display.BlendModeEffect;
-import openfl.utils.Assets;
 import states.PlayState;
 import sys.FileSystem;
 
@@ -41,7 +38,17 @@ class ForeverTools
 		}
 	}
 
-	public static function returnSkinAsset(asset:String, assetModifier:String = 'base', changeableSkin:String = 'default', baseLibrary:String,
+	/**
+	 * [Returns a skin asset with the given parameters]
+	 * @param asset the asset we should get from the asset skin folders
+	 * @param assetModifier the asset modifier from the skin folders, usually `base`
+	 * @param changeableSkin the changeable default skin for the asset we should get
+	 * @param baseLibrary the base folder where we should grab the assets from, usually `UI`
+	 * @param defaultChangeableSkin optional, specifies the default folder for the `changeableSkin` parameter
+	 * @param defaultBaseAsset optional, specieis the default folder for the `assetModifier` parameter
+	 * @return String
+	 */
+	public static function returnSkin(asset:String, assetModifier:String = 'base', changeableSkin:String = 'default', baseLibrary:String,
 			?defaultChangeableSkin:String = 'default', ?defaultBaseAsset:String = 'base'):String
 	{
 		var realAsset = '$baseLibrary/$changeableSkin/$assetModifier/$asset';
@@ -93,7 +100,7 @@ class ForeverTools
 		}
 	}
 
-	public static function getCameraFromString(cam:String)
+	public static function getCamFromString(cam:String)
 	{
 		switch (cam)
 		{
@@ -107,7 +114,7 @@ class ForeverTools
 		return PlayState.camGame;
 	}
 
-	public static function getColorFromString(str:String):FlxColor
+	public static function getColorFromString(?str:String = ''):FlxColor
 	{
 		switch (str.toLowerCase())
 		{

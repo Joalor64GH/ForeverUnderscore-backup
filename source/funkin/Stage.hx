@@ -904,7 +904,7 @@ class Stage extends FlxTypedGroup<FlxBasic>
 		setVar('setSpriteCamera', function(spriteID:String, newCam:String)
 		{
 			var gottenSprite:FNFSprite = PlayState.ScriptedGraphics.get(spriteID);
-			gottenSprite.cameras = [ForeverTools.getCameraFromString(newCam)];
+			gottenSprite.cameras = [ForeverTools.getCamFromString(newCam)];
 		});
 
 		setVar('addSprite', function(spriteID:String)

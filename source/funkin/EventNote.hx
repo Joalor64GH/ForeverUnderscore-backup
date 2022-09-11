@@ -22,6 +22,6 @@ class EventNote extends FlxSprite
 
 		super();
 
-		loadGraphic(Paths.image(ForeverTools.returnSkinAsset('eventNote', PlayState.assetModifier, PlayState.changeableSkin, 'UI')));
+		loadGraphic(Paths.image(ForeverTools.returnSkin('eventNote', PlayState.assetModifier, PlayState.changeableSkin, 'UI')));
 	}
 }

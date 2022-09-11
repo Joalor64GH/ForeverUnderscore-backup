@@ -2276,9 +2276,9 @@ class PlayState extends MusicBeatState
 
 			var introAssets:Map<String, Array<String>> = new Map<String, Array<String>>();
 			introAssets.set('default', [
-				ForeverTools.returnSkinAsset('ready', assetModifier, changeableSkin, 'UI'),
-				ForeverTools.returnSkinAsset('set', assetModifier, changeableSkin, 'UI'),
-				ForeverTools.returnSkinAsset('go', assetModifier, changeableSkin, 'UI')
+				ForeverTools.returnSkin('ready', assetModifier, changeableSkin, 'UI'),
+				ForeverTools.returnSkin('set', assetModifier, changeableSkin, 'UI'),
+				ForeverTools.returnSkin('go', assetModifier, changeableSkin, 'UI')
 			]);
 
 			var introAlts:Array<String> = introAssets.get('default');

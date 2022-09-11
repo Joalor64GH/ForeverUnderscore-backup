@@ -176,7 +176,7 @@ class Note extends FNFSprite
 					switch (noteType)
 					{
 						case 3: // pixel mines;
-							newNote.loadGraphic(Paths.image(ForeverTools.returnSkinAsset('mines', assetModifier, '', 'noteskins/mines')), true, 17, 17);
+							newNote.loadGraphic(Paths.image(ForeverTools.returnSkin('mines', assetModifier, '', 'noteskins/mines')), true, 17, 17);
 							newNote.animation.add(noteColorID[noteData] + 'Scroll', [0, 1, 2, 3, 4, 5, 6, 7], 12);
 
 						default: // pixel notes default
@@ -191,7 +191,7 @@ class Note extends FNFSprite
 				switch (noteType)
 				{
 					case 3: // mines
-						newNote.loadGraphic(Paths.image(ForeverTools.returnSkinAsset('mines', assetModifier, '', 'noteskins/mines')), true, 133, 128);
+						newNote.loadGraphic(Paths.image(ForeverTools.returnSkin('mines', assetModifier, '', 'noteskins/mines')), true, 133, 128);
 						newNote.animation.add(noteColorID[noteData] + 'Scroll', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]);
 
 						if (isSustainNote)
@@ -288,19 +288,19 @@ class Note extends FNFSprite
 						case 3: // pixel mines
 							if (assetModifier == 'pixel')
 							{
-								newNote.loadGraphic(Paths.image(ForeverTools.returnSkinAsset('mines', assetModifier, '', 'noteskins/mines')), true, 17, 17);
+								newNote.loadGraphic(Paths.image(ForeverTools.returnSkin('mines', assetModifier, '', 'noteskins/mines')), true, 17, 17);
 								newNote.animation.add(directionID[noteData] + 'Scroll', [0, 1, 2, 3, 4, 5, 6, 7], 12);
 							}
 							else
 							{
-								newNote.loadGraphic(Paths.image(ForeverTools.returnSkinAsset('mines', assetModifier, '', 'noteskins/mines')), true, 133, 128);
+								newNote.loadGraphic(Paths.image(ForeverTools.returnSkin('mines', assetModifier, '', 'noteskins/mines')), true, 133, 128);
 								newNote.animation.add(directionID[noteData] + 'Scroll', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9], 12);
 							}
 
 						default:
 							// in case you're unfamiliar with these, they're ternary operators, I just dont wanna check for pixel notes using a separate statement
 							var newNoteSize:Int = (assetModifier == 'pixel') ? 17 : 157;
-							newNote.loadGraphic(Paths.image(ForeverTools.returnSkinAsset('NOTE_quants', assetModifier, Init.trueSettings.get("Note Skin"),
+							newNote.loadGraphic(Paths.image(ForeverTools.returnSkin('NOTE_quants', assetModifier, Init.trueSettings.get("Note Skin"),
 								'noteskins/notes', 'quant')),
 								true, newNoteSize, newNoteSize);
 
@@ -319,7 +319,7 @@ class Note extends FNFSprite
 							newNote.kill();
 						default:
 							// quant holds
-							newNote.loadGraphic(Paths.image(ForeverTools.returnSkinAsset('HOLD_quants', assetModifier, Init.trueSettings.get("Note Skin"),
+							newNote.loadGraphic(Paths.image(ForeverTools.returnSkin('HOLD_quants', assetModifier, Init.trueSettings.get("Note Skin"),
 								'noteskins/notes', 'quant')),
 								true, (assetModifier == 'pixel') ? 17 : 109, (assetModifier == 'pixel') ? 6 : 52);
 							newNote.animation.add('hold', [0 + (newNote.noteQuant * 4)]);
@@ -382,7 +382,7 @@ class Note extends FNFSprite
 	{
 		if (assetModifier != 'pixel')
 		{
-			newNote.frames = Paths.getSparrowAtlas(ForeverTools.returnSkinAsset(texture, assetModifier, (changeable ? Init.trueSettings.get("Note Skin") : ''), texturePath));
+			newNote.frames = Paths.getSparrowAtlas(ForeverTools.returnSkin(texture, assetModifier, (changeable ? Init.trueSettings.get("Note Skin") : ''), texturePath));
 
 			newNote.animation.addByPrefix(noteColorID[newNote.noteData] + 'Scroll', noteColorID[newNote.noteData] + '0');
 			newNote.animation.addByPrefix(noteColorID[newNote.noteData] + 'holdend', noteColorID[newNote.noteData] + ' hold end');
@@ -398,13 +398,13 @@ class Note extends FNFSprite
 		{
 			if (newNote.isSustainNote)
 			{
-				newNote.loadGraphic(Paths.image(ForeverTools.returnSkinAsset(texture, assetModifier, (changeable ? Init.trueSettings.get("Note Skin") : ''), texturePath)), true, 7, 6);
+				newNote.loadGraphic(Paths.image(ForeverTools.returnSkin(texture, assetModifier, (changeable ? Init.trueSettings.get("Note Skin") : ''), texturePath)), true, 7, 6);
 				newNote.animation.add(noteColorID[newNote.noteData] + 'holdend', [pixelNoteID[newNote.noteData]]);
 				newNote.animation.add(noteColorID[newNote.noteData] + 'hold', [pixelNoteID[newNote.noteData] - 4]);
 			}
 			else
 			{
-				newNote.loadGraphic(Paths.image(ForeverTools.returnSkinAsset(texture, assetModifier, (changeable ? Init.trueSettings.get("Note Skin") : ''), texturePath)), true, 17, 17);
+				newNote.loadGraphic(Paths.image(ForeverTools.returnSkin(texture, assetModifier, (changeable ? Init.trueSettings.get("Note Skin") : ''), texturePath)), true, 17, 17);
 				newNote.animation.add(noteColorID[newNote.noteData] + 'Scroll', [pixelNoteID[newNote.noteData]], 12);
 			}
 		}

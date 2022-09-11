@@ -169,7 +169,7 @@ class ScriptFuncs extends PlayState
 		PlayState.contents.setVar('setSpriteCamera', function(spriteID:String, newCam:String)
 		{
 			var gottenSprite:FNFSprite = PlayState.ScriptedGraphics.get(spriteID);
-			gottenSprite.cameras = [ForeverTools.getCameraFromString(newCam)];
+			gottenSprite.cameras = [ForeverTools.getCamFromString(newCam)];
 		});
 
 		PlayState.contents.setVar('createCharacter', function(charID:String, key:String, x:Float, y:Float, alpha:Float, isPlayer:Bool = false)
