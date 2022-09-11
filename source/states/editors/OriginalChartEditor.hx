@@ -69,7 +69,7 @@ class OriginalChartEditor extends MusicBeatState
 	var curNoteName:Array<String> = ['Normal Note', 'Alt Animation', 'Hey!', 'Mine Note', 'GF Note', 'No Animation'];
 
 	// event name - desciption
-	var eventArray:Array<Array<String>> = [
+	var eventArray:Array<Dynamic> = [
 		["", ""],
 		[
 			"Hey!",
@@ -280,24 +280,6 @@ class OriginalChartEditor extends MusicBeatState
 			saveEvents();
 		});
 
-		var clear_events:FlxButton = new FlxButton(320, 310, 'Clear events', function()
-		{
-			clearEvents();
-			updateEventUI();
-			updateGrid();
-		});
-		clear_events.color = FlxColor.RED;
-		clear_events.label.color = FlxColor.WHITE;
-
-		var clear_notes:FlxButton = new FlxButton(320, clear_events.y + 30, 'Clear notes', function()
-		{
-			clearNotes();
-			updateNoteUI();
-			updateGrid();
-		});
-		clear_notes.color = FlxColor.RED;
-		clear_notes.label.color = FlxColor.WHITE;
-
 		var reloadSong:FlxButton = new FlxButton(saveButton.x + saveButton.width + 10, saveButton.y, "Reload Audio", function()
 		{
 			loadSong(_song.song);
@@ -447,7 +429,7 @@ class OriginalChartEditor extends MusicBeatState
 			copySection(Std.int(stepperCopy.value));
 		});
 
-		var clearSectionButton:FlxButton = new FlxButton(10, 150, "Clear Section", clearSection);
+		var clearSectionButton:FlxButton = new FlxButton(10, 150, "Clear section", clearSection);
 
 		var swapSection:FlxButton = new FlxButton(10, 170, "Swap section", function()
 		{
@@ -517,7 +499,7 @@ class OriginalChartEditor extends MusicBeatState
 			descText.text = eventArray[selectedEvent][1];
 			if (curSelectedEvent != null)
 			{
-				curSelectedEvent[2] = eventArray[selectedEvent][0];
+				curSelectedEvent[1] = eventArray[selectedEvent][0];
 				updateGrid();
 			}
 		});
@@ -1072,7 +1054,7 @@ class OriginalChartEditor extends MusicBeatState
 			vocals.pitch = 0.1;
 		}
 
-		bpmTxt.text = 'Song ${_song.song}'
+		bpmTxt.text = 'Song ${_song.song}\n'
 			+ Std.string(FlxMath.roundDecimal(Conductor.songPosition / 1000, 2))
 			+ " / " + Std.string(FlxMath.roundDecimal(songMusic.length / 1000, 2))
 			+ "\nSection: " + curSection
@@ -1544,30 +1526,6 @@ class OriginalChartEditor extends MusicBeatState
 		updateGrid();
 	}
 
-	function clearNotes():Void
-	{
-		for (sec in 0..._song.notes.length)
-		{
-			_song.notes[sec].sectionNotes = [];
-		}
-	}
-
-	function clearEvents():Void
-	{
-		_song.events = [];
-		updateGrid();
-	}
-
-	function clearSong():Void
-	{
-		for (daSection in 0..._song.notes.length)
-		{
-			_song.notes[daSection].sectionNotes = [];
-		}
-
-		updateGrid();
-	}
-
 	function addNote():Void
 	{
 		var noteStrum = getStrumTime(dummyArrow.y) + sectionStartTime();
@@ -1604,8 +1562,8 @@ class OriginalChartEditor extends MusicBeatState
 		curSelectedEvent = _song.events[_song.events.length - 1];
 		*/
 
-		updateEventUI();
 		updateGrid();
+		updateEventUI();
 	}
 
 	function getStrumTime(yPos:Float):Float
