@@ -6,6 +6,7 @@ import dependency.FNFSprite;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.group.FlxGroup.FlxTypedGroup;
+import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
 import flixel.util.FlxSort;
 import funkin.*;
@@ -66,6 +67,16 @@ class ForeverAssets
 		combo.velocity.y = -FlxG.random.int(140, 160);
 		combo.velocity.x = FlxG.random.float(-5, 5);
 
+		FlxTween.tween(combo, {alpha: 0}, (Conductor.stepCrochet * 2) / 1000, {
+			onComplete: function(tween:FlxTween)
+			{
+				combo.kill();
+			},
+			startDelay: (Conductor.crochet) / 1000
+		});
+
+		group.sort(FNFSprite.depthSorting, FlxSort.DESCENDING);
+
 		return combo;
 	}
 
@@ -102,14 +113,24 @@ class ForeverAssets
 		rating.velocity.x = -FlxG.random.int(0, 10);
 		rating.acceleration.y = 550;
 
+		FlxTween.tween(rating, {alpha: 0}, (Conductor.stepCrochet) / 1000, {
+			onComplete: function(tween:FlxTween)
+			{
+				rating.kill();
+			},
+			startDelay: ((Conductor.crochet + Conductor.stepCrochet * 2) / 1000)
+		});
+
+		group.sort(FNFSprite.depthSorting, FlxSort.DESCENDING);
+
 		return rating;
 	}
 
-	public static function generateNoteSplashes(asset:String, parentGroup:FlxTypedGroup<NoteSplash>, assetModifier:String = 'base', changeableSkin:String = 'default', baseLibrary:String,
+	public static function generateNoteSplashes(asset:String, group:FlxTypedGroup<NoteSplash>, assetModifier:String = 'base', changeableSkin:String = 'default', baseLibrary:String,
 			noteData:Int):NoteSplash
 	{
 		//
-		var tempSplash:NoteSplash = parentGroup.recycle(NoteSplash);
+		var tempSplash:NoteSplash = group.recycle(NoteSplash);
 		tempSplash.noteData = noteData;
 
 		switch (assetModifier)
@@ -148,7 +169,7 @@ class ForeverAssets
 				tempSplash.addOffset('anim2', -20, -10);
 		}
 		
-		parentGroup.sort(FNFSprite.depthSorting, FlxSort.DESCENDING);
+		group.sort(FNFSprite.depthSorting, FlxSort.DESCENDING);
 
 		return tempSplash;
 	}

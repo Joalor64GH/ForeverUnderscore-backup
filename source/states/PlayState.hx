@@ -1664,22 +1664,6 @@ class PlayState extends MusicBeatState
 		 */
 		insert(members.indexOf(strumLines), rating);
 
-		FlxTween.tween(rating, {alpha: 0}, (Conductor.stepCrochet) / 1000, {
-			onComplete: function(tween:FlxTween)
-			{
-				rating.kill();
-			},
-			startDelay: ((Conductor.crochet + Conductor.stepCrochet * 2) / 1000)
-		});
-
-		if (Init.trueSettings.get('Fixed Judgements'))
-		{
-			// bound to camera
-			if (!cached)
-				rating.cameras = [camHUD];
-			rating.screenCenter();
-		}
-
 		if (!cached)
 		{
 			Timings.gottenJudgements.set(newRating, Timings.gottenJudgements.get(newRating) + 1);
@@ -1690,14 +1674,23 @@ class PlayState extends MusicBeatState
 			}
 		}
 
+		if (Init.trueSettings.get('Fixed Judgements'))
+		{
+			// bound to camera
+			if (!cached)
+				rating.cameras = [camHUD];
+			rating.screenCenter();
+		}
+
 		if (cached)
 			rating.alpha = 0.000001;
 
 		var comboString:String = Std.string(combo);
+		var stringArray:Array<String> = comboString.split("");
+
 		var negative = false;
 		if ((comboString.startsWith('-')) || (combo == 0))
 			negative = true;
-		var stringArray:Array<String> = comboString.split("");
 
 		for (scoreInt in 0...stringArray.length)
 		{
@@ -1707,14 +1700,6 @@ class PlayState extends MusicBeatState
 			 * Credits to Shadow_Mario_;
 			 */
 			insert(members.indexOf(strumLines), comboNum);
-
-			FlxTween.tween(comboNum, {alpha: 0}, (Conductor.stepCrochet * 2) / 1000, {
-				onComplete: function(tween:FlxTween)
-				{
-					comboNum.kill();
-				},
-				startDelay: (Conductor.crochet) / 1000
-			});
 
 			if (Init.trueSettings.get('Fixed Judgements'))
 			{
@@ -1727,9 +1712,6 @@ class PlayState extends MusicBeatState
 			if (cached)
 				comboNum.alpha = 0.000001;
 		}
-		
-		comboGroup.sort(FNFSprite.depthSorting, FlxSort.DESCENDING);
-		ratingsGroup.sort(FNFSprite.depthSorting, FlxSort.DESCENDING);
 	}
 
 	public function decreaseCombo(?popMiss:Bool = false)
