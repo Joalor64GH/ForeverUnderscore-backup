@@ -804,6 +804,9 @@ class PlayState extends MusicBeatState
 				var mustHit = PlayState.SONG.notes[Std.int(curStep / 16)].mustHitSection;
 				var gfSection = PlayState.SONG.notes[Std.int(curStep / 16)].gfSection;
 
+				setVar('mustHit', mustHit);
+				setVar('gfSection', gfSection);
+
 				if (!mustHit && !gfSection)
 				{
 					var char = dadOpponent;
