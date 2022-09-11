@@ -92,6 +92,7 @@ class GameOverSubstate extends MusicBeatSubstate
 			if (tankNoise != null && tankNoise.playing)
 				tankNoise.stop();
 			PlayState.deaths = 0;
+			PLayState.chartingMode = false;
 
 			if (PlayState.isStoryMode)
 				Main.switchState(this, new StoryMenuState());
