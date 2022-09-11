@@ -1,6 +1,6 @@
 package base;
 
-import base.ChartParser.SwagSection;
+import base.ChartParser.LegacySection;
 import base.Conductor;
 import dependency.FNFSprite;
 import flixel.FlxG;

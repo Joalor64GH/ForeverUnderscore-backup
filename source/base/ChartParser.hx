@@ -1,11 +1,11 @@
 package base;
 
 import Paths.ChartType;
+import base.SongDefines;
+import flixel.util.FlxSort;
 import funkin.EventNote;
 import funkin.Note;
-import funkin.Strumline;
 import haxe.Json;
-import openfl.utils.Assets;
 import states.PlayState;
 import sys.io.File;
 
@@ -16,14 +16,22 @@ using StringTools;
  * say the base game type loads the base game's charts, the forever chart type loads a custom forever structure chart with custom features,
  * and so on. This class will handle both saving and loading of charts with useful features and scripts that will make things much easier
  * to handle and load, as well as much more modular!
- * 
- * Song Information, such as name, notes, events, bpm, etc;
 **/
-typedef SwagSong =
+
+typedef SongFormat = // new song format which i'm setting up later
 {
 	var song:String;
-	var notes:Array<SwagSection>;
-	var events:Array<Array<Array<Dynamic>>>;
+	var bpm:Float;
+	var events:Array<SongEvent>;
+	var notes:Array<SongNote>;
+	var speed:Float;
+}
+
+typedef LegacySong =
+{
+	var song:String;
+	var notes:Array<LegacySection>;
+	var events:Array<Array<Dynamic>>;
 	var bpm:Float;
 	var needsVoices:Bool;
 	var speed:Float;
@@ -40,22 +48,7 @@ typedef SwagSong =
 	var ?color:Array<Int>;
 }
 
-/**
- * Song Meta Information, such as author, asset modifier, offset, song color, etc;
-**/
-typedef SwagMeta =
-{
-	var author:String;
-	var assetModifier:String;
-	var ?offset:Int;
-	var ?color:Array<Int>;
-	var ?difficulties:Array<String>;
-}
-
-/**
- * Song Section Information;
-**/
-typedef SwagSection =
+typedef LegacySection =
 {
 	var sectionNotes:Array<Dynamic>;
 	var sectionBeats:Float; // thx shadowmario;
@@ -67,15 +60,24 @@ typedef SwagSection =
 	var altAnim:Bool;
 }
 
+typedef SongInfo =
+{
+	var author:String;
+	var assetModifier:String;
+	var ?offset:Int;
+	var ?color:Array<Int>;
+	var ?difficulties:Array<String>;
+}
+
 class ChartParser
 {
 	public static var songType:ChartType = UNDERSCORE;
 
 	// hopefully this makes it easier for people to load and save chart features and such, y'know the deal lol
-	public static function loadChart(songData:SwagSong, songType:ChartType = FNF_LEGACY):Array<Note>
+	public static function loadChart(songData:LegacySong, songType:ChartType = FNF_LEGACY):Array<Note>
 	{
 		var unspawnNotes:Array<Note> = [];
-		var noteData:Array<SwagSection>;
+		var noteData:Array<LegacySection>;
 
 		noteData = songData.notes;
 		switch (songType)
@@ -220,13 +222,20 @@ class ChartParser
 				// placeholder
 		}
 
+		// sort notes before returning them;
+		unspawnNotes.sort(function(Obj1:Note, Obj2:Note):Int
+		{
+			return FlxSort.byValues(FlxSort.ASCENDING, Obj1.strumTime, Obj2.strumTime);
+		});
+
 		return unspawnNotes;
 	}
 
-	public static function loadEvents(eventData:SwagSong, songType:ChartType = FNF_LEGACY):Array<EventNote>
+	public static function loadEvents(eventData:LegacySong, songType:ChartType = FNF_LEGACY):Array<EventNote>
 	{
 		var unspawnEvents:Array<EventNote> = [];
 
+		/*
 		if (eventData.events != null && eventData.events.length > 0)
 		{
 			for (i in 0...eventData.events.length)
@@ -242,6 +251,13 @@ class ChartParser
 				}
 			}
 		}
+		*/
+
+		unspawnEvents.sort(function(event1:EventNote, event2:EventNote):Int
+		{
+			return FlxSort.byValues(FlxSort.ASCENDING, event1.strumTime, event2.strumTime);
+		});
+
 		return unspawnEvents;
 	}
 }
@@ -249,12 +265,13 @@ class ChartParser
 class Song
 {
 	public var song:String;
-	public var notes:Array<SwagSection>;
+	public var notes:Array<LegacySection>;
 	public var bpm:Float;
 	public var needsVoices:Bool = true;
 	public var speed:Float = 1;
 	public var player1:String = 'bf';
 	public var player2:String = 'dad';
+	public var gfVersion:String = 'gf';
 
 	public function new(song, notes, bpm)
 	{
@@ -263,7 +280,7 @@ class Song
 		this.bpm = bpm;
 	}
 
-	public static function loadSong(jsonInput:String, ?folder:String):SwagSong
+	public static function loadSong(jsonInput:String, ?folder:String):LegacySong
 	{
 		var rawJson = '';
 		var rawMeta = '';
@@ -311,49 +328,49 @@ class Song
 		return parseSong(rawJson, rawMeta);
 	}
 
-	public static function parseSong(rawJson:String, rawMeta:String):SwagSong
+	public static function parseSong(rawJson:String, rawMeta:String):LegacySong
 	{
-		var swagShit:SwagSong = cast Json.parse(rawJson).song;
-		swagShit.validScore = true;
+		var oldSong:LegacySong = cast Json.parse(rawJson).song;
+		oldSong.validScore = true;
 
 		if (rawMeta != null)
 		{
-			var swagMeta:SwagMeta = cast Json.parse(rawMeta);
+			var songMeta:SongInfo = cast Json.parse(rawMeta);
 
 			// injecting info from the meta file if it's valid data, else get from the song data
 			// please spare me I know it looks weird.
-			if (swagMeta.assetModifier != null)
-				swagShit.assetModifier = swagMeta.assetModifier;
-			else if (swagMeta.assetModifier == null)
-				swagShit.assetModifier = swagShit.assetModifier;
+			if (songMeta.assetModifier != null)
+				oldSong.assetModifier = songMeta.assetModifier;
+			else if (songMeta.assetModifier == null)
+				oldSong.assetModifier = oldSong.assetModifier;
 			else
-				swagShit.assetModifier == 'base';
+				oldSong.assetModifier == 'base';
 
-			if (swagMeta.author != null)
-				swagShit.author = swagMeta.author;
-			else if (swagMeta.author == null)
-				swagShit.author = swagShit.author;
+			if (songMeta.author != null)
+				oldSong.author = songMeta.author;
+			else if (songMeta.author == null)
+				oldSong.author = oldSong.author;
 			else
-				swagShit.author = '???';
+				oldSong.author = '???';
 
-			if (swagMeta.offset != null)
-				swagShit.offset = swagMeta.offset;
-			else if (swagMeta.offset == null)
-				swagShit.offset = swagShit.offset;
+			if (songMeta.offset != null)
+				oldSong.offset = songMeta.offset;
+			else if (songMeta.offset == null)
+				oldSong.offset = oldSong.offset;
 			else
-				swagShit.offset = 0;
+				oldSong.offset = 0;
 
-			if (swagMeta.color != null)
-				swagShit.color = swagMeta.color;
-			else if (swagMeta.color == null)
-				swagShit.color = swagShit.color;
+			if (songMeta.color != null)
+				oldSong.color = songMeta.color;
+			else if (songMeta.color == null)
+				oldSong.color = oldSong.color;
 			else
-				swagShit.color = [255, 255, 255];
+				oldSong.color = [255, 255, 255];
 
 			// temporary custom difficulty things;
-			if (swagMeta.difficulties != null)
+			if (songMeta.difficulties != null)
 			{
-				for (i in swagMeta.difficulties)
+				for (i in songMeta.difficulties)
 				{
 					if (i != null && i.length > 1 && !CoolUtil.difficulties.contains(i))
 					{
@@ -366,7 +383,7 @@ class Song
 			}
 		}
 
-		return swagShit;
+		return oldSong;
 	}
 }
 

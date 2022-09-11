@@ -1,7 +1,7 @@
 package states.menus;
 
+import base.ChartParser.LegacySong;
 import base.ChartParser.Song;
-import base.ChartParser.SwagSong;
 import base.ChartParser;
 import base.CoolUtil;
 import base.MusicBeat.MusicBeatState;
@@ -131,7 +131,7 @@ class FreeplayState extends MusicBeatState
 				var chartExists:Bool = FileSystem.exists(Paths.songJson(i, i));
 				if (chartExists)
 				{
-					var castSong:SwagSong = Song.loadSong(i, i);
+					var castSong:LegacySong = Song.loadSong(i, i);
 					icon = (castSong != null) ? castSong.player2 : 'gf';
 
 					colorArray = castSong.color;

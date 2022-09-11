@@ -1,8 +1,8 @@
 package base;
 
+import base.ChartParser.LegacySection;
+import base.ChartParser.LegacySong;
 import base.ChartParser.Song;
-import base.ChartParser.SwagSection;
-import base.ChartParser.SwagSong;
 import flixel.FlxG;
 import flixel.system.FlxSound;
 import haxe.Json;
@@ -46,7 +46,7 @@ class Conductor
 	public static var songPlaybackRate:Float = 1;
 	public static var bpmChangeMap:Array<BPMChangeEvent> = [];
 
-	public static function mapBPMChanges(song:SwagSong)
+	public static function mapBPMChanges(song:LegacySong)
 	{
 		bpmChangeMap = [];
 
@@ -79,7 +79,7 @@ class Conductor
 	* it provides ease of access and reliability, along with mod support;
 	* https://github.com/ShadowMario/FNF-PsychEngine;
 	**/
-	static function getSectionBeats(song:SwagSong, section:Int)
+	static function getSectionBeats(song:LegacySong, section:Int)
 	{
 		var val:Null<Float> = null;
 		if (song.notes[section] != null)

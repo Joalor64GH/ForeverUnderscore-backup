@@ -2,8 +2,8 @@ package states;
 
 import Paths.ChartType;
 import base.*;
+import base.ChartParser.LegacySong;
 import base.ChartParser.Song;
-import base.ChartParser.SwagSong;
 import base.MusicBeat.MusicBeatState;
 import dependency.*;
 import flixel.FlxBasic;
@@ -62,7 +62,7 @@ class PlayState extends MusicBeatState
 	public static var startTimer:FlxTimer;
 
 	public static var curStage:String = '';
-	public static var SONG:SwagSong;
+	public static var SONG:LegacySong;
 	public static var isStoryMode:Bool = false;
 	public static var storyWeek:Int = 0;
 	public static var storyPlaylist:Array<String> = [];
@@ -80,11 +80,10 @@ class PlayState extends MusicBeatState
 	public static var changeableSkin:String = 'default';
 	public static var changeableSound:String = 'default';
 
-	public var events:FlxTypedGroup<EventNote> = new FlxTypedGroup<EventNote>();
-	public var unspawnEvents:Array<EventNote> = [];
-
 	public var notes:FlxTypedGroup<Note> = new FlxTypedGroup<Note>();
 	public var unspawnNotes:Array<Note> = [];
+
+	public var unspawnEvents:Array<EventNote> = [];
 
 	// if you ever wanna add more keys
 	var numberOfKeys:Int = 4;
@@ -943,13 +942,7 @@ class PlayState extends MusicBeatState
 			}
 		 */
 
-		events.forEachAlive(function(event:EventNote)
-		{
-			if (Conductor.songMusic.time == event.strumTime)
-			{
-				eventNoteHit(event);
-			}
-		});
+		checkSongEvents();
 
 		callFunc('postUpdate', []);
 	}
@@ -1222,21 +1215,30 @@ class PlayState extends MusicBeatState
 		daNote.destroy();
 	}
 
-	function eventNoteHit(eventNote:EventNote, ?eventName:String, ?val1:String, ?val2:String)
+	function checkSongEvents()
 	{
-		if (eventNote == null)
-			eventNote = new EventNote('', 0, '', '');
+		while (unspawnEvents.length > 0)
+		{
+			var leStrumTime:Float = unspawnEvents[0].strumTime;
+			if (Conductor.songPosition < leStrumTime)
+				break;
 
-		var event:String = eventNote.event;
+			var value1:String = '';
+			if (unspawnEvents[0].val1 != null)
+				value1 = unspawnEvents[0].val1;
 
-		if (eventName != null)
-			event = eventName;
-		if (val1 != null)
-			eventNote.val1 = val1;
-		if (val2 != null)
-			eventNote.val2 = val2;
+			var value2:String = '';
+			if (unspawnEvents[0].val2 != null)
+				value2 = unspawnEvents[0].val2;
 
-		switch (event)
+			eventNoteHit(unspawnEvents[0].event, value1, value2);
+			unspawnEvents.shift();
+		}
+	}
+
+	function eventNoteHit(eventName:String, ?val1:String, ?val2:String)
+	{
+		switch (eventName)
 		{
 			case 'Change Character':
 				var ogPosition:Array<Float> = [770, 450];
@@ -1320,11 +1322,7 @@ class PlayState extends MusicBeatState
 				}
 		}
 
-		callFunc('eventNoteHit', [eventNote.event, eventNote.val1, eventNote.val2]);
-
-		eventNote.kill();
-		events.remove(eventNote, true);
-		eventNote.destroy();
+		callFunc('eventNoteHit', [eventName, val1, val2]);
 	}
 
 	function goodNoteHit(coolNote:Note, character:Character, characterStrums:Strumline, ?canDisplayJudgement:Bool = true)
@@ -1816,21 +1814,14 @@ class PlayState extends MusicBeatState
 
 		// generate the chart and sort through notes
 		unspawnNotes = ChartParser.loadChart(SONG, ChartParser.songType);
-		unspawnNotes.sort(sortByShit);
+		unspawnEvents = ChartParser.loadEvents(SONG, ChartParser.songType);
 
-		unspawnEvents = ChartParser.loadEvents(SONG);
+		trace(unspawnEvents);
 
-		if (events.members.length > 1)
-			unspawnEvents.sort(sortByEvent);
+		checkSongEvents();
 
 		generatedMusic = true;
 	}
-
-	function sortByShit(Obj1:Note, Obj2:Note):Int
-		return FlxSort.byValues(FlxSort.ASCENDING, Obj1.strumTime, Obj2.strumTime);
-
-	function sortByEvent(event1:EventNote, event2:EventNote):Int
-		return FlxSort.byValues(FlxSort.ASCENDING, event1.strumTime, event2.strumTime);
 
 	override function stepHit()
 	{

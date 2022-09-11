@@ -1,9 +1,9 @@
 package states.editors;
 
+import base.ChartParser.LegacySection;
+import base.ChartParser.LegacySong;
 import base.ChartParser.Section;
 import base.ChartParser.Song;
-import base.ChartParser.SwagSection;
-import base.ChartParser.SwagSong;
 import base.Conductor;
 import base.ForeverAssets;
 import base.ForeverTools;
@@ -64,7 +64,7 @@ import sys.thread.Thread;
 **/
 class ChartEditor extends MusicBeatState
 {
-	var _song:SwagSong;
+	var _song:LegacySong;
 
 	var _file:FileReference;
 
@@ -80,7 +80,7 @@ class ChartEditor extends MusicBeatState
 	var strumLineCam:FlxObject;
 
 	public static var songPosition:Float = 0;
-	public static var curSong:SwagSong;
+	public static var curSong:LegacySong;
 
 	public static var gridSize:Int = 50;
 
@@ -744,8 +744,6 @@ class ChartEditor extends MusicBeatState
 	private function generateChartNote(daNoteInfo, daStrumTime, daSus, daNoteAlt, daNoteType, noteSection, pushNote:Bool)
 	{
 		var note:Note = ForeverAssets.generateArrow(_song.assetModifier, daStrumTime, daNoteInfo % 4, 0, false, null, daNoteType);
-		// I love how there's 3 different engines that use this exact same variable name lmao
-		note.rawNoteData = daNoteInfo;
 		note.sustainLength = daSus;
 		note.setGraphicSize(gridSize, gridSize);
 		note.updateHitbox();
@@ -794,7 +792,6 @@ class ChartEditor extends MusicBeatState
 			sustainVis.updateHitbox();
 			sustainVis.x = prevNote.x + constSize;
 			sustainVis.y = prevNote.y + constSize;
-			sustainVis.rawNoteData = daNoteInfo;
 			holdsGroup.add(sustainVis);
 
 			if (prevNote != null && prevNote.isSustainNote)
@@ -805,7 +802,6 @@ class ChartEditor extends MusicBeatState
 				sustainEnd.updateHitbox();
 				sustainEnd.x = sustainVis.x - 15;
 				sustainEnd.y = sustainVis.y + (sustainVis.height) + (gridSize / 2);
-				sustainEnd.rawNoteData = daNoteInfo;
 				holdsGroup.add(sustainEnd);
 			}
 			*/

@@ -5,9 +5,9 @@ package funkin;
 	stay the same as it was in the original source of the game. I'll most likely make some changes afterwards though!
 **/
 import base.*;
+import base.ChartParser.LegacySection;
+import base.ChartParser.LegacySong;
 import base.ChartParser.Song;
-import base.ChartParser.SwagSection;
-import base.ChartParser.SwagSong;
 import dependency.FNFSprite;
 import flixel.FlxG;
 import flixel.addons.util.FlxSimplex;
@@ -290,7 +290,7 @@ class Character extends FNFSprite
 
 	function loadMappedAnims()
 	{
-		var sections:Array<SwagSection> = Song.loadSong('picospeaker', PlayState.SONG.song.toLowerCase()).notes;
+		var sections:Array<LegacySection> = Song.loadSong('picospeaker', PlayState.SONG.song.toLowerCase()).notes;
 		for (section in sections)
 		{
 			for (note in section.sectionNotes)

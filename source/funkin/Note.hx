@@ -26,9 +26,6 @@ class Note extends FNFSprite
 	public var sustainLength:Float = 0;
 	public var isSustainNote:Bool = false;
 
-	// only useful for charting stuffs
-	public var rawNoteData:Int;
-
 	// offsets
 	public var offsetX:Float = 0;
 	public var offsetY:Float = 0;

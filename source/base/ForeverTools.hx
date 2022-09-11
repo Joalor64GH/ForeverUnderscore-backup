@@ -93,9 +93,10 @@ class ForeverTools
 		}
 	}
 
-	public static function beautifyEvents(event:Array<Array<Array<Dynamic>>>):Array<Array<Array<Dynamic>>>
+	public static function formatEvents(event:Array<Array<Dynamic>>):Array<Array<Dynamic>>
 	{
 		for (i in event)
+		{
 			if (i == null)
 			{
 				var index:Int = event.indexOf(i);
@@ -103,6 +104,7 @@ class ForeverTools
 				i = [];
 				event.insert(index, i);
 			}
+		}
 
 		return event;
 	}
