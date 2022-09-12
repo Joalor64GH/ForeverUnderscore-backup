@@ -7,65 +7,46 @@ function generateStage()
 	 * so my folder would be `assets/backgrounds/exampleStage/`
 	**/
 
-	stageName = 'exampleStage'; // sets this stage's name (needed for the graphics to actually load);
+	curStage = 'stage';
+    PlayState.defaultCamZoom = 0.9;
+	spawnGirlfriend = true;
 
-	setStageZoom(0.9); // sets the stage camera zoom;
-	spawnGirlfriend(true); // whether girlfriend should be on the stage or not;
+	// create stage graphics just haxe code!
 
-	/**
-		Blend Modes, for all your image effect needs
-				= AVAILABLE BLENDS =
-					"normal"
-					"darken"
-					"multiply"
-					"lighten"
-					"screen"
-					"overlay"
-					"hardlight"
-					"difference"
-					"add"
-					"subtract"
-					"invert"
-	**/
+	var bg:FNFSprite = new FNFSprite(-600, -200).loadGraphic(Paths.image('backgrounds/' + curStage + '/stageback'));
+    bg.antialiasing = true;
+    bg.scrollFactor.set(0.9, 0.9);
+    bg.active = false;
+    add(bg);
 
-	// create sprites for the stage
+    var stageFront:FNFSprite = new FNFSprite(-650, 600).loadGraphic(Paths.image('backgrounds/' + curStage + '/stagefront'));
+    stageFront.setGraphicSize(Std.int(stageFront.width * 1.1));
+    stageFront.updateHitbox();
+    stageFront.antialiasing = true;
+    stageFront.scrollFactor.set(0.9, 0.9);
+    stageFront.active = false;
+    add(stageFront);
 
-	// left to right, sprite ID, path, x, y, and if it should spawn on the foreground (above characters);
-	createSprite('bgBack', 'backgrounds/' + stageName + '/stageback', -600, -300);
-	setSpriteScrollFactor('bgBack', 0.9, 0.9);
-	addSprite('bgBack');
-
-	//
-	createSprite('bgFront', 'backgrounds/' + stageName + '/stageFront', -650, 600);
-	setSpriteScrollFactor('bgFront', 0.9, 0.9);
-	addSprite('bgFront');
-
-	//
-	createSprite('bgCurtains', 'backgrounds/' + stageName + '/stagecurtains', -500, -300);
-	setSpriteScrollFactor('bgCurtains', 0.9, 0.9);
-	addSprite('bgCurtains');
-
-	// extra functions for creating animated sprites, not used here because this is a stage with no animated graphics;
-	/**
-	 * createAnimatedSprite('spriteID', 'path', 'spriteType (can be sparrow or packer)', xPosition, yPosition [['animationPrefix', 'nameOnXML', fps, whether it loops or not]], defaultAnimation, spawnOnForeground);
-	 * addSpriteAnimation('spriteID', [['newAnimationPrefix', 'nameOnXML", fps, whether it loops or not]]);
-	 * addSpriteOffset('spriteID', 'animationPrefix', xOffset, yOffset);
-	 * spritePlayAnimation('spriteID', 'animationPrefix');
-	 * setSpriteBlend('spriteID', 'blendModeString');
-	 * setSpriteSize('spriteID', newSize); // newSize is a float value
-	 * setSpriteAlpha('spriteID', newOpacityValue); // newOpacityValue is a float value
-	**/
-
-	// function for adding sprites;
-	/**
-	 * addSprite('spriteID'); // add the sprite;
-	 * addSpriteToLayers('spriteID'); // add the sprite above girlfriend;
-	 * addSpriteOnForeground('spriteID'); // add the sprite above the characters;
-	 * addSpriteToGroup('spriteID'); // add the sprite to a created sprite group;
-	 */
+    var stageCurtains:FNFSprite = new FNFSprite(-500, -300).loadGraphic(Paths.image('backgrounds/' + curStage + '/stagecurtains'));
+    stageCurtains.setGraphicSize(Std.int(stageCurtains.width * 0.9));
+    stageCurtains.updateHitbox();
+    stageCurtains.antialiasing = true;
+    stageCurtains.scrollFactor.set(1.3, 1.3);
+    stageCurtains.active = false;
+    add(stageCurtains);
 }
 
-function repositionPlayers(boyfriend, dad, gf) // function used to reposition characters
+function updateStage(curBeat:Int, boyfriend:Character, gf:Character, dad:Character)
+{
+	// similar to beatHit, this function is used for stage updates *on beats*;
+}
+
+function updateStageSteps(curStep:Int, boyfriend:Character, gf:Character, dad:Character)
+{
+	// similar to stepHit, this function is used for stage updates *on steps*;
+}
+
+function repositionPlayers(boyfriend:Character, gf:Character, dad:Character)
 {
 	// boyfriend.x += 0;
 	// boyfriend.y += 0;
@@ -73,14 +54,4 @@ function repositionPlayers(boyfriend, dad, gf) // function used to reposition ch
 	// gf.y += 0;
 	// dad.x += 0;
 	// dad.y += 0;
-}
-
-function updateStage(curBeat) // stage updates
-{
-	//
-}
-
-function updateStageConst(elapsed) // stage constant updates
-{
-	//
 }

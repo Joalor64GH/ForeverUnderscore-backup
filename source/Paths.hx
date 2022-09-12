@@ -7,7 +7,6 @@ import base.CoolUtil;
 import flixel.FlxG;
 import flixel.graphics.FlxGraphic;
 import flixel.graphics.frames.FlxAtlasFrames;
-import funkin.Character.CharacterType;
 import haxe.Json;
 import lime.utils.Assets;
 import openfl.display.BitmapData;

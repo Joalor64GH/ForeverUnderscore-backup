@@ -708,6 +708,7 @@ class OriginalChartEditor extends MusicBeatState
 				{
 					curSelectedEvent[2] = eventVal1Input.text;
 					updateGrid();
+					updateEventUI();
 				}
 			}
 			else if (sender == eventVal2Input)
@@ -716,6 +717,7 @@ class OriginalChartEditor extends MusicBeatState
 				{
 					curSelectedEvent[3] = eventVal2Input.text;
 					updateGrid();
+					updateEventUI();
 				}
 			}
 		}
@@ -1285,17 +1287,6 @@ class OriginalChartEditor extends MusicBeatState
 				strumTimeInput.text = curSelectedNote[0];
 			}
 		}
-		else
-		{
-			eventDropDown.selectedLabel = curSelectedNote[2];
-			var selected:Int = Std.parseInt(eventDropDown.selectedId);
-			if (selected > 0 && selected < eventArray.length)
-			{
-				descText.text = eventArray[selected][1];
-			}
-			eventVal1Input.text = curSelectedNote[3];
-			eventVal2Input.text = curSelectedNote[4];
-		}
 	}
 
 	function updateEventUI()
@@ -1303,9 +1294,14 @@ class OriginalChartEditor extends MusicBeatState
 		if (curSelectedEvent == null)
 			return;
 
+		eventDropDown.selectedLabel = curSelectedEvent[1];
+		var selected:Int = Std.parseInt(eventDropDown.selectedId);
+		if (selected > 0 && selected < eventArray.length)
+		{
+			descText.text = eventArray[selected][1];
+		}
 		eventVal1Input.text = curSelectedEvent[2];
 		eventVal2Input.text = curSelectedEvent[3];
-		eventDropDown.selectedLabel = curSelectedEvent[1];
 	}
 
 	function generateGrid()
@@ -1546,7 +1542,6 @@ class OriginalChartEditor extends MusicBeatState
 
 		updateGrid();
 		updateNoteUI();
-
 		autosaveSong();
 	}
 
@@ -1558,8 +1553,11 @@ class OriginalChartEditor extends MusicBeatState
 		var text2 = eventVal2Input.text;
 
 		/*
-		_song.events.push([noteStrum, event, text1, text2]);
-		curSelectedEvent = _song.events[_song.events.length - 1];
+		if (event != null)
+		{
+			_song.events.push([noteStrum, event, text1, text2]);
+			curSelectedEvent = _song.events[_song.events.length - 1];
+		}
 		*/
 
 		updateGrid();

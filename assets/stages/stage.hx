@@ -1,22 +1,28 @@
 function generateStage()
 {
-	stageName = 'stage';
-	setStageZoom(0.9);
+    curStage = 'stage';
+    PlayState.defaultCamZoom = 0.9;
 
-	if (song == 'tutorial')
-    spawnGirlfriend(false);
-  else
-    spawnGirlfriend(true);
-  
-  createSprite('bgBack', 'backgrounds/' + stageName + '/stageback', -600, -300, false);
-  setSpriteScrollFactor('bgBack', 0.9, 0.9);
-	addSprite('bgBack');
-  
-  createSprite('bgFront', 'backgrounds/' + stageName + '/stageFront', -650, 600, false);
-  setSpriteScrollFactor('bgFront', 0.9, 0.9);
-	addSprite('bgFront');
-  
-  createSprite('bgCurtains', 'backgrounds/' + stageName + '/stagecurtains', -500, -300, false);
-  setSpriteScrollFactor('bgCurtains', 0.9, 0.9);
-  addSprite('bgCurtains');
+    var bg:FNFSprite = new FNFSprite(-600, -200).loadGraphic(Paths.image('backgrounds/' + curStage + '/stageback'));
+    bg.antialiasing = true;
+    bg.scrollFactor.set(0.9, 0.9);
+    bg.active = false;
+    add(bg);
+
+    var stageFront:FNFSprite = new FNFSprite(-650, 600).loadGraphic(Paths.image('backgrounds/' + curStage + '/stagefront'));
+    stageFront.setGraphicSize(Std.int(stageFront.width * 1.1));
+    stageFront.updateHitbox();
+    stageFront.antialiasing = true;
+    stageFront.scrollFactor.set(0.9, 0.9);
+    stageFront.active = false;
+    add(stageFront);
+
+    var stageCurtains:FNFSprite = new FNFSprite(-500, -300).loadGraphic(Paths.image('backgrounds/' + curStage + '/stagecurtains'));
+    stageCurtains.setGraphicSize(Std.int(stageCurtains.width * 0.9));
+    stageCurtains.updateHitbox();
+    stageCurtains.antialiasing = true;
+    stageCurtains.scrollFactor.set(1.3, 1.3);
+    stageCurtains.active = false;
+    add(stageCurtains);
 }
+  

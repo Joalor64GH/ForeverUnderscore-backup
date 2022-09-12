@@ -53,11 +53,7 @@ import vlc.MP4Handler;
 
 class PlayState extends MusicBeatState
 {
-	// FOR SCRIPTS;
-	public static var ScriptedGraphics:Map<String, Dynamic> = new Map<String, FNFSprite>();
 	public static var ScriptedShaders:Map<String, GraphicsShader> = new Map<String, GraphicsShader>();
-	public static var ScriptedTweens:Map<String, Dynamic> = new Map<String, Dynamic>();
-	public static var ScriptedSpriteGroups:Map<String, Dynamic> = new Map<String, FlxSpriteGroup>();
 
 	public static var startTimer:FlxTimer;
 
@@ -86,7 +82,7 @@ class PlayState extends MusicBeatState
 	public var unspawnEvents:Array<EventNote> = [];
 
 	// if you ever wanna add more keys
-	var numberOfKeys:Int = 4;
+	public var numberOfKeys:Int = 4;
 
 	// get it cus release
 	// I'm funny just trust me
@@ -101,8 +97,8 @@ class PlayState extends MusicBeatState
 
 	static var prevCamFollow:FlxObject;
 
-	var curSong:String = "";
-	var gfSpeed:Int = 1;
+	public var curSong:String = "";
+	public var gfSpeed:Int = 1;
 
 	public static var health:Float = 1; // mario
 	public static var combo:Int = 0;
@@ -162,7 +158,7 @@ class PlayState extends MusicBeatState
 	public static var strumLines:FlxTypedGroup<Strumline>;
 	public static var strumHUD:FlxCamera;
 
-	var allUIs:Array<FlxCamera> = [];
+	public var allUIs:Array<FlxCamera> = [];
 
 	public static var preventScoring:Bool = false;
 	public static var chartingMode:Bool = false;
@@ -281,8 +277,8 @@ class PlayState extends MusicBeatState
 
 		if (Init.trueSettings.get('Stage Opacity') > 0)
 		{
-			stageBuild.repositionPlayers(curStage, boyfriend, dadOpponent, gf);
-			stageBuild.dadPosition(curStage, boyfriend, dadOpponent, gf, camPos);
+			stageBuild.repositionPlayers(curStage, boyfriend, gf, dadOpponent);
+			stageBuild.dadPosition(curStage, boyfriend, gf, dadOpponent, camPos);
 		}
 
 		changeableSkin = Init.trueSettings.get("UI Skin");
@@ -640,11 +636,6 @@ class PlayState extends MusicBeatState
 			FlxG.stage.removeEventListener(KeyboardEvent.KEY_DOWN, onKeyPress);
 			FlxG.stage.removeEventListener(KeyboardEvent.KEY_UP, onKeyRelease);
 		}
-
-		ScriptedGraphics.clear();
-		ScriptedShaders.clear();
-		ScriptedSpriteGroups.clear();
-		ScriptedTweens.clear();
 
 		// clear scripts;
 		scriptArray = [];
@@ -1828,6 +1819,9 @@ class PlayState extends MusicBeatState
 
 		Conductor.resyncBySteps();
 
+		if (Init.trueSettings.get('Stage Opacity') > 0)
+			stageBuild.stageUpdateSteps(curStep, boyfriend, gf, dadOpponent);
+
 		callFunc('stepHit', [curStep]);
 	}
 
@@ -2409,59 +2403,6 @@ class PlayState extends MusicBeatState
 
 	function setPlayStateVars()
 	{
-		// PlayState values
-		setVar('song', PlayState.SONG);
-		setVar('currentSong', PlayState.SONG.song);
-		setVar('game', PlayState.contents);
-		setVar('stageBuild', stageBuild);
-		setVar('cameraSpeed', cameraSpeed);
-		setVar('preventScoring', preventScoring);
-		setVar('chartingMode', chartingMode);
-		setVar('practiceMode', practiceMode);
-		setVar('autoplay', bfStrums.autoplay);
-		setVar('dadStrums', dadStrums);
-		setVar('bfStrums', bfStrums);
-		setVar('hud', uiHUD);
-		setVar('defaultCamZoom', defaultCamZoom);
-
-		setVar('score', songScore);
-		setVar('misses', misses);
-		setVar('hits', hits);
-		setVar('health', health);
-		setVar('combo', combo);
-
-		// Character values
-		setVar('bf', boyfriend);
-		setVar('gf', gf);
-		setVar('dad', dadOpponent);
-
-		setVar('boyfriend', boyfriend);
-		setVar('girlfriend', gf);
-		setVar('dadOpponent', dadOpponent);
-
-		setVar('boyfriendName', boyfriend.curCharacter);
-		setVar('girlfriendName', gf.curCharacter);
-		setVar('dadOpponentName', dadOpponent.curCharacter);
-
-		setVar('bfName', boyfriend.curCharacter);
-		setVar('gfName', gf.curCharacter);
-		setVar('dadName', dadOpponent.curCharacter);
-
-		setVar('difficultyString', uiHUD.diffDisplay);
-		setVar('songString', uiHUD.infoDisplay);
-		setVar('engineString', uiHUD.engineDisplay);
-
-		setVar('camGame', camGame);
-		setVar('camAlt', camAlt);
-		setVar('camHUD', camHUD);
-		setVar('strumHUD', strumHUD);
-		setVar('dialogueHUD', dialogueHUD);
-
-		setVar('playVideo', function(key:String)
-		{
-			playVideo(key);
-		});
-
 		setVar('setProperty', function(key:String, value:Dynamic)
 		{
 			var dotList:Array<String> = key.split('.');

@@ -1,8 +1,10 @@
 package base;
 
 import base.*;
-import dependency.FNFSprite;
+import dependency.*;
 import flixel.*;
+import flixel.graphics.FlxGraphic;
+import flixel.graphics.frames.FlxAtlasFrames;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.group.FlxGroup;
 import flixel.group.FlxSpriteGroup;
@@ -34,6 +36,7 @@ class ScriptHandler extends SScript
 		set('FlxObject', FlxObject);
 		set('FlxCamera', FlxCamera);
 		set('FlxSprite', FlxSprite);
+		set('FlxSound', FlxSound);
 		set('FlxTimer', FlxTimer);
 		set('FlxTween', FlxTween);
 		set('FlxEase', FlxEase);
@@ -43,16 +46,33 @@ class ScriptHandler extends SScript
 		set('FlxTypedGroup', FlxTypedGroup);
 		set('FlxSpriteGroup', FlxSpriteGroup);
 		set('FlxStringUtil', FlxStringUtil);
+		set('FlxAtlasFrames', FlxAtlasFrames);
 		set('FlxSort', FlxSort);
+		set('Application', Application);
+		set('FlxGraphic', FlxGraphic);
+		set('FlxAtlasFrames', FlxAtlasFrames);
+		set('File', File);
 
-		set('Paths', Paths);
+		// CLASSES (FOREVER);
+		set('Init', Init);
+		set('ForeverAssets', ForeverAssets);
+		set('ForeverTools', ForeverTools);
+		set('FNFSprite', FNFSprite);
+		set('Discord', Discord);
+
+		// CLASSES (BASE);
+		set('Alphabet', Alphabet);
+		set('Character', Character);
 		set('Controls', Controls);
+		set('CoolUtil', CoolUtil);
+		set('Conductor', Conductor);
 		set('PlayState', PlayState);
+		set('Main', Main);
 		set('Note', Note);
 		set('Strumline', Strumline);
+		set('Paths', Paths);
+		set('Stage', Stage);
 		set('Timings', Timings);
-		set('Conductor', Conductor);
-		set('Init', Init);
 	}
 }
 
@@ -60,135 +80,6 @@ class ScriptFuncs extends PlayState
 {
 	public static function setBaseVars()
 	{
-		PlayState.contents.setVar('fnfVer', Application.current.meta.get('version'));
-		PlayState.contents.setVar('foreverVer', Main.foreverVersion);
-		PlayState.contents.setVar('underscoreVer', Main.underscoreVersion);
-
-		// Timings.hx values
-		PlayState.contents.setVar('comboRating', Timings.comboDisplay);
-		PlayState.contents.setVar('accuracy', Timings.accuracy);
-		PlayState.contents.setVar('ratingFinal', Timings.ratingFinal);
-		PlayState.contents.setVar('trueAccuracy', Timings.trueAccuracy);
-		PlayState.contents.setVar('formattedAccuracy', Math.floor(Timings.getAccuracy() * 100) / 100);
-		PlayState.contents.setVar('formattedRanking', Timings.returnScoreRating().toUpperCase());
-
-		PlayState.contents.setVar('makeSprite', function(spriteID:String, color:String, width:Float, height:Float, x:Int, y:Int)
-		{
-			var newSprite = new FNFSprite(width, height);
-			newSprite.makeGraphic(x, y, FlxColor.fromString(color));
-			newSprite.antialiasing = !Init.trueSettings.get('Disable Antialiasing');
-			PlayState.ScriptedGraphics.set(spriteID, newSprite);
-			PlayState.contents.setVar('$spriteID', newSprite);
-		});
-
-		PlayState.contents.setVar('loadSprite', function(spriteID:String, key:String, x:Float, y:Float)
-		{
-			var newSprite:FNFSprite = new FNFSprite(x, y).loadGraphic(Paths.image(key));
-			newSprite.updateHitbox();
-			newSprite.antialiasing = !Init.trueSettings.get('Disable Antialiasing');
-			PlayState.ScriptedGraphics.set(spriteID, newSprite);
-			PlayState.contents.setVar('$spriteID', newSprite);
-		});
-
-		PlayState.contents.setVar('loadAnimatedSprite',
-			function(spriteID:String, key:String, spriteType:String, x:Float = 0, y:Float = 0, spriteAnims:Array<Dynamic>, defAnim:String)
-			{
-				var newSprite:FNFSprite = new FNFSprite(x, y);
-
-				switch (spriteType)
-				{
-					case "packer":
-						newSprite.frames = Paths.getPackerAtlas(key);
-					case "sparrow":
-						newSprite.frames = Paths.getSparrowAtlas(key);
-					case "sparrow-hash":
-						newSprite.frames = Paths.getSparrowHashAtlas(key);
-				}
-
-				for (anim in spriteAnims)
-				{
-					newSprite.animation.addByPrefix(anim[0], anim[1], anim[2], anim[3]);
-				}
-				newSprite.updateHitbox();
-				newSprite.antialiasing = !Init.trueSettings.get('Disable Antialiasing');
-				newSprite.animation.play(defAnim);
-				PlayState.ScriptedGraphics.set(spriteID, newSprite);
-				PlayState.contents.setVar('$spriteID', newSprite);
-			});
-
-		PlayState.contents.setVar('addSpriteAnimation', function(spriteID:String, newAnims:Array<Dynamic>)
-		{
-			var gottenSprite:FNFSprite = PlayState.ScriptedGraphics.get(spriteID);
-			for (anim in newAnims)
-			{
-				gottenSprite.animation.addByPrefix(anim[0], anim[1], anim[2], anim[3]);
-			}
-		});
-
-		PlayState.contents.setVar('addSpriteOffset', function(spriteID:String, anim:String, x:Float, y:Float)
-		{
-			var gottenSprite:FNFSprite = PlayState.ScriptedGraphics.get(spriteID);
-			gottenSprite.addOffset(anim, x, y);
-		});
-
-		PlayState.contents.setVar('spritePlayAnimation', function(spriteID:String, animToPlay:String, forced:Bool = true)
-		{
-			var gottenSprite:FNFSprite = PlayState.ScriptedGraphics.get(spriteID);
-			gottenSprite.animation.play(animToPlay, forced);
-		});
-
-		PlayState.contents.setVar('setSpriteBlend', function(spriteID:String, blendString:String)
-		{
-			var gottenSprite:FNFSprite = PlayState.ScriptedGraphics.get(spriteID);
-			gottenSprite.blend = ForeverTools.getBlendFromString(blendString);
-		});
-
-		PlayState.contents.setVar('setSpriteScrollFactor', function(spriteID:String, x:Float, y:Float)
-		{
-			var gottenSprite:FNFSprite = PlayState.ScriptedGraphics.get(spriteID);
-			gottenSprite.scrollFactor.set(x, y);
-		});
-
-		PlayState.contents.setVar('setSpriteSize', function(spriteID:String, newSize:Float)
-		{
-			var gottenSprite:FNFSprite = PlayState.ScriptedGraphics.get(spriteID);
-			gottenSprite.setGraphicSize(Std.int(gottenSprite.width * newSize));
-		});
-
-		PlayState.contents.setVar('setSpriteAlpha', function(spriteID:String, newAlpha:Float)
-		{
-			var gottenSprite:FNFSprite = PlayState.ScriptedGraphics.get(spriteID);
-			gottenSprite.alpha = newAlpha;
-		});
-
-		PlayState.contents.setVar('addSprite', function(spriteID:String)
-		{
-			var gottenSprite:FNFSprite = PlayState.ScriptedGraphics.get(spriteID);
-			PlayState.contents.add(gottenSprite);
-		});
-
-		PlayState.contents.setVar('setSpriteCamera', function(spriteID:String, newCam:String)
-		{
-			var gottenSprite:FNFSprite = PlayState.ScriptedGraphics.get(spriteID);
-			gottenSprite.cameras = [ForeverTools.getCamFromString(newCam)];
-		});
-
-		PlayState.contents.setVar('createCharacter', function(charID:String, key:String, x:Float, y:Float, alpha:Float, isPlayer:Bool = false)
-		{
-			var newChar:Character;
-			newChar = new Character(x, y, isPlayer, key);
-			newChar.alpha = alpha;
-			newChar.dance();
-			PlayState.contents.characterArray.push(newChar);
-			PlayState.contents.setVar('$charID', charID);
-			PlayState.contents.add(newChar);
-		});
-
-		PlayState.contents.setVar('changeCharacter', function(key:String, target:String, x:Float, y:Float)
-		{
-			PlayState.contents.changeCharacter(key, target, x, y);
-		});
-
 		PlayState.contents.setVar('castShader', function(shaderID:String, key:String, camera:String = 'camGame')
 		{
 			if (Init.trueSettings.get('Disable Shaders'))
@@ -218,122 +109,5 @@ class ScriptFuncs extends PlayState
 				}
 			}
 		});
-
-		PlayState.contents.setVar('trace', function(text:String, printOnHud:Bool = true, color:Array<Int> = null)
-		{
-			if (color == null)
-				color = [255, 255, 255];
-
-			trace(text);
-
-			if (printOnHud)
-			{
-				PlayState.uiHUD.traceBar.text += '$text\n';
-				PlayState.uiHUD.traceBar.color = FlxColor.fromRGB(color[0], color[1], color[2]);
-				FlxTween.tween(PlayState.uiHUD.traceBar, {alpha: 1}, 0.5, {ease: FlxEase.circOut});
-
-				new FlxTimer().start(6, function(tmr:FlxTimer)
-				{
-					PlayState.uiHUD.traceBar.text = '';
-					FlxTween.tween(PlayState.uiHUD.traceBar, {alpha: 0}, 0.5, {ease: FlxEase.circOut});
-				});
-			}
-		});
-
-		PlayState.contents.setVar('playSound', function(sound:String)
-		{
-			FlxG.sound.play(Paths.sound(sound));
-		});
-
-		PlayState.contents.setVar('getColor', function(color:String)
-		{
-			ForeverTools.getColorFromString(color);
-		});
-
-		PlayState.contents.setVar('getTweenEase', function(ease:String)
-		{
-			ForeverTools.getEaseFromString(ease);
-		});
-
-		PlayState.contents.setVar('getTweenType', function(type:String)
-		{
-			ForeverTools.getTweenTypeFromString(type);
-		});
-
-		PlayState.contents.setVar('doTween', function(tweenID:String, object:Dynamic, tweenProp:String, value:Dynamic, time:Float, ?easeParams:Array<String>)
-		{
-			endTween(tweenID);
-			var parameters = {}; // TODO: make multiple parameters using the function directly, calling should be doTween('id', obj, {params}, time, [ease, type]);
-			var newTween:FlxTween = null;
-
-			/**
-			 * originally made for psych engine as a pull request
-			 * https://github.com/ShadowMario/FNF-PsychEngine/pull/10433
-			 * credits to Cherri#0815
-			 */
-			Reflect.setField(parameters, tweenProp, value);
-
-			PlayState.ScriptedTweens.set(tweenID, newTween = FlxTween.tween(object, parameters, time, {
-				ease: ForeverTools.getEaseFromString(easeParams[0]),
-				type: ForeverTools.getTweenTypeFromString(easeParams[1]),
-				onComplete: function(tween:FlxTween)
-				{
-					newTween.cancel();
-					completeTween(tweenID);
-					newTween = null;
-				}
-			}));
-		});
-
-		PlayState.contents.setVar('doStrumTween',
-			function(tweenID:String, strumline:String, newNote:Int, tweenProps:String, value:Dynamic, time:Float, ?easeParams:Array<String>)
-			{
-				endTween(tweenID);
-				var parameters = {};
-				var epicStrum = PlayState.bfStrums.receptors.members[newNote];
-				var newTween:FlxTween = null;
-
-				switch (strumline)
-				{
-					case 'dadStrums' | 'opponentStrums' | 'dad' | 'opponent':
-						epicStrum = PlayState.dadStrums.receptors.members[newNote];
-					default:
-						epicStrum = PlayState.bfStrums.receptors.members[newNote];
-				}
-
-				/**
-				 * originally made for psych engine as a pull request
-				 * https://github.com/ShadowMario/FNF-PsychEngine/pull/10433
-				 * credits to Cherri#0815
-				 */
-				Reflect.setField(parameters, tweenProps, value);
-
-				PlayState.ScriptedTweens.set(tweenID, newTween = FlxTween.tween(epicStrum, parameters, time, {
-					ease: ForeverTools.getEaseFromString(easeParams[0]),
-					type: ForeverTools.getTweenTypeFromString(easeParams[1]),
-					onComplete: function(tween:FlxTween)
-					{
-						newTween.cancel();
-						completeTween(tweenID);
-						newTween = null;
-					}
-				}));
-			});
-	}
-
-	public static function completeTween(tweenID:String)
-	{
-		PlayState.contents.callFunc('completeTween', [tweenID]);
-		endTween(tweenID);
-	}
-
-	public static function endTween(tweenID:String)
-	{
-		if (PlayState.ScriptedTweens.exists(tweenID))
-		{
-			PlayState.ScriptedTweens.get(tweenID).cancel();
-			PlayState.ScriptedTweens.get(tweenID).destroy();
-			PlayState.ScriptedTweens.remove(tweenID);
-		}
 	}
 }

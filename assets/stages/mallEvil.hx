@@ -1,19 +1,24 @@
 function generateStage()
 {
-	stageName = 'mallEvil';
-	setStageZoom(0.90);
+	curStage = 'stage';
+    PlayState.defaultCamZoom = 0.90;
 
-	createSprite('bg', 'backgrounds/' + stageName + '/evilBG', -500, -500);
-	createSprite('evilTree', 'backgrounds/' + stageName + '/evilTree', 300, -300);
-	createSprite('evilSnow', 'backgrounds/' + stageName + '/evilSnow', -500, 700);
+	var bg:FNFSprite = new FNFSprite(-500, -500).loadGraphic(Paths.image('backgrounds/mall/evilBG'));
+	bg.antialiasing = true;
+	bg.scrollFactor.set(0.2, 0.2);
+	bg.active = false;
+	bg.setGraphicSize(Std.int(bg.width * 0.8));
+	bg.updateHitbox();
+	add(bg);
 
-	setSpriteScrollFactor('bg', 0.2, 0.2);
-	setSpriteScrollFactor('evilTree', 0.2, 0.2);
-	setSpriteSize('bg', 0.8);
+	var evilTree:FNFSprite = new FNFSprite(300, -300).loadGraphic(Paths.image('backgrounds/mall/evilTree'));
+	evilTree.antialiasing = true;
+	evilTree.scrollFactor.set(0.2, 0.2);
+	add(evilTree);
 
-    addSprite('bg');
-    addSprite('evilTree');
-    addSprite('evilSnow');
+	var evilSnow:FNFSprite = new FNFSprite(-500, 700).loadGraphic(Paths.image("backgrounds/mall/evilSnow"));
+	evilSnow.antialiasing = true;
+	add(evilSnow);
 }
 
 function repositionPlayers(boyfriend, dad, gf)
