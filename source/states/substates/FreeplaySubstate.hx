@@ -17,14 +17,13 @@ import funkin.ui.menu.Selector;
 typedef GameModifier =
 {
 	var name:String;
-	var parentSetting:Dynamic;
 }
 
 class FreeplaySubstate extends MusicBeatSubstate
 {
 	var gameplayMods:Array<GameModifier> = [
-		{name: 'Enable Autoplay', parentSetting: Init.gameModifiers.get('Autoplay')},
-		{name: 'Disable Deaths', parentSetting: Init.gameModifiers.get('Practice Mode')}
+		{name: 'Enable Autoplay'},
+		{name: 'Disable Deaths'}
 	];
 
 	var group:FlxTypedGroup<Alphabet>;
@@ -60,17 +59,10 @@ class FreeplaySubstate extends MusicBeatSubstate
 			modifiers.targetY = i;
 			group.add(modifiers);
 
-			// generates an attached texture depending on the setting type
-			switch (Init.gameModifiers.get(gameplayMods[i].name)[1])
-			{
-				case Init.SettingTypes.Checkmark:
-					var checkmark:Checkmark = ForeverAssets.generateCheckmark(10, modifiers.y, 'checkboxThingie', 'base', 'default', 'UI');
-					checkmark.parent = modifiers;
-					checkmark.playAnim(Std.string(Init.gameModifiers.get(gameplayMods[i].name)) + ' finished');
-					checkmarkGroup.add(checkmark);
-				default:
-					// do nothing;
-			}
+			var checkmark:Checkmark = ForeverAssets.generateCheckmark(10, modifiers.y, 'checkboxThingie', 'base', 'default', 'UI');
+			checkmark.parent = modifiers;
+			checkmark.playAnim(Std.string(/* Init.gameModifiers.get(group.members[curSelection].text) + */ 'false finished'));
+			checkmarkGroup.add(checkmark);
 		}
 
 		updateSelection();

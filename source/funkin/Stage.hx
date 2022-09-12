@@ -492,6 +492,25 @@ class Stage extends FlxTypedGroup<FlxBasic>
 
 				foreground.add(groupDudes);
 
+				if (gfVersion == 'pico-speaker')
+				{
+					var tankmen:TankmenBG = new TankmenBG(20, 500, true);
+					tankmen.resetShit(20, 600, true);
+					tankmen.strumTime = 10;
+					tankmanRun.add(tankmen);
+
+					for (i in 0...TankmenBG.animationNotes.length)
+					{
+						if (FlxG.random.bool(16))
+						{
+							var man:TankmenBG = tankmanRun.recycle(TankmenBG);
+							man.strumTime = TankmenBG.animationNotes[i][0];
+							man.resetShit(500, 200 + FlxG.random.int(50, 100), TankmenBG.animationNotes[i][1] < 2);
+							tankmanRun.add(man);
+						}
+					}
+				}
+
 			default:
 				curStage = 'unknown';
 				PlayState.defaultCamZoom = 0.9;
@@ -677,24 +696,6 @@ class Stage extends FlxTypedGroup<FlxBasic>
 				tankWatchtower.playAnim('watchtower');
 				for (i in 0...groupDudes.length)
 					groupDudes.members[i].playAnim('fg');
-		}
-
-		if (gfVersion == 'pico-speaker')
-		{
-			var tankmen:TankmenBG = new TankmenBG(20, 500, true);
-			tankmen.strumTime = 10;
-			tankmen.resetShit(20, 600, true);
-			tankmanRun.add(tankmen);
-			for (i in 0...TankmenBG.animationNotes.length)
-			{
-				if (FlxG.random.bool(16))
-				{
-					var man:TankmenBG = tankmanRun.recycle(TankmenBG);
-					man.strumTime = TankmenBG.animationNotes[i][0];
-					man.resetShit(500, 200 + FlxG.random.int(50, 100), TankmenBG.animationNotes[i][1] < 2);
-					tankmanRun.add(man);
-				}
-			}
 		}
 
 		callFunc('updateStage', [curBeat, boyfriend, gf, dadOpponent]);

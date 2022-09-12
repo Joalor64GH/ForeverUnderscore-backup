@@ -15,20 +15,20 @@ import haxe.Json;
 
 typedef CreditsUserDef =
 {
-	name:String,
-	iconData:Array<Dynamic>,
-	textData:Array<String>,
-	colors:Array<Int>,
-	urlData:Array<Array<String>>,
-	?sectionName:String
+	var name:String;
+	var iconData:Array<Dynamic>;
+	var textData:Array<String>;
+	var colors:Array<Int>;
+	var urlData:Array<Array<String>>;
+	var ?sectionName:String;
 }
 
 typedef CreditsPrefDef =
 {
-	?menuBG:Null<String>,
-	?menuBGColor:Null<Array<Int>>,
-	?tweenColor:Null<Bool>,
-	users:Array<CreditsUserDef>
+	var ?menuBG:Null<String>;
+	var ?menuBGColor:Null<Array<Int>>;
+	var ?tweenColor:Null<Bool>;
+	var users:Array<CreditsUserDef>;
 }
 
 class CreditsState extends MusicBeatState
