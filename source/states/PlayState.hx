@@ -1815,7 +1815,7 @@ class PlayState extends MusicBeatState
 		unspawnNotes = ChartParser.loadChart(SONG, ChartParser.songType);
 		unspawnEvents = ChartParser.loadEvents(SONG, ChartParser.songType);
 
-		trace(unspawnEvents);
+		//trace(unspawnEvents);
 
 		checkSongEvents();
 

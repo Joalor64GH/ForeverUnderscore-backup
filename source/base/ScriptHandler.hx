@@ -42,6 +42,7 @@ class ScriptHandler extends SScript
 		set('FlxGroup', FlxGroup);
 		set('FlxTypedGroup', FlxTypedGroup);
 		set('FlxSpriteGroup', FlxSpriteGroup);
+		set('FlxStringUtil', FlxStringUtil);
 		set('FlxSort', FlxSort);
 
 		set('Paths', Paths);
@@ -259,10 +260,10 @@ class ScriptFuncs extends PlayState
 			ForeverTools.getTweenTypeFromString(type);
 		});
 
-		PlayState.contents.setVar('doTween', function(tweenID:String, tweenProperty:Array<String>, object:Dynamic, value:Dynamic, time:Float)
+		PlayState.contents.setVar('doTween', function(tweenID:String, object:Dynamic, tweenProp:String, value:Dynamic, time:Float, ?easeParams:Array<String>)
 		{
 			endTween(tweenID);
-			var parameter = {};
+			var parameters = {}; // TODO: make multiple parameters using the function directly, calling should be doTween('id', obj, {params}, time, [ease, type]);
 			var newTween:FlxTween = null;
 
 			/**
@@ -270,11 +271,11 @@ class ScriptFuncs extends PlayState
 			 * https://github.com/ShadowMario/FNF-PsychEngine/pull/10433
 			 * credits to Cherri#0815
 			 */
-			Reflect.setField(parameter, tweenProperty[0], value);
+			Reflect.setField(parameters, tweenProp, value);
 
-			PlayState.ScriptedTweens.set(tweenID, newTween = FlxTween.tween(object, parameter, time, {
-				ease: ForeverTools.getEaseFromString(tweenProperty[1]),
-				type: ForeverTools.getTweenTypeFromString(tweenProperty[2]),
+			PlayState.ScriptedTweens.set(tweenID, newTween = FlxTween.tween(object, parameters, time, {
+				ease: ForeverTools.getEaseFromString(easeParams[0]),
+				type: ForeverTools.getTweenTypeFromString(easeParams[1]),
 				onComplete: function(tween:FlxTween)
 				{
 					newTween.cancel();
@@ -285,10 +286,10 @@ class ScriptFuncs extends PlayState
 		});
 
 		PlayState.contents.setVar('doStrumTween',
-			function(tweenID:String, tweenProperty:Array<String>, strumline:String, newNote:Int, value:Dynamic, time:Float)
+			function(tweenID:String, strumline:String, newNote:Int, tweenProps:String, value:Dynamic, time:Float, ?easeParams:Array<String>)
 			{
 				endTween(tweenID);
-				var parameter = {};
+				var parameters = {};
 				var epicStrum = PlayState.bfStrums.receptors.members[newNote];
 				var newTween:FlxTween = null;
 
@@ -305,11 +306,11 @@ class ScriptFuncs extends PlayState
 				 * https://github.com/ShadowMario/FNF-PsychEngine/pull/10433
 				 * credits to Cherri#0815
 				 */
-				Reflect.setField(parameter, tweenProperty[0], value);
+				Reflect.setField(parameters, tweenProps, value);
 
-				PlayState.ScriptedTweens.set(tweenID, newTween = FlxTween.tween(epicStrum, parameter, time, {
-					ease: ForeverTools.getEaseFromString(tweenProperty[1]),
-					type: ForeverTools.getTweenTypeFromString(tweenProperty[2]),
+				PlayState.ScriptedTweens.set(tweenID, newTween = FlxTween.tween(epicStrum, parameters, time, {
+					ease: ForeverTools.getEaseFromString(easeParams[0]),
+					type: ForeverTools.getTweenTypeFromString(easeParams[1]),
 					onComplete: function(tween:FlxTween)
 					{
 						newTween.cancel();
