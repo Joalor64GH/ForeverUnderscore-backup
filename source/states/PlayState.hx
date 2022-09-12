@@ -2,9 +2,9 @@ package states;
 
 import Paths.ChartType;
 import base.*;
-import base.ChartParser.LegacySong;
-import base.ChartParser.Song;
 import base.MusicBeat.MusicBeatState;
+import base.SongLoader.LegacySong;
+import base.SongLoader.Song;
 import dependency.*;
 import flixel.FlxBasic;
 import flixel.FlxCamera;

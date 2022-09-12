@@ -30,6 +30,7 @@
 	<define name="HAXE_EXTENSION" unless="web" />
 	<define name="MOD_HANDLER" unless="web" />
 	<define name="DEBUG_TRACES" if="debug" />
+	<define name="FOREVER_WATERMARKS" /> <!-- comment or delete this line to disable forever engine developer names on the titlescreen -->
 
 	<!-- _____________________________ Path Settings ____________________________ -->
 

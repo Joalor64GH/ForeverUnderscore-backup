@@ -1,8 +1,8 @@
 package states.menus;
 
 import base.*;
-import base.ChartParser.Song;
 import base.MusicBeat.MusicBeatState;
+import base.SongLoader.Song;
 import base.WeekParser.WeekDataDef;
 import base.WeekParser.WeekSongDef;
 import dependency.Discord;

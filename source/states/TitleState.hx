@@ -327,13 +327,21 @@ class TitleState extends MusicBeatState
 		switch (curStep)
 		{
 			case 4:
+				#if FOREVER_WATERMARKS
 				createCoolText(['Yoshubs', 'Neolixn', 'Gedehari', 'Tsuraran', 'FlopDoodle', '']);
+				#else
+				createCoolText(['ninjamuffin99', 'phantomArcade', 'kawaisprite', 'evilsk8er']);
+				#end
 			case 12:
 				addMoreText('PRESENT');
 			case 16:
 				deleteCoolText();
 			case 20:
+				#if FOREVER_WATERMARKS
 				createCoolText(['Not associated', 'with']);
+				#else
+				createCoolText(['In association', 'with']);
+				#end
 			case 28:
 				addMoreText('newgrounds');
 				ngSpr.visible = true;

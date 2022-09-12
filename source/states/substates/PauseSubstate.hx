@@ -1,9 +1,9 @@
 package states.substates;
 
 import base.*;
-import base.ChartParser.Song;
 import base.CoolUtil;
 import base.MusicBeat.MusicBeatSubstate;
+import base.SongLoader.Song;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.FlxSubState;

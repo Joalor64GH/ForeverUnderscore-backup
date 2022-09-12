@@ -1,13 +1,13 @@
 package states.editors;
 
-import base.ChartParser.LegacySection;
-import base.ChartParser.LegacySong;
-import base.ChartParser.Section;
-import base.ChartParser.Song;
 import base.Conductor;
 import base.ForeverAssets;
 import base.ForeverTools;
 import base.MusicBeat.MusicBeatState;
+import base.SongLoader.LegacySection;
+import base.SongLoader.LegacySong;
+import base.SongLoader.Section;
+import base.SongLoader.Song;
 import dependency.AbsoluteText.EventText;
 import dependency.Discord;
 import flixel.FlxBasic;

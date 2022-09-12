@@ -1,8 +1,8 @@
 package base;
 
-import base.ChartParser.LegacySection;
-import base.ChartParser.LegacySong;
-import base.ChartParser.Song;
+import base.SongLoader.LegacySection;
+import base.SongLoader.LegacySong;
+import base.SongLoader.Song;
 import flixel.FlxG;
 import flixel.system.FlxSound;
 import haxe.Json;

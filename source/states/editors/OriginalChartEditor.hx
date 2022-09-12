@@ -1,13 +1,11 @@
 package states.editors;
 
 import base.*;
-import base.ChartParser.LegacySection;
-import base.ChartParser.LegacySong;
-import base.ChartParser.Song;
-import base.Conductor.BPMChangeEvent;
+import base.SongLoader.LegacySection;
+import base.SongLoader.LegacySong;
 import base.CoolUtil;
 import base.MusicBeat.MusicBeatState;
-import dependency.AbsoluteText.EventText;
+import base.SongLoader.Song; import dependency.AbsoluteText.EventText;
 import dependency.Discord;
 import flixel.FlxG;
 import flixel.FlxObject;
@@ -48,6 +46,7 @@ import states.editors.data.*;
 import states.menus.FreeplayState;
 
 using StringTools;
+import base.Conductor.BPMChangeEvent;
 
 /**
 	In case you dont like the forever engine chart editor, here's the base game one instead.

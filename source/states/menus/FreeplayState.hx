@@ -1,10 +1,10 @@
 package states.menus;
 
-import base.ChartParser.LegacySong;
-import base.ChartParser.Song;
 import base.ChartParser;
 import base.CoolUtil;
 import base.MusicBeat.MusicBeatState;
+import base.SongLoader.LegacySong;
+import base.SongLoader.Song;
 import base.WeekParser;
 import dependency.Discord;
 import flash.text.TextField;

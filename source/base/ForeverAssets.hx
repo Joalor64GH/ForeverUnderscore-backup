@@ -1,7 +1,7 @@
 package base;
 
-import base.ChartParser.LegacySection;
 import base.Conductor;
+import base.SongLoader.LegacySection;
 import dependency.FNFSprite;
 import flixel.FlxG;
 import flixel.FlxSprite;
