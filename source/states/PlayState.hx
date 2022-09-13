@@ -2416,6 +2416,8 @@ class PlayState extends MusicBeatState
 
 	function setPlayStateVars()
 	{
+		setVar('game', PlayState.contents);
+
 		setVar('setProperty', function(key:String, value:Dynamic)
 		{
 			var dotList:Array<String> = key.split('.');
