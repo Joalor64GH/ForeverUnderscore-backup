@@ -27,9 +27,9 @@ body:
   - type: dropdown
     id: modding
     attributes:
-      label: "Are you modding a build from source or with Lua?"
+      label: "Are you modding a build from source or with Scripts?"
       options:
-        - Lua
+        - Script
         - Source
     validations:
       required: true
@@ -42,9 +42,6 @@ body:
         - "Windows"
         - "Linux"
         - "Mac"
-        - "HTML5"
-        - "Flash/Air-based target"
-        - "Neko, HashLink, or other build system"
     validations:
       required: true
 
@@ -52,6 +49,6 @@ body:
     id: buildsummary
     attributes:
       label: "Did you edit anything in this build? If so, mention or summarize your changes."
-      placeholder: "Yes, I edited ClientPrefs.hx and tried to add a new setting"
+      placeholder: "Yes, I edited Note.hx and tried to add a new Notetype"
     validations:
       required: true
