@@ -170,6 +170,8 @@ class PlayState extends MusicBeatState
 	public var ratingsGroup:FlxTypedGroup<FNFSprite>;
 	public var comboGroup:FlxTypedGroup<FNFSprite>;
 
+	public var charGroup:FlxSpriteGroup;
+
 	// at the beginning of the playstate
 	override public function create()
 	{
@@ -273,6 +275,8 @@ class PlayState extends MusicBeatState
 		boyfriend = new Character(770, 450, true, SONG.player1);
 		boyfriend.dance(true);
 
+		charGroup = new FlxSpriteGroup();
+
 		var camPos:FlxPoint = new FlxPoint(gf.getMidpoint().x - 100, boyfriend.getMidpoint().y - 100);
 
 		if (Init.trueSettings.get('Stage Opacity') > 0)
@@ -308,6 +312,8 @@ class PlayState extends MusicBeatState
 			add(dadOpponent);
 			add(boyfriend);
 			add(stageBuild.foreground);
+
+			add(charGroup); // for changecharacter;
 		}
 
 		// force them to dance
@@ -1153,6 +1159,13 @@ class PlayState extends MusicBeatState
 			if (boyfriend.animation.curAnim.name.startsWith('sing') && !boyfriend.animation.curAnim.name.endsWith('miss'))
 				boyfriend.dance();
 		}
+	}
+
+	public function addCharacter(newCharacter:String)
+	{
+		var char:Character = new Character(0, 0, newCharacter);
+		char.alpha = 0.00001;
+		charGroup.add(char);
 	}
 
 	/**
