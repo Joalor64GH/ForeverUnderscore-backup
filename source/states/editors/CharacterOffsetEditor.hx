@@ -42,8 +42,8 @@ class CharacterOffsetEditor extends MusicBeatState
 	var char:Character;
 	var ghost:Character;
 
-	var curCharacter:String = 'dad';
-	var curGhost:String = 'dad';
+	var curCharacter:String;
+	var curGhost:String;
 
 	var isPlayer:Bool = false;
 
@@ -65,7 +65,7 @@ class CharacterOffsetEditor extends MusicBeatState
 
 	var UI_box:FlxUITabMenu;
 
-	public function new(curCharacter:String = 'dad', isPlayer:Bool = false, curStage:String = 'stage')
+	public function new(curCharacter:String, isPlayer:Bool = false, curStage:String)
 	{
 		super();
 		curGhost = curCharacter;
@@ -183,7 +183,9 @@ class CharacterOffsetEditor extends MusicBeatState
 
 		var resetBttn:FlxButton = new FlxButton(140, 30, "Reset Offsets", function()
 		{
-			Main.switchState(this, new CharacterOffsetEditor());
+			var prevStage = curStage;
+			var prevCharacter = curCharacter;
+			Main.switchState(this, new CharacterOffsetEditor(prevCharacter, !prevCharacter.startsWith('bf'), curStage));
 		});
 
 		showGhostBttn = new FlxButton(140, 50, "Show Ghost", function()
