@@ -9,7 +9,7 @@ function generateStage()
 
 	curStage = 'stage';
     PlayState.defaultCamZoom = 0.9;
-	spawnGirlfriend = true;
+    spawnGirlfriend(true);
 
 	// create stage graphics just haxe code!
 

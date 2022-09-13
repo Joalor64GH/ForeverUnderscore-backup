@@ -241,7 +241,10 @@ class Stage extends FlxTypedGroup<FlxBasic>
 		setVar('foreground', foreground);
 		setVar('layers', layers);
 		setVar('gfVersion', gfVersion);
-		setVar('spawnGirlfriend', spawnGirlfriend);
+		setVar('spawnGirlfriend', function(blah:Bool)
+		{
+			spawnGirlfriend = blah;
+		});
 		setVar('BackgroundDancer', BackgroundDancer);
 		setVar('BackgroundGirls', BackgroundGirls);
 		setVar('TankmenBG', TankmenBG);
