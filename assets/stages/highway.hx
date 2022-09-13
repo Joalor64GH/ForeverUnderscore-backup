@@ -39,7 +39,7 @@ function generateStage()
     fastCar = new FNFSprite(-300, 160).loadGraphic(Paths.image('backgrounds/' + curStage + '/fastCarLol'));
 }
 
-function repositionPlayers(boyfriend:Character, dad:Character, gf:Character)
+function repositionPlayers(boyfriend:Character, gf:Character, dad:Character)
 {
 	boyfriend.y -= 220;
 	boyfriend.x += 260;

@@ -85,7 +85,7 @@ function girlsGetScared()
     girlsDance();
 }
 
-function repositionPlayers(boyfriend:Character, dad:Character, gf:Character)
+function repositionPlayers(boyfriend:Character, gf:Character, dad:Character)
 {
 	boyfriend.x += 200;
     boyfriend.y += 220;

@@ -169,7 +169,7 @@ function generateStage()
     }
 }
 
-function repositionPlayers(boyfriend:Character, dad:Character, gf:Character)
+function repositionPlayers(boyfriend:Character, gf:Character, dad:Character)
 {
     gf.y -= 90;
     gf.x -= 30;

@@ -38,6 +38,8 @@ class ControlsSubstate extends MusicBeatSubstate
 		bg.antialiasing = !Init.trueSettings.get('Disable Antialiasing');
 		add(bg);
 
+		CreditsState.addSymbY = true;
+
 		super.create();
 
 		keyOptions = generateOptions();
@@ -303,6 +305,7 @@ class ControlsSubstate extends MusicBeatSubstate
 
 	override public function close()
 	{
+		CreditsState.addSymbY = false;
 		Init.saveControls(); // for controls
 		Init.saveSettings(); // for offset
 		super.close();

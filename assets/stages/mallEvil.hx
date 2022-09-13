@@ -21,7 +21,7 @@ function generateStage()
 	add(evilSnow);
 }
 
-function repositionPlayers(boyfriend, dad, gf)
+function repositionPlayers(boyfriend:Character, gf:Character, dad:Character)
 {
 	boyfriend.x += 320;
 }
