@@ -5,7 +5,7 @@ A custom-made Forever Engine build which aims to make things a little easier.
 ----------------------------------------------
 Forever Engine Underscore attempts to take on the challenge of making Forever Engine a lot easier by adding tools, such as a scripting system and more. 
 
-The Forever Engine Underscore project is currently on it's **final** state, meaning that very soon, it will be **deprecated**, but already contains features that can make anyone's life easier.
+The Forever Engine Underscore project is currently pretty powerful by itself, but contributions for further improving and expanding upon the project are and will always be appreciated.
 
 ----------------------------------------------
 # Current Goals:
