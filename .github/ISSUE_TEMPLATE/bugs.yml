@@ -17,6 +17,13 @@ body:
     validations:
       required: false
 
+  - type: textarea
+    id: steps
+    attributes:
+      label: "Steps to Reproduce (if existing)"
+    validations:
+      required: false
+
   - type: dropdown
     id: modding
     attributes:
