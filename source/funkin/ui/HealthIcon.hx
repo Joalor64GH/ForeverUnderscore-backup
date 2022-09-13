@@ -74,7 +74,7 @@ class HealthIcon extends FlxSprite
 			var iconGraphic:FlxGraphic = path;
 			var iconWidth = 1;
 
-			iconWidth = Std.int(iconGraphic.width / 150) - 1; 
+			iconWidth = Std.int(iconGraphic.width / 150) - 1;
 			iconWidth = iconWidth + 1;
 
 			loadGraphic(iconGraphic);
