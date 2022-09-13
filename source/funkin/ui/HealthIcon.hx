@@ -34,9 +34,9 @@ class HealthIcon extends FlxSprite
 	// dynamic, to avoid having 31 billion if statements;
 	public dynamic function updateAnim(health:Float)
 	{
-		if (health < 20)
+		if (health < 20 && animation.getByName('losing') != null)
 			animation.play('losing');
-		else if (health > 85)
+		else if (health > 85 && animation.getByName('winning') != null)
 			animation.play('winning');
 		else
 			animation.play('static');
@@ -74,21 +74,15 @@ class HealthIcon extends FlxSprite
 			var iconGraphic:FlxGraphic = path;
 			var iconWidth = 1;
 
-			switch (iconGraphic.width)
-			{
-				case 450: iconWidth = 3;
-				case 300: iconWidth = 2;
-				case 150: iconWidth = 1;
-			}
+			iconWidth = Std.int(iconGraphic.width / 150) - 1; 
+			iconWidth = iconWidth + 1;
 
 			loadGraphic(iconGraphic);
 			loadGraphic(iconGraphic, true, Std.int(iconGraphic.width / iconWidth), iconGraphic.height);
 
 			animation.add('static', [0], 0, false, isPlayer);
 			animation.add('losing', [1], 0, false, isPlayer);
-
-			// ternary to avoid frame 1 playing where it shouldn't
-			animation.add('winning', (iconWidth == 3 ? [2] : [0]), 0, false, isPlayer);
+			animation.add('winning', [2], 0, false, isPlayer);
 		}
 		animation.play('static');
 		scrollFactor.set();

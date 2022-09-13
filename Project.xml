@@ -61,7 +61,7 @@
 	<!-- ______________________________ Haxedefines _____________________________ -->
 
 	<!--You will get fine error reporting at parsing time-->
-	<haxedef name="hscriptPos" />
+	<!-- <haxedef name="hscriptPos" /> -->
 
 	<!--No DCE is performed-->
 	<haxeflag name="-dce no" />
