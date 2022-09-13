@@ -60,22 +60,32 @@
 
 	<!-- ______________________________ Haxedefines _____________________________ -->
 
+	<!--You will get fine error reporting at parsing time-->
+	<haxedef name="hscriptPos" />
+
+	<!--No DCE is performed-->
 	<haxeflag name="-dce no" />
 
-	<haxedef name="FLX_NO_TOUCH" if="desktop" />
-	<haxedef name="FLX_NO_MOUSE" if="mobile" />
-	<haxedef name="FLX_NO_KEYBOARD" if="mobile" />
-
+	<!--Disable the Flixel core focus lost screen-->
 	<haxedef name="FLX_NO_FOCUS_LOST_SCREEN" />
+
+	<!--Disable the Flixel core debugger. Automatically gets set whenever you compile in release mode!-->
 	<haxedef name="FLX_NO_DEBUG" unless="debug" />
+
+	<!--Enable this for Nape release builds for a serious peformance improvement-->
 	<haxedef name="NAPE_RELEASE_BUILD" unless="debug" />
 
-	<!-- Always enable Null Object Reference check for crash dialog -->
-	<haxedef name="HXCPP_CHECK_POINTER" if="release" />
-	<haxedef name="HXCPP_STACK_LINE" if="release" />
+	<!--Allow garbage collector to move memory to reduce fragmentation-->
+	<haxedef name="HXCPP_GC_MOVING" if="cpp" />
 
-	<!-- Make's the game use less ram -->
-	<haxedef name="HXCPP_GC_BIG_BLOCKS" />
+	<!--Allow working memory greater than 1 gigabyte-->
+	<haxedef name="HXCPP_GC_BIG_BLOCKS" if="cpp" />
+
+	<!--Include line information in stack traces, even in release mode-->
+	<haxedef name="HXCPP_STACK_LINE" if="cpp" unless="debug" />
+
+	<!--Add null-pointer checks, even in release mode-->
+	<haxedef name="HXCPP_CHECK_POINTER" if="cpp" unless="debug" />
 
 	<!-- Show debug traces for hxCodec -->
 	<haxedef name="HXC_DEBUG_TRACE" if="debug" />
