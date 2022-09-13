@@ -1,10 +1,7 @@
 package states.menus;
 
-import Init.SettingTypes;
 import base.ForeverAssets;
 import base.ForeverTools;
-import base.MusicBeat.MusicBeatState;
-import dependency.FNFSprite;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.effects.FlxFlicker;
@@ -16,27 +13,17 @@ import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
 import funkin.Alphabet;
 import funkin.ui.menu.Checkmark;
+import funkin.ui.menu.Selector;
+import states.parents.SettingsMenuParent;
 import states.substates.ControlsSubstate;
 import states.substates.PauseSubstate;
-
-typedef Category =
-{
-	var name:String; // the category name
-	var id:Int; // the category ID (used for selections)
-}
-
-typedef Option =
-{
-	var name:String; // the option name on Init
-	var parentID:Int; // the category ID associated with the option
-}
 
 /**
  * options menu rewrite, heavily based on Forever 1.0's Options Menu
  * because the old one felt too overcomplicated
  * no offense yoshubs.
  */
-class SettingsMenuState extends MusicBeatState
+class SettingsMenuState extends SettingsMenuParent
 {
 	var topBar:FlxSprite;
 	var bottomBar:FlxSprite;
@@ -45,34 +32,8 @@ class SettingsMenuState extends MusicBeatState
 	var bottomMarker:FlxText;
 
 	var currentGroup:FlxTypedGroup<Alphabet>;
-	var checkmarkGroup:FlxTypedGroup<Checkmark>;
 
 	var lockedMovement:Bool = false;
-
-	public var categories:Array<Category> = [
-		{name: 'GAMEPLAY', id: 1},
-		{name: 'CONTROLS', id: 2},
-		{name: 'VISUALS', id: 3},
-		{name: 'ACCESSIBILITY', id: 4},
-		{name: 'EXIT', id: -1}
-	];
-
-	public var options:Array<Option> = [
-		{name: 'Controller Mode', parentID: 1},
-		{name: 'Downscroll', parentID: 1},
-		{name: 'Centered Receptors', parentID: 1},
-		{name: 'Ghost Tapping', parentID: 1},
-		{name: 'UI Skin', parentID: 3},
-		{name: 'Disable Antialiasing', parentID: 4},
-		{name: 'Disable Flashing Lights', parentID: 4},
-		{name: 'Disable Shaders', parentID: 4},
-		{name: 'Reduced Movements', parentID: 4},
-		{name: 'Stage Opacity', parentID: 4},
-		{name: 'Filter', parentID: 4}
-	];
-
-	public var curCategory = 0;
-	public var curSelected = 0;
 
 	override public function create()
 	{
@@ -117,20 +78,6 @@ class SettingsMenuState extends MusicBeatState
 		FlxTween.tween(bottomMarker, {alpha: 1}, 0.4, {ease: FlxEase.quartOut, startDelay: 0.6});
 	}
 
-	function generateBackground()
-	{
-		var bg = new FlxSprite(-85);
-		bg.loadGraphic(Paths.image('menus/base/menuDesat'));
-		bg.scrollFactor.x = 0;
-		bg.scrollFactor.y = 0.18;
-		bg.setGraphicSize(Std.int(bg.width * 1.1));
-		bg.updateHitbox();
-		bg.screenCenter();
-		bg.color = 0xCE64DF;
-		bg.antialiasing = !Init.trueSettings.get('Disable Antialiasing');
-		add(bg);
-	}
-
 	override public function update(elapsed:Float)
 	{
 		super.update(elapsed);
@@ -143,13 +90,12 @@ class SettingsMenuState extends MusicBeatState
 
 		if (bottomMarker.text.length > 61)
 		{
-			bottomMarker.size = 26;
+			bottomMarker.size = 28;
 			bottomMarker.y = bottomBar.y;
 		}
 		else
 		{
-			bottomMarker.size = 32;
-			bottomMarker.y = bottomBar.y + 5;
+			bottomMarker.scale.set(1, 1);
 		}
 
 		if (Init.gameSettings.get(currentGroup.members[curSelected].text) != null)
@@ -158,7 +104,6 @@ class SettingsMenuState extends MusicBeatState
 			var textValue = currentSetting[2];
 			if (textValue == null)
 				textValue = "";
-
 			bottomMarker.text = textValue;
 		}
 
@@ -221,14 +166,6 @@ class SettingsMenuState extends MusicBeatState
 							});
 					}
 				}
-				else
-				{
-					FlxFlicker.flicker(currentGroup.members[curSelected], 0.5, 0.06 * 2, true, false, function(flick:FlxFlicker)
-					{
-						selectOption();
-						lockedMovement = false;
-					});
-				}
 			}
 		}
 	}
@@ -266,15 +203,12 @@ class SettingsMenuState extends MusicBeatState
 		if (currentGroup != null)
 			remove(currentGroup);
 
-		if (checkmarkGroup != null)
-			remove(checkmarkGroup);
-
 		// generate new instances for those groups;
 		currentGroup = new FlxTypedGroup<Alphabet>();
 		add(currentGroup);
 
-		checkmarkGroup = new FlxTypedGroup<Checkmark>();
-		add(checkmarkGroup);
+		generateCheckmarks();
+		generateSelectors();
 
 		if (curCategory != 0)
 		{
@@ -349,10 +283,13 @@ class SettingsMenuState extends MusicBeatState
 		switch (settingType)
 		{
 			case Init.SettingTypes.Checkmark:
-				Init.trueSettings.set(options[curSelected].name, !Init.trueSettings.get(options[curSelected].name));
-				if (checkmarkGroup.members[curSelected] != null)
-					checkmarkGroup.members[curSelected].playAnim(Std.string(Init.trueSettings.get(options[curSelected].name)));
-				Init.saveSettings();
+				if (controls.ACCEPT && curCategory != 0)
+				{
+					Init.trueSettings.set(options[curSelected].name, !Init.trueSettings.get(options[curSelected].name));
+					if (checkmarkGroup.members[curSelected] != null)
+						checkmarkGroup.members[curSelected].playAnim(Std.string(Init.trueSettings.get(options[curSelected].name)));
+					Init.saveSettings();
+				}
 			default:
 				// do nothing;
 		}
