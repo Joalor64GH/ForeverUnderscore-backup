@@ -6,7 +6,7 @@
 	"users":
 	[
 		{
-			"sectionName": "FE Underscore Team",
+			"sectionName": "Forever Engine Underscore Team",
 
 			"name": "BeastlyGhost",
 			"iconData": ["ghost", 375, 0],
@@ -29,7 +29,7 @@
 			"colors": [245, 108, 255]
 		},
 		{
-			"sectionName": "FE Underscore Team",
+			"sectionName": "Forever Engine Underscore Team",
 
 			"name": "TheWorldMachine",
 			"iconData": ["macxp",  510, -3],
@@ -47,11 +47,22 @@
 			"colors": [68, 68, 68]
 		},
 		{
-			"name": "NooBZiiTo",
+			"name": "yoisabo",
 			"iconData": [],
+			"textData": ["yoisabo"],
+			"urlData": [
+				["Twitch", "https://www.twitch.tv/abo_bora"],
+				["Twitter", "https://twitter.com/abo_bora"], 
+				["YouTube", "https://www.youtube.com/channel/UC4i6dpPE_6porNTxdzEiPXQ"]
+			],
+			"colors": [90, 49, 187]
+		},
+		{
+			"name": "NooBZiiTo",
+			"iconData": ["noobziito", 290, 0],
 			"textData": ["Custom Menu Assets", "i injected uranium in my veins."],
 			"urlData": [["Twitter", "https://twitter.com/NooBZiiTo1"]],
-			"colors": [67, 154, 73]
+			"colors": [113, 255, 0]
 		},
 		{
 			"sectionName": "Special Thanks",

@@ -272,21 +272,25 @@ class OriginalChartEditor extends MusicBeatState
 
 		var saveButton:FlxButton = new FlxButton(110, 8, "Save", function()
 		{
+			pauseMusic();
 			saveLevel();
 		});
 
 		var saveEvent:FlxButton = new FlxButton(saveButton.x, saveButton.y + 30, 'Save Events', function()
 		{
+			pauseMusic();
 			saveEvents();
 		});
 
 		var reloadSong:FlxButton = new FlxButton(saveButton.x + saveButton.width + 10, saveButton.y, "Reload Audio", function()
 		{
+			pauseMusic();
 			loadSong(_song.song);
 		});
 
 		var reloadSongJson:FlxButton = new FlxButton(reloadSong.x, saveButton.y + 30, "Reload JSON", function()
 		{
+			pauseMusic();
 			loadJson(_song.song.toLowerCase());
 		});
 
@@ -1392,35 +1396,32 @@ class OriginalChartEditor extends MusicBeatState
 		var sectionStart:Float = sectionStartTime();
 		var sectionEnd:Float = sectionStartTime(1);
 
-		if (_song.events != null && _song.events.length > 0)
+		for (i in _song.events)
 		{
-			for (i in _song.events)
+			if (sectionEnd > i[0] && i[0] >= sectionStart)
 			{
-				if (sectionEnd > i[0] && i[0] >= sectionStart)
-				{
-					var event:EventNote = new EventNote(i[1], i[0], i[2], i[3]);
-					event.y = Math.floor(getYfromStrum((event.strumTime - sectionStartTime()) % (Conductor.stepCrochet * getSectionBeats())));
-					event.setGraphicSize(GRID_SIZE, GRID_SIZE);
-					event.updateHitbox();
-					curRenderedEvents.add(event);
+				var event:EventNote = new EventNote(i[1], i[0], i[2], i[3]);
+				event.y = Math.floor(getYfromStrum((event.strumTime - sectionStartTime()) % (Conductor.stepCrochet * getSectionBeats())));
+				event.setGraphicSize(GRID_SIZE, GRID_SIZE);
+				event.updateHitbox();
+				curRenderedEvents.add(event);
 
-					var attachedEventTxt:EventText = new EventText(300,
-						'Event: '
-						+ event.event
-						+ ' ('
-						+ Math.floor(event.strumTime)
-						+ ' ms)'
-						+ '\nValue 1: '
-						+ event.val1
-						+ '\nValue 2: '
-						+ event.val2, 12);
-					attachedEventTxt.setFormat(Paths.font("vcr.ttf"), 12, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
-					attachedEventTxt.xAdd = -330;
-					attachedEventTxt.borderSize = 1;
-					curRenderedTexts.add(attachedEventTxt);
-					attachedEventTxt.tracker = event;
-					event.child = attachedEventTxt;
-				}
+				var attachedEventTxt:EventText = new EventText(300,
+					'Event: '
+					+ event.event
+					+ ' ('
+					+ Math.floor(event.strumTime)
+					+ ' ms)'
+					+ '\nValue 1: '
+					+ event.val1
+					+ '\nValue 2: '
+					+ event.val2, 12);
+				attachedEventTxt.setFormat(Paths.font("vcr.ttf"), 12, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+				attachedEventTxt.xAdd = -330;
+				attachedEventTxt.borderSize = 1;
+				curRenderedTexts.add(attachedEventTxt);
+				attachedEventTxt.tracker = event;
+				event.child = attachedEventTxt;
 			}
 		}
 	}

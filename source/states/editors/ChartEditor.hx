@@ -636,7 +636,7 @@ class ChartEditor extends MusicBeatState
 		var sectionCamera:FlxSprite = new FlxSprite(FlxG.width / 2 - (gridSize * (keysTotal / 2)) + (sectionExtend), placement);
 		sectionCamera.frames = sectionCameraGraphic.imageFrame;
 		sectionCamera.alpha = (88 / 255);
-		// sectionsGroup.add(sectionCamera);
+		sectionsGroup.add(sectionCamera);
 
 		// set up section numbers
 		for (i in 0...2)
