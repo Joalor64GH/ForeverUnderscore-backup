@@ -2,8 +2,8 @@ function beatHit(curBeat)
 {
     if (curBeat % 8 == 7)
 	{
-		boyfriend.playAnim('hey', true);
-        boyfriend.specialAnim = true;
-        boyfriend.heyTimer = 0.6;
+		PlayState.boyfriend.playAnim('hey', true);
+		PlayState.boyfriend.specialAnim = true;
+		PlayState.boyfriend.heyTimer = 0.6;
 	}
 }
