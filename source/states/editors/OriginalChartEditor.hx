@@ -1396,32 +1396,35 @@ class OriginalChartEditor extends MusicBeatState
 		var sectionStart:Float = sectionStartTime();
 		var sectionEnd:Float = sectionStartTime(1);
 
-		for (i in _song.events)
+		if (_song.events != null && _song.events.length > 1)
 		{
-			if (sectionEnd > i[0] && i[0] >= sectionStart)
+			for (i in _song.events)
 			{
-				var event:EventNote = new EventNote(i[1], i[0], i[2], i[3]);
-				event.y = Math.floor(getYfromStrum((event.strumTime - sectionStartTime()) % (Conductor.stepCrochet * getSectionBeats())));
-				event.setGraphicSize(GRID_SIZE, GRID_SIZE);
-				event.updateHitbox();
-				curRenderedEvents.add(event);
+				if (sectionEnd > i[0] && i[0] >= sectionStart)
+				{
+					var event:EventNote = new EventNote(i[1], i[0], i[2], i[3]);
+					event.y = Math.floor(getYfromStrum((event.strumTime - sectionStartTime()) % (Conductor.stepCrochet * getSectionBeats())));
+					event.setGraphicSize(GRID_SIZE, GRID_SIZE);
+					event.updateHitbox();
+					curRenderedEvents.add(event);
 
-				var attachedEventTxt:EventText = new EventText(300,
-					'Event: '
-					+ event.event
-					+ ' ('
-					+ Math.floor(event.strumTime)
-					+ ' ms)'
-					+ '\nValue 1: '
-					+ event.val1
-					+ '\nValue 2: '
-					+ event.val2, 12);
-				attachedEventTxt.setFormat(Paths.font("vcr.ttf"), 12, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
-				attachedEventTxt.xAdd = -330;
-				attachedEventTxt.borderSize = 1;
-				curRenderedTexts.add(attachedEventTxt);
-				attachedEventTxt.tracker = event;
-				event.child = attachedEventTxt;
+					var attachedEventTxt:EventText = new EventText(300,
+						'Event: '
+						+ event.event
+						+ ' ('
+						+ Math.floor(event.strumTime)
+						+ ' ms)'
+						+ '\nValue 1: '
+						+ event.val1
+						+ '\nValue 2: '
+						+ event.val2, 12);
+					attachedEventTxt.setFormat(Paths.font("vcr.ttf"), 12, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+					attachedEventTxt.xAdd = -330;
+					attachedEventTxt.borderSize = 1;
+					curRenderedTexts.add(attachedEventTxt);
+					attachedEventTxt.tracker = event;
+					event.child = attachedEventTxt;
+				}
 			}
 		}
 	}
