@@ -96,10 +96,10 @@ class Init extends FlxState
 			NOT_FORCED
 		],
 		#end
-		'Hardware Caching' => [
+		'GPU Rendering' => [
 			false,
 			Checkmark,
-			"Whether the game should upload images to the GPU, takes effect after restart.",
+			"Whether the game should use your GPU to render images, takes effect after restart.",
 			NOT_FORCED
 		],
 		'Menu Song' => [

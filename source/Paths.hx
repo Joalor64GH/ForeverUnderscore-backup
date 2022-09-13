@@ -140,9 +140,9 @@ final class Paths
 		localTrackedAssets = [];
 	}
 
-	public static function returnGraphic(key:String, folder:String = 'images', ?library:String, ?textureCompression:Bool)
+	public static function returnGraphic(key:String, folder:String = 'images', ?library:String, ?gpuRender:Bool)
 	{
-		textureCompression = Init.trueSettings.get('Hardware Caching');
+		gpuRender = Init.trueSettings.get('GPU Rendering');
 
 		#if MOD_HANDLER
 		var modPath:String = modImages(key);
@@ -152,7 +152,7 @@ final class Paths
 			{
 				var bitmap = BitmapData.fromFile(modPath);
 				var newGraphic:FlxGraphic = FlxGraphic.fromBitmapData(bitmap, false, modPath);
-				if (textureCompression)
+				if (gpuRender)
 				{
 					var texture = FlxG.stage.context3D.createTexture(bitmap.width, bitmap.height, BGRA, true, 0);
 					texture.uploadFromBitmapData(bitmap);
@@ -182,7 +182,7 @@ final class Paths
 			{
 				var bitmap = BitmapData.fromFile(path);
 				var newGraphic:FlxGraphic;
-				if (textureCompression)
+				if (gpuRender)
 				{
 					var texture = FlxG.stage.context3D.createTexture(bitmap.width, bitmap.height, BGRA, true, 0);
 					texture.uploadFromBitmapData(bitmap);
@@ -389,10 +389,10 @@ final class Paths
 		return sound;
 	}
 
-	inline static public function image(key:String, folder:String = 'images', ?library:String, ?textureCompression:Bool)
+	inline static public function image(key:String, folder:String = 'images', ?library:String, ?gpuRender:Bool)
 	{
-		textureCompression = Init.trueSettings.get('Hardware Caching');
-		var returnAsset:FlxGraphic = returnGraphic(key, folder, library, textureCompression);
+		gpuRender = Init.trueSettings.get('GPU Rendering');
+		var returnAsset:FlxGraphic = returnGraphic(key, folder, library, gpuRender);
 		return returnAsset;
 	}
 
