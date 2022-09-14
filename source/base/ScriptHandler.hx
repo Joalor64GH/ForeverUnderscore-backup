@@ -3,6 +3,7 @@ package base;
 import base.*;
 import dependency.*;
 import flixel.*;
+import flixel.addons.effects.FlxTrail;
 import flixel.graphics.FlxGraphic;
 import flixel.graphics.frames.FlxAtlasFrames;
 import flixel.group.FlxGroup.FlxTypedGroup;
@@ -52,6 +53,7 @@ class ScriptHandler extends SScript
 		set('FlxGraphic', FlxGraphic);
 		set('FlxAtlasFrames', FlxAtlasFrames);
 		set('File', File);
+		set('FlxTrail', FlxTrail);
 
 		// CLASSES (FOREVER);
 		set('Init', Init);

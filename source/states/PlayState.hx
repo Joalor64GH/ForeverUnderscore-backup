@@ -570,7 +570,7 @@ class PlayState extends MusicBeatState
 
 						if (eligable)
 						{
-							goodNoteHit(coolNote, (coolNote.gfNote || gfSec ? gf : bfStrums.character), bfStrums, firstNote); // then hit the note
+							goodNoteHit(coolNote, (coolNote.gfNote || gfSec ? gf : bfStrums.character), bfStrums); // then hit the note
 							pressedNotes.push(coolNote);
 						}
 						// end of this little check
@@ -1335,23 +1335,24 @@ class PlayState extends MusicBeatState
 		callFunc('eventNoteHit', [eventName, val1, val2]);
 	}
 
-	function goodNoteHit(coolNote:Note, character:Character, characterStrums:Strumline, ?canDisplayJudgement:Bool = true)
+	function goodNoteHit(coolNote:Note, character:Character, strumline:Strumline)
 	{
 		if (!coolNote.wasGoodHit)
 		{
-			callFunc('goodNoteHit', [coolNote, character]);
+			// lmao;
+			callFunc(!coolNote.mustPress ? 'opponentNoteHit' : 'goodNoteHit', [coolNote, character, strumline]);
 
 			coolNote.wasGoodHit = true;
 			Conductor.songVocals.volume = 1;
 
-			if (characterStrums.receptors.members[coolNote.noteData] != null)
-				characterStrums.receptors.members[coolNote.noteData].playAnim('confirm');
+			if (strumline.receptors.members[coolNote.noteData] != null)
+				strumline.receptors.members[coolNote.noteData].playAnim('confirm');
 
 			coolNote.goodNoteHit(coolNote, (coolNote.strumTime < Conductor.songPosition ? "late" : "early"));
 			characterPlayAnimation(coolNote, character);
 
 			// special thanks to sam, they gave me the original system which kinda inspired my idea for this new one
-			if (canDisplayJudgement)
+			if (strumline.displayJudgements)
 			{
 				// get the note ms timing
 				var noteDiff:Float = Math.abs(coolNote.strumTime - Conductor.songPosition);
@@ -1374,7 +1375,7 @@ class PlayState extends MusicBeatState
 					if (!coolNote.isSustainNote)
 					{
 						increaseCombo(foundRating, coolNote.noteData, character);
-						popUpScore(foundRating, coolNote.strumTime < Conductor.songPosition, Timings.curFC == 0, characterStrums, coolNote);
+						popUpScore(foundRating, coolNote.strumTime < Conductor.songPosition, Timings.curFC == 0, strumline, coolNote);
 
 						if (coolNote.childrenNotes.length > 0)
 							Timings.notesHit++;
@@ -1386,17 +1387,16 @@ class PlayState extends MusicBeatState
 						// call updated accuracy stuffs
 						if (coolNote.parentNote != null && coolNote.updateAccuracy)
 						{
+							hits++;
 							Timings.updateAccuracy(100, true, coolNote.parentNote.childrenNotes.length);
 							healthCall(100 / coolNote.parentNote.childrenNotes.length);
 						}
 					}
 				}
-
-				hits++;
 			}
 
 			if (!coolNote.isSustainNote)
-				destroyNote(characterStrums, coolNote);
+				destroyNote(strumline, coolNote);
 		}
 	}
 
@@ -1500,26 +1500,15 @@ class PlayState extends MusicBeatState
 			if (daNote.strumTime <= Conductor.songPosition && !daNote.canHurt)
 			{
 				// kill the note, then remove it from the array
-				var canDisplayJudgement = false;
 				if (strumline.displayJudgements)
-				{
-					canDisplayJudgement = true;
-					for (noteDouble in notesPressedAutoplay)
-					{
-						if (noteDouble.noteData == daNote.noteData)
-						{
-							canDisplayJudgement = false;
-						}
-					}
 					notesPressedAutoplay.push(daNote);
-				}
 
 				var curSection = Std.int(curStep / 16);
 
 				if (daNote.gfNote || (SONG.notes[curSection] != null) && (SONG.notes[curSection].gfSection))
 					char = gf;
 
-				goodNoteHit(daNote, char, strumline, canDisplayJudgement);
+				goodNoteHit(daNote, char, strumline);
 			}
 			//
 		}
@@ -1639,9 +1628,12 @@ class PlayState extends MusicBeatState
 
 		// create the note splash if you hit a sick
 		if (baseRating == "sick")
-			createSplash(coolNote, strumline);
+			popNoteSplash(coolNote, strumline);
 
-		popJudgement(baseRating, timing, perfect);
+		if (!bfStrums.autoplay)
+			popJudgement(baseRating, timing, perfect);
+		else
+			popJudgement('sick', false, true);
 		Timings.updateAccuracy(Timings.judgementsMap.get(baseRating)[3]);
 		score = Std.int(Timings.judgementsMap.get(baseRating)[2]);
 
@@ -1652,7 +1644,7 @@ class PlayState extends MusicBeatState
 		uiHUD.tweenScoreColor(baseRating, perfect);
 	}
 
-	public function createSplash(coolNote:Note, strumline:Strumline)
+	public function popNoteSplash(coolNote:Note, strumline:Strumline)
 	{
 		// play animation in existing notesplashes
 		var noteSplashRandom:String = (Std.string((FlxG.random.int(0, 1) + 1)));
@@ -1723,6 +1715,9 @@ class PlayState extends MusicBeatState
 
 	public function decreaseCombo(?popMiss:Bool = false)
 	{
+		if (bfStrums.autoplay)
+			return;
+
 		if (combo > 5 && gf.animOffsets.exists('sad'))
 			gf.playAnim('sad');
 
@@ -1741,7 +1736,8 @@ class PlayState extends MusicBeatState
 		if (popMiss)
 		{
 			uiHUD.tweenScoreColor("miss", false);
-			popJudgement("miss", true, Timings.curFC == 0);
+			// doesn't matter, miss ratings don't have timings
+			popJudgement("miss", false, Timings.curFC == 0);
 			healthCall(Timings.judgementsMap.get("miss")[3]);
 		}
 
