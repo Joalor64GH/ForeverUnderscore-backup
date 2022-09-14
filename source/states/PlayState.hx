@@ -1387,10 +1387,11 @@ class PlayState extends MusicBeatState
 						// call updated accuracy stuffs
 						if (coolNote.parentNote != null && coolNote.updateAccuracy)
 						{
-							hits++;
 							Timings.updateAccuracy(100, true, coolNote.parentNote.childrenNotes.length);
 							healthCall(100 / coolNote.parentNote.childrenNotes.length);
 						}
+
+						hits++;
 					}
 				}
 			}
