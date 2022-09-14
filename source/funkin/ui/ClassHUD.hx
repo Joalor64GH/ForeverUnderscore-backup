@@ -1,30 +1,18 @@
 package funkin.ui;
 
-import base.Conductor;
 import base.CoolUtil;
 import base.ForeverTools;
 import flixel.FlxBasic;
-import flixel.FlxCamera;
 import flixel.FlxG;
-import flixel.FlxObject;
 import flixel.FlxSprite;
-import flixel.FlxState;
 import flixel.group.FlxGroup.FlxTypedGroup;
-import flixel.group.FlxSpriteGroup;
 import flixel.math.FlxMath;
 import flixel.text.FlxText;
-import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 import flixel.ui.FlxBar;
 import flixel.util.FlxColor;
 import flixel.util.FlxSort;
-import flixel.util.FlxStringUtil;
-import flixel.util.FlxTimer;
-import funkin.Timings;
-import lime.app.Application;
 import states.PlayState;
-
-using StringTools;
 
 class ClassHUD extends FlxTypedGroup<FlxBasic>
 {
@@ -33,18 +21,11 @@ class ClassHUD extends FlxTypedGroup<FlxBasic>
 	var scoreLast:Float = -1;
 	var scoreColorTween:FlxTween;
 
-	public var traceBar:FlxText;
-
-	// fnf mods
-	var scoreDisplay:String = 'beep bop bo skdkdkdbebedeoop brrapadop';
-
 	var cornerMark:FlxText; // engine mark at the upper right corner
 	var centerMark:FlxText; // song display name and difficulty at the center
 
 	var healthBarBG:FlxSprite;
 	var healthBar:FlxBar;
-
-	var SONG = PlayState.SONG;
 
 	public var iconP1:HealthIcon;
 	public var iconP2:HealthIcon;
@@ -102,7 +83,7 @@ class ClassHUD extends FlxTypedGroup<FlxBasic>
 		iconP2.y = healthBar.y - (iconP2.height / 2);
 		add(iconP2);
 
-		scoreBar = new FlxText(FlxG.width / 2, Math.floor(healthBarBG.y + 40), 0, scoreDisplay);
+		scoreBar = new FlxText(FlxG.width / 2, Math.floor(healthBarBG.y + 40), 0, '');
 		scoreBar.setFormat(Paths.font('vcr.ttf'), 18, FlxColor.WHITE);
 		scoreBar.setBorderStyle(OUTLINE, FlxColor.BLACK, 1.5);
 		scoreBar.antialiasing = !Init.trueSettings.get('Disable Antialiasing');
@@ -140,20 +121,16 @@ class ClassHUD extends FlxTypedGroup<FlxBasic>
 
 		add(autoplayMark);
 
-		traceBar = new FlxText(10, 20, 0, '', 16);
-		traceBar.setFormat(Paths.font('vcr.ttf'), 24, FlxColor.WHITE);
-		traceBar.setBorderStyle(OUTLINE, FlxColor.BLACK, 2);
-		traceBar.scrollFactor.set();
-		traceBar.alpha = 0;
-		add(traceBar);
-
 		// counter
 		if (Init.trueSettings.get('Counter') != 'None')
 		{
 			var judgementNameArray:Array<String> = [];
 			for (i in Timings.judgementsMap.keys())
 				judgementNameArray.insert(Timings.judgementsMap.get(i)[0], i);
-			judgementNameArray.sort(sortByShit);
+			judgementNameArray.sort(function(Obj1:String, Obj2:String):Int
+			{
+				return FlxSort.byValues(FlxSort.ASCENDING, Timings.judgementsMap.get(Obj1)[0], Timings.judgementsMap.get(Obj2)[0]);
+			});
 			for (i in 0...judgementNameArray.length)
 			{
 				var textAsset:FlxText = new FlxText(5
@@ -163,7 +140,7 @@ class ClassHUD extends FlxTypedGroup<FlxBasic>
 					+ (i * counterTextSize), 0, '', counterTextSize);
 				if (!left)
 					textAsset.x -= textAsset.text.length * counterTextSize;
-				textAsset.setFormat(Paths.font("vcr.ttf"), counterTextSize, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+				textAsset.setFormat(Paths.font(counterTextFont), counterTextSize, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 				textAsset.scrollFactor.set();
 				timingsMap.set(judgementNameArray[i], textAsset);
 				add(textAsset);
@@ -175,9 +152,7 @@ class ClassHUD extends FlxTypedGroup<FlxBasic>
 	}
 
 	var counterTextSize:Int = 18;
-
-	function sortByShit(Obj1:String, Obj2:String):Int
-		return FlxSort.byValues(FlxSort.ASCENDING, Timings.judgementsMap.get(Obj1)[0], Timings.judgementsMap.get(Obj2)[0]);
+	var counterTextFont:String = 'vcr.ttf';
 
 	var left = (Init.trueSettings.get('Counter') == 'Left');
 
@@ -287,7 +262,7 @@ class ClassHUD extends FlxTypedGroup<FlxBasic>
 				default: rankColor = perfect ? FlxColor.fromString('#F8D482') : FlxColor.CYAN;
 			}
 
-			scoreColorTween = FlxTween.color(scoreBar, 0.005, scoreBar.color, rankColor,
+			scoreColorTween = FlxTween.color(scoreBar, 0.3, scoreBar.color, rankColor,
 			{
 				onComplete: function(twn:FlxTween)
 				{

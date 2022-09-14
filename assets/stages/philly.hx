@@ -1,149 +1,128 @@
 var phillyTrain:FNFSprite;
 var trainSound:FlxSound;
-var phillyCityLights:FlxSpriteGroup;
-
+var windowLight:FNFSprite;
+var phillyCityLightColors:Array<Int>;
 var trainFrameTiming:Float = 0;
 var trainCars:Int = 8;
 var trainCooldown:Int = 0;
-
 var curLight:Int = 0;
-
 var startedMoving:Bool = false;
 var trainMoving:Bool = false;
 var trainFinishing:Bool = false;
 
 function generateStage()
 {
-    curStage = 'philly';
-    PlayState.defaultCamZoom = 1.05;
+	curStage = 'philly';
+	PlayState.defaultCamZoom = 1.05;
 
-    var bg:FNFSprite = new FNFSprite(-100).loadGraphic(Paths.image('backgrounds/' + curStage + '/sky'));
-    bg.scrollFactor.set(0.1, 0.1);
-    add(bg);
+	var bg:FNFSprite = new FNFSprite(-100, 0);
+	bg.loadGraphic(Paths.image('backgrounds/' + curStage + '/sky'));
+	bg.scrollFactor.set(0.1, 0.1);
+	add(bg);
 
-    var city:FNFSprite = new FNFSprite(-10).loadGraphic(Paths.image('backgrounds/' + curStage + '/city'));
-    city.scrollFactor.set(0.3, 0.3);
-    city.setGraphicSize(Std.int(city.width * 0.85));
-    city.updateHitbox();
-    add(city);
+	var city:FNFSprite = new FNFSprite(-10).loadGraphic(Paths.image('backgrounds/' + curStage + '/city'));
+	city.scrollFactor.set(0.3, 0.3);
+	city.setGraphicSize(Std.int(city.width * 0.85));
+	city.updateHitbox();
+	add(city);
 
-    phillyCityLights = new FlxSpriteGroup();
-    add(phillyCityLights);
+	phillyCityLightColors = [0xFF31A2FD, 0xFF31FD8C, 0xFFFB33F5, 0xFFFD4531, 0xFFFBA633];
 
-    for (i in 0...5)
-    {
-        var light:FNFSprite = new FNFSprite(city.x).loadGraphic(Paths.image('backgrounds/' + curStage + '/win' + i));
-        light.scrollFactor.set(0.3, 0.3);
-        light.visible = false;
-        light.setGraphicSize(Std.int(light.width * 0.85));
-        light.updateHitbox();
-        light.antialiasing = !Init.trueSettings.get('Disable Antialiasing');
-        phillyCityLights.add(light);
-    }
+	windowLight = new FNFSprite(city.x).loadGraphic(Paths.image('backgrounds/' + curStage + '/win'));
+	windowLight.scrollFactor.set(0.3, 0.3);
+	windowLight.setGraphicSize(Std.int(windowLight.width * 0.85));
+	windowLight.updateHitbox();
+	windowLight.antialiasing = !Init.trueSettings.get('Disable Antialiasing');
+	windowLight.alpha = 0;
+	add(windowLight);
 
-    var streetBehind:FNFSprite = new FNFSprite(-40, 50).loadGraphic(Paths.image('backgrounds/' + curStage + '/behindTrain'));
-    add(streetBehind);
+	var streetBehind:FNFSprite = new FNFSprite(-40, 50).loadGraphic(Paths.image('backgrounds/' + curStage + '/behindTrain'));
+	add(streetBehind);
 
-    phillyTrain = new FNFSprite(2000, 360).loadGraphic(Paths.image('backgrounds/' + curStage + '/train'));
-    add(phillyTrain);
+	phillyTrain = new FNFSprite(2000, 360).loadGraphic(Paths.image('backgrounds/' + curStage + '/train'));
+	add(phillyTrain);
 
-    trainSound = new FlxSound().loadEmbedded(Paths.sound('train_passes'));
-    FlxG.sound.list.add(trainSound);
+	trainSound = new FlxSound().loadEmbedded(Paths.sound('train_passes'));
+	FlxG.sound.list.add(trainSound);
 
-    var street:FNFSprite = new FNFSprite(-40, streetBehind.y).loadGraphic(Paths.image('backgrounds/' + curStage + '/street'));
-    add(street);
+	var street:FNFSprite = new FNFSprite(-40, streetBehind.y).loadGraphic(Paths.image('backgrounds/' + curStage + '/street'));
+	add(street);
 }
 
 function trainStart()
 {
-    trainMoving = true;
-    if (!trainSound.playing)
-        trainSound.play(true);
+	trainMoving = true;
+	if (!trainSound.playing)
+		trainSound.play(true);
 }
 
 function updateTrainPos(gf:Character)
 {
-    if (trainSound.time >= 4700)
-    {
-        startedMoving = true;
-        gf.playAnim('hairBlow');
-    }
+	if (trainSound.time >= 4700)
+	{
+		startedMoving = true;
+		gf.playAnim('hairBlow');
+	}
 
-    if (startedMoving)
-    {
-        phillyTrain.x -= 400;
+	if (startedMoving)
+	{
+		phillyTrain.x -= 400;
 
-        if (phillyTrain.x < -2000 && !trainFinishing)
-        {
-            phillyTrain.x = -1150;
-            trainCars -= 1;
+		if (phillyTrain.x < -2000 && !trainFinishing)
+		{
+			phillyTrain.x = -1150;
+			trainCars -= 1;
 
-            if (trainCars <= 0)
-                trainFinishing = true;
-        }
+			if (trainCars <= 0)
+				trainFinishing = true;
+		}
 
-        if (phillyTrain.x < -4000 && trainFinishing)
-            trainReset(gf);
-    }
+		if (phillyTrain.x < -4000 && trainFinishing)
+			trainReset(gf);
+	}
 }
 
 function trainReset(gf:Character)
 {
-    gf.playAnim('hairFall');
-    phillyTrain.x = FlxG.width + 200;
-    trainMoving = false;
-    trainCars = 8;
-    trainFinishing = false;
-    startedMoving = false;
+	gf.playAnim('hairFall');
+	phillyTrain.x = FlxG.width + 200;
+	trainMoving = false;
+	trainCars = 8;
+	trainFinishing = false;
+	startedMoving = false;
 }
 
 function updateStage(curBeat:Int, boyfriend:Character, gf:Character, dadOpponent:Character)
 {
-    if (!trainMoving)
-        trainCooldown += 1;
+	if (!trainMoving)
+		trainCooldown += 1;
 
-    if (curBeat % 8 == 4 && FlxG.random.bool(30) && !trainMoving && trainCooldown > 8)
-    {
-        trainCooldown = FlxG.random.int(-4, 0);
-        trainStart();
-    }
+	if (curBeat % 8 == 4 && FlxG.random.bool(30) && !trainMoving && trainCooldown > 8)
+	{
+		trainCooldown = FlxG.random.int(-4, 0);
+		trainStart();
+	}
 
-    if (curBeat % 4 == 0)
-    {
-        var lastLight:FlxSprite = phillyCityLights.members[0];
-
-        phillyCityLights.forEach(function(light:FNFSprite)
-        {
-            // Take note of the previous light
-            if (light.visible == true)
-                lastLight = light;
-
-            light.visible = false;
-        });
-
-        // To prevent duplicate lights, iterate until you get a matching light
-        while (lastLight == phillyCityLights.members[curLight])
-        {
-            curLight = FlxG.random.int(0, phillyCityLights.length - 1);
-        }
-
-        phillyCityLights.members[curLight].visible = true;
-        phillyCityLights.members[curLight].alpha = 1;
-
-        FlxTween.tween(phillyCityLights.members[curLight], {alpha: 0}, Conductor.stepCrochet * .016);
-    }
+	if (curBeat % 4 == 0)
+	{
+		curLight = FlxG.random.int(0, phillyCityLightColors.length - 1, [curLight]);
+		windowLight.color = phillyCityLightColors[curLight];
+		windowLight.alpha = 1;
+	}
 }
 
 function updateStageConst(elapsed:Float, boyfriend:Character, gf:Character, dadOpponent:Character)
 {
-    if (trainMoving)
-    {
-        trainFrameTiming += elapsed;
+	windowLight.alpha -= (Conductor.crochet / 1000) * FlxG.elapsed * 1.5;
 
-        if (trainFrameTiming >= 1 / 24)
-        {
-            updateTrainPos(gf);
-            trainFrameTiming = 0;
-        }
-    }
+	if (trainMoving)
+	{
+		trainFrameTiming += elapsed;
+
+		if (trainFrameTiming >= 1 / 24)
+		{
+			updateTrainPos(gf);
+			trainFrameTiming = 0;
+		}
+	}
 }

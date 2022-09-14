@@ -439,15 +439,13 @@ class Init extends FlxState
 		FlxG.game.setFilters(filters);
 
 		var theFilter:String = trueSettings.get('Filter');
-		if (gameFilters.get(theFilter) != null)
+		if (theFilter != 'none' && gameFilters.get(theFilter) != null)
 		{
 			var realFilter = gameFilters.get(theFilter).filter;
 
 			if (realFilter != null)
 				filters.push(realFilter);
 		}
-
 		FlxG.game.setFilters(filters);
-		// */
 	}
 }

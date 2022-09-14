@@ -23,7 +23,6 @@ import flixel.util.FlxColor;
 import funkin.background.*;
 import openfl.Assets;
 import openfl.display.BlendMode;
-import openfl.display.BlendModeEffect;
 import openfl.display.GraphicsShader;
 import openfl.filters.ShaderFilter;
 import states.PlayState;
@@ -252,7 +251,7 @@ class Stage extends FlxTypedGroup<FlxBasic>
 		callFunc('generateStage', []);
 	}
 
-	public function callFunc(key:String, args:Array<Dynamic>):Dynamic
+	public function callFunc(key:String, args:Array<Dynamic>)
 	{
 		if (stageScript == null)
             return null;
@@ -260,11 +259,11 @@ class Stage extends FlxTypedGroup<FlxBasic>
 			return stageScript.call(key, args);
 	}
 
-	public function setVar(key:String, value:Dynamic):Void
+	public function setVar(key:String, value:Dynamic)
 	{
         if (stageScript == null)
-            return;
-
-		return stageScript.set(key, value);
+            return null;
+		else
+			return stageScript.set(key, value);
 	}
 }

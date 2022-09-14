@@ -33,7 +33,6 @@ import funkin.Strumline.UIStaticArrow;
 import funkin.ui.*;
 import lime.app.Application;
 import openfl.display.BlendMode;
-import openfl.display.BlendModeEffect;
 import openfl.display.GraphicsShader;
 import openfl.events.KeyboardEvent;
 import openfl.filters.ShaderFilter;
@@ -53,8 +52,6 @@ import vlc.MP4Handler;
 
 class PlayState extends MusicBeatState
 {
-	public static var ScriptedShaders:Map<String, GraphicsShader> = new Map<String, GraphicsShader>();
-
 	public static var startTimer:FlxTimer;
 
 	public static var curStage:String = '';
@@ -241,7 +238,6 @@ class PlayState extends MusicBeatState
 			curStage = 'unknown';
 
 		setupScripts();
-		callFunc('create', []);
 
 		if (Init.trueSettings.get('Stage Opacity') > 0)
 		{
@@ -459,15 +455,10 @@ class PlayState extends MusicBeatState
 	private function precacheSounds()
 	{
 		var soundArray:Array<String> = [];
-		var missArray:Array<String> = [];
 
 		var pauseMusic:FlxSound = new FlxSound().loadEmbedded(Paths.music('breakfast'), true, true);
 		pauseMusic.volume = 0.000001;
 		pauseMusic.play();
-
-		missArray.push('missnote1');
-		missArray.push('missnote2');
-		missArray.push('missnote3');
 
 		// push your sound paths to this array
 		if (Init.trueSettings.get('Hitsound Volume') > 0)
@@ -480,9 +471,9 @@ class PlayState extends MusicBeatState
 			allSounds.play();
 		}
 
-		for (i in missArray)
+		for (i in 0...4)
 		{
-			var missSounds:FlxSound = new FlxSound().loadEmbedded(Paths.sound(i));
+			var missSounds:FlxSound = new FlxSound().loadEmbedded(Paths.sound('missnote' + i));
 			missSounds.volume = 0.000001;
 			missSounds.play();
 
@@ -2374,10 +2365,7 @@ class PlayState extends MusicBeatState
 			i.call(key, args);
 
 		if (generatedMusic)
-		{
-			ScriptHandler.ScriptFuncs.setBaseVars();
 			setPlayStateVars();
-		}
 	}
 
 	public function setVar(key:String, value:Dynamic)
@@ -2405,10 +2393,16 @@ class PlayState extends MusicBeatState
 		];
 
 		for (dir in dirs)
+		{
 			for (script in dir)
+			{
 				if (dir.length > 0)
 					if (script.length > 0 && script.endsWith('.hx') || script.endsWith('.hxs'))
 						scriptArray.push(new ScriptHandler(script));
+			}
+		}
+
+		callFunc('create', []);
 	}
 
 	function setPlayStateVars()

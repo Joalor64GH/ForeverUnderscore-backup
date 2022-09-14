@@ -3,6 +3,7 @@ package base;
 import base.*;
 import flixel.FlxG;
 import flixel.system.FlxSound;
+import flixel.text.FlxText.FlxTextBorderStyle;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween.FlxTweenType;
 import flixel.util.FlxColor;

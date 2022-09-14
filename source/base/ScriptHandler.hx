@@ -11,6 +11,8 @@ import flixel.group.FlxGroup;
 import flixel.group.FlxSpriteGroup;
 import flixel.math.*;
 import flixel.system.*;
+import flixel.system.FlxAssets.FlxShader;
+import flixel.text.FlxText;
 import flixel.tweens.*;
 import flixel.util.*;
 import funkin.*;
@@ -37,6 +39,8 @@ class ScriptHandler extends SScript
 		set('FlxObject', FlxObject);
 		set('FlxCamera', FlxCamera);
 		set('FlxSprite', FlxSprite);
+		set('FlxText', FlxText);
+		set('FlxTextBorderStyle', FlxTextBorderStyle);
 		set('FlxSound', FlxSound);
 		set('FlxTimer', FlxTimer);
 		set('FlxTween', FlxTween);
@@ -46,6 +50,7 @@ class ScriptHandler extends SScript
 		set('FlxGroup', FlxGroup);
 		set('FlxTypedGroup', FlxTypedGroup);
 		set('FlxSpriteGroup', FlxSpriteGroup);
+		set('FlxTypedSpriteGroup', FlxTypedSpriteGroup);
 		set('FlxStringUtil', FlxStringUtil);
 		set('FlxAtlasFrames', FlxAtlasFrames);
 		set('FlxSort', FlxSort);
@@ -54,6 +59,9 @@ class ScriptHandler extends SScript
 		set('FlxAtlasFrames', FlxAtlasFrames);
 		set('File', File);
 		set('FlxTrail', FlxTrail);
+		set('FlxShader', FlxShader);
+		set('GraphicsShader', GraphicsShader);
+		set('ShaderFilter', ShaderFilter);
 
 		// CLASSES (FOREVER);
 		set('Init', Init);
@@ -75,41 +83,5 @@ class ScriptHandler extends SScript
 		set('Paths', Paths);
 		set('Stage', Stage);
 		set('Timings', Timings);
-	}
-}
-
-class ScriptFuncs extends PlayState
-{
-	public static function setBaseVars()
-	{
-		PlayState.contents.setVar('castShader', function(shaderID:String, key:String, camera:String = 'camGame')
-		{
-			if (Init.trueSettings.get('Disable Shaders'))
-			{
-				return null;
-			}
-			else
-			{
-				if (key != null || key != '')
-				{
-					var shader:GraphicsShader = new GraphicsShader("", File.getContent(Paths.shader(key)));
-					PlayState.ScriptedShaders.set(shaderID, shader);
-
-					switch (camera)
-					{
-						case 'camhud' | 'camHUD' | 'hud' | 'ui':
-							PlayState.camHUD.setFilters([new ShaderFilter(shader)]);
-						case 'camgame' | 'camGame' | 'game' | 'world':
-							PlayState.camGame.setFilters([new ShaderFilter(shader)]);
-						case 'strumhud' | 'strumHUD' | 'strum' | 'strumlines':
-							PlayState.strumHUD.setFilters([new ShaderFilter(shader)]);
-					}
-				}
-				else
-				{
-					return;
-				}
-			}
-		});
 	}
 }
