@@ -177,7 +177,7 @@ class ControlsSubstate extends MusicBeatSubstate
 
 	function getStringKey(arrayThingy:Dynamic):String
 	{
-		var keyString:String = '---';
+		var keyString:String = 'none';
 		if (arrayThingy != null)
 		{
 			var keyDisplay:FlxKey = arrayThingy;

@@ -51,11 +51,11 @@ class KeyFormatter
 			case RBRACKET: return "]";
 			case QUOTE: return "'";
 			case PRINTSCREEN: return "PRTSCRN";
-			case NONE: return '---';
+			case NONE: return 'none';
 			default:
 				var label:String = '' + key;
 				if (label.toLowerCase() == 'null')
-					return '---';
+					return 'none';
 				return '' + label.charAt(0).toUpperCase() + label.substr(1).toUpperCase();
 		}
 	}

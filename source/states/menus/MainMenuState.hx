@@ -161,7 +161,7 @@ class MainMenuState extends MusicBeatState
 			}
 
 			#if MOD_HANDLER
-			if (controls.RESET)
+			if (FlxG.keys.justPressed.M)
 			{
 				FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
 				Main.switchState(this, new ModsMenuState());
