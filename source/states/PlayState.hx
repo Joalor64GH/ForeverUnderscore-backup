@@ -1740,8 +1740,8 @@ class PlayState extends MusicBeatState
 
 		if (popMiss)
 		{
-			popJudgement("miss", true, Timings.curFC == 0);
 			uiHUD.tweenScoreColor("miss", false);
+			popJudgement("miss", true, Timings.curFC == 0);
 			healthCall(Timings.judgementsMap.get("miss")[3]);
 		}
 

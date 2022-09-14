@@ -46,7 +46,6 @@ class HealthIcon extends FlxSprite
 	{
 		var path = Paths.image('$icon/icon', 'characters');
 		var iconExists = FileSystem.exists(Paths.getPath('characters/$icon/icon.png', IMAGE));
-		var sparrowIcon = FileSystem.exists(Paths.getPath('characters/$icon/icon.xml', TEXT));
 
 		var trimmedIcon:String = icon;
 		if (trimmedIcon.contains('-'))
@@ -61,29 +60,18 @@ class HealthIcon extends FlxSprite
 			//trace('$icon icon is invalid, trying $trimmedIcon instead you fuck');
 		}
 
-		if (sparrowIcon)
-		{
-			frames = Paths.getSparrowAtlas('icon', 'characters/$icon');
+		var iconGraphic:FlxGraphic = path;
+		var iconWidth = 1;
 
-			animation.addByPrefix('static', '$icon-static', 24, true, isPlayer);
-			animation.addByPrefix('losing', '$icon-losing', 24, true, isPlayer);
-			animation.addByPrefix('winning', '$icon-winning', 24, true, isPlayer);
-		}
-		else
-		{
-			var iconGraphic:FlxGraphic = path;
-			var iconWidth = 1;
+		iconWidth = Std.int(iconGraphic.width / 150) - 1;
+		iconWidth = iconWidth + 1;
 
-			iconWidth = Std.int(iconGraphic.width / 150) - 1;
-			iconWidth = iconWidth + 1;
+		loadGraphic(iconGraphic);
+		loadGraphic(iconGraphic, true, Std.int(iconGraphic.width / iconWidth), iconGraphic.height);
 
-			loadGraphic(iconGraphic);
-			loadGraphic(iconGraphic, true, Std.int(iconGraphic.width / iconWidth), iconGraphic.height);
-
-			animation.add('static', [0], 0, false, isPlayer);
-			animation.add('losing', [1], 0, false, isPlayer);
-			animation.add('winning', [2], 0, false, isPlayer);
-		}
+		animation.add('static', [0], 0, false, isPlayer);
+		animation.add('losing', [1], 0, false, isPlayer);
+		animation.add('winning', [2], 0, false, isPlayer);
 		animation.play('static');
 		scrollFactor.set();
 		updateHitbox();

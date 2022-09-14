@@ -85,6 +85,9 @@ class Timings
 		}
 		trueAccuracy = (accuracy / notesHit);
 
+		if (trueAccuracy >= 100)
+			trueAccuracy = 100;
+
 		updateFCDisplay();
 		updateScoreRating();
 	}
@@ -104,13 +107,16 @@ class Timings
 				comboDisplay = 'SDCB';
 		}
 
-		switch (comboDisplay)
+		if (notesHit > 0)
 		{
-			case 'GFC': curFC = 1;
-			case 'FC': curFC = 2;
-			case 'SDCB': curFC = 3;
-			case '' | null: curFC = -1;
-			default: curFC = 0;
+			switch (comboDisplay)
+			{
+				case 'GFC': curFC = 1;
+				case 'FC': curFC = 2;
+				case 'SDCB': curFC = 3;
+				case '' | null: curFC = -1;
+				default: curFC = 0;
+			}
 		}
 
 		// this updates the most so uh
