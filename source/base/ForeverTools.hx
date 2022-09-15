@@ -3,7 +3,7 @@ package base;
 import base.*;
 import flixel.FlxG;
 import flixel.system.FlxSound;
-import flixel.text.FlxText.FlxTextBorderStyle;
+import flixel.text.FlxText;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween.FlxTweenType;
 import flixel.util.FlxColor;
@@ -248,6 +248,18 @@ class ForeverTools
 			case "subtract": BlendMode.SUBTRACT;
 			case "invert": BlendMode.INVERT;
 			case _: BlendMode.NORMAL;
+		}
+	}
+
+	public static function setTextAlign(str:String):FlxTextAlign
+	{
+		return switch (str)
+		{
+			case "center": FlxTextAlign.CENTER;
+			case "justify": FlxTextAlign.JUSTIFY;
+			case "left": FlxTextAlign.LEFT;
+			case "right": FlxTextAlign.RIGHT;
+			case _: FlxTextAlign.LEFT;
 		}
 	}
 }

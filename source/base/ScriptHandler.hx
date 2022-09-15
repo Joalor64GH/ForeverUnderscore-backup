@@ -14,6 +14,7 @@ import flixel.system.*;
 import flixel.system.FlxAssets.FlxShader;
 import flixel.text.FlxText;
 import flixel.tweens.*;
+import flixel.ui.FlxBar;
 import flixel.util.*;
 import funkin.*;
 import lime.app.Application;
@@ -33,6 +34,8 @@ class ScriptHandler extends SScript
 	override public function preset():Void
 	{
 		super.preset();
+
+		// will use import on scripts later so this won't be needed!
 
 		set('FlxG', FlxG);
 		set('FlxBasic', FlxBasic);
@@ -60,6 +63,9 @@ class ScriptHandler extends SScript
 		set('File', File);
 		set('FlxTrail', FlxTrail);
 		set('FlxShader', FlxShader);
+		set('FlxBar', FlxBar);
+		set('FlxBarFillDirection', FlxBarFillDirection);
+		set('FlxAxes', FlxAxes);
 		set('GraphicsShader', GraphicsShader);
 		set('ShaderFilter', ShaderFilter);
 
