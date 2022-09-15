@@ -229,6 +229,7 @@ class PauseSubstate extends MusicBeatSubstate
 						Main.switchState(this, new OptionsMenuState());
 				case "Exit to menu":
 					Conductor.stopMusic();
+					PlayState.seenCutscene = false;
 					PlayState.deaths = 0;
 					disableCheats(true);
 

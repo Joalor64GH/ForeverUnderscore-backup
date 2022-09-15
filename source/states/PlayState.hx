@@ -111,10 +111,13 @@ class PlayState extends MusicBeatState
 	public var startingSong:Bool = false;
 	public var paused:Bool = false;
 
-	var startedCountdown:Bool = false;
-	var inCutscene:Bool = false;
+	public var startedCountdown:Bool = false;
+	public var skipCountdown:Bool = false;
 
-	var canPause:Bool = true;
+	public static var seenCutscene:Bool = false;
+	public var inCutscene:Bool = false;
+
+	public var canPause:Bool = true;
 
 	var previousFrameTime:Int = 0;
 	var lastReportedPlayheadPosition:Int = 0;
@@ -440,7 +443,7 @@ class PlayState extends MusicBeatState
 		Paths.clearUnusedMemory();
 
 		// call the funny intro cutscene depending on the song
-		if (!skipCutscenes())
+		if (!skipCutscenes() && !seenCutscene)
 			songIntroCutscene();
 		else
 			startCountdown();
@@ -1981,6 +1984,7 @@ class PlayState extends MusicBeatState
 
 		canPause = false;
 		endingSong = true;
+		seenCutscene = false;
 
 		Conductor.stopMusic();
 
@@ -2201,6 +2205,7 @@ class PlayState extends MusicBeatState
 			default:
 				callTextbox();
 		}
+		seenCutscene = true;
 	}
 
 	function callTextbox()
@@ -2255,6 +2260,14 @@ class PlayState extends MusicBeatState
 		precacheSounds();
 
 		callFunc('startCountdown', []);
+
+		if (skipCountdown)
+		{
+			startedCountdown = true;
+			swagCounter = 4;
+			Conductor.songPosition = -5; // delay start position so the ends before it
+			return;
+		}
 
 		startTimer = new FlxTimer().start(Conductor.crochet / 1000, function(tmr:FlxTimer)
 		{

@@ -186,7 +186,7 @@ class Strumline extends FlxSpriteGroup
 			receptor.y -= 10;
 			receptor.playAnim('static');
 
-			if (receptor.doReceptorTween)
+			if (receptor.doReceptorTween || !PlayState.contents.skipCountdown)
 			{
 				receptor.alpha = 0;
 				FlxTween.tween(receptor, {y: receptor.initialY, alpha: receptor.setAlpha}, 1, {ease: FlxEase.circOut, startDelay: 0.5 + (0.2 * i)});
