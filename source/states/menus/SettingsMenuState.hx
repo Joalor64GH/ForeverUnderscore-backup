@@ -2,6 +2,7 @@ package states.menus;
 
 import base.ForeverAssets;
 import base.ForeverTools;
+import dependency.Discord;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.effects.FlxFlicker;
@@ -38,6 +39,10 @@ class SettingsMenuState extends SettingsMenuParent
 	override public function create()
 	{
 		super.create();
+
+		#if DISCORD_RPC
+		Discord.changePresence('ADJUSTING PREFERENCES', 'Options Menu');
+		#end
 
 		// make sure the music is playing
 		ForeverTools.resetMenuMusic();

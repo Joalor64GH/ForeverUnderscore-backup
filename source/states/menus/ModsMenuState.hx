@@ -36,6 +36,10 @@ class ModsMenuState extends MusicBeatState
 	#if MOD_HANDLER
 	var bg:FlxSprite;
 	var fg:FlxSprite;
+
+	var stateBG:FlxSprite;
+
+	var stateText:FlxText;
 	var infoText:FlxText;
 
 	private static var curSelection:Int = -1;
@@ -63,12 +67,14 @@ class ModsMenuState extends MusicBeatState
 		fg.scrollFactor.set();
 		add(fg);
 
-		var text:FlxText = new FlxText(0, 0, 0, '- MODS MENU -');
-		text.setFormat(Paths.font('vcr.ttf'), 36, FlxColor.WHITE);
-		text.setBorderStyle(OUTLINE, FlxColor.BLACK, 1.5);
-		text.antialiasing = !Init.trueSettings.get('Disable Antialiasing');
-		text.screenCenter(X);
-		add(text);
+		stateText = new FlxText(FlxG.width * 0.9 - 25, 10, 0, "", 32);
+		stateText.setFormat(Paths.font("vcr.ttf"), 32, FlxColor.WHITE, CENTER);
+
+		stateBG = new FlxSprite(stateText.x - stateText.width, 0).makeGraphic(Std.int(FlxG.width * 0.15), 56, 0xFF000000);
+		stateBG.alpha = 0.6;
+		add(stateBG);
+
+		add(stateText);
 
 		grpMenuMods = new FlxTypedGroup<Alphabet>();
 		add(grpMenuMods);
@@ -101,6 +107,8 @@ class ModsMenuState extends MusicBeatState
 	override function update(elapsed:Float)
 	{
 		super.update(elapsed);
+
+		stateText.text = (isEnabled ?  'ENABLED' : 'DISABLED');
 
 		if (controls.BACK)
 		{
@@ -135,8 +143,6 @@ class ModsMenuState extends MusicBeatState
 			{
 				if (isEnabled)
 					item.alpha = 1;
-				else
-					item.alpha = 0.6;
 			}
 		}
 

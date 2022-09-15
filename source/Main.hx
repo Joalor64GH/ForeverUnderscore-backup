@@ -41,7 +41,9 @@ class Main extends Sprite
 	public static var commitHash:String;
 	public static var showCommitHash:Bool = false;
 
-	static var infoCounter:Overlay; // initialize the heads up display that shows information before creating it.
+	public static var isSongTrans:Bool = false; // will eventually improve upon this
+
+	public static var infoCounter:Overlay; // initialize the heads up display that shows information before creating it.
 
 	// calls a function to set the game up
 	public function new()
@@ -96,6 +98,7 @@ class Main extends Sprite
 			curState.openSubState(new FNFTransition(0.35, false));
 			FNFTransition.finishCallback = function()
 			{
+				isSongTrans = false;
 				FlxG.switchState(target);
 			};
 			return #if DEBUG_TRACES trace('changed state') #end;

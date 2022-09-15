@@ -265,6 +265,8 @@ class StoryMenuState extends MusicBeatState
 
 		if (!locked)
 		{
+			Main.isSongTrans = true;
+
 			if (stopspamming == false)
 			{
 				FlxG.sound.play(Paths.sound('confirmMenu'));

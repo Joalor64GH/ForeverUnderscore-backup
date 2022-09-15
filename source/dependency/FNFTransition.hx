@@ -29,6 +29,9 @@ class FNFTransition extends MusicBeatSubstate
 	var transBlack:FlxSprite;
 	var transGradient:FlxSprite;
 
+	var bg:FlxSprite; // green thing so loadingFunkers doesn't look like it's cropped
+	var loadingFunkers:FlxSprite;
+
 	public function new(duration:Float, isTransIn:Bool)
 	{
 		super();
@@ -43,6 +46,24 @@ class FNFTransition extends MusicBeatSubstate
 		transBlack = new FlxSprite().makeGraphic(width, height + 400, FlxColor.BLACK);
 		transBlack.scrollFactor.set();
 		add(transBlack);
+
+		if (Main.isSongTrans)
+		{
+			// image may show up as cropped, so here we create a background so it won't look like it!!!!;
+			bg = new FlxSprite(0, 0).makeGraphic(FlxG.width, FlxG.height, 0xFFCAFF4D);
+			add(bg);
+
+			// loads an image for the transition;
+			loadingFunkers = new FlxSprite(0, 0).loadGraphic(Paths.image('menus/loading/funkay'));
+			loadingFunkers.setGraphicSize(0, FlxG.height);
+			loadingFunkers.updateHitbox();
+			loadingFunkers.antialiasing = !Init.trueSettings.get('Disable Antialiasing');
+			loadingFunkers.alpha = 0;
+			add(loadingFunkers);
+
+			loadingFunkers.scrollFactor.set();
+			loadingFunkers.screenCenter();
+		}
 
 		transGradient.x -= (width - FlxG.width) / 2;
 		transBlack.x = transGradient.x;
@@ -60,6 +81,11 @@ class FNFTransition extends MusicBeatSubstate
 		}
 		else
 		{
+			if (Main.isSongTrans) // shows that image here if allowed;
+				FlxTween.tween(loadingFunkers, {alpha: 1}, 0.2);
+			
+			// will eventually make the loadingFunkers stuff more customizable;
+
 			transGradient.y = -transGradient.height;
 			transBlack.y = transGradient.y - transBlack.height + 50;
 			leTween = FlxTween.tween(transGradient, {y: transGradient.height + 50}, duration, {

@@ -6,7 +6,7 @@
 	"users":
 	[
 		{
-			"sectionName": "Forever Engine Underscore Team",
+			"sectionName": "FOREVER ENGINE: UNDERSCORE",
 
 			"name": "BeastlyGhost",
 			"iconData": ["ghost", 375, 0],
@@ -29,16 +29,16 @@
 			"colors": [245, 108, 255]
 		},
 		{
-			"sectionName": "Forever Engine Underscore Team",
+			"sectionName": "FOREVER ENGINE: UNDERSCORE",
 
 			"name": "TheWorldMachine",
 			"iconData": ["macxp",  510, -3],
-			"textData": ["Script Backnd Coder, Github Repository Helper"],
+			"textData": ["Script Backend Coder, Github Repository Helper"],
 			"urlData": [[]],
 			"colors": [182, 84, 82]
 		},
 		{
-			"sectionName": "Special Thanks",
+			"sectionName": "SPECIAL THANKS",
 
 			"name": "ShadowMario",
 			"iconData": [],
@@ -65,7 +65,7 @@
 			"colors": [113, 255, 0]
 		},
 		{
-			"sectionName": "Special Thanks",
+			"sectionName": "SPECIAL THANKS",
 
 			"name": "PolybiusProxy",
 			"iconData": [],
@@ -74,7 +74,7 @@
 			"colors": [255, 234, 166]
 		},
 		{
-			"sectionName": "Shoutouts",
+			"sectionName": "SHOUTOUTS",
 
 			"name": "BoloVEVO",
 			"iconData": ["bolo", 120, -230, 0.3],
@@ -83,7 +83,7 @@
 			"colors": [255, 0, 49]
 		},
 		{
-			"sectionName": "Forever Engine Legacy",
+			"sectionName": "FOREVER ENGINE: LEGACY",
 
 			"name": "Yoshubs",
 			"iconData": [],
@@ -127,7 +127,7 @@
 			"colors": [175, 68, 65]
 		},
 		{
-			"sectionName": "Forever Engine Legacy",
+			"sectionName": "FOREVER ENGINE: LEGACY",
 
 			"name": "HelloSammu",
 			"iconData": [],
@@ -136,7 +136,7 @@
 			"colors": [204, 177, 73]
 		},
 		{
-			"sectionName": "Funkin' Crew",
+			"sectionName": "FUNKIN' CREW",
 
 			"name": "ninjamuffin99",
 			"iconData": [],
@@ -159,7 +159,7 @@
 			"colors": [90, 189, 75]
 		},
 		{
-			"sectionName": "Funkin' Crew",
+			"sectionName": "FUNKIN' CREW",
 
 			"name": "kawaisprite",
 			"iconData": [],

@@ -7,7 +7,9 @@ import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.effects.FlxFlicker;
 import flixel.group.FlxGroup.FlxTypedGroup;
+import flixel.math.FlxMath;
 import flixel.text.FlxText;
+import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
 import funkin.Alphabet;
@@ -37,15 +39,12 @@ class CreditsState extends MusicBeatState
 	var curSocial = -1;
 
 	var alphabetGroup:FlxTypedGroup<Alphabet>;
-	var infoText:FlxText;
 
 	var menuBG:FlxSprite = new FlxSprite();
 	var menuColorTween:FlxTween;
 
 	var userData:CreditsUserDef;
 	var credData:CreditsPrefDef;
-
-	var titleText:Alphabet;
 
 	var iconArray:Array<AbsoluteSprite> = [];
 
@@ -107,24 +106,64 @@ class CreditsState extends MusicBeatState
 		if (curSocial == -1)
 			curSocial = 0;
 
-		titleText = new Alphabet(50, 40, credData.users[curSelection].sectionName, true, false, 0.6);
-		titleText.alpha = 0.4;
-		add(titleText);
-
-		infoText = new FlxText(5, FlxG.height - 24, 0, "", 32);
-		infoText.setFormat(Paths.font('vcr.ttf'), 20, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
-		infoText.textField.background = true;
-		infoText.textField.backgroundColor = FlxColor.BLACK;
-		add(infoText);
-
+		generateMarkers();
 		updateSelection();
+	}
+
+	var topBar:FlxSprite;
+	var topMarker:FlxText;
+	var rightMarker:FlxText;
+	var bottomMarker:FlxText;
+	var centerMarker:FlxText;
+
+	function generateMarkers()
+	{
+		topBar = new FlxSprite().makeGraphic(1, 1, FlxColor.BLACK);
+		topBar.setGraphicSize(FlxG.width, 48);
+		topBar.updateHitbox();
+		topBar.screenCenter(X);
+
+		add(topBar);
+		topBar.y -= topBar.height;
+
+		topMarker = new FlxText(8, 8, 0, "CREDITS").setFormat(Paths.font('vcr.ttf'), 32, FlxColor.WHITE);
+		topMarker.alpha = 0;
+		add(topMarker);
+
+		centerMarker = new FlxText(8, 8, 0, "<NEWGROUNDS>").setFormat(Paths.font('vcr.ttf'), 32, FlxColor.WHITE);
+		centerMarker.screenCenter(X);
+		centerMarker.alpha = 0;
+		add(centerMarker);
+
+		rightMarker = new FlxText(8, 8, 0, "FOREVER ENGINE: UNDERSCORE").setFormat(Paths.font('vcr.ttf'), 32, FlxColor.WHITE);
+		rightMarker.x = FlxG.width - (rightMarker.width + 16);
+		rightMarker.alpha = 0;
+		add(rightMarker);
+
+		bottomMarker = new FlxText(5, FlxG.height - 24, 0, "", 32);
+		bottomMarker.setFormat(Paths.font('vcr.ttf'), 20, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		bottomMarker.textField.background = true;
+		bottomMarker.textField.backgroundColor = FlxColor.BLACK;
+		add(bottomMarker);
+
+		FlxTween.tween(topMarker, {alpha: 1}, 0.4, {ease: FlxEase.quartInOut, startDelay: 0.6});
+		FlxTween.tween(centerMarker, {alpha: 1}, 0.4, {ease: FlxEase.quartInOut, startDelay: 0.6});
+		FlxTween.tween(rightMarker, {alpha: 1}, 0.4, {ease: FlxEase.quartInOut, startDelay: 0.6});
 	}
 
 	override function update(elapsed:Float)
 	{
 		super.update(elapsed);
 
-		infoText.screenCenter(X);
+		topBar.y = FlxMath.lerp(topBar.y, 0, elapsed * 6);
+		topMarker.y = topBar.y + 5;
+		centerMarker.y = topBar.y + 5;
+
+		rightMarker.y = topBar.y + 5;
+
+		rightMarker.x = FlxG.width - (rightMarker.width + 16);
+
+		bottomMarker.screenCenter(X);
 
 		// CONTROLS //
 
@@ -148,17 +187,16 @@ class CreditsState extends MusicBeatState
 						curSelection = credData.users.length - 1;
 					else if (curSelection >= credData.users.length)
 						curSelection = 0;
-
 					updateSelection();
 				}
 			}
 		}
 
 		if (controls.UI_LEFT_P)
-			changeSocial(-1);
+			updateSocial(-1);
 
 		if (controls.UI_RIGHT_P)
-			changeSocial(1);
+			updateSocial(1);
 
 		if (controls.ACCEPT)
 		{
@@ -177,7 +215,7 @@ class CreditsState extends MusicBeatState
 			Paths.clearUnusedMemory();
 		}
 
-		updateInfoText();
+		updateBottomMarker();
 	}
 
 	function updateSelection()
@@ -196,8 +234,13 @@ class CreditsState extends MusicBeatState
 			}
 		}
 
-		if (credData.users[curSelection].sectionName.length > 1 && titleText != null)
-			titleText.changeText(credData.users[curSelection].sectionName);
+		if (credData.users[curSelection].sectionName.length > 1)
+		{
+			var textValue = credData.users[curSelection].sectionName;
+			if (credData.users[curSelection].sectionName == null)
+				textValue = "";
+			rightMarker.text = textValue;
+		}
 
 		if (credData.tweenColor)
 		{
@@ -217,9 +260,10 @@ class CreditsState extends MusicBeatState
 
 		// reset social;
 		curSocial = 0;
+		updateSocial(0, false);
 	}
 
-	public function updateInfoText()
+	public function updateBottomMarker()
 	{
 		var textData = credData.users[curSelection].textData;
 		var fullText:String = '';
@@ -232,19 +276,16 @@ class CreditsState extends MusicBeatState
 		if (textData[1] != null && textData[1].length >= 1)
 			fullText += ' - "' + textData[1] + '"';
 
-		if (credData.users[curSelection].urlData[curSocial][0] != null)
-			fullText += ' • Visit: <' + credData.users[curSelection].urlData[curSocial][0] + '>';
-
-		infoText.text = fullText;
+		bottomMarker.text = fullText;
 	}
 
-	public function changeSocial(huh:Int = 0) // HUH???
+	public function updateSocial(huh:Int = 0, playSound:Bool = true) // HUH???
 	{
 		if (credData.users[curSelection].urlData[curSocial][0] == null)
 			return;
 
 		// prevent loud scroll sounds
-		if (huh >= -1)
+		if (playSound)
 			FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
 
 		curSocial += huh;
@@ -253,6 +294,12 @@ class CreditsState extends MusicBeatState
 		if (curSocial >= credData.users[curSelection].urlData.length)
 			curSocial = 0;
 
-		// iconSocial.updateAnim(credData.users[curSelection].urlData[curSocial][0]);
+		if (credData.users[curSelection].urlData[curSocial][0] != null)
+		{
+			var textValue = '< ' + credData.users[curSelection].urlData[curSocial][0] + ' >';
+			if (credData.users[curSelection].urlData[curSocial][0] == null)
+				textValue = "";
+			centerMarker.text = textValue;
+		}
 	}
 }
