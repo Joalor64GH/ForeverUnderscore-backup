@@ -181,7 +181,7 @@ class Init extends FlxState
 			['None', 'Left', 'Right']
 		],
 		// NOTES AND HOLDS;
-		"Note Skin" => ['default', Selector, 'Choose a note skin.', NOT_FORCED, ''],
+		"Note Skin" => ['default', Selector, 'Choose a note skin, also affects notesplashes.', NOT_FORCED, ''],
 		'Arrow Opacity' => [60, Selector, "Set the opacity for your Strumline Notes.", NOT_FORCED],
 		"Clip Style" => [
 			'stepmania',

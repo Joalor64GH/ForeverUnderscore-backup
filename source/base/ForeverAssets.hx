@@ -6,6 +6,7 @@ import dependency.FNFSprite;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.group.FlxGroup.FlxTypedGroup;
+import flixel.group.FlxSpriteGroup.FlxTypedSpriteGroup;
 import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
 import flixel.util.FlxSort;
@@ -14,8 +15,18 @@ import funkin.Strumline.UIStaticArrow;
 import funkin.Timings;
 import funkin.ui.menu.*;
 import states.PlayState;
+import sys.FileSystem;
 
 using StringTools;
+
+typedef SplashData =
+{
+	var file:Null<String>;
+	var type:Null<String>;
+	var width:Null<Int>;
+	var height:Null<Int>;
+	var offsets:Null<Array<Int>>;
+}
 
 /**
 	Forever Assets is a class that manages the different asset types, basically a compilation of switch statements that are
@@ -126,49 +137,111 @@ class ForeverAssets
 		return rating;
 	}
 
-	public static function generateNoteSplashes(asset:String, group:FlxTypedGroup<NoteSplash>, assetModifier:String = 'base', changeableSkin:String = 'default', baseLibrary:String,
-			noteData:Int):NoteSplash
+	public static function generateNoteSplashes(asset:String, group:FlxTypedSpriteGroup<NoteSplash>, assetModifier:String = 'base', baseLibrary:String, noteData:Int):NoteSplash
 	{
 		//
 		var tempSplash:NoteSplash = group.recycle(NoteSplash);
 		tempSplash.noteData = noteData;
 
+		var changeableSkin:String = Init.trueSettings.get("Note Skin");
+
+		// will eventually change this in favor of customizable splashes through scripts;
+		var jsonPath = Paths.getTextFromFile('images/noteskins/notes/$changeableSkin/$assetModifier/splashData.json');
+		var splashJson:SplashData = haxe.Json.parse(jsonPath);
+
+		if (splashJson != null)
+			asset = splashJson.file;
+
 		switch (assetModifier)
 		{
 			case 'pixel':
-				asset = 'splash-pixel';
+				if (asset == null)
+					asset = 'splash-pixel';
+				
+				var width = splashJson.width;
+				var height = splashJson.height;
 
-				tempSplash.loadGraphic(Paths.image(ForeverTools.returnSkin(asset, assetModifier, changeableSkin, baseLibrary)), true, 34, 34);
-				tempSplash.animation.add('anim1', [noteData, 4 + noteData, 8 + noteData, 12 + noteData], 24, false);
-				tempSplash.animation.add('anim2', [16 + noteData, 20 + noteData, 24 + noteData, 28 + noteData], 24, false);
-				tempSplash.animation.play('anim1');
-				tempSplash.addOffset('anim1', -120, -90);
-				tempSplash.addOffset('anim2', -120, -90);
-				tempSplash.setGraphicSize(Std.int(tempSplash.width * PlayState.daPixelZoom));
+				if (splashJson.width == null) width = 34;
+				if (splashJson.height == null) height = 34;
+
+				switch (splashJson.type)
+				{
+					case "sparrow":
+						tempSplash.frames = Paths.getSparrowAtlas(ForeverTools.returnSkin(asset, assetModifier, changeableSkin, baseLibrary));
+	
+						// week 7 format
+						tempSplash.animation.addByPrefix('anim1', 'note impact 1 ' + UIStaticArrow.getColorFromNumber(noteData), 24, false);
+						tempSplash.animation.addByPrefix('anim2', 'note impact 2 ' + UIStaticArrow.getColorFromNumber(noteData), 24, false);
+
+						// psych format
+						tempSplash.animation.addByPrefix('anim1', 'note splash ' + UIStaticArrow.getColorFromNumber(noteData) + ' 1', 24, false);
+						tempSplash.animation.addByPrefix('anim2', 'note splash ' + UIStaticArrow.getColorFromNumber(noteData) + ' 2', 24, false);
+						tempSplash.updateHitbox();
+
+					default:
+						tempSplash.loadGraphic(Paths.image(ForeverTools.returnSkin(asset, assetModifier, changeableSkin, baseLibrary)), true, width, height);
+						tempSplash.animation.add('anim1', [noteData, 4 + noteData, 8 + noteData, 12 + noteData], 24, false);
+						tempSplash.animation.add('anim2', [16 + noteData, 20 + noteData, 24 + noteData, 28 + noteData], 24, false);
+						tempSplash.animation.play('anim1');
+						tempSplash.setGraphicSize(Std.int(tempSplash.width * PlayState.daPixelZoom));
+				}
 
 			default:
-				asset = 'noteSplashes';
+				if (asset == null)
+					asset = 'noteSplashes';
 
-				tempSplash.loadGraphic(Paths.image(ForeverTools.returnSkin(asset, assetModifier, changeableSkin, baseLibrary)), true, 210, 210);
-				tempSplash.animation.add('anim1', [
-					(noteData * 2 + 1),
-					8 + (noteData * 2 + 1),
-					16 + (noteData * 2 + 1),
-					24 + (noteData * 2 + 1),
-					32 + (noteData * 2 + 1)
-				], 24, false);
-				tempSplash.animation.add('anim2', [
-					(noteData * 2),
-					8 + (noteData * 2),
-					16 + (noteData * 2),
-					24 + (noteData * 2),
-					32 + (noteData * 2)
-				], 24, false);
-				tempSplash.animation.play('anim1');
-				tempSplash.addOffset('anim1', -20, -10);
-				tempSplash.addOffset('anim2', -20, -10);
+				var width = splashJson.width;
+				var height = splashJson.height;
+
+				if (splashJson.width == null) width = 210;
+				if (splashJson.height == null) height = 210;
+
+				switch (splashJson.type)
+				{
+					case "sparrow":
+						tempSplash.frames = Paths.getSparrowAtlas(ForeverTools.returnSkin(asset, assetModifier, changeableSkin, baseLibrary));
+
+						// week 7 format
+						tempSplash.animation.addByPrefix('anim1', 'note impact 1 ' + UIStaticArrow.getColorFromNumber(noteData), 24, false);
+						tempSplash.animation.addByPrefix('anim2', 'note impact 2 ' + UIStaticArrow.getColorFromNumber(noteData), 24, false);
+
+						// psych format
+						tempSplash.animation.addByPrefix('anim1', 'note splash ' + UIStaticArrow.getColorFromNumber(noteData) + ' 1', 24, false);
+						tempSplash.animation.addByPrefix('anim2', 'note splash ' + UIStaticArrow.getColorFromNumber(noteData) + ' 2', 24, false);
+						tempSplash.updateHitbox();
+
+					default:
+						tempSplash.loadGraphic(Paths.image(ForeverTools.returnSkin(asset, assetModifier, changeableSkin, baseLibrary)), true, width, height);
+						tempSplash.animation.add('anim1', [
+							(noteData * 2 + 1),
+							8 + (noteData * 2 + 1),
+							16 + (noteData * 2 + 1),
+							24 + (noteData * 2 + 1),
+							32 + (noteData * 2 + 1)
+						], 24, false);
+						tempSplash.animation.add('anim2', [
+							(noteData * 2),
+							8 + (noteData * 2),
+							16 + (noteData * 2),
+							24 + (noteData * 2),
+							32 + (noteData * 2)
+						], 24, false);
+				}
 		}
-		
+
+		if (splashJson.offsets == null)
+		{
+			tempSplash.addOffset('anim1', -20, -10);
+			tempSplash.addOffset('anim2', -20, -10);
+		}
+		else
+		{
+			tempSplash.addOffset('anim1', splashJson.offsets[0], splashJson.offsets[1]);
+			tempSplash.addOffset('anim2', splashJson.offsets[2], splashJson.offsets[3]);
+		}
+
+		tempSplash.animation.play('anim1', true);
+
 		group.sort(FNFSprite.depthSorting, FlxSort.DESCENDING);
 
 		return tempSplash;
