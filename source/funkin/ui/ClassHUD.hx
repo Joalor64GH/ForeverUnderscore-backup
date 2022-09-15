@@ -97,11 +97,12 @@ class ClassHUD extends FlxTypedGroup<FlxBasic>
 		cornerMark.visible = Init.trueSettings.get('Engine Mark');
 		add(cornerMark);
 
-		centerMark = new FlxText(0, (Init.trueSettings.get('Downscroll') ? FlxG.height - 45 : 20), 400, '- $infoDisplay [$diffDisplay] -', 24);
+		centerMark = new FlxText(0, (Init.trueSettings.get('Downscroll') ? FlxG.height - 45 : 20), 0, '- $infoDisplay [$diffDisplay] -');
 		centerMark.setFormat(Paths.font('vcr.ttf'), 24, FlxColor.WHITE);
 		centerMark.setBorderStyle(OUTLINE, FlxColor.BLACK, 2);
 		centerMark.antialiasing = !Init.trueSettings.get('Disable Antialiasing');
 		centerMark.screenCenter(X);
+		centerMark.x -= 15;
 		add(centerMark);
 
 		autoplayMark = new FlxText(-5, (Init.trueSettings.get('Downscroll') ? centerMark.y - 60 : centerMark.y + 60), FlxG.width - 800, "AUTOPLAY\n", 32);

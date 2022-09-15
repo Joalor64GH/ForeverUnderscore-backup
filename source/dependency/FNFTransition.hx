@@ -51,6 +51,7 @@ class FNFTransition extends MusicBeatSubstate
 		{
 			// image may show up as cropped, so here we create a background so it won't look like it!!!!;
 			bg = new FlxSprite(0, 0).makeGraphic(FlxG.width, FlxG.height, 0xFFCAFF4D);
+			bg.alpha = 0;
 			add(bg);
 
 			// loads an image for the transition;
@@ -82,7 +83,10 @@ class FNFTransition extends MusicBeatSubstate
 		else
 		{
 			if (Main.isSongTrans) // shows that image here if allowed;
-				FlxTween.tween(loadingFunkers, {alpha: 1}, 0.2);
+			{
+				FlxTween.tween(bg, {alpha: 1}, 0.1);
+				FlxTween.tween(loadingFunkers, {alpha: 1}, 0.4);
+			}
 			
 			// will eventually make the loadingFunkers stuff more customizable;
 
