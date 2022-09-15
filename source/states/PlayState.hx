@@ -1072,7 +1072,7 @@ class PlayState extends MusicBeatState
 
 					for (receptor in strumline.receptors)
 					{
-						if (receptor.animation.curAnim.name != 'confirm')
+						if (strumline.autoplay && receptor.animation.curAnim.name == 'confirm' && receptor.animation.curAnim.finished)
 							receptor.playAnim('static', true);
 					}
 
