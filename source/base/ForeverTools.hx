@@ -262,4 +262,9 @@ class ForeverTools
 			case _: FlxTextAlign.LEFT;
 		}
 	}
+
+	public static function fromHSB(hue:Float, sat:Float, brt:Float, alpha:Float):FlxColor
+	{
+		return FlxColor.fromHSB(hue, sat, brt, alpha);
+	}
 }

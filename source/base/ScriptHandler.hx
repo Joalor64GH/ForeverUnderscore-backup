@@ -79,7 +79,7 @@ class ScriptHandler extends SScript
 		// CLASSES (BASE);
 		set('Alphabet', Alphabet);
 		set('Character', Character);
-		set('Controls', Controls);
+		set('controls', Controls);
 		set('CoolUtil', CoolUtil);
 		set('Conductor', Conductor);
 		set('PlayState', PlayState);

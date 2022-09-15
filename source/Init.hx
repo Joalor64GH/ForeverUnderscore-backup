@@ -41,6 +41,24 @@ class Init extends FlxState
 	public static var FORCED = 'forced';
 	public static var NOT_FORCED = 'not forced';
 
+	/**
+	 * hi, gabi (ghost) here, I know this is an odd place to put a comment but i'm gonna try to be more descriptive
+	 * in regardless to variables and such from now on
+	 * i think it's nice to explain how at least some of these work at least for the sake of clarity and for making
+	 * things somewhat easier for everyone
+
+	 * here is the main setting format if you want to create a new one
+	 * set it to the `gameSettings` map and you should be good to go
+
+	 * `'Name' => [param1, Type, 'Description', NOT_FORCED`]
+
+	 * param1 can be either `true` | `false`, or a string value, like `'bepis'` or something
+	 * type can be anything on the `SettingTypes` enum,
+	 * `FORCED` means the main game will hide that option and force it to stay on the default parameter
+	**/
+
+	//
+
 	public static var gameSettings:Map<String, Dynamic> = [
 		// GAMEPLAY;
 		'Controller Mode' => [

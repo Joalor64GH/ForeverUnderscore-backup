@@ -125,10 +125,16 @@ class OriginalChartEditor extends MusicBeatState
 
 	var typingShit:FlxInputText;
 	/*
-	 * WILL BE THE CURRENT / LAST PLACED NOTE
+	 * an array with an Note's data, like Hold Length, Type, etc
+	 * represents the current selected or last placed note
 	**/
 	var curSelectedNote:Array<Dynamic>;
 
+	/**
+	 * an array with an Event's Data
+	 * similar to `curSelectedNote`, it stores data from said event
+	 * such as values or timing to hit the note
+	 */
 	var curSelectedEvent:Array<Dynamic>;
 
 	var gridGroup:FlxTypedGroup<FlxObject>;
@@ -1075,12 +1081,13 @@ class OriginalChartEditor extends MusicBeatState
 			playedSound.push(false);
 		}
 
-		// all rendered notes;
+		// each alive rendered note on the current sections;
 		curRenderedNotes.forEachAlive(function(note:Note)
 		{
 			if ((note.strumTime < songMusic.time))
 			{
 				var data:Int = note.noteData % 4;
+
 				// check if the song is playing and if the sound was not played once;
 				if (songMusic.playing && !playedSound[data] && note.noteData > -1 && note.strumTime >= lastSongPos)
 				{
