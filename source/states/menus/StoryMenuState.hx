@@ -265,7 +265,7 @@ class StoryMenuState extends MusicBeatState
 
 		if (!locked)
 		{
-			Main.isSongTrans = true;
+			//Main.isSongTrans = true;
 
 			if (stopspamming == false)
 			{

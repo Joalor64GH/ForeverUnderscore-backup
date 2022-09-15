@@ -364,7 +364,7 @@ class FreeplayState extends MusicBeatState
 
 	function loadSong(go:Bool = true, stopThread:Bool = true)
 	{
-		Main.isSongTrans = true;
+		//Main.isSongTrans = true;
 
 		var poop:String = Highscore.formatSong(songs[curSelected].songName.toLowerCase(),
 			CoolUtil.difficulties.indexOf(existingDifficulties[curSelected][curDifficulty]));

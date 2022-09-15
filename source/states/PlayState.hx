@@ -578,7 +578,7 @@ class PlayState extends MusicBeatState
 			}
 
 			if (bfStrums.receptors.members[key] != null && bfStrums.receptors.members[key].animation.curAnim.name != 'confirm')
-				bfStrums.receptors.members[key].playAnim('pressed');
+				bfStrums.receptors.members[key].playAnim('pressed', true);
 		}
 	}
 
@@ -990,12 +990,6 @@ class PlayState extends MusicBeatState
 		{
 			for (strumline in strumLines)
 			{
-				for (receptor in strumline.receptors)
-				{
-					if (strumline.autoplay && receptor.animation.finished)
-						receptor.playAnim('static');
-				}
-
 				strumline.allNotes.forEachAlive(function(strumNote:Note)
 				{
 					// set custom note speeds and stuff;
@@ -1076,6 +1070,12 @@ class PlayState extends MusicBeatState
 					// hell breaks loose here, we're using nested scripts!
 					mainControls(strumNote, strumline.character, strumline, strumline.autoplay);
 
+					for (receptor in strumline.receptors)
+					{
+						if (receptor.animation.curAnim.name != 'confirm')
+							receptor.playAnim('static', true);
+					}
+
 					// check where the note is and make sure it is either active or inactive
 					if (strumNote.y > FlxG.height)
 					{
@@ -1113,11 +1113,6 @@ class PlayState extends MusicBeatState
 									if (!parentNote.tooLate)
 									{
 										var breakFromLate:Bool = false;
-										for (note in parentNote.childrenNotes)
-										{
-											// trace('hold amount ${parentNote.childrenNotes.length}, note is late?' + note.tooLate + ', ' + breakFromLate);
-										}
-
 										if (!breakFromLate)
 										{
 											missNoteCheck((Init.trueSettings.get('Ghost Tapping')) ? true : false, strumNote.noteData, boyfriend, true);
@@ -1337,7 +1332,7 @@ class PlayState extends MusicBeatState
 			Conductor.songVocals.volume = 1;
 
 			if (strumline.receptors.members[coolNote.noteData] != null)
-				strumline.receptors.members[coolNote.noteData].playAnim('confirm');
+				strumline.receptors.members[coolNote.noteData].playAnim('confirm', true);
 
 			coolNote.goodNoteHit(coolNote, (coolNote.strumTime < Conductor.songPosition ? "late" : "early"));
 			characterPlayAnimation(coolNote, character);
@@ -1469,8 +1464,7 @@ class PlayState extends MusicBeatState
 				// check if it is the correct strum
 				if (daNote.noteData == cStrum.ID)
 				{
-					// if (cStrum.animation.curAnim.name != 'confirm')
-					cStrum.playAnim('confirm'); // play the correct strum's confirmation animation (haha rhymes)
+					cStrum.playAnim('confirm', true); // play the correct strum's confirmation animation (haha rhymes)
 
 					// stuff for sustain notes
 					if ((daNote.isSustainNote) && (!daNote.animation.curAnim.name.endsWith('holdend')))
@@ -1502,7 +1496,6 @@ class PlayState extends MusicBeatState
 
 				goodNoteHit(daNote, char, strumline);
 			}
-			//
 		}
 
 		var holdControls:Array<Bool> = [controls.LEFT, controls.DOWN, controls.UP, controls.RIGHT];

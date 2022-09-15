@@ -102,7 +102,7 @@ class ClassHUD extends FlxTypedGroup<FlxBasic>
 		centerMark.setBorderStyle(OUTLINE, FlxColor.BLACK, 2);
 		centerMark.antialiasing = !Init.trueSettings.get('Disable Antialiasing');
 		centerMark.screenCenter(X);
-		centerMark.x -= 15;
+		centerMark.x = Math.floor((FlxG.width / 2) - (centerMark.width / 2));
 		add(centerMark);
 
 		autoplayMark = new FlxText(-5, (Init.trueSettings.get('Downscroll') ? centerMark.y - 60 : centerMark.y + 60), FlxG.width - 800, "AUTOPLAY\n", 32);
