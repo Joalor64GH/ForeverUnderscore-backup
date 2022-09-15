@@ -41,7 +41,7 @@ class GameOverSubstate extends MusicBeatSubstate
 	{
 		super.create();
 		
-		PlayState.contents.callFunc('gameOverBegins', null);
+		PlayState.contents.callFunc('gameOverBegins', []);
 	}
 
 	public function new(x:Float, y:Float)
