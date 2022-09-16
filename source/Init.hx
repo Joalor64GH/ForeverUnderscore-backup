@@ -325,7 +325,7 @@ class Init extends FlxState
 			Main.commitHash = Main.getGitCommitHash(); // get the commit hash for use on menu texts and such;
 
 		// set default difficulties to the new difficulty array;
-		CoolUtil.difficulties = CoolUtil.baseDifficulties;
+		CoolUtil.difficulties = CoolUtil.baseDifficulties.copy();
 
 		goToInitialDestination();
 	}
