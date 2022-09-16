@@ -1,6 +1,7 @@
 package base;
 
 import flixel.FlxG;
+import openfl.Assets;
 import sys.FileSystem;
 
 using StringTools;
