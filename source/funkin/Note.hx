@@ -57,8 +57,6 @@ class Note extends FNFSprite
 
 	public var hitsoundSuffix = '';
 
-	static var noteColorID:Array<String> = ['purple', 'blue', 'green', 'red'];
-	static var directionID:Array<String> = ['left', 'down', 'up', 'right'];
 	static var pixelNoteID:Array<Int> = [4, 5, 6, 7];
 
 	public function new(strumTime:Float, noteData:Int, noteAlt:Float, ?prevNote:Note, ?sustainNote:Bool = false, ?noteType:Int = 0)
@@ -177,7 +175,7 @@ class Note extends FNFSprite
 					{
 						case 3: // pixel mines;
 							newNote.loadGraphic(Paths.image(ForeverTools.returnSkin('mines', assetModifier, '', 'noteskins/mines')), true, 17, 17);
-							newNote.animation.add(noteColorID[noteData] + 'Scroll', [0, 1, 2, 3, 4, 5, 6, 7], 12);
+							newNote.animation.add(UIStaticArrow.getColorFromNumber(noteData) + 'Scroll', [0, 1, 2, 3, 4, 5, 6, 7], 12);
 
 						default: // pixel notes default
 							reloadPrefixes('arrows-pixels', 'noteskins/notes', true, assetModifier, newNote);
@@ -192,7 +190,7 @@ class Note extends FNFSprite
 				{
 					case 3: // mines
 						newNote.loadGraphic(Paths.image(ForeverTools.returnSkin('mines', assetModifier, '', 'noteskins/mines')), true, 133, 128);
-						newNote.animation.add(noteColorID[noteData] + 'Scroll', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]);
+						newNote.animation.add(UIStaticArrow.getColorFromNumber(noteData) + 'Scroll', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]);
 
 						if (isSustainNote)
 							newNote.kill();
@@ -289,12 +287,12 @@ class Note extends FNFSprite
 							if (assetModifier == 'pixel')
 							{
 								newNote.loadGraphic(Paths.image(ForeverTools.returnSkin('mines', assetModifier, '', 'noteskins/mines')), true, 17, 17);
-								newNote.animation.add(directionID[noteData] + 'Scroll', [0, 1, 2, 3, 4, 5, 6, 7], 12);
+								newNote.animation.add(UIStaticArrow.getArrowFromNumber(noteData) + 'Scroll', [0, 1, 2, 3, 4, 5, 6, 7], 12);
 							}
 							else
 							{
 								newNote.loadGraphic(Paths.image(ForeverTools.returnSkin('mines', assetModifier, '', 'noteskins/mines')), true, 133, 128);
-								newNote.animation.add(directionID[noteData] + 'Scroll', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9], 12);
+								newNote.animation.add(UIStaticArrow.getArrowFromNumber(noteData) + 'Scroll', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9], 12);
 							}
 
 						default:
@@ -384,9 +382,9 @@ class Note extends FNFSprite
 		{
 			newNote.frames = Paths.getSparrowAtlas(ForeverTools.returnSkin(texture, assetModifier, (changeable ? Init.trueSettings.get("Note Skin") : ''), texturePath));
 
-			newNote.animation.addByPrefix(noteColorID[newNote.noteData] + 'Scroll', noteColorID[newNote.noteData] + '0');
-			newNote.animation.addByPrefix(noteColorID[newNote.noteData] + 'holdend', noteColorID[newNote.noteData] + ' hold end');
-			newNote.animation.addByPrefix(noteColorID[newNote.noteData] + 'hold', noteColorID[newNote.noteData] + ' hold piece');
+			newNote.animation.addByPrefix(UIStaticArrow.getColorFromNumber(newNote.noteData) + 'Scroll', UIStaticArrow.getColorFromNumber(newNote.noteData) + '0');
+			newNote.animation.addByPrefix(UIStaticArrow.getColorFromNumber(newNote.noteData) + 'holdend', UIStaticArrow.getColorFromNumber(newNote.noteData) + ' hold end');
+			newNote.animation.addByPrefix(UIStaticArrow.getColorFromNumber(newNote.noteData) + 'hold', UIStaticArrow.getColorFromNumber(newNote.noteData) + ' hold piece');
 
 			newNote.animation.addByPrefix('purpleholdend', 'pruple end hold'); // PA god dammit.
 
@@ -399,13 +397,13 @@ class Note extends FNFSprite
 			if (newNote.isSustainNote)
 			{
 				newNote.loadGraphic(Paths.image(ForeverTools.returnSkin(texture, assetModifier, (changeable ? Init.trueSettings.get("Note Skin") : ''), texturePath)), true, 7, 6);
-				newNote.animation.add(noteColorID[newNote.noteData] + 'holdend', [pixelNoteID[newNote.noteData]]);
-				newNote.animation.add(noteColorID[newNote.noteData] + 'hold', [pixelNoteID[newNote.noteData] - 4]);
+				newNote.animation.add(UIStaticArrow.getColorFromNumber(newNote.noteData) + 'holdend', [pixelNoteID[newNote.noteData]]);
+				newNote.animation.add(UIStaticArrow.getColorFromNumber(newNote.noteData) + 'hold', [pixelNoteID[newNote.noteData] - 4]);
 			}
 			else
 			{
 				newNote.loadGraphic(Paths.image(ForeverTools.returnSkin(texture, assetModifier, (changeable ? Init.trueSettings.get("Note Skin") : ''), texturePath)), true, 17, 17);
-				newNote.animation.add(noteColorID[newNote.noteData] + 'Scroll', [pixelNoteID[newNote.noteData]], 12);
+				newNote.animation.add(UIStaticArrow.getColorFromNumber(newNote.noteData) + 'Scroll', [pixelNoteID[newNote.noteData]], 12);
 			}
 		}
 	}
