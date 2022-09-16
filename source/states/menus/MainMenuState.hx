@@ -160,14 +160,6 @@ class MainMenuState extends MusicBeatState
 				Main.switchState(this, new TitleState());
 			}
 
-			#if MOD_HANDLER
-			if (FlxG.keys.justPressed.M)
-			{
-				FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
-				Main.switchState(this, new ModsMenuState());
-			}
-			#end
-
 			var controlArray:Array<Bool> = [
 				controls.UI_UP,
 				controls.UI_DOWN,

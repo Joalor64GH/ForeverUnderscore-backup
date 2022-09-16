@@ -1,15 +1,9 @@
 package base;
 
-import flixel.FlxCamera;
 import flixel.FlxG;
-import openfl.utils.Assets;
-import states.PlayState;
+import sys.FileSystem;
 
 using StringTools;
-
-#if sys
-import sys.FileSystem;
-#end
 
 class CoolUtil
 {
@@ -134,9 +128,7 @@ class CoolUtil
 		if (!file.endsWith('/'))
 			file = '$file/';
 
-		var path:String = Paths.getModpack(file);
-		if (!FileSystem.exists(path))
-			path = Paths.rawPath(file);
+		var path:String = Paths.rawPath(file);
 
 		var absolutePath:String = FileSystem.absolutePath(path);
 		var directory:Array<String> = FileSystem.readDirectory(absolutePath);
