@@ -3,7 +3,11 @@
 
 	<!-- _________________________ Application Settings _________________________ -->
 
-	<app title="Friday Night Funkin' Forever Engine" file="Forever-Engine" packageName="com.yoshubs.foreverengine" package="com.yoshubs.foreverengine" main="Main" version="0.2.8" company="Yoshubs" preloader="flixel.system.FlxPreloader" />
+	<app title="Friday Night Funkin' Forever Engine" file="Forever-Engine" main="Main" version="0.2.8" company="Yoshubs" />
+
+	<!--The flixel preloader is not accurate in Chrome. You can use it regularly if you embed the swf into a html file
+		or you can set the actual size of your file manually at "FlxPreloaderBase-onUpdate-bytesTotal"-->
+	<app preloader="flixel.system.FlxPreloader" />
 
 	<!--Minimum without FLX_NO_GAMEPAD: 11.8, without FLX_NO_NATIVE_CURSOR: 11.2-->
 	<set name="SWF_VERSION" value="11.8" />
@@ -13,14 +17,16 @@
 	<window width="1280" height="720" background="#000000" hardware="true" vsync="false" />
 	<window if="desktop" orientation="landscape" fullscreen="false" resizable="true" />
 
-	<!-- _____________________________ Underscore Custom Defines ____________________________ -->
+	<!-- _____________________________ Custom Defines ____________________________ -->
 
-	<define name="DISCORD_RPC" if="desktop" unless="web || neko" />
+	<define name="DISCORD_RPC" if="desktop" unless="neko" />
 	<define name="VIDEO_PLUGIN" if="windows" unless="32bits || neko" />
 	<define name="GAME_UPDATER" if="desktop officialBuild" /> <!-- thanks shadowmario -->
 	<define name="HAXE_EXTENSION" unless="web" />
 	<define name="DEBUG_TRACES" if="debug" />
-	<define name="FOREVER_WATERMARKS" /> <!-- comment or delete this line to disable forever engine developer names on the titlescreen -->
+
+	<!-- comment or delete this line to disable Forever Engine developer names on the titlescreen -->
+	<define name="FOREVER_ENGINE_WATERMARKS" />
 
 	<!-- _____________________________ Path Settings ____________________________ -->
 
@@ -41,42 +47,24 @@
 
 	<haxelib name="discord_rpc" if="DISCORD_RPC" />
 	<haxelib name="hxCodec" if="VIDEO_PLUGIN" />
-
 	<haxelib name="SScript" if="HAXE_EXTENSION" />
-	<!-- <haxelib name="hscript" if="HAXE_EXTENSION" /> -->
 
 	<haxelib name="hxcpp-debug-server" if="debug" />
 
 	<!-- ______________________________ Haxedefines _____________________________ -->
 
-	<!--You will get fine error reporting at parsing time-->
 	<haxedef name="hscriptPos" />
-
-	<!--No DCE is performed-->
 	<haxeflag name="-dce no" />
 
-	<!--Disable the Flixel core focus lost screen-->
 	<haxedef name="FLX_NO_FOCUS_LOST_SCREEN" />
-
-	<!--Disable the Flixel core debugger. Automatically gets set whenever you compile in release mode!-->
 	<haxedef name="FLX_NO_DEBUG" unless="debug" />
 
-	<!--Enable this for Nape release builds for a serious peformance improvement-->
 	<haxedef name="NAPE_RELEASE_BUILD" unless="debug" />
+	<haxedef name="HXCPP_GC_BIG_BLOCKS" />
 
-	<!--Allow garbage collector to move memory to reduce fragmentation-->
-	<haxedef name="HXCPP_GC_MOVING" if="cpp" />
+	<haxedef name="HXCPP_STACK_LINE" unless="debug" />
+	<haxedef name="HXCPP_CHECK_POINTER" unless="debug" />
 
-	<!--Allow working memory greater than 1 gigabyte-->
-	<haxedef name="HXCPP_GC_BIG_BLOCKS" if="cpp" />
-
-	<!--Include line information in stack traces, even in release mode-->
-	<haxedef name="HXCPP_STACK_LINE" if="cpp" unless="debug" />
-
-	<!--Add null-pointer checks, even in release mode-->
-	<haxedef name="HXCPP_CHECK_POINTER" if="cpp" unless="debug" />
-
-	<!-- Show debug traces for hxCodec -->
 	<haxedef name="HXC_DEBUG_TRACE" if="debug" />
 
 	<!-- _________________________________ Custom _______________________________ -->

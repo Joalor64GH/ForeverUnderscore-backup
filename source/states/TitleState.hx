@@ -327,7 +327,7 @@ class TitleState extends MusicBeatState
 		switch (curStep)
 		{
 			case 4:
-				#if FOREVER_WATERMARKS
+				#if FOREVER_ENGINE_WATERMARKS
 				createCoolText(['Yoshubs', 'Neolixn', 'Gedehari', 'Tsuraran', 'FlopDoodle', '']);
 				#else
 				createCoolText(['ninjamuffin99', 'phantomArcade', 'kawaisprite', 'evilsk8er']);
@@ -337,7 +337,7 @@ class TitleState extends MusicBeatState
 			case 16:
 				deleteCoolText();
 			case 20:
-				#if FOREVER_WATERMARKS
+				#if FOREVER_ENGINE_WATERMARKS
 				createCoolText(['Not associated', 'with']);
 				#else
 				createCoolText(['In association', 'with']);
