@@ -122,8 +122,6 @@ class ChartEditor extends MusicBeatState
 
 		generateBackground();
 
-		Main.changeInfoParams(0.6);
-
 		if (PlayState.SONG != null)
 			_song = PlayState.SONG;
 		else
@@ -528,7 +526,6 @@ class ChartEditor extends MusicBeatState
 			ForeverTools.killMusic([songMusic, vocals]);
 
 			Paths.clearUnusedMemory();
-			Main.changeInfoParams(1);
 
 			Main.switchState(this, new PlayState());
 		}
@@ -540,7 +537,6 @@ class ChartEditor extends MusicBeatState
 			ForeverTools.killMusic([songMusic, vocals]);
 
 			Paths.clearUnusedMemory();
-			Main.changeInfoParams(1);
 
 			CoolUtil.difficulties = CoolUtil.baseDifficulties;
 

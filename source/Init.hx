@@ -5,6 +5,7 @@ import flixel.FlxState;
 import flixel.graphics.FlxGraphic;
 import flixel.input.keyboard.FlxKey;
 import funkin.Highscore;
+import funkin.PlayerSettings;
 import openfl.filters.BitmapFilter;
 import openfl.filters.ColorMatrixFilter;
 import states.*;
@@ -304,7 +305,11 @@ class Init extends FlxState
 
 	override public function create():Void
 	{
+		// load base game highscores and settings;
+		PlayerSettings.init();
 		Highscore.load();
+
+		// load forever settings;
 		loadControls();
 		loadSettings();
 
@@ -321,13 +326,14 @@ class Init extends FlxState
 		FlxG.mouse.visible = false; // Hide mouse on start
 		FlxGraphic.defaultPersist = true; // make sure we control all of the memory
 
-		if(Main.showCommitHash)
-			Main.commitHash = Main.getGitCommitHash(); // get the commit hash for use on menu texts and such;
+		if (FlxG.save.data.volume != null)
+			FlxG.sound.volume = FlxG.save.data.volume;
+		if (FlxG.save.data.mute != null)
+			FlxG.sound.muted = FlxG.save.data.mute;
 
-		// set default difficulties to the new difficulty array;
-		CoolUtil.difficulties = CoolUtil.baseDifficulties.copy();
+		CoolUtil.difficulties = CoolUtil.baseDifficulties.copy(); // set default difficulties to the new difficulty array;
 
-		goToInitialDestination();
+		FlxG.switchState(cast Type.createInstance(Main.initialState, []));
 	}
 
 	public static function loadSettings():Void
@@ -399,14 +405,6 @@ class Init extends FlxState
 
 		saveSettings();
 		updateAll();
-	}
-
-	function goToInitialDestination()
-	{
-		if (!FlxG.save.data.leftFlashing)
-			Main.switchState(this, new FlashingState());
-		else
-			Main.switchState(this, new TitleState());
 	}
 
 	public static function saveSettings():Void

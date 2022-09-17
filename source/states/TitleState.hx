@@ -5,7 +5,6 @@ import base.MusicBeat.MusicBeatState;
 import dependency.Discord;
 import flixel.FlxG;
 import flixel.FlxSprite;
-import flixel.addons.display.FlxBackdrop;
 import flixel.addons.transition.FlxTransitionableState;
 import flixel.graphics.frames.FlxFrame;
 import flixel.group.FlxGroup;
@@ -30,14 +29,13 @@ class TitleState extends MusicBeatState
 
 	var credGroup:FlxGroup;
 	var textGroup:FlxGroup;
-	var credTextShit:Alphabet;
 
 	var curWacky:Array<String> = [];
 
 	var titleTextColors:Array<FlxColor> = [0xFF33FFFF, 0xFF3333CC];
 	var titleTextAlphas:Array<Float> = [1, .64];
 
-	var wackyImage:FlxSprite;
+	var bg:FlxSprite;
 
 	override public function create():Void
 	{
@@ -51,7 +49,6 @@ class TitleState extends MusicBeatState
 	var titleText:FlxSprite;
 	var gameLogo:FlxSprite;
 	var gfDance:FlxSprite;
-	//var backdrop:FlxSprite;
 	var blackScreen:FlxSprite;
 	var ngSpr:FlxSprite;
 
@@ -79,18 +76,13 @@ class TitleState extends MusicBeatState
 
 		persistentUpdate = true;
 
-		var bg:FlxSprite = new FlxSprite().makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
-		// bg.antialiasing = !Init.trueSettings.get('Disable Antialiasing');
-		// bg.setGraphicSize(Std.int(bg.width * 0.6));
-		// bg.updateHitbox();
+		bg = new FlxSprite().makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
+		/*
+		bg.antialiasing = !Init.trueSettings.get('Disable Antialiasing');
+		bg.setGraphicSize(Std.int(bg.width * 0.6));
+		bg.updateHitbox();
+		*/
 		add(bg);
-
-		// cool bg
-		/*backdrop = new FlxBackdrop(Paths.image('menus/base/title/grid'), 1, 1, true, true, 1, 1);
-		backdrop.velocity.set(300, 0);
-		backdrop.screenCenter(X);
-		backdrop.alpha = (32 / 255);
-		add(backdrop);*/
 
 		gfDance = new FlxSprite(FlxG.width * 0.4, FlxG.height * 0.07);
 		gfDance.frames = Paths.getSparrowAtlas('menus/base/title/gfDanceTitle');
@@ -141,11 +133,6 @@ class TitleState extends MusicBeatState
 		blackScreen = new FlxSprite().makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
 		credGroup.add(blackScreen);
 
-		credTextShit = new Alphabet(0, 0, "", true);
-		credTextShit.screenCenter();
-
-		credTextShit.visible = false;
-
 		ngSpr = new FlxSprite(0, FlxG.height * 0.52).loadGraphic(Paths.image('menus/base/title/newgrounds_logo'));
 		add(ngSpr);
 		ngSpr.visible = false;
@@ -153,8 +140,6 @@ class TitleState extends MusicBeatState
 		ngSpr.updateHitbox();
 		ngSpr.screenCenter(X);
 		ngSpr.antialiasing = !Init.trueSettings.get('Disable Antialiasing');
-
-		FlxTween.tween(credTextShit, {y: credTextShit.y + 20}, 2.9, {ease: FlxEase.quadInOut, type: PINGPONG});
 
 		if (initialized)
 			skipIntro();
@@ -220,14 +205,7 @@ class TitleState extends MusicBeatState
 			}
 
 			if (FlxG.keys.justPressed.ESCAPE && !pressedEnter)
-			{
-				FlxG.sound.music.fadeOut(0.5);
-				FlxG.camera.fade(FlxColor.BLACK, 0.5, false, false);
-				var close:FlxTimer = new FlxTimer().start(0.9, function(tmr:FlxTimer)
-				{
-					Sys.exit(0);
-				});
-			}
+				Sys.exit(0);
 
 			if (pressedEnter)
 			{
@@ -245,14 +223,10 @@ class TitleState extends MusicBeatState
 
 				new FlxTimer().start(2, function(tmr:FlxTimer)
 				{
-					if (ForeverTools.mustUpdate)
-					{
-						Main.switchState(this, new UpdateState());
-					}
+					if (ForeverTools.mustUpdate && !OutdatedState.leftState)
+						Main.switchState(this, new OutdatedState());
 					else
-					{
 						Main.switchState(this, new MainMenuState());
-					}
 				});
 			}
 		}

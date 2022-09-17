@@ -3,27 +3,17 @@ package;
 import base.debug.*;
 import dependency.Discord;
 import dependency.FNFTransition;
-import dependency.FNFUIState;
-import flixel.FlxBasic;
 import flixel.FlxG;
 import flixel.FlxGame;
-import flixel.FlxSprite;
 import flixel.FlxState;
 import flixel.addons.transition.FlxTransitionableState;
-import flixel.util.FlxColor;
-import funkin.PlayerSettings;
-import haxe.CallStack.StackItem;
 import haxe.CallStack;
 import haxe.io.Path;
 import lime.app.Application;
-import openfl.Assets;
 import openfl.Lib;
-import openfl.display.Bitmap;
-import openfl.display.BitmapData;
-import openfl.display.FPS;
 import openfl.display.Sprite;
-import openfl.events.Event;
 import openfl.events.UncaughtErrorEvent;
+import states.*;
 import sys.FileSystem;
 import sys.io.File;
 import sys.io.Process;
@@ -33,37 +23,30 @@ import sys.io.Process;
 // at least that's how I think it works. I could be stupid!
 class Main extends Sprite
 {
-	// class action variables
-	public static var mainClassState:Class<FlxState> = Init; // Determine the main class state of the game
+	public static var defaultFramerate = 120;
 
-	public static var foreverVersion:String = '0.3.1';
-	public static var underscoreVersion:String = '0.2.2';
-	public static var commitHash:String;
-	public static var showCommitHash:Bool = false;
+	// transition image, enabled when transitioning to a song (currently disabled by default;
+	public static var isSongTrans:Bool;
 
-	public static var isSongTrans:Bool = false; // will eventually improve upon this
+	public static var initialState:Class<FlxState> = TitleState; // specify the state where the game should start at;
 
-	public static var infoCounter:Overlay; // initialize the heads up display that shows information before creating it.
+	public static var foreverVersion:String = '0.3.1'; // current forever engine version;
+	public static var underscoreVersion:String = '0.2.2'; // current forever engine underscore version;
+
+	public static var commitHash:Null<String>; // commit hash, for github builds;
+	public static var showCommitHash:Bool = true; // whether to actually show the commit hash;
 
 	// calls a function to set the game up
 	public function new()
 	{
 		super();
 
-		/**
-			ok so, haxe html5 CANNOT do 120 fps. it just cannot.
-			so here i just set the framerate to 60 if its complied in html5.
-			reason why we dont just keep it because the game will act as if its 120 fps, and cause
-			note studders and shit its weird.
-		**/
+		commitHash = getGitCommitHash();
 
 		Lib.current.loaderInfo.uncaughtErrorEvents.addEventListener(UncaughtErrorEvent.UNCAUGHT_ERROR, onCrash);
-
 		FlxTransitionableState.skipNextTransIn = true;
 
-		// here we set up the base game
-		addChild(new FlxGame(0, 0, mainClassState, 1, #if (html5 || neko) 60 #else 120 #end, #if (html5 || neko) 60 #else 120 #end,
-			true)); // and create it afterwards
+		addChild(new FlxGame(0, 0, Init, 1, 120, 120, true));
 
 		// begin the discord rich presence
 		#if DISCORD_RPC
@@ -71,12 +54,9 @@ class Main extends Sprite
 		Discord.changePresence('');
 		#end
 
-		// test initialising the player settings
-		PlayerSettings.init();
-
-		infoCounter = new Overlay(0, 0);
-		changeInfoParams(1);
-		addChild(infoCounter);
+		var overlay:Overlay;
+		overlay = new Overlay(0, 0);
+		addChild(overlay);
 	}
 
 	public static function framerateAdjust(input:Float)
@@ -84,15 +64,13 @@ class Main extends Sprite
 		return input * (60 / FlxG.drawFramerate);
 	}
 
-	/*  This is used to switch "rooms," to put it basically. Imagine you are in the main menu, and press the freeplay button.
+	/*
+		This is used to switch "rooms," to put it basically. Imagine you are in the main menu, and press the freeplay button.
 		That would change the game's main class to freeplay, as it is the active class at the moment.
 	 */
-	public static var lastState:FlxState;
-
 	public static function switchState(curState:FlxState, target:FlxState)
 	{
 		// Custom made Trans in
-		mainClassState = Type.getClass(target);
 		if (!FlxTransitionableState.skipNextTransIn)
 		{
 			curState.openSubState(new FNFTransition(0.35, false));
@@ -157,9 +135,10 @@ class Main extends Sprite
 		errMsg += "\nUncaught Error: "
 			+ e.error
 			+
-			"\nPlease report this error to the GitHub page: https://github.com/BeastlyGhost/Forever-Engine-Underscore\non the \"master\" branch\n\n>Crash Handler written by: sqirra-rng\n\n";
+			"\nPlease report this error to the GitHub page: https://github.com/BeastlyGhost/Forever-Engine-Underscore
+			\n>Crash Handler written by: sqirra-rng\n";
 
-		try // to make the game to not crash if it can't save the crash file
+		try // to make the game not crash if it can't save the crash file
 		{
 			if (!FileSystem.exists("crash"))
 				FileSystem.createDirectory("crash");
@@ -175,11 +154,6 @@ class Main extends Sprite
 		Sys.exit(1);
 	}
 
-	public static function changeInfoParams(newAlpha:Float)
-	{
-		infoCounter.alpha = newAlpha;
-	}
-
 	public static function getGitCommitHash()
 	{
 		var process = new sys.io.Process('git', ['rev-parse', 'HEAD']);
@@ -190,13 +164,13 @@ class Main extends Sprite
 		{
 			commitHash = process.stdout.readLine();
 		}
-		catch (e) // leave it as null in the event of an error
+		catch (e) // leave it as blank in the event of an error
 		{
-			commitHash = null;
+			commitHash = '';
 		}
 		var trimmedCommitHash:String = commitHash.substr(0, 7);
 
 		// Generates a string expression
-		return commitHash != null ? trimmedCommitHash : 'UNKNOWN';
+		return trimmedCommitHash;
 	}
 }

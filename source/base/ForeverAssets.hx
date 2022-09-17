@@ -19,7 +19,7 @@ import sys.FileSystem;
 
 using StringTools;
 
-typedef SplashData =
+typedef SplashDataDef =
 {
 	var file:Null<String>;
 	var type:Null<String>;
@@ -146,8 +146,8 @@ class ForeverAssets
 		var changeableSkin:String = Init.trueSettings.get("Note Skin");
 
 		// will eventually change this in favor of customizable splashes through scripts;
-		var jsonPath = Paths.getTextFromFile('images/noteskins/notes/$changeableSkin/$assetModifier/splashData.json');
-		var splashJson:SplashData = haxe.Json.parse(jsonPath);
+		var jsonPath = Paths.getTextFromFile('images/noteskins/notes/$changeableSkin/$assetModifier/SplashDataDef.json');
+		var splashJson:SplashDataDef = haxe.Json.parse(jsonPath);
 
 		if (splashJson != null)
 			asset = splashJson.file;
