@@ -35,6 +35,9 @@ class ForeverTools
 			FlxG.sound.playMusic(song, (resetVolume) ? 0 : 0.7);
 			if (resetVolume)
 				FlxG.sound.music.fadeIn(4, 0, 0.7);
+
+			if (FlxG.sound.music.pitch != 1)
+				FlxG.sound.music.pitch = 1;
 			Conductor.changeBPM(102);
 		}
 	}

@@ -337,8 +337,6 @@ class FreeplayState extends MusicBeatState
 		{
 			if (presses <= 0)
 			{
-				songRate = 1;
-
 				if (FlxG.sound.music != null)
 					FlxG.sound.music.stop();
 				threadActive = false;
