@@ -171,6 +171,6 @@ class Main extends Sprite
 		var trimmedCommitHash:String = commitHash.substr(0, 7);
 
 		// Generates a string expression
-		return trimmedCommitHash;
+		return ' (' + trimmedCommitHash + ')';
 	}
 }

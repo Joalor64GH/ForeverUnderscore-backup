@@ -34,7 +34,7 @@ class ClassHUD extends FlxTypedGroup<FlxBasic>
 
 	public var infoDisplay:String = CoolUtil.dashToSpace(PlayState.SONG.song);
 	public var diffDisplay:String = CoolUtil.difficultyFromNumber(PlayState.storyDifficulty);
-	public var engineDisplay:String = "FE UNDERSCORE v" + Main.underscoreVersion + (Main.showCommitHash ? ' (${Main.commitHash})' : '');
+	public var engineDisplay:String = "FE UNDERSCORE v" + Main.underscoreVersion + (Main.showCommitHash ? '${Main.commitHash}' : '');
 
 	public var autoplayMark:FlxText;
 	public var autoplaySine:Float = 0;
