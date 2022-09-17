@@ -14,11 +14,10 @@ import openfl.text.TextFormat;
 	Based on this tutorial:
 	https://keyreal-code.github.io/haxecoder-tutorials/17_displaying_fps_and_memory_usage_using_openfl.html
 **/
-
 class Overlay extends TextField
 {
 	var times:Array<Float> = [];
-	var memPeak:UInt = 0;
+	var memPeak:Float = 0;
 
 	// display info
 	static var displayFps = true;
@@ -44,9 +43,8 @@ class Overlay extends TextField
 
 	static final intervalArray:Array<String> = ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB']; // tb support for the myth engine modders :)
 
-	public static function getInterval(num:UInt):String
+	public static function getInterval(size:Float):String
 	{
-		var size:Float = num;
 		var data = 0;
 		while (size > 1024 && data < intervalArray.length - 1)
 		{
@@ -65,7 +63,12 @@ class Overlay extends TextField
 		while (times[0] < now - 1)
 			times.shift();
 
-		var mem = System.totalMemory;
+		#if cpp
+		var mem:Float = cpp.vm.Gc.memInfo64(3);
+		#else
+		var mem:Float = openfl.system.System.totalMemory.toFloat();
+		#end
+
 		if (mem > memPeak)
 			memPeak = mem;
 
