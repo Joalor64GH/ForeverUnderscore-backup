@@ -43,7 +43,7 @@ class Conductor
 	public static var songMusic:FlxSound;
 	public static var songVocals:FlxSound;
 	public static var vocalArray:Array<FlxSound> = [];
-	public static var songPlaybackRate:Float = 1;
+	public static var playbackRate:Float = 1;
 	public static var bpmChangeMap:Array<BPMChangeEvent> = [];
 
 	public static function mapBPMChanges(song:LegacySong)
@@ -110,15 +110,15 @@ class Conductor
 		FlxG.sound.list.add(songMusic);
 		FlxG.sound.list.add(songVocals);
 		vocalArray.push(songVocals);
+
+		songMusic.pitch = playbackRate;
+		songVocals.pitch = playbackRate;
 	}
 
-	public static function startMusic(endFunc:Dynamic)
+	public static function startMusic()
 	{
 		songMusic.play();
 		songVocals.play();
-
-		songMusic.onComplete = endFunc;
-
 		resyncVocals();
 	}
 
@@ -153,23 +153,29 @@ class Conductor
 
 	public static function resyncVocals():Void
 	{
-		PlayState.contents.callFunc('resyncVocals', null);
+		PlayState.contents.callFunc('resyncVocals', []);
 
-		#if DEBUG_TRACES trace('resyncing vocal time ${songVocals.time}'); #end
+		#if DEBUG_TRACES trace('resyncing vocal time: ${songVocals.time}'); #end
 		songVocals.pause();
 		songMusic.play();
 		//songMusic.time = songPosition;
 		songPosition = songMusic.time;
-		if (songVocals != null && songPosition <= songVocals.length)
-			songVocals.time = songPosition;
+		songMusic.pitch = playbackRate;
+		if (songVocals != null)
+		{
+			if (songPosition <= songVocals.length)
+				songVocals.time = songPosition;
+
+			songVocals.pitch = playbackRate;
+		}
 		songVocals.play();
-		#if DEBUG_TRACES trace('new vocal time ${songPosition}, new vocal speed ${songPlaybackRate}'); #end
+		#if DEBUG_TRACES trace('new vocal time: ${songPosition}, playback rate: ${playbackRate}'); #end
 	}
 
 	public static function resyncBySteps()
 	{
-		if (Math.abs(songMusic.time - (songPosition - offset/* + songPlaybackRate */)) > 20
-			|| (PlayState.SONG.needsVoices && Math.abs(songVocals.time - (songPosition - offset/* + songPlaybackRate */)) > 20))
+		if (Math.abs(songMusic.time - (songPosition - offset)) > (20 * playbackRate)
+			|| (PlayState.SONG.needsVoices && Math.abs(songVocals.time - (songPosition - offset)) > (20 * playbackRate)))
 		{
 			resyncVocals();
 		}

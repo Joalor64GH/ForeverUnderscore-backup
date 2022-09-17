@@ -23,7 +23,7 @@ typedef Option =
 /**
  * a parent class for initializing categories and settings names for the settings menu
  */
-class SettingsMenuParent extends MusicBeatState
+class BaseSettingsMenu extends MusicBeatState
 {
 	public var categories:Array<Category> = [
 		{name: 'GAMEPLAY', id: 1},

@@ -321,7 +321,7 @@ class PlayState extends MusicBeatState
 		boyfriend.dance();
 
 		// set song position before beginning
-		Conductor.songPosition = -(Conductor.crochet * 4);
+		Conductor.songPosition = -(Conductor.crochet * 4) * Conductor.playbackRate;
 
 		// EVERYTHING SHOULD GO UNDER THIS, IF YOU PLAN ON SPAWNING SOMETHING LATER ADD IT TO STAGEBUILD OR FOREGROUND
 		// darken everything but the arrows and ui via a flxsprite
@@ -1143,7 +1143,7 @@ class PlayState extends MusicBeatState
 		// reset bf's animation
 		var holdControls:Array<Bool> = [controls.LEFT, controls.DOWN, controls.UP, controls.RIGHT];
 		if ((boyfriend != null && boyfriend.animation != null)
-			&& (boyfriend.holdTimer > Conductor.stepCrochet * 0.0011 * boyfriend.singDuration && (!holdControls.contains(true) || bfStrums.autoplay)))
+			&& (boyfriend.holdTimer > Conductor.stepCrochet * (0.0011 / Conductor.songMusic.pitch) * boyfriend.singDuration && (!holdControls.contains(true) || bfStrums.autoplay)))
 		{
 			if (boyfriend.animation.curAnim.name.startsWith('sing') && !boyfriend.animation.curAnim.name.endsWith('miss'))
 				boyfriend.dance();
@@ -1769,11 +1769,12 @@ class PlayState extends MusicBeatState
 
 		if (!paused)
 		{
-			Conductor.startMusic(endSong.bind());
+			Conductor.startMusic();
+			Conductor.songMusic.onComplete = endSong.bind();
 
 			#if DISCORD_RPC
 			// Song duration in a float, useful for the time left feature
-			songLength = Conductor.songMusic.length;
+			songLength = Conductor.songMusic.length / Conductor.playbackRate;
 
 			// Updating Discord Rich Presence (with Time Left)
 			updateRPC(false);
@@ -1787,7 +1788,7 @@ class PlayState extends MusicBeatState
 
 		Conductor.changeBPM(SONG.bpm);
 
-		songDetails = CoolUtil.dashToSpace(SONG.song) + ' [' + CoolUtil.difficultyFromNumber(storyDifficulty) + '] - by ' + SONG.author;
+		songDetails = CoolUtil.dashToSpace(SONG.song) + ' [' + CoolUtil.difficultyFromNumber(storyDifficulty) + '] - by ' + SONG.author + ' (${Conductor.playbackRate})';
 
 		detailsPausedText = "Paused - " + songDetails;
 		detailsSub = "";
@@ -2068,9 +2069,6 @@ class PlayState extends MusicBeatState
 		var difficulty:String = '-' + CoolUtil.difficultyFromNumber(storyDifficulty).toLowerCase();
 		difficulty = difficulty.replace('-normal', '');
 
-		FlxTransitionableState.skipNextTransIn = true;
-		FlxTransitionableState.skipNextTransOut = true;
-
 		PlayState.SONG = Song.loadSong(PlayState.storyPlaylist[0].toLowerCase() + difficulty, PlayState.storyPlaylist[0]);
 		Conductor.killMusic();
 
@@ -2265,7 +2263,7 @@ class PlayState extends MusicBeatState
 		{
 			startedCountdown = true;
 			swagCounter = 4;
-			Conductor.songPosition = -5; // delay start position so the ends before it
+			Conductor.songPosition = -5 * Conductor.playbackRate; // delay start position so the ends before it
 			return;
 		}
 
@@ -2293,7 +2291,7 @@ class PlayState extends MusicBeatState
 			{
 				case 0:
 					FlxG.sound.play(Paths.sound('intro3-' + assetModifier), 0.6);
-					Conductor.songPosition = -(Conductor.crochet * 4);
+					Conductor.songPosition = -(Conductor.crochet * 4) * Conductor.playbackRate;
 				case 1:
 					var ready:FlxSprite = new FlxSprite().loadGraphic(Paths.image(introAlts[0]));
 					ready.scrollFactor.set();
@@ -2312,7 +2310,7 @@ class PlayState extends MusicBeatState
 						}
 					});
 					FlxG.sound.play(Paths.sound('intro2-' + assetModifier), 0.6);
-					Conductor.songPosition = -(Conductor.crochet * 3);
+					Conductor.songPosition = -(Conductor.crochet * 3) * Conductor.playbackRate;
 				case 2:
 					var set:FlxSprite = new FlxSprite().loadGraphic(Paths.image(introAlts[1]));
 					set.scrollFactor.set();
@@ -2330,7 +2328,7 @@ class PlayState extends MusicBeatState
 						}
 					});
 					FlxG.sound.play(Paths.sound('intro1-' + assetModifier), 0.6);
-					Conductor.songPosition = -(Conductor.crochet * 2);
+					Conductor.songPosition = -(Conductor.crochet * 2) * Conductor.playbackRate;
 				case 3:
 					var go:FlxSprite = new FlxSprite().loadGraphic(Paths.image(introAlts[2]));
 					go.scrollFactor.set();
@@ -2350,7 +2348,7 @@ class PlayState extends MusicBeatState
 						}
 					});
 					FlxG.sound.play(Paths.sound('introGo-' + assetModifier), 0.6);
-					Conductor.songPosition = -(Conductor.crochet * 1);
+					Conductor.songPosition = -(Conductor.crochet * 1) * Conductor.playbackRate;
 			}
 
 			callFunc('onCountdownTick', [swagCounter]);

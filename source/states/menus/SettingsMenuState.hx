@@ -15,7 +15,7 @@ import flixel.util.FlxColor;
 import funkin.Alphabet;
 import funkin.ui.menu.Checkmark;
 import funkin.ui.menu.Selector;
-import states.parents.SettingsMenuParent;
+import states.parents.BaseSettingsMenu;
 import states.substates.ControlsSubstate;
 import states.substates.PauseSubstate;
 
@@ -24,7 +24,7 @@ import states.substates.PauseSubstate;
  * because the old one felt too overcomplicated
  * no offense yoshubs.
  */
-class SettingsMenuState extends SettingsMenuParent
+class SettingsMenuState extends BaseSettingsMenu
 {
 	var topBar:FlxSprite;
 	var bottomBar:FlxSprite;
@@ -171,6 +171,14 @@ class SettingsMenuState extends SettingsMenuParent
 							});
 					}
 				}
+				else
+				{
+					FlxFlicker.flicker(currentGroup.members[curSelected], 0.5, 0.06 * 2, true, false, function(flick:FlxFlicker)
+					{
+						selectOption('checkmark');
+						lockedMovement = false;
+					});
+				}
 			}
 		}
 	}
@@ -273,6 +281,17 @@ class SettingsMenuState extends SettingsMenuParent
 							checkmark.parent = baseAlphabet;
 							checkmark.playAnim(Std.string(Init.trueSettings.get(options[i].name)) + ' finished');
 							checkmarkGroup.add(checkmark);
+						case Init.SettingTypes.Selector:
+							var selector:Selector = new Selector(10, currentGroup.members[curSelected].y, options[curSelected].name, Init.gameSettings.get(options[curSelected].name)[4],
+							[
+								(options[curSelected].name == 'Framerate Cap') ? true : false,
+								(options[curSelected].name == 'Stage Opacity') ? true : false,
+								(options[curSelected].name == 'Hitsound Volume') ? true : false,
+								(options[curSelected].name == 'Scroll Speed') ? true : false,
+								(options[curSelected].name == 'Arrow Opacity') ? true : false,
+								(options[curSelected].name == 'Splash Opacity' ? true : false)
+							]);
+							selectorGroup.add(selector);
 						default:
 							// do nothing;
 					}
@@ -281,20 +300,32 @@ class SettingsMenuState extends SettingsMenuParent
 		}
 	}
 
-	function selectOption()
+	function selectOption(type:String = 'bool')
 	{
 		var settingType = Init.gameSettings.get(options[curSelected].name)[1];
 
 		switch (settingType)
 		{
 			case Init.SettingTypes.Checkmark:
-				if (controls.ACCEPT && curCategory != 0)
+				if (type == 'checkmark')
 				{
 					Init.trueSettings.set(options[curSelected].name, !Init.trueSettings.get(options[curSelected].name));
 					if (checkmarkGroup.members[curSelected] != null)
 						checkmarkGroup.members[curSelected].playAnim(Std.string(Init.trueSettings.get(options[curSelected].name)));
 					Init.saveSettings();
 				}
+			case Init.SettingTypes.Selector:
+				var selector:Selector = selectorGroup.members[curSelected];
+
+				if (!controls.UI_LEFT)
+					selector.selectorPlay('left');
+				if (!controls.UI_RIGHT)
+					selector.selectorPlay('right');
+
+				if (controls.UI_RIGHT_P)
+					updateSelector(selector, 1);
+				else if (controls.UI_LEFT_P)
+					updateSelector(selector, -1);
 			default:
 				// do nothing;
 		}

@@ -1,8 +1,5 @@
 package base.debug;
 
-#if (cpp && !windows)
-import cpp.vm.Gc;
-#end
 import flixel.FlxG;
 import haxe.Timer;
 import openfl.Lib;
@@ -17,17 +14,11 @@ import openfl.text.TextFormat;
 	Based on this tutorial:
 	https://keyreal-code.github.io/haxecoder-tutorials/17_displaying_fps_and_memory_usage_using_openfl.html
 **/
-#if windows
-@:headerCode("
-#define WIN32_LEAN_AND_MEAN
-#include <windows.h>
-#include <psapi.h>
-")
-#end
+
 class Overlay extends TextField
 {
 	var times:Array<Float> = [];
-	var memPeak:Float = 0;
+	var memPeak:UInt = 0;
 
 	// display info
 	static var displayFps = true;
@@ -53,8 +44,9 @@ class Overlay extends TextField
 
 	static final intervalArray:Array<String> = ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB']; // tb support for the myth engine modders :)
 
-	public static function getInterval(size:Float):String
+	public static function getInterval(num:UInt):String
 	{
+		var size:Float = num;
 		var data = 0;
 		while (size > 1024 && data < intervalArray.length - 1)
 		{
@@ -73,7 +65,7 @@ class Overlay extends TextField
 		while (times[0] < now - 1)
 			times.shift();
 
-		var mem:Float = #if windows obtainMemory() #elseif cpp Gc.memInfo64(3) #else System.totalMemory.toFloat() #end;
+		var mem = System.totalMemory;
 		if (mem > memPeak)
 			memPeak = mem;
 
@@ -93,19 +85,4 @@ class Overlay extends TextField
 		displayMemory = shouldDisplayMemory;
 		displayForever = shouldDisplayForever;
 	}
-
-	#if windows
-	@:functionCode("
-		auto memhandle = GetCurrentProcess();
-		PROCESS_MEMORY_COUNTERS pmc;
-		if (GetProcessMemoryInfo(memhandle, &pmc, sizeof(pmc)))
-			return(pmc.WorkingSetSize);
-		else
-			return 0;
-	")
-	function obtainMemory():Dynamic
-	{
-		return 0;
-	}
-	#end
 }

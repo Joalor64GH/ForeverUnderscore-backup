@@ -1,3 +1,5 @@
+var halloweenBG:FNFSprite;
+
 function generateStage()
 {
 	curStage = 'spooky';
@@ -20,7 +22,12 @@ function updateStage(curBeat:Int, boyfriend:Character, gf:Character, dadOpponent
 {
 	if (FlxG.random.bool(10) && curBeat > lightningStrikeBeat + lightningOffset)
 	{
-		lightningStrikeShit();
+		lightningStrikeBeat = curBeat;
+
+		FlxG.sound.play(Paths.soundRandom('thunder_', 1, 2));
+		halloweenBG.animation.play('lightning');
+		lightningOffset = FlxG.random.int(8, 24);
+
 		if (boyfriend.animOffsets.exists('scared'))
 		{
 			boyfriend.playAnim('scared', true);
@@ -35,13 +42,4 @@ function updateStage(curBeat:Int, boyfriend:Character, gf:Character, dadOpponent
 			gf.heyTimer = 0.4;
 		}
 	}
-}
-
-function lightningStrikeShit()
-{
-	FlxG.sound.play(Paths.soundRandom('thunder_', 1, 2));
-	halloweenBG.animation.play('lightning');
-
-	lightningStrikeBeat = curBeat;
-	lightningOffset = FlxG.random.int(8, 24);
 }

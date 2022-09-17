@@ -9,7 +9,7 @@ The Forever Engine Underscore project is currently pretty powerful by itself, bu
 
 ----------------------------------------------
 # Current Goals:
-* make Notes and Notetypes Scripted, allowing for no source code interaction while messing with them;
+* make Notes and Notetypes Scripted, allowing for much more easier custom note setups and such;
 * Finish the Chart Editor **(HIGH PRIORITY)**;
 
 help would be extremely appreciated!

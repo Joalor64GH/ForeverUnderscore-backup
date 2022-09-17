@@ -231,7 +231,7 @@ class Character extends FNFSprite
 					holdTimer += elapsed;
 				}
 
-				if (holdTimer >= Conductor.stepCrochet * 0.0011 * singDuration)
+				if (holdTimer >= Conductor.stepCrochet * (0.0011 / Conductor.songMusic.pitch) * singDuration)
 				{
 					dance();
 					holdTimer = 0;

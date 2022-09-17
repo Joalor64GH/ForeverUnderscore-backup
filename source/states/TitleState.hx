@@ -43,6 +43,17 @@ class TitleState extends MusicBeatState
 		curWacky = FlxG.random.getObject(getIntroTextShit());
 		super.create();
 
+		if (!initialized)
+		{
+			#if DISCORD_RPC
+			Discord.changePresence('TITLE SCREEN', 'Main Menu');
+			#end
+
+			#if GAME_UPDATER
+			ForeverTools.checkUpdates();
+			#end
+		}
+
 		startIntro();
 	}
 
@@ -60,17 +71,6 @@ class TitleState extends MusicBeatState
 	{
 		if (!initialized)
 		{
-			#if DISCORD_RPC
-			Discord.changePresence('TITLE SCREEN', 'Main Menu');
-			#end
-
-			transIn = FlxTransitionableState.defaultTransIn;
-			transOut = FlxTransitionableState.defaultTransOut;
-
-			#if GAME_UPDATER
-			ForeverTools.checkUpdates();
-			#end
-
 			ForeverTools.resetMenuMusic(true);
 		}
 

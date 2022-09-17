@@ -1,6 +1,7 @@
 package states.menus;
 
 import base.ChartParser;
+import base.Conductor;
 import base.CoolUtil;
 import base.MusicBeat.MusicBeatState;
 import base.SongLoader.LegacySong;
@@ -47,8 +48,11 @@ class FreeplayState extends MusicBeatState
 
 	var scoreText:FlxText;
 	var diffText:FlxText;
+	var rateText:FlxText;
 	var lerpScore:Int = 0;
 	var intendedScore:Int = 0;
+
+	var songRate:Float = 1;
 
 	var songThread:Thread;
 	var threadActive:Bool = true;
@@ -182,7 +186,7 @@ class FreeplayState extends MusicBeatState
 		scoreText = new FlxText(FlxG.width * 0.7, 5, 0, "", 32);
 		scoreText.setFormat(Paths.font("vcr.ttf"), 32, FlxColor.WHITE, RIGHT);
 
-		scoreBG = new FlxSprite(scoreText.x - scoreText.width, 0).makeGraphic(Std.int(FlxG.width * 0.35), 66, 0xFF000000);
+		scoreBG = new FlxSprite(scoreText.x - scoreText.width, 0).makeGraphic(Std.int(FlxG.width * 0.35), 106, 0xFF000000);
 		scoreBG.alpha = 0.6;
 		add(scoreBG);
 
@@ -191,6 +195,12 @@ class FreeplayState extends MusicBeatState
 		diffText.font = scoreText.font;
 		diffText.x = scoreBG.getGraphicMidpoint().x;
 		add(diffText);
+
+		rateText = new FlxText(diffText.x, diffText.y + 36, 0, "", 24);
+		rateText.alignment = CENTER;
+		rateText.font = scoreText.font;
+		rateText.x = scoreBG.getGraphicMidpoint().x;
+		add(rateText);
 
 		add(scoreText);
 
@@ -302,15 +312,33 @@ class FreeplayState extends MusicBeatState
 			}
 		}
 
-		if (controls.UI_LEFT_P)
+		if (controls.UI_LEFT_P && !shiftP)
 			changeDiff(-1);
-		else if (controls.UI_RIGHT_P)
+		else if (controls.UI_RIGHT_P && !shiftP)
 			changeDiff(1);
+
+		if (controls.UI_LEFT_P && shiftP)
+			songRate -= 0.05;
+		else if (controls.UI_RIGHT_P && shiftP)
+			songRate += 0.05;
+
+		if (controls.RESET && shiftP)
+			songRate = 1;
+
+		if (songRate <= 0.5)
+			songRate = 0.5;
+		else if (songRate >= 3)
+			songRate = 3;
+
+		// for pitch playback
+		FlxG.sound.music.pitch = songRate;
 
 		if (controls.BACK || FlxG.mouse.justPressedRight)
 		{
 			if (presses <= 0)
 			{
+				songRate = 1;
+
 				if (FlxG.sound.music != null)
 					FlxG.sound.music.stop();
 				threadActive = false;
@@ -335,15 +363,19 @@ class FreeplayState extends MusicBeatState
 			PlayState.prevCharter == (shiftP ? 1 : 0);
 			Main.switchState(this, (shiftP ? new ChartEditor() : new OriginalChartEditor()));
 		}
+		/*
 		else if (ctrl)
 			openSubState(new FreeplaySubstate());
-		else if (controls.RESET && presses < 3)
+		*/
+		else if (controls.RESET && presses < 3 && !shiftP)
 		{
 			presses++;
 			resetScore();
 		}
 
 		scoreText.text = "PERSONAL BEST:" + lerpScore;
+		rateText.text = "RATE: " + songRate;
+		rateText.x = FlxG.width - rateText.width;
 		repositionHighscore();
 
 		mutex.acquire();
@@ -386,7 +418,12 @@ class FreeplayState extends MusicBeatState
 			threadActive = false;
 		}
 		if (go)
+		{
+			if (songRate <= 1)
+				PlayState.preventScoring = true; // lmao.
+			Conductor.playbackRate = songRate;
 			Main.switchState(this, new PlayState());
+		}
 	}
 
 	var lastDifficulty:String;

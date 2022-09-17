@@ -333,7 +333,7 @@ class Init extends FlxState
 
 		CoolUtil.difficulties = CoolUtil.baseDifficulties.copy(); // set default difficulties to the new difficulty array;
 
-		FlxG.switchState(cast Type.createInstance(Main.initialState, []));
+		Main.switchState(this, cast Type.createInstance(Main.initialState, []));
 	}
 
 	public static function loadSettings():Void
