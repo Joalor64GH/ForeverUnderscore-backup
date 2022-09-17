@@ -3,6 +3,7 @@ package base;
 import base.*;
 import dependency.*;
 import flixel.*;
+import flixel.addons.display.FlxBackdrop;
 import flixel.addons.effects.FlxTrail;
 import flixel.graphics.FlxGraphic;
 import flixel.graphics.frames.FlxAtlasFrames;
@@ -21,6 +22,7 @@ import lime.app.Application;
 import openfl.display.GraphicsShader;
 import openfl.filters.ShaderFilter;
 import states.PlayState;
+import states.substates.ScriptedSubstate;
 import sys.io.File;
 
 class ScriptHandler extends SScript
@@ -64,6 +66,7 @@ class ScriptHandler extends SScript
 		set('FlxTrail', FlxTrail);
 		set('FlxShader', FlxShader);
 		set('FlxBar', FlxBar);
+		set('FlxBackdrop', FlxBackdrop);
 		set('FlxBarFillDirection', FlxBarFillDirection);
 		set('FlxAxes', FlxAxes);
 		set('GraphicsShader', GraphicsShader);
@@ -75,6 +78,7 @@ class ScriptHandler extends SScript
 		set('ForeverTools', ForeverTools);
 		set('FNFSprite', FNFSprite);
 		set('Discord', Discord);
+		set('ScriptedSubstate', ScriptedSubstate);
 
 		// CLASSES (BASE);
 		set('Alphabet', Alphabet);

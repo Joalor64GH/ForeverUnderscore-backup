@@ -2412,6 +2412,7 @@ class PlayState extends MusicBeatState
 	function setPlayStateVars()
 	{
 		setVar('game', PlayState.contents);
+		setVar('openSubState', openSubState);
 
 		setVar('setProperty', function(key:String, value:Dynamic)
 		{
