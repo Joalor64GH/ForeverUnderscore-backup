@@ -30,7 +30,7 @@ class ScriptedSubstate extends MusicBeatSubstate
 	{
 		PlayState.contents.callFunc('substateUpdate', [stateName, elapsed]);
 		super.update(elapsed);
-		PlayState.contents.callFunc('substateUpdatePost', [stateName, elapsed]);
+		PlayState.contents.callFunc('substatePostUpdate', [stateName, elapsed]);
 	}
 
 	override function destroy()
