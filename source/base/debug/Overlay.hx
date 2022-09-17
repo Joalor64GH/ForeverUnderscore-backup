@@ -1,8 +1,5 @@
 package base.debug;
 
-#if (cpp && !windows)
-import cpp.vm.Gc;
-#end
 import flixel.FlxG;
 import haxe.Timer;
 import openfl.Lib;
@@ -17,13 +14,6 @@ import openfl.text.TextFormat;
 	Based on this tutorial:
 	https://keyreal-code.github.io/haxecoder-tutorials/17_displaying_fps_and_memory_usage_using_openfl.html
 **/
-#if windows
-@:headerCode("
-#define WIN32_LEAN_AND_MEAN
-#include <windows.h>
-#include <psapi.h>
-")
-#end
 class Overlay extends TextField
 {
 	var times:Array<Float> = [];
@@ -73,7 +63,12 @@ class Overlay extends TextField
 		while (times[0] < now - 1)
 			times.shift();
 
-		var mem:Float = #if windows obtainMemory() #elseif cpp Gc.memInfo64(3) #else System.totalMemory.toFloat() #end;
+		#if cpp
+		var mem:Float = cpp.vm.Gc.memInfo64(3);
+		#else
+		var mem:Float = openfl.system.System.totalMemory.toFloat();
+		#end
+
 		if (mem > memPeak)
 			memPeak = mem;
 
@@ -93,19 +88,4 @@ class Overlay extends TextField
 		displayMemory = shouldDisplayMemory;
 		displayForever = shouldDisplayForever;
 	}
-
-	#if windows
-	@:functionCode("
-		auto memhandle = GetCurrentProcess();
-		PROCESS_MEMORY_COUNTERS pmc;
-		if (GetProcessMemoryInfo(memhandle, &pmc, sizeof(pmc)))
-			return(pmc.WorkingSetSize);
-		else
-			return 0;
-	")
-	function obtainMemory():Dynamic
-	{
-		return 0;
-	}
-	#end
 }
