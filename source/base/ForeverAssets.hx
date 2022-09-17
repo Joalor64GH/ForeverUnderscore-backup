@@ -146,7 +146,7 @@ class ForeverAssets
 		var changeableSkin:String = Init.trueSettings.get("Note Skin");
 
 		// will eventually change this in favor of customizable splashes through scripts;
-		var jsonPath = Paths.getTextFromFile('images/noteskins/notes/$changeableSkin/$assetModifier/SplashDataDef.json');
+		var jsonPath = Paths.getTextFromFile('images/noteskins/notes/$changeableSkin/$assetModifier/splashData.json');
 		var splashJson:SplashDataDef = haxe.Json.parse(jsonPath);
 
 		if (splashJson != null)
