@@ -1563,12 +1563,12 @@ class OriginalChartEditor extends MusicBeatState
 		var text1 = eventVal1Input.text;
 		var text2 = eventVal2Input.text;
 
+		if (event == null || event == '')
+			return;
+
 		/*
-		if (event != null)
-		{
-			_song.events.push([noteStrum, event, text1, text2]);
-			curSelectedEvent = _song.events[_song.events.length - 1];
-		}
+		_song.events.push([noteStrum, event, text1, text2]);
+		curSelectedEvent = _song.events[_song.events.length - 1];
 		*/
 
 		updateGrid();

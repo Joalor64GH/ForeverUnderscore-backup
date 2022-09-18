@@ -20,19 +20,6 @@ import sys.io.File;
 
 using StringTools;
 
-/**
-	future chart types support (unfinished!)
-	code taken from: FNF-Forever-Engine, https://github.com/Yoshubs/FNF-Forever-Engine
-**/
-enum abstract ChartType(String) to String
-{
-	var FNF;
-	var FNF_LEGACY;
-	var FOREVER;
-	var UNDERSCORE;
-	var PSYCH;
-}
-
 final class Paths
 {
 	// Here we set up the paths class. This will be used to

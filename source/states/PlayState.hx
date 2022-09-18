@@ -1,6 +1,5 @@
 package states;
 
-import Paths.ChartType;
 import base.*;
 import base.MusicBeat.MusicBeatState;
 import base.SongLoader.LegacySong;
@@ -249,17 +248,11 @@ class PlayState extends MusicBeatState
 		}
 
 		// set up characters here too
-		switch (ChartParser.songType)
-		{
-			case UNDERSCORE | PSYCH:
-				gf = new Character(300, 100, false, SONG.gfVersion);
 
-			case FNF_LEGACY:
-				gf = new Character(300, 100, false, stageBuild.returnGFtype(curStage));
-
-			default:
-				// blah
-		}
+		if (SONG.gfVersion.length < 1 || SONG.gfVersion == null)
+			gf = new Character(300, 100, false, stageBuild.returnGFtype(curStage));
+		else
+			gf = new Character(300, 100, false, SONG.gfVersion);
 		gf.adjustPos = false;
 		gf.scrollFactor.set(0.95, 0.95);
 		gf.dance(true);
@@ -283,11 +276,7 @@ class PlayState extends MusicBeatState
 		changeableSkin = Init.trueSettings.get("UI Skin");
 		changeableSound = Init.trueSettings.get("Hitsound Type");
 
-		if (ChartParser.songType == UNDERSCORE)
-			assetModifier = SONG.assetModifier;
-
-		if ((curStage.startsWith("school")) && (ChartParser.songType == FNF_LEGACY))
-			assetModifier = 'pixel';
+		assetModifier = SONG.assetModifier;
 
 		// dad is girlfriend, spawn him on her position;
 		if (dadOpponent.curCharacter.startsWith('gf'))
@@ -1802,8 +1791,8 @@ class PlayState extends MusicBeatState
 		Conductor.bindMusic();
 
 		// generate the chart and sort through notes
-		unspawnNotes = ChartParser.loadChart(SONG, ChartParser.songType);
-		unspawnEvents = ChartParser.loadEvents(SONG, ChartParser.songType);
+		unspawnNotes = ChartParser.loadChart(SONG);
+		unspawnEvents = ChartParser.loadEvents(SONG);
 
 		songSpeed = SONG.speed;
 

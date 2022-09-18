@@ -74,9 +74,9 @@ class ForeverAssets
 			combo.setGraphicSize(Std.int(combo.frameWidth * 0.5));
 		}
 		combo.updateHitbox();
-		combo.acceleration.y = FlxG.random.int(100, 200) * Conductor.playbackRate;
-		combo.velocity.y = -FlxG.random.int(140, 160) * Conductor.playbackRate;
-		combo.velocity.x = FlxG.random.float(-5, 5) * Conductor.playbackRate;
+		combo.acceleration.y = FlxG.random.int(100, 200);
+		combo.velocity.y = -FlxG.random.int(140, 160);
+		combo.velocity.x = FlxG.random.float(-5, 5);
 
 		FlxTween.tween(combo, {alpha: 0}, (Conductor.stepCrochet * 2) / 1000, {
 			onComplete: function(tween:FlxTween)
@@ -120,9 +120,9 @@ class ForeverAssets
 
 		rating.y -= 60;
 		rating.x = (FlxG.width * 0.55) - 40;
-		rating.velocity.y = -FlxG.random.int(140, 175) * Conductor.playbackRate;
-		rating.velocity.x = -FlxG.random.int(0, 10) * Conductor.playbackRate;
-		rating.acceleration.y = 550 * Conductor.playbackRate;
+		rating.velocity.y = -FlxG.random.int(140, 175);
+		rating.velocity.x = -FlxG.random.int(0, 10);
+		rating.acceleration.y = 550;
 
 		FlxTween.tween(rating, {alpha: 0}, (Conductor.stepCrochet) / 1000, {
 			onComplete: function(tween:FlxTween)
