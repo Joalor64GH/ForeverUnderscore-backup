@@ -25,14 +25,6 @@ import sys.FileSystem;
 import sys.io.File;
 
 using StringTools;
-
-enum CharacterType
-{
-	SPARROW;
-	PACKER;
-	HASH;
-}
-
 typedef PsychEngineChar =
 {
 	var animations:Array<PsychAnimArray>;
@@ -82,7 +74,7 @@ class Character extends FNFSprite
 	public var isPlayer:Bool = false;
 	public var quickDancer:Bool = false;
 
-	public var charScripts:Array<ScriptHandler> = [];
+	public static var charScripts:Array<ScriptHandler> = [];
 
 	public var idleSuffix:String = '';
 
