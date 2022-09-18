@@ -947,7 +947,7 @@ class PlayState extends MusicBeatState
 		}
 		
 		// set the notes x and y
-		var downscrollMultiplier = (Init.trueSettings.get('Downscroll') ? -1 : 1) * FlxMath.signOf(get_songSpeed());
+		var downscrollMultiplier = (Init.trueSettings.get('Downscroll') ? -1 : 1) * FlxMath.signOf(songSpeed);
 		if (generatedMusic && startedCountdown)
 		{
 			for (strumline in strumLines)
@@ -958,7 +958,7 @@ class PlayState extends MusicBeatState
 					if (strumNote.useCustomSpeed)
 						strumNote.noteSpeed = Init.trueSettings.get('Scroll Speed');
 					else
-						strumNote.noteSpeed = Math.abs(get_songSpeed());
+						strumNote.noteSpeed = Math.abs(songSpeed);
 	 
 					var roundedSpeed = FlxMath.roundDecimal(strumNote.noteSpeed, 2);
 					var receptorX:Float = strumline.receptors.members[Math.floor(strumNote.noteData)].x;
