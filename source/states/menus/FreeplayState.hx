@@ -372,7 +372,7 @@ class FreeplayState extends MusicBeatState
 		}
 
 		scoreText.text = "PERSONAL BEST:" + lerpScore;
-		rateText.text = "RATE: " + songRate;
+		rateText.text = "RATE: " + songRate + "x";
 		rateText.x = FlxG.width - rateText.width;
 		repositionHighscore();
 

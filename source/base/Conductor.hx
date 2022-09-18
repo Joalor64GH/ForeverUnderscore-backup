@@ -156,26 +156,26 @@ class Conductor
 		PlayState.contents.callFunc('resyncVocals', []);
 
 		#if DEBUG_TRACES trace('resyncing vocal time: ${songVocals.time}'); #end
+
 		songVocals.pause();
 		songMusic.play();
-		//songMusic.time = songPosition;
-		songPosition = songMusic.time;
-		songMusic.pitch = playbackRate;
-		if (songVocals != null)
-		{
-			if (songPosition <= songVocals.length)
-				songVocals.time = songPosition;
 
-			songVocals.pitch = playbackRate;
+		songPosition = songMusic.time;
+
+		// all vocals in the vocal array;
+		for (i in vocalArray)
+		{
+			if (songPosition <= i.length)
+				i.time = songPosition;
+			i.play();
 		}
-		songVocals.play();
 		#if DEBUG_TRACES trace('new vocal time: ${songPosition}, playback rate: ${playbackRate}'); #end
 	}
 
 	public static function resyncBySteps()
 	{
-		if (Math.abs(songMusic.time - (songPosition - offset)) > (20 * playbackRate)
-			|| (PlayState.SONG.needsVoices && Math.abs(songVocals.time - (songPosition - offset)) > (20 * playbackRate)))
+		if (Math.abs(songMusic.time - (songPosition - offset)) > 20 * playbackRate
+			|| (PlayState.SONG.needsVoices && Math.abs(songVocals.time - (songPosition - offset)) > 20 * playbackRate))
 		{
 			resyncVocals();
 		}

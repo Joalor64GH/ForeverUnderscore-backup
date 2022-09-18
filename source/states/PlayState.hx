@@ -248,10 +248,6 @@ class PlayState extends MusicBeatState
 			add(stageBuild);
 		}
 
-		var setSpeed = Init.trueSettings.get('Scroll Speed');
-		if (Init.trueSettings.get('Use Custom Note Speed'))
-			SONG.speed = setSpeed;
-
 		// set up characters here too
 		switch (ChartParser.songType)
 		{
@@ -321,7 +317,7 @@ class PlayState extends MusicBeatState
 		boyfriend.dance();
 
 		// set song position before beginning
-		Conductor.songPosition = -(Conductor.crochet * 4) * Conductor.playbackRate;
+		Conductor.songPosition = -(Conductor.crochet * 4);
 
 		// EVERYTHING SHOULD GO UNDER THIS, IF YOU PLAN ON SPAWNING SOMETHING LATER ADD IT TO STAGEBUILD OR FOREGROUND
 		// darken everything but the arrows and ui via a flxsprite
@@ -755,14 +751,14 @@ class PlayState extends MusicBeatState
 			{
 				if (startedCountdown)
 				{
-					Conductor.songPosition += elapsed * 1000;
+					Conductor.songPosition += elapsed * 1000 * Conductor.playbackRate;
 					if (Conductor.songPosition >= 0)
 						startSong();
 				}
 			}
 			else
 			{
-				Conductor.songPosition += elapsed * 1000;
+				Conductor.songPosition += elapsed * 1000 * Conductor.playbackRate;
 				if (!paused)
 				{
 					songTime += FlxG.game.ticks - previousFrameTime;
@@ -988,7 +984,7 @@ class PlayState extends MusicBeatState
 		}
 		
 		// set the notes x and y
-		var downscrollMultiplier = (Init.trueSettings.get('Downscroll') ? -1 : 1) * FlxMath.signOf(SONG.speed);
+		var downscrollMultiplier = (Init.trueSettings.get('Downscroll') ? -1 : 1) * FlxMath.signOf(songSpeed);
 		if (generatedMusic && startedCountdown)
 		{
 			for (strumline in strumLines)
@@ -999,7 +995,7 @@ class PlayState extends MusicBeatState
 					if (strumNote.useCustomSpeed)
 						strumNote.noteSpeed = Init.trueSettings.get('Scroll Speed');
 					else
-						strumNote.noteSpeed = Math.abs(SONG.speed);
+						strumNote.noteSpeed = Math.abs(songSpeed);
 	 
 					var roundedSpeed = FlxMath.roundDecimal(strumNote.noteSpeed, 2);
 					var receptorX:Float = strumline.receptors.members[Math.floor(strumNote.noteData)].x;
@@ -1594,6 +1590,11 @@ class PlayState extends MusicBeatState
 		super.onFocusLost();
 	}
 
+	public static var songSpeed(get, default):Float = 0;
+
+	static function get_songSpeed()
+		return songSpeed / Conductor.playbackRate;
+
 	public static function updateRPC(pausedRPC:Bool)
 	{
 		#if DISCORD_RPC
@@ -1774,7 +1775,7 @@ class PlayState extends MusicBeatState
 
 			#if DISCORD_RPC
 			// Song duration in a float, useful for the time left feature
-			songLength = Conductor.songMusic.length / Conductor.playbackRate;
+			songLength = Conductor.songMusic.length;
 
 			// Updating Discord Rich Presence (with Time Left)
 			updateRPC(false);
@@ -1788,7 +1789,7 @@ class PlayState extends MusicBeatState
 
 		Conductor.changeBPM(SONG.bpm);
 
-		songDetails = CoolUtil.dashToSpace(SONG.song) + ' [' + CoolUtil.difficultyFromNumber(storyDifficulty) + '] - by ' + SONG.author + ' (${Conductor.playbackRate})';
+		songDetails = CoolUtil.dashToSpace(SONG.song) + ' [' + CoolUtil.difficultyFromNumber(storyDifficulty) + '] - by ' + SONG.author + ' (${Conductor.playbackRate}x)';
 
 		detailsPausedText = "Paused - " + songDetails;
 		detailsSub = "";
@@ -1803,6 +1804,8 @@ class PlayState extends MusicBeatState
 		// generate the chart and sort through notes
 		unspawnNotes = ChartParser.loadChart(SONG, ChartParser.songType);
 		unspawnEvents = ChartParser.loadEvents(SONG, ChartParser.songType);
+
+		songSpeed = SONG.speed;
 
 		//trace(unspawnEvents);
 
@@ -2263,7 +2266,7 @@ class PlayState extends MusicBeatState
 		{
 			startedCountdown = true;
 			swagCounter = 4;
-			Conductor.songPosition = -5 * Conductor.playbackRate; // delay start position so the ends before it
+			Conductor.songPosition = -5; // delay start position so the ends before it
 			return;
 		}
 
@@ -2291,7 +2294,7 @@ class PlayState extends MusicBeatState
 			{
 				case 0:
 					FlxG.sound.play(Paths.sound('intro3-' + assetModifier), 0.6);
-					Conductor.songPosition = -(Conductor.crochet * 4) * Conductor.playbackRate;
+					Conductor.songPosition = -(Conductor.crochet * 4);
 				case 1:
 					var ready:FlxSprite = new FlxSprite().loadGraphic(Paths.image(introAlts[0]));
 					ready.scrollFactor.set();
@@ -2310,7 +2313,7 @@ class PlayState extends MusicBeatState
 						}
 					});
 					FlxG.sound.play(Paths.sound('intro2-' + assetModifier), 0.6);
-					Conductor.songPosition = -(Conductor.crochet * 3) * Conductor.playbackRate;
+					Conductor.songPosition = -(Conductor.crochet * 3);
 				case 2:
 					var set:FlxSprite = new FlxSprite().loadGraphic(Paths.image(introAlts[1]));
 					set.scrollFactor.set();
@@ -2328,7 +2331,7 @@ class PlayState extends MusicBeatState
 						}
 					});
 					FlxG.sound.play(Paths.sound('intro1-' + assetModifier), 0.6);
-					Conductor.songPosition = -(Conductor.crochet * 2) * Conductor.playbackRate;
+					Conductor.songPosition = -(Conductor.crochet * 2);
 				case 3:
 					var go:FlxSprite = new FlxSprite().loadGraphic(Paths.image(introAlts[2]));
 					go.scrollFactor.set();
@@ -2348,7 +2351,7 @@ class PlayState extends MusicBeatState
 						}
 					});
 					FlxG.sound.play(Paths.sound('introGo-' + assetModifier), 0.6);
-					Conductor.songPosition = -(Conductor.crochet * 1) * Conductor.playbackRate;
+					Conductor.songPosition = -(Conductor.crochet * 1);
 			}
 
 			callFunc('onCountdownTick', [swagCounter]);
