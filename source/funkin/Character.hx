@@ -190,7 +190,7 @@ class Character extends FNFSprite
 		{
 			if (heyTimer > 0)
 			{
-				heyTimer -= elapsed;
+				heyTimer -= elapsed * Conductor.playbackRate;
 				if (heyTimer <= 0)
 				{
 					if (specialAnim && animation.curAnim.name == 'hey' || animation.curAnim.name == 'cheer')

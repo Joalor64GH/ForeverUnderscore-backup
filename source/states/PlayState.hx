@@ -898,32 +898,6 @@ class PlayState extends MusicBeatState
 			}
 		}
 
-		/*
-			if (!isStoryMode && !startingSong && !endingSong && scriptDebugMode)
-			{
-				if (FlxG.keys.pressed.CONTROL && FlxG.keys.justPressed.Z)
-				{
-					Conductor.songPlaybackRate += 0.1;
-					Conductor.songMusic.pitch += 0.1;
-					Conductor.songVocals.pitch += 0.1;
-				}
-
-				if (FlxG.keys.pressed.CONTROL && FlxG.keys.justPressed.X)
-				{
-					Conductor.songPlaybackRate -= 0.1;
-					Conductor.songMusic.pitch -= 0.1;
-					Conductor.songVocals.pitch -= 0.1;
-				}
-
-				if (FlxG.keys.pressed.CONTROL && FlxG.keys.justPressed.C)
-				{
-					Conductor.songPlaybackRate = 1;
-					Conductor.songMusic.pitch = 1;
-					Conductor.songVocals.pitch = 1;
-				}
-			}
-		 */
-
 		checkSongEvents();
 
 		callFunc('postUpdate', [elapsed]);
@@ -1128,7 +1102,7 @@ class PlayState extends MusicBeatState
 		// reset bf's animation
 		var holdControls:Array<Bool> = [controls.LEFT, controls.DOWN, controls.UP, controls.RIGHT];
 		if ((boyfriend != null && boyfriend.animation != null)
-			&& (boyfriend.holdTimer > Conductor.stepCrochet * (0.0011 / Conductor.songMusic.pitch) * boyfriend.singDuration && (!holdControls.contains(true) || bfStrums.autoplay)))
+			&& (boyfriend.holdTimer > Conductor.stepCrochet * (0.0011 / Conductor.playbackRate) * boyfriend.singDuration && (!holdControls.contains(true) || bfStrums.autoplay)))
 		{
 			if (boyfriend.animation.curAnim.name.startsWith('sing') && !boyfriend.animation.curAnim.name.endsWith('miss'))
 				boyfriend.dance();
@@ -1581,8 +1555,8 @@ class PlayState extends MusicBeatState
 
 	public static var songSpeed(get, default):Float = 0;
 
-	static function get_songSpeed()
-		return songSpeed / Conductor.playbackRate;
+	static function get_songSpeed() // TODO: fix sustains on high rates;
+		return songSpeed * Conductor.playbackRate;
 
 	public static function updateRPC(pausedRPC:Bool)
 	{
@@ -2259,7 +2233,7 @@ class PlayState extends MusicBeatState
 			return;
 		}
 
-		startTimer = new FlxTimer().start(Conductor.crochet / 1000, function(tmr:FlxTimer)
+		startTimer = new FlxTimer().start(Conductor.crochet / 1000 / Conductor.playbackRate, function(tmr:FlxTimer)
 		{
 			startedCountdown = true;
 
