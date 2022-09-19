@@ -32,7 +32,7 @@
 			"sectionName": "FOREVER ENGINE: UNDERSCORE",
 
 			"name": "TheWorldMachine",
-			"iconData": ["twm",  510, -3],
+			"iconData": ["macxp", 510, -3],
 			"textData": ["Script Backend Coder, Github Repository Helper"],
 			"urlData": [[]],
 			"colors": [182, 84, 82]
