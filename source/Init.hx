@@ -330,6 +330,8 @@ class Init extends FlxState
 			FlxG.sound.volume = FlxG.save.data.volume;
 		if (FlxG.save.data.mute != null)
 			FlxG.sound.muted = FlxG.save.data.mute;
+			
+		CoolUtil.difficulties = CoolUtil.baseDifficulties.copy();
 
 		Main.switchState(this, cast Type.createInstance(Main.initialState, []));
 	}
