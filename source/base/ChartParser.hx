@@ -15,15 +15,6 @@ using StringTools;
  * to handle and load, as well as much more modular!
 **/
 
-typedef SongFormat = // new song format which i'm setting up later
-{
-	var song:String;
-	var bpm:Float;
-	var events:Array<SongEvent>;
-	var notes:Array<SongNote>;
-	var speed:Float;
-}
-
 class ChartParser
 {
 	// hopefully this makes it easier for people to load and save chart features and such, y'know the deal lol

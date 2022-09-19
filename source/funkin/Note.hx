@@ -142,6 +142,15 @@ class Note extends FNFSprite
 		if (tooLate || (parentNote != null && parentNote.tooLate))
 			alpha = 0.3;
 	}
+	
+	public function rescaleSustain(newScale:Float)
+	{
+		if (animation.curAnim != null && !animation.curAnim.name.endsWith('end') && isSustainNote)
+		{
+			scale.y *= newScale;
+			updateHitbox();
+		}
+	}
 
 	/**
 		Note creation scripts

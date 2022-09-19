@@ -12,7 +12,16 @@ function loadAnimations()
 	addByPrefix('hey', 'BF HEY', 24, false);
 	addByPrefix('scared', 'BF idle shaking', 24);
 
-	addOffset('hey', -3);
+	addOffset("idle", -5, 0);
+	addOffset("hey", -4, -1);
+	addOffset("singRIGHT", -5, 0);
+	addOffset("singDOWN", 0, 0);
+	addOffset("singUP", -6, -1);
+	addOffset("singLEFT", -8, 0);
+	addOffset("singRIGHTmiss", -5, 0);
+	addOffset("singDOWNmiss", 0, 0);
+	addOffset("singUPmiss", -6, -1);
+	addOffset("singLEFTmiss", -8, 0);
 
 	playAnim('idle');
 

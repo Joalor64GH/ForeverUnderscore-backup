@@ -30,7 +30,8 @@ class OutdatedState extends MusicBeatState
 
 		// uh
 		persistentUpdate = persistentDraw = true;
-
+		
+		#if GAME_UPDATER
 		var bg:FlxSprite = new FlxSprite().makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
 		add(bg);
 
@@ -50,6 +51,9 @@ class OutdatedState extends MusicBeatState
 		add(updateText);
 
 		FlxTween.tween(updateText, {alpha: 1}, 0.4);
+		#else
+		Main.switchState(this, new MainMenuState());
+		#end
     }
 
 	override function update(elapsed:Float)

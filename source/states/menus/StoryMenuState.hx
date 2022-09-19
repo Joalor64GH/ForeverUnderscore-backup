@@ -149,7 +149,6 @@ class StoryMenuState extends MusicBeatState
 		}
 
 		difficultySelectors = new FlxGroup();
-		add(difficultySelectors);
 
 		#if DEBUG_TRACES trace("Line 124"); #end
 
@@ -191,6 +190,8 @@ class StoryMenuState extends MusicBeatState
 		// add(rankText);
 		add(scoreText);
 		add(txtWeekTitle);
+		
+		add(difficultySelectors);
 
 		// very unprofessional yoshubs!
 

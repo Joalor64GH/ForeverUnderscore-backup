@@ -37,13 +37,17 @@ class Conductor
 	public static var bpm:Float = 100;
 	public static var crochet:Float = ((60 / bpm) * 1000); // beats in milliseconds
 	public static var stepCrochet:Float = crochet / 4; // steps in milliseconds
-	public static var songPosition:Float;
+
 	public static var lastSongPos:Float;
-	public static var offset:Float = 0;
+
+	public static var songPosition:Float;
+	public static var offset:Float = 0; // song chart offset;
+
 	public static var songMusic:FlxSound;
 	public static var songVocals:FlxSound;
+	public static var playbackRate:Float = 1; // song playback speed (also affects pitch);
+	
 	public static var vocalArray:Array<FlxSound> = [];
-	public static var playbackRate:Float = 1;
 	public static var bpmChangeMap:Array<BPMChangeEvent> = [];
 
 	public static function mapBPMChanges(song:LegacySong)
@@ -72,6 +76,14 @@ class Conductor
 			totalPos += ((60 / curBPM) * 1000 / 4) * deltaSteps;
 		}
 	}
+	
+	public static function changeBPM(newBpm:Float, measure:Float = 4 / 4)
+	{
+		bpm = newBpm;
+
+		crochet = ((60 / bpm) * 1000);
+		stepCrochet = (crochet / 4) * measure;
+	}
 
 	/**
 	* new code for lengthInSteps that my friend ShadowMario made;
@@ -85,14 +97,6 @@ class Conductor
 		if (song.notes[section] != null)
 			val = song.notes[section].sectionBeats;
 		return val != null ? val : 4;
-	}
-
-	public static function changeBPM(newBpm:Float, measure:Float = 4 / 4)
-	{
-		bpm = newBpm;
-
-		crochet = ((60 / bpm) * 1000);
-		stepCrochet = (crochet / 4) * measure;
 	}
 
 	public static function bindMusic()

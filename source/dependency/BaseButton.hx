@@ -4,18 +4,18 @@ import flixel.FlxSprite;
 
 class BaseButton extends FlxSprite
 {
-	public var clickThing:Void->Void;
+	public var onClickAction:Void->Void;
 	public var size:String = "";
 	public var child(default, set):String;
 
-	public function new(x:Float, y:Float, size:String = "", ?clickThing:Void->Void)
+	public function new(x:Float, y:Float, size:String = "", ?onClickAction:Void->Void)
 	{
 		super(x, y);
 
-		this.clickThing = clickThing;
+		this.onClickAction = onClickAction;
 		this.size = size;
 
-		loadGraphic(Paths.image('UI/default/base/charter/charting_button${size.toUpperCase()}'));
+		loadGraphic(Paths.image('menus/chart editor/ui-buttons/charting_button-${size.toLowerCase()}'));
 		antialiasing = !Init.trueSettings.get('Disable Antialiasing');
 		scrollFactor.set();
 	}
@@ -28,16 +28,16 @@ class BaseButton extends FlxSprite
 
 	public function onClick(?value:Dynamic):Void
 	{
-		if (clickThing != null)
-			clickThing();
+		if (onClickAction != null)
+			onClickAction();
 	}
 }
 
-class CoolAssButton extends BaseButton
+class ChartingButton extends BaseButton
 {
-	public function new(x:Float, y:Float, size:String = "", ?clickThing:Void->Void)
+	public function new(x:Float, y:Float, size:String = "", ?onClickAction:Void->Void)
 	{
-		super(x, y, size, clickThing);
+		super(x, y, size, onClickAction);
 	}
 
 	override public function onClick(?value:Dynamic)

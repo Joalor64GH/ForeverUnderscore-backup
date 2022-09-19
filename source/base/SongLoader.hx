@@ -4,31 +4,6 @@ import haxe.Json;
 import sys.io.File;
 
 using StringTools;
-
-/**
- * just an idea, I don't think i'm actually doing so;
- * Custom Song Note and Event Format;
- */
-
-//
-typedef SongNote =
-{
-	var noteData:Int;
-    var strumTime:Float;
-    var sustainLength:Float;
-    var noteType:String;
-    var animString:String;
-}
-
-typedef SongEvent =
-{
-	var strumTime:Float;
-	var name:String;
-	var value1:String;
-	var value2:String;
-	var ?description:String;
-}
-
 typedef LegacySong =
 {
 	var song:String;
@@ -53,7 +28,7 @@ typedef LegacySong =
 typedef LegacySection =
 {
 	var sectionNotes:Array<Dynamic>;
-	var sectionBeats:Float; // thx shadowmario;
+	var sectionBeats:Float; // for Psych Engine v0.6+ chart compatibility;
 	var typeOfSection:Int;
 	var mustHitSection:Bool;
 	var gfSection:Bool;

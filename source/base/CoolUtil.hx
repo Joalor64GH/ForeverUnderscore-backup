@@ -9,9 +9,10 @@ using StringTools;
 class CoolUtil
 {
 	public static var baseDifficulties:Array<String> = ["EASY", "NORMAL", "HARD"];
+
 	public static var difficulties:Array<String> = [];
-	public static var difficultyLength = baseDifficulties.length;
-	public static var customDiffLength = difficulties.length;
+
+	public static var difficultyLength = difficulties.length;
 
 	inline public static function boundTo(value:Float, min:Float, max:Float):Float
 	{

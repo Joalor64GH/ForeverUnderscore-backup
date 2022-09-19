@@ -137,16 +137,14 @@ class ForeverAssets
 		return rating;
 	}
 
-	public static function generateNoteSplashes(asset:String, group:FlxTypedSpriteGroup<NoteSplash>, assetModifier:String = 'base', baseLibrary:String, noteData:Int):NoteSplash
+	public static function generateNoteSplashes(asset:String, group:FlxTypedSpriteGroup<NoteSplash>, assetModifier:String = 'base', changeableSkin:String = 'default', baseLibrary:String, noteData:Int):NoteSplash
 	{
 		//
 		var tempSplash:NoteSplash = group.recycle(NoteSplash);
 		tempSplash.noteData = noteData;
 
-		var changeableSkin:String = Init.trueSettings.get("Note Skin");
-
 		// will eventually change this in favor of customizable splashes through scripts;
-		var jsonPath = Paths.getTextFromFile('images/noteskins/notes/$changeableSkin/$assetModifier/splashData.json');
+		var jsonPath = Paths.getTextFromFile('images/$baseLibrary/$changeableSkin/$assetModifier/splashData.json');
 		var splashJson:SplashDataDef = haxe.Json.parse(jsonPath);
 
 		if (splashJson != null)
@@ -172,6 +170,8 @@ class ForeverAssets
 						// week 7 format
 						tempSplash.animation.addByPrefix('anim1', 'note impact 1 ' + UIStaticArrow.getColorFromNumber(noteData), 24, false);
 						tempSplash.animation.addByPrefix('anim2', 'note impact 2 ' + UIStaticArrow.getColorFromNumber(noteData), 24, false);
+
+						tempSplash.animation.addByPrefix('anim1', 'note impact 1  blue', 24, false); // HE DID IT AGAIN MY BOYS;
 
 						// psych format
 						tempSplash.animation.addByPrefix('anim1', 'note splash ' + UIStaticArrow.getColorFromNumber(noteData) + ' 1', 24, false);
@@ -204,6 +204,8 @@ class ForeverAssets
 						// week 7 format
 						tempSplash.animation.addByPrefix('anim1', 'note impact 1 ' + UIStaticArrow.getColorFromNumber(noteData), 24, false);
 						tempSplash.animation.addByPrefix('anim2', 'note impact 2 ' + UIStaticArrow.getColorFromNumber(noteData), 24, false);
+
+						tempSplash.animation.addByPrefix('anim1', 'note impact 1  blue', 24, false); // HE DID IT AGAIN MY BOYS;
 
 						// psych format
 						tempSplash.animation.addByPrefix('anim1', 'note splash ' + UIStaticArrow.getColorFromNumber(noteData) + ' 1', 24, false);
@@ -303,23 +305,26 @@ class ForeverAssets
 				// set little offsets per note!
 				// so these had a little problem honestly and they make me wanna off(set) myself so the middle notes basically
 				// have slightly different offsets than the side notes (which have the same offset)
-
-				var offsetMiddleX = 0;
-				var offsetMiddleY = 0;
-				if (staticArrowType > 0 && staticArrowType < 3)
+				
+				var pressCenterOffsets:Array<Int> = [0, 0];
+				var centerOffsets:Array<Int> = [2, 2];
+				
+				switch (staticArrowType)
 				{
-					offsetMiddleX = 2;
-					offsetMiddleY = 2;
-					if (staticArrowType == 1)
-					{
-						offsetMiddleX -= 1;
-						offsetMiddleY += 2;
-					}
+					case 0:
+						pressCenterOffsets = [-2, -2];
+						centerOffsets = [1, 1];
+					case 1:
+						pressCenterOffsets = [-2, -3];
+						centerOffsets = [1, 4];
+					case 3:
+						pressCenterOffsets = [0, -1];
+						centerOffsets = [-1, 2];
 				}
 
-				newStaticArrow.addOffset('static');
-				newStaticArrow.addOffset('pressed', -2, -2);
-				newStaticArrow.addOffset('confirm', 36 + offsetMiddleX, 36 + offsetMiddleY);
+				//newStaticArrow.addOffset('static');
+				newStaticArrow.addOffset('pressed', -2 + pressCenterOffsets[0], -2 + pressCenterOffsets[1]);
+				newStaticArrow.addOffset('confirm', 36 + centerOffsets[0], 36 + centerOffsets[1]);
 		}
 
 		return newStaticArrow;

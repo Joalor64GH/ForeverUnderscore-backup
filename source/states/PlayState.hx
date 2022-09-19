@@ -401,7 +401,7 @@ class PlayState extends MusicBeatState
 
 		ratingsGroup = new FlxTypedGroup<FNFSprite>();
 		comboGroup = new FlxTypedGroup<FNFSprite>();
-		//add(ratingsGroup);
+		add(ratingsGroup);
 		add(comboGroup);
 
 		// precache judgements and combo before using them;
@@ -626,7 +626,9 @@ class PlayState extends MusicBeatState
 		scriptArray = [];
 
 		// clear characters;
-		Character.charScripts = [];
+		boyfriend.charScripts = [];
+		dadOpponent.charScripts = [];
+		gf.charScripts = [];
 
 		super.destroy();
 	}
@@ -719,14 +721,12 @@ class PlayState extends MusicBeatState
 				if (FlxG.keys.pressed.SHIFT && FlxG.keys.justPressed.FIVE)
 				{
 					preventScoring = true;
-					FlxG.sound.play(Paths.sound('scrollMenu'));
 					practiceMode = !practiceMode;
 				}
 
 				if (FlxG.keys.pressed.SHIFT && FlxG.keys.justPressed.SIX)
 				{
 					preventScoring = true;
-					FlxG.sound.play(Paths.sound('scrollMenu'));
 					bfStrums.autoplay = !bfStrums.autoplay;
 					uiHUD.autoplayMark.visible = bfStrums.autoplay;
 					uiHUD.autoplayMark.alpha = 1;
@@ -976,7 +976,7 @@ class PlayState extends MusicBeatState
 					strumNote.angle = -strumNote.noteDirection;
 
 					// shitty note hack I hate it so much
-					var center:Float = receptorY + UIStaticArrow.swagWidth / 2;
+					var center:Float = receptorY + UIStaticArrow.swagWidth / (1.85 * (assetModifier == 'pixel' ? 3 : 1));
 					if (strumNote.isSustainNote)
 					{
 						strumNote.y -= ((strumNote.height / 2) * downscrollMultiplier);
@@ -989,7 +989,7 @@ class PlayState extends MusicBeatState
 								if (strumNote.endHoldOffset == Math.NEGATIVE_INFINITY)
 								{
 									// set the end hold offset yeah I hate that I fix this like this
-									strumNote.endHoldOffset = (strumNote.prevNote.y - (strumNote.y + strumNote.height));
+									strumNote.endHoldOffset = (strumNote.prevNote.y - (strumNote.y + strumNote.height - 1));
 									// trace(strumNote.endHoldOffset);
 								}
 								else
@@ -1583,7 +1583,7 @@ class PlayState extends MusicBeatState
 		if (!bfStrums.autoplay)
 			popJudgement(baseRating, timing, perfect);
 		else
-			popJudgement('sick', false, true);
+			popJudgement('sick', false, Timings.curFC == 0);
 		Timings.updateAccuracy(Timings.judgementsMap.get(baseRating)[3]);
 		score = Std.int(Timings.judgementsMap.get(baseRating)[2]);
 
@@ -1611,7 +1611,7 @@ class PlayState extends MusicBeatState
 		/**
 		 * Credits to Shadow_Mario_;
 		 */
-		insert(members.indexOf(strumLines), rating);
+		//insert(members.indexOf(strumLines), rating);
 
 		if (!cached)
 		{
@@ -1648,7 +1648,7 @@ class PlayState extends MusicBeatState
 			/**
 			 * Credits to Shadow_Mario_;
 			 */
-			insert(members.indexOf(strumLines), comboNum);
+			//insert(members.indexOf(strumLines), comboNum);
 
 			if (Init.trueSettings.get('Fixed Judgements'))
 			{
@@ -2254,7 +2254,7 @@ class PlayState extends MusicBeatState
 			switch (swagCounter)
 			{
 				case 0:
-					FlxG.sound.play(Paths.sound('intro3-' + assetModifier), 0.6);
+					FlxG.sound.play(Paths.sound('countdown/intro3-' + assetModifier), 0.6);
 					Conductor.songPosition = -(Conductor.crochet * 4);
 				case 1:
 					var ready:FlxSprite = new FlxSprite().loadGraphic(Paths.image(introAlts[0]));
@@ -2273,7 +2273,7 @@ class PlayState extends MusicBeatState
 							ready.destroy();
 						}
 					});
-					FlxG.sound.play(Paths.sound('intro2-' + assetModifier), 0.6);
+					FlxG.sound.play(Paths.sound('countdown/intro2-' + assetModifier), 0.6);
 					Conductor.songPosition = -(Conductor.crochet * 3);
 				case 2:
 					var set:FlxSprite = new FlxSprite().loadGraphic(Paths.image(introAlts[1]));
@@ -2291,7 +2291,7 @@ class PlayState extends MusicBeatState
 							set.destroy();
 						}
 					});
-					FlxG.sound.play(Paths.sound('intro1-' + assetModifier), 0.6);
+					FlxG.sound.play(Paths.sound('countdown/intro1-' + assetModifier), 0.6);
 					Conductor.songPosition = -(Conductor.crochet * 2);
 				case 3:
 					var go:FlxSprite = new FlxSprite().loadGraphic(Paths.image(introAlts[2]));
@@ -2311,7 +2311,7 @@ class PlayState extends MusicBeatState
 							go.destroy();
 						}
 					});
-					FlxG.sound.play(Paths.sound('introGo-' + assetModifier), 0.6);
+					FlxG.sound.play(Paths.sound('countdown/introGo-' + assetModifier), 0.6);
 					Conductor.songPosition = -(Conductor.crochet * 1);
 			}
 

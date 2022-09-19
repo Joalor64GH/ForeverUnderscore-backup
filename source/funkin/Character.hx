@@ -74,7 +74,7 @@ class Character extends FNFSprite
 	public var isPlayer:Bool = false;
 	public var quickDancer:Bool = false;
 
-	public static var charScripts:Array<ScriptHandler> = [];
+	public var charScripts:Array<ScriptHandler> = [];
 
 	public var idleSuffix:String = '';
 

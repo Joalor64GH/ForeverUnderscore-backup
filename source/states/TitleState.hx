@@ -297,45 +297,48 @@ class TitleState extends MusicBeatState
 	override function stepHit()
 	{
 		super.stepHit();
-
-		switch (curStep)
+		
+		if (!skippedIntro)
 		{
-			case 4:
-				#if FOREVER_ENGINE_WATERMARKS
-				createCoolText(['Yoshubs', 'Neolixn', 'Gedehari', 'Tsuraran', 'FlopDoodle', '']);
-				#else
-				createCoolText(['ninjamuffin99', 'phantomArcade', 'kawaisprite', 'evilsk8er']);
-				#end
-			case 12:
-				addMoreText('PRESENT');
-			case 16:
-				deleteCoolText();
-			case 20:
-				#if FOREVER_ENGINE_WATERMARKS
-				createCoolText(['Not associated', 'with']);
-				#else
-				createCoolText(['In association', 'with']);
-				#end
-			case 28:
-				addMoreText('newgrounds');
-				ngSpr.visible = true;
-			case 32:
-				deleteCoolText();
-				ngSpr.visible = false;
-			case 36:
-				createCoolText([curWacky[0]]);
-			case 44:
-				addMoreText(curWacky[1]);
-				if (curWacky[1] == 'vine boom sfx')
-					FlxG.sound.play(Paths.sound('psych'));
-			case 48:
-				deleteCoolText();
-			case 52:
-				addMoreText("Friday");
-			case 56:
-				addMoreText('Night');
-			case 60:
-				addMoreText("Funkin");
+			switch (curStep)
+			{
+				case 4:
+					#if FOREVER_ENGINE_WATERMARKS
+					createCoolText(['Yoshubs', 'Neolixn', 'Gedehari', 'Tsuraran', 'FlopDoodle', '']);
+					#else
+					createCoolText(['ninjamuffin99', 'phantomArcade', 'kawaisprite', 'evilsk8er']);
+					#end
+				case 12:
+					addMoreText('PRESENT');
+				case 16:
+					deleteCoolText();
+				case 20:
+					#if FOREVER_ENGINE_WATERMARKS
+					createCoolText(['Not associated', 'with']);
+					#else
+					createCoolText(['In association', 'with']);
+					#end
+				case 28:
+					addMoreText('newgrounds');
+					ngSpr.visible = true;
+				case 32:
+					deleteCoolText();
+					ngSpr.visible = false;
+				case 36:
+					createCoolText([curWacky[0]]);
+				case 44:
+					addMoreText(curWacky[1]);
+					if (curWacky[1] == 'vine boom sfx')
+						FlxG.sound.play(Paths.sound('psych'));
+				case 48:
+					deleteCoolText();
+				case 52:
+					addMoreText("Friday");
+				case 56:
+					addMoreText('Night');
+				case 60:
+					addMoreText("Funkin");
+			}
 		}
 	}
 

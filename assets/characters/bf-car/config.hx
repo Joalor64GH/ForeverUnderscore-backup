@@ -10,17 +10,17 @@ function loadAnimations()
 	addByPrefix('singLEFTmiss', 'BF NOTE LEFT MISS', 24, false);
 	addByPrefix('singRIGHTmiss', 'BF NOTE RIGHT MISS', 24, false);
 
-	addOffset('idle', -5, 30);
-	addOffset('idleHair', -5, 30);
-	addOffset('singUP', -29, 57);
-	addOffset('singDOWN', -10, -20);
-	addOffset('singLEFT', 12, 24);
-	addOffset('singRIGHT', -38, 23);
+	addOffset("idle", -5, 30);
 
-	addOffset('singUPmiss', -29, 57);
-	addOffset('singDOWNmiss', -11, 11);
-	addOffset('singLEFTmiss', 12, 54);
-	addOffset('singRIGHTmiss', -30, 51);
+	addOffset("singLEFT", 2, 24);
+	addOffset("singDOWN", -10, -20);
+	addOffset("singUP", -49, 64);
+	addOffset("singRIGHT", -44, 23);
+
+	addOffset("singLEFTmiss", 2, 51);
+	addOffset("singDOWNmiss", -11, 11);
+	addOffset("singUPmiss", -39, 57);
+	addOffset("singRIGHTmiss", -40, 51);
 
 	playAnim('idle');
 

@@ -5,9 +5,6 @@ import dependency.FNFUIState;
 import flixel.FlxCamera;
 import flixel.FlxG;
 import flixel.FlxSubState;
-import flixel.addons.transition.FlxTransitionableState;
-import flixel.math.FlxRect;
-import flixel.util.FlxTimer;
 import funkin.PlayerSettings;
 
 /* 
@@ -19,10 +16,6 @@ import funkin.PlayerSettings;
  */
 class MusicBeatState extends FNFUIState
 {
-	// original variables extended from original game source
-	var lastBeat:Float = 0;
-	var lastStep:Float = 0;
-
 	public var curStep:Int = 0;
 	public var curBeat:Int = 0;
 
@@ -150,9 +143,6 @@ class MusicBeatSubstate extends FlxSubState
 	{
 		super();
 	}
-
-	var lastBeat:Float = 0;
-	var lastStep:Float = 0;
 
 	var curStep:Int = 0;
 	var curBeat:Int = 0;

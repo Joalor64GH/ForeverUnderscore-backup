@@ -270,4 +270,24 @@ class ForeverTools
 	{
 		return FlxColor.fromHSB(hue, sat, brt, alpha);
 	}
+
+	public static function fromRGB(red:Int, green:Int, blue:Int, alpha:Int):FlxColor
+	{
+		return FlxColor.fromRGB(red, green, blue, alpha);
+	}
+
+	public static function fromRGBFloat(red:Float, green:Float, blue:Float, alpha:Float):FlxColor
+	{
+		return FlxColor.fromRGBFloat(red, green, blue, alpha);
+	}
+
+	public static function fromInt(value:Int):FlxColor
+	{
+		return FlxColor.fromInt(value);
+	}
+	
+	public static function fromString(str:String):FlxColor
+	{
+		return FlxColor.fromString(str);
+	}
 }

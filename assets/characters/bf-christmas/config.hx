@@ -11,17 +11,18 @@ function loadAnimations()
 	addByPrefix('singDOWNmiss', 'BF NOTE DOWN MISS', 24, false);
 	addByPrefix('hey', 'BF HEY', 24, false);
 
-	addOffset('idle', -5, 0);
-	addOffset('hey', 7, 4);
-	addOffset('singUP', -29, 27);
-	addOffset('singDOWN', -10, -50);
-	addOffset('singLEFT', 12, -6);
-	addOffset('singRIGHT', -38, -7);
+	addOffset("idle", -5, 0);
+	addOffset("hey", -3, 4);
 
-	addOffset('singUPmiss', -29, 27);
-	addOffset('singDOWNmiss', -11, -19);
-	addOffset('singLEFTmiss', 12, 24);
-	addOffset('singRIGHTmiss', -30, 21);
+	addOffset("singLEFT", 2, -6);
+	addOffset("singDOWN", -20, -50);
+	addOffset("singUP", -45, 30);
+	addOffset("singRIGHT", -50, -7);
+
+	addOffset("singLEFTmiss", 2, 14);
+	addOffset("singDOWNmiss", -11, -19);
+	addOffset("singUPmiss", -32, 27);
+	addOffset("singRIGHTmiss", -30, 21);
 
 	playAnim('idle');
 
