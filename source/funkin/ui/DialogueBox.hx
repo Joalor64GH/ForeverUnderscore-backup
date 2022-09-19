@@ -110,7 +110,9 @@ class DialogueBox extends FlxSpriteGroup
 	public var textStarted:Bool = false;
 
 	public static function createDialogue(thisDialogue:String):DialogueBox
+	{
 		return new DialogueBox(false, thisDialogue);
+	}
 
 	public function dialoguePath(file:String):String
 	{
@@ -223,12 +225,16 @@ class DialogueBox extends FlxSpriteGroup
 			else
 				pixelTextSpeed = 0.06;
 
-			pixelText.resetText(textToDisplay);
-			pixelText.start(pixelTextSpeed, true);
-			pixelText.completeCallback = function()
+			if (boxData.textType == 'custom')
 			{
-				alphabetText.finishedLine = true;
-				handSelect.visible = true;
+				pixelText.resetText(textToDisplay);
+				pixelText.start(pixelTextSpeed, true);
+				
+				pixelText.completeCallback = function()
+				{
+					alphabetText.finishedLine = true;
+					handSelect.visible = true;
+				}
 			}
 		}
 
