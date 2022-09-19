@@ -881,7 +881,7 @@ class ChartEditor extends MusicBeatState
 	{
 		try
 		{
-			PlayState.SONG = Song.parseSong(FlxG.save.data.autosave, null);
+			PlayState.SONG = Song.parseSong(FlxG.save.data.autosave, null, null);
 			FlxG.resetState();
 		}
 		catch (e)

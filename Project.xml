@@ -53,6 +53,7 @@
 
 	<!-- ______________________________ Haxedefines _____________________________ -->
 
+	<haxedef name="no-deprecation-warnings" />
 	<haxedef name="hscriptPos" />
 	<haxeflag name="-dce no" />
 

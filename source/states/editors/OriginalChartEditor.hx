@@ -1338,10 +1338,7 @@ class OriginalChartEditor extends MusicBeatState
 
 		eventDropDown.selectedLabel = curSelectedEvent[1];
 		var selected:Int = Std.parseInt(eventDropDown.selectedId);
-		if (selected > 0 && selected < eventArray.length)
-		{
-			descText.text = eventArray[selected][1];
-		}
+		descText.text = eventArray[selected][1];
 		eventVal1Input.text = curSelectedEvent[2];
 		eventVal2Input.text = curSelectedEvent[3];
 	}
@@ -1364,7 +1361,7 @@ class OriginalChartEditor extends MusicBeatState
 		gridGroup.add(secondBlackLine);
 	}
 
-	function updateGrid():Void
+	final function updateGrid():Void
 	{
 		curRenderedNotes.clear();
 		curRenderedSustains.clear();
@@ -1538,7 +1535,7 @@ class OriginalChartEditor extends MusicBeatState
 
 	function deleteEvent(event:EventNote):Void
 	{
-		for (i in _song.events[curSection])
+		for (i in _song.events)
 		{
 			if (i[0] == event.strumTime)
 			{
@@ -1584,17 +1581,12 @@ class OriginalChartEditor extends MusicBeatState
 	function addEvent():Void
 	{
 		var noteStrum = getStrumTime(dummyArrow.y) + sectionStartTime();
-		var event = eventArray[Std.parseInt(eventDropDown.selectedId)][0];
+		var event = eventDropDown.selectedLabel;
 		var text1 = eventVal1Input.text;
 		var text2 = eventVal2Input.text;
-
-		if (event == null || event == '')
-			return;
-
-		/*
+		
 		_song.events.push([noteStrum, event, text1, text2]);
 		curSelectedEvent = _song.events[_song.events.length - 1];
-		*/
 
 		updateGrid();
 		updateEventUI();
@@ -1673,8 +1665,11 @@ class OriginalChartEditor extends MusicBeatState
 
 	function autosaveSong():Void
 	{
+		var swag = _song;
+		swag.events = null;
+
 		var json = {
-			"song": _song
+			"song": swag
 		};
 
 		var data:String = Json.stringify(json, "\t");
@@ -1690,7 +1685,7 @@ class OriginalChartEditor extends MusicBeatState
 	{
 		try
 		{
-			PlayState.SONG = Song.parseSong(FlxG.save.data.autosave, null);
+			PlayState.SONG = Song.parseSong(FlxG.save.data.autosave, null, null);
 			FlxG.resetState();
 		}
 		catch (e)

@@ -68,6 +68,7 @@ class Song
 	{
 		var rawJson = '';
 		var rawMeta = '';
+		var rawEvent:String = null;
 
 		try
 		{
@@ -99,6 +100,14 @@ class Song
 				rawMeta = rawMeta.substr(0, rawMeta.length - 1);
 		}
 
+		try
+		{
+			rawEvent = File.getContent(Paths.songJson(folder.toLowerCase(), 'events').trim()).trim();
+		}
+		catch (e)
+		{	
+			rawEvent = null;
+		}
 		if (rawMeta == null)
 		{
 			rawMeta = '{
@@ -109,10 +118,10 @@ class Song
 			}';
 		}
 
-		return parseSong(rawJson, rawMeta);
+		return parseSong(rawJson, rawMeta, rawEvent);
 	}
 
-	public static function parseSong(rawJson:String, rawMeta:String):LegacySong
+	public static function parseSong(rawJson:String, rawMeta:String, rawEvent:String):LegacySong
 	{
 		var oldSong:LegacySong = cast Json.parse(rawJson).song;
 		oldSong.validScore = true;
@@ -166,6 +175,11 @@ class Song
 				}
 			}
 		}
+
+		if (rawEvent != null)
+			oldSong.events = Json.parse(rawEvent).events;
+		else
+			oldSong.events = [];
 
 		return oldSong;
 	}
