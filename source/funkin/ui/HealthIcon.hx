@@ -42,25 +42,30 @@ class HealthIcon extends FlxSprite
 			animation.play('static');
 	}
 
-	public function updateIcon(icon:String = 'bf', isPlayer:Bool = false)
+	public function updateIcon(char:String = 'bf', isPlayer:Bool = false)
 	{
-		var path = Paths.image('$icon/icon', 'characters');
-		var iconExists = FileSystem.exists(Paths.getPath('characters/$icon/icon.png', IMAGE));
-
-		var trimmedIcon:String = icon;
-		if (trimmedIcon.contains('-'))
-			trimmedIcon = trimmedIcon.substring(0, trimmedIcon.indexOf('-'));
-
-		if (!iconExists)
+		var trimmedChar:String = char;
+		if (trimmedChar.contains('-'))
+			trimmedChar = trimmedChar.substring(0, trimmedChar.indexOf('-'));
+		else
+			trace('$char has no suffix!');
+			
+		var iconPath = char;
+		if (!FileSystem.exists(Paths.getPath('characters/$char/icon.png', IMAGE)))
 		{
-			if (icon != trimmedIcon)
-				path = Paths.image('$trimmedIcon/icon', 'characters');
+			if (iconPath != trimmedChar)
+			{
+				iconPath = trimmedChar;
+				trace('$char is invalid, trying $trimmedChar instead you fuck');
+			}
 			else
-				path = Paths.image('characters/face');
-			//trace('$icon icon is invalid, trying $trimmedIcon instead you fuck');
+			{
+				iconPath = 'face';
+				trace('$char and $trimmedChar are both invalid, trying face.');
+			}
 		}
 
-		var iconGraphic:FlxGraphic = path;
+		var iconGraphic:FlxGraphic = (iconPath != 'face' ? Paths.image('$iconPath/icon', 'characters') : Paths.image('$iconPath', 'characters'));
 		var iconWidth = 1;
 
 		iconWidth = Std.int(iconGraphic.width / 150) - 1;
@@ -72,7 +77,9 @@ class HealthIcon extends FlxSprite
 		animation.add('static', [0], 0, false, isPlayer);
 		animation.add('losing', [1], 0, false, isPlayer);
 		animation.add('winning', [2], 0, false, isPlayer);
+
 		animation.play('static');
+
 		scrollFactor.set();
 		updateHitbox();
 
