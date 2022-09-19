@@ -331,8 +331,6 @@ class Init extends FlxState
 		if (FlxG.save.data.mute != null)
 			FlxG.sound.muted = FlxG.save.data.mute;
 
-		CoolUtil.difficulties = CoolUtil.baseDifficulties.copy(); // set default difficulties to the new difficulty array;
-
 		Main.switchState(this, cast Type.createInstance(Main.initialState, []));
 	}
 

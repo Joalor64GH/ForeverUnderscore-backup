@@ -57,7 +57,6 @@ class StoryMenuState extends MusicBeatState
 		super.create();
 
 		PlayState.chartingMode = false;
-		CoolUtil.difficulties = CoolUtil.baseDifficulties;
 
 		WeekParser.loadJsons(true);
 		if (curWeek >= WeekParser.weeksList.length)
@@ -119,7 +118,7 @@ class StoryMenuState extends MusicBeatState
 				weekImageLabel.targetY = weekNum;
 				grpWeekText.add(weekImageLabel);
 
-				weekImageLabel.screenCenter();
+				weekImageLabel.screenCenter(X);
 				weekImageLabel.antialiasing = !Init.trueSettings.get('Disable Antialiasing');
 				// weekImageLabel.updateHitbox();
 
@@ -149,6 +148,7 @@ class StoryMenuState extends MusicBeatState
 		}
 
 		difficultySelectors = new FlxGroup();
+		add(difficultySelectors);
 
 		#if DEBUG_TRACES trace("Line 124"); #end
 
@@ -158,16 +158,16 @@ class StoryMenuState extends MusicBeatState
 		leftArrow.animation.addByPrefix('press', "arrow push left");
 		leftArrow.animation.play('idle');
 		difficultySelectors.add(leftArrow);
-
+		
+		CoolUtil.difficulties = CoolUtil.baseDifficulties.copy();
 		if (lastDifficultyName == '')
 		{
 			lastDifficultyName = 'NORMAL';
 		}
-		curDifficulty = Math.round(Math.max(0, CoolUtil.difficulties.indexOf(lastDifficultyName)));
+		curDifficulty = Math.round(Math.max(0, CoolUtil.baseDifficulties.indexOf(lastDifficultyName)));
 
 		sprDifficulty = new FlxSprite(0, leftArrow.y);
 		sprDifficulty.antialiasing = !Init.trueSettings.get('Disable Antialiasing');
-
 		difficultySelectors.add(sprDifficulty);
 
 		rightArrow = new FlxSprite(leftArrow.x + 376, leftArrow.y);
@@ -190,11 +190,10 @@ class StoryMenuState extends MusicBeatState
 		// add(rankText);
 		add(scoreText);
 		add(txtWeekTitle);
-		
-		add(difficultySelectors);
 
 		// very unprofessional yoshubs!
 
+		changeWeek();
 		changeDifficulty();
 		updateText();
 	}
@@ -322,12 +321,12 @@ class StoryMenuState extends MusicBeatState
 		curDifficulty += change;
 
 		if (curDifficulty < 0)
-			curDifficulty = CoolUtil.difficultyLength - 1;
-		if (curDifficulty > CoolUtil.difficultyLength - 1)
+			curDifficulty = CoolUtil.difficulties.length - 1;
+		if (curDifficulty > CoolUtil.difficulties.length - 1)
 			curDifficulty = 0;
 
-		var diff:String = CoolUtil.difficulties[curDifficulty];
-		var newImage:FlxGraphic = Paths.image('menus/base/storymenu/difficulties/' + Paths.songPath(diff));
+		var diff:String = CoolUtil.baseDifficulties[curDifficulty];
+		var newImage:FlxGraphic = Paths.image('menus/base/storymenu/difficulties/' + Paths.formatPath(diff));
 
 		if (sprDifficulty.graphic != newImage)
 		{
@@ -364,8 +363,8 @@ class StoryMenuState extends MusicBeatState
 		if (curWeek < 0)
 			curWeek = allWeeks.length - 1;
 
+		CoolUtil.difficulties = CoolUtil.baseDifficulties.copy();
 		var locked:Bool = checkLock(WeekParser.weeksList[curWeek]);
-
 		difficultySelectors.visible = !locked;
 
 		var weekTitle = WeekParser.loadedWeeks.get(WeekParser.weeksList[curWeek]).weekName;

@@ -307,9 +307,9 @@ final class Paths
 		return file;
 	}
 
-	inline static public function songPath(path:String)
+	inline static public function formatPath(path:String)
 	{
-		return CoolUtil.swapSpaceDash(path);
+		return CoolUtil.swapSpaceDash(path).toLowerCase();
 	}
 
 	inline static public function songSounds(song:String, songFile:String)
