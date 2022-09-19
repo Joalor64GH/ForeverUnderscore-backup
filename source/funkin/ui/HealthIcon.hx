@@ -47,8 +47,6 @@ class HealthIcon extends FlxSprite
 		var trimmedChar:String = char;
 		if (trimmedChar.contains('-'))
 			trimmedChar = trimmedChar.substring(0, trimmedChar.indexOf('-'));
-		else
-			trace('$char has no suffix!');
 			
 		var iconPath = char;
 		if (!FileSystem.exists(Paths.getPath('characters/$char/icon.png', IMAGE)))
