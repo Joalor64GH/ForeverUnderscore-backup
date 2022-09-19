@@ -490,6 +490,8 @@ class Character extends FNFSprite
 			playAnim('danceLeft');
 		else
 			playAnim('idle');
+			
+		curCharacter = char;
 	}
 
 	public function setVar(key:String, value:Dynamic):Bool
@@ -558,5 +560,7 @@ class Character extends FNFSprite
 			playAnim('danceLeft');
 		else
 			playAnim('idle');
+			
+		curCharacter = char;
 	}
 }
