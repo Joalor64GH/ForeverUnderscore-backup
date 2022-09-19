@@ -939,8 +939,8 @@ class PlayState extends MusicBeatState
 			if (strumline.splashNotes != null)
 				for (i in 0...strumline.splashNotes.length)
 				{
-					strumline.splashNotes.members[i].x = strumline.receptors.members[i].x - 48;
-					strumline.splashNotes.members[i].y = strumline.receptors.members[i].y + (UIStaticArrow.swagWidth / 6) - 56;
+					strumline.splashNotes.members[i].x = strumline.receptors.members[i].x;
+					strumline.splashNotes.members[i].y = strumline.receptors.members[i].y;
 				}
 		}
 		
