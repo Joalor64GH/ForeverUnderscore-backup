@@ -439,7 +439,36 @@ class OriginalChartEditor extends MusicBeatState
 			copySection(Std.int(stepperCopy.value));
 		});
 
-		var clearSectionButton:FlxButton = new FlxButton(10, 150, "Clear section", clearSection);
+		var clearSectionButton:FlxButton = new FlxButton(10, 150, "Clear section", function()
+		{
+			_song.notes[curSection].sectionNotes = [];
+			updateGrid();
+			updateNoteUI();
+		});
+
+		var clearNotesButton:FlxButton = new FlxButton(100, 150, "Clear notes", function()
+		{
+			for (sec in 0..._song.notes.length)
+			{
+				_song.notes[sec].sectionNotes = [];
+			}
+			updateGrid();
+			updateNoteUI();
+		});
+		clearNotesButton.color = FlxColor.RED;
+		clearNotesButton.label.color = FlxColor.WHITE;
+		
+		var clearEventsButton:FlxButton = new FlxButton(100, 170, "Clear events", function()
+		{
+			for (sec in 0..._song.notes.length)
+			{
+				_song.events = [];
+			}
+			updateGrid();
+			updateEventUI();
+		});
+		clearEventsButton.color = FlxColor.RED;
+		clearEventsButton.label.color = FlxColor.WHITE;
 
 		var swapSection:FlxButton = new FlxButton(10, 170, "Swap section", function()
 		{
@@ -478,6 +507,8 @@ class OriginalChartEditor extends MusicBeatState
 		tab_group_section.add(check_changeBPM);
 		tab_group_section.add(copyButton);
 		tab_group_section.add(clearSectionButton);
+		tab_group_section.add(clearNotesButton);
+		tab_group_section.add(clearEventsButton);
 		tab_group_section.add(swapSection);
 
 		UI_box.addGroup(tab_group_section);
@@ -1525,12 +1556,6 @@ class OriginalChartEditor extends MusicBeatState
 			return false;
 
 		return array[0] == event.strumTime;
-	}
-
-	function clearSection():Void
-	{
-		_song.notes[curSection].sectionNotes = [];
-		updateGrid();
 	}
 
 	function addNote():Void
