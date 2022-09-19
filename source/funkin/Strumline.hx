@@ -192,7 +192,7 @@ class Strumline extends FlxSpriteGroup
 
 			if (noteSplashes)
 			{
-				var noteSplash:NoteSplash = ForeverAssets.generateNoteSplashes('noteSplashes', splashNotes, PlayState.assetModifier, PlayState.changeableSkin, 'UI', i);
+				var noteSplash:NoteSplash = ForeverAssets.generateNoteSplashes('noteSplashes', splashNotes, PlayState.assetModifier, 'noteskins/notes', i);
 				splashNotes.add(noteSplash);
 			}
 		}

@@ -137,11 +137,13 @@ class ForeverAssets
 		return rating;
 	}
 
-	public static function generateNoteSplashes(asset:String, group:FlxTypedSpriteGroup<NoteSplash>, assetModifier:String = 'base', changeableSkin:String = 'default', baseLibrary:String, noteData:Int):NoteSplash
+	public static function generateNoteSplashes(asset:String, group:FlxTypedSpriteGroup<NoteSplash>, assetModifier:String = 'base', baseLibrary:String, noteData:Int):NoteSplash
 	{
 		//
 		var tempSplash:NoteSplash = group.recycle(NoteSplash);
 		tempSplash.noteData = noteData;
+		
+		var changeableSkin:String = Init.trueSettings.get("Note Skin");
 
 		// will eventually change this in favor of customizable splashes through scripts;
 		var jsonPath = Paths.getTextFromFile('images/$baseLibrary/$changeableSkin/$assetModifier/splashData.json');

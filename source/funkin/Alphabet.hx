@@ -134,8 +134,12 @@ class Alphabet extends FlxSpriteGroup
 
 			var isNumber:Bool = AlphaCharacter.numbers.contains(character);
 			var isSymbol:Bool = AlphaCharacter.symbols.contains(character);
+			
+			var alphaIndex:Bool = (AlphaCharacter.alphabet.indexOf(character.toLowerCase()) != -1);
+			var numIndex:Bool = (AlphaCharacter.numbers.indexOf(character) != -1);
+			var symIndex:Bool = (AlphaCharacter.symbols.indexOf(character) != -1);
 
-			if ((AlphaCharacter.alphabet.indexOf(character.toLowerCase()) != -1) || (AlphaCharacter.numbers.contains(character)))
+			if (alphaIndex || numIndex || symIndex)
 			{
 				if (xPosResetted)
 				{
@@ -156,8 +160,15 @@ class Alphabet extends FlxSpriteGroup
 
 				var letter:AlphaCharacter = new AlphaCharacter(xPos, 0, textSize);
 
-				if (isBold)
-					letter.createBold(character);
+				if (isBold && (alphaIndex || numIndex || symIndex))
+				{
+					if (isNumber)
+						letter.createBoldNumber(character);
+					else if (isSymbol)
+						letter.createBoldSymbol(character);
+					else
+						letter.createBold(character);
+				}
 				else
 				{
 					if (isNumber)
@@ -245,7 +256,12 @@ class Alphabet extends FlxSpriteGroup
 				letter.row = curRow;
 				if (isBold)
 				{
-					letter.createBold(splitWords[loopNum]);
+					if (isSymbol)
+						letter.createBoldSymbol(splitWords[loopNum]);
+					else if (isNumber)
+						letter.createBoldNumber(splitWords[loopNum]);
+					else
+						letter.createBold(splitWords[loopNum]);
 				}
 				else
 				{
