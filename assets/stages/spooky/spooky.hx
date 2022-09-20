@@ -5,7 +5,7 @@ function generateStage()
 	curStage = 'spooky';
 	PlayState.defaultCamZoom = 1.05;
 
-	var hallowTex = Paths.getSparrowAtlas('backgrounds/' + curStage + '/halloween_bg');
+	var hallowTex = Paths.getSparrowAtlas('halloween_bg', 'stages/' + curStage + '/images');
 	halloweenBG = new FNFSprite(-200, -100);
 	halloweenBG.frames = hallowTex;
 	halloweenBG.animation.addByPrefix('idle', 'halloweem bg0');

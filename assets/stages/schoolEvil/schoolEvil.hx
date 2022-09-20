@@ -6,7 +6,7 @@ function generateStage()
     var posX = 400;
     var posY = 200;
     var bg:FNFSprite = new FNFSprite(posX, posY);
-    bg.frames = Paths.getSparrowAtlas('backgrounds/' + curStage + '/animatedEvilSchool');
+    bg.frames = Paths.getSparrowAtlas('animatedEvilSchool', 'stages/' + curStage + '/images');
     bg.animation.addByPrefix('idle', 'background 2', 24);
     bg.animation.play('idle');
     bg.scrollFactor.set(0.8, 0.9);

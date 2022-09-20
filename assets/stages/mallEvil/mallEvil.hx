@@ -1,9 +1,9 @@
 function generateStage()
 {
-	curStage = 'stage';
+	curStage = 'mallEvil';
     PlayState.defaultCamZoom = 0.90;
 
-	var bg:FNFSprite = new FNFSprite(-500, -500).loadGraphic(Paths.image('backgrounds/mall/evilBG'));
+	var bg:FNFSprite = new FNFSprite(-500, -500).loadGraphic(Paths.image('evilBG', 'stages/' + curStage + '/images'));
 	bg.antialiasing = true;
 	bg.scrollFactor.set(0.2, 0.2);
 	bg.active = false;
@@ -11,12 +11,12 @@ function generateStage()
 	bg.updateHitbox();
 	add(bg);
 
-	var evilTree:FNFSprite = new FNFSprite(300, -300).loadGraphic(Paths.image('backgrounds/mall/evilTree'));
+	var evilTree:FNFSprite = new FNFSprite(300, -300).loadGraphic(Paths.image('evilTree', 'stages/' + curStage + '/images'));
 	evilTree.antialiasing = true;
 	evilTree.scrollFactor.set(0.2, 0.2);
 	add(evilTree);
 
-	var evilSnow:FNFSprite = new FNFSprite(-500, 700).loadGraphic(Paths.image("backgrounds/mall/evilSnow"));
+	var evilSnow:FNFSprite = new FNFSprite(-500, 700).loadGraphic(Paths.image("evilSnow", 'stages/' + curStage + '/images'));
 	evilSnow.antialiasing = true;
 	add(evilSnow);
 }

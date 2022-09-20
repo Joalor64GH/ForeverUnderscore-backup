@@ -191,8 +191,8 @@ class Stage extends FlxTypedGroup<FlxBasic>
 	function callStageScript()
 	{
 		var paths:Array<String> = [
-			Paths.getPreloadPath('stages/$curStage.hx'),
-			Paths.getPreloadPath('stages/$curStage.hxs')
+			Paths.getPreloadPath('stages/$curStage/$curStage.hx'),
+			Paths.getPreloadPath('stages/$curStage/$curStage.hxs')
 		];
 
 		for (path in paths)

@@ -313,7 +313,7 @@ class OriginalChartEditor extends MusicBeatState
 		blockPressWhileTypingOnStepper.push(stepperBPM);
 
 		var baseChars:Array<String> = CoolUtil.returnAssetsLibrary('characters', 'assets');
-		var baseStages:Array<String> = CoolUtil.returnAssetsLibrary('backgrounds', 'assets/images');
+		var baseStages:Array<String> = CoolUtil.returnAssetsLibrary('stages', 'assets');
 		var baseAssets:Array<String> = CoolUtil.returnAssetsLibrary('UI/default', 'assets/images');
 
 		var characters:Array<String> = baseChars;

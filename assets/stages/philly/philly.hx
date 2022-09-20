@@ -16,11 +16,11 @@ function generateStage()
 	PlayState.defaultCamZoom = 1.05;
 
 	var bg:FNFSprite = new FNFSprite(-100, 0);
-	bg.loadGraphic(Paths.image('backgrounds/' + curStage + '/sky'));
+	bg.loadGraphic(Paths.image('sky', 'stages/' + curStage + '/images'));
 	bg.scrollFactor.set(0.1, 0.1);
 	add(bg);
 
-	var city:FNFSprite = new FNFSprite(-10).loadGraphic(Paths.image('backgrounds/' + curStage + '/city'));
+	var city:FNFSprite = new FNFSprite(-10).loadGraphic(Paths.image('city', 'stages/' + curStage + '/images'));
 	city.scrollFactor.set(0.3, 0.3);
 	city.setGraphicSize(Std.int(city.width * 0.85));
 	city.updateHitbox();
@@ -28,7 +28,7 @@ function generateStage()
 
 	phillyCityLightColors = [0xFF31A2FD, 0xFF31FD8C, 0xFFFB33F5, 0xFFFD4531, 0xFFFBA633];
 
-	windowLight = new FNFSprite(city.x).loadGraphic(Paths.image('backgrounds/' + curStage + '/win'));
+	windowLight = new FNFSprite(city.x).loadGraphic(Paths.image('win', 'stages/' + curStage + '/images'));
 	windowLight.scrollFactor.set(0.3, 0.3);
 	windowLight.setGraphicSize(Std.int(windowLight.width * 0.85));
 	windowLight.updateHitbox();
@@ -36,16 +36,16 @@ function generateStage()
 	windowLight.alpha = 0;
 	add(windowLight);
 
-	var streetBehind:FNFSprite = new FNFSprite(-40, 50).loadGraphic(Paths.image('backgrounds/' + curStage + '/behindTrain'));
+	var streetBehind:FNFSprite = new FNFSprite(-40, 50).loadGraphic(Paths.image('behindTrain', 'stages/' + curStage + '/images'));
 	add(streetBehind);
 
-	phillyTrain = new FNFSprite(2000, 360).loadGraphic(Paths.image('backgrounds/' + curStage + '/train'));
+	phillyTrain = new FNFSprite(2000, 360).loadGraphic(Paths.image('train', 'stages/' + curStage + '/images'));
 	add(phillyTrain);
 
 	trainSound = new FlxSound().loadEmbedded(Paths.sound('train_passes'));
 	FlxG.sound.list.add(trainSound);
 
-	var street:FNFSprite = new FNFSprite(-40, streetBehind.y).loadGraphic(Paths.image('backgrounds/' + curStage + '/street'));
+	var street:FNFSprite = new FNFSprite(-40, streetBehind.y).loadGraphic(Paths.image('street', 'stages/' + curStage + '/images'));
 	add(street);
 }
 
