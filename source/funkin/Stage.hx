@@ -1,5 +1,6 @@
 package funkin;
 
+import sys.FileSystem;
 import base.*;
 import dependency.FNFSprite;
 import flixel.FlxBasic;
@@ -20,13 +21,12 @@ import flixel.text.FlxText;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
-import funkin.background.*;
 import openfl.Assets;
 import openfl.display.BlendMode;
 import openfl.display.GraphicsShader;
 import openfl.filters.ShaderFilter;
 import states.PlayState;
-import sys.FileSystem;
+import funkin.background.*;
 
 using StringTools;
 
@@ -139,9 +139,9 @@ class Stage extends FlxTypedGroup<FlxBasic>
 						camPos.x += 600;
 						tweenCamIn();
 					}
-					case 'spirit':
-						var evilTrail = new FlxTrail(char, null, 4, 24, 0.3, 0.069);
-						add(evilTrail);
+				case 'spirit':
+					var evilTrail = new FlxTrail(char, null, 4, 24, 0.3, 0.069);
+					add(evilTrail);
 			}
 		}
 	}
