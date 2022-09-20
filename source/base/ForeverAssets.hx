@@ -151,7 +151,7 @@ class ForeverAssets
 		var rawJson = null;
 		if (!FileSystem.exists(path))
 		{
-			path = Paths.getPreloadPath('images/$baseLibrary/default/base/splashData.json');
+			path = Paths.getPreloadPath('images/$baseLibrary/default/$assetModifier/splashData.json');
 		}
 		rawJson = sys.io.File.getContent(path);
 
