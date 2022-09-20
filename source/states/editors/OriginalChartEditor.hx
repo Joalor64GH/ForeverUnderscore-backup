@@ -1,5 +1,6 @@
 package states.editors;
 
+import haxe.Json;
 import base.*;
 import base.Conductor.BPMChangeEvent;
 import base.CoolUtil;
@@ -37,7 +38,6 @@ import flixel.util.FlxColor;
 import funkin.*;
 import funkin.Strumline.UIStaticArrow;
 import funkin.ui.*;
-import haxe.Json;
 import lime.utils.Assets;
 import openfl.events.Event;
 import openfl.events.IOErrorEvent;
@@ -1153,7 +1153,7 @@ class OriginalChartEditor extends MusicBeatState
 	{
 		autosaveSong();
 		lastSection = curSection;
-		CoolUtil.difficulties = CoolUtil.baseDifficulties;
+		//CoolUtil.difficulties = CoolUtil.baseDifficulties;
 
 		PlayState.SONG = _song;
 		ForeverTools.killMusic([songMusic, vocals]);

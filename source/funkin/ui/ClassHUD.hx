@@ -200,11 +200,12 @@ class ClassHUD extends FlxTypedGroup<FlxBasic>
 
 		scoreBar.text = 'Score: $importSongScore';
 		if (displayAccuracy)
-		{
 			scoreBar.text += divider + 'Accuracy: ${(Math.floor(Timings.getAccuracy() * 100) / 100)}%' + (!unrated ? comboDisplay : '');
-			scoreBar.text += divider + 'Combo Breaks: $importMisses';
+
+		scoreBar.text += divider + 'Combo Breaks: $importMisses';
+
+		if (displayAccuracy)
 			scoreBar.text += divider + 'Rank: ${Timings.returnScoreRating().toUpperCase()}';
-		}
 		scoreBar.text += '\n';
 		scoreBar.x = Math.floor((FlxG.width / 2) - (scoreBar.width / 2));
 

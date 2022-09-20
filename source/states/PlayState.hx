@@ -1961,7 +1961,7 @@ class PlayState extends MusicBeatState
 			Highscore.saveRank(SONG.song, rank, storyDifficulty);
 		}
 
-		CoolUtil.difficulties = CoolUtil.baseDifficulties;
+		//CoolUtil.difficulties = CoolUtil.baseDifficulties;
 
 		if (chartingMode)
 			Main.switchState(this, (prevCharter == 1 ? new ChartEditor() : new OriginalChartEditor()));

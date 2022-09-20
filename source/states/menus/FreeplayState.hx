@@ -340,7 +340,7 @@ class FreeplayState extends MusicBeatState
 				if (FlxG.sound.music != null)
 					FlxG.sound.music.stop();
 				threadActive = false;
-				CoolUtil.difficulties = CoolUtil.baseDifficulties;
+				//CoolUtil.difficulties = CoolUtil.baseDifficulties;
 				FlxG.sound.play(Paths.sound('cancelMenu'), 0.4);
 				Main.switchState(this, new MainMenuState());
 			}

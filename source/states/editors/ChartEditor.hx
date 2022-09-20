@@ -581,7 +581,7 @@ class ChartEditor extends MusicBeatState
 			Main.overlay.x = 0;
 			Main.overlay.autoSize = LEFT;
 
-			CoolUtil.difficulties = CoolUtil.baseDifficulties;
+			//CoolUtil.difficulties = CoolUtil.baseDifficulties;
 
 			Main.switchState(this, new FreeplayState());
 		}

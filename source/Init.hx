@@ -1,3 +1,4 @@
+import sys.FileSystem;
 import base.CoolUtil;
 import base.debug.Overlay;
 import flixel.FlxG;
@@ -9,7 +10,6 @@ import funkin.PlayerSettings;
 import openfl.filters.BitmapFilter;
 import openfl.filters.ColorMatrixFilter;
 import states.*;
-import sys.FileSystem;
 
 using StringTools;
 

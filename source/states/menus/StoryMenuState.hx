@@ -159,7 +159,7 @@ class StoryMenuState extends MusicBeatState
 		leftArrow.animation.play('idle');
 		difficultySelectors.add(leftArrow);
 		
-		CoolUtil.difficulties = CoolUtil.baseDifficulties.copy();
+		//CoolUtil.difficulties = CoolUtil.baseDifficulties.copy();
 		if (lastDifficultyName == '')
 		{
 			lastDifficultyName = 'NORMAL';
@@ -363,7 +363,7 @@ class StoryMenuState extends MusicBeatState
 		if (curWeek < 0)
 			curWeek = allWeeks.length - 1;
 
-		CoolUtil.difficulties = CoolUtil.baseDifficulties.copy();
+		//CoolUtil.difficulties = CoolUtil.baseDifficulties.copy();
 		var locked:Bool = checkLock(WeekParser.weeksList[curWeek]);
 		difficultySelectors.visible = !locked;
 

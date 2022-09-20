@@ -170,7 +170,7 @@ class Song
 						// clear previous difficulties;
 						// CoolUtil.difficulties = [];
 						// add new ones;
-						CoolUtil.difficulties.push(i);
+						//CoolUtil.difficulties.push(i);
 					}
 				}
 			}

@@ -1,5 +1,6 @@
 package states.substates;
 
+import sys.FileSystem;
 import base.*;
 import base.CoolUtil;
 import base.MusicBeat.MusicBeatSubstate;
@@ -16,7 +17,6 @@ import funkin.Alphabet;
 import funkin.Highscore;
 import states.*;
 import states.menus.*;
-import sys.FileSystem;
 
 class PauseSubstate extends MusicBeatSubstate
 {
@@ -229,7 +229,7 @@ class PauseSubstate extends MusicBeatSubstate
 					PlayState.deaths = 0;
 					disableCheats(true);
 
-					CoolUtil.difficulties = CoolUtil.baseDifficulties;
+					//CoolUtil.difficulties = CoolUtil.baseDifficulties;
 
 					if (PlayState.isStoryMode)
 						Main.switchState(this, new StoryMenuState());
