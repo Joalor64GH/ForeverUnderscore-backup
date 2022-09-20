@@ -146,10 +146,18 @@ class ForeverAssets
 		var changeableSkin:String = Init.trueSettings.get("Note Skin");
 
 		// will eventually change this in favor of customizable splashes through scripts;
-		var jsonPath = Paths.getTextFromFile('images/$baseLibrary/$changeableSkin/$assetModifier/splashData.json');
-		var splashJson:SplashDataDef = haxe.Json.parse(jsonPath);
+		var path = Paths.getPreloadPath('images/$baseLibrary/$changeableSkin/$assetModifier/splashData.json');
 
-		if (splashJson != null)
+		var rawJson = null;
+		if (!FileSystem.exists(path))
+		{
+			path = Paths.getPreloadPath('images/$baseLibrary/default/base/splashData.json');
+		}
+		rawJson = sys.io.File.getContent(path);
+
+		var splashJson:SplashDataDef = cast haxe.Json.parse(rawJson);
+
+		if (splashJson.file != null)
 			asset = splashJson.file;
 
 		switch (assetModifier)
