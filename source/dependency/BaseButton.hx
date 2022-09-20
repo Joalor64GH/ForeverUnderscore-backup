@@ -4,15 +4,15 @@ import flixel.FlxSprite;
 
 class BaseButton extends FlxSprite
 {
-	public var onClickAction:Void->Void;
+	public var clickThing:Void->Void;
 	public var size:String = "";
 	public var child(default, set):String;
 
-	public function new(x:Float, y:Float, size:String = "", ?onClickAction:Void->Void)
+	public function new(x:Float, y:Float, size:String = "", ?clickThing:Void->Void)
 	{
 		super(x, y);
 
-		this.onClickAction = onClickAction;
+		this.clickThing = clickThing;
 		this.size = size;
 
 		loadGraphic(Paths.image('menus/chart editor/ui-buttons/charting_button-${size.toLowerCase()}'));
@@ -28,8 +28,8 @@ class BaseButton extends FlxSprite
 
 	public function onClick(?value:Dynamic):Void
 	{
-		if (onClickAction != null)
-			onClickAction();
+		if (clickThing != null)
+			clickThing();
 	}
 }
 

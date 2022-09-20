@@ -1,5 +1,10 @@
 package;
 
+import haxe.CallStack;
+import haxe.io.Path;
+import sys.FileSystem;
+import sys.io.File;
+import sys.io.Process;
 import base.debug.*;
 import dependency.Discord;
 import dependency.FNFTransition;
@@ -7,16 +12,11 @@ import flixel.FlxG;
 import flixel.FlxGame;
 import flixel.FlxState;
 import flixel.addons.transition.FlxTransitionableState;
-import haxe.CallStack;
-import haxe.io.Path;
 import lime.app.Application;
 import openfl.Lib;
 import openfl.display.Sprite;
 import openfl.events.UncaughtErrorEvent;
 import states.*;
-import sys.FileSystem;
-import sys.io.File;
-import sys.io.Process;
 
 // Here we actually import the states and metadata, and just the metadata.
 // It's nice to have modularity so that we don't have ALL elements loaded at the same time.
@@ -35,6 +35,8 @@ class Main extends Sprite
 
 	public static var commitHash:Null<String>; // commit hash, for github builds;
 	public static var showCommitHash:Bool = true; // whether to actually show the commit hash;
+	
+	public static var overlay:Overlay;
 
 	// calls a function to set the game up
 	public function new()
@@ -54,7 +56,6 @@ class Main extends Sprite
 		Discord.changePresence('');
 		#end
 
-		var overlay:Overlay;
 		overlay = new Overlay(0, 0);
 		addChild(overlay);
 	}

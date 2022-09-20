@@ -1,5 +1,7 @@
 package states.editors;
 
+import haxe.Json;
+import haxe.io.Bytes;
 import base.Conductor;
 import base.ForeverAssets;
 import base.ForeverTools;
@@ -9,6 +11,8 @@ import base.SongLoader.LegacySong;
 import base.SongLoader.Section;
 import base.SongLoader.Song;
 import dependency.AbsoluteText.EventText;
+import dependency.AbsoluteText;
+import dependency.BaseButton.ChartingButton;
 import dependency.Discord;
 import flixel.FlxBasic;
 import flixel.FlxCamera;
@@ -38,10 +42,7 @@ import flixel.util.FlxGradient;
 import funkin.Note;
 import funkin.Strumline.UIStaticArrow;
 import funkin.ui.HealthIcon;
-import haxe.Json;
-import haxe.io.Bytes;
 import lime.media.AudioBuffer;
-import meta.subState.charting.*;
 import openfl.events.Event;
 import openfl.events.IOErrorEvent;
 import openfl.geom.ColorTransform;
@@ -113,12 +114,23 @@ class ChartEditor extends MusicBeatState
 	];
 	var markerLevel:Int = 0;
 	var scrollSpeed:Float = 0.75;
+	
+	final scrollArray:Array<Float> = [0.5, 0.75, 1, 1.05, 1.5, 2, 2.05, 2.5, 3, 3.05, 3.5];
 
 	var arrowGroup:FlxTypedSpriteGroup<UIStaticArrow>;
+	
+	var buttonTextGroup:FlxTypedGroup<AbsoluteText>;
+	var buttonGroup:FlxTypedGroup<ChartingButton>;
+	
+	var buttonArray:Array<Array<Dynamic>> = [];
 
 	override public function create()
 	{
 		super.create();
+		
+		// moving fps to the right;
+		Main.overlay.x = FlxG.width - 245;
+		Main.overlay.autoSize = RIGHT;
 
 		generateBackground();
 
@@ -147,6 +159,8 @@ class ChartEditor extends MusicBeatState
 		holdsGroup = new FlxTypedGroup<FlxSprite>();
 		sectionsGroup = new FlxTypedGroup<FlxBasic>();
 		textsGroup = new FlxTypedGroup<EventText>();
+		buttonGroup = new FlxTypedGroup<ChartingButton>();
+		buttonTextGroup = new FlxTypedGroup<AbsoluteText>();
 
 		generateNotes();
 
@@ -154,6 +168,10 @@ class ChartEditor extends MusicBeatState
 		add(holdsGroup);
 		add(notesGroup);
 		add(textsGroup);
+		add(buttonGroup);
+		add(buttonTextGroup);
+
+		generateButtons();
 
 		strumLineCam = new FlxObject(0, 0);
 		strumLineCam.screenCenter(X);
@@ -377,6 +395,11 @@ class ChartEditor extends MusicBeatState
 			songMusic.time = Math.min(songMusic.time, songMusic.length);
 			vocals.time = songMusic.time;
 		}
+		
+		if (FlxG.keys.justPressed.LEFT)
+			changeMouseScroll(-1);
+		if (FlxG.keys.justPressed.RIGHT)
+			changeMouseScroll(1);
 
 		// strumline camera stuffs!
 		Conductor.songPosition = songMusic.time;
@@ -504,6 +527,20 @@ class ChartEditor extends MusicBeatState
 				}
 			}
 		}
+		
+		if (FlxG.mouse.justPressed)
+		{
+			if (FlxG.mouse.overlaps(buttonGroup))
+			{
+				buttonGroup.forEach(function(button:ChartingButton)
+				{
+					if (FlxG.mouse.overlaps(button))
+					{
+						button.onClick(null);
+					}
+				});
+			}
+		}
 
 		if (FlxG.keys.pressed.CONTROL && FlxG.keys.justPressed.S)
 		{
@@ -526,6 +563,9 @@ class ChartEditor extends MusicBeatState
 			ForeverTools.killMusic([songMusic, vocals]);
 
 			Paths.clearUnusedMemory();
+			
+			Main.overlay.x = 0;
+			Main.overlay.autoSize = LEFT;
 
 			Main.switchState(this, new PlayState());
 		}
@@ -537,6 +577,9 @@ class ChartEditor extends MusicBeatState
 			ForeverTools.killMusic([songMusic, vocals]);
 
 			Paths.clearUnusedMemory();
+			
+			Main.overlay.x = 0;
+			Main.overlay.autoSize = LEFT;
 
 			CoolUtil.difficulties = CoolUtil.baseDifficulties;
 
@@ -544,6 +587,17 @@ class ChartEditor extends MusicBeatState
 		}
 
 		updateHUD();
+	}
+	
+	function changeMouseScroll(newSpd:Int)
+	{
+		markerLevel += newSpd;
+		if (markerLevel < 0)
+			markerLevel = scrollArray.length - 1;
+		if (markerLevel > scrollArray.length - 1)
+			markerLevel = 0;
+
+		scrollSpeed = scrollArray[markerLevel];
 	}
 
 	override public function stepHit()
@@ -819,6 +873,64 @@ class ChartEditor extends MusicBeatState
 			FlxColor.gradient(FlxColor.fromRGB(188, 158, 255, 200), FlxColor.fromRGB(80, 12, 108, 255), 16));
 		coolGradient.alpha = (32 / 255);
 		add(coolGradient);
+	}
+	function generateButtons():Void
+	{
+		// x, y, text on button, text size, child (optional), size ("" (medium), "big", or "small"),
+		// function that will be called when pressed (optional)
+
+		buttonArray = [
+			[FlxG.width - 350, 280, "SAVE SONG", 20, null, "medium", null],
+			[FlxG.width - 350, 330, "RELOAD SONG", 20, null, "medium", null],
+			[FlxG.width - 350, 380, "LOAD AUTOSAVE", 20, null, "medium", null]
+		];
+
+		buttonGroup.clear();
+		buttonTextGroup.clear();
+
+		var void:Void->Void = null;
+
+		for (i in buttonArray)
+		{
+			if (i != null)
+			{
+				// trace(i);
+
+				switch (i[2].toLowerCase())
+				{
+					case 'reload song':
+						void = function()
+						{
+							loadSong(PlayState.SONG.song);
+							FlxG.resetState();
+						};
+
+					case 'save song':
+						void = function()
+						{
+							saveLevel();
+						}
+
+					case 'load autosave':
+						void = function()
+						{
+							PlayState.SONG = Song.parseSong(FlxG.save.data.autosave, null, null);
+							FlxG.resetState();
+						}
+					default:
+						void = i[6];
+				}
+
+				var button:ChartingButton = new ChartingButton(i[0], i[1], i[5], null);
+				button.child = i[4];
+				button.clickThing = void;
+				buttonGroup.add(button);
+
+				var text:AbsoluteText = new AbsoluteText(i[2], i[3], button, 10, 10);
+				text.scrollFactor.set();
+				buttonTextGroup.add(text);
+			}
+		}
 	}
 
 	function adjustSide(noteData:Int, sectionTemp:Bool)
