@@ -1871,7 +1871,7 @@ class PlayState extends MusicBeatState
 			}
 		}
 
-		uiHUD.beatHit();
+		uiHUD.beatHit(curBeat);
 
 		charactersDance(curBeat);
 
