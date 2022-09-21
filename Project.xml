@@ -12,6 +12,11 @@
 	<!--Minimum without FLX_NO_GAMEPAD: 11.8, without FLX_NO_NATIVE_CURSOR: 11.2-->
 	<set name="SWF_VERSION" value="11.8" />
 
+        <log warn="RUN THE SETUP.BAT FILE" />
+	<log warn="IF THE GAME FAILS TO COMPILE" />
+	<log warn="LOOK ON THE FOLDER: \"art/setupFiles\"" />
+        <echo value="-BeastlyGhost"/>
+
 	<!-- ____________________________ Window Settings ___________________________ -->
 
 	<window width="1280" height="720" background="#000000" hardware="true" vsync="false" />
