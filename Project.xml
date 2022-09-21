@@ -14,7 +14,7 @@
 
         <log warn="RUN THE SETUP.BAT FILE" />
 	<log warn="IF THE GAME FAILS TO COMPILE" />
-	<log warn="LOOK ON THE FOLDER: \"art/setupFiles\"" />
+	<log warn="LOOK ON THE FOLDER: art/setupFiles"/>
         <echo value="-BeastlyGhost"/>
 
 	<!-- ____________________________ Window Settings ___________________________ -->
