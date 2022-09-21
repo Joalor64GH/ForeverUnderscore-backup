@@ -1,6 +1,6 @@
 {
 	"menuBG": "",
-	"menuBGColor": [],
+	"menuBGColor": [255, 255, 255],
 	"tweenColor": true,
 
 	"users":
@@ -18,7 +18,7 @@
 			"name": "Satoru",
 			"iconData": ["satoru", 200, 0],
 			"textData": ["Additional Artist", "se a vaca bebe água e come mato, pq ela dá leite e não chá?"],
-			"urlData": [[]],
+			"urlData": [["Twitter", "https://twitter.com/kajizyoficial"]],
 			"colors": [237, 215, 255]
 		},
 		{
@@ -29,12 +29,19 @@
 			"colors": [245, 108, 255]
 		},
 		{
-			"sectionName": "FOREVER ENGINE: UNDERSCORE",
-
 			"name": "TheWorldMachine",
 			"iconData": ["macxp", 510, -3],
-			"textData": ["Script Backend Coder, Github Repository Helper"],
-			"urlData": [[]],
+			"textData": ["Script Backend Coder, Additional Coder"],
+			"urlData": [["Discord", "https://discord.com/users/891724604387774534"]],
+			"colors": [182, 84, 82]
+		},
+		{
+			"sectionName": "FOREVER ENGINE: UNDERSCORE",
+			
+			"name": "Teles",
+			"iconData": [],
+			"textData": ["Additional Coder"],
+			"urlData": [["Twitter", "https://twitter.com/itzteles_aa"]],
 			"colors": [182, 84, 82]
 		},
 		{
@@ -45,17 +52,6 @@
 			"textData": ["Coding Help, some advices and overhaul good friend", "WikiHow: How to handle fame."],
 			"urlData": [["Twitter", "https://twitter.com/Shadow_Mario_"]],
 			"colors": [68, 68, 68]
-		},
-		{
-			"name": "yoisabo",
-			"iconData": [],
-			"textData": ["yoisabo"],
-			"urlData": [
-				["Twitch", "https://www.twitch.tv/abo_bora"],
-				["Twitter", "https://twitter.com/abo_bora"], 
-				["YouTube", "https://www.youtube.com/channel/UC4i6dpPE_6porNTxdzEiPXQ"]
-			],
-			"colors": [90, 49, 187]
 		},
 		{
 			"name": "NooBZiiTo",
@@ -81,6 +77,19 @@
 			"textData": ["Made a KE fork with lots of performance improvements.", "Big Black Male Chicken"],
 			"urlData": [["Git (KE)", "https://github.com/BoloVEVO/Kade-Engine-Public"], ["Git (User)", "https://github.com/BoloVEVO"]],
 			"colors": [255, 0, 49]
+		},
+		{
+			"sectionName": "SHOUTOUTS",
+
+			"name": "yoisabo",
+			"iconData": [],
+			"textData": ["yoisabo"],
+			"urlData": [
+				["Twitch", "https://www.twitch.tv/abo_bora"],
+				["Twitter", "https://twitter.com/abo_bora"], 
+				["YouTube", "https://www.youtube.com/channel/UC4i6dpPE_6porNTxdzEiPXQ"]
+			],
+			"colors": [90, 49, 187]
 		},
 		{
 			"sectionName": "FOREVER ENGINE: LEGACY",
