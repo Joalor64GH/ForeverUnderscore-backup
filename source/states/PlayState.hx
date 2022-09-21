@@ -1351,8 +1351,6 @@ class PlayState extends MusicBeatState
 
 	public function missNoteCheck(?includeAnimation:Bool = false, direction:Int = 0, character:Character, popMiss:Bool = false, lockMiss:Bool = false)
 	{
-		callFunc('missNoteCheck', []);
-
 		if (bfStrums.autoplay)
 			return;
 
@@ -2317,7 +2315,7 @@ class PlayState extends MusicBeatState
 					Conductor.songPosition = -(Conductor.crochet * 1);
 			}
 
-			callFunc('onCountdownTick', [swagCounter]);
+			callFunc('countdownTick', [swagCounter]);
 			swagCounter += 1;
 		}, 5);
 	}
