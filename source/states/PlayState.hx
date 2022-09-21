@@ -1061,7 +1061,7 @@ class PlayState extends MusicBeatState
 								Conductor.songVocals.volume = 0;
 								strumNote.noteMissActions(strumNote);
 								
-								callFunc('onNoteMiss', [strumNote]);
+								callFunc('noteMiss', [strumNote]);
 
 								missNoteCheck((Init.trueSettings.get('Ghost Tapping')) ? true : false, strumNote.noteData, boyfriend, true);
 								// ambiguous name
