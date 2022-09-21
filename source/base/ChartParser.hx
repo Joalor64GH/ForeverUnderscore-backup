@@ -17,7 +17,6 @@ using StringTools;
 
 class ChartParser
 {
-	// hopefully this makes it easier for people to load and save chart features and such, y'know the deal lol
 	public static function loadChart(songData:LegacySong):Array<Note>
 	{
 		var unspawnNotes:Array<Note> = [];
@@ -57,7 +56,9 @@ class ChartParser
 
 				var susLength:Float = swagNote.sustainLength;
 				susLength = susLength / Conductor.stepCrochet;
-				unspawnNotes.push(swagNote);
+				
+				if (swagNote.noteData > -1) // don't push notes if they are an event??
+					unspawnNotes.push(swagNote);
 
 				for (susNote in 0...Math.floor(susLength))
 				{
@@ -65,8 +66,9 @@ class ChartParser
 					var sustainNote:Note = ForeverAssets.generateArrow(PlayState.assetModifier,
 						daStrumTime + (Conductor.stepCrochet * susNote) + Conductor.stepCrochet, daNoteData, daNoteAlt, true, oldNote, daNoteType);
 					sustainNote.scrollFactor.set();
-
-					unspawnNotes.push(sustainNote);
+					
+					if (sustainNote.noteData > -1)
+						unspawnNotes.push(sustainNote);
 					sustainNote.mustPress = gottaHitNote;
 				}
 

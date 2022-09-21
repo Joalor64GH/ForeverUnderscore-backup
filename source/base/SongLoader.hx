@@ -4,6 +4,15 @@ import haxe.Json;
 import sys.io.File;
 
 using StringTools;
+
+/**
+ * tbh, i think the legacy fnf format sucks ass
+ * i'm gonna try to write a new one later with compatibility
+ * for base game charts and such
+ * -gabi (BeastlyGhost)
+ */
+
+
 typedef LegacySong =
 {
 	var song:String;

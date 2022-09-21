@@ -282,23 +282,13 @@ class ChartEditor extends MusicBeatState
 		infoTextChart.cameras = [camHUD];
 		add(infoTextChart);
 
-		/*
-			helpTxt = new FlxText(0, 0, 0, "", 16);
-				helpTxt.setFormat(Paths.font("vcr.ttf"), 20, FlxColor.WHITE, LEFT);
-				helpTxt.scrollFactor.set();
-				add(helpTxt);
+		var prefTxt:FlxText = new FlxText(0, 0, 0, "", 16);
+		prefTxt.setFormat(Paths.font("vcr.ttf"), 20, FlxColor.WHITE, LEFT);
+		prefTxt.scrollFactor.set();
+		add(prefTxt);
 
-				prefTxt = new FlxText(0, 0, 0, "", 16);
-				prefTxt.setFormat(Paths.font("vcr.ttf"), 20, FlxColor.WHITE, LEFT);
-				prefTxt.scrollFactor.set();
-				add(prefTxt);
-
-				helpTxt.text = 'PRESS BACKSPACE FOR HELP';
-				prefTxt.text = 'PRESS ENTER FOR PREFERENCES';
-
-				helpTxt.setPosition(FlxG.width - (helpTxt.width + 5), FlxG.height - 55);
-				prefTxt.setPosition(FlxG.width - (prefTxt.width + 5), FlxG.height - 30);
-		 */
+		prefTxt.text = '-BeastlyGhost';
+		prefTxt.setPosition(FlxG.width - (prefTxt.width + 5), FlxG.height - 30);
 	}
 
 	function updateHUD()
@@ -457,8 +447,11 @@ class ChartEditor extends MusicBeatState
 				if (data > -1 && epicNote.mustPress != _song.notes[curSection].mustHitSection)
 					data += 4;
 
-				arrowGroup.members[data].playAnim('confirm', true);
-				arrowGroup.members[data].resetAnim = (epicNote.sustainLength / 1000) + 0.2;
+				if (epicNote.noteData > -1)
+				{
+					arrowGroup.members[data].playAnim('confirm', true);
+					arrowGroup.members[data].resetAnim = (epicNote.sustainLength / 1000) + 0.2;
+				}
 
 				if (!hitSoundsPlayed.contains(epicNote))
 				{
