@@ -146,9 +146,6 @@ class OriginalChartEditor extends MusicBeatState
 	var leftIcon:HealthIcon;
 	var rightIcon:HealthIcon;
 
-	var playTicksBf:FlxUICheckBox = null;
-	var playTicksDad:FlxUICheckBox = null;
-
 	// was annoying.
 	var blockPressWhileTypingOn:Array<FlxUIInputText> = [];
 	var blockPressWhileTypingOnStepper:Array<FlxUINumericStepper> = [];
@@ -233,6 +230,9 @@ class OriginalChartEditor extends MusicBeatState
 		FlxG.mouse.visible = true;
 		FlxG.mouse.useSystemCursor = true;
 	}
+	
+	var stepperSpeed:FlxUINumericStepper;
+	var stepperBPM:FlxUINumericStepper;
 
 	function addSongUI():Void
 	{
@@ -249,7 +249,7 @@ class OriginalChartEditor extends MusicBeatState
 			#if DEBUG_TRACES trace('CHECKED!'); #end
 		};
 
-		var check_mute_inst = new FlxUICheckBox(10, 310, null, null, "Mute Instrumental (in editor)", 100);
+		var check_mute_inst = new FlxUICheckBox(10, 335, null, null, "Mute Instrumental (in editor)", 100);
 		check_mute_inst.checked = false;
 		check_mute_inst.callback = function()
 		{
@@ -261,7 +261,7 @@ class OriginalChartEditor extends MusicBeatState
 			songMusic.volume = vol;
 		};
 
-		var check_mute_vocals = new FlxUICheckBox(check_mute_inst.x + 120, check_mute_inst.y - 5, null, null, "Mute Vocals (in editor)", 100);
+		var check_mute_vocals = new FlxUICheckBox(check_mute_inst.x + 120, check_mute_inst.y, null, null, "Mute Vocals (in editor)", 100);
 		check_mute_vocals.checked = false;
 		check_mute_vocals.callback = function()
 		{
@@ -302,12 +302,12 @@ class OriginalChartEditor extends MusicBeatState
 
 		var loadAutosaveBtn:FlxButton = new FlxButton(reloadSongJson.x, reloadSongJson.y + 30, 'load autosave', loadAutosave);
 
-		var stepperSpeed:FlxUINumericStepper = new FlxUINumericStepper(10, 80, 0.1, 1, 0.1, 10, 1);
+		stepperSpeed = new FlxUINumericStepper(10, 80, 0.1, 1, 0.1, 10, 1);
 		stepperSpeed.value = _song.speed;
 		stepperSpeed.name = 'song_speed';
 		blockPressWhileTypingOnStepper.push(stepperSpeed);
 
-		var stepperBPM:FlxUINumericStepper = new FlxUINumericStepper(10, 65, 1, 1, 1, 350, 0);
+		stepperBPM = new FlxUINumericStepper(10, 65, 1, 1, 1, 350, 0);
 		stepperBPM.value = Conductor.bpm;
 		stepperBPM.name = 'song_bpm';
 		blockPressWhileTypingOnStepper.push(stepperBPM);
@@ -364,18 +364,6 @@ class OriginalChartEditor extends MusicBeatState
 		assetModifierDropDown.selectedLabel = _song.assetModifier;
 		blockPressWhileScrolling.push(assetModifierDropDown);
 
-		playTicksBf = new FlxUICheckBox(check_mute_inst.x, check_mute_vocals.y + 30, null, null, 'Play Hitsounds (Boyfriend - in editor)', 100);
-		playTicksBf.checked = false;
-
-		playTicksDad = new FlxUICheckBox(check_mute_inst.x + 120, playTicksBf.y, null, null, 'Play Hitsounds (Opponent - in editor)', 100);
-		playTicksDad.checked = false;
-
-		playTicksBf = new FlxUICheckBox(check_mute_inst.x, check_mute_inst.y + 25, null, null, 'Play Hitsounds (Boyfriend - in editor)', 100);
-		playTicksBf.checked = false;
-
-		playTicksDad = new FlxUICheckBox(check_mute_inst.x + 120, playTicksBf.y, null, null, 'Play Hitsounds (Opponent - in editor)', 100);
-		playTicksDad.checked = false;
-
 		var tab_group_song = new FlxUI(null, UI_box);
 		tab_group_song.name = "Song";
 		tab_group_song.add(UI_songTitle);
@@ -395,8 +383,6 @@ class OriginalChartEditor extends MusicBeatState
 		tab_group_song.add(new FlxText(player2DropDown.x, player2DropDown.y - 15, 0, 'Opponent:'));
 		tab_group_song.add(new FlxText(stageDropDown.x, stageDropDown.y - 15, 0, 'Stage:'));
 		tab_group_song.add(new FlxText(assetModifierDropDown.x, assetModifierDropDown.y - 15, 0, 'Asset Skin:'));
-		tab_group_song.add(playTicksBf);
-		tab_group_song.add(playTicksDad);
 		tab_group_song.add(player2DropDown);
 		tab_group_song.add(gfVersionDropDown);
 		tab_group_song.add(player1DropDown);
@@ -565,8 +551,12 @@ class OriginalChartEditor extends MusicBeatState
 	}
 
 	var stepperSusLength:FlxUINumericStepper;
+	var stepperSoundTest:FlxUINumericStepper;
 	var strumTimeInput:FlxUIInputText;
 	var noteTypeDropDown:PsychDropDown;
+	var playTicksBf:FlxUICheckBox;
+	var playTicksDad:FlxUICheckBox;
+	var metronomeTick:FlxUICheckBox;
 	var key:Int = 0;
 
 	function addNoteUI():Void
@@ -582,6 +572,9 @@ class OriginalChartEditor extends MusicBeatState
 		strumTimeInput = new FlxUIInputText(10, 65, 180, "0");
 		tab_group_note.add(strumTimeInput);
 		blockPressWhileTypingOn.push(strumTimeInput);
+
+		stepperSoundTest = new FlxUINumericStepper(120, 25, 1, _song.bpm, 1, 350, 0);
+		blockPressWhileTypingOnStepper.push(stepperSoundTest);
 
 		// note types
 		for (i in 0...curNoteName.length)
@@ -599,13 +592,27 @@ class OriginalChartEditor extends MusicBeatState
 		});
 
 		blockPressWhileScrolling.push(noteTypeDropDown);
+		
+		metronomeTick = new FlxUICheckBox(10, 305, null, null, 'Enable Metronome', 100);
+		metronomeTick.checked = false;
+		
+		playTicksBf = new FlxUICheckBox(10, 335, null, null, 'Play Hitsounds (Boyfriend - in editor)', 100);
+		playTicksBf.checked = false;
+
+		playTicksDad = new FlxUICheckBox(playTicksBf.x + 120, playTicksBf.y, null, null, 'Play Hitsounds (Opponent - in editor)', 100);
+		playTicksDad.checked = false;
 
 		tab_group_note.add(new FlxText(10, 10, 0, 'Sustain length:'));
+		tab_group_note.add(new FlxText(120, 10, 0, 'Metronome BPM:'));
 		tab_group_note.add(new FlxText(10, 50, 0, 'Strum time (in miliseconds):'));
 		tab_group_note.add(new FlxText(10, 90, 0, 'Note Type:'));
 		tab_group_note.add(stepperSusLength);
 		tab_group_note.add(strumTimeInput);
 		tab_group_note.add(noteTypeDropDown);
+		tab_group_note.add(playTicksBf);
+		tab_group_note.add(playTicksDad);
+		tab_group_note.add(stepperSoundTest);
+		tab_group_note.add(metronomeTick);
 
 		UI_box.addGroup(tab_group_note);
 		// I'm genuinely tempted to go around and remove every instance of the word "sus" it is genuinely killing me inside
@@ -1105,6 +1112,17 @@ class OriginalChartEditor extends MusicBeatState
 			+ "\nStep: " + curStep
 			+ "\nRate: " + songMusic.pitch;
 		super.update(elapsed);
+		
+		if(metronomeTick.checked && lastSongPos != Conductor.songPosition)
+		{
+			var soundInterval:Float = 60 / stepperSoundTest.value;
+			var metronomeCurStep:Int = Math.floor(((Conductor.songPosition + stepperSoundTest.value) / soundInterval) / 1000);
+			var lastStepHit:Int = Math.floor(((lastSongPos + stepperSoundTest.value) / soundInterval) / 1000);
+			if(metronomeCurStep != lastStepHit)
+			{
+				FlxG.sound.play(Paths.sound('soundTest'));
+			}
+		}
 
 		var playedSound:Array<Bool> = [];
 		for (i in 0...8)
