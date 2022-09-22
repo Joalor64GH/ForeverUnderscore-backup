@@ -258,6 +258,8 @@ class ChartEditor extends MusicBeatState
 	}
 
 	var songText:FlxText;
+	var helpTxt:FlxText;
+	var prefTxt:FlxText;
 	var infoTextChart:FlxText;
 
 	function generateHUD()
@@ -281,14 +283,23 @@ class ChartEditor extends MusicBeatState
 		infoTextChart.setFormat(Paths.font("vcr.ttf"), constTextSize);
 		infoTextChart.cameras = [camHUD];
 		add(infoTextChart);
+		
+		/*
+			helpTxt = new FlxText(0, 0, 0, "", 16);
+			helpTxt.setFormat(Paths.font("vcr.ttf"), 20, FlxColor.WHITE, LEFT);
+			helpTxt.scrollFactor.set();
+			add(helpTxt);
 
-		var prefTxt:FlxText = new FlxText(0, 0, 0, "", 16);
-		prefTxt.setFormat(Paths.font("vcr.ttf"), 20, FlxColor.WHITE, LEFT);
-		prefTxt.scrollFactor.set();
-		add(prefTxt);
+			prefTxt = new FlxText(0, 0, 0, "", 16);
+			prefTxt.setFormat(Paths.font("vcr.ttf"), 20, FlxColor.WHITE, LEFT);
+			prefTxt.scrollFactor.set();
+			add(prefTxt);
 
-		prefTxt.text = '-BeastlyGhost';
-		prefTxt.setPosition(FlxG.width - (prefTxt.width + 5), FlxG.height - 30);
+			helpTxt.text = 'PRESS BACKSPACE FOR HELP';
+			prefTxt.text = 'PRESS ENTER FOR PREFERENCES';
+			helpTxt.setPosition(FlxG.width - (helpTxt.width + 5), FlxG.height - 55);
+			prefTxt.setPosition(FlxG.width - (prefTxt.width + 5), FlxG.height - 30);
+		*/
 	}
 
 	function updateHUD()
