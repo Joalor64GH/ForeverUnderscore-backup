@@ -1,10 +1,11 @@
 package funkin.ui;
 
+import sys.FileSystem;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.graphics.FlxGraphic;
 import flixel.graphics.frames.FlxAtlasFrames;
-import sys.FileSystem;
+import flixel.tweens.FlxTween;
 
 using StringTools;
 
@@ -40,6 +41,15 @@ class HealthIcon extends FlxSprite
 			animation.play('winning');
 		else
 			animation.play('static');
+	}
+	
+	var bounceTween:FlxTween;
+	public function bop(time:Float)
+	{
+		scale.set(1.2, 1.2);
+		if (bounceTween != null)
+			bounceTween.cancel();
+		bounceTween = FlxTween.tween(this.scale, {x: 1, y: 1}, time);
 	}
 
 	public function updateIcon(char:String = 'bf', isPlayer:Bool = false)

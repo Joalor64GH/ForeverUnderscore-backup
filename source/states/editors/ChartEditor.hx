@@ -97,7 +97,7 @@ class ChartEditor extends MusicBeatState
 
 	var dummyArrow:FlxSprite;
 	var notesGroup:FlxTypedGroup<Note>;
-	var holdsGroup:FlxTypedGroup<Note>;
+	var holdsGroup:FlxTypedGroup<FlxSprite>;
 	var sectionsGroup:FlxTypedGroup<FlxBasic>;
 	var textsGroup:FlxTypedGroup<EventText>;
 
@@ -156,7 +156,7 @@ class ChartEditor extends MusicBeatState
 		generateGrid();
 
 		notesGroup = new FlxTypedGroup<Note>();
-		holdsGroup = new FlxTypedGroup<Note>();
+		holdsGroup = new FlxTypedGroup<FlxSprite>();
 		sectionsGroup = new FlxTypedGroup<FlxBasic>();
 		textsGroup = new FlxTypedGroup<EventText>();
 		buttonGroup = new FlxTypedGroup<ChartingButton>();
@@ -311,6 +311,32 @@ class ChartEditor extends MusicBeatState
 		// update markers if needed;
 		markerL.color = markerColors[markerLevel];
 		markerR.color = markerColors[markerLevel];
+		
+		notesGroup.forEachAlive(function(epicNote:Note)
+		{
+			var songCrochet = (Math.floor(Conductor.songPosition / Conductor.stepCrochet));
+
+			// do epic note calls for strum stuffs
+			if (songCrochet == Math.floor(epicNote.strumTime / Conductor.stepCrochet) && songMusic.playing)
+			{
+				var data:Null<Int> = epicNote.noteData;
+
+				if (data > -1 && epicNote.mustPress != _song.notes[curSection].mustHitSection)
+					data += 4;
+
+				if (epicNote.noteData > -1)
+				{
+					arrowGroup.members[data].playAnim('confirm', true);
+					arrowGroup.members[data].resetAnim = (epicNote.sustainLength / 1000) + 0.2;
+				}
+
+				if (!hitSoundsPlayed.contains(epicNote))
+				{
+					FlxG.sound.play(Paths.sound('hitsounds/${Init.trueSettings.get('Hitsound Type').toLowerCase()}/hit'));
+					hitSoundsPlayed.push(epicNote);
+				}
+			}
+		});
 	}
 
 	var hitSoundsPlayed:Array<Note> = [];
@@ -442,32 +468,6 @@ class ChartEditor extends MusicBeatState
 		}
 
 		super.update(elapsed);
-
-		notesGroup.forEachAlive(function(epicNote:Note)
-		{
-			var songCrochet = (Math.floor(Conductor.songPosition / Conductor.stepCrochet));
-
-			// do epic note calls for strum stuffs
-			if (songCrochet == Math.floor(epicNote.strumTime / Conductor.stepCrochet) && songMusic.playing)
-			{
-				var data:Null<Int> = epicNote.noteData;
-
-				if (data > -1 && epicNote.mustPress != _song.notes[curSection].mustHitSection)
-					data += 4;
-
-				if (epicNote.noteData > -1)
-				{
-					arrowGroup.members[data].playAnim('confirm', true);
-					arrowGroup.members[data].resetAnim = (epicNote.sustainLength / 1000) + 0.2;
-				}
-
-				if (!hitSoundsPlayed.contains(epicNote))
-				{
-					FlxG.sound.play(Paths.sound('hitsounds/${Init.trueSettings.get('Hitsound Type').toLowerCase()}/hit'));
-					hitSoundsPlayed.push(epicNote);
-				}
-			}
-		});
 
 		if (FlxG.mouse.x > (fullGrid.x)
 			&& FlxG.mouse.x < (fullGrid.x + fullGrid.width)
@@ -836,24 +836,28 @@ class ChartEditor extends MusicBeatState
 		{
 			var constSize = Std.int(gridSize / 2);
 
-			var sustainVis:Note = ForeverAssets.generateArrow(_song.assetModifier, daStrumTime + Conductor.stepCrochet, daNoteInfo % 4, daNoteAlt, true,
-				prevNote, daNoteType);
-			sustainVis.setGraphicSize(constSize, Math.floor(FlxMath.remapToRange(daSus, 0, Conductor.stepCrochet * 16, 0, gridSize * constSize)));
-			sustainVis.updateHitbox();
-			sustainVis.x = prevNote.x + constSize;
-			sustainVis.y = prevNote.y + constSize;
-			//holdsGroup.add(sustainVis);
+			var note = ForeverAssets.generateArrow(_song.assetModifier, daStrumTime + Conductor.stepCrochet, daNoteInfo % 4, daNoteAlt, true, prevNote, daNoteType);
 
+			var hold:FlxTiledSprite = new FlxTiledSprite(FlxGraphic.fromFrame(note.frame), note.frame.frame.width, gridSize * daSus, false, true);
+			hold.scale.x = 0.5;
+			hold.updateHitbox();
+			hold.x = prevNote.x - prevNote.width * 0.5;
+			hold.y = prevNote.y + prevNote.height - hold.height * 0.5;
+			holdsGroup.add(hold);
+			note.destroy();
+
+			/*
 			if (prevNote != null && prevNote.isSustainNote)
 			{
-				var sustainEnd:Note = ForeverAssets.generateArrow(_song.assetModifier, daStrumTime + Conductor.stepCrochet, daNoteInfo % 4, daNoteAlt, true,
-					sustainVis, daNoteType);
-				sustainEnd.setGraphicSize(constSize, Math.floor(FlxMath.remapToRange(daSus, 0, Conductor.stepCrochet * 16, 0, gridSize * constSize)));
-				sustainEnd.updateHitbox();
-				sustainEnd.x = sustainVis.x - 15;
-				sustainEnd.y = sustainVis.y + (sustainVis.height) + (gridSize / 2);
-				//holdsGroup.add(sustainEnd);
+				var end:Note = ForeverAssets.generateArrow(_song.assetModifier, daStrumTime + Conductor.stepCrochet, daNoteInfo % 4, daNoteAlt, true,
+					hold, daNoteType);
+				end.setGraphicSize(constSize, Math.floor(FlxMath.remapToRange(daSus, 0, Conductor.stepCrochet * 16, 0, gridSize * constSize)));
+				end.updateHitbox();
+				end.x = hold.x - 15;
+				end.y = hold.y + (hold.height) + (gridSize / 2);
+				holdsGroup.add(end);
 			}
+			*/
 		}
 	}
 
