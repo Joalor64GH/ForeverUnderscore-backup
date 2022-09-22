@@ -529,19 +529,19 @@ class Character extends FNFSprite
 
 		var spriteType = "SparrowAtlas";
 
-		if (FileSystem.exists(Paths.getPath('characters/$char/$char.txt', TEXT)))
+		if (FileSystem.exists(Paths.getPath('characters/$char/' + json.image.replace('characters/', '') + '.txt', TEXT)))
 			spriteType = "PackerAtlas";
-		else if (FileSystem.exists(Paths.getPath('characters/$char/$char.json', TEXT)))
+		else if (FileSystem.exists(Paths.getPath('characters/$char/' + json.image.replace('characters/', '') + '.json', TEXT)))
 			spriteType = "JsonAtlas";
 
 		trace('Atlas Type: ' + spriteType + ' for Character: ' + char);
 
 		if (spriteType == "PackerAtlas")
-			tex = Paths.getPackerAtlas(char, 'characters/$char');
+			tex = Paths.getPackerAtlas(json.image.replace('characters/', ''), 'characters/$char');
 		else if (spriteType == "JsonAtlas")
-			tex = Paths.getJsonAtlas(char, 'characters/$char');
+			tex = Paths.getJsonAtlas(json.image.replace('characters/', ''), 'characters/$char');
 		else
-			tex = Paths.getSparrowAtlas(char, 'characters/$char');
+			tex = Paths.getSparrowAtlas(json.image.replace('characters/', ''), 'characters/$char');
 
 		frames = tex;
 

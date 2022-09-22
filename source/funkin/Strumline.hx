@@ -67,8 +67,6 @@ class UIStaticArrow extends FlxSprite
 		{
 			resetAnim -= elapsed;
 
-			if (resetAnim <= 0.0975) // little detail.
-				playAnim('pressed');
 			if (resetAnim < 0)
 			{
 				playAnim('static');

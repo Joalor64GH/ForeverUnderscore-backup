@@ -97,7 +97,7 @@ class ChartEditor extends MusicBeatState
 
 	var dummyArrow:FlxSprite;
 	var notesGroup:FlxTypedGroup<Note>;
-	var holdsGroup:FlxTypedGroup<FlxSprite>;
+	var holdsGroup:FlxTypedGroup<Note>;
 	var sectionsGroup:FlxTypedGroup<FlxBasic>;
 	var textsGroup:FlxTypedGroup<EventText>;
 
@@ -156,7 +156,7 @@ class ChartEditor extends MusicBeatState
 		generateGrid();
 
 		notesGroup = new FlxTypedGroup<Note>();
-		holdsGroup = new FlxTypedGroup<FlxSprite>();
+		holdsGroup = new FlxTypedGroup<Note>();
 		sectionsGroup = new FlxTypedGroup<FlxBasic>();
 		textsGroup = new FlxTypedGroup<EventText>();
 		buttonGroup = new FlxTypedGroup<ChartingButton>();
@@ -217,11 +217,8 @@ class ChartEditor extends MusicBeatState
 			if (typeReal > 3)
 				typeReal -= 4;
 
-			var assetType = 'base';
-			assetType = (_song.assetModifier == 'base' ? 'chart editor' : _song.assetModifier);
-
 			var newArrow:UIStaticArrow = ForeverAssets.generateUIArrows(((FlxG.width / 2) - ((keysTotal / 2) * gridSize)) + ((i - 1) * gridSize),
-				assetType == 'pixel' ? -55 : -75, typeReal, assetType);
+				_song.assetModifier == 'pixel' ? -55 : -80, typeReal, _song.assetModifier);
 
 			newArrow.ID = i;
 			newArrow.setGraphicSize(gridSize);
