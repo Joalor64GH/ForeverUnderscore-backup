@@ -531,8 +531,8 @@ class Character extends FNFSprite
 
 		if (FileSystem.exists(Paths.getPath('characters/$char/' + json.image.replace('characters/', '') + '.txt', TEXT)))
 			spriteType = "PackerAtlas";
-		else if (FileSystem.exists(Paths.getPath('characters/$char/' + json.image.replace('characters/', '') + '.json', TEXT)))
-			spriteType = "JsonAtlas";
+		//else if (FileSystem.exists(Paths.getPath('characters/$char/' + json.image.replace('characters/', '') + '.json', TEXT)))
+		//	spriteType = "JsonAtlas";
 
 		trace('Atlas Type: ' + spriteType + ' for Character: ' + char);
 
