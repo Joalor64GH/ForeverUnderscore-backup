@@ -2268,8 +2268,11 @@ class PlayState extends MusicBeatState
 			darknessLine1.x = darknessBG.x - 5;
 			darknessLine2.x = FlxG.width - darknessBG.x - 8;
 			FlxTween.tween(darknessBG, {alpha: (100 - Init.trueSettings.get('Darkness Opacity')) / 100}, 0.5, {ease: FlxEase.circOut});
-			FlxTween.tween(darknessLine1, {alpha: 1}, 0.5, {ease: FlxEase.circOut});
-			FlxTween.tween(darknessLine2, {alpha: 1}, 0.5, {ease: FlxEase.circOut});
+			if (Init.trueSettings.get('Darkness Opacity') > 0)
+			{
+				FlxTween.tween(darknessLine1, {alpha: 1}, 0.5, {ease: FlxEase.circOut});
+				FlxTween.tween(darknessLine2, {alpha: 1}, 0.5, {ease: FlxEase.circOut});
+			}
 
 			if (!Init.trueSettings.get('Centered Receptors'))
 			{
@@ -2277,8 +2280,11 @@ class PlayState extends MusicBeatState
 				darknessLine3.x = darknessOpponent.x - 5;
 				darknessLine4.x = FlxG.width - darknessOpponent.x - 8;
 				FlxTween.tween(darknessOpponent, {alpha: (100 - Init.trueSettings.get('Darkness Opacity')) / 100}, 0.5, {ease: FlxEase.circOut});
-				FlxTween.tween(darknessLine3, {alpha: 1}, 0.5, {ease: FlxEase.circOut});
-				FlxTween.tween(darknessLine4, {alpha: 1}, 0.5, {ease: FlxEase.circOut});
+				if (Init.trueSettings.get('Darkness Opacity') > 0)
+				{
+					FlxTween.tween(darknessLine3, {alpha: 1}, 0.5, {ease: FlxEase.circOut});
+					FlxTween.tween(darknessLine4, {alpha: 1}, 0.5, {ease: FlxEase.circOut});
+				}
 			}
 		}
 
