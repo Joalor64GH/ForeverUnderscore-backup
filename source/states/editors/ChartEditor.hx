@@ -837,7 +837,6 @@ class ChartEditor extends MusicBeatState
 		// this is genuinely driving me insane and I don't know how should I do it
 		if (daSus > 0 && prevNote != null)
 		{
-			/*
 			var constSize = Std.int(gridSize / 2);
 
 			var sustainVis:Note = ForeverAssets.generateArrow(_song.assetModifier, daStrumTime + Conductor.stepCrochet, daNoteInfo % 4, daNoteAlt, true,
@@ -846,7 +845,7 @@ class ChartEditor extends MusicBeatState
 			sustainVis.updateHitbox();
 			sustainVis.x = prevNote.x + constSize;
 			sustainVis.y = prevNote.y + constSize;
-			holdsGroup.add(sustainVis);
+			//holdsGroup.add(sustainVis);
 
 			if (prevNote != null && prevNote.isSustainNote)
 			{
@@ -856,9 +855,8 @@ class ChartEditor extends MusicBeatState
 				sustainEnd.updateHitbox();
 				sustainEnd.x = sustainVis.x - 15;
 				sustainEnd.y = sustainVis.y + (sustainVis.height) + (gridSize / 2);
-				holdsGroup.add(sustainEnd);
+				//holdsGroup.add(sustainEnd);
 			}
-			*/
 		}
 	}
 

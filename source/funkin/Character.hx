@@ -12,7 +12,7 @@ import dependency.FNFSprite;
 import flixel.FlxG;
 import flixel.addons.util.FlxSimplex;
 import flixel.animation.FlxBaseAnimation;
-import flixel.graphics.frames.FlxAtlasFrames;
+import flixel.graphics.frames.FlxFramesCollection;
 import flixel.util.FlxSort;
 import funkin.background.TankmenBG;
 import funkin.ui.HealthIcon;
@@ -25,6 +25,7 @@ import sys.FileSystem;
 import sys.io.File;
 
 using StringTools;
+
 typedef PsychEngineChar =
 {
 	var animations:Array<PsychAnimArray>;
@@ -369,16 +370,25 @@ class Character extends FNFSprite
 			}
 		}
 
-		var spriteType = "sparrow";
+		var tex:FlxFramesCollection;
+
+		var spriteType = "SparrowAtlas";
 
 		if (FileSystem.exists(Paths.getPath('characters/$char/$char.txt', TEXT)))
-		{
-			spriteType = "packer";
-		}
-		if (spriteType == "packer")
-			frames = Paths.getPackerAtlas(char, 'characters/$char');
+			spriteType = "PackerAtlas";
+		else if (FileSystem.exists(Paths.getPath('characters/$char/$char.json', TEXT)))
+			spriteType = "JsonAtlas";
+			
+		trace('Atlas Type: ' + spriteType + ' for Character: ' + char);
+
+		if (spriteType == "PackerAtlas")
+			tex = Paths.getPackerAtlas(char, 'characters/$char');
+		else if (spriteType == "JsonAtlas")
+			tex = Paths.getJsonAtlas(char, 'characters/$char');
 		else
-			frames = Paths.getSparrowAtlas(char, 'characters/$char');
+			tex = Paths.getSparrowAtlas(char, 'characters/$char');
+
+		frames = tex;
 
 		// trace(interp, script);
 		setVar('addByPrefix', function(name:String, prefix:String, ?frames:Int = 24, ?loop:Bool = false)
