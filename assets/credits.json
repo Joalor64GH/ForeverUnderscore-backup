@@ -36,12 +36,19 @@
 			"colors": [182, 84, 82]
 		},
 		{
-			"sectionName": "FOREVER ENGINE: UNDERSCORE",
-			
 			"name": "Teles",
 			"iconData": [],
 			"textData": ["Additional Coder"],
 			"urlData": [["Twitter", "https://twitter.com/itzteles_aa"]],
+			"colors": [182, 84, 82]
+		},
+		{
+			"sectionName": "FOREVER ENGINE: UNDERSCORE",
+			
+			"name": "Luisinho01",
+			"iconData": [],
+			"textData": ["Additional Coder"],
+			"urlData": [["Github", "https://github.com/Luisinhi010"]],
 			"colors": [182, 84, 82]
 		},
 		{
