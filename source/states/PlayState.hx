@@ -357,7 +357,7 @@ class PlayState extends MusicBeatState
 		else
 		{
 			darknessBG = new FlxSprite(FlxG.width * -0.5, FlxG.height * -0.5).makeGraphic(FlxG.width * 2, FlxG.height * 2, FlxColor.BLACK);
-			darknessBG.alpha = (100 - Init.trueSettings.get('Darkness Opacity')) / 100;
+			darknessBG.alpha = (Init.trueSettings.get('Darkness Opacity') * 0.01);
 			darknessBG.scrollFactor.set(0, 0);
 			add(darknessBG);
 		}
@@ -2267,7 +2267,7 @@ class PlayState extends MusicBeatState
 			darknessBG.x = bfStrums.receptors.members[0].x + 20;
 			darknessLine1.x = darknessBG.x - 5;
 			darknessLine2.x = FlxG.width - darknessBG.x - 8;
-			FlxTween.tween(darknessBG, {alpha: (100 - Init.trueSettings.get('Darkness Opacity')) / 100}, 0.5, {ease: FlxEase.circOut});
+			FlxTween.tween(darknessBG, {alpha: (Init.trueSettings.get('Darkness Opacity') * 0.01)}, 0.5, {ease: FlxEase.circOut});
 			if (Init.trueSettings.get('Darkness Opacity') > 0)
 			{
 				FlxTween.tween(darknessLine1, {alpha: 1}, 0.5, {ease: FlxEase.circOut});
@@ -2279,7 +2279,7 @@ class PlayState extends MusicBeatState
 				darknessOpponent.x = dadStrums.receptors.members[0].x + 20;
 				darknessLine3.x = darknessOpponent.x - 5;
 				darknessLine4.x = FlxG.width - darknessOpponent.x - 8;
-				FlxTween.tween(darknessOpponent, {alpha: (100 - Init.trueSettings.get('Darkness Opacity')) / 100}, 0.5, {ease: FlxEase.circOut});
+				FlxTween.tween(darknessOpponent, {alpha: (Init.trueSettings.get('Darkness Opacity') * 0.01)}, 0.5, {ease: FlxEase.circOut});
 				if (Init.trueSettings.get('Darkness Opacity') > 0)
 				{
 					FlxTween.tween(darknessLine3, {alpha: 1}, 0.5, {ease: FlxEase.circOut});
