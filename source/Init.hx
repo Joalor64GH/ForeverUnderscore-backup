@@ -378,7 +378,7 @@ class Init extends FlxState
 			switch (i)
 			{
 				case 'Darkness Opacity':
-					defaultValue = 100;
+					defaultValue = 0;
 				case "Hitsound Volume":
 					defaultValue = 0;
 				case "Arrow Opacity":
