@@ -2266,7 +2266,7 @@ class PlayState extends MusicBeatState
 		{
 			darknessBG.x = bfStrums.receptors.members[0].x + 20;
 			darknessLine1.x = darknessBG.x - 5;
-			darknessLine2.x = FlxG.width - darknessBG.x - 8;
+			darknessLine2.x = FlxG.width - darknessBG.x;
 			FlxTween.tween(darknessBG, {alpha: (Init.trueSettings.get('Darkness Opacity') * 0.01)}, 0.5, {ease: FlxEase.circOut});
 			if (Init.trueSettings.get('Darkness Opacity') > 0)
 			{
@@ -2278,7 +2278,7 @@ class PlayState extends MusicBeatState
 			{
 				darknessOpponent.x = dadStrums.receptors.members[0].x + 20;
 				darknessLine3.x = darknessOpponent.x - 5;
-				darknessLine4.x = FlxG.width - darknessOpponent.x - 8;
+				darknessLine4.x = FlxG.width - darknessOpponent.x;
 				FlxTween.tween(darknessOpponent, {alpha: (Init.trueSettings.get('Darkness Opacity') * 0.01)}, 0.5, {ease: FlxEase.circOut});
 				if (Init.trueSettings.get('Darkness Opacity') > 0)
 				{
