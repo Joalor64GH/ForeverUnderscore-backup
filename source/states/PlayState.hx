@@ -157,7 +157,7 @@ class PlayState extends MusicBeatState
 	public var darknessLine3:FlxSprite;
 	public var darknessLine4:FlxSprite;
 
-	var stageBuild:Stage;
+	public var stageBuild:Stage;
 
 	public static var uiHUD:ClassHUD;
 	public static var daPixelZoom:Float = 6;
