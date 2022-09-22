@@ -129,8 +129,6 @@ final class Paths
 
 	public static function returnGraphic(key:String, folder:String = 'images', ?library:String)
 	{
-		var gpuRender = Init.trueSettings.get('GPU Rendering');
-
 		var path = getPath('$folder/$key.png', IMAGE, library);
 
 		if (FileSystem.exists(path))
@@ -139,7 +137,7 @@ final class Paths
 			{
 				var bitmap = BitmapData.fromFile(path);
 				var newGraphic:FlxGraphic;
-				if (gpuRender)
+				if (Init.trueSettings.get('GPU Rendering'))
 				{
 					var texture = FlxG.stage.context3D.createTexture(bitmap.width, bitmap.height, BGRA, true, 0);
 					texture.uploadFromBitmapData(bitmap);
