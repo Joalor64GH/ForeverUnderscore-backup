@@ -127,9 +127,9 @@ final class Paths
 		localTrackedAssets = [];
 	}
 
-	public static function returnGraphic(key:String, folder:String = 'images', ?library:String, ?gpuRender:Bool)
+	public static function returnGraphic(key:String, folder:String = 'images', ?library:String)
 	{
-		gpuRender = Init.trueSettings.get('GPU Rendering');
+		var gpuRender = Init.trueSettings.get('GPU Rendering');
 
 		var path = getPath('$folder/$key.png', IMAGE, library);
 
@@ -319,10 +319,9 @@ final class Paths
 		return sound;
 	}
 
-	inline static public function image(key:String, folder:String = 'images', ?library:String, ?gpuRender:Bool)
+	inline static public function image(key:String, folder:String = 'images', ?library:String)
 	{
-		gpuRender = Init.trueSettings.get('GPU Rendering');
-		var returnAsset:FlxGraphic = returnGraphic(key, folder, library, gpuRender);
+		var returnAsset:FlxGraphic = returnGraphic(key, folder, library);
 		return returnAsset;
 	}
 
