@@ -1,11 +1,11 @@
 package funkin.ui.menu;
 
-import flixel.FlxSprite;
-import flixel.graphics.frames.FlxAtlasFrames;
 import haxe.Json;
-import lime.utils.Assets;
 import sys.FileSystem;
 import sys.io.File;
+import flixel.FlxSprite;
+import flixel.graphics.frames.FlxAtlasFrames;
+import lime.utils.Assets;
 
 typedef WeekCharacterDef =
 {

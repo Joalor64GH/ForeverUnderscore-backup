@@ -56,7 +56,7 @@ class BaseSettingsMenu extends MusicBeatState
 		{name: 'Disable Flashing Lights', parentID: 4},
 		{name: 'Disable Shaders', parentID: 4},
 		{name: 'Reduced Movements', parentID: 4},
-		{name: 'Stage Opacity', parentID: 4},
+		{name: 'Darkness Opacity', parentID: 4},
 		{name: 'Filter', parentID: 4}
 	];
 

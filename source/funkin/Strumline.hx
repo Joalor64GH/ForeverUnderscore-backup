@@ -13,8 +13,8 @@ import flixel.math.FlxRect;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 import flixel.util.FlxSort;
-import funkin.Timings;
 import states.PlayState;
+import funkin.Timings;
 
 using StringTools;
 

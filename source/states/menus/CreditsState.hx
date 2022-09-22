@@ -1,5 +1,6 @@
 package states.menus;
 
+import haxe.Json;
 import base.MusicBeat.MusicBeatState;
 import dependency.AbsoluteSprite;
 import dependency.Discord;
@@ -13,7 +14,6 @@ import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
 import funkin.Alphabet;
-import haxe.Json;
 
 typedef CreditsUserDef =
 {

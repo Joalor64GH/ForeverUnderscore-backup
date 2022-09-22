@@ -118,7 +118,8 @@ class OptionsMenuState extends MusicBeatState
 					['Disable Flashing Lights', getFromOption],
 					['Disable Shaders', getFromOption],
 					['Reduced Movements', getFromOption],
-					["Stage Opacity", getFromOption],
+					["Darkness Opacity", getFromOption],
+					["Opacity Type", getFromOption],
 					['Filter', getFromOption],
 				]
 			]
@@ -443,7 +444,7 @@ class OptionsMenuState extends MusicBeatState
 						var selector:Selector = new Selector(10, letter.y, letter.text, Init.gameSettings.get(letter.text)[4], [
 							// wow this SUCKS, I need to rewrite this already;
 							(letter.text == 'Framerate Cap') ? true : false,
-							(letter.text == 'Stage Opacity') ? true : false,
+							(letter.text == 'Darkness Opacity') ? true : false,
 							(letter.text == 'Hitsound Volume') ? true : false,
 							(letter.text == 'Scroll Speed') ? true : false,
 							(letter.text == 'Arrow Opacity') ? true : false,

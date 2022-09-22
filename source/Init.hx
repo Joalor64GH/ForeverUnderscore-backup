@@ -229,11 +229,18 @@ class Init extends FlxState
 			'Whether to reduce movements, like icons bouncing or beat zooms in gameplay.',
 			NOT_FORCED
 		],
-		'Stage Opacity' => [
+		'Darkness Opacity' => [
 			Checkmark,
 			Selector,
 			'Darkens non-ui elements, useful if you find the characters and backgrounds distracting.',
 			NOT_FORCED
+		],
+		'Opacity Type' => [
+			'World',
+			Selector,
+			'Choose where the Darkness Opacity Filter should be applied.',
+			NOT_FORCED,
+			['World', 'Notes']
 		],
 		'Filter' => [
 			'none',
@@ -363,14 +370,14 @@ class Init extends FlxState
 			|| trueSettings.get("Framerate Cap") > 360)
 			trueSettings.set("Framerate Cap", 30);
 
-		var similarSettings:Array<String> = ["Stage Opacity", "Hitsound Volume", "Arrow Opacity", "Splash Opacity"];
+		var similarSettings:Array<String> = ["Darkness Opacity", "Hitsound Volume", "Arrow Opacity", "Splash Opacity"];
 
 		for (i in similarSettings)
 		{
 			var defaultValue = 100;
 			switch (i)
 			{
-				case 'Stage Opacity':
+				case 'Darkness Opacity':
 					defaultValue = 100;
 				case "Hitsound Volume":
 					defaultValue = 0;

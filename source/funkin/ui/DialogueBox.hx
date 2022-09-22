@@ -13,8 +13,8 @@ import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
 import flixel.util.FlxTimer;
-import funkin.Alphabet;
 import states.PlayState;
+import funkin.Alphabet;
 
 using StringTools;
 

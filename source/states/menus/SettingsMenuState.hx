@@ -285,7 +285,7 @@ class SettingsMenuState extends BaseSettingsMenu
 							var selector:Selector = new Selector(10, currentGroup.members[curSelected].y, options[curSelected].name, Init.gameSettings.get(options[curSelected].name)[4],
 							[
 								(options[curSelected].name == 'Framerate Cap') ? true : false,
-								(options[curSelected].name == 'Stage Opacity') ? true : false,
+								(options[curSelected].name == 'Darkness Opacity') ? true : false,
 								(options[curSelected].name == 'Hitsound Volume') ? true : false,
 								(options[curSelected].name == 'Scroll Speed') ? true : false,
 								(options[curSelected].name == 'Arrow Opacity') ? true : false,

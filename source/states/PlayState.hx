@@ -145,6 +145,18 @@ class PlayState extends MusicBeatState
 	public static var iconRPC:String = "";
 	public static var songLength:Float = 0;
 
+	// darkness background for stages / notes
+	public var darknessBG:FlxSprite;
+
+	public var darknessLine1:FlxSprite;
+	public var darknessLine2:FlxSprite;
+	
+	// i hate that i have to do this shit twice for the opponent strumlines but eh
+	public var darknessOpponent:FlxSprite;
+
+	public var darknessLine3:FlxSprite;
+	public var darknessLine4:FlxSprite;
+
 	var stageBuild:Stage;
 
 	public static var uiHUD:ClassHUD;
@@ -241,11 +253,8 @@ class PlayState extends MusicBeatState
 
 		setupScripts();
 
-		if (Init.trueSettings.get('Stage Opacity') > 0)
-		{
-			stageBuild = new Stage(PlayState.curStage);
-			add(stageBuild);
-		}
+		stageBuild = new Stage(PlayState.curStage);
+		add(stageBuild);
 
 		// set up characters here too
 
@@ -266,39 +275,26 @@ class PlayState extends MusicBeatState
 		charGroup = new FlxSpriteGroup();
 
 		var camPos:FlxPoint = new FlxPoint(gf.getMidpoint().x - 100, boyfriend.getMidpoint().y - 100);
-
-		if (Init.trueSettings.get('Stage Opacity') > 0)
-		{
-			stageBuild.repositionPlayers(curStage, boyfriend, gf, dadOpponent);
-			stageBuild.dadPosition(curStage, boyfriend, gf, dadOpponent, camPos);
-		}
+		
+		stageBuild.repositionPlayers(curStage, boyfriend, gf, dadOpponent);
+		stageBuild.dadPosition(curStage, boyfriend, gf, dadOpponent, camPos);
 
 		changeableSkin = Init.trueSettings.get("UI Skin");
 		changeableSound = Init.trueSettings.get("Hitsound Type");
 
 		assetModifier = SONG.assetModifier;
 
-		// dad is girlfriend, spawn him on her position;
-		if (dadOpponent.curCharacter.startsWith('gf'))
-		{
-			dadOpponent.x = 300;
-			dadOpponent.y = 100;
-		}
-
 		// add characters
-		if (Init.trueSettings.get('Stage Opacity') > 0)
-		{
-			if (stageBuild.spawnGirlfriend)
-				add(gf);
+		if (stageBuild.spawnGirlfriend)
+			add(gf);
 
-			add(stageBuild.layers);
+		add(stageBuild.layers);
 
-			add(dadOpponent);
-			add(boyfriend);
-			add(stageBuild.foreground);
+		add(dadOpponent);
+		add(boyfriend);
+		add(stageBuild.foreground);
 
-			add(charGroup); // for changecharacter;
-		}
+		add(charGroup); // for changecharacter;
 
 		// force them to dance
 		dadOpponent.dance();
@@ -309,12 +305,62 @@ class PlayState extends MusicBeatState
 		Conductor.songPosition = -(Conductor.crochet * 4);
 
 		// EVERYTHING SHOULD GO UNDER THIS, IF YOU PLAN ON SPAWNING SOMETHING LATER ADD IT TO STAGEBUILD OR FOREGROUND
-		// darken everything but the arrows and ui via a flxsprite
-		var darknessBG:FNFSprite = new FNFSprite(FlxG.width * -0.5, FlxG.height * -0.5);
-		darknessBG.makeGraphic(FlxG.width * 2, FlxG.height * 2, FlxColor.BLACK);
-		darknessBG.alpha = (100 - Init.trueSettings.get('Stage Opacity')) / 100;
-		darknessBG.scrollFactor.set(0, 0);
-		add(darknessBG);
+		// darkens the notes / stage according to the opacity type option
+		if (Init.trueSettings.get('Opacity Type') == 'Notes')
+		{
+			// unoptimized darkness background for notes;
+			darknessBG = new FlxSprite(0, 0).makeGraphic(100 * 4 + 50, FlxG.height, FlxColor.BLACK);
+
+			darknessLine1 = new FlxSprite(0, 0).makeGraphic(5, FlxG.height, FlxColor.WHITE);
+			darknessLine2 = new FlxSprite(0, 0).loadGraphicFromSprite(darknessLine1);
+
+			add(darknessBG);
+			add(darknessLine1);
+			add(darknessLine2);
+
+			for (dark in [darknessBG, darknessLine1, darknessLine2])
+			{
+				dark.alpha = 0;
+				dark.cameras = [camHUD];
+				dark.scrollFactor.set();
+				dark.screenCenter(Y);
+				if (Init.trueSettings.get('Colored Health Bar'))
+					dark.color = FlxColor.fromRGB(boyfriend.barColor[0], boyfriend.barColor[1], boyfriend.barColor[2]);
+				else
+					dark.color = 0xFF66FF33;
+			}
+
+			// for the opponent
+			if (!Init.trueSettings.get('Centered Receptors'))
+			{
+				darknessOpponent = new FlxSprite(0, 0).loadGraphicFromSprite(darknessBG);
+				darknessLine3 = new FlxSprite(0, 0).loadGraphicFromSprite(darknessLine1);
+				darknessLine4 = new FlxSprite(0, 0).loadGraphicFromSprite(darknessLine1);
+
+				for (dark in [darknessOpponent, darknessLine3, darknessLine4])
+				{
+					dark.alpha = 0;
+					dark.cameras = [camHUD];
+					dark.scrollFactor.set();
+					dark.screenCenter(Y);
+					if (Init.trueSettings.get('Colored Health Bar'))
+						dark.color = FlxColor.fromRGB(dadOpponent.barColor[0], dadOpponent.barColor[1], dadOpponent.barColor[2]);
+					else
+						dark.color = 0xFFFF0000;
+				}
+
+				add(darknessOpponent);
+				add(darknessLine3);
+				add(darknessLine4);
+			}
+		}
+		else
+		{
+			darknessBG = new FlxSprite(FlxG.width * -0.5, FlxG.height * -0.5).makeGraphic(FlxG.width * 2, FlxG.height * 2, FlxColor.BLACK);
+			darknessBG.alpha = (100 - Init.trueSettings.get('Darkness Opacity')) / 100;
+			darknessBG.scrollFactor.set(0, 0);
+			add(darknessBG);
+		}
 
 		// strum setup
 		strumLines = new FlxTypedGroup<Strumline>();
@@ -643,8 +689,7 @@ class PlayState extends MusicBeatState
 
 		callFunc('update', [elapsed]);
 
-		if (Init.trueSettings.get('Stage Opacity') > 0)
-			stageBuild.stageUpdateConstant(elapsed, boyfriend, gf, dadOpponent);
+		stageBuild.stageUpdateConstant(elapsed, boyfriend, gf, dadOpponent);
 
 		if (health > 2)
 			health = 2;
@@ -1727,8 +1772,6 @@ class PlayState extends MusicBeatState
 		previousFrameTime = FlxG.game.ticks;
 		lastReportedPlayheadPosition = 0;
 
-		// FlxTween.tween(uiHUD.centerMark, {alpha: 1}, 0.5, {ease: FlxEase.circOut});
-
 		if (!paused)
 		{
 			Conductor.startMusic();
@@ -1781,8 +1824,7 @@ class PlayState extends MusicBeatState
 
 		Conductor.resyncBySteps();
 
-		if (Init.trueSettings.get('Stage Opacity') > 0)
-			stageBuild.stageUpdateSteps(curStep, boyfriend, gf, dadOpponent);
+		stageBuild.stageUpdateSteps(curStep, boyfriend, gf, dadOpponent);
 
 		callFunc('stepHit', [curStep]);
 	}
@@ -1876,8 +1918,7 @@ class PlayState extends MusicBeatState
 		charactersDance(curBeat);
 
 		// stage stuffs
-		if (Init.trueSettings.get('Stage Opacity') > 0)
-			stageBuild.stageUpdate(curBeat, boyfriend, gf, dadOpponent);
+		stageBuild.stageUpdate(curBeat, boyfriend, gf, dadOpponent);
 
 		callFunc('beatHit', [curBeat]);
 	}
@@ -2220,6 +2261,26 @@ class PlayState extends MusicBeatState
 
 		precacheImages();
 		precacheSounds();
+
+		if (Init.trueSettings.get('Opacity Type') == 'Notes')
+		{
+			darknessBG.x = bfStrums.receptors.members[0].x + 20;
+			darknessLine1.x = darknessBG.x - 5;
+			darknessLine2.x = FlxG.width - darknessBG.x - 8;
+			FlxTween.tween(darknessBG, {alpha: (100 - Init.trueSettings.get('Darkness Opacity')) / 100}, 0.5, {ease: FlxEase.circOut});
+			FlxTween.tween(darknessLine1, {alpha: 1}, 0.5, {ease: FlxEase.circOut});
+			FlxTween.tween(darknessLine2, {alpha: 1}, 0.5, {ease: FlxEase.circOut});
+
+			if (!Init.trueSettings.get('Centered Receptors'))
+			{
+				darknessOpponent.x = dadStrums.receptors.members[0].x + 20;
+				darknessLine3.x = darknessOpponent.x - 5;
+				darknessLine4.x = FlxG.width - darknessOpponent.x - 8;
+				FlxTween.tween(darknessOpponent, {alpha: (100 - Init.trueSettings.get('Darkness Opacity')) / 100}, 0.5, {ease: FlxEase.circOut});
+				FlxTween.tween(darknessLine3, {alpha: 1}, 0.5, {ease: FlxEase.circOut});
+				FlxTween.tween(darknessLine4, {alpha: 1}, 0.5, {ease: FlxEase.circOut});
+			}
+		}
 
 		callFunc('startCountdown', []);
 

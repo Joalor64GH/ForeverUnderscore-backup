@@ -1,6 +1,6 @@
 package base;
 
-import base.*;
+import sys.FileSystem;
 import flixel.FlxG;
 import flixel.system.FlxSound;
 import flixel.text.FlxText;
@@ -9,7 +9,7 @@ import flixel.tweens.FlxTween.FlxTweenType;
 import flixel.util.FlxColor;
 import openfl.display.BlendMode;
 import states.PlayState;
-import sys.FileSystem;
+import base.*;
 
 using StringTools;
 

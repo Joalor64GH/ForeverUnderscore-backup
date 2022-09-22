@@ -4,8 +4,8 @@ import base.*;
 import dependency.FNFSprite;
 import flixel.FlxG;
 import flixel.FlxSprite;
-import funkin.Strumline.UIStaticArrow;
 import states.PlayState;
+import funkin.Strumline.UIStaticArrow;
 
 using StringTools;
 

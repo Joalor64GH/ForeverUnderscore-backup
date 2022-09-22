@@ -1,7 +1,6 @@
 package base;
 
-import base.Conductor;
-import base.SongLoader.LegacySection;
+import sys.FileSystem;
 import dependency.FNFSprite;
 import flixel.FlxG;
 import flixel.FlxSprite;
@@ -15,7 +14,8 @@ import funkin.Strumline.UIStaticArrow;
 import funkin.Timings;
 import funkin.ui.menu.*;
 import states.PlayState;
-import sys.FileSystem;
+import base.Conductor;
+import base.SongLoader.LegacySection;
 
 using StringTools;
 

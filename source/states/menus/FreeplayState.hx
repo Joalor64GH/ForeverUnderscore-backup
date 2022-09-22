@@ -1,5 +1,9 @@
 package states.menus;
 
+import flash.text.TextField;
+import sys.FileSystem;
+import sys.thread.Mutex;
+import sys.thread.Thread;
 import base.ChartParser;
 import base.Conductor;
 import base.CoolUtil;
@@ -8,7 +12,6 @@ import base.SongLoader.LegacySong;
 import base.SongLoader.Song;
 import base.WeekParser;
 import dependency.Discord;
-import flash.text.TextField;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.addons.display.FlxGridOverlay;
@@ -28,9 +31,6 @@ import lime.utils.Assets;
 import openfl.media.Sound;
 import states.editors.*;
 import states.substates.FreeplaySubstate;
-import sys.FileSystem;
-import sys.thread.Mutex;
-import sys.thread.Thread;
 
 using StringTools;
 
