@@ -378,7 +378,7 @@ class Character extends FNFSprite
 			spriteType = "PackerAtlas";
 		else if (FileSystem.exists(Paths.getPath('characters/$char/$char.json', TEXT)))
 			spriteType = "JsonAtlas";
-			
+
 		trace('Atlas Type: ' + spriteType + ' for Character: ' + char);
 
 		if (spriteType == "PackerAtlas")
@@ -524,16 +524,26 @@ class Character extends FNFSprite
 		var rawJson = File.getContent(path);
 
 		var json:PsychEngineChar = cast Json.parse(rawJson);
-		var spriteType = "sparrow";
 
-		if (FileSystem.exists(Paths.getPath('characters/$char/${json.image}.txt', TEXT)))
-		{
-			spriteType = "packer";
-		}
-		if (spriteType == "packer")
-			frames = Paths.getPackerAtlas(json.image.replace('characters/', ''), 'characters/$char');
+		var tex:FlxFramesCollection;
+
+		var spriteType = "SparrowAtlas";
+
+		if (FileSystem.exists(Paths.getPath('characters/$char/$char.txt', TEXT)))
+			spriteType = "PackerAtlas";
+		else if (FileSystem.exists(Paths.getPath('characters/$char/$char.json', TEXT)))
+			spriteType = "JsonAtlas";
+
+		trace('Atlas Type: ' + spriteType + ' for Character: ' + char);
+
+		if (spriteType == "PackerAtlas")
+			tex = Paths.getPackerAtlas(char, 'characters/$char');
+		else if (spriteType == "JsonAtlas")
+			tex = Paths.getJsonAtlas(char, 'characters/$char');
 		else
-			frames = Paths.getSparrowAtlas(json.image.replace('characters/', ''), 'characters/$char');
+			tex = Paths.getSparrowAtlas(char, 'characters/$char');
+
+		frames = tex;
 
 		psychAnimationsArray = json.animations;
 		for (anim in psychAnimationsArray)
