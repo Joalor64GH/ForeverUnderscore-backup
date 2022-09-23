@@ -11,11 +11,12 @@
 
 	<!--Minimum without FLX_NO_GAMEPAD: 11.8, without FLX_NO_NATIVE_CURSOR: 11.2-->
 	<set name="SWF_VERSION" value="11.8" />
-
-        <log warn="RUN THE SETUP.BAT FILE" />
-	<log warn="IF THE GAME FAILS TO COMPILE" />
+	
+	<!--
+	<log warn="IF THE GAME FAILS TO COMPILE, PLEASE RUN THE SETUP.BAT FILE" />
 	<log warn="LOOK ON THE FOLDER: art/setupFiles"/>
-        <echo value="-BeastlyGhost"/>
+	<echo value="-BeastlyGhost"/>
+	-->
 
 	<!-- ____________________________ Window Settings ___________________________ -->
 
