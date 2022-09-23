@@ -311,47 +311,41 @@ class PlayState extends MusicBeatState
 			// unoptimized darkness background for notes;
 			darknessBG = new FlxSprite(0, 0).makeGraphic(100 * 4 + 50, FlxG.height, FlxColor.BLACK);
 
-			darknessLine1 = new FlxSprite(0, 0).makeGraphic(5, FlxG.height, FlxColor.WHITE);
+			var lineColorP1 = 0xFF66FF33;
+
+			if (Init.trueSettings.get('Colored Health Bar'))
+				lineColorP1 = FlxColor.fromRGB(boyfriend.barColor[0], boyfriend.barColor[1], boyfriend.barColor[2]);
+
+			darknessLine1 = new FlxSprite(0, 0).makeGraphic(5, FlxG.height, lineColorP1);
 			darknessLine2 = new FlxSprite(0, 0).loadGraphicFromSprite(darknessLine1);
 
 			add(darknessBG);
 			add(darknessLine1);
 			add(darknessLine2);
 
-			for (dark in [darknessBG, darknessLine1, darknessLine2])
+			// for the opponent
+			if (!Init.trueSettings.get('Centered Receptors'))
+			{
+				var lineColorP2 = 0xFFFF0000;
+
+				if (Init.trueSettings.get('Colored Health Bar'))
+					lineColorP2 = FlxColor.fromRGB(dadOpponent.barColor[0], dadOpponent.barColor[1], dadOpponent.barColor[2]);
+
+				darknessOpponent = new FlxSprite(0, 0).loadGraphicFromSprite(darknessBG);
+				darknessLine3 = new FlxSprite(0, 0).makeGraphic(5, FlxG.height, lineColorP2);
+				darknessLine4 = new FlxSprite(0, 0).loadGraphicFromSprite(darknessLine3);
+
+				add(darknessOpponent);
+				add(darknessLine3);
+				add(darknessLine4);
+			}
+
+			for (dark in [darknessBG, darknessOpponent, darknessLine1, darknessLine2, darknessLine3, darknessLine4])
 			{
 				dark.alpha = 0;
 				dark.cameras = [camHUD];
 				dark.scrollFactor.set();
 				dark.screenCenter(Y);
-				if (Init.trueSettings.get('Colored Health Bar'))
-					dark.color = FlxColor.fromRGB(boyfriend.barColor[0], boyfriend.barColor[1], boyfriend.barColor[2]);
-				else
-					dark.color = 0xFF66FF33;
-			}
-
-			// for the opponent
-			if (!Init.trueSettings.get('Centered Receptors'))
-			{
-				darknessOpponent = new FlxSprite(0, 0).loadGraphicFromSprite(darknessBG);
-				darknessLine3 = new FlxSprite(0, 0).loadGraphicFromSprite(darknessLine1);
-				darknessLine4 = new FlxSprite(0, 0).loadGraphicFromSprite(darknessLine1);
-
-				for (dark in [darknessOpponent, darknessLine3, darknessLine4])
-				{
-					dark.alpha = 0;
-					dark.cameras = [camHUD];
-					dark.scrollFactor.set();
-					dark.screenCenter(Y);
-					if (Init.trueSettings.get('Colored Health Bar'))
-						dark.color = FlxColor.fromRGB(dadOpponent.barColor[0], dadOpponent.barColor[1], dadOpponent.barColor[2]);
-					else
-						dark.color = 0xFFFF0000;
-				}
-
-				add(darknessOpponent);
-				add(darknessLine3);
-				add(darknessLine4);
 			}
 		}
 		else
@@ -2266,7 +2260,7 @@ class PlayState extends MusicBeatState
 		{
 			darknessBG.x = bfStrums.receptors.members[0].x + 20;
 			darknessLine1.x = darknessBG.x - 5;
-			darknessLine2.x = FlxG.width - darknessBG.x;
+			darknessLine2.x = FlxG.width - darknessBG.x + 2;
 			FlxTween.tween(darknessBG, {alpha: (Init.trueSettings.get('Darkness Opacity') * 0.01)}, 0.5, {ease: FlxEase.circOut});
 			if (Init.trueSettings.get('Darkness Opacity') > 0)
 			{
@@ -2278,7 +2272,7 @@ class PlayState extends MusicBeatState
 			{
 				darknessOpponent.x = dadStrums.receptors.members[0].x + 20;
 				darknessLine3.x = darknessOpponent.x - 5;
-				darknessLine4.x = FlxG.width - darknessOpponent.x;
+				darknessLine4.x = FlxG.width - darknessOpponent.x + 2;
 				FlxTween.tween(darknessOpponent, {alpha: (Init.trueSettings.get('Darkness Opacity') * 0.01)}, 0.5, {ease: FlxEase.circOut});
 				if (Init.trueSettings.get('Darkness Opacity') > 0)
 				{
