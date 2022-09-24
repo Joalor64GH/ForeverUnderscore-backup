@@ -404,10 +404,10 @@ class PlayState extends MusicBeatState
 		startedCountdown = true;
 
 		// initialize ui elements
-		var bfPlacement = FlxG.width / 2 + (!Init.trueSettings.get('Centered Receptors') ? FlxG.width / 4 : 0);
-		var dadPlacement = (FlxG.width / 2) - FlxG.width / 4;
+		var bfPlacement:Float = FlxG.width / 2 + (!Init.trueSettings.get('Centered Receptors') ? FlxG.width / 4 : 0);
+		var dadPlacement:Float = (FlxG.width / 2) - FlxG.width / 4;
 
-		var strumVertPos = (Init.trueSettings.get('Downscroll') ? FlxG.height - 200 : 0);
+		var strumVertPos:Int = (Init.trueSettings.get('Downscroll') ? FlxG.height - 200 : 0);
 
 		dadStrums = new Strumline(dadPlacement, strumVertPos, this, dadOpponent, false, true, false, 4);
 		bfStrums = new Strumline(bfPlacement, strumVertPos, this, boyfriend, true, false, true, 4);
@@ -1701,7 +1701,6 @@ class PlayState extends MusicBeatState
 			// bound to camera
 			if (!cached)
 				rating.cameras = [camHUD];
-			rating.screenCenter();
 		}
 
 		if (cached)

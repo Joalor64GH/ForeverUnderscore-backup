@@ -4,6 +4,9 @@ package funkin;
 	The character class initialises any and all characters that exist within gameplay. For now, the character class will
 	stay the same as it was in the original source of the game. I'll most likely make some changes afterwards though!
 **/
+import haxe.Json;
+import sys.FileSystem;
+import sys.io.File;
 import base.*;
 import base.SongLoader.LegacySection;
 import base.SongLoader.LegacySong;
@@ -14,15 +17,12 @@ import flixel.addons.util.FlxSimplex;
 import flixel.animation.FlxBaseAnimation;
 import flixel.graphics.frames.FlxFramesCollection;
 import flixel.util.FlxSort;
-import funkin.background.TankmenBG;
-import funkin.ui.HealthIcon;
-import haxe.Json;
 import openfl.Assets;
 import openfl.utils.Assets as OpenFlAssets;
 import states.PlayState;
 import states.substates.GameOverSubstate;
-import sys.FileSystem;
-import sys.io.File;
+import funkin.background.TankmenBG;
+import funkin.ui.HealthIcon;
 
 using StringTools;
 
@@ -564,6 +564,7 @@ class Character extends FNFSprite
 		flipX = json.flip_x;
 		antialiasing = !json.no_antialiasing;
 		offsets = json.position;
+		camOffsets = json.camera_position;
 
 		if (isPlayer) // fuck you ninjamuffin lmao
 		{

@@ -56,6 +56,7 @@ class OptionsMenuState extends MusicBeatState
 					['preferences', callNewGroup],
 					['appearance', callNewGroup],
 					['controls', openControlmenu],
+					['adjust combo', openJudgeState],
 					['exit', exitMenu]
 				]
 			],
@@ -622,6 +623,20 @@ class OptionsMenuState extends MusicBeatState
 			FlxFlicker.flicker(activeSubgroup.members[curSelection], 0.5, 0.06 * 2, true, false, function(flick:FlxFlicker)
 			{
 				openSubState(new ControlsSubstate());
+				lockedMovement = false;
+			});
+		}
+	}
+	
+	public function openJudgeState()
+	{
+		if (controls.ACCEPT || FlxG.mouse.justPressed)
+		{
+			playSound('confirmMenu');
+			lockedMovement = true;
+			FlxFlicker.flicker(activeSubgroup.members[curSelection], 0.5, 0.06 * 2, true, false, function(flick:FlxFlicker)
+			{
+				Main.switchState(this, new JudgementOffsetState());
 				lockedMovement = false;
 			});
 		}

@@ -51,7 +51,7 @@ class Stage extends FlxTypedGroup<FlxBasic>
 
 	public var stageScript:ScriptHandler;
 
-	public function new(curStage)
+	public function new(curStage:String = 'unknown', stageDebug:Bool = false)
 	{
 		super();
 		this.curStage = curStage;
@@ -60,7 +60,7 @@ class Stage extends FlxTypedGroup<FlxBasic>
 		{
 			switch (CoolUtil.spaceToDash(PlayState.SONG.song.toLowerCase()))
 			{
-				case 'bopeebo' | 'fresh' | 'dadbattle':
+				case 'bopeebo' | 'fresh' | 'dadbattle' | 'dad-battle':
 					curStage = 'stage';
 				case 'spookeez' | 'south' | 'monster':
 					curStage = 'spooky';
@@ -82,7 +82,8 @@ class Stage extends FlxTypedGroup<FlxBasic>
 					curStage = 'unknown';
 			}
 		}
-		PlayState.curStage = PlayState.SONG.stage;
+		if (!stageDebug)
+			PlayState.curStage = PlayState.SONG.stage;
 
 		// to apply to foreground use foreground.add(); instead of add();
 		foreground = new FlxTypedGroup<FlxBasic>();

@@ -42,6 +42,9 @@ class Init extends FlxState
 	public static var FORCED = 'forced';
 	public static var NOT_FORCED = 'not forced';
 
+	public static var comboOffset:Array<Float> = [0, 0];
+	public static var ratingOffset:Array<Float> = [0, 0];
+
 	/**
 	 * hi, gabi (ghost) here, I know this is an odd place to put a comment but i'm gonna try to be more descriptive
 	 * in regardless to variables and such from now on
@@ -163,7 +166,7 @@ class Init extends FlxState
 			NOT_FORCED
 		],
 		'Fixed Judgements' => [
-			false,
+			true,
 			Checkmark,
 			"Fixes the judgements to the camera instead of to the world itself, making them easier to read.",
 			NOT_FORCED
@@ -343,6 +346,10 @@ class Init extends FlxState
 			FlxG.sound.volume = FlxG.save.data.volume;
 		if (FlxG.save.data.mute != null)
 			FlxG.sound.muted = FlxG.save.data.mute;
+		if (FlxG.save.data.comboOffset != null)
+			comboOffset = FlxG.save.data.comboOffset;
+		if (FlxG.save.data.ratingOffset != null)
+			ratingOffset = FlxG.save.data.ratingOffset;
 			
 		CoolUtil.difficulties = CoolUtil.baseDifficulties.copy();
 
@@ -415,6 +422,10 @@ class Init extends FlxState
 			FlxG.sound.volume = FlxG.save.data.volume;
 		if (FlxG.save.data.mute != null)
 			FlxG.sound.muted = FlxG.save.data.mute;
+		if (FlxG.save.data.comboOffset != null)
+			comboOffset = FlxG.save.data.comboOffset;
+		if (FlxG.save.data.ratingOffset != null)
+			ratingOffset = FlxG.save.data.ratingOffset;
 
 		saveSettings();
 		updateAll();
@@ -424,6 +435,8 @@ class Init extends FlxState
 	{
 		// ez save lol
 		FlxG.save.bind('forever-settings', 'BeastlyGhost');
+		FlxG.save.data.comboOffset = comboOffset;
+		FlxG.save.data.ratingOffset = ratingOffset;
 		FlxG.save.data.settings = trueSettings;
 		FlxG.save.flush();
 

@@ -37,19 +37,22 @@ class ForeverAssets
 {
 	//
 	public static function generateCombo(asset:String, number:String, allSicks:Bool, group:FlxTypedGroup<FNFSprite>, assetModifier:String = 'base', changeableSkin:String = 'default',
-		baseLibrary:String, negative:Bool, createdColor:FlxColor, scoreInt:Int):FNFSprite
+		baseLibrary:String, negative:Bool, createdColor:FlxColor, scoreInt:Int, ?debug:Bool = false):FNFSprite
 	{
-		var width = 100;
-		var height = 140;
+		var width:Int = 100;
+		var height:Int = 140;
 		if (assetModifier == 'pixel')
 		{
 			width = 10;
 			height = 12;
 		}
 
-		var parsedNumber = Std.parseInt(number);
-
-		var combo = group.recycle(FNFSprite);
+		var parsedNumber:Null<Int> = Std.parseInt(number);
+		var combo:FNFSprite;
+		if (group != null)
+			combo = group.recycle(FNFSprite);
+		else
+			combo = new FNFSprite();
 		combo.loadGraphic(Paths.image(ForeverTools.returnSkin(asset, assetModifier, changeableSkin, baseLibrary)), true, width, height);
 		combo.animation.add('combo', [(parsedNumber != null ? parsedNumber + 1 : 0) + (!allSicks ? 0 : 11)], 0, false);
 
@@ -59,6 +62,12 @@ class ForeverAssets
 		combo.screenCenter();
 		combo.x += (43 * scoreInt) + 20;
 		combo.y += 60;
+
+		if (Init.trueSettings.get('Fixed Judgements') && !debug)
+		{
+			combo.x += Init.comboOffset[0];
+			combo.y += Init.comboOffset[1];
+		}
 
 		combo.color = FlxColor.WHITE;
 		if (negative)
@@ -78,7 +87,7 @@ class ForeverAssets
 		
 		if (combo != null)
 		{
-			if (Init.trueSettings.get('Judgement Stacking'))
+			if (Init.trueSettings.get('Judgement Stacking') && !debug)
 			{
 				combo.acceleration.y = FlxG.random.int(100, 200);
 				combo.velocity.y = -FlxG.random.int(140, 160);
@@ -92,21 +101,26 @@ class ForeverAssets
 					startDelay: (Conductor.crochet) / 1000
 				});
 			}
-			else
+			else if (!debug)
 			{
 				FlxTween.tween(combo, {y: combo.y + 20}, 0.1, {type: FlxTweenType.BACKWARD, ease: FlxEase.circOut});
 			}
 		}
 
-		group.sort(FNFSprite.depthSorting, FlxSort.DESCENDING);
+		if (group != null)
+			group.sort(FNFSprite.depthSorting, FlxSort.DESCENDING);
 
 		return combo;
 	}
 
 	public static function generateRating(newRating:String, perfect:Bool, lateHit:Bool, group:FlxTypedGroup<FNFSprite>, assetModifier:String = 'base', changeableSkin:String = 'default',
-			baseLibrary:String):FNFSprite
+			baseLibrary:String, ?debug:Bool = false):FNFSprite
 	{
-		var rating = group.recycle(FNFSprite);
+		var rating:FNFSprite;
+		if (group != null)
+			rating = group.recycle(FNFSprite);
+		else
+			rating = new FNFSprite();
 		rating.loadGraphic(Paths.image(ForeverTools.returnSkin('judgements', assetModifier, changeableSkin, baseLibrary)), true,
 			assetModifier == 'pixel' ? 72 : 500, assetModifier == 'pixel' ? 32 : 163);
 
@@ -118,6 +132,14 @@ class ForeverAssets
 		rating.zDepth = -Conductor.songPosition;
 		rating.screenCenter();
 		rating.animation.play(newRating);
+		rating.y -= 60;
+		rating.x = (FlxG.width * 0.55) - 40;
+
+		if (Init.trueSettings.get('Fixed Judgements') && !debug)
+		{
+			rating.x += Init.ratingOffset[0];
+			rating.y += Init.ratingOffset[1];
+		}
 
 		if (assetModifier == 'pixel')
 		{
@@ -129,13 +151,11 @@ class ForeverAssets
 			rating.antialiasing = !Init.trueSettings.get('Disable Antialiasing');
 			rating.setGraphicSize(Std.int(rating.frameWidth * 0.7));
 		}
+		rating.updateHitbox();
 
-		rating.y -= 60;
-		rating.x = (FlxG.width * 0.55) - 40;
-		
 		if (rating != null)
 		{
-			if (Init.trueSettings.get('Judgement Stacking'))
+			if (Init.trueSettings.get('Judgement Stacking') && !debug)
 			{
 				rating.velocity.y = -FlxG.random.int(140, 175);
 				rating.velocity.x = -FlxG.random.int(0, 10);
@@ -151,7 +171,8 @@ class ForeverAssets
 			}
 		}
 
-		group.sort(FNFSprite.depthSorting, FlxSort.DESCENDING);
+		if (group != null)
+			group.sort(FNFSprite.depthSorting, FlxSort.DESCENDING);
 
 		return rating;
 	}
