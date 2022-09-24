@@ -4,9 +4,9 @@ function loadAnimations()
 	addByPrefix('deathLoop', "Retry Loop", 24, true);
 	addByPrefix('deathConfirm', "RETRY CONFIRM", 24, false);
 
-	addOffset('firstDeath', 0, -20);
-	addOffset('deathLoop', -30, -20);
-	addOffset('deathConfirm', 0, -20);
+	addOffset("firstDeath", 9, 24);
+	addOffset("deathConfirm", 10, 24);
+	addOffset("deathLoop", 10, 24);
 
 	setGraphicSize(get('width') * 6);
 	set('antialiasing', false);
@@ -17,7 +17,7 @@ function loadAnimations()
 		setCamOffsets(-30, -150);
 	}
 	if (curStage == 'school' || curStage == 'schoolEvil')
-		setOffsets(15, 400);
+		setOffsets(15, 480);
 	if (curStage == 'school')
 		setCamOffsets(50, -80);
 	if (curStage == 'schoolEvil')

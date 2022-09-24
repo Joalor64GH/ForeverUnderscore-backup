@@ -12,15 +12,16 @@ function loadAnimations()
 
 	addOffset('idle', 0, 0);
 	addOffset('bfCatch', 0, 0);
-	addOffset('singUP', -29, 10);
-	addOffset('singDOWN', -10, -10);
-	addOffset('singLEFT', 12, 7);
-	addOffset('singRIGHT', -41, 23);
 
-	addOffset('singUPmiss', -29, 10);
-	addOffset('singDOWNmiss', -10, -10);
-	addOffset('singLEFTmiss', 12, 7);
-	addOffset('singRIGHTmiss', -41, 23);
+	addOffset("singLEFT", 11, 4);
+	addOffset("singDOWN", -10, -10);
+	addOffset("singUP", -42, 10);
+	addOffset("singRIGHT", -41, 20);
+
+	addOffset("singLEFTmiss", 10, 4);
+	addOffset("singDOWNmiss", -10, -10);
+	addOffset("singUPmiss", -32, 8);
+	addOffset("singRIGHTmiss", -34, 33);
 
 	playAnim('idle');
 

@@ -99,15 +99,19 @@ class GameOverSubstate extends MusicBeatSubstate
 			endBullshit(true);
 		}
 
-		if (bf.animation.curAnim.name == 'firstDeath' && bf.animation.curAnim.curFrame == 12)
-			FlxG.camera.follow(camFollow, LOCKON, 0.01);
-
-		if (bf.animation.curAnim.name == 'firstDeath' && bf.animation.curAnim.finished)
+		if (bf.animation.curAnim.name == 'firstDeath')
 		{
-			bf.playAnim('deathLoop');
-			deathSong.play(false);
-			deathSong.persist = true;
-			deathSong.looped = true;
+			if (bf.animation.curAnim.curFrame == 12)
+			{
+				FlxG.camera.follow(camFollow, LOCKON, 0.01);
+			}
+			else if (bf.animation.curAnim.finished)
+			{
+				bf.playAnim('deathLoop');
+				deathSong.play(false);
+				deathSong.persist = true;
+				deathSong.looped = true;
+			}
 		}
 
 		if (PlayState.SONG.stage == 'military')

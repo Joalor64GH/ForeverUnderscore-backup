@@ -4,6 +4,10 @@ function loadAnimations()
     addByPrefix('deathLoop', "BF Dead Loop", 24, true);
     addByPrefix('deathConfirm', "BF Dead confirm", 24, false);
 
+    addOffset("firstDeath", -10, 0);
+    addOffset("deathConfirm", -10, 0);
+    addOffset("deathLoop", -10, 0);
+
     set('antialiasing', true);
 
     if (isPlayer)

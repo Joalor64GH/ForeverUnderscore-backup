@@ -6,9 +6,12 @@ function loadAnimations()
 
 	set('antialiasing', true);
 
-	addOffset('firstDeath', 37, 14);
-	addOffset('deathLoop', 37, -3);
-	addOffset('deathConfirm', 37, 28);
+	addOffset("firstDeath", 26, 31);
+	addOffset("deathConfirm", 27, 44);
+	addOffset("deathLoop", 26, 13);
+
+	setOffsets(0, 450);
+
 	if (isPlayer)
 		set('flipX', true);
 	else

@@ -249,7 +249,7 @@ class CharacterOffsetEditor extends MusicBeatState
 	override function update(elapsed:Float)
 	{
 		MusicBeatState.camBeat = camHUD;
-		textAnim.text = char.animation.curAnim.name;
+		textAnim.text = (char.animation.curAnim.name != null ? char.animation.curAnim.name : '');
 		ghost.flipX = char.flipX;
 
 		ghost.visible = showGhost;
@@ -311,7 +311,6 @@ class CharacterOffsetEditor extends MusicBeatState
 
 		if (FlxG.keys.justPressed.W)
 			updateAnimation(-1);
-
 		if (FlxG.keys.justPressed.S)
 			updateAnimation(1);
 
@@ -320,7 +319,7 @@ class CharacterOffsetEditor extends MusicBeatState
 			char.playAnim(animList[curAnim]);
 		}
 
-		if (check_offset.checked)
+		if (check_offset.checked && char.animation.curAnim != null)
 		{
 			var controlArray:Array<Bool> = [
 				FlxG.keys.justPressed.LEFT,
