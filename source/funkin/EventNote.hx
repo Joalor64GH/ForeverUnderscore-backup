@@ -1,6 +1,5 @@
 package funkin;
 
-import base.ForeverTools;
 import dependency.AbsoluteText.EventText;
 import flixel.FlxSprite;
 import states.PlayState;

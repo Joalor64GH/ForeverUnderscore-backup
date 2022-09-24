@@ -323,6 +323,14 @@ class PlayState extends MusicBeatState
 			add(darknessLine1);
 			add(darknessLine2);
 
+			for (dark in [darknessBG, darknessLine1, darknessLine2])
+			{
+				dark.alpha = 0;
+				dark.cameras = [camHUD];
+				dark.scrollFactor.set();
+				dark.screenCenter(Y);
+			}
+
 			// for the opponent
 			if (!Init.trueSettings.get('Centered Receptors'))
 			{
@@ -338,14 +346,14 @@ class PlayState extends MusicBeatState
 				add(darknessOpponent);
 				add(darknessLine3);
 				add(darknessLine4);
-			}
 
-			for (dark in [darknessBG, darknessOpponent, darknessLine1, darknessLine2, darknessLine3, darknessLine4])
-			{
-				dark.alpha = 0;
-				dark.cameras = [camHUD];
-				dark.scrollFactor.set();
-				dark.screenCenter(Y);
+				for (dark in [darknessOpponent, darknessLine3, darknessLine4])
+				{
+					dark.alpha = 0;
+					dark.cameras = [camHUD];
+					dark.scrollFactor.set();
+					dark.screenCenter(Y);
+				}
 			}
 		}
 		else
@@ -887,7 +895,8 @@ class PlayState extends MusicBeatState
 			{
 				health = 0;
 			}
-			doGameOverCheck();
+			if (!startingSong && !endingSong)
+				doGameOverCheck();
 
 			// spawn in the notes from the array
 			if ((unspawnNotes[0] != null) && ((unspawnNotes[0].strumTime - Conductor.songPosition) < 3500))
@@ -1362,7 +1371,7 @@ class PlayState extends MusicBeatState
 					if (!coolNote.isSustainNote)
 					{
 						increaseCombo(foundRating, coolNote.noteData, character);
-						popUpScore(foundRating, coolNote.strumTime < Conductor.songPosition, Timings.curFC == 0, strumline, coolNote);
+						popUpScore(foundRating, coolNote.strumTime < Conductor.songPosition, Timings.perfectSicks, strumline, coolNote);
 
 						if (coolNote.childrenNotes.length > 0)
 							Timings.notesHit++;
@@ -1622,7 +1631,7 @@ class PlayState extends MusicBeatState
 		if (!bfStrums.autoplay)
 			popJudgement(baseRating, timing, perfect);
 		else
-			popJudgement('sick', false, Timings.curFC == 0);
+			popJudgement('sick', false, Timings.perfectSicks);
 		Timings.updateAccuracy(Timings.judgementsMap.get(baseRating)[3]);
 		score = Std.int(Timings.judgementsMap.get(baseRating)[2]);
 
@@ -1725,8 +1734,7 @@ class PlayState extends MusicBeatState
 		if (popMiss)
 		{
 			uiHUD.tweenScoreColor("miss", false);
-			// doesn't matter, miss ratings don't have timings
-			popJudgement("miss", false, Timings.curFC == 0);
+			popJudgement("miss", true, false);
 			healthCall(Timings.judgementsMap.get("miss")[3]);
 		}
 
@@ -2300,6 +2308,7 @@ class PlayState extends MusicBeatState
 
 			var introAssets:Map<String, Array<String>> = new Map<String, Array<String>>();
 			introAssets.set('default', [
+				ForeverTools.returnSkin('prepare', assetModifier, changeableSkin, 'UI'),
 				ForeverTools.returnSkin('ready', assetModifier, changeableSkin, 'UI'),
 				ForeverTools.returnSkin('set', assetModifier, changeableSkin, 'UI'),
 				ForeverTools.returnSkin('go', assetModifier, changeableSkin, 'UI')
@@ -2315,19 +2324,41 @@ class PlayState extends MusicBeatState
 			switch (swagCounter)
 			{
 				case 0:
+					var prepare:FlxSprite = new FlxSprite().loadGraphic(Paths.image(introAlts[0]));
+					prepare.scrollFactor.set();
+					prepare.updateHitbox();
+
+					prepare.cameras = [camHUD];
+
+					/* doing it later;
+						if (assetModifier == 'pixel')
+							prepare.setGraphicSize(Std.int(prepare.width * PlayState.daPixelZoom));
+					 */
+
+					prepare.screenCenter();
+					add(prepare);
+					FlxTween.tween(prepare, {y: prepare.y += 50, alpha: 0}, Conductor.crochet / 1000, {
+						ease: FlxEase.cubeInOut,
+						onComplete: function(twn:FlxTween)
+						{
+							prepare.destroy();
+						}
+					});
 					FlxG.sound.play(Paths.sound('countdown/intro3-' + assetModifier), 0.6);
 					Conductor.songPosition = -(Conductor.crochet * 4);
 				case 1:
-					var ready:FlxSprite = new FlxSprite().loadGraphic(Paths.image(introAlts[0]));
+					var ready:FlxSprite = new FlxSprite().loadGraphic(Paths.image(introAlts[1]));
 					ready.scrollFactor.set();
 					ready.updateHitbox();
+
+					ready.cameras = [camHUD];
 
 					if (assetModifier == 'pixel')
 						ready.setGraphicSize(Std.int(ready.width * PlayState.daPixelZoom));
 
 					ready.screenCenter();
 					add(ready);
-					FlxTween.tween(ready, {y: ready.y += 100, alpha: 0}, Conductor.crochet / 1000, {
+					FlxTween.tween(ready, {y: ready.y += 50, alpha: 0}, Conductor.crochet / 1000, {
 						ease: FlxEase.cubeInOut,
 						onComplete: function(twn:FlxTween)
 						{
@@ -2337,15 +2368,17 @@ class PlayState extends MusicBeatState
 					FlxG.sound.play(Paths.sound('countdown/intro2-' + assetModifier), 0.6);
 					Conductor.songPosition = -(Conductor.crochet * 3);
 				case 2:
-					var set:FlxSprite = new FlxSprite().loadGraphic(Paths.image(introAlts[1]));
+					var set:FlxSprite = new FlxSprite().loadGraphic(Paths.image(introAlts[2]));
 					set.scrollFactor.set();
+
+					set.cameras = [camHUD];
 
 					if (assetModifier == 'pixel')
 						set.setGraphicSize(Std.int(set.width * PlayState.daPixelZoom));
 
 					set.screenCenter();
 					add(set);
-					FlxTween.tween(set, {y: set.y += 100, alpha: 0}, Conductor.crochet / 1000, {
+					FlxTween.tween(set, {y: set.y += 50, alpha: 0}, Conductor.crochet / 1000, {
 						ease: FlxEase.cubeInOut,
 						onComplete: function(twn:FlxTween)
 						{
@@ -2355,8 +2388,10 @@ class PlayState extends MusicBeatState
 					FlxG.sound.play(Paths.sound('countdown/intro1-' + assetModifier), 0.6);
 					Conductor.songPosition = -(Conductor.crochet * 2);
 				case 3:
-					var go:FlxSprite = new FlxSprite().loadGraphic(Paths.image(introAlts[2]));
+					var go:FlxSprite = new FlxSprite().loadGraphic(Paths.image(introAlts[3]));
 					go.scrollFactor.set();
+
+					go.cameras = [camHUD];
 
 					if (assetModifier == 'pixel')
 						go.setGraphicSize(Std.int(go.width * PlayState.daPixelZoom));
@@ -2365,7 +2400,7 @@ class PlayState extends MusicBeatState
 
 					go.screenCenter();
 					add(go);
-					FlxTween.tween(go, {y: go.y += 100, alpha: 0}, Conductor.crochet / 1000, {
+					FlxTween.tween(go, {y: go.y += 50, alpha: 0}, Conductor.crochet / 1000, {
 						ease: FlxEase.cubeInOut,
 						onComplete: function(twn:FlxTween)
 						{

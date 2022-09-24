@@ -1,7 +1,5 @@
 package states.menus;
 
-import base.ForeverAssets;
-import base.ForeverTools;
 import dependency.Discord;
 import flixel.FlxG;
 import flixel.FlxSprite;

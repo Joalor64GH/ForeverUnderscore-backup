@@ -2,7 +2,6 @@ package funkin.ui;
 
 import base.Conductor;
 import base.CoolUtil;
-import base.ForeverTools;
 import flixel.FlxBasic;
 import flixel.FlxG;
 import flixel.FlxSprite;
@@ -116,9 +115,9 @@ class ClassHUD extends FlxTypedGroup<FlxBasic>
 		if (Init.trueSettings.get('Centered Receptors'))
 		{
 			if (Init.trueSettings.get('Downscroll'))
-				autoplayMark.y = autoplayMark.y - 85;
+				autoplayMark.y = autoplayMark.y - 105;
 			else
-				autoplayMark.y = autoplayMark.y + 85;
+				autoplayMark.y = autoplayMark.y + 105;
 		}
 
 		add(autoplayMark);

@@ -1,7 +1,7 @@
 package funkin;
 
-import funkin.*;
 import states.PlayState;
+import funkin.*;
 
 /**
 	Here's a class that calculates timings and judgements for the songs and such
@@ -12,7 +12,7 @@ class Timings
 	public static var accuracy:Float;
 	public static var trueAccuracy:Float;
 
-	public static var curFC:Int = 0;
+	public static var perfectSicks:Bool = true;
 
 	// from left to right
 	// judgement id, max milliseconds, score from it and percentage
@@ -66,7 +66,7 @@ class Timings
 
 		notesHit = 0;
 		segmentsHit = 0;
-		curFC = 0;
+		perfectSicks = true;
 
 		ratingFinal = "N/A";
 		comboDisplay = '';
@@ -107,17 +107,7 @@ class Timings
 				comboDisplay = 'SDCB';
 		}
 
-		if (notesHit > 0)
-		{
-			switch (comboDisplay)
-			{
-				case 'GFC': curFC = 1;
-				case 'FC': curFC = 2;
-				case 'SDCB': curFC = 3;
-				case '' | null: curFC = -1;
-				default: curFC = 0;
-			}
-		}
+		perfectSicks = (trueAccuracy >= 100);
 
 		// this updates the most so uh
 		PlayState.uiHUD.updateScoreText();

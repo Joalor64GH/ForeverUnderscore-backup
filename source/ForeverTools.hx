@@ -1,6 +1,7 @@
-package base;
+package;
 
 import sys.FileSystem;
+import base.*;
 import flixel.FlxG;
 import flixel.system.FlxSound;
 import flixel.text.FlxText;
@@ -9,7 +10,6 @@ import flixel.tweens.FlxTween.FlxTweenType;
 import flixel.util.FlxColor;
 import openfl.display.BlendMode;
 import states.PlayState;
-import base.*;
 
 using StringTools;
 
@@ -49,8 +49,8 @@ class ForeverTools
 	 * @param changeableSkin the changeable default skin for the asset we should get
 	 * @param baseLibrary the base folder where we should grab the assets from, usually `UI`
 	 * @param defaultChangeableSkin optional, specifies the default folder for the `changeableSkin` parameter
-	 * @param defaultBaseAsset optional, specieis the default folder for the `assetModifier` parameter
-	 * @return String
+	 * @param defaultBaseAsset optional, specifies the default folder for the `assetModifier` parameter
+	 * @return String, which references your custom Asset
 	 */
 	public static function returnSkin(asset:String, assetModifier:String = 'base', changeableSkin:String = 'default', baseLibrary:String,
 			?defaultChangeableSkin:String = 'default', ?defaultBaseAsset:String = 'base'):String

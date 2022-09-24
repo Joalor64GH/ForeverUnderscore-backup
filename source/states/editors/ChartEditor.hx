@@ -3,8 +3,6 @@ package states.editors;
 import haxe.Json;
 import haxe.io.Bytes;
 import base.Conductor;
-import base.ForeverAssets;
-import base.ForeverTools;
 import base.MusicBeat.MusicBeatState;
 import base.SongLoader.LegacySection;
 import base.SongLoader.LegacySong;

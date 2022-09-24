@@ -1,6 +1,5 @@
 package states.substates;
 
-import base.ForeverAssets;
 import base.MusicBeat.MusicBeatSubstate;
 import dependency.FNFSprite;
 import flixel.FlxG;

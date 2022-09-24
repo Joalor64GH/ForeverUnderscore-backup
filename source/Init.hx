@@ -118,7 +118,7 @@ class Init extends FlxState
 		'GPU Rendering' => [
 			false,
 			Checkmark,
-			"Whether the game should use your GPU to render images, takes effect after restart.",
+			"Whether the game should use your GPU to render images. [EXPERIMENTAL, takes effect after restart]",
 			NOT_FORCED
 		],
 		'Menu Song' => [

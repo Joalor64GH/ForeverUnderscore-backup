@@ -4,7 +4,6 @@ import base.Conductor;
 import base.MusicBeat.MusicBeatSubstate;
 import flixel.FlxG;
 import flixel.FlxObject;
-import flixel.math.FlxPoint;
 import flixel.system.FlxSound;
 import flixel.util.FlxColor;
 import flixel.util.FlxTimer;
@@ -19,6 +18,7 @@ class GameOverSubstate extends MusicBeatSubstate
 
 	var deathSong:FlxSound;
 	var tankNoise:FlxSound;
+	var confirmNoise:FlxSound;
 
 	public static var character:String = 'bf-dead';
 	public static var deathMusic:String = 'gameOver';
@@ -64,6 +64,10 @@ class GameOverSubstate extends MusicBeatSubstate
 			FlxG.sound.list.add(tankNoise);
 		}
 
+		// precache confirm sound
+		confirmNoise = new FlxSound().loadEmbedded(Paths.music(deathConfirm), false, true);
+		FlxG.sound.list.add(confirmNoise);
+
 		bf = new Character(x, y, character);
 		add(bf);
 
@@ -84,22 +88,15 @@ class GameOverSubstate extends MusicBeatSubstate
 		super.update(elapsed);
 
 		if (controls.ACCEPT)
-			endBullshit();
+			endBullshit(false);
 
 		if (controls.BACK)
 		{
-			deathSong.stop();
-			if (tankNoise != null && tankNoise.playing)
-				tankNoise.stop();
-
 			PlayState.deaths = 0;
 			PlayState.seenCutscene = false;
 			PlayState.chartingMode = false;
 
-			if (PlayState.isStoryMode)
-				Main.switchState(this, new StoryMenuState());
-			else
-				Main.switchState(this, new FreeplayState());
+			endBullshit(true);
 		}
 
 		if (bf.animation.curAnim.name == 'firstDeath' && bf.animation.curAnim.curFrame == 12)
@@ -135,23 +132,34 @@ class GameOverSubstate extends MusicBeatSubstate
 	}
 
 	var isEnding:Bool = false;
-	function endBullshit():Void
+	function endBullshit(leaving:Bool):Void
 	{
 		if (!isEnding)
 		{
-			isEnding = true;
-			bf.playAnim('deathConfirm', true);
 			deathSong.stop();
 			if (tankNoise != null && tankNoise.playing)
 				tankNoise.stop();
-			FlxG.sound.play(Paths.music(deathConfirm));
-			new FlxTimer().start(0.7, function(tmr:FlxTimer)
+
+			if (!leaving)
 			{
-				FlxG.camera.fade(FlxColor.BLACK, 1, false, function()
+				isEnding = true;
+				bf.playAnim('deathConfirm', true);
+				confirmNoise.play(false);
+				new FlxTimer().start(0.9, function(tmr:FlxTimer)
 				{
-					Main.switchState(this, new PlayState());
+					FlxG.camera.fade(FlxColor.BLACK, 0.7, false, function()
+					{
+						Main.switchState(this, new PlayState());
+					});
 				});
-			});
+			}
+			else
+			{
+				if (PlayState.isStoryMode)
+					Main.switchState(this, new StoryMenuState());
+				else
+					Main.switchState(this, new FreeplayState());
+			}
 		}
 	}
 }

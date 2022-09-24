@@ -1,6 +1,5 @@
 package states.menus;
 
-import base.ForeverTools;
 import base.MusicBeat.MusicBeatState;
 import dependency.Discord;
 import flixel.FlxG;

@@ -1,6 +1,5 @@
 package funkin.ui;
 
-import base.ForeverTools;
 import dependency.FNFSprite;
 import flixel.FlxBasic;
 import flixel.FlxG;

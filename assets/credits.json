@@ -3,15 +3,14 @@
 	"menuBGColor": [255, 255, 255],
 	"tweenColor": true,
 
-	"users":
-	[
+	"users": [
 		{
 			"sectionName": "FOREVER ENGINE: UNDERSCORE",
 
 			"name": "BeastlyGhost",
 			"iconData": ["ghost", 375, 0],
 			"textData": ["Main Coder", "I am definitely not a ghost, just trust me on that one."],
-			"urlData": [["Twitter", "https://twitter.com/Fan_de_RPG"]],
+			"urlData": [["Twitter", "https://twitter.com/Fan_de_RPG"], ["Discord", "https://discord.com/users/597124141530742805"]],
 			"colors": [197, 222, 255]
 		},
 		{
@@ -32,7 +31,7 @@
 			"name": "TheWorldMachine",
 			"iconData": ["macxp", 510, -3],
 			"textData": ["Script Backend Coder, Additional Coder"],
-			"urlData": [["Discord", "https://discord.com/users/891724604387774534"]],
+			"urlData": [["Twitter", "https://twitter.com/DaWordMachinima"], ["Discord", "https://discord.com/users/891724604387774534"]],
 			"colors": [182, 84, 82]
 		},
 		{
@@ -56,7 +55,7 @@
 
 			"name": "ShadowMario",
 			"iconData": [],
-			"textData": ["Coding Help, some advices and overhaul good friend", "WikiHow: How to handle fame."],
+			"textData": ["Coding Help, some advices and overall good friend", "WikiHow: How to handle fame."],
 			"urlData": [["Twitter", "https://twitter.com/Shadow_Mario_"]],
 			"colors": [68, 68, 68]
 		},
@@ -66,6 +65,20 @@
 			"textData": ["Custom Menu Assets", "i injected uranium in my veins."],
 			"urlData": [["Twitter", "https://twitter.com/NooBZiiTo1"]],
 			"colors": [113, 255, 0]
+		},
+		{
+			"name": "Suok",
+			"iconData": [],
+			"textData": ["Custom Game Assets", "não faça sexo."],
+			"urlData": [["Twitter", "https://twitter.com/SuokArts3"]],
+			"colors": [255, 255, 255]
+		},
+		{
+			"name": "ImNotSonic",
+			"iconData": [],
+			"textData": ["Custom Pixel Game Assets", ""],
+			"urlData": [["Twitter", "https://twitter.com/Imnotsonic1"]],
+			"colors": [255, 255, 255]
 		},
 		{
 			"sectionName": "SPECIAL THANKS",
