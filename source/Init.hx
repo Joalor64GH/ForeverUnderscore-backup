@@ -156,6 +156,12 @@ class Init extends FlxState
 			NOT_FORCED,
 			''
 		],
+		'Judgement Stacking' => [
+			true,
+			Checkmark,
+			"Whether Judgements should stack on top of eachother, also simplifies judgement / combo animations if disabled.",
+			NOT_FORCED
+		],
 		'Fixed Judgements' => [
 			false,
 			Checkmark,

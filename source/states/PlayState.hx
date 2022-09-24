@@ -183,6 +183,11 @@ class PlayState extends MusicBeatState
 
 	public var charGroup:FlxSpriteGroup;
 
+	// stores the last judgement sprite object
+	public static var lastJudgement:FNFSprite;
+	// stores the last combo sprite objects in an array
+	public static var lastCombo:Array<FNFSprite> = [];
+
 	// at the beginning of the playstate
 	override public function create()
 	{
@@ -1656,13 +1661,25 @@ class PlayState extends MusicBeatState
 	{
 		var rating = ForeverAssets.generateRating('$newRating', perfect, lateHit, ratingsGroup, assetModifier, changeableSkin, 'UI');
 
-		/**
-		 * Credits to Shadow_Mario_;
-		 */
-		//insert(members.indexOf(strumLines), rating);
-
 		if (!cached)
 		{
+			if (!Init.trueSettings.get('Judgement Stacking'))
+			{
+				if (lastJudgement != null)
+					lastJudgement.kill();
+				for (i in 0...ratingsGroup.members.length)
+					lastJudgement = ratingsGroup.members[i];
+					
+				FlxTween.tween(rating, {y: rating.y + 20}, 0.2, {type: FlxTweenType.BACKWARD, ease: FlxEase.circOut});
+				FlxTween.tween(rating, {"scale.x": 0, "scale.y": 0}, (Conductor.stepCrochet) / 1000, {
+					onComplete: function(tween:FlxTween)
+					{
+						rating.kill();
+					},
+					startDelay: ((Conductor.crochet + Conductor.stepCrochet * 2) / 1000)
+				});
+			}
+
 			Timings.gottenJudgements.set(newRating, Timings.gottenJudgements.get(newRating) + 1);
 			if (Timings.smallestRating != newRating)
 			{
@@ -1689,14 +1706,24 @@ class PlayState extends MusicBeatState
 		if ((comboString.startsWith('-')) || (combo == 0))
 			negative = true;
 
+		if (lastCombo != null)
+		{
+			while (lastCombo.length > 0)
+			{
+				lastCombo[0].kill();
+				lastCombo.remove(lastCombo[0]);
+			}
+		}
+
 		for (scoreInt in 0...stringArray.length)
 		{
 			var comboNum = ForeverAssets.generateCombo('combo_numbers', stringArray[scoreInt], (!negative ? perfect : false), comboGroup, assetModifier, changeableSkin, 'UI', negative, createdColor, scoreInt);
 			
-			/**
-			 * Credits to Shadow_Mario_;
-			 */
-			//insert(members.indexOf(strumLines), comboNum);
+			if (!Init.trueSettings.get('Judgement Stacking'))
+			{
+				for (i in 0...comboGroup.members.length)
+					lastCombo.push(comboGroup.members[i]);
+			}
 
 			if (Init.trueSettings.get('Fixed Judgements'))
 			{

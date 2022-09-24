@@ -4,17 +4,43 @@ All notable changes will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [0.2.2] - [SEP-8-2022]
+## [0.2.2] - [SEP-8-2022 - SEP-24-2022]
 
 ### Added
+- a "Prepare" sprite for the "Three" sound clip during the countdown sequence;
+- You can now have a Dark Background for notes by using the `Opacity Type` option;
+- the Original Chart Editor now has a metronome, can help with BPM Syncing;
+- Substates can now be created with scripts, refer to the `ExampleSubstate.hx` file inside the `docs` folder;
+- Notesplashes are now attached to Noteskins and can be fully customized using the new `splashData.json` file;
+- Re-added "Simply Judgements", with a new name, "Judgement Stacking";
+- Re-added "hxs" extension for older script support;
 
 
 ### Fixed
+- Old Psych Engine Charts (0.4 or prior) should no longer cause a crash;
+- Story Mode Menu will now properly show difficulty selectors;
+- Girlfriend will no longer spawn twice on Tutorial;
+- Non-Pixel Dialogues should now be fully working;
+- Receptors should now have their "confirm" animations looped for autoplay;
+- Accuracy will no longer go over 100%;
+- Health Icons will no longer crash the game if the Character's icon doesn't exist;
 - Transitions should no longer skip themselves if you leave a song during story mode;
 
 
 ### Adjusted
+- General stability improvemets;
+- Receptors are now properly centered;
+- Icon animations are now much simpler;
+- Combo Breaks are now shown even if you have your Accuracy disabled on Options;
+- Scripts now give you output on what went wrong in the event of an error;
+- Stages are fully Softcoded and can be used as examples for animated backgrounds and such;
+- Judgements and Combo are now recycled sprites, meaning that they won't increase memory once you hit a note;
+- Scripts are now fully based on HaxeFlixel, rather than having a bunch of functions for them;
+- Engine Watermark can now be disabled from gameplay;
 - Controls should now be properly formatted along with bold numbers and symbols having correct offsets;
+
+
+## DOWN BELOW THERE ARE VERY OUTDATED CHANGES THAT ARE NO LONGER TRUE / WERE CHANGED WITH TIME;
 
 
 ## [0.2.1.1] - [AUG-23-2022 - SEP-8-2022]

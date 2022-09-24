@@ -8,6 +8,7 @@ import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.group.FlxSpriteGroup.FlxTypedSpriteGroup;
+import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
 import flixel.util.FlxSort;
@@ -74,17 +75,28 @@ class ForeverAssets
 			combo.setGraphicSize(Std.int(combo.frameWidth * 0.5));
 		}
 		combo.updateHitbox();
-		combo.acceleration.y = FlxG.random.int(100, 200);
-		combo.velocity.y = -FlxG.random.int(140, 160);
-		combo.velocity.x = FlxG.random.float(-5, 5);
-
-		FlxTween.tween(combo, {alpha: 0}, (Conductor.stepCrochet * 2) / 1000, {
-			onComplete: function(tween:FlxTween)
+		
+		if (combo != null)
+		{
+			if (Init.trueSettings.get('Judgement Stacking'))
 			{
-				combo.kill();
-			},
-			startDelay: (Conductor.crochet) / 1000
-		});
+				combo.acceleration.y = FlxG.random.int(100, 200);
+				combo.velocity.y = -FlxG.random.int(140, 160);
+				combo.velocity.x = FlxG.random.float(-5, 5);
+
+				FlxTween.tween(combo, {alpha: 0}, (Conductor.stepCrochet * 2) / 1000, {
+					onComplete: function(tween:FlxTween)
+					{
+						combo.kill();
+					},
+					startDelay: (Conductor.crochet) / 1000
+				});
+			}
+			else
+			{
+				FlxTween.tween(combo, {y: combo.y + 20}, 0.1, {type: FlxTweenType.BACKWARD, ease: FlxEase.circOut});
+			}
+		}
 
 		group.sort(FNFSprite.depthSorting, FlxSort.DESCENDING);
 
@@ -120,17 +132,24 @@ class ForeverAssets
 
 		rating.y -= 60;
 		rating.x = (FlxG.width * 0.55) - 40;
-		rating.velocity.y = -FlxG.random.int(140, 175);
-		rating.velocity.x = -FlxG.random.int(0, 10);
-		rating.acceleration.y = 550;
-
-		FlxTween.tween(rating, {alpha: 0}, (Conductor.stepCrochet) / 1000, {
-			onComplete: function(tween:FlxTween)
+		
+		if (rating != null)
+		{
+			if (Init.trueSettings.get('Judgement Stacking'))
 			{
-				rating.kill();
-			},
-			startDelay: ((Conductor.crochet + Conductor.stepCrochet * 2) / 1000)
-		});
+				rating.velocity.y = -FlxG.random.int(140, 175);
+				rating.velocity.x = -FlxG.random.int(0, 10);
+				rating.acceleration.y = 550;
+
+				FlxTween.tween(rating, {alpha: 0}, (Conductor.stepCrochet) / 1000, {
+					onComplete: function(tween:FlxTween)
+					{
+						rating.kill();
+					},
+					startDelay: ((Conductor.crochet + Conductor.stepCrochet * 2) / 1000)
+				});
+			}
+		}
 
 		group.sort(FNFSprite.depthSorting, FlxSort.DESCENDING);
 
