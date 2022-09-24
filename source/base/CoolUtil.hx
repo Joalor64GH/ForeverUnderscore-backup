@@ -1,8 +1,9 @@
 package base;
 
+import sys.FileSystem;
 import flixel.FlxG;
 import openfl.Assets;
-import sys.FileSystem;
+import states.PlayState;
 
 using StringTools;
 
@@ -19,9 +20,21 @@ class CoolUtil
 		return Math.max(min, Math.min(max, value));
 	}
 
-	public static function difficultyFromNumber(number:Int):String
+	inline public static function returnDifficultySuffix(number:Null<Int> = null):String
 	{
-		return difficulties[number];
+		if (number == null)
+			number = PlayState.storyDifficulty;
+		var suffix:String = difficulties[number];
+		suffix = (suffix != 'NORMAL' ? '-' + suffix : '');
+		return suffix;
+	}
+
+	inline public static function difficultyFromString():String
+	{
+		var string = returnDifficultySuffix().replace('-', '');
+		if (string == '' || string == null)
+			string = 'NORMAL';
+		return string;
 	}
 
 	public static function dashToSpace(string:String):String

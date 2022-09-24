@@ -33,7 +33,7 @@ class ClassHUD extends FlxTypedGroup<FlxBasic>
 	var stupidHealth:Float = 0;
 
 	public var infoDisplay:String = CoolUtil.dashToSpace(PlayState.SONG.song);
-	public var diffDisplay:String = CoolUtil.difficultyFromNumber(PlayState.storyDifficulty);
+	public var diffDisplay:String = CoolUtil.difficultyFromString();
 	public var engineDisplay:String = "FE UNDERSCORE v" + Main.underscoreVersion + (Main.showCommitHash ? '${Main.commitHash}' : '');
 
 	public var autoplayMark:FlxText;

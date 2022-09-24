@@ -166,7 +166,7 @@ class OriginalChartEditor extends MusicBeatState
 		Discord.changePresence('CHART EDITOR',
 			'Charting: '
 			+ _song.song
-			+ ' [${CoolUtil.difficultyFromNumber(PlayState.storyDifficulty)}] - by '
+			+ ' [${CoolUtil.difficultyFromString()}] - by '
 			+ _song.author, null, null, null, true);
 		#end
 

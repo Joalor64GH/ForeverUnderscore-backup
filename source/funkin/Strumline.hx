@@ -149,6 +149,7 @@ class Strumline extends FlxSpriteGroup
 
 	public var autoplay:Bool = true;
 	public var displayJudgements:Bool = false;
+	public var noteSplashes:Bool = false;
 
 	public function new(xPos:Float = 0, yPos:Float = 0, playState:PlayState, ?character:Character, ?displayJudgements:Bool = true, ?autoplay:Bool = true,
 			?noteSplashes:Bool = false, ?keyAmount:Int = 4, ?parent:Strumline)
@@ -159,6 +160,7 @@ class Strumline extends FlxSpriteGroup
 		this.character = character;
 		this.playState = playState;
 		this.displayJudgements = displayJudgements;
+		this.noteSplashes = noteSplashes;
 
 		receptors = new FlxTypedSpriteGroup<UIStaticArrow>();
 		splashNotes = new FlxTypedSpriteGroup<NoteSplash>();

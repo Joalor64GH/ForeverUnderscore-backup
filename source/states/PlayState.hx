@@ -919,33 +919,41 @@ class PlayState extends MusicBeatState
 				controllerInput();
 		}
 
-		if (FlxG.keys.justPressed.TWO && !isStoryMode && !startingSong && !endingSong && scriptDebugMode)
+		if (!isStoryMode && !startingSong && !endingSong && scriptDebugMode)
 		{ // Go 10 seconds into the future, @author Shadow_Mario_
-			if (Conductor.songPosition + 10000 < Conductor.songMusic.length)
+			if (FlxG.keys.justPressed.ONE)
 			{
 				preventScoring = true;
-				Conductor.songMusic.pause();
-				Conductor.songVocals.pause();
-				Conductor.songPosition += 10000;
-				notes.forEachAlive(function(daNote:Note)
+				endSong();
+			}
+			if (FlxG.keys.justPressed.TWO)
+			{
+				if (Conductor.songPosition + 10000 < Conductor.songMusic.length)
 				{
-					if (daNote.strumTime - 500 < Conductor.songPosition)
+					preventScoring = true;
+					Conductor.songMusic.pause();
+					Conductor.songVocals.pause();
+					Conductor.songPosition += 10000;
+					notes.forEachAlive(function(daNote:Note)
 					{
-						daNote.active = false;
-						daNote.visible = false;
-
-						daNote.kill();
-						notes.remove(daNote, true);
-						daNote.alive = false;
-						daNote.destroy();
-					}
-				});
-
-				Conductor.songMusic.time = Conductor.songPosition;
-				Conductor.songVocals.time = Conductor.songPosition;
-
-				Conductor.songMusic.play();
-				Conductor.songVocals.play();
+						if (daNote.strumTime - 500 < Conductor.songPosition)
+						{
+							daNote.active = false;
+							daNote.visible = false;
+	
+							daNote.kill();
+							notes.remove(daNote, true);
+							daNote.alive = false;
+							daNote.destroy();
+						}
+					});
+	
+					Conductor.songMusic.time = Conductor.songPosition;
+					Conductor.songVocals.time = Conductor.songPosition;
+	
+					Conductor.songMusic.play();
+					Conductor.songVocals.play();
+				}
 			}
 		}
 
@@ -1822,7 +1830,7 @@ class PlayState extends MusicBeatState
 
 		Conductor.changeBPM(SONG.bpm);
 
-		songDetails = CoolUtil.dashToSpace(SONG.song) + ' [' + CoolUtil.difficultyFromNumber(storyDifficulty) + '] - by ' + SONG.author + ' (${Conductor.playbackRate}x)';
+		songDetails = CoolUtil.dashToSpace(SONG.song) + ' [' + CoolUtil.returnDifficultySuffix() + '] - by ' + SONG.author + ' (${Conductor.playbackRate}x)';
 
 		detailsPausedText = "Paused - " + songDetails;
 		detailsSub = "";
@@ -2025,7 +2033,7 @@ class PlayState extends MusicBeatState
 
 		deaths = 0;
 
-		if (SONG.validScore && !preventScoring)
+		if (SONG.validScore)
 		{
 			Highscore.saveScore(SONG.song, songScore, storyDifficulty);
 			Highscore.saveRank(SONG.song, rank, storyDifficulty);
@@ -2060,7 +2068,7 @@ class PlayState extends MusicBeatState
 				Main.switchState(this, new StoryMenuState());
 
 				// save the week's score if the score is valid
-				if (SONG.validScore && !preventScoring)
+				if (SONG.validScore)
 					Highscore.saveWeekScore(storyWeek, campaignScore, storyDifficulty);
 
 				// flush the save
@@ -2100,8 +2108,7 @@ class PlayState extends MusicBeatState
 
 	function callDefaultSongEnd()
 	{
-		var difficulty:String = '-' + CoolUtil.difficultyFromNumber(storyDifficulty).toLowerCase();
-		difficulty = difficulty.replace('-normal', '');
+		var difficulty:String = CoolUtil.returnDifficultySuffix().toLowerCase();
 
 		PlayState.SONG = Song.loadSong(PlayState.storyPlaylist[0].toLowerCase() + difficulty, PlayState.storyPlaylist[0]);
 		Conductor.killMusic();

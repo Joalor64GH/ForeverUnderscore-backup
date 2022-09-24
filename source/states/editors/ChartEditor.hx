@@ -141,7 +141,7 @@ class ChartEditor extends MusicBeatState
 		Discord.changePresence('CHART EDITOR',
 			'Charting: '
 			+ _song.song
-			+ ' [${CoolUtil.difficultyFromNumber(PlayState.storyDifficulty)}] - by '
+			+ ' [${CoolUtil.difficultyFromString()}] - by '
 			+ _song.author, null, null, null, true);
 		#end
 
@@ -264,7 +264,7 @@ class ChartEditor extends MusicBeatState
 		songText.scrollFactor.set();
 		add(songText);
 
-		songText.text = '${_song.song.toUpperCase()} <${CoolUtil.difficultyFromNumber(PlayState.storyDifficulty)}> BY ${_song.author.toUpperCase()}\n';
+		songText.text = '${_song.song.toUpperCase()} <${CoolUtil.difficultyFromString()}> BY ${_song.author.toUpperCase()}\n';
 
 		var sidebar = new FlxShapeBox(916, 160, 326, 480, {thickness: 24, color: FlxColor.WHITE}, FlxColor.WHITE);
 		sidebar.alpha = (26 / 255);

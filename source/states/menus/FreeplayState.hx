@@ -417,7 +417,7 @@ class FreeplayState extends MusicBeatState
 		}
 		if (go)
 		{
-			if (songRate <= 1)
+			if (songRate < 1)
 				PlayState.preventScoring = true; // lmao.
 			Conductor.playbackRate = songRate;
 			Main.switchState(this, new PlayState());
