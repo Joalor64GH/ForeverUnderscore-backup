@@ -1830,7 +1830,7 @@ class PlayState extends MusicBeatState
 
 		Conductor.changeBPM(SONG.bpm);
 
-		songDetails = CoolUtil.dashToSpace(SONG.song) + ' [' + CoolUtil.returnDifficultySuffix() + '] - by ' + SONG.author + ' (${Conductor.playbackRate}x)';
+		songDetails = CoolUtil.dashToSpace(SONG.song) + ' [' + CoolUtil.difficultyFromString() + '] - by ' + SONG.author + ' (${Conductor.playbackRate}x)';
 
 		detailsPausedText = "Paused - " + songDetails;
 		detailsSub = "";
