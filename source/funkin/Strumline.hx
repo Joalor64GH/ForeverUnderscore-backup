@@ -76,7 +76,10 @@ class UIStaticArrow extends FlxSprite
 	// literally just character code
 	public function playAnim(AnimName:String, Force:Bool = false, Reversed:Bool = false, Frame:Int = 0):Void
 	{
-		alpha = setAlpha;
+		if (AnimName == 'confirm')
+			alpha = 1;
+		else
+			alpha = setAlpha;
 
 		animation.play(AnimName, Force, Reversed, Frame);
 		updateHitbox();
