@@ -71,7 +71,6 @@ class JudgementOffsetState extends MusicBeatState
 
 				dadStrums.members[i].alpha = 0.35;
 				dadStrums.receptors.members[i].setAlpha = 0.35;
-				dadStrums.receptors.members[i].lightConfirms = false;
 			}
 		}
 		dadStrums.visible = !Init.trueSettings.get('Hide Opponent Receptors');
