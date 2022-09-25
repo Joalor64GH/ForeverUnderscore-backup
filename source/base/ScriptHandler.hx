@@ -1,6 +1,6 @@
 package base;
 
-import base.*;
+import sys.io.File;
 import dependency.*;
 import flixel.*;
 import flixel.addons.display.FlxBackdrop;
@@ -13,6 +13,7 @@ import flixel.group.FlxSpriteGroup;
 import flixel.math.*;
 import flixel.system.*;
 import flixel.system.FlxAssets.FlxShader;
+import flixel.system.scaleModes.StageSizeScaleMode;
 import flixel.text.FlxText;
 import flixel.tweens.*;
 import flixel.ui.FlxBar;
@@ -23,7 +24,7 @@ import openfl.display.GraphicsShader;
 import openfl.filters.ShaderFilter;
 import states.PlayState;
 import states.substates.ScriptedSubstate;
-import sys.io.File;
+import base.*;
 
 class ScriptHandler extends SScript
 {
@@ -67,6 +68,7 @@ class ScriptHandler extends SScript
 		set('FlxShader', FlxShader);
 		set('FlxBar', FlxBar);
 		set('FlxBackdrop', FlxBackdrop);
+		set('StageSizeScaleMode', StageSizeScaleMode);
 		set('FlxBarFillDirection', FlxBarFillDirection);
 		set('FlxAxes', FlxAxes);
 		set('GraphicsShader', GraphicsShader);
