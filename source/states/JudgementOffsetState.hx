@@ -1,4 +1,4 @@
-package states.menus;
+package states;
 
 import base.MusicBeat.MusicBeatState;
 import dependency.FNFSprite;
@@ -17,24 +17,24 @@ class JudgementOffsetState extends MusicBeatState
 {
 	var infoBar:FlxText;
 	var stageBuild:Stage;
-    var judge:FNFSprite;
+	var judge:FNFSprite;
 	var combo:FNFSprite;
 
 	var dadStrums:Strumline;
-    var bfStrums:Strumline;
+	var bfStrums:Strumline;
 
-    var _camWorld:FlxCamera;
-    var _camUI:FlxCamera;
+	var _camWorld:FlxCamera;
+	var _camUI:FlxCamera;
 
 	var judgeDefPos:FlxPoint;
 	var comboDefPos:FlxPoint;
 	var judgeNewPos:FlxPoint;
 	var comboNewPos:FlxPoint;
 
-    override function create()
-    {
+	override function create()
+	{
 		super.create();
-        FlxG.mouse.visible = true;
+		FlxG.mouse.visible = true;
 
 		judgeDefPos = FlxPoint.get();
 		comboDefPos = FlxPoint.get();
@@ -93,7 +93,8 @@ class JudgementOffsetState extends MusicBeatState
 
 		for (scoreInt in 0...stringArray.length)
 		{
-			combo = ForeverAssets.generateCombo('combo_numbers', stringArray[scoreInt], true, null, 'base', Init.trueSettings.get('UI Skin'), 'UI', false, FlxColor.WHITE, scoreInt, true);
+			combo = ForeverAssets.generateCombo('combo_numbers', stringArray[scoreInt], true, null, 'base', Init.trueSettings.get('UI Skin'), 'UI', false,
+				FlxColor.WHITE, scoreInt, true);
 			combo.cameras = [_camUI];
 			combo.y += 50;
 			combo.x += 100;
@@ -107,13 +108,12 @@ class JudgementOffsetState extends MusicBeatState
 
 		comboNewPos = FlxPoint.get(Init.comboOffset[0], Init.comboOffset[1]);
 		judgeNewPos = FlxPoint.get(Init.ratingOffset[0], Init.ratingOffset[1]);
-    }
-
+	}
 	var mousePos:FlxPoint = new FlxPoint();
 	var heldObject:String = null;
 
-    override function update(elapsed:Float)
-    {
+	override function update(elapsed:Float)
+	{
 		super.update(elapsed);
 
 		infoBar.text = '[Rating Position: ' + judge.x + ' | ' + judge.y + ' • Combo Position: ' + combo.x + ' | ' + combo.y + ']';
@@ -138,9 +138,9 @@ class JudgementOffsetState extends MusicBeatState
 					judgeNewPos.y = Init.ratingOffset[1];
 				}
 			}
-        }
-        
-        if (FlxG.mouse.justReleased)
+		}
+
+		if (FlxG.mouse.justReleased)
 			heldObject = null;
 
 		if (heldObject != null)
@@ -167,17 +167,17 @@ class JudgementOffsetState extends MusicBeatState
 		judge.x = judgeDefPos.x + Init.ratingOffset[0];
 		judge.y = judgeDefPos.y + Init.ratingOffset[1];
 
-        if (controls.RESET)
+		if (controls.RESET)
 		{
 			Init.comboOffset = [0, 0];
 			Init.ratingOffset = [0, 0];
 		}
 
 		if (controls.ACCEPT || controls.BACK)
-        {
+		{
 			Init.saveSettings();
 			FlxG.mouse.visible = false;
-            Main.switchState(this, new OptionsMenuState());
-        }
-    }
+			Main.switchState(this, new states.menus.OptionsMenuState());
+		}
+	}
 }

@@ -15,7 +15,6 @@ import flixel.util.FlxTimer;
 import funkin.Alphabet;
 import funkin.ui.menu.Checkmark;
 import funkin.ui.menu.Selector;
-import states.substates.*;
 
 /**
 	Options menu rewrite because I'm unhappy with how it was done previously
@@ -349,7 +348,7 @@ class OptionsMenuState extends MusicBeatState
 			{
 				loadSubgroup('main');
 			}
-			else if (PauseSubstate.toOptions)
+			else if (states.substates.PauseSubstate.toOptions)
 			{
 				Conductor.stopMusic();
 				Main.switchState(this, new PlayState());
@@ -622,7 +621,7 @@ class OptionsMenuState extends MusicBeatState
 			lockedMovement = true;
 			FlxFlicker.flicker(activeSubgroup.members[curSelection], 0.5, 0.06 * 2, true, false, function(flick:FlxFlicker)
 			{
-				openSubState(new ControlsSubstate());
+				openSubState(new states.substates.ControlsSubstate());
 				lockedMovement = false;
 			});
 		}
@@ -636,7 +635,7 @@ class OptionsMenuState extends MusicBeatState
 			lockedMovement = true;
 			FlxFlicker.flicker(activeSubgroup.members[curSelection], 0.5, 0.06 * 2, true, false, function(flick:FlxFlicker)
 			{
-				Main.switchState(this, new JudgementOffsetState());
+				Main.switchState(this, new states.JudgementOffsetState());
 				lockedMovement = false;
 			});
 		}
@@ -657,7 +656,7 @@ class OptionsMenuState extends MusicBeatState
 			lockedMovement = true;
 			FlxFlicker.flicker(activeSubgroup.members[curSelection], 0.5, 0.06 * 2, true, false, function(flick:FlxFlicker)
 			{
-				if (PauseSubstate.toOptions)
+				if (states.substates.PauseSubstate.toOptions)
 				{
 					Conductor.stopMusic();
 					Main.switchState(this, new PlayState());
