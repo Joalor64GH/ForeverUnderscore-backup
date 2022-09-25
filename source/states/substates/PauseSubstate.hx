@@ -59,7 +59,11 @@ class PauseSubstate extends MusicBeatSubstate
 		}
 
 		if (PlayState.chartingMode)
+		{
 			menuItems.insert(3, 'Leave Charting Mode');
+			menuItems.insert(4, 'Toggle Practice Mode');
+			menuItems.insert(5, 'Toggle Autoplay');
+		}
 
 		// pause music, bg, and texts
 		pauseMusic = new FlxSound().loadEmbedded(Paths.music('breakfast'), true, true);
@@ -110,7 +114,6 @@ class PauseSubstate extends MusicBeatSubstate
 		levelInfo.alpha = 0;
 		levelAuthor.alpha = 0;
 		levelDeaths.alpha = 0;
-		levelPractice.alpha = 0;
 		levelError.alpha = 0;
 
 		levelInfo.x = FlxG.width - (levelInfo.width + 20);
@@ -123,8 +126,6 @@ class PauseSubstate extends MusicBeatSubstate
 		FlxTween.tween(levelInfo, {alpha: 1, y: 20}, 0.4, {ease: FlxEase.quartInOut, startDelay: 0.3});
 		FlxTween.tween(levelAuthor, {alpha: 1, y: levelAuthor.y + 5}, 0.4, {ease: FlxEase.quartInOut, startDelay: 0.5});
 		FlxTween.tween(levelDeaths, {alpha: 1, y: levelDeaths.y + 5}, 0.4, {ease: FlxEase.quartInOut, startDelay: 0.7});
-		if (PlayState.practiceMode)
-			FlxTween.tween(levelPractice, {alpha: 1, y: levelPractice.y + 5}, 0.4, {ease: FlxEase.quartInOut, startDelay: 0.9});
 
 		grpMenuShit = new FlxTypedGroup<Alphabet>();
 		add(grpMenuShit);
@@ -240,6 +241,16 @@ class PauseSubstate extends MusicBeatSubstate
 					disableCheats(true);
 					PlayState.chartingMode = false;
 					Main.switchState(this, new PlayState());
+				case 'Toggle Practice Mode':
+					PlayState.preventScoring = true;
+					PlayState.practiceMode = !PlayState.practiceMode;
+					levelPractice.visible = PlayState.practiceMode;
+				case 'Toggle Autoplay':
+					PlayState.preventScoring = true;
+					PlayState.bfStrums.autoplay = !PlayState.bfStrums.autoplay;
+					PlayState.uiHUD.autoplayMark.visible = PlayState.bfStrums.autoplay;
+					PlayState.uiHUD.autoplayMark.alpha = 1;
+					PlayState.uiHUD.autoplaySine = 0;
 				case 'BACK':
 					menuItems = pauseItems;
 					reloadOptions();
