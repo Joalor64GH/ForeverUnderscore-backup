@@ -424,6 +424,7 @@ class PlayState extends MusicBeatState
 
 				dadStrums.members[i].alpha = 0.35; // notes, splashes, etc;
 				dadStrums.receptors.members[i].setAlpha = 0.35; // strumline, in case it still follows the settings alpha;
+				dadStrums.receptors.members[i].lightConfirms = false; // disable automatic strumline confirm animation going fully visible;
 			}
 
 			// have fun messing with these on scripts now;

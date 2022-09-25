@@ -42,6 +42,7 @@ class UIStaticArrow extends FlxSprite
 	public var setAlpha:Float = (Init.trueSettings.get('Arrow Opacity') * 0.01);
 
 	public var doReceptorTween:Bool = true;
+	public var lightConfirms:Bool = true;
 
 	public var resetAnim:Float = 0;
 
@@ -76,7 +77,7 @@ class UIStaticArrow extends FlxSprite
 	// literally just character code
 	public function playAnim(AnimName:String, Force:Bool = false, Reversed:Bool = false, Frame:Int = 0):Void
 	{
-		if (AnimName == 'confirm')
+		if (AnimName == 'confirm' && lightConfirms)
 			alpha = 1;
 		else
 			alpha = setAlpha;
