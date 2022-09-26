@@ -5,6 +5,7 @@ import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.graphics.FlxGraphic;
 import flixel.graphics.frames.FlxAtlasFrames;
+import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 
 using StringTools;
@@ -49,7 +50,7 @@ class HealthIcon extends FlxSprite
 		scale.set(1.2, 1.2);
 		if (bounceTween != null)
 			bounceTween.cancel();
-		bounceTween = FlxTween.tween(this.scale, {x: 1, y: 1}, time);
+		bounceTween = FlxTween.tween(this.scale, {x: 1, y: 1}, time, {ease: FlxEase.expoOut});
 	}
 
 	public function updateIcon(char:String = 'bf', isPlayer:Bool = false)
