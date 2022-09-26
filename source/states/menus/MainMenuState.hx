@@ -1,6 +1,8 @@
 package states.menus;
 
+import sys.FileSystem;
 import base.MusicBeat.MusicBeatState;
+import base.ScriptHandler;
 import dependency.Discord;
 import flixel.FlxG;
 import flixel.FlxObject;
@@ -24,25 +26,23 @@ using StringTools;
 **/
 class MainMenuState extends MusicBeatState
 {
-	var menuItems:FlxTypedGroup<FlxSprite>;
-	private static var curSelected:Float = 0;
+	public var menuItems:FlxTypedGroup<FlxSprite>;
+	public static var curSelected:Float = 0;
 
-	var bg:FlxSprite;
-	var magenta:FlxSprite;
-	var camFollow:FlxObject;
+	public var bg:FlxSprite;
+	public var magenta:FlxSprite;
+	public var camFollow:FlxObject;
 
-	final optionShit:Array<String> = ['story mode', 'freeplay', 'credits', 'options'];
-	var canSnap:Array<Float> = [];
+	public var optionShit:Array<String> = ['story mode', 'freeplay', 'credits', 'options'];
 
-	static var tweenFinished:Bool = true;
+	public var forceCenter:Bool = true;
+	public var menuScript:ScriptHandler;
 
-	var menuItemScale:Int = 1;
+	public var menuItemScale:Int = 1;
 
 	override function create()
 	{
 		super.create();
-
-		CreditsState.addSymbY = false;
 
 		// make sure the music is playing
 		ForeverTools.resetMenuMusic();
@@ -54,8 +54,28 @@ class MainMenuState extends MusicBeatState
 		transIn = FlxTransitionableState.defaultTransIn;
 		transOut = FlxTransitionableState.defaultTransOut;
 
+		CreditsState.addSymbY = false;
+
 		// uh
 		persistentUpdate = persistentDraw = true;
+
+		var paths:Array<String> = [
+			Paths.getPreloadPath('classes/MenuState.hx'),
+			Paths.getPreloadPath('classes/MenuState.hxs')
+		];
+
+		for (path in paths)
+		{
+			if (FileSystem.exists(path))
+				menuScript = new ScriptHandler(path);
+		}
+
+		setVar('MainMenuState', this);
+		setVar('add', this.add);
+		setVar('remove', this.remove);
+		setVar('destroy', this.destroy);
+
+		callFunc('create', []);
 
 		var vertScroll:Float = Math.max(0.25 - (0.05 * (optionShit.length - 4)), 0.1);
 
@@ -85,6 +105,7 @@ class MainMenuState extends MusicBeatState
 
 		for (i in 0...optionShit.length)
 		{
+			callFunc('optionSetup', []);
 			var menuItem:FlxSprite = new FlxSprite(0, FlxG.height * 1.1);
 			menuItem.frames = Paths.getSparrowAtlas('menus/base/menuItems/' + optionShit[i]);
 
@@ -93,11 +114,10 @@ class MainMenuState extends MusicBeatState
 			menuItem.animation.addByPrefix('idle', optionShit[i] + " basic", 24);
 			menuItem.animation.addByPrefix('selected', optionShit[i] + " white", 24);
 			menuItem.animation.play('idle');
-			canSnap[i] = -1;
-
 			menuItem.ID = i;
 
-			menuItem.screenCenter(X);
+			if (forceCenter)
+				menuItem.screenCenter(X);
 			if (menuItem.ID % 2 == 0)
 				menuItem.x += 1000;
 			else
@@ -112,23 +132,10 @@ class MainMenuState extends MusicBeatState
 			menuItem.antialiasing = !Init.trueSettings.get('Disable Antialiasing');
 			menuItem.updateHitbox();
 
-			/*if (!tweenFinished)
-				{
-					FlxTween.tween(menuItem, {y: 60 + (i * 160)}, 1 + (i * 0.25),
-					{
-						ease: FlxEase.expoInOut,
-						onComplete: function(flxTween:FlxTween)
-						{
-							tweenFinished = true;
-							updateSelection();
-						}
-					});
-				}
-				else */
-			{
-				var vertLimit:Float = (Math.max(optionShit.length, 4) - 4) * 80;
-				menuItem.y = 60 + (i * 160)  + vertLimit;
-			}
+			var vertLimit:Float = (Math.max(optionShit.length, 4) - 4) * 80;
+			menuItem.y = 60 + (i * 160)  + vertLimit;
+			setVar('menuItem', menuItem);
+			callFunc('postOptionSetup', []);
 		}
 
 		var camLerp = Main.framerateAdjust(0.10);
@@ -149,12 +156,19 @@ class MainMenuState extends MusicBeatState
 		versionShit.scrollFactor.set();
 		versionShit.setFormat(Paths.font('vcr.ttf'), 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		add(versionShit);
+
+		if (optionShit.length < 2) // so you can't hardlock someone on the menu
+			optionShit = ['story mode', 'freeplay', 'credits', 'options'];
+
+		callFunc('postCreate', []);
 	}
 
 	var selectedSomethin:Bool = false;
 
 	override function update(elapsed:Float)
 	{
+		callFunc('update', [elapsed]);
+
 		if (!selectedSomethin)
 		{
 			if (controls.BACK || FlxG.mouse.justPressedRight)
@@ -171,7 +185,7 @@ class MainMenuState extends MusicBeatState
 				FlxG.mouse.wheel == 1,
 				FlxG.mouse.wheel == -1
 			];
-			if ((controlArray.contains(true)) && (tweenFinished))
+			if ((controlArray.contains(true)))
 			{
 				for (i in 0...controlArray.length)
 				{
@@ -194,18 +208,18 @@ class MainMenuState extends MusicBeatState
 				}
 			}
 
-			if ((tweenFinished) && (controls.ACCEPT || FlxG.mouse.justPressed))
-			{
-				//
-				selectedSomethin = true;
-				FlxG.sound.play(Paths.sound('confirmMenu'));
+		if ((controls.ACCEPT || FlxG.mouse.justPressed))
+		{
+			//
+			selectedSomethin = true;
+			FlxG.sound.play(Paths.sound('confirmMenu'));
 
-				var flickerVal:Float = 0.06;
+			var flickerVal:Float = 0.06;
 
-				if (Init.trueSettings.get('Disable Flashing Lights'))
-					flickerVal = 1;
-				if (!Init.trueSettings.get('Disable Flashing Lights'))
-					FlxFlicker.flicker(magenta, 0.8, 0.1, false);
+			if (Init.trueSettings.get('Disable Flashing Lights'))
+				flickerVal = 1;
+			if (!Init.trueSettings.get('Disable Flashing Lights'))
+			FlxFlicker.flicker(magenta, 0.8, 0.1, false);
 
 				menuItems.forEach(function(spr:FlxSprite)
 				{
@@ -253,14 +267,17 @@ class MainMenuState extends MusicBeatState
 
 		menuItems.forEach(function(menuItem:FlxSprite)
 		{
-			menuItem.screenCenter(X);
+			if (forceCenter)
+				menuItem.screenCenter(X);
 		});
+		callFunc('postUpdate', [elapsed]);
 	}
 
 	var lastCurSelected:Int = 0;
 
 	function updateSelection()
 	{
+		callFunc('updateSelection', []);
 		// reset all selections
 		menuItems.forEach(function(spr:FlxSprite)
 		{
@@ -284,5 +301,22 @@ class MainMenuState extends MusicBeatState
 		menuItems.members[Math.floor(curSelected)].updateHitbox();
 
 		lastCurSelected = Math.floor(curSelected);
+		callFunc('postUpdateSelection', []);
+	}
+	
+	public function callFunc(key:String, args:Array<Dynamic>)
+	{
+		if (menuScript == null)
+			return null;
+		else
+			return menuScript.call(key, args);
+	}
+
+	public function setVar(key:String, value:Dynamic)
+	{
+		if (menuScript == null)
+			return null;
+		else
+			return menuScript.set(key, value);
 	}
 }
