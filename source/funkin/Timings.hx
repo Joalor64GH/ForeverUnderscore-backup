@@ -90,6 +90,8 @@ class Timings
 
 		updateFCDisplay();
 		updateScoreRating();
+
+		PlayState.contents.callFunc('onUpdateAccuracy', []);
 	}
 
 	public static function updateFCDisplay()
