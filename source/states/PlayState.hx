@@ -257,6 +257,12 @@ class PlayState extends MusicBeatState
 			curStage = 'unknown';
 
 		setupScripts();
+		callFunc('create', []);
+
+		setVar('add', this.add);
+		setVar('kill', this.kill);
+		setVar('remove', this.remove);
+		setVar('destroy', this.destroy);
 
 		stageBuild = new Stage(PlayState.curStage);
 		add(stageBuild);
@@ -2498,13 +2504,15 @@ class PlayState extends MusicBeatState
 						scriptArray.push(new ScriptHandler(script));
 			}
 		}
-
-		callFunc('create', []);
 	}
 
 	function setPlayStateVars()
 	{
 		setVar('game', PlayState.contents);
+		setVar('add', add);
+		setVar('kill', kill);
+		setVar('remove', remove);
+		setVar('destroy', destroy);
 		setVar('openSubState', openSubState);
 
 		setVar('setProperty', function(key:String, value:Dynamic)

@@ -168,7 +168,10 @@ class Stage extends FlxTypedGroup<FlxBasic>
             	stageScript = new ScriptHandler(path);
 		}
 
-		setVar('add', add);
+		setVar('add', this.add);
+		setVar('kill', this.kill);
+		setVar('remove', this.remove);
+		setVar('destroy', this.destroy);
 		setVar('foreground', foreground);
 		setVar('layers', layers);
 		setVar('gfVersion', gfVersion);

@@ -75,6 +75,7 @@ class MainMenuState extends MusicBeatState
 
 		setVar('MainMenuState', this);
 		setVar('add', this.add);
+		setVar('kill', this.kill);
 		setVar('remove', this.remove);
 		setVar('destroy', this.destroy);
 
