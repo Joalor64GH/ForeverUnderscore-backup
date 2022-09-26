@@ -81,7 +81,7 @@ class MainMenuState extends MusicBeatState
 
 		callFunc('create', []);
 		
-		if (optionShit.length < 2) // so you can't hardlock someone on the menu
+		if (optionShit.length < 1) // so you can't hardlock someone on the menu
 			optionShit = ['story mode', 'freeplay', 'credits', 'options'];
 
 		var vertScroll:Float = Math.max(0.25 - (0.05 * (optionShit.length - 4)), 0.1);
