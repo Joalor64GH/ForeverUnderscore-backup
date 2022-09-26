@@ -6,6 +6,7 @@ import sys.FileSystem;
 import sys.io.File;
 import sys.io.Process;
 import base.debug.*;
+import base.debug.Overlay.Console;
 import dependency.Discord;
 import dependency.FNFTransition;
 import flixel.FlxG;
@@ -35,8 +36,9 @@ class Main extends Sprite
 
 	public static var commitHash:Null<String>; // commit hash, for github builds;
 	public static var showCommitHash:Bool = true; // whether to actually show the commit hash;
-	
+
 	public static var overlay:Overlay;
+	public static var console:Console;
 
 	// calls a function to set the game up
 	public function new()
@@ -58,6 +60,9 @@ class Main extends Sprite
 
 		overlay = new Overlay(0, 0);
 		addChild(overlay);
+
+		console = new Console();
+		addChild(console);
 	}
 
 	public static function framerateAdjust(input:Float)

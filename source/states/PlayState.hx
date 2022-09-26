@@ -682,6 +682,7 @@ class PlayState extends MusicBeatState
 		boyfriend.charScripts = [];
 		dadOpponent.charScripts = [];
 		gf.charScripts = [];
+		scriptDebugMode = false;
 
 		super.destroy();
 	}

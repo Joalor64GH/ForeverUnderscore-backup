@@ -81,6 +81,7 @@ class OptionsMenuState extends MusicBeatState
 					['Meta Settings', null],
 
 					['Auto Pause', getFromOption],
+					['Allow Console Window', getFromOption],
 					#if GAME_UPDATER ['Check for Updates', getFromOption], #end
 					['GPU Rendering', getFromOption],
 					['Menu Song', getFromOption],

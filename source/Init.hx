@@ -151,6 +151,12 @@ class Init extends FlxState
 			'Whether to display the Engine Watermark during Gameplay',
 			NOT_FORCED
 		],
+		'Allow Console Window' => [
+			true,
+			Checkmark,
+			'Whether to display a console window when F10 is pressed, useful for scripts.',
+			NOT_FORCED
+		],
 		// USER INTERFACE;
 		"UI Skin" => [
 			'default',
