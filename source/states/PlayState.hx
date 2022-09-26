@@ -203,6 +203,7 @@ class PlayState extends MusicBeatState
 		health = 1;
 		misses = 0;
 		hits = 0;
+		scriptDebugMode = false;
 
 		defaultCamZoom = 1.05;
 		cameraSpeed = 1;
@@ -258,11 +259,6 @@ class PlayState extends MusicBeatState
 
 		setupScripts();
 		callFunc('create', []);
-
-		setVar('add', this.add);
-		setVar('kill', this.kill);
-		setVar('remove', this.remove);
-		setVar('destroy', this.destroy);
 
 		stageBuild = new Stage(PlayState.curStage);
 		add(stageBuild);
@@ -688,7 +684,6 @@ class PlayState extends MusicBeatState
 		boyfriend.charScripts = [];
 		dadOpponent.charScripts = [];
 		gf.charScripts = [];
-		scriptDebugMode = false;
 
 		super.destroy();
 	}
@@ -2500,8 +2495,13 @@ class PlayState extends MusicBeatState
 			for (script in dir)
 			{
 				if (dir.length > 0)
+				{
 					if (script.length > 0 && script.endsWith('.hx') || script.endsWith('.hxs'))
-						scriptArray.push(new ScriptHandler(script));
+					{
+						//scriptArray.push(new ScriptHandler(script));
+						trace('');
+					}
+				}
 			}
 		}
 	}
@@ -2509,10 +2509,10 @@ class PlayState extends MusicBeatState
 	function setPlayStateVars()
 	{
 		setVar('game', PlayState.contents);
-		setVar('add', add);
-		setVar('kill', kill);
-		setVar('remove', remove);
-		setVar('destroy', destroy);
+		setVar('add', this.add);
+		setVar('kill', this.kill);
+		setVar('remove', this.remove);
+		setVar('destroy', this.destroy);
 		setVar('openSubState', openSubState);
 
 		setVar('setProperty', function(key:String, value:Dynamic)
