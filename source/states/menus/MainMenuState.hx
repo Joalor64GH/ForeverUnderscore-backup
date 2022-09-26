@@ -79,6 +79,9 @@ class MainMenuState extends MusicBeatState
 		setVar('destroy', this.destroy);
 
 		callFunc('create', []);
+		
+		if (optionShit.length < 2) // so you can't hardlock someone on the menu
+			optionShit = ['story mode', 'freeplay', 'credits', 'options'];
 
 		var vertScroll:Float = Math.max(0.25 - (0.05 * (optionShit.length - 4)), 0.1);
 
@@ -159,9 +162,6 @@ class MainMenuState extends MusicBeatState
 		versionShit.scrollFactor.set();
 		versionShit.setFormat(Paths.font('vcr.ttf'), 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		add(versionShit);
-
-		if (optionShit.length < 2) // so you can't hardlock someone on the menu
-			optionShit = ['story mode', 'freeplay', 'credits', 'options'];
 
 		callFunc('postCreate', []);
 	}
