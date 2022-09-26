@@ -39,6 +39,11 @@ function updateStageSteps(curStep:Int, boyfriend:Character, gf:Character, dad:Ch
 	// similar to stepHit, this function is used for stage updates *on steps*;
 }
 
+public function updateStageConst(elapsed:Float, boyfriend:Character, gf:Character, dad:Character)
+{
+    // constant stage updates, similar to the update function;
+}
+
 function repositionPlayers(boyfriend:Character, gf:Character, dad:Character)
 {
 	// boyfriend.x += 0;
