@@ -172,7 +172,7 @@ class MainMenuState extends MusicBeatState
 	{
 		callFunc('update', [elapsed]);
 		
-		var setupOver:Dynamic = callFunc('overrideUpdate' [elapsed]);
+		var setupOver:Dynamic = callFunc('overrideUpdate', [elapsed]);
 		if (setupOver != null) return;
 
 		if (!selectedSomethin)
@@ -284,7 +284,7 @@ class MainMenuState extends MusicBeatState
 	function updateSelection()
 	{
 		callFunc('updateSelection', []);
-		var selOver:Dynamic = callFunc('overrideUpdateSelection');
+		var selOver:Dynamic = callFunc('overrideUpdateSelection', []);
 		if (selOver != null) return;
 		// reset all selections
 		menuItems.forEach(function(spr:FlxSprite)
