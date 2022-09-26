@@ -1,3 +1,19 @@
+var cameraTwn:FlxTween;
+
+function tweenCamIn()
+{
+	if (PlayState.SONG.song.toLowerCase() == 'tutorial' && cameraTwn == null && FlxG.camera.zoom != 1.3)
+	{
+		cameraTwn = FlxTween.tween(FlxG.camera, {zoom: 1.1}, (Conductor.stepCrochet * 4 / 1000), {
+			ease: FlxEase.elasticInOut,
+			onComplete: function(twn:FlxTween)
+			{
+				cameraTwn = null;
+			}
+		});
+	}
+} 
+
 function generateStage()
 {
     curStage = 'stage';
@@ -25,4 +41,17 @@ function generateStage()
     stageCurtains.active = false;
     add(stageCurtains);
 }
-  
+
+function dadPosition(boyfriend:Character, gf:Character, dad:Character, camPos:FlxPoint)
+{
+	if (dad.curCharacter == 'gf')
+	{
+		dad.setPosition(gf.x, gf.y);
+		gf.visible = false;
+		if (PlayState.isStoryMode)
+		{
+			camPos.x += 600;
+			tweenCamIn();
+		}
+	}
+}

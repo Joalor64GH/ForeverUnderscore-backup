@@ -226,7 +226,7 @@ class PlayState extends MusicBeatState
 		camHUD = new FlxCamera();
 		camHUD.bgColor.alpha = 0;
 
-		// create an alternative camera, will be used for stuff later
+		// create an alternative camera, in case you need a third one for scripts
 		camAlt = new FlxCamera();
 		camAlt.bgColor.alpha = 0;
 
@@ -280,9 +280,6 @@ class PlayState extends MusicBeatState
 		charGroup = new FlxSpriteGroup();
 
 		var camPos:FlxPoint = new FlxPoint(gf.getMidpoint().x - 100, boyfriend.getMidpoint().y - 100);
-		
-		stageBuild.repositionPlayers(curStage, boyfriend, gf, dadOpponent);
-		stageBuild.dadPosition(curStage, boyfriend, gf, dadOpponent, camPos);
 
 		changeableSkin = Init.trueSettings.get("UI Skin");
 		changeableSound = Init.trueSettings.get("Hitsound Type");
@@ -305,6 +302,9 @@ class PlayState extends MusicBeatState
 		dadOpponent.dance();
 		gf.dance();
 		boyfriend.dance();
+
+		stageBuild.repositionPlayers(curStage, boyfriend, gf, dadOpponent);
+		stageBuild.dadPosition(curStage, boyfriend, gf, dadOpponent, camPos);
 
 		// set song position before beginning
 		Conductor.songPosition = -(Conductor.crochet * 4);

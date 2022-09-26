@@ -123,43 +123,9 @@ class Stage extends FlxTypedGroup<FlxBasic>
 		return gfVersion;
 	}
 
-	// get the dad's position
 	public function dadPosition(curStage:String, boyfriend:Character, gf:Character, dad:Character, camPos:FlxPoint):Void
 	{
-		var characterArray:Array<Character> = [dad, boyfriend];
-		for (char in characterArray)
-		{
-			switch (char.curCharacter)
-			{
-				case 'gf':
-					char.setPosition(gf.x, gf.y);
-					gf.visible = false;
-
-					if (PlayState.isStoryMode)
-					{
-						camPos.x += 600;
-						tweenCamIn();
-					}
-				case 'spirit':
-					var evilTrail = new FlxTrail(char, null, 4, 24, 0.3, 0.069);
-					add(evilTrail);
-			}
-		}
-	}
-
-	var cameraTwn:FlxTween;
-	function tweenCamIn()
-	{
-		if (PlayState.SONG.song.toLowerCase() == 'tutorial' && cameraTwn == null && FlxG.camera.zoom != 1.3)
-		{
-			cameraTwn = FlxTween.tween(FlxG.camera, {zoom: 1.1}, (Conductor.stepCrochet * 4 / 1000), {
-				ease: FlxEase.elasticInOut,
-				onComplete: function(twn:FlxTween)
-				{
-					cameraTwn = null;
-				}
-			});
-		}
+		callFunc('dadPosition', [boyfriend, gf, dad, camPos]);
 	}
 
 	public function repositionPlayers(curStage:String, boyfriend:Character, gf:Character, dad:Character)

@@ -44,6 +44,11 @@ function updateStageConst(elapsed:Float, boyfriend:Character, gf:Character, dad:
     // constant stage updates, similar to the update function;
 }
 
+function dadPosition(boyfriend:Character, gf:Character, dad:Character, camPos:FlxPoint)
+{
+	// used for adding special parameters on stages, e.g: Spirit Trail, Hide Girlfriend on Tutorial;
+}
+
 function repositionPlayers(boyfriend:Character, gf:Character, dad:Character)
 {
 	// boyfriend.x += 0;

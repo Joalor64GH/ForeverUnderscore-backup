@@ -834,13 +834,13 @@ class ChartEditor extends MusicBeatState
 		{
 			var constSize = Std.int(gridSize / 2);
 
-			var note = ForeverAssets.generateArrow(_song.assetModifier, daStrumTime + Conductor.stepCrochet, daNoteInfo % 4, daNoteAlt, true, prevNote, daNoteType);
+			var note = ForeverAssets.generateArrow(_song.assetModifier, daStrumTime, daNoteInfo % 8, daNoteAlt, true, prevNote, daNoteType);
 
 			var hold:FlxTiledSprite = new FlxTiledSprite(FlxGraphic.fromFrame(note.frame), note.frame.frame.width, gridSize * daSus, false, true);
-			hold.scale.x = 0.5;
-			hold.updateHitbox();
 			hold.x = prevNote.x - prevNote.width * 0.5;
 			hold.y = prevNote.y + prevNote.height - hold.height * 0.5;
+			hold.scale.x = 0.5;
+			hold.updateHitbox();
 			holdsGroup.add(hold);
 			note.destroy();
 

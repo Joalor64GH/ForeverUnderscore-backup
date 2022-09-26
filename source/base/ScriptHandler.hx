@@ -54,6 +54,7 @@ class ScriptHandler extends SScript
 		set('FlxMath', FlxMath);
 		set('FlxSound', FlxSound);
 		set('FlxGroup', FlxGroup);
+		set('FlxPoint', FlxPoint);
 		set('FlxTypedGroup', FlxTypedGroup);
 		set('FlxSpriteGroup', FlxSpriteGroup);
 		set('FlxTypedSpriteGroup', FlxTypedSpriteGroup);
