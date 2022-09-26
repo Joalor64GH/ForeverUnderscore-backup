@@ -2443,9 +2443,8 @@ class PlayState extends MusicBeatState
 					FlxG.sound.play(Paths.sound('countdown/introGo-' + assetModifier), 0.6);
 					Conductor.songPosition = -(Conductor.crochet * 1);
 			}
-
-			callFunc('countdownTick', [swagCounter]);
 			swagCounter += 1;
+			callFunc('countdownTick', [swagCounter]);
 		}, 5);
 	}
 
