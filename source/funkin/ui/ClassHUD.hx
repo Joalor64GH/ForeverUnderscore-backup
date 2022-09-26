@@ -34,7 +34,7 @@ class ClassHUD extends FlxTypedGroup<FlxBasic>
 
 	public var infoDisplay:String = CoolUtil.dashToSpace(PlayState.SONG.song);
 	public var diffDisplay:String = CoolUtil.difficultyFromString();
-	public var engineDisplay:String = "FE UNDERSCORE v" + Main.underscoreVersion + (Main.showCommitHash ? '${Main.commitHash}' : '');
+	public var engineDisplay:String = "FE UNDERSCORE v" + Main.underscoreVersion;
 
 	public var autoplayMark:FlxText;
 	public var autoplaySine:Float = 0;
@@ -46,11 +46,14 @@ class ClassHUD extends FlxTypedGroup<FlxBasic>
 	var bfBar = FlxColor.fromRGB(PlayState.boyfriend.barColor[0], PlayState.boyfriend.barColor[1], PlayState.boyfriend.barColor[2]);
 	var dadBar = FlxColor.fromRGB(PlayState.dadOpponent.barColor[0], PlayState.dadOpponent.barColor[1], PlayState.dadOpponent.barColor[2]);
 
-	// eep
 	public function new()
 	{
-		// call the initializations and stuffs
 		super();
+
+		var hash:String = '';
+		if (Main.showCommitHash && Main.commitHash.length > 3)
+			hash = Main.commitHash;
+		engineDisplay = "FE UNDERSCORE v" + Main.underscoreVersion + hash;
 
 		// le healthbar setup
 		var barY = FlxG.height * 0.875;

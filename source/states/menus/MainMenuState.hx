@@ -141,7 +141,11 @@ class MainMenuState extends MusicBeatState
 		versionShit.setFormat(Paths.font('vcr.ttf'), 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		add(versionShit);
 
-		var versionShit:FlxText = new FlxText(5, FlxG.height - 18, 0, "Forever Engine v" + Main.foreverVersion + " • Underscore v" + Main.underscoreVersion + (Main.showCommitHash ? '${Main.commitHash}' : ''), 12);
+		var hash:String = '';
+		if (Main.showCommitHash && Main.commitHash.length > 3)
+			hash = Main.commitHash;
+
+		var versionShit:FlxText = new FlxText(5, FlxG.height - 18, 0, "Forever Engine v" + Main.foreverVersion + " • Underscore v" + Main.underscoreVersion + hash, 12);
 		versionShit.scrollFactor.set();
 		versionShit.setFormat(Paths.font('vcr.ttf'), 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		add(versionShit);
