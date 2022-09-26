@@ -44,6 +44,9 @@ class MainMenuState extends MusicBeatState
 	{
 		super.create();
 
+		var createOver:Dynamic = callFunc('overrideCreate', []);
+		if (createOver != null) return;
+
 		// make sure the music is playing
 		ForeverTools.resetMenuMusic();
 
@@ -168,6 +171,9 @@ class MainMenuState extends MusicBeatState
 	override function update(elapsed:Float)
 	{
 		callFunc('update', [elapsed]);
+		
+		var setupOver:Dynamic = callFunc('overrideUpdate' [elapsed]);
+		if (setupOver != null) return;
 
 		if (!selectedSomethin)
 		{
@@ -278,6 +284,8 @@ class MainMenuState extends MusicBeatState
 	function updateSelection()
 	{
 		callFunc('updateSelection', []);
+		var selOver:Dynamic = callFunc('overrideUpdateSelection');
+		if (selOver != null) return;
 		// reset all selections
 		menuItems.forEach(function(spr:FlxSprite)
 		{
