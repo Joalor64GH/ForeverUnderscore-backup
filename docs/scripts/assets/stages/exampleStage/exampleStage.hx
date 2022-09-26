@@ -1,6 +1,6 @@
 function generateStage()
 {
-	curStage = 'stage';
+    curStage = 'exampleStage';
     PlayState.defaultCamZoom = 0.9;
     spawnGirlfriend(true);
 
