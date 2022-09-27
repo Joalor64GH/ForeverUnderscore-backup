@@ -257,6 +257,7 @@ class MainMenuState extends MusicBeatState
 					}
 					else
 					{
+						callFunc('stateSwitch', []);
 						FlxFlicker.flicker(spr, 1, flickerVal, false, false, function(flick:FlxFlicker)
 						{
 							switch (optionShit[Math.floor(curSelected)])
@@ -276,6 +277,7 @@ class MainMenuState extends MusicBeatState
 									else
 										Main.switchState(this, new OptionsMenuState());
 							}
+							callFunc('postStateSwitch', []);
 						});
 					}
 				});
