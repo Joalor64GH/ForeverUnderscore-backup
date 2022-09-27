@@ -1,4 +1,4 @@
-function beatHit(curBeat)
+function beatHit(curBeat:Int)
 {
     if (curBeat % 16 == 15 && curBeat > 16 && curBeat < 48)
 	{

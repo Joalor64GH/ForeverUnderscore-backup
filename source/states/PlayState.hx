@@ -1,10 +1,10 @@
 package states;
 
 import base.*;
+import base.Controls.Control;
 import base.MusicBeat.MusicBeatState;
 import base.SongLoader.LegacySong;
 import base.SongLoader.Song;
-import base.Controls.Control;
 import dependency.*;
 import flixel.FlxBasic;
 import flixel.FlxCamera;
@@ -17,8 +17,8 @@ import flixel.addons.transition.FlxTransitionableState;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.group.FlxSpriteGroup.FlxTypedSpriteGroup;
 import flixel.group.FlxSpriteGroup;
-import flixel.input.keyboard.FlxKey;
 import flixel.input.gamepad.FlxGamepad;
+import flixel.input.keyboard.FlxKey;
 import flixel.math.FlxMath;
 import flixel.math.FlxPoint;
 import flixel.math.FlxRect;
@@ -259,7 +259,6 @@ class PlayState extends MusicBeatState
 			curStage = 'unknown';
 
 		setupScripts();
-		callFunc('create', []);
 
 		stageBuild = new Stage(PlayState.curStage);
 		add(stageBuild);
@@ -689,14 +688,6 @@ class PlayState extends MusicBeatState
 
 		FlxG.stage.removeEventListener(KeyboardEvent.KEY_DOWN, onKeyPress);
 		FlxG.stage.removeEventListener(KeyboardEvent.KEY_UP, onKeyRelease);
-
-		// clear scripts;
-		scriptArray = [];
-
-		// clear characters;
-		boyfriend.charScripts = [];
-		dadOpponent.charScripts = [];
-		gf.charScripts = [];
 
 		super.destroy();
 	}
@@ -2544,7 +2535,7 @@ class PlayState extends MusicBeatState
 	{
 		var dirs:Array<Array<String>> = [
 			CoolUtil.absoluteDirectory('scripts'),
-			CoolUtil.absoluteDirectory('songs/${SONG.song.toLowerCase().replace(' ', '-')}')
+			CoolUtil.absoluteDirectory('songs/${CoolUtil.swapSpaceDash(SONG.song.toLowerCase())}')
 		];
 
 		for (dir in dirs)
@@ -2553,15 +2544,14 @@ class PlayState extends MusicBeatState
 			{
 				if (dir.length > 0)
 				{
-					/*
-						if (script.length > 0 && script.endsWith('.hx') || script.endsWith('.hxs'))
-						{
-							scriptArray.push(new ScriptHandler(script));
-						}
-					 */
+					if (script.length > 0 && script.endsWith('.hx') || script.endsWith('.hxs'))
+					{
+						scriptArray.push(new ScriptHandler(script));
+					}
 				}
 			}
 		}
+		callFunc('create', []);
 	}
 
 	function setPlayStateVars()

@@ -1,4 +1,4 @@
-function beatHit(curBeat)
+function beatHit(curBeat:Int)
 {
     switch (curBeat)
     {

@@ -314,13 +314,13 @@ class Init extends FlxState
 		'ACCEPT' => [[FlxKey.SPACE, Z, FlxKey.ENTER], 6],
 		'BACK' => [[FlxKey.BACKSPACE, X, FlxKey.ESCAPE], 7],
 		'PAUSE' => [[FlxKey.ENTER, P], 8],
-		'RESET' => [[R, R], 9],
+		'RESET' => [[R, NUMPADMULTIPLY], 9],
 		'UI_UP' => [[FlxKey.UP, W], 12],
 		'UI_DOWN' => [[FlxKey.DOWN, S], 13],
 		'UI_LEFT' => [[FlxKey.LEFT, A], 14],
 		'UI_RIGHT' => [[FlxKey.RIGHT, D], 15],
-		'DEBUG1' => [[SEVEN, SEVEN], 17],
-		'DEBUG2' => [[EIGHT, EIGHT], 18],
+		'DEBUG1' => [[SEVEN, NUMPADSEVEN], 17],
+		'DEBUG2' => [[EIGHT, NUMPADEIGHT], 18],
 	];
 
 	public static var filters:Array<BitmapFilter> = []; // the filters the game has active
