@@ -2537,11 +2537,12 @@ class PlayState extends MusicBeatState
 			{
 				if (dir.length > 0)
 				{
+					/*
 					if (script.length > 0 && script.endsWith('.hx') || script.endsWith('.hxs'))
 					{
-						//scriptArray.push(new ScriptHandler(script));
-						trace('');
+						scriptArray.push(new ScriptHandler(script));
 					}
+					*/
 				}
 			}
 		}

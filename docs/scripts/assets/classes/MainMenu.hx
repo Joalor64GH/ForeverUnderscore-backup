@@ -102,7 +102,7 @@ function postCreate()
 	MainMenuState.camFollow.active = false;
 	MainMenuState.forceCenter = false;
 	FlxG.camera.follow(null, null, null);
-	boyfriend = new Character(30, 250, true, 'bf');
+	boyfriend = new Character(30, 250, true, 'bf-psych');
 	boyfriend.cameras = [MainMenuState.camHUD];
 	boyfriend.flipX = true;
 	add(boyfriend);
