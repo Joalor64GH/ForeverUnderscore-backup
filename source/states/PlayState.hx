@@ -258,7 +258,7 @@ class PlayState extends MusicBeatState
 		else
 			curStage = 'unknown';
 
-		//setupScripts();
+		setupScripts();
 		callFunc('create', []);
 
 		stageBuild = new Stage(PlayState.curStage);
@@ -2576,10 +2576,10 @@ class PlayState extends MusicBeatState
 	function setPlayStateVars()
 	{
 		setVar('game', PlayState.contents);
-		setVar('add', this.add);
-		setVar('kill', this.kill);
-		setVar('remove', this.remove);
-		setVar('destroy', this.destroy);
+		setVar('add', add);
+		setVar('kill', kill);
+		setVar('remove', remove);
+		setVar('destroy', destroy);
 		setVar('openSubState', openSubState);
 
 		setVar('setProperty', function(key:String, value:Dynamic)
