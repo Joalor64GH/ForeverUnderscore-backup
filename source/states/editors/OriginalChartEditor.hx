@@ -55,6 +55,7 @@ using StringTools;
 class OriginalChartEditor extends MusicBeatState
 {
 	var _file:FileReference;
+	var _diff:String = '';
 
 	var UI_box:FlxUITabMenu;
 
@@ -364,6 +365,29 @@ class OriginalChartEditor extends MusicBeatState
 		assetModifierDropDown.selectedLabel = _song.assetModifier;
 		blockPressWhileScrolling.push(assetModifierDropDown);
 
+		if (CoolUtil.difficulties[PlayState.storyDifficulty].toLowerCase() != 'normal')
+			_diff = '-' + CoolUtil.difficulties[PlayState.storyDifficulty].toLowerCase();
+
+		var difficultyDropDown = new PsychDropDown(assetModifierDropDown.x, assetModifierDropDown.y + 40, PsychDropDown.makeStrIdLabelArray(CoolUtil.difficulties, true), function(difficulty:String)
+		{
+			var newDifficulty:String = CoolUtil.difficulties[Std.parseInt(difficulty)].toLowerCase();
+			trace("Current difficulty: " + CoolUtil.difficulties[PlayState.storyDifficulty]);
+			trace("New diffculty: " + newDifficulty);
+			PlayState.storyDifficulty = Std.parseInt(difficulty);
+			if (newDifficulty != 'normal') _diff = '-' + newDifficulty;
+			try // doing this to avoid crashes with songs that don't have 3 difficulties until I actually manage to make a custom difficulty system
+			{
+				PlayState.SONG = Song.loadSong(_song.song.toLowerCase() + _diff, _song.song.toLowerCase());
+			}
+			catch(e)
+			{
+				PlayState.SONG = Song.loadSong(_song.song.toLowerCase(), _song.song.toLowerCase());
+			}
+			Main.switchState(this, new OriginalChartEditor());
+		});
+		difficultyDropDown.selectedLabel = CoolUtil.difficulties[PlayState.storyDifficulty];
+		blockPressWhileScrolling.push(difficultyDropDown);
+
 		var tab_group_song = new FlxUI(null, UI_box);
 		tab_group_song.name = "Song";
 		tab_group_song.add(UI_songTitle);
@@ -382,10 +406,12 @@ class OriginalChartEditor extends MusicBeatState
 		tab_group_song.add(new FlxText(gfVersionDropDown.x, gfVersionDropDown.y - 15, 0, 'Girlfriend:'));
 		tab_group_song.add(new FlxText(player2DropDown.x, player2DropDown.y - 15, 0, 'Opponent:'));
 		tab_group_song.add(new FlxText(stageDropDown.x, stageDropDown.y - 15, 0, 'Stage:'));
+		tab_group_song.add(new FlxText(difficultyDropDown.x, difficultyDropDown.y - 15, 0, 'Difficulty:'));
 		tab_group_song.add(new FlxText(assetModifierDropDown.x, assetModifierDropDown.y - 15, 0, 'Asset Skin:'));
 		tab_group_song.add(player2DropDown);
 		tab_group_song.add(gfVersionDropDown);
 		tab_group_song.add(player1DropDown);
+		tab_group_song.add(difficultyDropDown);
 		tab_group_song.add(assetModifierDropDown);
 		tab_group_song.add(stageDropDown);
 
@@ -1104,8 +1130,9 @@ class OriginalChartEditor extends MusicBeatState
 			vocals.pitch = 0.1;
 		}
 
-		bpmTxt.text = 'Song ${_song.song}\n'
-			+ Std.string(FlxMath.roundDecimal(Conductor.songPosition / 1000, 2))
+		bpmTxt.text = 'Song: ${_song.song}'
+			+ '\nDiff: ${_diff.replace('-', '')}'
+			+ '\n' + Std.string(FlxMath.roundDecimal(Conductor.songPosition / 1000, 2))
 			+ " / " + Std.string(FlxMath.roundDecimal(songMusic.length / 1000, 2))
 			+ "\nSection: " + curSection
 			+ "\nBeat: " + curBeat
@@ -1677,8 +1704,15 @@ class OriginalChartEditor extends MusicBeatState
 
 	function loadJson(song:String):Void
 	{
-		PlayState.SONG = Song.loadSong(song.toLowerCase(), song.toLowerCase());
-		FlxG.resetState();
+		try
+		{
+			PlayState.SONG = Song.loadSong(song.toLowerCase() + _diff, song.toLowerCase());
+		}
+		catch(e)
+		{
+			PlayState.SONG = Song.loadSong(song.toLowerCase(), song.toLowerCase());
+		}
+		Main.switchState(this, new OriginalChartEditor());
 	}
 
 	function autosaveSong():Void
@@ -1726,7 +1760,7 @@ class OriginalChartEditor extends MusicBeatState
 			_file.addEventListener(Event.COMPLETE, onSaveComplete);
 			_file.addEventListener(Event.CANCEL, onSaveCancel);
 			_file.addEventListener(IOErrorEvent.IO_ERROR, onSaveError);
-			_file.save(data.trim(), _song.song.toLowerCase() + ".json");
+			_file.save(data.trim(), _song.song.toLowerCase() + _diff + ".json");
 		}
 	}
 

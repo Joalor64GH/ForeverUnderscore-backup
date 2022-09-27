@@ -109,7 +109,7 @@ class Timings
 				comboDisplay = 'SDCB';
 		}
 
-		perfectSicks = (trueAccuracy >= 100);
+		perfectSicks = (comboDisplay == 'MFC');
 
 		// this updates the most so uh
 		PlayState.uiHUD.updateScoreText();
