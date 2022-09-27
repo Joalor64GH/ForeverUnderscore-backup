@@ -8,6 +8,8 @@ import haxe.Json;
 import sys.FileSystem;
 import sys.io.File;
 import base.*;
+import base.data.SuperChar;
+import base.data.PsychChar;
 import base.SongLoader.LegacySection;
 import base.SongLoader.LegacySong;
 import base.SongLoader.Song;
@@ -26,31 +28,6 @@ import funkin.ui.HealthIcon;
 
 using StringTools;
 
-typedef PsychEngineChar =
-{
-	var animations:Array<PsychAnimArray>;
-	var image:String;
-	var scale:Float;
-	var sing_duration:Float;
-	var healthicon:String;
-
-	var position:Array<Float>;
-	var camera_position:Array<Float>;
-	var flip_x:Bool;
-	var no_antialiasing:Bool;
-	var healthbar_colors:Array<Float>;
-}
-
-typedef PsychAnimArray =
-{
-	var anim:String;
-	var name:String;
-	var fps:Int;
-	var loop:Bool;
-	var indices:Array<Int>;
-	var offsets:Array<Int>;
-}
-
 class Character extends FNFSprite
 {
 	public var character:String;
@@ -67,7 +44,7 @@ class Character extends FNFSprite
 	public var animationNotes:Array<Dynamic> = [];
 	public var idlePos:Array<Float> = [0, 0];
 
-	public var offsets:Array<Float> = [0, 0];
+	public var charOffsets:Array<Float> = [0, 0];
 	public var camOffsets:Array<Float> = [0, 0];
 	public var scales:Array<Float> = [0, 0];
 
@@ -420,7 +397,7 @@ class Character extends FNFSprite
 
 		setVar('setOffsets', function(?x:Float = 0, ?y:Float = 0)
 		{
-			offsets = [x, y];
+			charOffsets = [x, y];
 		});
 
 		setVar('setCamOffsets', function(?x:Float = 0, ?y:Float = 0)
@@ -563,7 +540,7 @@ class Character extends FNFSprite
 		}
 		flipX = json.flip_x;
 		antialiasing = !json.no_antialiasing;
-		offsets = json.position;
+		charOffsets = json.position;
 		camOffsets = json.camera_position;
 
 		if (isPlayer) // fuck you ninjamuffin lmao
