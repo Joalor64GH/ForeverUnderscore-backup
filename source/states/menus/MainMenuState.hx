@@ -28,6 +28,7 @@ using StringTools;
 class MainMenuState extends MusicBeatState
 {
 	public var menuItems:FlxTypedGroup<FlxSprite>;
+
 	public static var curSelected:Float = 0;
 
 	public var bg:FlxSprite;
@@ -49,7 +50,8 @@ class MainMenuState extends MusicBeatState
 		super.create();
 
 		var createOver:Dynamic = callFunc('overrideCreate', []);
-		if (createOver != null) return;
+		if (createOver != null)
+			return;
 
 		// make sure the music is playing
 		ForeverTools.resetMenuMusic();
@@ -65,7 +67,7 @@ class MainMenuState extends MusicBeatState
 
 		// uh
 		persistentUpdate = persistentDraw = true;
-		
+
 		// create the game camera
 		camGame = new FlxCamera();
 
@@ -95,7 +97,7 @@ class MainMenuState extends MusicBeatState
 		setVar('destroy', this.destroy);
 
 		callFunc('create', []);
-		
+
 		if (optionShit.length < 1) // so you can't hardlock someone on the menu
 			optionShit = ['story mode', 'freeplay', 'credits', 'options'];
 
@@ -146,7 +148,7 @@ class MainMenuState extends MusicBeatState
 				menuItem.x -= 1000;
 
 			var newScroll:Float = (optionShit.length - 4) * 0.135;
-			if(optionShit.length < 6)
+			if (optionShit.length < 6)
 				newScroll = 0;
 
 			menuItems.add(menuItem);
@@ -155,7 +157,7 @@ class MainMenuState extends MusicBeatState
 			menuItem.updateHitbox();
 
 			var vertLimit:Float = (Math.max(optionShit.length, 4) - 4) * 80;
-			menuItem.y = 60 + (i * 160)  + vertLimit;
+			menuItem.y = 60 + (i * 160) + vertLimit;
 			setVar('menuItem', menuItem);
 			callFunc('postOptionSetup', []);
 		}
@@ -174,7 +176,8 @@ class MainMenuState extends MusicBeatState
 		if (Main.showCommitHash && Main.commitHash.length > 3)
 			hash = Main.commitHash;
 
-		var versionShit:FlxText = new FlxText(5, FlxG.height - 18, 0, "Forever Engine v" + Main.foreverVersion + " • Underscore v" + Main.underscoreVersion + hash, 12);
+		var versionShit:FlxText = new FlxText(5, FlxG.height - 18, 0,
+			"Forever Engine v" + Main.foreverVersion + " • Underscore v" + Main.underscoreVersion + hash, 12);
 		versionShit.scrollFactor.set();
 		versionShit.setFormat(Paths.font('vcr.ttf'), 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		add(versionShit);
@@ -187,9 +190,10 @@ class MainMenuState extends MusicBeatState
 	override function update(elapsed:Float)
 	{
 		callFunc('update', [elapsed]);
-		
+
 		var setupOver:Dynamic = callFunc('overrideUpdate', [elapsed]);
-		if (setupOver != null) return;
+		if (setupOver != null)
+			return;
 
 		if (!selectedSomethin)
 		{
@@ -230,18 +234,18 @@ class MainMenuState extends MusicBeatState
 				}
 			}
 
-		if ((controls.ACCEPT || FlxG.mouse.justPressed))
-		{
-			//
-			selectedSomethin = true;
-			FlxG.sound.play(Paths.sound('confirmMenu'));
+			if ((controls.ACCEPT || FlxG.mouse.justPressed))
+			{
+				//
+				selectedSomethin = true;
+				FlxG.sound.play(Paths.sound('confirmMenu'));
 
-			var flickerVal:Float = 0.06;
+				var flickerVal:Float = 0.06;
 
-			if (Init.trueSettings.get('Disable Flashing Lights'))
-				flickerVal = 1;
-			if (!Init.trueSettings.get('Disable Flashing Lights'))
-			FlxFlicker.flicker(magenta, 0.8, 0.1, false);
+				if (Init.trueSettings.get('Disable Flashing Lights'))
+					flickerVal = 1;
+				if (!Init.trueSettings.get('Disable Flashing Lights'))
+					FlxFlicker.flicker(magenta, 0.8, 0.1, false);
 
 				menuItems.forEach(function(spr:FlxSprite)
 				{
@@ -296,13 +300,13 @@ class MainMenuState extends MusicBeatState
 		});
 		callFunc('postUpdate', [elapsed]);
 	}
-	
+
 	override function beatHit()
 	{
 		super.beatHit();
 		callFunc('beatHit', [curBeat]);
 	}
-	
+
 	override function stepHit()
 	{
 		super.stepHit();
@@ -315,7 +319,8 @@ class MainMenuState extends MusicBeatState
 	{
 		callFunc('updateSelection', []);
 		var selOver:Dynamic = callFunc('overrideUpdateSelection', []);
-		if (selOver != null) return;
+		if (selOver != null)
+			return;
 		// reset all selections
 		menuItems.forEach(function(spr:FlxSprite)
 		{
@@ -326,7 +331,7 @@ class MainMenuState extends MusicBeatState
 		});
 
 		var itemLength:Float = 0;
-		if(menuItems.length > 4)
+		if (menuItems.length > 4)
 			itemLength = menuItems.length * 8;
 
 		// set the sprites and all of the current selection
@@ -341,7 +346,7 @@ class MainMenuState extends MusicBeatState
 		lastCurSelected = Math.floor(curSelected);
 		callFunc('postUpdateSelection', []);
 	}
-	
+
 	public function callFunc(key:String, args:Array<Dynamic>)
 	{
 		if (menuScript == null)

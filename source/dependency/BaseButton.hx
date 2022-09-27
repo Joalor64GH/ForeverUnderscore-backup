@@ -8,25 +8,21 @@ class BaseButton extends FlxShape
 	public var size:String = "";
 	public var child(default, set):String;
 
-	public static var sizes:Map<String,Array<Int>> = [
-		"large" => [342, 45],
-		"medium" => [297, 47],
-		"small" => [183, 52],
-	];
+	public static var sizes:Map<String, Array<Int>> = ["large" => [342, 45], "medium" => [297, 47], "small" => [183, 52],];
 
 	public function new(x:Float, y:Float, size:String = "", ?clickThing:Void->Void)
 	{
 		var _size = [342, 45];
-		if(sizes[size.toLowerCase()] != null)
+		if (sizes[size.toLowerCase()] != null)
 		{
 			_size = sizes[size.toLowerCase()];
 		}
-		super(x, y,_size[0],_size[1],{jointStyle:"bevel", thickness:2, color:0x543b61}, 0x543b61);
+		super(x, y, _size[0], _size[1], {jointStyle: "bevel", thickness: 2, color: 0x543b61}, 0x543b61);
 
 		this.clickThing = clickThing;
 		this.size = size;
 
-		//loadGraphic(Paths.image('menus/chart editor/ui-buttons/charting_button-${size.toLowerCase()}'));
+		// loadGraphic(Paths.image('menus/chart editor/ui-buttons/charting_button-${size.toLowerCase()}'));
 		antialiasing = !Init.trueSettings.get('Disable Antialiasing');
 		scrollFactor.set();
 	}

@@ -78,10 +78,10 @@ class TitleState extends MusicBeatState
 
 		bg = new FlxSprite().makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
 		/*
-		bg.antialiasing = !Init.trueSettings.get('Disable Antialiasing');
-		bg.setGraphicSize(Std.int(bg.width * 0.6));
-		bg.updateHitbox();
-		*/
+			bg.antialiasing = !Init.trueSettings.get('Disable Antialiasing');
+			bg.setGraphicSize(Std.int(bg.width * 0.6));
+			bg.updateHitbox();
+		 */
 		add(bg);
 
 		gfDance = new FlxSprite(FlxG.width * 0.4, FlxG.height * 0.07);
@@ -297,7 +297,7 @@ class TitleState extends MusicBeatState
 	override function stepHit()
 	{
 		super.stepHit();
-		
+
 		if (!skippedIntro)
 		{
 			switch (curStep)

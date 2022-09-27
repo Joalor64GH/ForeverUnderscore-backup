@@ -226,12 +226,13 @@ class CharacterOffsetEditor extends MusicBeatState
 		});
 		characterDropDown.selectedLabel = curCharacter;
 
-		var ghostCharacterDropDown = new PsychDropDown(10, characterDropDown.y + 40, PsychDropDown.makeStrIdLabelArray(characters, true), function(character:String)
-		{
-			curGhost = characters[Std.parseInt(character)];
-			generateGhost(!curCharacter.startsWith('bf'));
-			genCharOffsets(false, true);
-		});
+		var ghostCharacterDropDown = new PsychDropDown(10, characterDropDown.y + 40, PsychDropDown.makeStrIdLabelArray(characters, true),
+			function(character:String)
+			{
+				curGhost = characters[Std.parseInt(character)];
+				generateGhost(!curCharacter.startsWith('bf'));
+				genCharOffsets(false, true);
+			});
 		ghostCharacterDropDown.selectedLabel = curGhost;
 
 		tab_group.add(resetBttn);

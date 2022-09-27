@@ -676,19 +676,6 @@ class Controls extends FlxActionSet
 		#end
 	}
 
-	inline function addGamepadLiteral(id:Int, ?buttonMap:Map<Control, Array<FlxGamepadInputID>>):Void
-	{
-		gamepadsAdded.push(id);
-
-		#if (haxe >= "4.0.0")
-		for (control => buttons in buttonMap)
-		inline bindButtons(control, id, buttons);
-		#else
-		for (control in buttonMap.keys())
-			bindButtons(control, id, buttonMap[control]);
-		#end
-	}
-
 	public function removeGamepad(deviceID:Int = FlxInputDeviceID.ALL):Void
 	{
 		for (action in this.digitalActions)
@@ -708,9 +695,13 @@ class Controls extends FlxActionSet
 	public function addDefaultGamepad(id):Void
 	{
 		#if !switch
-		addGamepadLiteral(id, [
+		addGamepad(id, [
 			Control.ACCEPT => [A],
 			Control.BACK => [B],
+			Control.UI_UP => [DPAD_UP, LEFT_STICK_DIGITAL_UP, RIGHT_STICK_DIGITAL_UP],
+			Control.UI_DOWN => [DPAD_DOWN, LEFT_STICK_DIGITAL_DOWN, RIGHT_STICK_DIGITAL_DOWN],
+			Control.UI_LEFT => [DPAD_LEFT, LEFT_STICK_DIGITAL_LEFT, RIGHT_STICK_DIGITAL_LEFT],
+			Control.UI_RIGHT => [DPAD_RIGHT, LEFT_STICK_DIGITAL_RIGHT, RIGHT_STICK_DIGITAL_RIGHT],
 			Control.UP => [DPAD_UP, LEFT_STICK_DIGITAL_UP, RIGHT_STICK_DIGITAL_UP],
 			Control.DOWN => [DPAD_DOWN, LEFT_STICK_DIGITAL_DOWN, RIGHT_STICK_DIGITAL_DOWN],
 			Control.LEFT => [DPAD_LEFT, LEFT_STICK_DIGITAL_LEFT, RIGHT_STICK_DIGITAL_LEFT],
@@ -719,10 +710,14 @@ class Controls extends FlxActionSet
 			Control.RESET => [Y]
 		]);
 		#else
-		addGamepadLiteral(id, [
+		addGamepad(id, [
 			// Swap A and B for switch
 			Control.ACCEPT => [B],
 			Control.BACK => [A],
+			Control.UI_UP => [DPAD_UP, LEFT_STICK_DIGITAL_UP, RIGHT_STICK_DIGITAL_UP],
+			Control.UI_DOWN => [DPAD_DOWN, LEFT_STICK_DIGITAL_DOWN, RIGHT_STICK_DIGITAL_DOWN],
+			Control.UI_LEFT => [DPAD_LEFT, LEFT_STICK_DIGITAL_LEFT, RIGHT_STICK_DIGITAL_LEFT],
+			Control.UI_RIGHT => [DPAD_RIGHT, LEFT_STICK_DIGITAL_RIGHT, RIGHT_STICK_DIGITAL_RIGHT],
 			Control.UP => [DPAD_UP, LEFT_STICK_DIGITAL_UP, RIGHT_STICK_DIGITAL_UP],
 			Control.DOWN => [DPAD_DOWN, LEFT_STICK_DIGITAL_DOWN, RIGHT_STICK_DIGITAL_DOWN],
 			Control.LEFT => [DPAD_LEFT, LEFT_STICK_DIGITAL_LEFT, RIGHT_STICK_DIGITAL_LEFT],
@@ -778,11 +773,9 @@ class Controls extends FlxActionSet
 		}
 	}
 
-	public function getInputsFor(control:Control, device:Device, ?list:Array<Int>):Array<Int>
+	public function getInputsFor(control:Control, device:Device):Array<Int>
 	{
-		if (list == null)
-			list = [];
-
+		var list:Array<Int> = [];
 		switch (device)
 		{
 			case Keys:

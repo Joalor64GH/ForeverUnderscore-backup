@@ -41,8 +41,11 @@ class FreeplayState extends MusicBeatState
 	var songs:Array<SongMetadata> = [];
 
 	var selector:FlxText;
+
 	private static var curSelected:Int = 0;
+
 	var curSongPlaying:Int = -1;
+
 	private static var curDifficulty:Int = 1;
 
 	var presses:Int = 0;
@@ -287,31 +290,31 @@ class FreeplayState extends MusicBeatState
 					changeSelection(shiftMult);
 					holdTime = 0;
 				}
-	
+
 				/**
 				 * Hold Scrolling Code
 				 * @author ShadowMario
 				**/
-	
+
 				if (controls.UI_DOWN || controls.UI_UP)
 				{
 					var checkLastHold:Int = Math.floor((holdTime - 0.5) * 10);
 					holdTime += elapsed;
 					var checkNewHold:Int = Math.floor((holdTime - 0.5) * 10);
-	
+
 					if (holdTime > 0.5 && checkNewHold - checkLastHold > 0)
 					{
 						changeSelection((checkNewHold - checkLastHold) * (controls.UI_UP ? -shiftMult : shiftMult));
 						changeDiff();
 					}
 				}
-	
+
 				if (FlxG.mouse.wheel != 0)
 				{
 					changeSelection(-shiftMult * FlxG.mouse.wheel);
 					changeDiff();
 				}
-	
+
 				if (controls.BACK || FlxG.mouse.justPressedRight)
 				{
 					if (presses <= 0)
@@ -319,18 +322,18 @@ class FreeplayState extends MusicBeatState
 						if (FlxG.sound.music != null)
 							FlxG.sound.music.stop();
 						threadActive = false;
-						//CoolUtil.difficulties = CoolUtil.baseDifficulties;
+						// CoolUtil.difficulties = CoolUtil.baseDifficulties;
 						FlxG.sound.play(Paths.sound('cancelMenu'), 0.4);
 						Main.switchState(this, new MainMenuState());
 					}
-		
+
 					if (presses > 0)
 					{
 						FlxG.sound.play(Paths.sound('confirmMenu'), 0.4);
 						endBullshit();
 					}
 				}
-		
+
 				if (accepted || FlxG.mouse.justPressed)
 					loadSong(true, true);
 				else if (seven)
@@ -341,15 +344,15 @@ class FreeplayState extends MusicBeatState
 					Main.switchState(this, (shiftP ? new ChartEditor() : new OriginalChartEditor()));
 				}
 				/*
-				else if (ctrl)
-					openSubState(new FreeplaySubstate());
-				*/
+					else if (ctrl)
+						openSubState(new FreeplaySubstate());
+				 */
 				else if (controls.RESET && presses < 3 && !shiftP)
 				{
 					presses++;
 					resetScore();
 				}
-				
+
 				if (controls.UI_LEFT_P && !shiftP)
 					changeDiff(-1);
 				else if (controls.UI_RIGHT_P && !shiftP)
@@ -359,7 +362,7 @@ class FreeplayState extends MusicBeatState
 					songRate -= 0.05;
 				else if (controls.UI_RIGHT_P && shiftP)
 					songRate += 0.05;
-		
+
 				if (controls.RESET && shiftP)
 					songRate = 1;
 			}
@@ -396,7 +399,7 @@ class FreeplayState extends MusicBeatState
 
 	function loadSong(go:Bool = true, stopThread:Bool = true)
 	{
-		//Main.isSongTrans = true;
+		// Main.isSongTrans = true;
 
 		var poop:String = Highscore.formatSong(songs[curSelected].songName.toLowerCase(),
 			CoolUtil.difficulties.indexOf(existingDifficulties[curSelected][curDifficulty]));

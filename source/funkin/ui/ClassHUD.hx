@@ -69,7 +69,7 @@ class ClassHUD extends FlxTypedGroup<FlxBasic>
 
 		healthBar = new FlxBar(healthBarBG.x + 4, healthBarBG.y + 4, barFillDir, Std.int(healthBarBG.width - 8), Std.int(healthBarBG.height - 8));
 		healthBar.scrollFactor.set();
-		
+
 		if (Init.trueSettings.get('Colored Health Bar'))
 			healthBar.createFilledBar(dadBar, bfBar);
 		else
@@ -243,22 +243,26 @@ class ClassHUD extends FlxTypedGroup<FlxBasic>
 	{
 		if (Init.trueSettings.get('Animated Score Color'))
 		{
-			if(scoreColorTween != null)
+			if (scoreColorTween != null)
 				scoreColorTween.cancel();
 
 			var rankColor = FlxColor.CYAN;
 
 			switch (rating)
 			{
-				case 'good': rankColor = FlxColor.LIME;
-				case 'bad': rankColor = FlxColor.ORANGE;
-				case 'shit': rankColor = FlxColor.PURPLE;
-				case 'miss': rankColor = FlxColor.RED;
-				default: rankColor = perfect ? FlxColor.fromString('#F8D482') : FlxColor.CYAN;
+				case 'good':
+					rankColor = FlxColor.LIME;
+				case 'bad':
+					rankColor = FlxColor.ORANGE;
+				case 'shit':
+					rankColor = FlxColor.PURPLE;
+				case 'miss':
+					rankColor = FlxColor.RED;
+				default:
+					rankColor = perfect ? FlxColor.fromString('#F8D482') : FlxColor.CYAN;
 			}
 
-			scoreColorTween = FlxTween.color(scoreBar, 0.3, scoreBar.color, rankColor,
-			{
+			scoreColorTween = FlxTween.color(scoreBar, 0.3, scoreBar.color, rankColor, {
 				onComplete: function(twn:FlxTween)
 				{
 					FlxTween.color(scoreBar, 0.75, scoreBar.color, FlxColor.WHITE);

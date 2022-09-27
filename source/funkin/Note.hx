@@ -142,7 +142,7 @@ class Note extends FNFSprite
 		if (tooLate || (parentNote != null && parentNote.tooLate))
 			alpha = 0.3;
 	}
-	
+
 	public function rescaleSustain(newScale:Float)
 	{
 		if (animation.curAnim != null && !animation.curAnim.name.endsWith('end') && isSustainNote)
@@ -235,7 +235,8 @@ class Note extends FNFSprite
 		return newNote;
 	}
 
-	public static function returnQuantNote(assetModifier, strumTime, noteData, noteAlt, ?isSustainNote:Bool = false, ?prevNote:Note = null, noteType:Int = 0):Note
+	public static function returnQuantNote(assetModifier, strumTime, noteData, noteAlt, ?isSustainNote:Bool = false, ?prevNote:Note = null,
+			noteType:Int = 0):Note
 	{
 		var newNote:Note = new Note(strumTime, noteData, noteAlt, prevNote, isSustainNote, noteType);
 
@@ -389,11 +390,15 @@ class Note extends FNFSprite
 	{
 		if (assetModifier != 'pixel')
 		{
-			newNote.frames = Paths.getSparrowAtlas(ForeverTools.returnSkin(texture, assetModifier, (changeable ? Init.trueSettings.get("Note Skin") : ''), texturePath));
+			newNote.frames = Paths.getSparrowAtlas(ForeverTools.returnSkin(texture, assetModifier, (changeable ? Init.trueSettings.get("Note Skin") : ''),
+				texturePath));
 
-			newNote.animation.addByPrefix(UIStaticArrow.getColorFromNumber(newNote.noteData) + 'Scroll', UIStaticArrow.getColorFromNumber(newNote.noteData) + '0');
-			newNote.animation.addByPrefix(UIStaticArrow.getColorFromNumber(newNote.noteData) + 'holdend', UIStaticArrow.getColorFromNumber(newNote.noteData) + ' hold end');
-			newNote.animation.addByPrefix(UIStaticArrow.getColorFromNumber(newNote.noteData) + 'hold', UIStaticArrow.getColorFromNumber(newNote.noteData) + ' hold piece');
+			newNote.animation.addByPrefix(UIStaticArrow.getColorFromNumber(newNote.noteData) + 'Scroll',
+				UIStaticArrow.getColorFromNumber(newNote.noteData) + '0');
+			newNote.animation.addByPrefix(UIStaticArrow.getColorFromNumber(newNote.noteData) + 'holdend',
+				UIStaticArrow.getColorFromNumber(newNote.noteData) + ' hold end');
+			newNote.animation.addByPrefix(UIStaticArrow.getColorFromNumber(newNote.noteData) + 'hold',
+				UIStaticArrow.getColorFromNumber(newNote.noteData) + ' hold piece');
 
 			newNote.animation.addByPrefix('purpleholdend', 'pruple end hold'); // PA god dammit.
 
@@ -405,13 +410,17 @@ class Note extends FNFSprite
 		{
 			if (newNote.isSustainNote)
 			{
-				newNote.loadGraphic(Paths.image(ForeverTools.returnSkin(texture, assetModifier, (changeable ? Init.trueSettings.get("Note Skin") : ''), texturePath)), true, 7, 6);
+				newNote.loadGraphic(Paths.image(ForeverTools.returnSkin(texture, assetModifier, (changeable ? Init.trueSettings.get("Note Skin") : ''),
+					texturePath)), true,
+					7, 6);
 				newNote.animation.add(UIStaticArrow.getColorFromNumber(newNote.noteData) + 'holdend', [pixelNoteID[newNote.noteData]]);
 				newNote.animation.add(UIStaticArrow.getColorFromNumber(newNote.noteData) + 'hold', [pixelNoteID[newNote.noteData] - 4]);
 			}
 			else
 			{
-				newNote.loadGraphic(Paths.image(ForeverTools.returnSkin(texture, assetModifier, (changeable ? Init.trueSettings.get("Note Skin") : ''), texturePath)), true, 17, 17);
+				newNote.loadGraphic(Paths.image(ForeverTools.returnSkin(texture, assetModifier, (changeable ? Init.trueSettings.get("Note Skin") : ''),
+					texturePath)), true,
+					17, 17);
 				newNote.animation.add(UIStaticArrow.getColorFromNumber(newNote.noteData) + 'Scroll', [pixelNoteID[newNote.noteData]], 12);
 			}
 		}
@@ -420,7 +429,7 @@ class Note extends FNFSprite
 	// will be later replacing this function in favor of an actual scripted notetype system;
 
 	/**
-	* Custom Note Functions (for when you hit a note), this should execute in PlayState;
+	 * Custom Note Functions (for when you hit a note), this should execute in PlayState;
 	**/
 	public function goodNoteHit(newNote:Note, ?ratingTiming:String)
 	{

@@ -109,6 +109,7 @@ class JudgementOffsetState extends MusicBeatState
 		comboNewPos = FlxPoint.get(Init.comboOffset[0], Init.comboOffset[1]);
 		judgeNewPos = FlxPoint.get(Init.ratingOffset[0], Init.ratingOffset[1]);
 	}
+
 	var mousePos:FlxPoint = new FlxPoint();
 	var heldObject:String = null;
 

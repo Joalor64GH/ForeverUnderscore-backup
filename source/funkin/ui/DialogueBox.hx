@@ -87,6 +87,7 @@ class DialogueBox extends FlxSpriteGroup
 	 * nothing yet :P
 	**/
 	public var box:FNFSprite;
+
 	public var bgFade:FlxSprite;
 	public var portrait:FNFSprite;
 	public var alphabetText:Alphabet;
@@ -179,7 +180,7 @@ class DialogueBox extends FlxSpriteGroup
 		add(portrait);
 		add(box);
 
-		if(boxData.textType != 'custom')
+		if (boxData.textType != 'custom')
 			add(alphabetText);
 		else
 			add(pixelText);
@@ -213,7 +214,7 @@ class DialogueBox extends FlxSpriteGroup
 
 			if (pageData.text != null)
 				textToDisplay = pageData.text;
-			
+
 			if (boxData.textType != 'custom')
 				alphabetText.startText(textToDisplay, true);
 
@@ -228,7 +229,7 @@ class DialogueBox extends FlxSpriteGroup
 			{
 				pixelText.resetText(textToDisplay);
 				pixelText.start(pixelTextSpeed, true);
-				
+
 				pixelText.completeCallback = function()
 				{
 					alphabetText.finishedLine = true;
@@ -584,10 +585,10 @@ class DialogueBox extends FlxSpriteGroup
 	public function closeDialog()
 	{
 		whenDaFinish();
-		
+
 		var fadeOut = dialogueData.songFadeOut;
 		FlxG.sound.music.fadeOut((fadeOut != null ? fadeOut : 2.2), 0);
-		
+
 		alphabetText.playSounds = false;
 		kill();
 	}
@@ -606,7 +607,7 @@ class DialogueBox extends FlxSpriteGroup
 	}
 
 	override function update(elapsed:Float)
-	{		
+	{
 		if (box.animation.finished)
 		{
 			if (boxData.singleFrame != true)

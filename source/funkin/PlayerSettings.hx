@@ -17,14 +17,13 @@ class PlayerSettings
 	static public var player1(default, null):PlayerSettings;
 	static public var player2(default, null):PlayerSettings;
 
-	#if (haxe >= "4.0.0")
-	static public final onAvatarAdd = new FlxTypedSignal<PlayerSettings->Void>();
-	static public final onAvatarRemove = new FlxTypedSignal<PlayerSettings->Void>();
-	#else
-	static public var onAvatarAdd = new FlxTypedSignal<PlayerSettings->Void>();
-	static public var onAvatarRemove = new FlxTypedSignal<PlayerSettings->Void>();
-	#end
-
+	// #if (haxe >= "4.0.0")
+	// static public final onAvatarAdd = new FlxTypedSignal<PlayerSettings->Void>();
+	// static public final onAvatarRemove = new FlxTypedSignal<PlayerSettings->Void>();
+	// #else
+	// static public var onAvatarAdd = new FlxTypedSignal<PlayerSettings->Void>();
+	// static public var onAvatarRemove = new FlxTypedSignal<PlayerSettings->Void>();
+	// #end
 	public var id(default, null):Int;
 
 	#if (haxe >= "4.0.0")
@@ -150,8 +149,6 @@ class PlayerSettings
 
 			player2.controls.addDefaultGamepad(1);
 		}
-
-		// DeviceManager.init();
 	}
 
 	static public function reset()

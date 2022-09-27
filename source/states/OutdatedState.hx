@@ -14,35 +14,33 @@ import states.menus.MainMenuState;
 	a state for warning about new engine updates and such
 	this is just code from the base game that i've made some slight improvements to
 **/
-
 class OutdatedState extends MusicBeatState
 {
 	public static var leftState:Bool = false; // so you won't get to this substate again until you restart the game;
+
 	var updateText:FlxText;
 
-    override function create()
-    {
-        super.create();
+	override function create()
+	{
+		super.create();
 
 		transIn = FlxTransitionableState.defaultTransIn;
 		transOut = FlxTransitionableState.defaultTransOut;
 
 		// uh
 		persistentUpdate = persistentDraw = true;
-		
+
 		#if GAME_UPDATER
 		var bg:FlxSprite = new FlxSprite().makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
 		add(bg);
 
-		updateText = new FlxText(0, 0, FlxG.width,
-			"Hey, You're running an outdated version of Forever Engine Underscore
+		updateText = new FlxText(0, 0, FlxG.width, "Hey, You're running an outdated version of Forever Engine Underscore
 			\nPress ENTER to Update\nfrom "
 			+ Main.underscoreVersion
 			+ ' to '
 			+ ForeverTools.updateVersion
 			+ '\nPress ESCAPE to ignore this message.
-			\nif you wish to disable this, Uncheck "Check for Updates" on the Options Menu',
-			32);
+			\nif you wish to disable this, Uncheck "Check for Updates" on the Options Menu', 32);
 		updateText.setFormat("VCR OSD Mono", 32, FlxColor.WHITE, CENTER);
 		updateText.screenCenter();
 		updateText.alpha = 0;
@@ -53,7 +51,7 @@ class OutdatedState extends MusicBeatState
 		#else
 		Main.switchState(this, new MainMenuState());
 		#end
-    }
+	}
 
 	override function update(elapsed:Float)
 	{

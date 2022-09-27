@@ -106,26 +106,25 @@ class ChartEditor extends MusicBeatState
 	var markerR:FlxSprite;
 
 	final markerColors:Array<FlxColor> = [
-		FlxColor.RED, FlxColor.BLUE, FlxColor.PURPLE, FlxColor.YELLOW,
-		FlxColor.GRAY, FlxColor.PINK, FlxColor.ORANGE, FlxColor.CYAN, FlxColor.GREEN,
+		FlxColor.RED, FlxColor.BLUE, FlxColor.PURPLE, FlxColor.YELLOW, FlxColor.GRAY, FlxColor.PINK, FlxColor.ORANGE, FlxColor.CYAN, FlxColor.GREEN,
 		FlxColor.LIME, FlxColor.MAGENTA
 	];
 	var markerLevel:Int = 0;
 	var scrollSpeed:Float = 0.75;
-	
+
 	final scrollArray:Array<Float> = [0.5, 0.75, 1, 1.05, 1.5, 2, 2.05, 2.5, 3, 3.05, 3.5];
 
 	var arrowGroup:FlxTypedSpriteGroup<UIStaticArrow>;
-	
+
 	var buttonTextGroup:FlxTypedGroup<AbsoluteText>;
 	var buttonGroup:FlxTypedGroup<ChartingButton>;
-	
+
 	var buttonArray:Array<Array<Dynamic>> = [];
 
 	override public function create()
 	{
 		super.create();
-		
+
 		// moving fps to the right;
 		Main.overlay.x = FlxG.width - 245;
 		Main.overlay.autoSize = RIGHT;
@@ -138,11 +137,8 @@ class ChartEditor extends MusicBeatState
 			_song = Song.loadSong('test', 'test');
 
 		#if DISCORD_RPC
-		Discord.changePresence('CHART EDITOR',
-			'Charting: '
-			+ _song.song
-			+ ' [${CoolUtil.difficultyFromString()}] - by '
-			+ _song.author, null, null, null, true);
+		Discord.changePresence('CHART EDITOR', 'Charting: ' + _song.song + ' [${CoolUtil.difficultyFromString()}] - by ' + _song.author, null, null, null,
+			true);
 		#end
 
 		loadSong(_song.song);
@@ -278,7 +274,7 @@ class ChartEditor extends MusicBeatState
 		infoTextChart.setFormat(Paths.font("vcr.ttf"), constTextSize);
 		infoTextChart.cameras = [camHUD];
 		add(infoTextChart);
-		
+
 		/*
 			helpTxt = new FlxText(0, 0, 0, "", 16);
 			helpTxt.setFormat(Paths.font("vcr.ttf"), 20, FlxColor.WHITE, LEFT);
@@ -294,7 +290,7 @@ class ChartEditor extends MusicBeatState
 			prefTxt.text = 'PRESS ENTER FOR PREFERENCES';
 			helpTxt.setPosition(FlxG.width - (helpTxt.width + 5), FlxG.height - 55);
 			prefTxt.setPosition(FlxG.width - (prefTxt.width + 5), FlxG.height - 30);
-		*/
+		 */
 	}
 
 	function updateHUD()
@@ -309,7 +305,7 @@ class ChartEditor extends MusicBeatState
 		// update markers if needed;
 		markerL.color = markerColors[markerLevel];
 		markerR.color = markerColors[markerLevel];
-		
+
 		notesGroup.forEachAlive(function(epicNote:Note)
 		{
 			var songCrochet = (Math.floor(Conductor.songPosition / Conductor.stepCrochet));
@@ -417,7 +413,7 @@ class ChartEditor extends MusicBeatState
 			songMusic.time = Math.min(songMusic.time, songMusic.length);
 			vocals.time = songMusic.time;
 		}
-		
+
 		if (FlxG.keys.justPressed.LEFT)
 			changeMouseScroll(-1);
 		if (FlxG.keys.justPressed.RIGHT)
@@ -526,7 +522,7 @@ class ChartEditor extends MusicBeatState
 				}
 			}
 		}
-		
+
 		if (FlxG.mouse.justPressed)
 		{
 			if (FlxG.mouse.overlaps(buttonGroup))
@@ -562,7 +558,7 @@ class ChartEditor extends MusicBeatState
 			ForeverTools.killMusic([songMusic, vocals]);
 
 			Paths.clearUnusedMemory();
-			
+
 			Main.overlay.x = 0;
 			Main.overlay.autoSize = LEFT;
 
@@ -576,18 +572,18 @@ class ChartEditor extends MusicBeatState
 			ForeverTools.killMusic([songMusic, vocals]);
 
 			Paths.clearUnusedMemory();
-			
+
 			Main.overlay.x = 0;
 			Main.overlay.autoSize = LEFT;
 
-			//CoolUtil.difficulties = CoolUtil.baseDifficulties;
+			// CoolUtil.difficulties = CoolUtil.baseDifficulties;
 
 			Main.switchState(this, new FreeplayState());
 		}
 
 		updateHUD();
 	}
-	
+
 	function changeMouseScroll(newSpd:Int)
 	{
 		markerLevel += newSpd;
@@ -845,17 +841,17 @@ class ChartEditor extends MusicBeatState
 			note.destroy();
 
 			/*
-			if (prevNote != null && prevNote.isSustainNote)
-			{
-				var end:Note = ForeverAssets.generateArrow(_song.assetModifier, daStrumTime + Conductor.stepCrochet, daNoteInfo % 4, daNoteAlt, true,
-					hold, daNoteType);
-				end.setGraphicSize(constSize, Math.floor(FlxMath.remapToRange(daSus, 0, Conductor.stepCrochet * 16, 0, gridSize * constSize)));
-				end.updateHitbox();
-				end.x = hold.x - 15;
-				end.y = hold.y + (hold.height) + (gridSize / 2);
-				holdsGroup.add(end);
-			}
-			*/
+				if (prevNote != null && prevNote.isSustainNote)
+				{
+					var end:Note = ForeverAssets.generateArrow(_song.assetModifier, daStrumTime + Conductor.stepCrochet, daNoteInfo % 4, daNoteAlt, true,
+						hold, daNoteType);
+					end.setGraphicSize(constSize, Math.floor(FlxMath.remapToRange(daSus, 0, Conductor.stepCrochet * 16, 0, gridSize * constSize)));
+					end.updateHitbox();
+					end.x = hold.x - 15;
+					end.y = hold.y + (hold.height) + (gridSize / 2);
+					holdsGroup.add(end);
+				}
+			 */
 		}
 	}
 
@@ -875,6 +871,7 @@ class ChartEditor extends MusicBeatState
 		coolGradient.alpha = (32 / 255);
 		add(coolGradient);
 	}
+
 	function generateButtons():Void
 	{
 		// x, y, text on button, text size, child (optional), size ("" (medium), "big", or "small"),

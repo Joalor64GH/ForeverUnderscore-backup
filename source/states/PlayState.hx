@@ -4,6 +4,7 @@ import base.*;
 import base.MusicBeat.MusicBeatState;
 import base.SongLoader.LegacySong;
 import base.SongLoader.Song;
+import base.Controls.Control;
 import dependency.*;
 import flixel.FlxBasic;
 import flixel.FlxCamera;
@@ -17,6 +18,7 @@ import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.group.FlxSpriteGroup.FlxTypedSpriteGroup;
 import flixel.group.FlxSpriteGroup;
 import flixel.input.keyboard.FlxKey;
+import flixel.input.gamepad.FlxGamepad;
 import flixel.math.FlxMath;
 import flixel.math.FlxPoint;
 import flixel.math.FlxRect;
@@ -150,7 +152,7 @@ class PlayState extends MusicBeatState
 
 	public var darknessLine1:FlxSprite;
 	public var darknessLine2:FlxSprite;
-	
+
 	// i hate that i have to do this shit twice for the opponent strumlines but eh
 	public var darknessOpponent:FlxSprite;
 
@@ -457,7 +459,7 @@ class PlayState extends MusicBeatState
 		comboGroup = new FlxTypedGroup<FNFSprite>();
 		add(ratingsGroup);
 		add(comboGroup);
-		
+
 		comboHUD = new FlxCamera();
 		comboHUD.bgColor.alpha = 0;
 		comboHUD.cameras = [camHUD];
@@ -480,11 +482,8 @@ class PlayState extends MusicBeatState
 			copyKey(Init.gameControls.get('RIGHT')[0])
 		];
 
-		if (!Init.trueSettings.get('Controller Mode'))
-		{
-			FlxG.stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyPress);
-			FlxG.stage.addEventListener(KeyboardEvent.KEY_UP, onKeyRelease);
-		}
+		FlxG.stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyPress);
+		FlxG.stage.addEventListener(KeyboardEvent.KEY_UP, onKeyRelease);
 
 		Paths.clearUnusedMemory();
 
@@ -563,18 +562,22 @@ class PlayState extends MusicBeatState
 		return copiedArray;
 	}
 
-	var keysArray:Array<Dynamic>;
+	var keysArray:Array<Array<FlxKey>>;
+
+	var holdControls:Array<Bool> = [];
 
 	public function onKeyPress(event:KeyboardEvent):Void
 	{
 		var eventKey:FlxKey = event.keyCode;
 		var key:Int = getKeyFromEvent(eventKey);
 
-		if ((key >= 0)
+		if (key >= 0
+			&& !holdControls[key]
 			&& !bfStrums.autoplay
-			&& (FlxG.keys.checkStatus(eventKey, JUST_PRESSED) || Init.trueSettings.get('Controller Mode'))
 			&& (FlxG.keys.enabled && !paused && (FlxG.state.active || FlxG.state.persistentUpdate)))
 		{
+			holdControls[key] = true;
+
 			if (generatedMusic)
 			{
 				var previousTime:Float = Conductor.songPosition;
@@ -649,8 +652,10 @@ class PlayState extends MusicBeatState
 		var eventKey:FlxKey = event.keyCode;
 		var key:Int = getKeyFromEvent(eventKey);
 
-		if (FlxG.keys.enabled && !paused && (FlxG.state.active || FlxG.state.persistentUpdate))
+		if (key >= 0 && !bfStrums.autoplay && (FlxG.keys.enabled && !paused && (FlxG.state.active || FlxG.state.persistentUpdate)))
 		{
+			holdControls[key] = false;
+
 			// receptor reset
 			if (key >= 0 && bfStrums.receptors.members[key] != null)
 				bfStrums.receptors.members[key].playAnim('static');
@@ -677,11 +682,8 @@ class PlayState extends MusicBeatState
 	{
 		callFunc('destroy', []);
 
-		if (!Init.trueSettings.get('Controller Mode'))
-		{
-			FlxG.stage.removeEventListener(KeyboardEvent.KEY_DOWN, onKeyPress);
-			FlxG.stage.removeEventListener(KeyboardEvent.KEY_UP, onKeyRelease);
-		}
+		FlxG.stage.removeEventListener(KeyboardEvent.KEY_DOWN, onKeyPress);
+		FlxG.stage.removeEventListener(KeyboardEvent.KEY_UP, onKeyRelease);
 
 		// clear scripts;
 		scriptArray = [];
@@ -728,7 +730,7 @@ class PlayState extends MusicBeatState
 				{
 					FlxG.sound.play(Paths.sound(sound));
 				}
-				catch(e)
+				catch (e)
 				{
 					trace('Dialogue Error: ' + e);
 				}
@@ -782,7 +784,9 @@ class PlayState extends MusicBeatState
 					var holdingAlt = FlxG.keys.pressed.ALT;
 
 					Conductor.stopMusic();
-					Main.switchState(this, new CharacterOffsetEditor(holdingShift ? SONG.player1 : holdingAlt ? SONG.gfVersion : SONG.player2, holdingShift ? true : false, PlayState.curStage));
+					Main.switchState(this,
+						new CharacterOffsetEditor(holdingShift ? SONG.player1 : holdingAlt ? SONG.gfVersion : SONG.player2, holdingShift ? true : false,
+							PlayState.curStage));
 				}
 
 				if (FlxG.keys.pressed.SHIFT && FlxG.keys.justPressed.FIVE)
@@ -930,7 +934,7 @@ class PlayState extends MusicBeatState
 
 			noteCalls();
 
-			if (Init.trueSettings.get('Controller Mode'))
+			if (!bfStrums.autoplay)
 				controllerInput();
 		}
 
@@ -955,17 +959,17 @@ class PlayState extends MusicBeatState
 						{
 							daNote.active = false;
 							daNote.visible = false;
-	
+
 							daNote.kill();
 							notes.remove(daNote, true);
 							daNote.alive = false;
 							daNote.destroy();
 						}
 					});
-	
+
 					Conductor.songMusic.time = Conductor.songPosition;
 					Conductor.songVocals.time = Conductor.songPosition;
-	
+
 					Conductor.songMusic.play();
 					Conductor.songVocals.play();
 				}
@@ -977,27 +981,23 @@ class PlayState extends MusicBeatState
 		callFunc('postUpdate', [elapsed]);
 	}
 
-	// maybe theres a better place to put this, idk -saw
 	function controllerInput()
 	{
-		var justPressArray:Array<Bool> = [controls.LEFT_P, controls.DOWN_P, controls.UP_P, controls.RIGHT_P];
-		var justReleaseArray:Array<Bool> = [controls.LEFT_R, controls.DOWN_R, controls.UP_R, controls.RIGHT_R];
-
-		if (justPressArray.contains(true))
+		if (controls.gamepadsAdded.length > 0)
 		{
-			for (i in 0...justPressArray.length)
+			var gamepad:FlxGamepad = FlxG.gamepads.getByID(controls.gamepadsAdded[0]);
+			var binds:Array<Array<Int>> = [];
+			var directions:Array<Control> = [LEFT, DOWN, UP, RIGHT];
+
+			for (direction in directions)
+				binds.push(controls.getInputsFor(direction, Gamepad(gamepad.id)));
+
+			for (i in 0...binds.length)
 			{
-				if (justPressArray[i])
+				if (gamepad.anyJustPressed(binds[i]))
 					onKeyPress(new KeyboardEvent(KeyboardEvent.KEY_DOWN, true, true, -1, keysArray[i][0]));
-			}
-		}
-
-		if (justReleaseArray.contains(true))
-		{
-			for (i in 0...justReleaseArray.length)
-			{
-				if (justReleaseArray[i])
-					onKeyRelease(new KeyboardEvent(KeyboardEvent.KEY_UP, true, true, -1, keysArray[i][0]));
+				if (gamepad.anyJustReleased(binds[i]))
+					onKeyRelease(new KeyboardEvent(KeyboardEvent.KEY_DOWN, true, true, -1, keysArray[i][0]));
 			}
 		}
 	}
@@ -1019,7 +1019,7 @@ class PlayState extends MusicBeatState
 					strumline.splashNotes.members[i].y = strumline.receptors.members[i].y + (UIStaticArrow.swagWidth / 6) - 56;
 				}
 		}
-		
+
 		// set the notes x and y
 		var downscrollMultiplier = (Init.trueSettings.get('Downscroll') ? -1 : 1) * FlxMath.signOf(get_songSpeed());
 		if (generatedMusic && startedCountdown)
@@ -1033,7 +1033,7 @@ class PlayState extends MusicBeatState
 						strumNote.noteSpeed = Init.trueSettings.get('Scroll Speed');
 					else
 						strumNote.noteSpeed = Math.abs(get_songSpeed());
-	 
+
 					var roundedSpeed = FlxMath.roundDecimal(strumNote.noteSpeed, 2);
 					var receptorX:Float = strumline.receptors.members[Math.floor(strumNote.noteData)].x;
 					var receptorY:Float = strumline.receptors.members[Math.floor(strumNote.noteData)].y;
@@ -1056,7 +1056,8 @@ class PlayState extends MusicBeatState
 					if (strumNote.isSustainNote)
 					{
 						strumNote.y -= ((strumNote.height / 2) * downscrollMultiplier);
-						if ((strumNote.animation.curAnim.name.endsWith('holdend') || strumNote.animation.curAnim.name.endsWith('rollend')) && (strumNote.prevNote != null))
+						if ((strumNote.animation.curAnim.name.endsWith('holdend') || strumNote.animation.curAnim.name.endsWith('rollend'))
+							&& (strumNote.prevNote != null))
 						{
 							strumNote.y -= ((strumNote.prevNote.height / 2) * downscrollMultiplier);
 							if (downscrollMultiplier < 0) // downscroll;
@@ -1081,7 +1082,8 @@ class PlayState extends MusicBeatState
 							strumNote.flipY = true;
 							if ((strumNote.parentNote != null && strumNote.parentNote.wasGoodHit)
 								&& strumNote.y - strumNote.offset.y * strumNote.scale.y + strumNote.height >= center
-								&& (strumline.autoplay || (strumNote.wasGoodHit || (strumNote.prevNote.wasGoodHit && !strumNote.canBeHit))))
+								&& (strumline.autoplay
+									|| (strumNote.wasGoodHit || (strumNote.prevNote.wasGoodHit && !strumNote.canBeHit))))
 							{
 								var swagRect = new FlxRect(0, 0, strumNote.frameWidth, strumNote.frameHeight);
 								swagRect.height = (center - strumNote.y) / strumNote.scale.y;
@@ -1093,7 +1095,8 @@ class PlayState extends MusicBeatState
 						{
 							if ((strumNote.parentNote != null && strumNote.parentNote.wasGoodHit)
 								&& strumNote.y + strumNote.offset.y * strumNote.scale.y <= center
-								&& (strumline.autoplay || (strumNote.wasGoodHit || (strumNote.prevNote.wasGoodHit && !strumNote.canBeHit))))
+								&& (strumline.autoplay
+									|| (strumNote.wasGoodHit || (strumNote.prevNote.wasGoodHit && !strumNote.canBeHit))))
 							{
 								var swagRect = new FlxRect(0, 0, strumNote.width / strumNote.scale.x, strumNote.height / strumNote.scale.y);
 								swagRect.y = (center - strumNote.y) / strumNote.scale.y;
@@ -1124,7 +1127,9 @@ class PlayState extends MusicBeatState
 						strumNote.active = true;
 					}
 
-					if (!strumNote.tooLate && strumNote.strumTime < Conductor.songPosition - (Timings.msThreshold) && !strumNote.wasGoodHit)
+					if (!strumNote.tooLate
+						&& strumNote.strumTime < Conductor.songPosition - (Timings.msThreshold)
+						&& !strumNote.wasGoodHit)
 					{
 						if ((!strumNote.tooLate) && (strumNote.mustPress) && (!strumNote.canHurt))
 						{
@@ -1136,7 +1141,7 @@ class PlayState extends MusicBeatState
 
 								Conductor.songVocals.volume = 0;
 								strumNote.noteMissActions(strumNote);
-								
+
 								callFunc('noteMiss', [strumNote]);
 
 								missNoteCheck((Init.trueSettings.get('Ghost Tapping')) ? true : false, strumNote.noteData, boyfriend, true);
@@ -1176,9 +1181,9 @@ class PlayState extends MusicBeatState
 		}
 
 		// reset bf's animation
-		var holdControls:Array<Bool> = [controls.LEFT, controls.DOWN, controls.UP, controls.RIGHT];
 		if ((boyfriend != null && boyfriend.animation != null)
-			&& (boyfriend.holdTimer > Conductor.stepCrochet * (0.0011 / Conductor.playbackRate) * boyfriend.singDuration && (!holdControls.contains(true) || bfStrums.autoplay)))
+			&& (boyfriend.holdTimer > Conductor.stepCrochet * (0.0011 / Conductor.playbackRate) * boyfriend.singDuration
+				&& (!holdControls.contains(true) || bfStrums.autoplay)))
 		{
 			if (boyfriend.animation.curAnim.name.startsWith('sing') && !boyfriend.animation.curAnim.name.endsWith('miss'))
 				boyfriend.dance();
@@ -1534,7 +1539,6 @@ class PlayState extends MusicBeatState
 			}
 		}
 
-		var holdControls:Array<Bool> = [controls.LEFT, controls.DOWN, controls.UP, controls.RIGHT];
 		if (!autoplay)
 		{
 			// check if anything is held
@@ -1692,7 +1696,7 @@ class PlayState extends MusicBeatState
 					lastJudgement.kill();
 				for (i in 0...ratingsGroup.members.length)
 					lastJudgement = ratingsGroup.members[i];
-					
+
 				FlxTween.tween(rating, {y: rating.y + 20}, 0.2, {type: FlxTweenType.BACKWARD, ease: FlxEase.circOut});
 				FlxTween.tween(rating, {"scale.x": 0, "scale.y": 0}, (Conductor.stepCrochet) / 1000, {
 					onComplete: function(tween:FlxTween)
@@ -1739,8 +1743,9 @@ class PlayState extends MusicBeatState
 
 		for (scoreInt in 0...stringArray.length)
 		{
-			var comboNum = ForeverAssets.generateCombo('combo_numbers', stringArray[scoreInt], (!negative ? perfect : false), comboGroup, assetModifier, changeableSkin, 'UI', negative, createdColor, scoreInt);
-			
+			var comboNum = ForeverAssets.generateCombo('combo_numbers', stringArray[scoreInt], (!negative ? perfect : false), comboGroup, assetModifier,
+				changeableSkin, 'UI', negative, createdColor, scoreInt);
+
 			if (!Init.trueSettings.get('Judgement Stacking'))
 			{
 				for (i in 0...comboGroup.members.length)
@@ -1844,7 +1849,12 @@ class PlayState extends MusicBeatState
 
 		Conductor.changeBPM(SONG.bpm);
 
-		songDetails = CoolUtil.dashToSpace(SONG.song) + ' [' + CoolUtil.difficultyFromString() + '] - by ' + SONG.author + ' (${Conductor.playbackRate}x)';
+		songDetails = CoolUtil.dashToSpace(SONG.song)
+			+ ' ['
+			+ CoolUtil.difficultyFromString()
+			+ '] - by '
+			+ SONG.author
+			+ ' (${Conductor.playbackRate}x)';
 
 		detailsPausedText = "Paused - " + songDetails;
 		detailsSub = "";
@@ -1862,7 +1872,7 @@ class PlayState extends MusicBeatState
 
 		songSpeed = SONG.speed;
 
-		//trace(unspawnEvents);
+		// trace(unspawnEvents);
 
 		checkSongEvents();
 
@@ -2041,7 +2051,7 @@ class PlayState extends MusicBeatState
 
 		canPause = false;
 		endingSong = true;
-		
+
 		if (!endSongEvent)
 		{
 			if (checkTextbox())
@@ -2058,7 +2068,7 @@ class PlayState extends MusicBeatState
 			Highscore.saveRank(SONG.song, rank, storyDifficulty);
 		}
 
-		//CoolUtil.difficulties = CoolUtil.baseDifficulties;
+		// CoolUtil.difficulties = CoolUtil.baseDifficulties;
 
 		if (chartingMode)
 			Main.switchState(this, (prevCharter == 1 ? new ChartEditor() : new OriginalChartEditor()));
@@ -2138,13 +2148,13 @@ class PlayState extends MusicBeatState
 		if (isStoryMode)
 		{
 			var difficulty:String = CoolUtil.returnDifficultySuffix().toLowerCase();
-	
+
 			PlayState.SONG = Song.loadSong(PlayState.storyPlaylist[0].toLowerCase() + difficulty, PlayState.storyPlaylist[0]);
 			Conductor.killMusic();
 
 			FlxTransitionableState.skipNextTransIn = true;
 			FlxTransitionableState.skipNextTransOut = true;
-	
+
 			// deliberately did not use the main.switchstate as to not unload the assets
 			FlxG.switchState(new PlayState());
 		}
@@ -2283,7 +2293,6 @@ class PlayState extends MusicBeatState
 		}
 	}
 
-
 	function checkTextbox():Bool
 	{
 		var dialogPath = Paths.json('songs/' + SONG.song.toLowerCase() + (endingSong ? '/dialogueEnd' : '/dialogue'));
@@ -2301,7 +2310,8 @@ class PlayState extends MusicBeatState
 			if (!endingSong)
 				startedCountdown = false;
 
-			dialogueBox = DialogueBox.createDialogue(sys.io.File.getContent(Paths.json('songs/' + SONG.song.toLowerCase() + (endingSong ? '/dialogueEnd' : '/dialogue'))));
+			dialogueBox = DialogueBox.createDialogue(sys.io.File.getContent(Paths.json('songs/' + SONG.song.toLowerCase()
+				+ (endingSong ? '/dialogueEnd' : '/dialogue'))));
 			dialogueBox.cameras = [dialogueHUD];
 			dialogueBox.whenDaFinish = (endingSong ? callDefaultSongEnd : startCountdown);
 
@@ -2543,11 +2553,11 @@ class PlayState extends MusicBeatState
 				if (dir.length > 0)
 				{
 					/*
-					if (script.length > 0 && script.endsWith('.hx') || script.endsWith('.hxs'))
-					{
-						scriptArray.push(new ScriptHandler(script));
-					}
-					*/
+						if (script.length > 0 && script.endsWith('.hx') || script.endsWith('.hxs'))
+						{
+							scriptArray.push(new ScriptHandler(script));
+						}
+					 */
 				}
 			}
 		}

@@ -32,6 +32,7 @@ class PauseSubstate extends MusicBeatSubstate
 
 	public static var toOptions:Bool = false;
 	public static var levelPractice:FlxText;
+
 	private var levelError:FlxText;
 
 	public function new(x:Float, y:Float)
@@ -47,7 +48,8 @@ class PauseSubstate extends MusicBeatSubstate
 		{
 			// check for existance of difficulty files, and then push said files to the difficulty array as an entry;
 			if (FileSystem.exists(Paths.songJson(CoolUtil.dashToSpace(PlayState.SONG.song), CoolUtil.dashToSpace(PlayState.SONG.song) + '-' + i))
-				|| (FileSystem.exists(Paths.songJson(CoolUtil.dashToSpace(PlayState.SONG.song), CoolUtil.dashToSpace(PlayState.SONG.song))) && i == "NORMAL"))
+				|| (FileSystem.exists(Paths.songJson(CoolUtil.dashToSpace(PlayState.SONG.song), CoolUtil.dashToSpace(PlayState.SONG.song)))
+					&& i == "NORMAL"))
 				difficultyArray.push(i);
 		}
 
@@ -229,7 +231,7 @@ class PauseSubstate extends MusicBeatSubstate
 					PlayState.deaths = 0;
 					disableCheats(true);
 
-					//CoolUtil.difficulties = CoolUtil.baseDifficulties;
+					// CoolUtil.difficulties = CoolUtil.baseDifficulties;
 
 					if (PlayState.isStoryMode)
 						Main.switchState(this, new StoryMenuState());

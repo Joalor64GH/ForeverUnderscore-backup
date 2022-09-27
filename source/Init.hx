@@ -46,39 +46,41 @@ class Init extends FlxState
 	public static var ratingOffset:Array<Float> = [0, 0];
 
 	/**
-	 * hi, gabi (ghost) here, I know this is an odd place to put a comment but i'm gonna try to be more descriptive
-	 * in regardless to variables and such from now on
-	 * i think it's nice to explain how at least some of these work at least for the sake of clarity and for making
-	 * things somewhat easier for everyone
+		* hi, gabi (ghost) here, I know this is an odd place to put a comment but i'm gonna try to be more descriptive
+		* in regardless to variables and such from now on
+		* i think it's nice to explain how at least some of these work at least for the sake of clarity and for making
+		* things somewhat easier for everyone
 
-	 * here is the main setting format if you want to create a new one
-	 * set it to the `gameSettings` map and you should be good to go
+		* here is the main setting format if you want to create a new one
+		* set it to the `gameSettings` map and you should be good to go
 
-	 * `'Name' => [param1, Type, 'Description', NOT_FORCED`]
+		* `'Name' => [param1, Type, 'Description', NOT_FORCED`]
 
-	 * param1 can be either `true` | `false`, or a string value, like `'bepis'` or something
-	 * type can be anything on the `SettingTypes` enum,
-	 * `FORCED` means the main game will hide that option and force it to stay on the default parameter
+		* param1 can be either `true` | `false`, or a string value, like `'bepis'` or something
+		* type can be anything on the `SettingTypes` enum,
+		* `FORCED` means the main game will hide that option and force it to stay on the default parameter
 	**/
-
 	//
-
 	public static var gameSettings:Map<String, Dynamic> = [
 		// GAMEPLAY;
-		'Controller Mode' => [
-			false,
-			Checkmark,
-			'Whether to use a controller instead of the keyboard to play.',
-			NOT_FORCED
-		],
 		'Downscroll' => [
 			false,
 			Checkmark,
 			'Whether to have the receptors vertically flipped in gameplay.',
 			NOT_FORCED
 		],
-		'Centered Receptors' => [false, Checkmark, "Center your notes, and repositions the enemy's notes to the sides of the screen.", NOT_FORCED],
-		'Hide Opponent Receptors' => [false, Checkmark, "Whether to hide the Opponent's Notes during gameplay.", NOT_FORCED],
+		'Centered Receptors' => [
+			false,
+			Checkmark,
+			"Center your notes, and repositions the enemy's notes to the sides of the screen.",
+			NOT_FORCED
+		],
+		'Hide Opponent Receptors' => [
+			false,
+			Checkmark,
+			"Whether to hide the Opponent's Notes during gameplay.",
+			NOT_FORCED
+		],
 		'Ghost Tapping' => [
 			false,
 			Checkmark,
@@ -93,9 +95,19 @@ class Init extends FlxState
 			"Whether to override the song's scroll speed to use your own.",
 			NOT_FORCED
 		],
-		'Scroll Speed' => [1, Selector, 'Set your custom scroll speed for the Notes (NEEDS "Use Custom Note Speed" ENABLED).', NOT_FORCED],
+		'Scroll Speed' => [
+			1,
+			Selector,
+			'Set your custom scroll speed for the Notes (NEEDS "Use Custom Note Speed" ENABLED).',
+			NOT_FORCED
+		],
 		// TEXT;
-		'Display Accuracy' => [true, Checkmark, 'Whether to display your accuracy on the score bar during gameplay.', NOT_FORCED],
+		'Display Accuracy' => [
+			true,
+			Checkmark,
+			'Whether to display your accuracy on the score bar during gameplay.',
+			NOT_FORCED
+		],
 		'Skip Text' => [
 			'freeplay only',
 			Selector,
@@ -129,8 +141,7 @@ class Init extends FlxState
 			Selector,
 			'Which song should we use for the Main Menu? takes effect upon switching states or restarting the game.',
 			NOT_FORCED,
-			''
-			//['foreverMenu', 'freakyMenu']
+			'' // ['foreverMenu', 'freakyMenu']
 		],
 		"Framerate Cap" => [120, Selector, 'Define your maximum FPS.', NOT_FORCED, ['']],
 		'FPS Counter' => [true, Checkmark, 'Whether to display the FPS counter.', NOT_FORCED],
@@ -198,7 +209,13 @@ class Init extends FlxState
 			['None', 'Left', 'Right']
 		],
 		// NOTES AND HOLDS;
-		"Note Skin" => ['default', Selector, 'Choose a note skin, can also affect note splashes.', NOT_FORCED, ''],
+		"Note Skin" => [
+			'default',
+			Selector,
+			'Choose a note skin, can also affect note splashes.',
+			NOT_FORCED,
+			''
+		],
 		'Arrow Opacity' => [60, Selector, "Set the opacity for your Strumline Notes.", NOT_FORCED],
 		"Clip Style" => [
 			'stepmania',
@@ -357,7 +374,7 @@ class Init extends FlxState
 			comboOffset = FlxG.save.data.comboOffset;
 		if (FlxG.save.data.ratingOffset != null)
 			ratingOffset = FlxG.save.data.ratingOffset;
-			
+
 		CoolUtil.difficulties = CoolUtil.baseDifficulties.copy();
 
 		Main.switchState(this, cast Type.createInstance(Main.initialState, []));
@@ -406,9 +423,7 @@ class Init extends FlxState
 				case "Splash Opacity":
 					defaultValue = 80;
 			}
-			if (!Std.isOfType(trueSettings.get(i), Int)
-				|| trueSettings.get(i) < 0
-				|| trueSettings.get(i) > 100)
+			if (!Std.isOfType(trueSettings.get(i), Int) || trueSettings.get(i) < 0 || trueSettings.get(i) > 100)
 				trueSettings.set(i, defaultValue);
 		}
 
@@ -424,7 +439,7 @@ class Init extends FlxState
 		gameSettings.get("Hitsound Type")[4] = CoolUtil.returnAssetsLibrary('hitsounds', 'assets/sounds');
 		if (!gameSettings.get("Hitsound Type")[4].contains(trueSettings.get("Hitsound Type")))
 			trueSettings.set("Hitsound Type", 'default');
-			
+
 		gameSettings.get("Menu Song")[4] = CoolUtil.returnAssetsLibrary('menus', 'assets/music');
 		if (!gameSettings.get("Menu Song")[4].contains(trueSettings.get("Menu Song")))
 			trueSettings.set("Menu Song", 'freakyMenu');

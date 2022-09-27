@@ -164,8 +164,8 @@ class Stage extends FlxTypedGroup<FlxBasic>
 
 		for (path in paths)
 		{
-        	if (FileSystem.exists(path))
-            	stageScript = new ScriptHandler(path);
+			if (FileSystem.exists(path))
+				stageScript = new ScriptHandler(path);
 		}
 
 		setVar('add', this.add);
@@ -190,15 +190,15 @@ class Stage extends FlxTypedGroup<FlxBasic>
 	public function callFunc(key:String, args:Array<Dynamic>)
 	{
 		if (stageScript == null)
-            return null;
+			return null;
 		else
 			return stageScript.call(key, args);
 	}
 
 	public function setVar(key:String, value:Dynamic)
 	{
-        if (stageScript == null)
-            return null;
+		if (stageScript == null)
+			return null;
 		else
 			return stageScript.set(key, value);
 	}

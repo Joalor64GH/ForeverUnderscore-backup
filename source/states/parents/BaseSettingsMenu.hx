@@ -34,14 +34,11 @@ class BaseSettingsMenu extends MusicBeatState
 	];
 
 	public var options:Array<Option> = [
-
-        // GAMEPLAY
-		{name: 'Controller Mode', parentID: 1},
+		// GAMEPLAY
 		{name: 'Downscroll', parentID: 1},
 		{name: 'Centered Receptors', parentID: 1},
 		{name: 'Ghost Tapping', parentID: 1},
-
-        // VISUALS
+		// VISUALS
 		{name: 'Fixed Judgements', parentID: 3},
 		{name: 'Colored Health Bar', parentID: 3},
 		{name: 'Animated Score Color', parentID: 3},
@@ -50,7 +47,6 @@ class BaseSettingsMenu extends MusicBeatState
 		{name: 'Note Skin', parentID: 3},
 		{name: 'Arrow Opacity', parentID: 3},
 		{name: 'UI Skin', parentID: 3},
-
 		// ACCESSIBILITY
 		{name: 'Disable Antialiasing', parentID: 4},
 		{name: 'Disable Flashing Lights', parentID: 4},
@@ -64,9 +60,9 @@ class BaseSettingsMenu extends MusicBeatState
 	public var curSelected = 0;
 
 	public var checkmarkGroup:FlxTypedGroup<Checkmark>;
-    public var selectorGroup:FlxTypedGroup<Selector>;
+	public var selectorGroup:FlxTypedGroup<Selector>;
 
-    var bg:FlxSprite;
+	var bg:FlxSprite;
 	var coolGrid:FlxBackdrop;
 
 	function generateBackground()
@@ -81,7 +77,7 @@ class BaseSettingsMenu extends MusicBeatState
 		bg.color = 0xCE64DF;
 		bg.antialiasing = !Init.trueSettings.get('Disable Antialiasing');
 		add(bg);
-        
+
 		coolGrid = new FlxBackdrop(null, 1, 1, true, true, 1, 1);
 		coolGrid.loadGraphic(Paths.image('menus/chart editor/grid'));
 		coolGrid.alpha = (32 / 255);
@@ -89,13 +85,13 @@ class BaseSettingsMenu extends MusicBeatState
 	}
 
 	public function generateCheckmarks()
-    {
+	{
 		if (checkmarkGroup != null)
 			remove(checkmarkGroup);
 
 		checkmarkGroup = new FlxTypedGroup<Checkmark>();
 		add(checkmarkGroup);
-    }
+	}
 
 	public function generateSelectors()
 	{

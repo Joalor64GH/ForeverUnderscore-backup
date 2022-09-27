@@ -322,8 +322,8 @@ class Character extends FNFSprite
 	private var settingCharacterUp:Bool = true;
 
 	/**
-	* for Psych Engine Characters;
-	* @author Shadow_Mario_
+	 * for Psych Engine Characters;
+	 * @author Shadow_Mario_
 	**/
 	public function recalcDance()
 	{
@@ -349,7 +349,10 @@ class Character extends FNFSprite
 
 	function generateBaseChar(char:String = 'bf')
 	{
-		var scripts:Array<String> = [Paths.getPreloadPath('characters/$char/config.hx'), Paths.getPreloadPath('characters/$char/config.hxs')];
+		var scripts:Array<String> = [
+			Paths.getPreloadPath('characters/$char/config.hx'),
+			Paths.getPreloadPath('characters/$char/config.hxs')
+		];
 
 		var pushedScripts:Array<String> = [];
 
@@ -500,7 +503,7 @@ class Character extends FNFSprite
 			playAnim('danceLeft');
 		else
 			playAnim('idle');
-			
+
 		curCharacter = char;
 	}
 
@@ -531,7 +534,7 @@ class Character extends FNFSprite
 
 		if (FileSystem.exists(Paths.getPath('characters/$char/' + json.image.replace('characters/', '') + '.txt', TEXT)))
 			spriteType = "PackerAtlas";
-		//else if (FileSystem.exists(Paths.getPath('characters/$char/' + json.image.replace('characters/', '') + '.json', TEXT)))
+		// else if (FileSystem.exists(Paths.getPath('characters/$char/' + json.image.replace('characters/', '') + '.json', TEXT)))
 		//	spriteType = "JsonAtlas";
 
 		trace('Atlas Type: ' + spriteType + ' for Character: ' + char);
@@ -581,7 +584,7 @@ class Character extends FNFSprite
 			playAnim('danceLeft');
 		else
 			playAnim('idle');
-			
+
 		curCharacter = char;
 	}
 }

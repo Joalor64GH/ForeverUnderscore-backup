@@ -134,7 +134,7 @@ class Alphabet extends FlxSpriteGroup
 
 			var isNumber:Bool = AlphaCharacter.numbers.contains(character);
 			var isSymbol:Bool = AlphaCharacter.symbols.contains(character);
-			
+
 			var alphaIndex:Bool = (AlphaCharacter.alphabet.indexOf(character.toLowerCase()) != -1);
 			var numIndex:Bool = (AlphaCharacter.numbers.indexOf(character) != -1);
 			var symIndex:Bool = (AlphaCharacter.symbols.indexOf(character) != -1);
@@ -284,7 +284,7 @@ class Alphabet extends FlxSpriteGroup
 						var cur = FlxG.random.int(0, soundChoices.length - 1);
 						var daSound:String = beginPath + soundChoices[cur] + "." + Paths.SOUND_EXT;
 
-						if(daSound.endsWith(Paths.SOUND_EXT) && daSound != null)
+						if (daSound.endsWith(Paths.SOUND_EXT) && daSound != null)
 							FlxG.sound.play(daSound);
 					}
 				}
@@ -425,7 +425,7 @@ class AlphaCharacter extends FlxSprite
 		scale.set(textSize, textSize);
 		updateHitbox();
 
-		//FlxG.log.add('the row' + row);
+		// FlxG.log.add('the row' + row);
 
 		y = (110 - height);
 		y += row * 50;

@@ -122,11 +122,16 @@ class ForeverTools
 	{
 		switch (type.toLowerCase())
 		{
-			case 'backward': return FlxTweenType.BACKWARD;
-			case 'looping': return FlxTweenType.LOOPING;
-			case 'oneshot': return FlxTweenType.ONESHOT;
-			case 'persist': return FlxTweenType.PERSIST;
-			case 'pingpong': return FlxTweenType.PINGPONG;
+			case 'backward':
+				return FlxTweenType.BACKWARD;
+			case 'looping':
+				return FlxTweenType.LOOPING;
+			case 'oneshot':
+				return FlxTweenType.ONESHOT;
+			case 'persist':
+				return FlxTweenType.PERSIST;
+			case 'pingpong':
+				return FlxTweenType.PINGPONG;
 		}
 		return FlxTweenType.PERSIST;
 	}
@@ -166,20 +171,34 @@ class ForeverTools
 	{
 		switch (str.toLowerCase())
 		{
-			case "black": FlxColor.BLACK;
-			case "white": FlxColor.WHITE;
-			case "blue": FlxColor.BLUE;
-			case "brown": FlxColor.BROWN;
-			case "cyan": FlxColor.CYAN;
-			case "gray": FlxColor.GRAY;
-			case "green": FlxColor.GREEN;
-			case "lime": FlxColor.LIME;
-			case "magenta": FlxColor.MAGENTA;
-			case "orange": FlxColor.ORANGE;
-			case "pink": FlxColor.PINK;
-			case "purple": FlxColor.PURPLE;
-			case "red": FlxColor.RED;
-			case "transparent": FlxColor.TRANSPARENT;
+			case "black":
+				FlxColor.BLACK;
+			case "white":
+				FlxColor.WHITE;
+			case "blue":
+				FlxColor.BLUE;
+			case "brown":
+				FlxColor.BROWN;
+			case "cyan":
+				FlxColor.CYAN;
+			case "gray":
+				FlxColor.GRAY;
+			case "green":
+				FlxColor.GREEN;
+			case "lime":
+				FlxColor.LIME;
+			case "magenta":
+				FlxColor.MAGENTA;
+			case "orange":
+				FlxColor.ORANGE;
+			case "pink":
+				FlxColor.PINK;
+			case "purple":
+				FlxColor.PURPLE;
+			case "red":
+				FlxColor.RED;
+			case "transparent":
+				FlxColor.TRANSPARENT;
 		}
 		return FlxColor.TRANSPARENT;
 	}
@@ -203,7 +222,7 @@ class ForeverTools
 	{
 		return FlxColor.fromInt(value);
 	}
-	
+
 	public static function fromString(str:String):FlxColor
 	{
 		return FlxColor.fromString(str);

@@ -91,30 +91,32 @@ class Overlay extends TextField
 }
 
 /**
-   Console Overlay that gives information such as traced lines, like a Command Prompt/Terminal
-   author @superpowers04
-   support Super Engine - https://github.com/superpowers04/Super-Engine
-*/
+	Console Overlay that gives information such as traced lines, like a Command Prompt/Terminal
+	author @superpowers04
+	support Super Engine - https://github.com/superpowers04/Super-Engine
+ */
 class Console extends TextField
 {
 	public static var instance:Console = new Console();
+
 	/**
 		The current frame rate, expressed using frames-per-second
 	**/
 	public var currentFPS(default, null):Int;
- 
+
 	@:noCompletion private var cacheCount:Int;
 	@:noCompletion private var currentTime:Float;
 	@:noCompletion private var times:Array<Float>;
+
 	public static var debugVar:String = "";
- 
+
 	public function new(x:Float = 20, y:Float = 20, color:Int = 0xFFFFFFFF)
 	{
 		super();
 		instance = this;
 		haxe.Log.trace = function(v, ?infos)
 		{
-			var str = haxe.Log.formatOutput(v,infos);
+			var str = haxe.Log.formatOutput(v, infos);
 			#if js
 			if (js.Syntax.typeof(untyped console) != "undefined" && (untyped console).log != null)
 				(untyped console).log(str);
@@ -123,9 +125,9 @@ class Console extends TextField
 			#elseif sys
 			Sys.println(str);
 			#end
-			if(Console.instance != null)Console.instance.log(str);
+			if (Console.instance != null)
+				Console.instance.log(str);
 		}
-
 
 		this.x = x;
 		this.y = y;
@@ -134,13 +136,13 @@ class Console extends TextField
 		background = true;
 		backgroundColor = 0xaa000000;
 		// alpha = 0;
- 
+
 		selectable = false;
 		mouseEnabled = mouseWheelEnabled = true;
 		defaultTextFormat = new TextFormat("_sans", 12, color);
 		text = "Start of log";
 		alpha = 0;
- 
+
 		#if flash
 		addEventListener(Event.ENTER_FRAME, function(e)
 		{
@@ -148,38 +150,44 @@ class Console extends TextField
 		});
 		#end
 	}
+
 	var lineCount:Int = 0;
 	var lines:Array<String> = [];
+
 	public function log(str:String)
 	{
-		if(FlxG.save.data != null && !Init.trueSettings.get('Allow Console Window')) return;
+		if (FlxG.save.data != null && !Init.trueSettings.get('Allow Console Window'))
+			return;
 		// text += "\n-" + lineCount + ": " + str;
 		lineCount++;
 		lines.push('$lineCount ~ $str');
-		while(lines.length > 100){
+		while (lines.length > 100)
+		{
 			lines.shift();
 		}
 		requestUpdate = true;
 	}
+
 	var requestUpdate = false;
 	var showConsole = false;
 	var wasMouseDisabled = false;
- 
+
 	// Event Handlers
 	@:noCompletion
 	private #if !flash override #end function __enterFrame(deltaTime:Float):Void
 	{
-		if (FlxG.keys == null || FlxG.save.data == null || !Init.trueSettings.get('Allow Console Window')) return;
-		if(FlxG.keys.pressed.SHIFT && FlxG.keys.pressed.CONTROL && FlxG.keys.justPressed.F10)
+		if (FlxG.keys == null || FlxG.save.data == null || !Init.trueSettings.get('Allow Console Window'))
+			return;
+		if (FlxG.keys.pressed.SHIFT && FlxG.keys.pressed.CONTROL && FlxG.keys.justPressed.F10)
 		{
 			lines = [];
 			trace("Cleared log");
 		}
-		else if(FlxG.keys != null && FlxG.keys.justPressed.F10 && FlxG.save.data != null)
+		else if (FlxG.keys != null && FlxG.keys.justPressed.F10 && FlxG.save.data != null)
 		{
 			showConsole = !showConsole;
 			alpha = (showConsole ? 1 : 0);
-			if(showConsole)
+			if (showConsole)
 			{
 				wasMouseDisabled = FlxG.mouse.visible;
 				FlxG.mouse.visible = true;
@@ -193,7 +201,7 @@ class Console extends TextField
 				FlxG.mouse.visible = wasMouseDisabled;
 			}
 		}
-		if(showConsole && requestUpdate)
+		if (showConsole && requestUpdate)
 		{
 			text = lines.join("\n");
 			scrollV = bottomScrollV;

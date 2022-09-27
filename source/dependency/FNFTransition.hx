@@ -87,7 +87,7 @@ class FNFTransition extends MusicBeatSubstate
 				FlxTween.tween(bg, {alpha: 1}, 0.1);
 				FlxTween.tween(loadingFunkers, {alpha: 1}, 0.4);
 			}
-			
+
 			// will eventually make the loadingFunkers stuff more customizable;
 
 			transGradient.y = -transGradient.height;

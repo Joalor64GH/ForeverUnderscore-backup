@@ -63,7 +63,6 @@ class OptionsMenuState extends MusicBeatState
 				[
 					['Gameplay Settings', null],
 
-					['Controller Mode', getFromOption],
 					['Downscroll', getFromOption],
 					['Centered Receptors', getFromOption],
 					['Hide Opponent Receptors', getFromOption],
@@ -444,10 +443,14 @@ class OptionsMenuState extends MusicBeatState
 						var selector:Selector = new Selector(10, letter.y, letter.text, Init.gameSettings.get(letter.text)[4], [
 							// wow this SUCKS, I need to rewrite this already;
 							(letter.text == 'Framerate Cap') ? true : false,
-							(letter.text == 'Darkness Opacity') ? true : false,
-							(letter.text == 'Hitsound Volume') ? true : false,
-							(letter.text == 'Scroll Speed') ? true : false,
-							(letter.text == 'Arrow Opacity') ? true : false,
+							(letter.text == 'Darkness Opacity')
+							? true : false,
+							(letter.text == 'Hitsound Volume')
+							? true : false,
+							(letter.text == 'Scroll Speed')
+							? true : false,
+							(letter.text == 'Arrow Opacity')
+							? true : false,
 							(letter.text == 'Splash Opacity' ? true : false)
 						]);
 
@@ -529,8 +532,8 @@ class OptionsMenuState extends MusicBeatState
 		var notesplashOp = selector.optionBooleans[5];
 
 		/**
-			* left to right, minimum value, maximum value, change value
-			* rest is default stuff that I needed to keep
+		 * left to right, minimum value, maximum value, change value
+		 * rest is default stuff that I needed to keep
 		**/
 		if (fps)
 			generateSelector(30, 360, 15, updateBy, selector);
@@ -627,7 +630,7 @@ class OptionsMenuState extends MusicBeatState
 			});
 		}
 	}
-	
+
 	public function openJudgeState()
 	{
 		if (controls.ACCEPT || FlxG.mouse.justPressed)

@@ -14,7 +14,6 @@ using StringTools;
  * and so on. This class will handle both saving and loading of charts with useful features and scripts that will make things much easier
  * to handle and load, as well as much more modular!
 **/
-
 class ChartParser
 {
 	public static function loadChart(songData:LegacySong):Array<Note>
@@ -56,7 +55,7 @@ class ChartParser
 
 				var susLength:Float = swagNote.sustainLength;
 				susLength = susLength / Conductor.stepCrochet;
-				
+
 				if (swagNote.noteData > -1) // don't push notes if they are an event??
 					unspawnNotes.push(swagNote);
 
@@ -66,7 +65,7 @@ class ChartParser
 					var sustainNote:Note = ForeverAssets.generateArrow(PlayState.assetModifier,
 						daStrumTime + (Conductor.stepCrochet * susNote) + Conductor.stepCrochet, daNoteData, daNoteAlt, true, oldNote, daNoteType);
 					sustainNote.scrollFactor.set();
-					
+
 					if (sustainNote.noteData > -1)
 						unspawnNotes.push(sustainNote);
 					sustainNote.mustPress = gottaHitNote;

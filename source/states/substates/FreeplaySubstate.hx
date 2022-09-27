@@ -20,10 +20,7 @@ typedef GameModifier =
 
 class FreeplaySubstate extends MusicBeatSubstate
 {
-	var gameplayMods:Array<GameModifier> = [
-		{name: 'Enable Autoplay'},
-		{name: 'Disable Deaths'}
-	];
+	var gameplayMods:Array<GameModifier> = [{name: 'Enable Autoplay'}, {name: 'Disable Deaths'}];
 
 	var group:FlxTypedGroup<Alphabet>;
 	var checkmarkGroup:FlxTypedGroup<Checkmark>;

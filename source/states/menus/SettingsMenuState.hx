@@ -271,7 +271,7 @@ class SettingsMenuState extends BaseSettingsMenu
 					baseAlphabet.alpha = 0.6;
 					currentGroup.add(baseAlphabet);
 
-                    // generates an attached texture depending on the setting type
+					// generates an attached texture depending on the setting type
 					switch (Init.gameSettings.get(options[i].name)[1])
 					{
 						case Init.SettingTypes.Checkmark:
@@ -280,15 +280,20 @@ class SettingsMenuState extends BaseSettingsMenu
 							checkmark.playAnim(Std.string(Init.trueSettings.get(options[i].name)) + ' finished');
 							checkmarkGroup.add(checkmark);
 						case Init.SettingTypes.Selector:
-							var selector:Selector = new Selector(10, currentGroup.members[curSelected].y, options[curSelected].name, Init.gameSettings.get(options[curSelected].name)[4],
-							[
-								(options[curSelected].name == 'Framerate Cap') ? true : false,
-								(options[curSelected].name == 'Darkness Opacity') ? true : false,
-								(options[curSelected].name == 'Hitsound Volume') ? true : false,
-								(options[curSelected].name == 'Scroll Speed') ? true : false,
-								(options[curSelected].name == 'Arrow Opacity') ? true : false,
-								(options[curSelected].name == 'Splash Opacity' ? true : false)
-							]);
+							var selector:Selector = new Selector(10, currentGroup.members[curSelected].y, options[curSelected].name,
+								Init.gameSettings.get(options[curSelected].name)[4], [
+									(options[curSelected].name == 'Framerate Cap')
+									? true : false,
+									(options[curSelected].name == 'Darkness Opacity')
+									? true : false,
+									(options[curSelected].name == 'Hitsound Volume')
+									? true : false,
+									(options[curSelected].name == 'Scroll Speed')
+									? true : false,
+									(options[curSelected].name == 'Arrow Opacity')
+									? true : false,
+									(options[curSelected].name == 'Splash Opacity' ? true : false)
+								]);
 							selectorGroup.add(selector);
 						default:
 							// do nothing;
@@ -327,6 +332,6 @@ class SettingsMenuState extends BaseSettingsMenu
 			default:
 				// do nothing;
 		}
-		//trace(Init.trueSettings.get(options[curSelected].name));
+		// trace(Init.trueSettings.get(options[curSelected].name));
 	}
 }

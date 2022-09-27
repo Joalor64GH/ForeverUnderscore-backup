@@ -43,8 +43,9 @@ class HealthIcon extends FlxSprite
 		else
 			animation.play('static');
 	}
-	
+
 	var bounceTween:FlxTween;
+
 	public function bop(time:Float)
 	{
 		scale.set(1.2, 1.2);
@@ -58,7 +59,7 @@ class HealthIcon extends FlxSprite
 		var trimmedChar:String = char;
 		if (trimmedChar.contains('-'))
 			trimmedChar = trimmedChar.substring(0, trimmedChar.indexOf('-'));
-			
+
 		var iconPath = char;
 		if (!FileSystem.exists(Paths.getPath('characters/$char/icon.png', IMAGE)))
 		{

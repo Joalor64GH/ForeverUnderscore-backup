@@ -164,11 +164,8 @@ class OriginalChartEditor extends MusicBeatState
 		curSection = lastSection;
 
 		#if DISCORD_RPC
-		Discord.changePresence('CHART EDITOR',
-			'Charting: '
-			+ _song.song
-			+ ' [${CoolUtil.difficultyFromString()}] - by '
-			+ _song.author, null, null, null, true);
+		Discord.changePresence('CHART EDITOR', 'Charting: ' + _song.song + ' [${CoolUtil.difficultyFromString()}] - by ' + _song.author, null, null, null,
+			true);
 		#end
 
 		gridGroup = new FlxTypedGroup<FlxObject>();
@@ -231,7 +228,7 @@ class OriginalChartEditor extends MusicBeatState
 		FlxG.mouse.visible = true;
 		FlxG.mouse.useSystemCursor = true;
 	}
-	
+
 	var stepperSpeed:FlxUINumericStepper;
 	var stepperBPM:FlxUINumericStepper;
 
@@ -368,18 +365,20 @@ class OriginalChartEditor extends MusicBeatState
 		if (CoolUtil.difficulties[PlayState.storyDifficulty].toLowerCase() != 'normal')
 			_diff = '-' + CoolUtil.difficulties[PlayState.storyDifficulty].toLowerCase();
 
-		var difficultyDropDown = new PsychDropDown(assetModifierDropDown.x, assetModifierDropDown.y + 40, PsychDropDown.makeStrIdLabelArray(CoolUtil.difficulties, true), function(difficulty:String)
+		var difficultyDropDown = new PsychDropDown(assetModifierDropDown.x, assetModifierDropDown.y + 40,
+			PsychDropDown.makeStrIdLabelArray(CoolUtil.difficulties, true), function(difficulty:String)
 		{
 			var newDifficulty:String = CoolUtil.difficulties[Std.parseInt(difficulty)].toLowerCase();
 			trace("Current difficulty: " + CoolUtil.difficulties[PlayState.storyDifficulty]);
 			trace("New diffculty: " + newDifficulty);
 			PlayState.storyDifficulty = Std.parseInt(difficulty);
-			if (newDifficulty != 'normal') _diff = '-' + newDifficulty;
+			if (newDifficulty != 'normal')
+				_diff = '-' + newDifficulty;
 			try // doing this to avoid crashes with songs that don't have 3 difficulties until I actually manage to make a custom difficulty system
 			{
 				PlayState.SONG = Song.loadSong(_song.song.toLowerCase() + _diff, _song.song.toLowerCase());
 			}
-			catch(e)
+			catch (e)
 			{
 				PlayState.SONG = Song.loadSong(_song.song.toLowerCase(), _song.song.toLowerCase());
 			}
@@ -469,7 +468,7 @@ class OriginalChartEditor extends MusicBeatState
 		});
 		clearNotesButton.color = FlxColor.RED;
 		clearNotesButton.label.color = FlxColor.WHITE;
-		
+
 		var clearEventsButton:FlxButton = new FlxButton(100, 170, "Clear events", function()
 		{
 			for (sec in 0..._song.notes.length)
@@ -618,10 +617,10 @@ class OriginalChartEditor extends MusicBeatState
 		});
 
 		blockPressWhileScrolling.push(noteTypeDropDown);
-		
+
 		metronomeTick = new FlxUICheckBox(10, 305, null, null, 'Enable Metronome', 100);
 		metronomeTick.checked = false;
-		
+
 		playTicksBf = new FlxUICheckBox(10, 335, null, null, 'Play Hitsounds (Boyfriend - in editor)', 100);
 		playTicksBf.checked = false;
 
@@ -661,7 +660,7 @@ class OriginalChartEditor extends MusicBeatState
 
 		if (_song.needsVoices)
 			vocals.loadEmbedded(Paths.songSounds(daSong, 'Voices'), false, true);
-		
+
 		FlxG.sound.list.add(songMusic);
 		FlxG.sound.list.add(vocals);
 
@@ -1132,20 +1131,26 @@ class OriginalChartEditor extends MusicBeatState
 
 		bpmTxt.text = 'Song: ${_song.song}'
 			+ '\nDiff: ${_diff.replace('-', '')}'
-			+ '\n' + Std.string(FlxMath.roundDecimal(Conductor.songPosition / 1000, 2))
-			+ " / " + Std.string(FlxMath.roundDecimal(songMusic.length / 1000, 2))
-			+ "\nSection: " + curSection
-			+ "\nBeat: " + curBeat
-			+ "\nStep: " + curStep
-			+ "\nRate: " + songMusic.pitch;
+			+ '\n'
+			+ Std.string(FlxMath.roundDecimal(Conductor.songPosition / 1000, 2))
+			+ " / "
+			+ Std.string(FlxMath.roundDecimal(songMusic.length / 1000, 2))
+			+ "\nSection: "
+			+ curSection
+			+ "\nBeat: "
+			+ curBeat
+			+ "\nStep: "
+			+ curStep
+			+ "\nRate: "
+			+ songMusic.pitch;
 		super.update(elapsed);
-		
-		if(metronomeTick.checked && lastSongPos != Conductor.songPosition)
+
+		if (metronomeTick.checked && lastSongPos != Conductor.songPosition)
 		{
 			var soundInterval:Float = 60 / stepperSoundTest.value;
 			var metronomeCurStep:Int = Math.floor(((Conductor.songPosition + stepperSoundTest.value) / soundInterval) / 1000);
 			var lastStepHit:Int = Math.floor(((lastSongPos + stepperSoundTest.value) / soundInterval) / 1000);
-			if(metronomeCurStep != lastStepHit)
+			if (metronomeCurStep != lastStepHit)
 			{
 				FlxG.sound.play(Paths.sound('soundTest'));
 			}
@@ -1198,7 +1203,7 @@ class OriginalChartEditor extends MusicBeatState
 	{
 		autosaveSong();
 		lastSection = curSection;
-		//CoolUtil.difficulties = CoolUtil.baseDifficulties;
+		// CoolUtil.difficulties = CoolUtil.baseDifficulties;
 
 		PlayState.SONG = _song;
 		ForeverTools.killMusic([songMusic, vocals]);
@@ -1438,7 +1443,7 @@ class OriginalChartEditor extends MusicBeatState
 			var daNoteType:Int = i[3];
 
 			#if DEBUG_TRACES trace('Current note type is ' + curNoteName[daNoteType] + '.'); #end
-			
+
 			var note:Note = ForeverAssets.generateArrow(_song.assetModifier, daStrumTime, daNoteInfo % 4, 0, null, null, daNoteType);
 			note.sustainLength = daSus;
 			note.noteType = daNoteType;
@@ -1629,7 +1634,7 @@ class OriginalChartEditor extends MusicBeatState
 		var event = eventDropDown.selectedLabel;
 		var text1 = eventVal1Input.text;
 		var text2 = eventVal2Input.text;
-		
+
 		_song.events.push([noteStrum, event, text1, text2]);
 		curSelectedEvent = _song.events[_song.events.length - 1];
 
@@ -1708,7 +1713,7 @@ class OriginalChartEditor extends MusicBeatState
 		{
 			PlayState.SONG = Song.loadSong(song.toLowerCase() + _diff, song.toLowerCase());
 		}
-		catch(e)
+		catch (e)
 		{
 			PlayState.SONG = Song.loadSong(song.toLowerCase(), song.toLowerCase());
 		}

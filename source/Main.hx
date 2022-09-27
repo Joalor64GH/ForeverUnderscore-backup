@@ -140,8 +140,7 @@ class Main extends Sprite
 
 		errMsg += "\nUncaught Error: "
 			+ e.error
-			+
-			"\nPlease report this error to the GitHub page: https://github.com/BeastlyGhost/Forever-Engine-Underscore
+			+ "\nPlease report this error to the GitHub page: https://github.com/BeastlyGhost/Forever-Engine-Underscore
 			\n>Crash Handler written by: sqirra-rng\n";
 
 		try // to make the game not crash if it can't save the crash file

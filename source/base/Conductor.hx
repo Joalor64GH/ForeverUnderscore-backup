@@ -46,7 +46,7 @@ class Conductor
 	public static var songMusic:FlxSound;
 	public static var songVocals:FlxSound;
 	public static var playbackRate:Float = 1; // song playback speed (also affects pitch);
-	
+
 	public static var vocalArray:Array<FlxSound> = [];
 	public static var bpmChangeMap:Array<BPMChangeEvent> = [];
 
@@ -76,7 +76,7 @@ class Conductor
 			totalPos += ((60 / curBPM) * 1000 / 4) * deltaSteps;
 		}
 	}
-	
+
 	public static function changeBPM(newBpm:Float, measure:Float = 4 / 4)
 	{
 		bpm = newBpm;
@@ -86,10 +86,10 @@ class Conductor
 	}
 
 	/**
-	* new code for lengthInSteps that my friend ShadowMario made;
-	* it's probably unlikely, but if you didn't check out Psych Engine yet, give it a chance;
-	* it provides ease of access and reliability, along with mod support;
-	* https://github.com/ShadowMario/FNF-PsychEngine;
+	 * new code for lengthInSteps that my friend ShadowMario made;
+	 * it's probably unlikely, but if you didn't check out Psych Engine yet, give it a chance;
+	 * it provides ease of access and reliability, along with mod support;
+	 * https://github.com/ShadowMario/FNF-PsychEngine;
 	**/
 	static function getSectionBeats(song:LegacySong, section:Int)
 	{

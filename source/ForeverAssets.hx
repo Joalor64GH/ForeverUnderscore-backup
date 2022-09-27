@@ -36,8 +36,8 @@ typedef SplashDataDef =
 class ForeverAssets
 {
 	//
-	public static function generateCombo(asset:String, number:String, allSicks:Bool, group:FlxTypedGroup<FNFSprite>, assetModifier:String = 'base', changeableSkin:String = 'default',
-		baseLibrary:String, negative:Bool, createdColor:FlxColor, scoreInt:Int, ?debug:Bool = false):FNFSprite
+	public static function generateCombo(asset:String, number:String, allSicks:Bool, group:FlxTypedGroup<FNFSprite>, assetModifier:String = 'base',
+			changeableSkin:String = 'default', baseLibrary:String, negative:Bool, createdColor:FlxColor, scoreInt:Int, ?debug:Bool = false):FNFSprite
 	{
 		var width:Int = 100;
 		var height:Int = 140;
@@ -84,7 +84,7 @@ class ForeverAssets
 			combo.setGraphicSize(Std.int(combo.frameWidth * 0.5));
 		}
 		combo.updateHitbox();
-		
+
 		if (combo != null)
 		{
 			if (Init.trueSettings.get('Judgement Stacking') && !debug)
@@ -113,8 +113,8 @@ class ForeverAssets
 		return combo;
 	}
 
-	public static function generateRating(newRating:String, perfect:Bool, lateHit:Bool, group:FlxTypedGroup<FNFSprite>, assetModifier:String = 'base', changeableSkin:String = 'default',
-			baseLibrary:String, ?debug:Bool = false):FNFSprite
+	public static function generateRating(newRating:String, perfect:Bool, lateHit:Bool, group:FlxTypedGroup<FNFSprite>, assetModifier:String = 'base',
+			changeableSkin:String = 'default', baseLibrary:String, ?debug:Bool = false):FNFSprite
 	{
 		var rating:FNFSprite;
 		if (group != null)
@@ -177,12 +177,13 @@ class ForeverAssets
 		return rating;
 	}
 
-	public static function generateNoteSplashes(asset:String, group:FlxTypedSpriteGroup<NoteSplash>, assetModifier:String = 'base', baseLibrary:String, noteData:Int):NoteSplash
+	public static function generateNoteSplashes(asset:String, group:FlxTypedSpriteGroup<NoteSplash>, assetModifier:String = 'base', baseLibrary:String,
+			noteData:Int):NoteSplash
 	{
 		//
 		var tempSplash:NoteSplash = group.recycle(NoteSplash);
 		tempSplash.noteData = noteData;
-		
+
 		var changeableSkin:String = Init.trueSettings.get("Note Skin");
 
 		// will eventually change this in favor of customizable splashes through scripts;
@@ -205,18 +206,20 @@ class ForeverAssets
 			case 'pixel':
 				if (asset == null)
 					asset = 'splash-pixel';
-				
+
 				var width = splashJson.width;
 				var height = splashJson.height;
 
-				if (splashJson.width == null) width = 34;
-				if (splashJson.height == null) height = 34;
+				if (splashJson.width == null)
+					width = 34;
+				if (splashJson.height == null)
+					height = 34;
 
 				switch (splashJson.type)
 				{
 					case "sparrow":
 						tempSplash.frames = Paths.getSparrowAtlas(ForeverTools.returnSkin(asset, assetModifier, changeableSkin, baseLibrary));
-	
+
 						// week 7 format
 						tempSplash.animation.addByPrefix('anim1', 'note impact 1 ' + UIStaticArrow.getColorFromNumber(noteData), 24, false);
 						tempSplash.animation.addByPrefix('anim2', 'note impact 2 ' + UIStaticArrow.getColorFromNumber(noteData), 24, false);
@@ -243,8 +246,10 @@ class ForeverAssets
 				var width = splashJson.width;
 				var height = splashJson.height;
 
-				if (splashJson.width == null) width = 210;
-				if (splashJson.height == null) height = 210;
+				if (splashJson.width == null)
+					width = 210;
+				if (splashJson.height == null)
+					height = 210;
 
 				switch (splashJson.type)
 				{
@@ -310,8 +315,8 @@ class ForeverAssets
 				// genuinely more programmers should make their code more modular
 				var framesArgument:String = "arrows-pixels";
 				newStaticArrow.loadGraphic(Paths.image(ForeverTools.returnSkin('$framesArgument', assetModifier, Init.trueSettings.get("Note Skin"),
-					'noteskins/notes')), true,
-					17, 17);
+					'noteskins/notes')), true, 17,
+					17);
 				newStaticArrow.animation.add('static', [staticArrowType]);
 				newStaticArrow.animation.add('pressed', [4 + staticArrowType, 8 + staticArrowType], 12, false);
 				newStaticArrow.animation.add('confirm', [12 + staticArrowType, 16 + staticArrowType], 24, false);
@@ -342,8 +347,8 @@ class ForeverAssets
 
 				var framesArgument:String = "NOTE_assets";
 
-				newStaticArrow.frames = Paths.getSparrowAtlas(ForeverTools.returnSkin('$framesArgument', assetModifier,
-					Init.trueSettings.get("Note Skin"), 'noteskins/notes'));
+				newStaticArrow.frames = Paths.getSparrowAtlas(ForeverTools.returnSkin('$framesArgument', assetModifier, Init.trueSettings.get("Note Skin"),
+					'noteskins/notes'));
 
 				newStaticArrow.animation.addByPrefix('static', 'arrow' + stringSect.toUpperCase());
 				newStaticArrow.animation.addByPrefix('pressed', stringSect + ' press', 24, false);
@@ -355,10 +360,10 @@ class ForeverAssets
 				// set little offsets per note!
 				// so these had a little problem honestly and they make me wanna off(set) myself so the middle notes basically
 				// have slightly different offsets than the side notes (which have the same offset)
-				
+
 				var pressCenterOffsets:Array<Int> = [0, 0];
 				var centerOffsets:Array<Int> = [2, 2];
-				
+
 				switch (staticArrowType)
 				{
 					case 0:
@@ -372,7 +377,7 @@ class ForeverAssets
 						centerOffsets = [-1, 2];
 				}
 
-				//newStaticArrow.addOffset('static');
+				// newStaticArrow.addOffset('static');
 				newStaticArrow.addOffset('pressed', -2 + pressCenterOffsets[0], -2 + pressCenterOffsets[1]);
 				newStaticArrow.addOffset('confirm', 36 + centerOffsets[0], 36 + centerOffsets[1]);
 		}

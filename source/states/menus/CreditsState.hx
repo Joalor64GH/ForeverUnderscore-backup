@@ -36,6 +36,7 @@ typedef CreditsPrefDef =
 class CreditsState extends MusicBeatState
 {
 	static var curSelection = -1;
+
 	var curSocial = -1;
 
 	var alphabetGroup:FlxTypedGroup<Alphabet>;
@@ -167,7 +168,14 @@ class CreditsState extends MusicBeatState
 
 		// CONTROLS //
 
-		var controlArray:Array<Bool> = [controls.UI_UP, controls.UI_DOWN, controls.UI_UP_P, controls.UI_DOWN_P, FlxG.mouse.wheel == 1, FlxG.mouse.wheel == -1];
+		var controlArray:Array<Bool> = [
+			controls.UI_UP,
+			controls.UI_DOWN,
+			controls.UI_UP_P,
+			controls.UI_DOWN_P,
+			FlxG.mouse.wheel == 1,
+			FlxG.mouse.wheel == -1
+		];
 		if ((controlArray.contains(true)))
 		{
 			for (i in 0...controlArray.length)

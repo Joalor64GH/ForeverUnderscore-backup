@@ -11,8 +11,6 @@ using StringTools;
  * for base game charts and such
  * -gabi (BeastlyGhost)
  */
-
-
 typedef LegacySong =
 {
 	var song:String;
@@ -114,7 +112,7 @@ class Song
 			rawEvent = File.getContent(Paths.songJson(folder.toLowerCase(), 'events').trim()).trim();
 		}
 		catch (e)
-		{	
+		{
 			rawEvent = null;
 		}
 		if (rawMeta == null)
@@ -179,7 +177,7 @@ class Song
 						// clear previous difficulties;
 						// CoolUtil.difficulties = [];
 						// add new ones;
-						//CoolUtil.difficulties.push(i);
+						// CoolUtil.difficulties.push(i);
 					}
 				}
 			}
