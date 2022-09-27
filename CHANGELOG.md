@@ -4,9 +4,24 @@ All notable changes will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [0.2.2] - [SEP-8-2022 - SEP-24-2022]
+## [0.2.3] - [SEP-27-2022]
 
 ### Added
+
+
+### Fixed
+
+
+### Adjusted
+
+
+## [0.2.2] - [SEP-8-2022 - SEP-27-2022]
+
+### Added
+- a Console for source / script debug traces, press F10 on any screen to enable / disable it, make sure `Allow Console Window` is enabled on preferences in order for it to work;
+- `import` can now be used on Scripts (make sure to update your SScript Libraries!!);
+- Customizable Judgement / Combo Positions;
+- Custom Main Menu Scripts, more information the `docs` folder;
 - a "Prepare" sprite for the "Three" sound clip during the countdown sequence;
 - You can now have a Dark Background for notes by using the `Opacity Type` option;
 - the Original Chart Editor now has a metronome, can help with BPM Syncing;

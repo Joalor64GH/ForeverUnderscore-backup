@@ -169,9 +169,7 @@ class Stage extends FlxTypedGroup<FlxBasic>
 		}
 
 		setVar('add', add);
-		setVar('kill', kill);
 		setVar('remove', remove);
-		setVar('destroy', destroy);
 		setVar('foreground', foreground);
 		setVar('layers', layers);
 		setVar('gfVersion', gfVersion);

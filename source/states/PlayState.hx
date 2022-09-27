@@ -2577,9 +2577,7 @@ class PlayState extends MusicBeatState
 	{
 		setVar('game', PlayState.contents);
 		setVar('add', add);
-		setVar('kill', kill);
 		setVar('remove', remove);
-		setVar('destroy', destroy);
 		setVar('openSubState', openSubState);
 
 		setVar('setProperty', function(key:String, value:Dynamic)
