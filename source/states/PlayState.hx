@@ -623,7 +623,12 @@ class PlayState extends MusicBeatState
 				else
 				{ // else just call bad notes
 					if (!Init.trueSettings.get('Ghost Tapping'))
-						missNoteCheck(true, key, boyfriend, true);
+					{
+						if (startingSong) // mash warning
+							uiHUD.tweenScoreColor('miss', false);
+						else
+							missNoteCheck(true, key, boyfriend, true);
+					}
 				}
 
 				Conductor.songPosition = previousTime;
@@ -1140,7 +1145,7 @@ class PlayState extends MusicBeatState
 
 								callFunc('noteMiss', [strumNote]);
 
-								missNoteCheck((Init.trueSettings.get('Ghost Tapping')) ? true : false, strumNote.noteData, boyfriend, true);
+								missNoteCheck((Init.trueSettings.get('Ghost Tapping') && !startingSong) ? true : false, strumNote.noteData, boyfriend, true);
 								// ambiguous name
 								Timings.updateAccuracy(0);
 							}
@@ -1154,7 +1159,7 @@ class PlayState extends MusicBeatState
 										var breakFromLate:Bool = false;
 										if (!breakFromLate)
 										{
-											missNoteCheck((Init.trueSettings.get('Ghost Tapping')) ? true : false, strumNote.noteData, boyfriend, true);
+											missNoteCheck((Init.trueSettings.get('Ghost Tapping') && !startingSong) ? true : false, strumNote.noteData, boyfriend, true);
 											for (note in parentNote.childrenNotes)
 												note.tooLate = true;
 										}
