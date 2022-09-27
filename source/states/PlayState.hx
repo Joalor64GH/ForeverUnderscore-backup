@@ -258,7 +258,8 @@ class PlayState extends MusicBeatState
 		else
 			curStage = 'unknown';
 
-		setupScripts();
+		//setupScripts();
+		callFunc('create', []);
 
 		stageBuild = new Stage(PlayState.curStage);
 		add(stageBuild);
@@ -2570,7 +2571,6 @@ class PlayState extends MusicBeatState
 				}
 			}
 		}
-		callFunc('create', []);
 	}
 
 	function setPlayStateVars()
