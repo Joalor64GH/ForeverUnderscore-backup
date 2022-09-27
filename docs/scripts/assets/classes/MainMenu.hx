@@ -76,7 +76,7 @@ function create()
 	add(bottomBar);
 	bottomBar.y += FlxG.height;
 
-	topMarker = new FlxText(8, 8, 0, "[TEST TEST SCRIPTED MENU BLABLABLA BULLSHIT]").setFormat(Paths.font('vcr.ttf'), 32, 0xFFFFFFFF);
+	topMarker = new FlxText(8, 8, 0, "[CUSTOM SCRIPTED MENU STATE EXAMPLE]").setFormat(Paths.font('vcr.ttf'), 32, 0xFFFFFFFF);
 	topMarker.alpha = 0;
 	topMarker.velocity.set(100, 0);
 	topMarker.scrollFactor.set();
