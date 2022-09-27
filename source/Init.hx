@@ -216,7 +216,24 @@ class Init extends FlxState
 			NOT_FORCED,
 			''
 		],
-		'Arrow Opacity' => [60, Selector, "Set the opacity for your Strumline Notes.", NOT_FORCED],
+		'Arrow Opacity' => [
+			80,
+			Selector,
+			"Set the opacity for your Strumline Notes [gray notes at the top / bottom].",
+			NOT_FORCED
+		],
+		'Splash Opacity' => [
+			50,
+			Selector,
+			"Set the opacity for your notesplashes, usually shown when hit a \"Sick!\" Judgement on Notes.",
+			NOT_FORCED
+		],
+		"Hold Opacity" => [
+			60,
+			Selector,
+			"Set the opacity for your hold notes.. Huh, why isnt the trail cut off?",
+			NOT_FORCED
+		],
 		"Clip Style" => [
 			'stepmania',
 			Selector,
@@ -230,13 +247,6 @@ class Init extends FlxState
 			'When enabled, left and right notes no longer move the camera.',
 			NOT_FORCED
 		],
-		'Splash Opacity' => [
-			80,
-			Selector,
-			"Set the opacity for your notesplashes, usually shown when hit a \"Sick!\" Judgement on Notes.",
-			NOT_FORCED
-		],
-		"Opaque Holds" => [false, Checkmark, "Huh, why isnt the trail cut off?", NOT_FORCED],
 		// ACCESSIBILITY;
 		'Disable Antialiasing' => [
 			false,
@@ -409,7 +419,7 @@ class Init extends FlxState
 			|| trueSettings.get("Framerate Cap") > 360)
 			trueSettings.set("Framerate Cap", 30);
 
-		var similarSettings:Array<String> = ["Darkness Opacity", "Hitsound Volume", "Arrow Opacity", "Splash Opacity"];
+		var similarSettings:Array<String> = ["Darkness Opacity", "Hitsound Volume", "Arrow Opacity", "Splash Opacity", "Hold Opacity"];
 
 		for (i in similarSettings)
 		{
@@ -421,9 +431,11 @@ class Init extends FlxState
 				case "Hitsound Volume":
 					defaultValue = 0;
 				case "Arrow Opacity":
-					defaultValue = 60;
-				case "Splash Opacity":
 					defaultValue = 80;
+				case "Splash Opacity":
+					defaultValue = 50;
+				case "Hold Opacity":
+					defaultValue = 60;
 			}
 			if (!Std.isOfType(trueSettings.get(i), Int) || trueSettings.get(i) < 0 || trueSettings.get(i) > 100)
 				trueSettings.set(i, defaultValue);

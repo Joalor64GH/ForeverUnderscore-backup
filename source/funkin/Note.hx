@@ -218,7 +218,7 @@ class Note extends FNFSprite
 		if (isSustainNote && prevNote != null)
 		{
 			newNote.noteSpeed = prevNote.noteSpeed;
-			newNote.alpha = (Init.trueSettings.get('Opaque Holds')) ? 1 : 0.6;
+			newNote.alpha = Init.trueSettings.get('Hold Opacity') * 0.01;
 
 			newNote.animation.play(UIStaticArrow.getColorFromNumber(noteData) + 'holdend');
 
@@ -361,7 +361,7 @@ class Note extends FNFSprite
 		if (isSustainNote && prevNote != null)
 		{
 			newNote.noteSpeed = prevNote.noteSpeed;
-			newNote.alpha = (Init.trueSettings.get('Opaque Holds')) ? 1 : 0.6;
+			newNote.alpha = Init.trueSettings.get('Hold Opacity') * 0.01;
 
 			newNote.animation.play('holdend');
 			newNote.updateHitbox();
