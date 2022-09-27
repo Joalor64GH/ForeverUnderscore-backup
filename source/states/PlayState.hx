@@ -949,19 +949,38 @@ class PlayState extends MusicBeatState
 					Conductor.songMusic.pause();
 					Conductor.songVocals.pause();
 					Conductor.songPosition += 10000;
-					notes.forEachAlive(function(daNote:Note)
+
+					var i:Int = unspawnNotes.length - 1;
+					while (i >= 0)
 					{
-						if (daNote.strumTime - 500 < Conductor.songPosition)
+						var daNote:Note = unspawnNotes[i];
+						if(daNote.strumTime - 500 < Conductor.songPosition)
 						{
 							daNote.active = false;
 							daNote.visible = false;
-
+				
 							daNote.kill();
-							notes.remove(daNote, true);
-							daNote.alive = false;
+							unspawnNotes.remove(daNote);
 							daNote.destroy();
 						}
-					});
+						--i;
+					}
+
+					i = notes.length - 1;
+					while (i >= 0)
+					{
+						var daNote:Note = notes.members[i];
+						if(daNote.strumTime - 500 < Conductor.songPosition)
+						{
+							daNote.active = false;
+							daNote.visible = false;
+				
+							daNote.kill();
+							notes.remove(daNote, true);
+							daNote.destroy();
+						}
+						--i;
+					}
 
 					Conductor.songMusic.time = Conductor.songPosition;
 					Conductor.songVocals.time = Conductor.songPosition;
