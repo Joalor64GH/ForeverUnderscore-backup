@@ -7,6 +7,7 @@ import dependency.Discord;
 import flixel.FlxG;
 import flixel.FlxObject;
 import flixel.FlxSprite;
+import flixel.FlxCamera;
 import flixel.addons.transition.FlxTransitionableState;
 import flixel.effects.FlxFlicker;
 import flixel.graphics.frames.FlxAtlasFrames;
@@ -32,6 +33,9 @@ class MainMenuState extends MusicBeatState
 	public var bg:FlxSprite;
 	public var magenta:FlxSprite;
 	public var camFollow:FlxObject;
+
+	public var camGame:FlxCamera;
+	public var camHUD:FlxCamera;
 
 	public var optionShit:Array<String> = ['story mode', 'freeplay', 'credits', 'options'];
 
@@ -61,6 +65,17 @@ class MainMenuState extends MusicBeatState
 
 		// uh
 		persistentUpdate = persistentDraw = true;
+		
+		// create the game camera
+		camGame = new FlxCamera();
+
+		// create the hud camera (separate so the hud stays on screen)
+		camHUD = new FlxCamera();
+		camHUD.bgColor.alpha = 0;
+
+		FlxG.cameras.reset(camGame);
+		FlxG.cameras.add(camHUD, false);
+		FlxG.cameras.setDefaultDrawTarget(camGame, true);
 
 		var paths:Array<String> = [
 			Paths.getPreloadPath('classes/MenuState.hx'),
@@ -278,6 +293,18 @@ class MainMenuState extends MusicBeatState
 				menuItem.screenCenter(X);
 		});
 		callFunc('postUpdate', [elapsed]);
+	}
+	
+	override function beatHit()
+	{
+		super.beatHit();
+		callFunc('beatHit', [curBeat]);
+	}
+	
+	override function stepHit()
+	{
+		super.stepHit();
+		callFunc('stepHit', [curStep]);
 	}
 
 	var lastCurSelected:Int = 0;

@@ -129,7 +129,8 @@ class Init extends FlxState
 			Selector,
 			'Which song should we use for the Main Menu? takes effect upon switching states or restarting the game.',
 			NOT_FORCED,
-			['foreverMenu', 'freakyMenu']
+			''
+			//['foreverMenu', 'freakyMenu']
 		],
 		"Framerate Cap" => [120, Selector, 'Define your maximum FPS.', NOT_FORCED, ['']],
 		'FPS Counter' => [true, Checkmark, 'Whether to display the FPS counter.', NOT_FORCED],
@@ -423,6 +424,10 @@ class Init extends FlxState
 		gameSettings.get("Hitsound Type")[4] = CoolUtil.returnAssetsLibrary('hitsounds', 'assets/sounds');
 		if (!gameSettings.get("Hitsound Type")[4].contains(trueSettings.get("Hitsound Type")))
 			trueSettings.set("Hitsound Type", 'default');
+			
+		gameSettings.get("Menu Song")[4] = CoolUtil.returnAssetsLibrary('menus', 'assets/music');
+		if (!gameSettings.get("Menu Song")[4].contains(trueSettings.get("Menu Song")))
+			trueSettings.set("Menu Song", 'freakyMenu');
 
 		if (FlxG.save.data.volume != null)
 			FlxG.sound.volume = FlxG.save.data.volume;
