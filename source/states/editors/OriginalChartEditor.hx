@@ -1456,8 +1456,13 @@ class OriginalChartEditor extends MusicBeatState
 
 			if (daSus > 0)
 			{
+				var colorList:Array<Int> = [0xFFC24B99, 0xFF00FFFF, 0xFF12FA05, 0xFFF9393F];
+				if (_song.assetModifier == 'pixel')
+					colorList = [0xFFE276FF, 0xFF3DCAFF, 0xFF71E300, 0xFFFF884E];
+
 				var sustainVis:FlxSprite = new FlxSprite(note.x + (GRID_SIZE / 2 - 3),
-					note.y + GRID_SIZE).makeGraphic(8, Math.floor(FlxMath.remapToRange(daSus, 0, Conductor.stepCrochet * 16, 0, (gridBG.height / gridMult))));
+					note.y + GRID_SIZE).makeGraphic(8, Math.floor(FlxMath.remapToRange(daSus, 0, Conductor.stepCrochet * 16, 0, (gridBG.height / gridMult))),
+						colorList[note.noteData]);
 				curRenderedSustains.add(sustainVis);
 			}
 
