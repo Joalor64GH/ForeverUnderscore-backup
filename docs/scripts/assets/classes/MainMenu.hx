@@ -20,6 +20,12 @@ updateSelection()
 overrideUpdateSelection()
 postUpdateSelection()
 
+beatHit(curBeat:Int)
+stepHit(curStep:Int)
+
+stateSwitch()
+postStateSwitch()
+
 NOTICE: "override" functions will stop the original one, so you can add your own parameters to them
 they also make "post" functions not work at all if used
 

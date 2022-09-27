@@ -78,8 +78,8 @@ class MainMenuState extends MusicBeatState
 		FlxG.cameras.setDefaultDrawTarget(camGame, true);
 
 		var paths:Array<String> = [
-			Paths.getPreloadPath('classes/MenuState.hx'),
-			Paths.getPreloadPath('classes/MenuState.hxs')
+			Paths.getPreloadPath('classes/MainMenu.hx'),
+			Paths.getPreloadPath('classes/MainMenu.hxs')
 		];
 
 		for (path in paths)
