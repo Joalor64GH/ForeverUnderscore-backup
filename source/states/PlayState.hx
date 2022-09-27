@@ -1301,7 +1301,7 @@ class PlayState extends MusicBeatState
 					case 'bf' | 'player' | 'boyfriend':
 						ogPosition = [770, 450];
 				}
-				changeCharacter(val1, val2, ogPosition[0], ogPosition[1]);
+				changeCharacter(val2, val1, ogPosition[0], ogPosition[1]);
 
 			case 'Set GF Speed':
 				var speed:Int = Std.parseInt(val1);

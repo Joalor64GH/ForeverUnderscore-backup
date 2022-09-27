@@ -49,10 +49,6 @@ class MainMenuState extends MusicBeatState
 	{
 		super.create();
 
-		var createOver:Dynamic = callFunc('overrideCreate', []);
-		if (createOver != null)
-			return;
-
 		// make sure the music is playing
 		ForeverTools.resetMenuMusic();
 
@@ -97,6 +93,10 @@ class MainMenuState extends MusicBeatState
 		setVar('destroy', this.destroy);
 
 		callFunc('create', []);
+
+		var createOver:Dynamic = callFunc('overrideCreate', []);
+		if (createOver != null)
+			return;
 
 		if (optionShit.length < 1) // so you can't hardlock someone on the menu
 			optionShit = ['story mode', 'freeplay', 'credits', 'options'];
