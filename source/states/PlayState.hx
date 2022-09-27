@@ -112,8 +112,6 @@ class PlayState extends MusicBeatState
 
 	public var startedCountdown:Bool = false;
 	public var skipCountdown:Bool = false;
-
-	public static var seenCutscene:Bool = false;
 	public var inCutscene:Bool = false;
 
 	public var canPause:Bool = true;
@@ -129,6 +127,8 @@ class PlayState extends MusicBeatState
 	public static var camGame:FlxCamera;
 	public static var camAlt:FlxCamera;
 	public static var dialogueHUD:FlxCamera;
+	public static var comboHUD:FlxCamera;
+	public static var strumHUD:FlxCamera;
 
 	public var camDisplaceX:Float = 0;
 	public var camDisplaceY:Float = 0; // might not use depending on result
@@ -167,7 +167,6 @@ class PlayState extends MusicBeatState
 	public static var bfStrums:Strumline;
 
 	public static var strumLines:FlxTypedGroup<Strumline>;
-	public static var strumHUD:FlxCamera;
 
 	public var allUIs:Array<FlxCamera> = [];
 
@@ -458,6 +457,13 @@ class PlayState extends MusicBeatState
 		comboGroup = new FlxTypedGroup<FNFSprite>();
 		add(ratingsGroup);
 		add(comboGroup);
+		
+		comboHUD = new FlxCamera();
+		comboHUD.bgColor.alpha = 0;
+		comboHUD.cameras = [camHUD];
+		allUIs.push(comboHUD);
+
+		FlxG.cameras.add(comboHUD, false);
 
 		// precache judgements and combo before using them;
 		popJudgement('sick', false, true, true);
@@ -483,7 +489,7 @@ class PlayState extends MusicBeatState
 		Paths.clearUnusedMemory();
 
 		// call the funny intro cutscene depending on the song
-		if (!skipCutscenes() && !seenCutscene)
+		if (!skipCutscenes())
 			songIntroCutscene();
 		else
 			startCountdown();
@@ -1702,7 +1708,7 @@ class PlayState extends MusicBeatState
 		{
 			// bound to camera
 			if (!cached)
-				rating.cameras = [camHUD];
+				rating.cameras = [comboHUD];
 		}
 
 		if (cached)
@@ -1737,7 +1743,7 @@ class PlayState extends MusicBeatState
 			if (Init.trueSettings.get('Fixed Judgements'))
 			{
 				if (!cached)
-					comboNum.cameras = [camHUD];
+					comboNum.cameras = [comboHUD];
 				comboNum.y += 50;
 			}
 			comboNum.x += 100;
@@ -2028,7 +2034,12 @@ class PlayState extends MusicBeatState
 
 		canPause = false;
 		endingSong = true;
-		seenCutscene = false;
+		
+		if (!endSongEvent)
+		{
+			if (checkTextbox())
+				endSongEvent = true;
+		}
 
 		Conductor.stopMusic();
 
@@ -2045,7 +2056,12 @@ class PlayState extends MusicBeatState
 		if (chartingMode)
 			Main.switchState(this, (prevCharter == 1 ? new ChartEditor() : new OriginalChartEditor()));
 		else if (!isStoryMode)
-			Main.switchState(this, new FreeplayState());
+		{
+			if ((!endSongEvent))
+				Main.switchState(this, new FreeplayState());
+			else if (!skipCutscenes())
+				songEndCutscene();
+		}
 		else
 		{
 			// set the campaign's score higher
@@ -2075,14 +2091,15 @@ class PlayState extends MusicBeatState
 				// flush the save
 				FlxG.save.flush();
 			}
-			else
-				songEndSpecificActions();
+			else if (!skipCutscenes())
+				songEndCutscene();
 		}
 		//
 	}
 
-	function songEndSpecificActions()
+	function songEndCutscene()
 	{
+		callFunc('songEndCutscene', []);
 		switch (SONG.song.toLowerCase())
 		{
 			case 'eggnog':
@@ -2103,19 +2120,26 @@ class PlayState extends MusicBeatState
 				}, 1);
 
 			default:
-				callDefaultSongEnd();
+				callTextbox();
 		}
 	}
 
 	function callDefaultSongEnd()
 	{
-		var difficulty:String = CoolUtil.returnDifficultySuffix().toLowerCase();
-
-		PlayState.SONG = Song.loadSong(PlayState.storyPlaylist[0].toLowerCase() + difficulty, PlayState.storyPlaylist[0]);
-		Conductor.killMusic();
-
-		// deliberately did not use the main.switchstate as to not unload the assets
-		FlxG.switchState(new PlayState());
+		if (isStoryMode)
+		{
+			var difficulty:String = CoolUtil.returnDifficultySuffix().toLowerCase();
+	
+			PlayState.SONG = Song.loadSong(PlayState.storyPlaylist[0].toLowerCase() + difficulty, PlayState.storyPlaylist[0]);
+			Conductor.killMusic();
+	
+			// deliberately did not use the main.switchstate as to not unload the assets
+			FlxG.switchState(new PlayState());
+		}
+		else
+		{
+			Main.switchState(this, new FreeplayState());
+		}
 	}
 
 	public function playVideo(name:String)
@@ -2245,24 +2269,35 @@ class PlayState extends MusicBeatState
 			default:
 				callTextbox();
 		}
-		seenCutscene = true;
+	}
+
+
+	function checkTextbox():Bool
+	{
+		var dialogPath = Paths.json('songs/' + SONG.song.toLowerCase() + (endingSong ? '/dialogueEnd' : '/dialogue'));
+
+		if (sys.FileSystem.exists(dialogPath))
+			return true;
+
+		return false;
 	}
 
 	function callTextbox()
 	{
-		var dialogPath = Paths.json('songs/' + SONG.song.toLowerCase() + '/dialogue');
-		if (sys.FileSystem.exists(dialogPath))
+		var file = sys.io.File.getContent(Paths.json('songs/' + SONG.song.toLowerCase() + (endingSong ? '/dialogueEnd' : '/dialogue')));
+		if (checkTextbox())
 		{
-			startedCountdown = false;
+			if (!endingSong)
+				startedCountdown = false;
 
-			dialogueBox = DialogueBox.createDialogue(sys.io.File.getContent(dialogPath));
+			dialogueBox = DialogueBox.createDialogue(file);
 			dialogueBox.cameras = [dialogueHUD];
-			dialogueBox.whenDaFinish = startCountdown;
+			dialogueBox.whenDaFinish = (endingSong ? callDefaultSongEnd : startCountdown);
 
 			add(dialogueBox);
 		}
 		else
-			startCountdown();
+			(endingSong ? callDefaultSongEnd() : startCountdown());
 	}
 
 	public static function skipCutscenes():Bool

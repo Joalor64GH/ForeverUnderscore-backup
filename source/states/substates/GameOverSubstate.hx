@@ -93,7 +93,6 @@ class GameOverSubstate extends MusicBeatSubstate
 		if (controls.BACK)
 		{
 			PlayState.deaths = 0;
-			PlayState.seenCutscene = false;
 			PlayState.chartingMode = false;
 
 			endBullshit(true);

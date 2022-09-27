@@ -8,5 +8,8 @@
     "position": "right",
 
     "sounds": ["BF_1", "BF_2", "BF_3"],
-    "confirmSound": "cancelMenu"
+    "confirmSound": "cancelMenu",
+
+    "textColor": [255, 255, 255],
+    "textBorderColor": [0, 0, 0]
 }
