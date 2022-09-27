@@ -14,8 +14,8 @@ import base.WeekParser;
 import dependency.Discord;
 import flixel.FlxG;
 import flixel.FlxSprite;
-import flixel.effects.FlxFlicker;
 import flixel.addons.display.FlxGridOverlay;
+import flixel.effects.FlxFlicker;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.math.FlxMath;
 import flixel.system.FlxSound;
@@ -267,7 +267,7 @@ class FreeplayState extends MusicBeatState
 
 		var upP = controls.UI_UP_P;
 		var downP = controls.UI_DOWN_P;
-		var accepted = FlxG.keys.justPressed.ENTER;
+		var accepted = controls.ACCEPT;
 		var shiftP = FlxG.keys.pressed.SHIFT;
 		var seven = FlxG.keys.justPressed.SEVEN;
 		var ctrl = FlxG.keys.justPressed.CONTROL;

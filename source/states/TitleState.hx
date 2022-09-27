@@ -174,7 +174,7 @@ class TitleState extends MusicBeatState
 		gameLogo.scale.x = FlxMath.lerp(newLogoScale, gameLogo.scale.x, 0.95);
 		gameLogo.scale.y = FlxMath.lerp(newLogoScale, gameLogo.scale.y, 0.95);
 
-		var pressedEnter:Bool = FlxG.keys.justPressed.ENTER;
+		var pressedEnter:Bool = controls.ACCEPT;
 		var gamepad:FlxGamepad = FlxG.gamepads.lastActive;
 
 		if (newTitle)

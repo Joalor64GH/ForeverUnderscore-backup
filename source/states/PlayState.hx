@@ -753,7 +753,7 @@ class PlayState extends MusicBeatState
 		if (!inCutscene)
 		{
 			// pause the game if the game is allowed to pause and enter is pressed
-			if (FlxG.keys.justPressed.ENTER && startedCountdown && canPause)
+			if (controls.PAUSE && startedCountdown && canPause)
 			{
 				pauseGame();
 			}
@@ -762,7 +762,7 @@ class PlayState extends MusicBeatState
 			if (!isStoryMode)
 			{
 				// charting state (more on that later)
-				if (FlxG.keys.justPressed.SEVEN)
+				if (controls.DEBUG1)
 				{
 					Conductor.stopMusic();
 					chartingMode = true;
@@ -778,7 +778,7 @@ class PlayState extends MusicBeatState
 						Main.switchState(this, new OriginalChartEditor());
 					}
 				}
-				if (FlxG.keys.justPressed.EIGHT)
+				if (controls.DEBUG2)
 				{
 					var holdingShift = FlxG.keys.pressed.SHIFT;
 					var holdingAlt = FlxG.keys.pressed.ALT;

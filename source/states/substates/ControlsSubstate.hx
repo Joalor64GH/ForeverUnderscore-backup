@@ -366,20 +366,20 @@ class ControlsSubstate extends MusicBeatSubstate
 		}
 		else
 		{
-			if (FlxG.keys.justPressed.ENTER)
+			if (controls.ACCEPT)
 			{
 				Init.trueSettings['Offset'] = offsetTemp;
 				closeSubmenu();
 			}
-			else if (FlxG.keys.justPressed.ESCAPE)
+			else if (controls.BACK)
 				closeSubmenu();
 
 			var move = 0;
 
-			var left = FlxG.keys.justPressed.LEFT;
-			var right = FlxG.keys.justPressed.RIGHT;
-			var leftP = FlxG.keys.pressed.LEFT;
-			var rightP = FlxG.keys.pressed.RIGHT;
+			var left = controls.UI_LEFT_P;
+			var right = controls.UI_RIGHT_P;
+			var leftP = controls.UI_LEFT;
+			var rightP = controls.UI_RIGHT;
 			var shiftP = FlxG.keys.pressed.SHIFT;
 
 			if (left || leftP && shiftP)
