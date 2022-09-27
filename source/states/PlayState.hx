@@ -2087,6 +2087,8 @@ class PlayState extends MusicBeatState
 				// set up transitions
 				transIn = FlxTransitionableState.defaultTransIn;
 				transOut = FlxTransitionableState.defaultTransOut;
+				FlxTransitionableState.skipNextTransIn = false;
+				FlxTransitionableState.skipNextTransOut = false;
 
 				// change to the menu state
 				Main.switchState(this, new StoryMenuState());
@@ -2139,6 +2141,9 @@ class PlayState extends MusicBeatState
 	
 			PlayState.SONG = Song.loadSong(PlayState.storyPlaylist[0].toLowerCase() + difficulty, PlayState.storyPlaylist[0]);
 			Conductor.killMusic();
+
+			FlxTransitionableState.skipNextTransIn = true;
+			FlxTransitionableState.skipNextTransOut = true;
 	
 			// deliberately did not use the main.switchstate as to not unload the assets
 			FlxG.switchState(new PlayState());
