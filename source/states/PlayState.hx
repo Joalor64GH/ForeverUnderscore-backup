@@ -724,7 +724,14 @@ class PlayState extends MusicBeatState
 				if (dialogueBox.portraitData.confirmSound != null)
 					sound = dialogueBox.portraitData.confirmSound;
 
-				FlxG.sound.play(Paths.sound(sound));
+				try
+				{
+					FlxG.sound.play(Paths.sound(sound));
+				}
+				catch(e)
+				{
+					trace('Dialogue Error: ' + e);
+				}
 				dialogueBox.curPage += 1;
 
 				if (dialogueBox.curPage == dialogueBox.dialogueData.dialogue.length)
@@ -2284,13 +2291,12 @@ class PlayState extends MusicBeatState
 
 	function callTextbox()
 	{
-		var file = sys.io.File.getContent(Paths.json('songs/' + SONG.song.toLowerCase() + (endingSong ? '/dialogueEnd' : '/dialogue')));
 		if (checkTextbox())
 		{
 			if (!endingSong)
 				startedCountdown = false;
 
-			dialogueBox = DialogueBox.createDialogue(file);
+			dialogueBox = DialogueBox.createDialogue(sys.io.File.getContent(Paths.json('songs/' + SONG.song.toLowerCase() + (endingSong ? '/dialogueEnd' : '/dialogue'))));
 			dialogueBox.cameras = [dialogueHUD];
 			dialogueBox.whenDaFinish = (endingSong ? callDefaultSongEnd : startCountdown);
 
