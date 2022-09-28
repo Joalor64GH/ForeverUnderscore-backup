@@ -2064,7 +2064,7 @@ class PlayState extends MusicBeatState
 
 		deaths = 0;
 
-		if (SONG.validScore)
+		if (SONG.validScore && !preventScoring)
 		{
 			Highscore.saveScore(SONG.song, songScore, storyDifficulty);
 			Highscore.saveRank(SONG.song, rank, storyDifficulty);
