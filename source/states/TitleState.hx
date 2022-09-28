@@ -44,7 +44,7 @@ class TitleState extends MusicBeatState
 		curWacky = FlxG.random.getObject(getIntroTextShit());
 		super.create();
 
-		swagShader = new ColorSwap();
+		//swagShader = new ColorSwap();
 
 		if (!initialized)
 		{
@@ -101,8 +101,8 @@ class TitleState extends MusicBeatState
 		newLogoScale = gameLogo.scale.x;
 		add(gameLogo);
 
-		gfDance.shader = swagShader.shader;
-		gameLogo.shader = swagShader.shader;
+		//gfDance.shader = swagShader.shader;
+		//gameLogo.shader = swagShader.shader;
 
 		titleText = new FlxSprite(100, FlxG.height * 0.8);
 		titleText.frames = Paths.getSparrowAtlas('menus/base/title/titleEnter');

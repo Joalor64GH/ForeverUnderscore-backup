@@ -2411,10 +2411,8 @@ class PlayState extends MusicBeatState
 
 					prepare.cameras = [camHUD];
 
-					/* doing it later;
-						if (assetModifier == 'pixel')
-							prepare.setGraphicSize(Std.int(prepare.width * PlayState.daPixelZoom));
-					 */
+					if (assetModifier == 'pixel')
+						prepare.setGraphicSize(Std.int(prepare.width * PlayState.daPixelZoom));
 
 					prepare.screenCenter();
 					add(prepare);
