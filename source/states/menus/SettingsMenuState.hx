@@ -232,7 +232,8 @@ class SettingsMenuState extends BaseSettingsMenu
 			{
 				var baseAlphabet:Alphabet = new Alphabet(0, 0, categories[i].name, true, false);
 				baseAlphabet.screenCenter();
-				baseAlphabet.y += (90 * (i - Math.floor(categories.length / 2)));
+				baseAlphabet.y += (80 * (i - Math.floor(categories.length / 2)));
+				baseAlphabet.y += 50;
 				baseAlphabet.targetY = i;
 				baseAlphabet.disableX = true;
 				if (curCategory > 0)
