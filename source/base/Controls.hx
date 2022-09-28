@@ -43,7 +43,6 @@ enum abstract Action(String) to String from String
 	var RESET = "reset";
 	var CHEAT = "cheat";
 	var DEBUG1 = "debug1";
-	var DEBUG2 = "debug2";
 }
 
 enum Device
@@ -73,7 +72,6 @@ enum Control
 	PAUSE;
 	CHEAT;
 	DEBUG1;
-	DEBUG2;
 }
 
 enum KeyboardScheme
@@ -120,7 +118,6 @@ class Controls extends FlxActionSet
 	var _reset = new FlxActionDigital(Action.RESET);
 	var _cheat = new FlxActionDigital(Action.CHEAT);
 	var _debug1 = new FlxActionDigital(Action.DEBUG1);
-	var _debug2 = new FlxActionDigital(Action.DEBUG2);
 
 	#if (haxe >= "4.0.0")
 	var byName:Map<String, FlxActionDigital> = [];
@@ -275,16 +272,11 @@ class Controls extends FlxActionSet
 
 	inline function get_CHEAT()
 		return _cheat.check();
-		
+
 	public var DEBUG1(get, never):Bool;
 
 	inline function get_DEBUG1()
 		return _debug1.check();
-		
-	public var DEBUG2(get, never):Bool;
-
-	inline function get_DEBUG2()
-		return _debug2.check();
 
 	public function new(name, scheme = None)
 	{
@@ -320,7 +312,6 @@ class Controls extends FlxActionSet
 		add(_reset);
 		add(_cheat);
 		add(_debug1);
-		add(_debug2);
 
 		for (action in digitalActions)
 			byName[action.name] = action;
@@ -377,7 +368,6 @@ class Controls extends FlxActionSet
 			case RESET: _reset;
 			case CHEAT: _cheat;
 			case DEBUG1: _debug1;
-			case DEBUG2: _debug2;
 		}
 	}
 
@@ -441,8 +431,6 @@ class Controls extends FlxActionSet
 				func(_cheat, JUST_PRESSED);
 			case DEBUG1:
 				func(_debug1, JUST_PRESSED);
-			case DEBUG2:
-				func(_debug2, JUST_PRESSED);
 		}
 	}
 
@@ -602,7 +590,6 @@ class Controls extends FlxActionSet
 		inline bindKeys(Control.PAUSE, [Init.gameControls.get('PAUSE')[0][0], Init.gameControls.get('PAUSE')[0][1]]);
 		inline bindKeys(Control.RESET, [Init.gameControls.get('RESET')[0][0], Init.gameControls.get('RESET')[0][1]]);
 		inline bindKeys(Control.DEBUG1, [Init.gameControls.get('DEBUG1')[0][0], Init.gameControls.get('DEBUG1')[0][1]]);
-		inline bindKeys(Control.DEBUG2, [Init.gameControls.get('DEBUG2')[0][0], Init.gameControls.get('DEBUG2')[0][1]]);
 
 		/* 
 			#if (haxe >= "4.0.0")

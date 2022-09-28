@@ -340,13 +340,13 @@ class FreeplayState extends MusicBeatState
 				{
 					loadSong(false, true);
 					PlayState.chartingMode = true;
-					PlayState.prevCharter == (shiftP ? 1 : 0);
+					PlayState.lastEditor == (shiftP ? 1 : 0);
 					Main.switchState(this, (shiftP ? new ChartEditor() : new OriginalChartEditor()));
 				}
 				/*
 					else if (ctrl)
 						openSubState(new FreeplaySubstate());
-				 */
+				*/
 				else if (controls.RESET && presses < 3 && !shiftP)
 				{
 					presses++;

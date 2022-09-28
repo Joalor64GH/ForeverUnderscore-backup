@@ -1,0 +1,135 @@
+package states.substates;
+
+import base.MusicBeat.MusicBeatSubstate;
+import flixel.FlxG;
+import flixel.FlxSprite;
+import flixel.group.FlxGroup.FlxTypedGroup;
+import flixel.system.FlxSound;
+import flixel.tweens.FlxEase;
+import flixel.tweens.FlxTween;
+import funkin.Alphabet;
+
+/*
+    Substate used to load engine editors
+    e.g: Chart Editor, Character Offset Editor, etc
+*/
+class EditorMenuSubstate extends MusicBeatSubstate
+{
+    var alphabetGroup:FlxTypedGroup<Alphabet>;
+	var optionsArray:Array<String> = ['Original Chart Editor', 'Character Offset Editor', 'Chart Editor'];
+    var curSelected:Int = 0;
+
+    var music:FlxSound;
+    
+    public function new()
+    {
+		super();
+
+		cameras = [FlxG.cameras.list[FlxG.cameras.list.length - 1]];
+
+		music = new FlxSound().loadEmbedded(Paths.music('menus/prototype/prototype'), true, true);
+		music.volume = 0;
+		music.play(false, FlxG.random.int(0, Std.int(music.length / 2)));
+
+		FlxG.sound.list.add(music);
+
+		var bg:FlxSprite = new FlxSprite().makeGraphic(FlxG.width, FlxG.height, 0xFF000000);
+		bg.alpha = 0;
+		bg.scrollFactor.set();
+		add(bg);
+
+		FlxTween.tween(bg, {alpha: 0.6}, 0.4, {ease: FlxEase.quartInOut});
+
+		alphabetGroup = new FlxTypedGroup<Alphabet>();
+		add(alphabetGroup);
+
+		for (i in 0...optionsArray.length)
+		{
+			var option:Alphabet = new Alphabet(0, (70 * i) + 30, optionsArray[i], true, false);
+			option.isMenuItem = true;
+			option.disableX = true;
+			option.targetY = i;
+			alphabetGroup.add(option);
+		}
+
+		changeSelection();
+    }
+    
+    override function update(elapsed:Float)
+    {
+        super.update(elapsed);
+        
+		if (music.volume < 0.5)
+			music.volume += 0.01 * elapsed;
+
+		if (controls.UI_UP_P)
+		{
+			changeSelection(-1);
+			FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
+		}
+		if (controls.UI_DOWN_P)
+		{
+			changeSelection(1);
+			FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
+		}
+
+		if (controls.ACCEPT)
+		{
+			var daSelected:String = optionsArray[curSelected];
+			base.Conductor.stopMusic();
+
+            switch (daSelected)
+            {
+				case 'Original Chart Editor':
+					PlayState.chartingMode = true;
+					PlayState.preventScoring = true;
+					PlayState.lastEditor = 0;
+                    Main.switchState(this, new states.editors.OriginalChartEditor());
+                
+                case 'Chart Editor':
+					PlayState.chartingMode = true;
+					PlayState.preventScoring = true;
+					PlayState.lastEditor = 1;
+					Main.switchState(this, new states.editors.ChartEditor());
+					
+				case 'Character Offset Editor':
+					Main.switchState(this, new states.editors.CharacterOffsetEditor(PlayState.SONG.player2, false, PlayState.curStage));
+            }
+		}
+
+        if (controls.BACK)
+            close();
+    }
+    
+	override function destroy()
+	{
+		music.destroy();
+		super.destroy();
+	}
+    
+    function changeSelection(change:Int = 0):Void
+	{
+		curSelected += change;
+
+		if (curSelected < 0)
+			curSelected = optionsArray.length - 1;
+		if (curSelected >= optionsArray.length)
+			curSelected = 0;
+
+		var bullShit:Int = 0;
+		for (item in alphabetGroup.members)
+		{
+			item.targetY = bullShit - curSelected;
+			bullShit++;
+
+			item.alpha = 0.6;
+			// item.setGraphicSize(Std.int(item.width * 0.8));
+
+			if (item.targetY == 0)
+			{
+				item.alpha = 1;
+				// item.setGraphicSize(Std.int(item.width));
+			}
+		}
+	}
+}

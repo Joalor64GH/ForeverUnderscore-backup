@@ -177,7 +177,7 @@ class PlayState extends MusicBeatState
 	public static var practiceMode:Bool = false;
 	public static var scriptDebugMode:Bool = false;
 
-	public static var prevCharter:Int = 0;
+	public static var lastEditor:Int = 0;
 
 	public var ratingsGroup:FlxTypedGroup<FNFSprite>;
 	public var comboGroup:FlxTypedGroup<FNFSprite>;
@@ -508,6 +508,10 @@ class PlayState extends MusicBeatState
 		pauseMusic.volume = 0.000001;
 		pauseMusic.play();
 
+		var editorMusic:FlxSound = new FlxSound().loadEmbedded(Paths.music('menus/prototype/prototype'), true, true);
+		editorMusic.volume = 0.000001;
+		editorMusic.play();
+
 		// push your sound paths to this array
 		if (Init.trueSettings.get('Hitsound Volume') > 0)
 			soundArray.push('hitsounds/$changeableSound/hit');
@@ -530,6 +534,8 @@ class PlayState extends MusicBeatState
 			{
 				pauseMusic.stop();
 				pauseMusic.destroy();
+				editorMusic.stop();
+				editorMusic.destroy();
 			}
 		}
 	}
@@ -761,29 +767,21 @@ class PlayState extends MusicBeatState
 				// charting state (more on that later)
 				if (controls.DEBUG1)
 				{
-					Conductor.stopMusic();
-					chartingMode = true;
-					preventScoring = true;
-					if (FlxG.keys.pressed.SHIFT)
+					paused = true;
+					updateRPC(true);
+					persistentUpdate = false;
+					persistentDraw = true;
+					FlxTimer.globalManager.forEach(function(tmr:FlxTimer)
 					{
-						prevCharter = 1;
-						Main.switchState(this, new ChartEditor());
-					}
-					else
+						if (!tmr.finished)
+							tmr.active = false;
+					});
+					FlxTween.globalManager.forEach(function(twn:FlxTween)
 					{
-						prevCharter = 0;
-						Main.switchState(this, new OriginalChartEditor());
-					}
-				}
-				if (controls.DEBUG2)
-				{
-					var holdingShift = FlxG.keys.pressed.SHIFT;
-					var holdingAlt = FlxG.keys.pressed.ALT;
-
-					Conductor.stopMusic();
-					Main.switchState(this,
-						new CharacterOffsetEditor(holdingShift ? SONG.player1 : holdingAlt ? SONG.gfVersion : SONG.player2, holdingShift ? true : false,
-							PlayState.curStage));
+						if (!twn.finished)
+							twn.active = false;
+					});
+					openSubState(new EditorMenuSubstate());
 				}
 
 				if (FlxG.keys.pressed.SHIFT && FlxG.keys.justPressed.FIVE)
@@ -2073,7 +2071,7 @@ class PlayState extends MusicBeatState
 		// CoolUtil.difficulties = CoolUtil.baseDifficulties;
 
 		if (chartingMode)
-			Main.switchState(this, (prevCharter == 1 ? new ChartEditor() : new OriginalChartEditor()));
+			Main.switchState(this, (lastEditor == 1 ? new ChartEditor() : new OriginalChartEditor()));
 		else if (!isStoryMode)
 		{
 			if ((!endSongEvent))

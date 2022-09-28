@@ -319,8 +319,7 @@ class Init extends FlxState
 		'UI_DOWN' => [[FlxKey.DOWN, S], 13],
 		'UI_LEFT' => [[FlxKey.LEFT, A], 14],
 		'UI_RIGHT' => [[FlxKey.RIGHT, D], 15],
-		'DEBUG1' => [[SEVEN, NUMPADSEVEN], 17],
-		'DEBUG2' => [[EIGHT, NUMPADEIGHT], 18],
+		'DEBUG1' => [[SEVEN, EIGHT], 17],
 	];
 
 	public static var filters:Array<BitmapFilter> = []; // the filters the game has active
