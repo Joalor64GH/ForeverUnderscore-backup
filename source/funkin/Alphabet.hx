@@ -286,8 +286,13 @@ class Alphabet extends FlxSpriteGroup
 
 						try
 						{
-							if (daSound.endsWith(Paths.SOUND_EXT) && daSound != null)
-								FlxG.sound.play(daSound);
+							if (daSound.endsWith(Paths.SOUND_EXT))
+							{
+								if (daSound == null)
+									FlxG.sound.play(Paths.sound('pixelText'));
+								else
+									FlxG.sound.play(daSound);
+							}
 						}
 						catch(e)
 						{

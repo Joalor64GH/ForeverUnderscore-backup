@@ -732,7 +732,10 @@ class PlayState extends MusicBeatState
 
 				try
 				{
-					FlxG.sound.play(Paths.sound(sound));
+					if (sound == null)
+						FlxG.sound.play(Paths.sound('cancelMenu'));
+					else
+						FlxG.sound.play(Paths.sound(sound));
 				}
 				catch (e)
 				{
