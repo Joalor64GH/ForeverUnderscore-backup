@@ -44,6 +44,16 @@ class HealthIcon extends FlxSprite
 			animation.play('static');
 	}
 
+	var bounceTween:FlxTween;
+
+	public function bop(time:Float)
+	{
+		scale.set(1.2, 1.2);
+		if (bounceTween != null)
+			bounceTween.cancel();
+		bounceTween = FlxTween.tween(this.scale, {x: 1, y: 1}, time, {ease: FlxEase.expoOut});
+	}
+
 	public function updateIcon(char:String = 'bf', isPlayer:Bool = false)
 	{
 		var trimmedChar:String = char;

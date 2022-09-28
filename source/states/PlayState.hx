@@ -951,37 +951,7 @@ class PlayState extends MusicBeatState
 					Conductor.songVocals.pause();
 					Conductor.songPosition += 10000;
 
-					var i:Int = unspawnNotes.length - 1;
-					while (i >= 0)
-					{
-						var daNote:Note = unspawnNotes[i];
-						if(daNote.strumTime - 500 < Conductor.songPosition)
-						{
-							daNote.active = false;
-							daNote.visible = false;
-				
-							daNote.kill();
-							unspawnNotes.remove(daNote);
-							daNote.destroy();
-						}
-						--i;
-					}
-
-					i = notes.length - 1;
-					while (i >= 0)
-					{
-						var daNote:Note = notes.members[i];
-						if(daNote.strumTime - 500 < Conductor.songPosition)
-						{
-							daNote.active = false;
-							daNote.visible = false;
-				
-							daNote.kill();
-							notes.remove(daNote, true);
-							daNote.destroy();
-						}
-						--i;
-					}
+					noteCleanup(Conductor.songPosition);
 
 					Conductor.songMusic.time = Conductor.songPosition;
 					Conductor.songVocals.time = Conductor.songPosition;
@@ -995,6 +965,26 @@ class PlayState extends MusicBeatState
 		checkSongEvents();
 
 		callFunc('postUpdate', [elapsed]);
+	}
+	
+	function noteCleanup(time:Float)
+	{
+		var i:Int = unspawnNotes.length - 1;
+		while (i >= 0)
+		{
+			var daNote:Note = unspawnNotes[i];
+			if(daNote.strumTime - 350 < time)
+			{
+				daNote.active = false;
+				daNote.visible = false;
+
+				daNote.kill();
+				unspawnNotes.remove(daNote);
+				notes.remove(daNote, true);
+				daNote.destroy();
+			}
+			--i;
+		}
 	}
 
 	function controllerInput()
