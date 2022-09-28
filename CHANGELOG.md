@@ -8,6 +8,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 - Automatic Gamepad Detection (by: Stilic);
+- Newer Runtime Shader Support (by: MasterEric);
+* this basically means psych engine shaders now work
 
 ### Fixed
 
