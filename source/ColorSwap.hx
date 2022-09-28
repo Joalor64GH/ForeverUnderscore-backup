@@ -1,11 +1,10 @@
 package;
 
-import flixel.FlxG;
 import flixel.system.FlxAssets.FlxShader;
 
-class ColorSwap
+final class ColorSwap
 {
-	public var shader(default, null):ColorSwapShader = new ColorSwapShader();
+	public var shader(default, null):ColorSwapShader;
 	public var hue(default, set):Float = 0;
 	public var saturation(default, set):Float = 0;
 	public var brightness(default, set):Float = 0;
@@ -33,11 +32,9 @@ class ColorSwap
 
 	public function new()
 	{
-		if (shader != null)
-		{
-			shader.uTime.value = [0, 0, 0];
-			shader.awesomeOutline.value = [false];
-		}
+		shader = new ColorSwapShader();
+		shader.uTime.value = [0, 0, 0];
+		shader.awesomeOutline.value = [false];
 	}
 }
 
@@ -54,10 +51,7 @@ class ColorSwapShader extends FlxShader
 		uniform sampler2D bitmap;
 
 		uniform bool hasTransform;
-		uniform bool hasColorTrans
-
-		uniform vec3 uTime;
-		uniform bool awesomeOutline;
+		uniform bool hasColorTransform;
 
 		vec4 flixel_texture2D(sampler2D bitmap, vec2 coord)
 		{
@@ -91,7 +85,11 @@ class ColorSwapShader extends FlxShader
 			{
 				return vec4(color.rgb * color.a * openfl_Alphav, color.a * openfl_Alphav);
 			}
-			return vec4(0.0, 0.0, 0.0, 0.0);ine;
+			return vec4(0.0, 0.0, 0.0, 0.0);
+		}
+
+		uniform vec3 uTime;
+		uniform bool awesomeOutline;
 
 		const float offset = 1.0 / 128.0;
 		vec3 normalizeColor(vec3 color)
