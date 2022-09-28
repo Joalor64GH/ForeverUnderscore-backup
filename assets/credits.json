@@ -60,6 +60,13 @@
 			"colors": [68, 68, 68]
 		},
 		{
+			"name": "MasterEric",
+			"iconData": [],
+			"textData": ["Runtime Shader Support"],
+			"urlData": [["Twitter", "https://twitter.com/EliteMasterEric"]],
+			"colors": [255, 255, 255]
+		},
+		{
 			"name": "NooBZiiTo",
 			"iconData": ["noobziito", 290, 0],
 			"textData": ["Custom Menu Assets", "i injected uranium in my veins."],

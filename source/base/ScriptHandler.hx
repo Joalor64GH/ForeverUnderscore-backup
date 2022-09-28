@@ -47,6 +47,7 @@ class ScriptHandler extends SScript
 		set('FlxSprite', FlxSprite);
 		set('FlxText', FlxText);
 		set('FlxTextBorderStyle', FlxTextBorderStyle);
+		set('FlxRuntimeShader', flixel.addons.display.FlxRuntimeShader);
 		set('FlxSound', FlxSound);
 		set('FlxTimer', FlxTimer);
 		set('FlxTween', FlxTween);

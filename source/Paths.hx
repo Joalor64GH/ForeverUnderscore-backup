@@ -351,6 +351,6 @@ final class Paths
 
 	inline static public function shader(key:String)
 	{
-		return 'assets/shaders/$key.frag';
+		return 'assets/shaders/$key';
 	}
 }
