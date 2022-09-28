@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.2.3] - [SEP-27-2022]
 
 ### Added
-
+- Automatic Gamepad Detection (by: Stilic);
 
 ### Fixed
 

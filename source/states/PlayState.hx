@@ -759,6 +759,8 @@ class PlayState extends MusicBeatState
 			if (controls.PAUSE && startedCountdown && canPause)
 			{
 				pauseGame();
+				// open pause substate
+				openSubState(new PauseSubstate(boyfriend.getScreenPosition().x, boyfriend.getScreenPosition().y));
 			}
 
 			// make sure you're not cheating lol
@@ -767,20 +769,7 @@ class PlayState extends MusicBeatState
 				// charting state (more on that later)
 				if (controls.DEBUG1)
 				{
-					paused = true;
-					updateRPC(true);
-					persistentUpdate = false;
-					persistentDraw = true;
-					FlxTimer.globalManager.forEach(function(tmr:FlxTimer)
-					{
-						if (!tmr.finished)
-							tmr.active = false;
-					});
-					FlxTween.globalManager.forEach(function(twn:FlxTween)
-					{
-						if (!twn.finished)
-							twn.active = false;
-					});
+					pauseGame();
 					openSubState(new EditorMenuSubstate());
 				}
 
@@ -1612,9 +1601,6 @@ class PlayState extends MusicBeatState
 			if (!twn.finished)
 				twn.active = false;
 		});
-
-		// open pause substate
-		openSubState(new PauseSubstate(boyfriend.getScreenPosition().x, boyfriend.getScreenPosition().y));
 	}
 
 	override public function onFocus():Void
@@ -1627,7 +1613,11 @@ class PlayState extends MusicBeatState
 	override public function onFocusLost():Void
 	{
 		if (canPause && !paused && !inCutscene && !bfStrums.autoplay && !Init.trueSettings.get('Auto Pause') && startedCountdown)
+		{
 			pauseGame();
+			// open pause substate
+			openSubState(new PauseSubstate(boyfriend.getScreenPosition().x, boyfriend.getScreenPosition().y));
+		}
 		super.onFocusLost();
 	}
 

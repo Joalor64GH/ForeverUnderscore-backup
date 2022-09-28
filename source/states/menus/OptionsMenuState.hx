@@ -56,6 +56,7 @@ class OptionsMenuState extends MusicBeatState
 					['appearance', callNewGroup],
 					['controls', openControlmenu],
 					['adjust combo', openJudgeState],
+					['note colors', openNotemenu],
 					['exit', exitMenu]
 				]
 			],
@@ -134,10 +135,8 @@ class OptionsMenuState extends MusicBeatState
 		ForeverTools.resetMenuMusic();
 
 		// call the options menu
-		var bg = new FlxSprite(-85);
-		bg.loadGraphic(Paths.image('menus/base/menuDesat'));
-		bg.scrollFactor.x = 0;
-		bg.scrollFactor.y = 0.18;
+		var bg = new FlxSprite(-85).loadGraphic(Paths.image('menus/base/menuDesat'));
+		bg.scrollFactor.set(0, 0.18);
 		bg.setGraphicSize(Std.int(bg.width * 1.1));
 		bg.updateHitbox();
 		bg.screenCenter();
@@ -409,7 +408,8 @@ class OptionsMenuState extends MusicBeatState
 			{
 				var thisOption:Alphabet = new Alphabet(0, 0, categoryMap.get(groupName)[0][i][0], true, false);
 				thisOption.screenCenter();
-				thisOption.y += (90 * (i - Math.floor(categoryMap.get(groupName)[0].length / 2)));
+				thisOption.y += (80 * (i - Math.floor(categoryMap.get(groupName)[0].length / 2)));
+				thisOption.y += 50;
 				thisOption.targetY = i;
 				thisOption.disableX = true;
 				// hardcoded main so it doesnt have scroll
@@ -629,6 +629,20 @@ class OptionsMenuState extends MusicBeatState
 			FlxFlicker.flicker(activeSubgroup.members[curSelection], 0.5, 0.06 * 2, true, false, function(flick:FlxFlicker)
 			{
 				openSubState(new states.substates.ControlsSubstate());
+				lockedMovement = false;
+			});
+		}
+	}
+	
+	public function openNotemenu()
+	{
+		if (controls.ACCEPT || FlxG.mouse.justPressed)
+		{
+			playSound('confirmMenu');
+			lockedMovement = true;
+			FlxFlicker.flicker(activeSubgroup.members[curSelection], 0.5, 0.06 * 2, true, false, function(flick:FlxFlicker)
+			{
+				openSubState(new states.substates.NoteColorsSubstate());
 				lockedMovement = false;
 			});
 		}

@@ -36,12 +36,15 @@ class TitleState extends MusicBeatState
 	var titleTextAlphas:Array<Float> = [1, .64];
 
 	var bg:FlxSprite;
+	var swagShader:ColorSwap = null;
 
 	override public function create():Void
 	{
 		controls.setKeyboardScheme(None, false);
 		curWacky = FlxG.random.getObject(getIntroTextShit());
 		super.create();
+
+		swagShader = new ColorSwap();
 
 		if (!initialized)
 		{
@@ -97,6 +100,9 @@ class TitleState extends MusicBeatState
 		initLogowidth = gameLogo.width;
 		newLogoScale = gameLogo.scale.x;
 		add(gameLogo);
+
+		gfDance.shader = swagShader.shader;
+		gameLogo.shader = swagShader.shader;
 
 		titleText = new FlxSprite(100, FlxG.height * 0.8);
 		titleText.frames = Paths.getSparrowAtlas('menus/base/title/titleEnter');
@@ -176,6 +182,14 @@ class TitleState extends MusicBeatState
 
 		var pressedEnter:Bool = controls.ACCEPT;
 		var gamepad:FlxGamepad = FlxG.gamepads.lastActive;
+
+		if (swagShader != null)
+		{
+			if (controls.UI_LEFT)
+				swagShader.hue -= elapsed * 0.1;
+			if (controls.UI_RIGHT)
+				swagShader.hue += elapsed * 0.1;
+		}
 
 		if (newTitle)
 		{
