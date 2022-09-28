@@ -269,7 +269,7 @@ class FlxRuntimeShader extends FlxShader
 	 * The parent function that initializes the shader.
 	 * This is done to add the `#version` shader directive.
 	 */
-	private override function __initGL():Void
+	public override function __initGL():Void
 	{
 		if (__glSourceDirty || __paramBool == null)
 		{
