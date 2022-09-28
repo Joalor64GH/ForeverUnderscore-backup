@@ -139,9 +139,9 @@ class Init extends FlxState
 		'Menu Song' => [
 			'freakyMenu',
 			Selector,
-			'Which song should we use for the Main Menu? takes effect upon switching states or restarting the game.',
+			'Which song should we use for the Main Menu?',
 			NOT_FORCED,
-			'' // ['foreverMenu', 'freakyMenu']
+			''
 		],
 		"Framerate Cap" => [120, Selector, 'Define your maximum FPS.', NOT_FORCED, ['']],
 		'FPS Counter' => [true, Checkmark, 'Whether to display the FPS counter.', NOT_FORCED],

@@ -490,20 +490,35 @@ class OptionsMenuState extends MusicBeatState
 				case Init.SettingTypes.Selector:
 					#if !html5
 					var selector:Selector = currentAttachmentMap.get(activeSubgroup.members[curSelection]);
-
 					if (!controls.UI_LEFT)
 						selector.selectorPlay('left');
 					if (!controls.UI_RIGHT)
 						selector.selectorPlay('right');
 
 					if (controls.UI_RIGHT_P)
+					{
 						updateSelector(selector, 1);
+						onChangeSelector();
+					}
 					else if (controls.UI_LEFT_P)
+					{
 						updateSelector(selector, -1);
+						onChangeSelector();
+					}
 					#end
 				default:
 					// none
 			}
+		}
+	}
+
+	function onChangeSelector()
+	{
+		switch (activeSubgroup.members[curSelection].text)
+		{
+			case 'Menu Song':
+				FlxG.sound.music.stop();
+				ForeverTools.resetMenuMusic();
 		}
 	}
 

@@ -319,7 +319,7 @@ class FreeplayState extends MusicBeatState
 				{
 					if (presses <= 0)
 					{
-						if (FlxG.sound.music != null)
+						if (FlxG.sound.music != null && !shiftP)
 							FlxG.sound.music.stop();
 						threadActive = false;
 						// CoolUtil.difficulties = CoolUtil.baseDifficulties;
