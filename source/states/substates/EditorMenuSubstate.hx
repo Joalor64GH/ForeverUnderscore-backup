@@ -10,19 +10,19 @@ import flixel.tweens.FlxTween;
 import funkin.Alphabet;
 
 /*
-    Substate used to load engine editors
-    e.g: Chart Editor, Character Offset Editor, etc
-*/
+	Substate used to load engine editors
+	e.g: Chart Editor, Character Offset Editor, etc
+ */
 class EditorMenuSubstate extends MusicBeatSubstate
 {
-    var alphabetGroup:FlxTypedGroup<Alphabet>;
+	var alphabetGroup:FlxTypedGroup<Alphabet>;
 	var optionsArray:Array<String> = ['Original Chart Editor', 'Character Offset Editor', 'Chart Editor'];
-    var curSelected:Int = 0;
+	var curSelected:Int = 0;
 
-    var music:FlxSound;
-    
-    public function new()
-    {
+	var music:FlxSound;
+
+	public function new()
+	{
 		super();
 
 		cameras = [FlxG.cameras.list[FlxG.cameras.list.length - 1]];
@@ -53,12 +53,12 @@ class EditorMenuSubstate extends MusicBeatSubstate
 		}
 
 		changeSelection();
-    }
-    
-    override function update(elapsed:Float)
-    {
-        super.update(elapsed);
-        
+	}
+
+	override function update(elapsed:Float)
+	{
+		super.update(elapsed);
+
 		if (music.volume < 0.5)
 			music.volume += 0.01 * elapsed;
 
@@ -78,36 +78,36 @@ class EditorMenuSubstate extends MusicBeatSubstate
 			var daSelected:String = optionsArray[curSelected];
 			base.Conductor.stopMusic();
 
-            switch (daSelected)
-            {
+			switch (daSelected)
+			{
 				case 'Original Chart Editor':
 					PlayState.chartingMode = true;
 					PlayState.preventScoring = true;
 					PlayState.lastEditor = 0;
-                    Main.switchState(this, new states.editors.OriginalChartEditor());
-                
-                case 'Chart Editor':
+					Main.switchState(this, new states.editors.OriginalChartEditor());
+
+				case 'Chart Editor':
 					PlayState.chartingMode = true;
 					PlayState.preventScoring = true;
 					PlayState.lastEditor = 1;
 					Main.switchState(this, new states.editors.ChartEditor());
-					
+
 				case 'Character Offset Editor':
 					Main.switchState(this, new states.editors.CharacterOffsetEditor(PlayState.SONG.player2, false, PlayState.curStage));
-            }
+			}
 		}
 
-        if (controls.BACK)
-            close();
-    }
-    
+		if (controls.BACK)
+			close();
+	}
+
 	override function destroy()
 	{
 		music.destroy();
 		super.destroy();
 	}
-    
-    function changeSelection(change:Int = 0):Void
+
+	function changeSelection(change:Int = 0):Void
 	{
 		curSelected += change;
 

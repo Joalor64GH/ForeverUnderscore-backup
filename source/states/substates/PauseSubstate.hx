@@ -138,13 +138,10 @@ class PauseSubstate extends MusicBeatSubstate
 	function reloadOptions()
 	{
 		// kill and destroy all the existing items inside the item group;
-		for (i in 0...grpMenuShit.members.length)
-		{
-			var existingItems = grpMenuShit.members[i];
-			existingItems.kill();
-			grpMenuShit.remove(existingItems, true);
-			existingItems.destroy();
-		}
+		var existingItem = grpMenuShit.members[0];
+		existingItem.kill();
+		grpMenuShit.remove(existingItem, true);
+		existingItem.destroy();
 
 		// generate the new menu items;
 		for (i in 0...menuItems.length)
