@@ -261,10 +261,10 @@ class Init extends FlxState
 			NOT_FORCED
 		],
 		'Disable Shaders' => [
-			true,
+			false,
 			Checkmark,
 			"Whether to disable Fragment / Vertex shaders during gameplay, can improve performance.",
-			FORCED
+			NOT_FORCED
 		],
 		'Reduced Movements' => [
 			false,

@@ -194,6 +194,9 @@ class FlxRuntimeShader extends FlxShader
 	 */
 	public function new(fragmentSource:String = null, vertexSource:String = null, glslVersion:Int = 120):Void
 	{
+		if (Init.trueSettings.get('Disable Shaders'))
+			return;
+
 		_glslVersion = glslVersion;
 
 		if (fragmentSource == null)
