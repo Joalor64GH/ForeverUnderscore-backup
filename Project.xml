@@ -45,6 +45,7 @@
 
 	<assets path="assets" />
 	<assets path="assets/mobile" if="android" /> <!-- to not have the android assets in another builds -saw -->
+	<assets path="mods" if="desktop || android" />
 
 	<!-- _______________________________ Libraries ______________________________ -->
 

@@ -143,7 +143,7 @@ class CoolUtil
 		if (!file.endsWith('/'))
 			file = '$file/';
 
-		var path:String = Paths.rawPath(file);
+		var path:String = Paths.getPreloadPath(file);
 
 		var absolutePath:String = FileSystem.absolutePath(path);
 		var directory:Array<String> = FileSystem.readDirectory(absolutePath);

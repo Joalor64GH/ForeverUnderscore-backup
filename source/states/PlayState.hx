@@ -190,6 +190,72 @@ class PlayState extends MusicBeatState
 	// stores the last combo sprite objects in an array
 	public static var lastCombo:Array<FNFSprite> = [];
 
+	/**
+	 * Simply put, a Function to Precache Sounds and Songs;
+	 * when adding yours, make sure to use `FlxSound` and `volume = 0.00000001`;
+	**/
+	private function precacheSounds()
+	{
+		var soundArray:Array<String> = [];
+
+		var pauseMusic:FlxSound = new FlxSound().loadEmbedded(Paths.music('breakfast'), true, true);
+		pauseMusic.volume = 0.000001;
+		pauseMusic.play();
+
+		var editorMusic:FlxSound = new FlxSound().loadEmbedded(Paths.music('menus/prototype/prototype'), true, true);
+		editorMusic.volume = 0.000001;
+		editorMusic.play();
+
+		// push your sound paths to this array
+		if (Init.getSetting('Hitsound Volume') > 0)
+			soundArray.push('hitsounds/$changeableSound/hit');
+
+		for (i in soundArray)
+		{
+			var allSounds:FlxSound = new FlxSound().loadEmbedded(Paths.sound(i));
+			allSounds.volume = 0.000001;
+			allSounds.play();
+		}
+
+		for (i in 0...4)
+		{
+			var missSounds:FlxSound = new FlxSound().loadEmbedded(Paths.sound('missnote' + i));
+			missSounds.volume = 0.000001;
+			missSounds.play();
+
+			// stopping the pause music once these are done;
+			missSounds.onComplete = function():Void
+			{
+				pauseMusic.stop();
+				pauseMusic.destroy();
+				editorMusic.stop();
+				editorMusic.destroy();
+			}
+		}
+	}
+
+	/**
+	 * a Function to Precache Images;
+	**/
+	private function precacheImages()
+	{
+		Paths.image('UI/default/base/alphabet');
+		Paths.getSparrowAtlas(GameOverSubstate.character, 'characters/' + GameOverSubstate.character);
+	}
+
+	/**
+	 * Sorts through possible notes, author @Shadow_Mario
+	 */
+	function sortHitNotes(a:Note, b:Note):Int
+	{
+		if (a.lowPriority && !b.lowPriority)
+			return 1;
+		else if (!a.lowPriority && b.lowPriority)
+			return -1;
+
+		return FlxSort.byValues(FlxSort.ASCENDING, Std.int(a.strumTime), Std.int(b.strumTime));
+	}
+
 	// at the beginning of the playstate
 	override public function create()
 	{
@@ -282,6 +348,7 @@ class PlayState extends MusicBeatState
 		boyfriend.dance(true);
 
 		charGroup = new FlxSpriteGroup();
+		charGroup.alpha = 0.00001;
 
 		var camPos:FlxPoint = new FlxPoint(gf.getMidpoint().x - 100, boyfriend.getMidpoint().y - 100);
 
@@ -496,58 +563,44 @@ class PlayState extends MusicBeatState
 
 		callFunc('postCreate', []);
 	}
-
-	/**
-	 * Simply put, a Function to Precache Sounds and Songs;
-	 * when adding yours, make sure to use `FlxSound` and `volume = 0.00000001`;
-	**/
-	private function precacheSounds()
+	
+	public function playVideo(name:String)
 	{
-		var soundArray:Array<String> = [];
+		#if VIDEO_PLUGIN
+		inCutscene = true;
 
-		var pauseMusic:FlxSound = new FlxSound().loadEmbedded(Paths.music('breakfast'), true, true);
-		pauseMusic.volume = 0.000001;
-		pauseMusic.play();
-
-		var editorMusic:FlxSound = new FlxSound().loadEmbedded(Paths.music('menus/prototype/prototype'), true, true);
-		editorMusic.volume = 0.000001;
-		editorMusic.play();
-
-		// push your sound paths to this array
-		if (Init.getSetting('Hitsound Volume') > 0)
-			soundArray.push('hitsounds/$changeableSound/hit');
-
-		for (i in soundArray)
+		var filepath:String = Paths.video(name);
+		#if sys
+		if (!FileSystem.exists(filepath))
+		#else
+		if (!OpenFlAssets.exists(filepath))
+		#end
 		{
-			var allSounds:FlxSound = new FlxSound().loadEmbedded(Paths.sound(i));
-			allSounds.volume = 0.000001;
-			allSounds.play();
+			FlxG.log.warn('Couldnt find video file: ' + name);
+			startAndEnd();
+			return;
 		}
 
-		for (i in 0...4)
+		var video:MP4Handler = new MP4Handler();
+		video.playVideo(filepath);
+		video.finishCallback = function()
 		{
-			var missSounds:FlxSound = new FlxSound().loadEmbedded(Paths.sound('missnote' + i));
-			missSounds.volume = 0.000001;
-			missSounds.play();
-
-			// stopping the pause music once these are done;
-			missSounds.onComplete = function():Void
-			{
-				pauseMusic.stop();
-				pauseMusic.destroy();
-				editorMusic.stop();
-				editorMusic.destroy();
-			}
+			startAndEnd();
+			return;
 		}
+		#else
+		FlxG.log.warn('Platform not supported!');
+		startAndEnd();
+		return;
+		#end
 	}
 
-	/**
-	 * a Function to Precache Images;
-	**/
-	private function precacheImages()
+	function startAndEnd()
 	{
-		Paths.image('UI/default/base/alphabet');
-		Paths.getSparrowAtlas(GameOverSubstate.character, 'characters/' + GameOverSubstate.character);
+		if (endingSong)
+			endSong();
+		else
+			callTextbox();
 	}
 
 	public static function copyKey(arrayToCopy:Array<FlxKey>):Array<FlxKey>
@@ -572,6 +625,11 @@ class PlayState extends MusicBeatState
 	var keysArray:Array<Array<FlxKey>>;
 
 	var holdControls:Array<Bool> = [];
+
+	/*
+		input system functions
+		for pressing and releasing notes
+	*/
 
 	public function onKeyPress(event:KeyboardEvent):Void
 	{
@@ -646,19 +704,6 @@ class PlayState extends MusicBeatState
 		}
 	}
 
-	/**
-	 * Sorts through possible notes, author @Shadow_Mario
-	 */
-	function sortHitNotes(a:Note, b:Note):Int
-	{
-		if (a.lowPriority && !b.lowPriority)
-			return 1;
-		else if (!a.lowPriority && b.lowPriority)
-			return -1;
-
-		return FlxSort.byValues(FlxSort.ASCENDING, Std.int(a.strumTime), Std.int(b.strumTime));
-	}
-
 	public function onKeyRelease(event:KeyboardEvent):Void
 	{
 		var eventKey:FlxKey = event.keyCode;
@@ -688,16 +733,6 @@ class PlayState extends MusicBeatState
 			}
 		}
 		return -1;
-	}
-
-	override public function destroy()
-	{
-		callFunc('destroy', []);
-
-		FlxG.stage.removeEventListener(KeyboardEvent.KEY_DOWN, onKeyPress);
-		FlxG.stage.removeEventListener(KeyboardEvent.KEY_UP, onKeyRelease);
-
-		super.destroy();
 	}
 
 	var staticDisplace:Int = 0;
@@ -927,7 +962,7 @@ class PlayState extends MusicBeatState
 		}
 
 		if (!isStoryMode && !startingSong && !endingSong && scriptDebugMode)
-		{ // Go 10 seconds into the future, @author Shadow_Mario_
+		{
 			if (FlxG.keys.justPressed.ONE)
 			{
 				preventScoring = true;
@@ -935,8 +970,9 @@ class PlayState extends MusicBeatState
 			}
 			if (FlxG.keys.justPressed.TWO)
 			{
+				// apparently this can kill you??? huh
 				if (Conductor.songPosition + 10000 < Conductor.songMusic.length)
-				{
+				{ // Go 10 seconds into the future, @author Shadow_Mario_
 					preventScoring = true;
 					Conductor.songMusic.pause();
 					Conductor.songVocals.pause();
@@ -1186,7 +1222,6 @@ class PlayState extends MusicBeatState
 	public function addCharacter(newCharacter:String)
 	{
 		var char:Character = new Character(0, 0, newCharacter);
-		char.alpha = 0.00001;
 		charGroup.add(char);
 	}
 
@@ -2158,45 +2193,6 @@ class PlayState extends MusicBeatState
 		}
 	}
 
-	public function playVideo(name:String)
-	{
-		#if VIDEO_PLUGIN
-		inCutscene = true;
-
-		var filepath:String = Paths.video(name);
-		#if sys
-		if (!FileSystem.exists(filepath))
-		#else
-		if (!OpenFlAssets.exists(filepath))
-		#end
-		{
-			FlxG.log.warn('Couldnt find video file: ' + name);
-			startAndEnd();
-			return;
-		}
-
-		var video:MP4Handler = new MP4Handler();
-		video.playVideo(filepath);
-		video.finishCallback = function()
-		{
-			startAndEnd();
-			return;
-		}
-		#else
-		FlxG.log.warn('Platform not supported!');
-		startAndEnd();
-		return;
-		#end
-	}
-
-	function startAndEnd()
-	{
-		if (endingSong)
-			endSong();
-		else
-			callTextbox();
-	}
-
 	var dialogueBox:DialogueBox;
 
 	public function songIntroCutscene()
@@ -2496,6 +2492,16 @@ class PlayState extends MusicBeatState
 			swagCounter += 1;
 			callFunc('countdownTick', [swagCounter]);
 		}, 5);
+	}
+
+	override public function destroy()
+	{
+		callFunc('destroy', []);
+
+		FlxG.stage.removeEventListener(KeyboardEvent.KEY_DOWN, onKeyPress);
+		FlxG.stage.removeEventListener(KeyboardEvent.KEY_UP, onKeyRelease);
+
+		super.destroy();
 	}
 
 	override function add(Object:FlxBasic):FlxBasic

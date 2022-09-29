@@ -115,11 +115,6 @@ class Timings
 		PlayState.uiHUD.updateScoreText();
 	}
 
-	public static function getAccuracy()
-	{
-		return trueAccuracy;
-	}
-
 	public static function updateScoreRating()
 	{
 		var biggest:Int = 0;
@@ -131,6 +126,11 @@ class Timings
 				ratingFinal = score;
 			}
 		}
+	}
+
+	public static function getAccuracy()
+	{
+		return trueAccuracy;
 	}
 
 	public static function returnScoreRating()

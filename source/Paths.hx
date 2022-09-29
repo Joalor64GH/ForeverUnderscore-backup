@@ -193,29 +193,14 @@ final class Paths
 	inline public static function getPath(file:String, ?type:AssetType, ?library:Null<String>)
 	{
 		/*
-				Okay so, from what I understand, this loads in the current path based on the level
-				we're in (if a library is not specified), say like week 1 or something, 
-				then checks if the assets you're looking for are there.
-				if not, it checks the shared assets folder.
-			// */
-
-		// well I'm rewriting it so that the library is the path and it looks for the file type
-		// later lmao I don't really wanna rn
+			Okay so, from what I understand, this loads in the current path based on the level
+			we're in (if a library is not specified), say like week 1 or something, 
+			then checks if the assets you're looking for are there.
+			if not, it checks the shared assets folder.
+		*/
 
 		if (library != null)
 			return getLibraryPath(file, library);
-
-		/*
-			if (currentLevel != null)
-			{
-				levelPath = getLibraryPathForce(file, currentLevel);
-				if (OpenFlAssets.exists(levelPath, type))
-					return levelPath;
-
-				levelPath = getLibraryPathForce(file, "shared");
-				if (OpenFlAssets.exists(levelPath, type))
-					return levelPath;
-		}*/
 
 		var levelPath = getLibraryPathForce(file, "mods");
 		if (OpenFlAssets.exists(levelPath, type))
@@ -224,22 +209,6 @@ final class Paths
 		return getPreloadPath(file);
 	}
 
-	// files!
-	// this is how I'm gonna do it, considering it's much cleaner in my opinion
-
-	/*
-		inline static public function returnFileType(fileName:String, ?library:String, fileExtension:String)
-		{
-			// I don't really use haxe so bare with me
-			var returnFile:String = "$" + fileName + "." + fileExtension;
-			return getPath()
-	}//*/
-	/*  
-		actually I could just combine all of these main functions into one and really call it a day
-		it's similar and would use one function with a switch case
-		for now I'm more focused on getting this to run than anything and I'll clean out the code later as I do want to organise
-		everything later 
-	 */
 	static public function getLibraryPath(file:String, library = "preload")
 	{
 		return if (library == "preload" || library == "default") getPreloadPath(file); else getLibraryPathForce(file, library);
@@ -258,11 +227,6 @@ final class Paths
 		return returnPath;
 	}
 
-	public static function rawPath(file:String)
-	{
-		return 'assets/$file';
-	}
-
 	inline static public function file(file:String, type:AssetType = TEXT, ?library:String)
 	{
 		return getPath(file, type, library);
@@ -271,11 +235,6 @@ final class Paths
 	inline static public function txt(key:String, ?library:String)
 	{
 		return getPath('$key.txt', TEXT, library);
-	}
-
-	inline static public function xml(key:String, ?library:String)
-	{
-		return getPath('data/$key.xml', TEXT, library);
 	}
 
 	inline static public function json(key:String, ?library:String)
