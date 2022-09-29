@@ -39,7 +39,7 @@ jobs:
           sudo apt-get -y install libidn12
           haxelib setup ~/haxelib
           haxelib install hxcpp > /dev/null
-          haxelib install lime
+          haxelib install lime 7.9.0
           haxelib install openfl
           haxelib install flixel
           haxelib install flixel-ui
@@ -76,7 +76,7 @@ jobs:
         run: |
           haxelib setup C:/haxelib
           haxelib install hxcpp > /dev/null
-          haxelib install lime
+          haxelib install lime 7.9.0
           haxelib install openfl
           haxelib install flixel
           haxelib install flixel-ui
@@ -114,7 +114,7 @@ jobs:
         run: |
           haxelib setup ~/haxelib
           haxelib install hxcpp > /dev/null
-          haxelib install lime
+          haxelib install lime 7.9.0
           haxelib install openfl
           haxelib install flixel
           haxelib install flixel-ui
