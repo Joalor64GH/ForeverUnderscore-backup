@@ -1,5 +1,5 @@
-tankman<?xml version='1.0' encoding='utf-8'?>
-<TextureAtlas imagePath="campaign_menu_UI_characters.png">
+<?xml version='1.0' encoding='utf-8'?>
+<TextureAtlas imagePath="tankman.png">
 <SubTexture name="tankman idle0000" x="457" y="301" width="228" height="292" frameX="-3" frameY="-9" frameWidth="231" frameHeight="301" />
 <SubTexture name="tankman idle0001" x="457" y="301" width="228" height="292" frameX="-3" frameY="-9" frameWidth="231" frameHeight="301" />
 <SubTexture name="tankman idle0002" x="228" y="301" width="229" height="293" frameX="-2" frameY="-8" frameWidth="231" frameHeight="301" />
