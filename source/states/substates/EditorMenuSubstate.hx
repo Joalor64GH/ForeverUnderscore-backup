@@ -7,6 +7,7 @@ import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.system.FlxSound;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
+import flixel.util.FlxTimer;
 import funkin.Alphabet;
 
 /*
@@ -20,6 +21,8 @@ class EditorMenuSubstate extends MusicBeatSubstate
 	var curSelected:Int = 0;
 
 	var music:FlxSound;
+
+	public static var fromPause:Bool = false;
 
 	public function new()
 	{
@@ -73,7 +76,7 @@ class EditorMenuSubstate extends MusicBeatSubstate
 			FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
 		}
 
-		if (controls.ACCEPT)
+		if (controls.ACCEPT && !fromPause)
 		{
 			var daSelected:String = optionsArray[curSelected];
 			base.Conductor.stopMusic();
@@ -96,6 +99,13 @@ class EditorMenuSubstate extends MusicBeatSubstate
 					Main.switchState(this, new states.editors.CharacterOffsetEditor(PlayState.SONG.player2, false, PlayState.curStage));
 			}
 		}
+
+		// unlock controls or something idk will change this later
+		new FlxTimer().start(0.6, function(timer:FlxTimer)
+		{
+			if (fromPause)
+				fromPause = false;
+		}, 1);
 
 		if (controls.BACK)
 			close();

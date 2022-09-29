@@ -61,7 +61,7 @@ class PauseSubstate extends MusicBeatSubstate
 		}
 
 		if (!PlayState.isStoryMode)
-			menuItems.insert(3, 'Debug Menus');
+			menuItems.insert(3, 'Open Editors');
 
 		if (PlayState.chartingMode)
 		{
@@ -241,8 +241,8 @@ class PauseSubstate extends MusicBeatSubstate
 					else
 						Main.switchState(this, new FreeplayState());
 						
-				case 'Debug Menus':
-					close();
+				case 'Open Editors':
+					EditorMenuSubstate.fromPause = true;
 					openSubState(new EditorMenuSubstate());
 
 				case 'Leave Charting Mode':
