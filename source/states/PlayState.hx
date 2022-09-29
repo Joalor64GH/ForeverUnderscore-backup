@@ -208,7 +208,7 @@ class PlayState extends MusicBeatState
 		scriptDebugMode = false;
 
 		defaultCamZoom = 1.05;
-		cameraSpeed = 1;
+		cameraSpeed = 1 * Conductor.playbackRate;
 		forceZoom = [0, 0, 0, 0];
 
 		Timings.callAccuracy();

@@ -25,7 +25,8 @@ function updateStage(curBeat:Int, boyfriend:Character, gf:Character, dadOpponent
 		lightningStrikeBeat = curBeat;
 
 		FlxG.sound.play(Paths.soundRandom('thunder_', 1, 2));
-		halloweenBG.animation.play('lightning');
+		if (!Init.getSetting('Disable Flashing Lights'))
+			halloweenBG.animation.play('lightning');
 		lightningOffset = FlxG.random.int(8, 24);
 
 		if (boyfriend.animOffsets.exists('scared'))
