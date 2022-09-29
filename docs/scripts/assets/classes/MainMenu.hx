@@ -52,7 +52,7 @@ function create()
 	newbg.setGraphicSize(Std.int(newbg.width * 1.175));
 	newbg.updateHitbox();
 	newbg.screenCenter();
-	newbg.antialiasing = !Init.trueSettings.get('Disable Antialiasing');
+	newbg.antialiasing = !Init.getSetting('Disable Antialiasing');
 	add(newbg);
 
 	checkers = new FlxBackdrop(null, 1, 1, true, true, 1, 1).loadGraphic(Paths.image('menus/chart editor/grid'));

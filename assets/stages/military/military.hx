@@ -69,28 +69,28 @@ function generateStage()
     smokeL = new FNFSprite(-200, -100);
     smokeL.frames = Paths.getSparrowAtlas('smokeLeft', 'stages/' + curStage + '/images');
     smokeL.animation.addByPrefix('smokeLeft', 'SmokeBlurLeft');
-    smokeL.antialiasing = !Init.trueSettings.get('Disable Antialiasing');
+    smokeL.antialiasing = !Init.getSetting('Disable Antialiasing');
     smokeL.scrollFactor.set(0.4, 0.4);
     add(smokeL);
 
     smokeR = new FNFSprite(1100, -100);
     smokeR.frames = Paths.getSparrowAtlas('smokeRight', 'stages/' + curStage + '/images');
     smokeR.animation.addByPrefix('smokeRight', 'SmokeRight');
-    smokeR.antialiasing = !Init.trueSettings.get('Disable Antialiasing');
+    smokeR.antialiasing = !Init.getSetting('Disable Antialiasing');
     smokeR.scrollFactor.set(0.4, 0.4);
     add(smokeR);
 
     tankWatchtower = new FNFSprite(100, 50);
     tankWatchtower.frames = Paths.getSparrowAtlas('tankWatchtower', 'stages/' + curStage + '/images');
     tankWatchtower.animation.addByPrefix('watchtower', 'watchtower gradient color');
-    tankWatchtower.antialiasing = !Init.trueSettings.get('Disable Antialiasing');
+    tankWatchtower.antialiasing = !Init.getSetting('Disable Antialiasing');
     tankWatchtower.scrollFactor.set(0.5, 0.5);
     add(tankWatchtower);
 
     tankGround = new FNFSprite(300, 300);
     tankGround.frames = Paths.getSparrowAtlas('tankRolling', 'stages/' + curStage + '/images');
     tankGround.animation.addByPrefix('bgTank', 'BG tank w lighting');
-    tankGround.antialiasing = !Init.trueSettings.get('Disable Antialiasing');
+    tankGround.antialiasing = !Init.getSetting('Disable Antialiasing');
     tankGround.scrollFactor.set(0.5, 0.5);
     add(tankGround);
 
@@ -108,42 +108,42 @@ function generateStage()
     tankdude0 = new FNFSprite(-500, 650);
     tankdude0.frames = Paths.getSparrowAtlas('tank0', 'stages/' + curStage + '/images');
     tankdude0.animation.addByPrefix('fg', 'fg');
-    tankdude0.antialiasing = !Init.trueSettings.get('Disable Antialiasing');
+    tankdude0.antialiasing = !Init.getSetting('Disable Antialiasing');
     tankdude0.scrollFactor.set(1.7, 1.5);
     groupDudes.add(tankdude0);
 
     tankdude1 = new FNFSprite(-300, 750);
     tankdude1.frames = Paths.getSparrowAtlas('tank1', 'stages/' + curStage + '/images');
     tankdude1.animation.addByPrefix('fg', 'fg');
-    tankdude1.antialiasing = !Init.trueSettings.get('Disable Antialiasing');
+    tankdude1.antialiasing = !Init.getSetting('Disable Antialiasing');
     tankdude1.scrollFactor.set(2, 0.2);
     groupDudes.add(tankdude1);
 
     tankdude2 = new FNFSprite(450, 750);
     tankdude2.frames = Paths.getSparrowAtlas('tank2', 'stages/' + curStage + '/images');
     tankdude2.animation.addByPrefix('fg', 'groupDudes');
-    tankdude2.antialiasing = !Init.trueSettings.get('Disable Antialiasing');
+    tankdude2.antialiasing = !Init.getSetting('Disable Antialiasing');
     tankdude2.scrollFactor.set(1.5, 1.5);
     groupDudes.add(tankdude2);
 
     tankdude4 = new FNFSprite(1300, 750);
     tankdude4.frames = Paths.getSparrowAtlas('tank4', 'stages/' + curStage + '/images');
     tankdude4.animation.addByPrefix('fg', 'fg');
-    tankdude4.antialiasing = !Init.trueSettings.get('Disable Antialiasing');
+    tankdude4.antialiasing = !Init.getSetting('Disable Antialiasing');
     tankdude4.scrollFactor.set(1.5, 1.5);
     groupDudes.add(tankdude4);
 
     tankdude5 = new FNFSprite(1620, 750);
     tankdude5.frames = Paths.getSparrowAtlas('tank5', 'stages/' + curStage + '/images');
     tankdude5.animation.addByPrefix('fg', 'fg');
-    tankdude5.antialiasing = !Init.trueSettings.get('Disable Antialiasing');
+    tankdude5.antialiasing = !Init.getSetting('Disable Antialiasing');
     tankdude5.scrollFactor.set(1.5, 1.5);
     groupDudes.add(tankdude5);
 
     tankdude3 = new FNFSprite(1300, 750);
     tankdude3.frames = Paths.getSparrowAtlas('tank3', 'stages/' + curStage + '/images');
     tankdude3.animation.addByPrefix('fg', 'fg');
-    tankdude3.antialiasing = !Init.trueSettings.get('Disable Antialiasing');
+    tankdude3.antialiasing = !Init.getSetting('Disable Antialiasing');
     tankdude3.scrollFactor.set(3.5, 2.5);
     groupDudes.add(tankdude3);
 

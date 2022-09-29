@@ -63,7 +63,7 @@ class ForeverAssets
 		combo.x += (43 * scoreInt) + 20;
 		combo.y += 60;
 
-		if (Init.trueSettings.get('Fixed Judgements') && !debug)
+		if (Init.getSetting('Fixed Judgements') && !debug)
 		{
 			combo.x += Init.comboOffset[0];
 			combo.y += Init.comboOffset[1];
@@ -80,14 +80,14 @@ class ForeverAssets
 		}
 		else
 		{
-			combo.antialiasing = !Init.trueSettings.get('Disable Antialiasing');
+			combo.antialiasing = !Init.getSetting('Disable Antialiasing');
 			combo.setGraphicSize(Std.int(combo.frameWidth * 0.5));
 		}
 		combo.updateHitbox();
 
 		if (combo != null)
 		{
-			if (Init.trueSettings.get('Judgement Stacking') && !debug)
+			if (Init.getSetting('Judgement Stacking') && !debug)
 			{
 				combo.acceleration.y = FlxG.random.int(100, 200);
 				combo.velocity.y = -FlxG.random.int(140, 160);
@@ -135,7 +135,7 @@ class ForeverAssets
 		rating.y -= 60;
 		rating.x = (FlxG.width * 0.55) - 40;
 
-		if (Init.trueSettings.get('Fixed Judgements') && !debug)
+		if (Init.getSetting('Fixed Judgements') && !debug)
 		{
 			rating.x += Init.ratingOffset[0];
 			rating.y += Init.ratingOffset[1];
@@ -148,14 +148,14 @@ class ForeverAssets
 		}
 		else
 		{
-			rating.antialiasing = !Init.trueSettings.get('Disable Antialiasing');
+			rating.antialiasing = !Init.getSetting('Disable Antialiasing');
 			rating.setGraphicSize(Std.int(rating.frameWidth * 0.7));
 		}
 		rating.updateHitbox();
 
 		if (rating != null)
 		{
-			if (Init.trueSettings.get('Judgement Stacking') && !debug)
+			if (Init.getSetting('Judgement Stacking') && !debug)
 			{
 				rating.velocity.y = -FlxG.random.int(140, 175);
 				rating.velocity.x = -FlxG.random.int(0, 10);
@@ -184,7 +184,7 @@ class ForeverAssets
 		var tempSplash:NoteSplash = group.recycle(NoteSplash);
 		tempSplash.noteData = noteData;
 
-		var changeableSkin:String = Init.trueSettings.get("Note Skin");
+		var changeableSkin:String = Init.getSetting("Note Skin");
 
 		// will eventually change this in favor of customizable splashes through scripts;
 		var path = Paths.getPreloadPath('images/$baseLibrary/$changeableSkin/$assetModifier/splashData.json');
@@ -314,7 +314,7 @@ class ForeverAssets
 				// not even just a cleanliness thing it's just so annoying to tweak if something goes wrong like
 				// genuinely more programmers should make their code more modular
 				var framesArgument:String = "arrows-pixels";
-				newStaticArrow.loadGraphic(Paths.image(ForeverTools.returnSkin('$framesArgument', assetModifier, Init.trueSettings.get("Note Skin"),
+				newStaticArrow.loadGraphic(Paths.image(ForeverTools.returnSkin('$framesArgument', assetModifier, Init.getSetting("Note Skin"),
 					'noteskins/notes')), true, 17,
 					17);
 				newStaticArrow.animation.add('static', [staticArrowType]);
@@ -347,14 +347,14 @@ class ForeverAssets
 
 				var framesArgument:String = "NOTE_assets";
 
-				newStaticArrow.frames = Paths.getSparrowAtlas(ForeverTools.returnSkin('$framesArgument', assetModifier, Init.trueSettings.get("Note Skin"),
+				newStaticArrow.frames = Paths.getSparrowAtlas(ForeverTools.returnSkin('$framesArgument', assetModifier, Init.getSetting("Note Skin"),
 					'noteskins/notes'));
 
 				newStaticArrow.animation.addByPrefix('static', 'arrow' + stringSect.toUpperCase());
 				newStaticArrow.animation.addByPrefix('pressed', stringSect + ' press', 24, false);
 				newStaticArrow.animation.addByPrefix('confirm', stringSect + ' confirm', 24, false);
 
-				newStaticArrow.antialiasing = !Init.trueSettings.get('Disable Antialiasing');
+				newStaticArrow.antialiasing = !Init.getSetting('Disable Antialiasing');
 				newStaticArrow.setGraphicSize(Std.int(newStaticArrow.width * 0.7));
 
 				// set little offsets per note!
@@ -392,7 +392,7 @@ class ForeverAssets
 			noteType:Int = 0):Note
 	{
 		var newNote:Note;
-		var changeableSkin:String = Init.trueSettings.get("Note Skin");
+		var changeableSkin:String = Init.getSetting("Note Skin");
 		// gonna improve the system eventually
 		if (changeableSkin.startsWith('quant'))
 			newNote = Note.returnQuantNote(assetModifier, strumTime, noteData, noteAlt, isSustainNote, prevNote, noteType);
@@ -420,7 +420,7 @@ class ForeverAssets
 	{
 		var newCheckmark:Checkmark = new Checkmark(x, y);
 		newCheckmark.frames = Paths.getSparrowAtlas(ForeverTools.returnSkin(asset, assetModifier, changeableSkin, baseLibrary));
-		newCheckmark.antialiasing = !Init.trueSettings.get('Disable Antialiasing');
+		newCheckmark.antialiasing = !Init.getSetting('Disable Antialiasing');
 
 		newCheckmark.animation.addByPrefix('false finished', 'uncheckFinished');
 		newCheckmark.animation.addByPrefix('false', 'uncheck', 12, false);

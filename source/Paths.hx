@@ -137,7 +137,7 @@ final class Paths
 			{
 				var bitmap = BitmapData.fromFile(path);
 				var newGraphic:FlxGraphic;
-				if (Init.trueSettings.get('GPU Rendering'))
+				if (Init.getSetting('GPU Rendering'))
 				{
 					var texture = FlxG.stage.context3D.createTexture(bitmap.width, bitmap.height, BGRA, true, 0);
 					texture.uploadFromBitmapData(bitmap);

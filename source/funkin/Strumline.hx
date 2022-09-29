@@ -39,7 +39,7 @@ class UIStaticArrow extends FlxSprite
 	public var yTo:Float;
 	public var angleTo:Float;
 
-	public var setAlpha:Float = (Init.trueSettings.get('Arrow Opacity') * 0.01);
+	public var setAlpha:Float = (Init.getSetting('Arrow Opacity') * 0.01);
 
 	public var doReceptorTween:Bool = true;
 	public var lightConfirms:Bool = true;
@@ -196,10 +196,10 @@ class Strumline extends FlxSpriteGroup
 			}
 		}
 
-		if (Init.trueSettings.get("Clip Style").toLowerCase() == 'stepmania')
+		if (Init.getSetting("Clip Style").toLowerCase() == 'stepmania')
 			add(holdsGroup);
 		add(receptors);
-		if (Init.trueSettings.get("Clip Style").toLowerCase() == 'fnf')
+		if (Init.getSetting("Clip Style").toLowerCase() == 'fnf')
 			add(holdsGroup);
 		add(notesGroup);
 		if (splashNotes != null)
@@ -218,6 +218,6 @@ class Strumline extends FlxSpriteGroup
 		var chosenGroup = (newNote.isSustainNote ? holdsGroup : notesGroup);
 		chosenGroup.add(newNote);
 		allNotes.add(newNote);
-		chosenGroup.sort(FlxSort.byY, (!Init.trueSettings.get('Downscroll')) ? FlxSort.DESCENDING : FlxSort.ASCENDING);
+		chosenGroup.sort(FlxSort.byY, (!Init.getSetting('Downscroll')) ? FlxSort.DESCENDING : FlxSort.ASCENDING);
 	}
 }

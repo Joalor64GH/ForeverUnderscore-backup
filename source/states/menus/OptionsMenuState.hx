@@ -141,7 +141,7 @@ class OptionsMenuState extends MusicBeatState
 		bg.updateHitbox();
 		bg.screenCenter();
 		bg.color = 0xCE64DF;
-		bg.antialiasing = !Init.trueSettings.get('Disable Antialiasing');
+		bg.antialiasing = !Init.getSetting('Disable Antialiasing');
 		add(bg);
 
 		infoText = new FlxText(5, FlxG.height - 24, 0, "", 32);
@@ -435,7 +435,7 @@ class OptionsMenuState extends MusicBeatState
 					case Init.SettingTypes.Checkmark:
 						// checkmark
 						var checkmark = ForeverAssets.generateCheckmark(10, letter.y, 'checkboxThingie', 'base', 'default', 'UI');
-						checkmark.playAnim(Std.string(Init.trueSettings.get(letter.text)) + ' finished');
+						checkmark.playAnim(Std.string(Init.getSetting(letter.text)) + ' finished');
 
 						extrasMap.set(letter, checkmark);
 					case Init.SettingTypes.Selector:
@@ -525,8 +525,8 @@ class OptionsMenuState extends MusicBeatState
 	function checkmarkBasics()
 	{
 		// LMAO THIS IS HUGE
-		Init.trueSettings.set(activeSubgroup.members[curSelection].text, !Init.trueSettings.get(activeSubgroup.members[curSelection].text));
-		updateCheckmark(currentAttachmentMap.get(activeSubgroup.members[curSelection]), Init.trueSettings.get(activeSubgroup.members[curSelection].text));
+		Init.setSetting(activeSubgroup.members[curSelection].text, !Init.getSetting(activeSubgroup.members[curSelection].text));
+		updateCheckmark(currentAttachmentMap.get(activeSubgroup.members[curSelection]), Init.getSetting(activeSubgroup.members[curSelection].text));
 
 		// save the setting
 		Init.saveSettings();
@@ -591,7 +591,7 @@ class OptionsMenuState extends MusicBeatState
 			selector.chosenOptionString = selector.options[newSelection];
 			selector.optionChosen.text = selector.chosenOptionString;
 
-			Init.trueSettings.set(activeSubgroup.members[curSelection].text, selector.chosenOptionString);
+			Init.setSetting(activeSubgroup.members[curSelection].text, selector.chosenOptionString);
 			Init.saveSettings();
 		}
 	}
@@ -599,7 +599,7 @@ class OptionsMenuState extends MusicBeatState
 	function generateSelector(min:Float = 0, max:Float = 100, inc:Float = 5, updateBy:Int, selector:Selector)
 	{
 		// lazily hardcoded selector generator.
-		var originalValue = Init.trueSettings.get(activeSubgroup.members[curSelection].text);
+		var originalValue = Init.getSetting(activeSubgroup.members[curSelection].text);
 		var increase = inc * updateBy;
 		// min
 		if (originalValue + increase < min)
@@ -618,7 +618,7 @@ class OptionsMenuState extends MusicBeatState
 		originalValue += increase;
 		selector.chosenOptionString = Std.string(originalValue);
 		selector.optionChosen.text = Std.string(originalValue);
-		Init.trueSettings.set(activeSubgroup.members[curSelection].text, originalValue);
+		Init.setSetting(activeSubgroup.members[curSelection].text, originalValue);
 		Init.saveSettings();
 	}
 

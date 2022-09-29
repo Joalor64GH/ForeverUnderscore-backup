@@ -34,8 +34,8 @@ class NoteSplash extends FNFSprite
 	override public function playAnim(AnimName:String, Force:Bool = false, Reversed:Bool = false, Frame:Int = 0)
 	{
 		// make sure the animation is visible
-		if (Init.trueSettings.get('Splash Opacity') >= 0)
-			alpha = (Init.trueSettings.get('Splash Opacity') * 0.01);
+		if (Init.getSetting('Splash Opacity') >= 0)
+			alpha = (Init.getSetting('Splash Opacity') * 0.01);
 
 		super.playAnim(AnimName, Force, Reversed, Frame);
 	}

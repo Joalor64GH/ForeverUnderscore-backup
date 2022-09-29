@@ -58,7 +58,7 @@ class FNFTransition extends MusicBeatSubstate
 			loadingFunkers = new FlxSprite(0, 0).loadGraphic(Paths.image('menus/loading/funkay'));
 			loadingFunkers.setGraphicSize(0, FlxG.height);
 			loadingFunkers.updateHitbox();
-			loadingFunkers.antialiasing = !Init.trueSettings.get('Disable Antialiasing');
+			loadingFunkers.antialiasing = !Init.getSetting('Disable Antialiasing');
 			loadingFunkers.alpha = 0;
 			add(loadingFunkers);
 

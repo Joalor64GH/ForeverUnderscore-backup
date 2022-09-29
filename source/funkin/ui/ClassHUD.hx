@@ -57,7 +57,7 @@ class ClassHUD extends FlxTypedGroup<FlxBasic>
 
 		// le healthbar setup
 		var barY = FlxG.height * 0.875;
-		if (Init.trueSettings.get('Downscroll'))
+		if (Init.getSetting('Downscroll'))
 			barY = 64;
 
 		healthBarBG = new FlxSprite(0, barY);
@@ -70,7 +70,7 @@ class ClassHUD extends FlxTypedGroup<FlxBasic>
 		healthBar = new FlxBar(healthBarBG.x + 4, healthBarBG.y + 4, barFillDir, Std.int(healthBarBG.width - 8), Std.int(healthBarBG.height - 8));
 		healthBar.scrollFactor.set();
 
-		if (Init.trueSettings.get('Colored Health Bar'))
+		if (Init.getSetting('Colored Health Bar'))
 			healthBar.createFilledBar(dadBar, bfBar);
 		else
 			healthBar.createFilledBar(0xFFFF0000, 0xFF66FF33);
@@ -89,7 +89,7 @@ class ClassHUD extends FlxTypedGroup<FlxBasic>
 		scoreBar = new FlxText(FlxG.width / 2, Math.floor(healthBarBG.y + 40), 0, '');
 		scoreBar.setFormat(Paths.font('vcr.ttf'), 18, FlxColor.WHITE);
 		scoreBar.setBorderStyle(OUTLINE, FlxColor.BLACK, 1.5);
-		scoreBar.antialiasing = !Init.trueSettings.get('Disable Antialiasing');
+		scoreBar.antialiasing = !Init.getSetting('Disable Antialiasing');
 		add(scoreBar);
 
 		cornerMark = new FlxText(0, 0, 0, engineDisplay);
@@ -97,27 +97,27 @@ class ClassHUD extends FlxTypedGroup<FlxBasic>
 		cornerMark.setBorderStyle(OUTLINE, FlxColor.BLACK, 2);
 		cornerMark.setPosition(FlxG.width - (cornerMark.width + 5), 5);
 		cornerMark.antialiasing = true;
-		cornerMark.visible = Init.trueSettings.get('Engine Mark');
+		cornerMark.visible = Init.getSetting('Engine Mark');
 		add(cornerMark);
 
-		centerMark = new FlxText(0, (Init.trueSettings.get('Downscroll') ? FlxG.height - 45 : 20), 0, '- $infoDisplay [$diffDisplay] -');
+		centerMark = new FlxText(0, (Init.getSetting('Downscroll') ? FlxG.height - 45 : 20), 0, '- $infoDisplay [$diffDisplay] -');
 		centerMark.setFormat(Paths.font('vcr.ttf'), 24, FlxColor.WHITE);
 		centerMark.setBorderStyle(OUTLINE, FlxColor.BLACK, 2);
-		centerMark.antialiasing = !Init.trueSettings.get('Disable Antialiasing');
+		centerMark.antialiasing = !Init.getSetting('Disable Antialiasing');
 		centerMark.screenCenter(X);
 		centerMark.x = Math.floor((FlxG.width / 2) - (centerMark.width / 2));
 		add(centerMark);
 
-		autoplayMark = new FlxText(-5, (Init.trueSettings.get('Downscroll') ? centerMark.y - 60 : centerMark.y + 60), FlxG.width - 800, "[AUTOPLAY]\n", 32);
+		autoplayMark = new FlxText(-5, (Init.getSetting('Downscroll') ? centerMark.y - 60 : centerMark.y + 60), FlxG.width - 800, "[AUTOPLAY]\n", 32);
 		autoplayMark.setFormat(Paths.font("vcr.ttf"), 32, FlxColor.WHITE, CENTER);
 		autoplayMark.setBorderStyle(OUTLINE, FlxColor.BLACK, 2);
 		autoplayMark.screenCenter(X);
 		autoplayMark.visible = PlayState.bfStrums.autoplay;
 
 		// repositioning for it to not be covered by the receptors
-		if (Init.trueSettings.get('Centered Receptors'))
+		if (Init.getSetting('Centered Receptors'))
 		{
-			if (Init.trueSettings.get('Downscroll'))
+			if (Init.getSetting('Downscroll'))
 				autoplayMark.y = autoplayMark.y - 105;
 			else
 				autoplayMark.y = autoplayMark.y + 105;
@@ -126,7 +126,7 @@ class ClassHUD extends FlxTypedGroup<FlxBasic>
 		add(autoplayMark);
 
 		// counter
-		if (Init.trueSettings.get('Counter') != 'None')
+		if (Init.getSetting('Counter') != 'None')
 		{
 			var judgementNameArray:Array<String> = [];
 			for (i in Timings.judgementsMap.keys())
@@ -158,7 +158,7 @@ class ClassHUD extends FlxTypedGroup<FlxBasic>
 	var counterTextSize:Int = 18;
 	var counterTextFont:String = 'vcr.ttf';
 
-	var left = (Init.trueSettings.get('Counter') == 'Left');
+	var left = (Init.getSetting('Counter') == 'Left');
 
 	override public function update(elapsed:Float)
 	{
@@ -192,7 +192,7 @@ class ClassHUD extends FlxTypedGroup<FlxBasic>
 		var comboDisplay = ' [' + Timings.comboDisplay + ']';
 
 		// testing purposes
-		var displayAccuracy:Bool = Init.trueSettings.get('Display Accuracy');
+		var displayAccuracy:Bool = Init.getSetting('Display Accuracy');
 
 		scoreBar.text = 'Score: $importSongScore';
 		if (displayAccuracy)
@@ -206,7 +206,7 @@ class ClassHUD extends FlxTypedGroup<FlxBasic>
 		scoreBar.x = Math.floor((FlxG.width / 2) - (scoreBar.width / 2));
 
 		// update counter
-		if (Init.trueSettings.get('Counter') != 'None')
+		if (Init.getSetting('Counter') != 'None')
 		{
 			for (i in timingsMap.keys())
 			{
@@ -222,7 +222,7 @@ class ClassHUD extends FlxTypedGroup<FlxBasic>
 
 	public function updateBar()
 	{
-		if (Init.trueSettings.get('Colored Health Bar'))
+		if (Init.getSetting('Colored Health Bar'))
 			healthBar.createFilledBar(dadBar, bfBar);
 		else
 			healthBar.createFilledBar(0xFFFF0000, 0xFF66FF33);
@@ -232,7 +232,7 @@ class ClassHUD extends FlxTypedGroup<FlxBasic>
 
 	public function beatHit(curBeat:Int)
 	{
-		if (!Init.trueSettings.get('Reduced Movements'))
+		if (!Init.getSetting('Reduced Movements'))
 		{
 			iconP1.bop(60 / Conductor.bpm);
 			iconP2.bop(60 / Conductor.bpm);
@@ -241,7 +241,7 @@ class ClassHUD extends FlxTypedGroup<FlxBasic>
 
 	public function tweenScoreColor(rating:String, perfect:Bool)
 	{
-		if (Init.trueSettings.get('Animated Score Color'))
+		if (Init.getSetting('Animated Score Color'))
 		{
 			if (scoreColorTween != null)
 				scoreColorTween.cancel();

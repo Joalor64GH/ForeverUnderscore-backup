@@ -278,7 +278,7 @@ class SettingsMenuState extends BaseSettingsMenu
 						case Init.SettingTypes.Checkmark:
 							var checkmark:Checkmark = ForeverAssets.generateCheckmark(10, baseAlphabet.y - 40, 'checkboxThingie', 'base', 'default', 'UI');
 							checkmark.parent = baseAlphabet;
-							checkmark.playAnim(Std.string(Init.trueSettings.get(options[i].name)) + ' finished');
+							checkmark.playAnim(Std.string(Init.getSetting(options[i].name)) + ' finished');
 							checkmarkGroup.add(checkmark);
 						case Init.SettingTypes.Selector:
 							var selector:Selector = new Selector(10, currentGroup.members[curSelected].y, options[curSelected].name,
@@ -313,9 +313,9 @@ class SettingsMenuState extends BaseSettingsMenu
 			case Init.SettingTypes.Checkmark:
 				if (type == 'checkmark')
 				{
-					Init.trueSettings.set(options[curSelected].name, !Init.trueSettings.get(options[curSelected].name));
+					Init.setSetting(options[curSelected].name, !Init.getSetting(options[curSelected].name));
 					if (checkmarkGroup.members[curSelected] != null)
-						checkmarkGroup.members[curSelected].playAnim(Std.string(Init.trueSettings.get(options[curSelected].name)));
+						checkmarkGroup.members[curSelected].playAnim(Std.string(Init.getSetting(options[curSelected].name)));
 					Init.saveSettings();
 				}
 			case Init.SettingTypes.Selector:
@@ -333,6 +333,6 @@ class SettingsMenuState extends BaseSettingsMenu
 			default:
 				// do nothing;
 		}
-		// trace(Init.trueSettings.get(options[curSelected].name));
+		// trace(Init.getSetting(options[curSelected].name));
 	}
 }

@@ -29,7 +29,7 @@ class ForeverTools
 		if (((FlxG.sound.music != null) && (!FlxG.sound.music.playing)) || (FlxG.sound.music == null))
 		{
 			var menuSong:String = 'freakyMenu';
-			menuSong = Init.trueSettings.get('Menu Song');
+			menuSong = Init.getSetting('Menu Song');
 
 			var song = Paths.music('menus/$menuSong/$menuSong');
 			FlxG.sound.playMusic(song, (resetVolume) ? 0 : 0.7);
@@ -80,7 +80,7 @@ class ForeverTools
 	public static function checkUpdates()
 	{
 		// check for updates
-		if (Init.trueSettings.get('Check for Updates'))
+		if (Init.getSetting('Check for Updates'))
 		{
 			trace('checking for update');
 			var http = new haxe.Http("https://raw.githubusercontent.com/BeastlyGhost/Forever-Engine-Underscore/master/gameVersion.txt");

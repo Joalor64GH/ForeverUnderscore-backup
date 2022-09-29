@@ -50,10 +50,10 @@ class Selector extends FlxTypedSpriteGroup<FlxSprite>
 		add(rightSelector);
 		#end
 
-		chosenOptionString = Init.trueSettings.get(word);
+		chosenOptionString = Init.getSetting(word);
 		if (optionBooleans.contains(true))
 		{
-			chosenOptionString = Std.string(Init.trueSettings.get(word));
+			chosenOptionString = Std.string(Init.getSetting(word));
 			optionChosen = new Alphabet(FlxG.width / 2 + 200, shiftY + 20, chosenOptionString, false, false);
 		}
 		else

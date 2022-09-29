@@ -78,7 +78,7 @@ class MenuCharacter extends FlxSprite
 		else
 			visible = false;
 
-		antialiasing = !Init.trueSettings.get('Disable Antialiasing');
+		antialiasing = !Init.getSetting('Disable Antialiasing');
 		character = newCharacter;
 	}
 }

@@ -49,17 +49,17 @@ class JudgementOffsetState extends MusicBeatState
 		stageBuild = new Stage('stage', true);
 		add(stageBuild);
 
-		var bfPlacement:Float = FlxG.width / 2 + (!Init.trueSettings.get('Centered Receptors') ? FlxG.width / 4 : 0);
+		var bfPlacement:Float = FlxG.width / 2 + (!Init.getSetting('Centered Receptors') ? FlxG.width / 4 : 0);
 		var dadPlacement:Float = (FlxG.width / 2) - FlxG.width / 4;
 
-		var strumVertPos:Int = (Init.trueSettings.get('Downscroll') ? FlxG.height - 200 : 0);
+		var strumVertPos:Int = (Init.getSetting('Downscroll') ? FlxG.height - 200 : 0);
 
 		dadStrums = new Strumline(dadPlacement, strumVertPos, this, null, false, true, false, 4);
 		bfStrums = new Strumline(bfPlacement, strumVertPos, this, null, true, false, true, 4);
 		bfStrums.cameras = [_camUI];
 		dadStrums.cameras = [_camUI];
 
-		if (Init.trueSettings.get('Centered Receptors'))
+		if (Init.getSetting('Centered Receptors'))
 		{
 			// psych-like Opponent Strumlines;
 			for (i in 0...dadStrums.receptors.members.length)
@@ -74,15 +74,15 @@ class JudgementOffsetState extends MusicBeatState
 				dadStrums.receptors.members[i].lightConfirms = false;
 			}
 		}
-		dadStrums.visible = !Init.trueSettings.get('Hide Opponent Receptors');
+		dadStrums.visible = !Init.getSetting('Hide Opponent Receptors');
 
-		infoBar = new FlxText((Init.trueSettings.get('Downscroll') ? FlxG.height - 45 : 20), 0, '');
+		infoBar = new FlxText((Init.getSetting('Downscroll') ? FlxG.height - 45 : 20), 0, '');
 		infoBar.setFormat(Paths.font('vcr.ttf'), 32, FlxColor.WHITE);
 		infoBar.setBorderStyle(OUTLINE, FlxColor.BLACK, 1.5);
-		infoBar.antialiasing = !Init.trueSettings.get('Disable Antialiasing');
+		infoBar.antialiasing = !Init.getSetting('Disable Antialiasing');
 		add(infoBar);
 
-		judge = ForeverAssets.generateRating('sick', true, false, null, 'base', Init.trueSettings.get('UI Skin'), 'UI', true);
+		judge = ForeverAssets.generateRating('sick', true, false, null, 'base', Init.getSetting('UI Skin'), 'UI', true);
 		judge.cameras = [_camUI];
 		add(judge);
 
@@ -93,7 +93,7 @@ class JudgementOffsetState extends MusicBeatState
 
 		for (scoreInt in 0...stringArray.length)
 		{
-			combo = ForeverAssets.generateCombo('combo_numbers', stringArray[scoreInt], true, null, 'base', Init.trueSettings.get('UI Skin'), 'UI', false,
+			combo = ForeverAssets.generateCombo('combo_numbers', stringArray[scoreInt], true, null, 'base', Init.getSetting('UI Skin'), 'UI', false,
 				FlxColor.WHITE, scoreInt, true);
 			combo.cameras = [_camUI];
 			combo.y += 50;

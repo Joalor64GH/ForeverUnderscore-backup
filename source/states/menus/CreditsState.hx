@@ -68,7 +68,7 @@ class CreditsState extends MusicBeatState
 		else
 			menuBG.loadGraphic(Paths.image('menus/base/menuDesat'));
 
-		menuBG.antialiasing = !Init.trueSettings.get('Disable Antialiasing');
+		menuBG.antialiasing = !Init.getSetting('Disable Antialiasing');
 		menuBG.screenCenter();
 		add(menuBG);
 

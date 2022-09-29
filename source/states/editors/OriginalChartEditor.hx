@@ -1174,7 +1174,7 @@ class OriginalChartEditor extends MusicBeatState
 				{
 					if ((playTicksBf.checked) && (note.mustPress) || (playTicksDad.checked) && (!note.mustPress))
 					{
-						FlxG.sound.play(Paths.sound('hitsounds/${Init.trueSettings.get('Hitsound Type').toLowerCase()}/hit'));
+						FlxG.sound.play(Paths.sound('hitsounds/${Init.getSetting('Hitsound Type').toLowerCase()}/hit'));
 						playedSound[data] = true;
 					}
 				}

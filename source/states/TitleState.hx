@@ -81,7 +81,7 @@ class TitleState extends MusicBeatState
 
 		bg = new FlxSprite().makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
 		/*
-			bg.antialiasing = !Init.trueSettings.get('Disable Antialiasing');
+			bg.antialiasing = !Init.getSetting('Disable Antialiasing');
 			bg.setGraphicSize(Std.int(bg.width * 0.6));
 			bg.updateHitbox();
 		 */
@@ -91,12 +91,12 @@ class TitleState extends MusicBeatState
 		gfDance.frames = Paths.getSparrowAtlas('menus/base/title/gfDanceTitle');
 		gfDance.animation.addByIndices('danceLeft', 'gfDance', [30, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14], "", 24, false);
 		gfDance.animation.addByIndices('danceRight', 'gfDance', [15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29], "", 24, false);
-		gfDance.antialiasing = !Init.trueSettings.get('Disable Antialiasing');
+		gfDance.antialiasing = !Init.getSetting('Disable Antialiasing');
 		add(gfDance);
 
 		gameLogo = new FlxSprite(0, 50);
 		gameLogo.loadGraphic(Paths.image('menus/base/title/logo'));
-		gameLogo.antialiasing = !Init.trueSettings.get('Disable Antialiasing');
+		gameLogo.antialiasing = !Init.getSetting('Disable Antialiasing');
 		initLogowidth = gameLogo.width;
 		newLogoScale = gameLogo.scale.x;
 		add(gameLogo);
@@ -117,7 +117,7 @@ class TitleState extends MusicBeatState
 			newTitle = true;
 
 			titleText.animation.addByPrefix('idle', "ENTER IDLE", 24);
-			titleText.animation.addByPrefix('press', !Init.trueSettings.get('Disable Flashing Lights') ? "ENTER PRESSED" : "ENTER FREEZE", 24);
+			titleText.animation.addByPrefix('press', !Init.getSetting('Disable Flashing Lights') ? "ENTER PRESSED" : "ENTER FREEZE", 24);
 		}
 		else
 		{
@@ -126,7 +126,7 @@ class TitleState extends MusicBeatState
 			titleText.animation.addByPrefix('idle', "Press Enter to Begin", 24);
 			titleText.animation.addByPrefix('press', "ENTER PRESSED", 24);
 		}
-		titleText.antialiasing = !Init.trueSettings.get('Disable Antialiasing');
+		titleText.antialiasing = !Init.getSetting('Disable Antialiasing');
 		titleText.animation.play('idle');
 		titleText.updateHitbox();
 		add(titleText);
@@ -145,7 +145,7 @@ class TitleState extends MusicBeatState
 		ngSpr.setGraphicSize(Std.int(ngSpr.width * 0.8));
 		ngSpr.updateHitbox();
 		ngSpr.screenCenter(X);
-		ngSpr.antialiasing = !Init.trueSettings.get('Disable Antialiasing');
+		ngSpr.antialiasing = !Init.getSetting('Disable Antialiasing');
 
 		if (initialized)
 			skipIntro();
@@ -227,7 +227,7 @@ class TitleState extends MusicBeatState
 				titleText.alpha = 1;
 				titleText.animation.play('press');
 
-				if (!Init.trueSettings.get('Disable Flashing Lights'))
+				if (!Init.getSetting('Disable Flashing Lights'))
 					FlxG.camera.flash(FlxColor.WHITE, 1);
 				FlxG.sound.play(Paths.sound('confirmMenu'), 0.7);
 

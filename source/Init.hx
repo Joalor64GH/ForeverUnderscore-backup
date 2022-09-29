@@ -354,6 +354,16 @@ class Init extends FlxState
 		}
 	];
 
+	inline public static function getSetting(setting:String)
+	{
+		return trueSettings.get(setting);
+	}
+
+	inline public static function setSetting(setting:String, value:Dynamic)
+	{
+		return trueSettings.set(setting, value);
+	}
+
 	override public function create():Void
 	{
 		// load base game highscores and settings;

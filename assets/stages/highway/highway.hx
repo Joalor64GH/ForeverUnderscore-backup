@@ -33,7 +33,7 @@ function generateStage()
     limo.frames = limoTex;
     limo.animation.addByPrefix('drive', "Limo stage", 24);
     limo.animation.play('drive');
-    limo.antialiasing = !Init.trueSettings.get('Disable Antialiasing');
+    limo.antialiasing = !Init.getSetting('Disable Antialiasing');
     layers.add(limo);
 
     fastCar = new FNFSprite(-300, 160).loadGraphic(Paths.image('fastCarLol', 'stages/' + curStage + '/images'));

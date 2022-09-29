@@ -221,7 +221,7 @@ class ChartEditor extends MusicBeatState
 			if (_song.assetModifier == 'pixel')
 				newArrow.antialiasing = false;
 			else
-				newArrow.antialiasing = !Init.trueSettings.get('Disable Antialiasing');
+				newArrow.antialiasing = !Init.getSetting('Disable Antialiasing');
 
 			// lol silly idiot
 			newArrow.playAnim('static');
@@ -326,7 +326,7 @@ class ChartEditor extends MusicBeatState
 
 				if (!hitSoundsPlayed.contains(epicNote))
 				{
-					FlxG.sound.play(Paths.sound('hitsounds/${Init.trueSettings.get('Hitsound Type').toLowerCase()}/hit'));
+					FlxG.sound.play(Paths.sound('hitsounds/${Init.getSetting('Hitsound Type').toLowerCase()}/hit'));
 					hitSoundsPlayed.push(epicNote);
 				}
 			}

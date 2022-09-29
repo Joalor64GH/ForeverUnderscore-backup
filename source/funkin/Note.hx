@@ -33,7 +33,7 @@ class Note extends FNFSprite
 	public var lowPriority:Bool = false;
 	public var hitboxLength:Float = 1;
 
-	public var useCustomSpeed:Bool = Init.trueSettings.get('Use Custom Note Speed');
+	public var useCustomSpeed:Bool = Init.getSetting('Use Custom Note Speed');
 
 	// not set initially
 	public var noteQuant:Int = -1;
@@ -206,7 +206,7 @@ class Note extends FNFSprite
 
 						newNote.setGraphicSize(Std.int(newNote.width * 0.8));
 						newNote.updateHitbox();
-						newNote.antialiasing = !Init.trueSettings.get('Disable Antialiasing');
+						newNote.antialiasing = !Init.getSetting('Disable Antialiasing');
 					default: // anything else
 						reloadPrefixes("NOTE_assets", 'noteskins/notes', true, assetModifier, newNote);
 				}
@@ -218,7 +218,7 @@ class Note extends FNFSprite
 		if (isSustainNote && prevNote != null)
 		{
 			newNote.noteSpeed = prevNote.noteSpeed;
-			newNote.alpha = Init.trueSettings.get('Hold Opacity') * 0.01;
+			newNote.alpha = Init.getSetting('Hold Opacity') * 0.01;
 
 			newNote.animation.play(UIStaticArrow.getColorFromNumber(noteData) + 'holdend');
 
@@ -308,7 +308,7 @@ class Note extends FNFSprite
 						default:
 							// in case you're unfamiliar with these, they're ternary operators, I just dont wanna check for pixel notes using a separate statement
 							var newNoteSize:Int = (assetModifier == 'pixel') ? 17 : 157;
-							newNote.loadGraphic(Paths.image(ForeverTools.returnSkin('NOTE_quants', assetModifier, Init.trueSettings.get("Note Skin"),
+							newNote.loadGraphic(Paths.image(ForeverTools.returnSkin('NOTE_quants', assetModifier, Init.getSetting("Note Skin"),
 								'noteskins/notes', 'quant')),
 								true, newNoteSize, newNoteSize);
 
@@ -327,7 +327,7 @@ class Note extends FNFSprite
 							newNote.kill();
 						default:
 							// quant holds
-							newNote.loadGraphic(Paths.image(ForeverTools.returnSkin('HOLD_quants', assetModifier, Init.trueSettings.get("Note Skin"),
+							newNote.loadGraphic(Paths.image(ForeverTools.returnSkin('HOLD_quants', assetModifier, Init.getSetting("Note Skin"),
 								'noteskins/notes', 'quant')),
 								true, (assetModifier == 'pixel') ? 17 : 109, (assetModifier == 'pixel') ? 6 : 52);
 							newNote.animation.add('hold', [0 + (newNote.noteQuant * 4)]);
@@ -351,7 +351,7 @@ class Note extends FNFSprite
 				{
 					newNote.setGraphicSize(Std.int(newNote.width * sizeThing));
 					newNote.updateHitbox();
-					newNote.antialiasing = !Init.trueSettings.get('Disable Antialiasing');
+					newNote.antialiasing = !Init.getSetting('Disable Antialiasing');
 				}
 		}
 
@@ -361,7 +361,7 @@ class Note extends FNFSprite
 		if (isSustainNote && prevNote != null)
 		{
 			newNote.noteSpeed = prevNote.noteSpeed;
-			newNote.alpha = Init.trueSettings.get('Hold Opacity') * 0.01;
+			newNote.alpha = Init.getSetting('Hold Opacity') * 0.01;
 
 			newNote.animation.play('holdend');
 			newNote.updateHitbox();
@@ -390,7 +390,7 @@ class Note extends FNFSprite
 	{
 		if (assetModifier != 'pixel')
 		{
-			newNote.frames = Paths.getSparrowAtlas(ForeverTools.returnSkin(texture, assetModifier, (changeable ? Init.trueSettings.get("Note Skin") : ''),
+			newNote.frames = Paths.getSparrowAtlas(ForeverTools.returnSkin(texture, assetModifier, (changeable ? Init.getSetting("Note Skin") : ''),
 				texturePath));
 
 			newNote.animation.addByPrefix(UIStaticArrow.getColorFromNumber(newNote.noteData) + 'Scroll',
@@ -402,7 +402,7 @@ class Note extends FNFSprite
 
 			newNote.animation.addByPrefix('purpleholdend', 'pruple end hold'); // PA god dammit.
 
-			newNote.antialiasing = !Init.trueSettings.get('Disable Antialiasing');
+			newNote.antialiasing = !Init.getSetting('Disable Antialiasing');
 			newNote.setGraphicSize(Std.int(newNote.width * 0.7));
 			newNote.updateHitbox();
 		}
@@ -410,7 +410,7 @@ class Note extends FNFSprite
 		{
 			if (newNote.isSustainNote)
 			{
-				newNote.loadGraphic(Paths.image(ForeverTools.returnSkin(texture, assetModifier, (changeable ? Init.trueSettings.get("Note Skin") : ''),
+				newNote.loadGraphic(Paths.image(ForeverTools.returnSkin(texture, assetModifier, (changeable ? Init.getSetting("Note Skin") : ''),
 					texturePath)), true,
 					7, 6);
 				newNote.animation.add(UIStaticArrow.getColorFromNumber(newNote.noteData) + 'holdend', [pixelNoteID[newNote.noteData]]);
@@ -418,7 +418,7 @@ class Note extends FNFSprite
 			}
 			else
 			{
-				newNote.loadGraphic(Paths.image(ForeverTools.returnSkin(texture, assetModifier, (changeable ? Init.trueSettings.get("Note Skin") : ''),
+				newNote.loadGraphic(Paths.image(ForeverTools.returnSkin(texture, assetModifier, (changeable ? Init.getSetting("Note Skin") : ''),
 					texturePath)), true,
 					17, 17);
 				newNote.animation.add(UIStaticArrow.getColorFromNumber(newNote.noteData) + 'Scroll', [pixelNoteID[newNote.noteData]], 12);
@@ -433,7 +433,7 @@ class Note extends FNFSprite
 	**/
 	public function goodNoteHit(newNote:Note, ?ratingTiming:String)
 	{
-		var hitsound = Init.trueSettings.get('Hitsound Type');
+		var hitsound = Init.getSetting('Hitsound Type');
 		switch (newNote.noteType)
 		{
 			case 3:
@@ -442,8 +442,8 @@ class Note extends FNFSprite
 			default:
 				if (newNote.hitSounds)
 				{
-					if (Init.trueSettings.get('Hitsound Volume') > 0 && newNote.canBeHit)
-						FlxG.sound.play(Paths.sound('hitsounds/$hitsound/hit$hitsoundSuffix'), Init.trueSettings.get('Hitsound Volume'));
+					if (Init.getSetting('Hitsound Volume') > 0 && newNote.canBeHit)
+						FlxG.sound.play(Paths.sound('hitsounds/$hitsound/hit$hitsoundSuffix'), Init.getSetting('Hitsound Volume'));
 				}
 		}
 	}

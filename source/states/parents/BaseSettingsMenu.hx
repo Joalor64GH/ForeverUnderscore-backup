@@ -75,7 +75,7 @@ class BaseSettingsMenu extends MusicBeatState
 		bg.updateHitbox();
 		bg.screenCenter();
 		bg.color = 0xCE64DF;
-		bg.antialiasing = !Init.trueSettings.get('Disable Antialiasing');
+		bg.antialiasing = !Init.getSetting('Disable Antialiasing');
 		add(bg);
 
 		coolGrid = new FlxBackdrop(null, 1, 1, true, true, 1, 1);
@@ -153,7 +153,7 @@ class BaseSettingsMenu extends MusicBeatState
 			selector.chosenOptionString = selector.options[newSelection];
 			selector.optionChosen.text = selector.chosenOptionString;
 
-			Init.trueSettings.set(options[curSelected].name, selector.chosenOptionString);
+			Init.setSetting(options[curSelected].name, selector.chosenOptionString);
 			Init.saveSettings();
 		}
 	}
@@ -161,7 +161,7 @@ class BaseSettingsMenu extends MusicBeatState
 	public function generateSelector(min:Float = 0, max:Float = 100, inc:Float = 5, updateBy:Int, selector:Selector)
 	{
 		// lazily hardcoded??
-		var originalValue = Init.trueSettings.get(options[curSelected].name);
+		var originalValue = Init.getSetting(options[curSelected].name);
 		var increase = inc * updateBy;
 		// min
 		if (originalValue + increase < min)
@@ -180,7 +180,7 @@ class BaseSettingsMenu extends MusicBeatState
 		originalValue += increase;
 		selector.chosenOptionString = Std.string(originalValue);
 		selector.optionChosen.text = Std.string(originalValue);
-		Init.trueSettings.set(options[curSelected].name, originalValue);
+		Init.setSetting(options[curSelected].name, originalValue);
 		Init.saveSettings();
 	}
 }

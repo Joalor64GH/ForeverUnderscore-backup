@@ -119,7 +119,7 @@ class StoryMenuState extends MusicBeatState
 				grpWeekText.add(weekImageLabel);
 
 				weekImageLabel.screenCenter(X);
-				weekImageLabel.antialiasing = !Init.trueSettings.get('Disable Antialiasing');
+				weekImageLabel.antialiasing = !Init.getSetting('Disable Antialiasing');
 				// weekImageLabel.updateHitbox();
 
 				// Needs an offset thingie
@@ -130,7 +130,7 @@ class StoryMenuState extends MusicBeatState
 					lock.animation.addByPrefix('lock', 'lock');
 					lock.animation.play('lock');
 					lock.ID = i;
-					lock.antialiasing = !Init.trueSettings.get('Disable Antialiasing');
+					lock.antialiasing = !Init.getSetting('Disable Antialiasing');
 					grpLocks.add(lock);
 				}
 				weekNum++;
@@ -143,7 +143,7 @@ class StoryMenuState extends MusicBeatState
 		for (char in 0...3)
 		{
 			var weekCharacterThing:MenuCharacter = new MenuCharacter((FlxG.width * 0.25) * (1 + char) - 150, weekChars[char]);
-			weekCharacterThing.antialiasing = !Init.trueSettings.get('Disable Antialiasing');
+			weekCharacterThing.antialiasing = !Init.getSetting('Disable Antialiasing');
 			grpWeekCharacters.add(weekCharacterThing);
 		}
 
@@ -167,7 +167,7 @@ class StoryMenuState extends MusicBeatState
 		curDifficulty = Math.round(Math.max(0, CoolUtil.baseDifficulties.indexOf(lastDifficultyName)));
 
 		sprDifficulty = new FlxSprite(0, leftArrow.y);
-		sprDifficulty.antialiasing = !Init.trueSettings.get('Disable Antialiasing');
+		sprDifficulty.antialiasing = !Init.getSetting('Disable Antialiasing');
 		difficultySelectors.add(sprDifficulty);
 
 		rightArrow = new FlxSprite(leftArrow.x + 376, leftArrow.y);

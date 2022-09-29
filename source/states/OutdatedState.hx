@@ -44,7 +44,7 @@ class OutdatedState extends MusicBeatState
 		updateText.setFormat("VCR OSD Mono", 32, FlxColor.WHITE, CENTER);
 		updateText.screenCenter();
 		updateText.alpha = 0;
-		updateText.antialiasing = !Init.trueSettings.get('Disable Antialiasing');
+		updateText.antialiasing = !Init.getSetting('Disable Antialiasing');
 		add(updateText);
 
 		FlxTween.tween(updateText, {alpha: 1}, 0.4);

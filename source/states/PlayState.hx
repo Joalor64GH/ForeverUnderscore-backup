@@ -285,8 +285,8 @@ class PlayState extends MusicBeatState
 
 		var camPos:FlxPoint = new FlxPoint(gf.getMidpoint().x - 100, boyfriend.getMidpoint().y - 100);
 
-		changeableSkin = Init.trueSettings.get("UI Skin");
-		changeableSound = Init.trueSettings.get("Hitsound Type");
+		changeableSkin = Init.getSetting("UI Skin");
+		changeableSound = Init.getSetting("Hitsound Type");
 
 		assetModifier = SONG.assetModifier;
 
@@ -315,14 +315,14 @@ class PlayState extends MusicBeatState
 
 		// EVERYTHING SHOULD GO UNDER THIS, IF YOU PLAN ON SPAWNING SOMETHING LATER ADD IT TO STAGEBUILD OR FOREGROUND
 		// darkens the notes / stage according to the opacity type option
-		if (Init.trueSettings.get('Opacity Type') == 'Notes')
+		if (Init.getSetting('Opacity Type') == 'Notes')
 		{
 			// unoptimized darkness background for notes;
 			darknessBG = new FlxSprite(0, 0).makeGraphic(100 * 4 + 50, FlxG.height, FlxColor.BLACK);
 
 			var lineColorP1 = 0xFF66FF33;
 
-			if (Init.trueSettings.get('Colored Health Bar'))
+			if (Init.getSetting('Colored Health Bar'))
 				lineColorP1 = FlxColor.fromRGB(boyfriend.barColor[0], boyfriend.barColor[1], boyfriend.barColor[2]);
 
 			darknessLine1 = new FlxSprite(0, 0).makeGraphic(5, FlxG.height, lineColorP1);
@@ -341,11 +341,11 @@ class PlayState extends MusicBeatState
 			}
 
 			// for the opponent
-			if (!Init.trueSettings.get('Centered Receptors'))
+			if (!Init.getSetting('Centered Receptors'))
 			{
 				var lineColorP2 = 0xFFFF0000;
 
-				if (Init.trueSettings.get('Colored Health Bar'))
+				if (Init.getSetting('Colored Health Bar'))
 					lineColorP2 = FlxColor.fromRGB(dadOpponent.barColor[0], dadOpponent.barColor[1], dadOpponent.barColor[2]);
 
 				darknessOpponent = new FlxSprite(0, 0).loadGraphicFromSprite(darknessBG);
@@ -368,7 +368,7 @@ class PlayState extends MusicBeatState
 		else
 		{
 			darknessBG = new FlxSprite(FlxG.width * -0.5, FlxG.height * -0.5).makeGraphic(FlxG.width * 2, FlxG.height * 2, FlxColor.BLACK);
-			darknessBG.alpha = (Init.trueSettings.get('Darkness Opacity') * 0.01);
+			darknessBG.alpha = (Init.getSetting('Darkness Opacity') * 0.01);
 			darknessBG.scrollFactor.set(0, 0);
 			add(darknessBG);
 		}
@@ -408,15 +408,15 @@ class PlayState extends MusicBeatState
 		startedCountdown = true;
 
 		// initialize ui elements
-		var bfPlacement:Float = FlxG.width / 2 + (!Init.trueSettings.get('Centered Receptors') ? FlxG.width / 4 : 0);
+		var bfPlacement:Float = FlxG.width / 2 + (!Init.getSetting('Centered Receptors') ? FlxG.width / 4 : 0);
 		var dadPlacement:Float = (FlxG.width / 2) - FlxG.width / 4;
 
-		var strumVertPos:Int = (Init.trueSettings.get('Downscroll') ? FlxG.height - 200 : 0);
+		var strumVertPos:Int = (Init.getSetting('Downscroll') ? FlxG.height - 200 : 0);
 
 		dadStrums = new Strumline(dadPlacement, strumVertPos, this, dadOpponent, false, true, false, 4);
 		bfStrums = new Strumline(bfPlacement, strumVertPos, this, boyfriend, true, false, true, 4);
 
-		if (Init.trueSettings.get('Centered Receptors'))
+		if (Init.getSetting('Centered Receptors'))
 		{
 			// psych-like Opponent Strumlines;
 			for (i in 0...dadStrums.receptors.members.length)
@@ -434,7 +434,7 @@ class PlayState extends MusicBeatState
 			// have fun messing with these on scripts now;
 		}
 
-		dadStrums.visible = !Init.trueSettings.get('Hide Opponent Receptors');
+		dadStrums.visible = !Init.getSetting('Hide Opponent Receptors');
 
 		strumLines.add(dadStrums);
 		strumLines.add(bfStrums);
@@ -514,7 +514,7 @@ class PlayState extends MusicBeatState
 		editorMusic.play();
 
 		// push your sound paths to this array
-		if (Init.trueSettings.get('Hitsound Volume') > 0)
+		if (Init.getSetting('Hitsound Volume') > 0)
 			soundArray.push('hitsounds/$changeableSound/hit');
 
 		for (i in soundArray)
@@ -629,7 +629,7 @@ class PlayState extends MusicBeatState
 				}
 				else
 				{ // else just call bad notes
-					if (!Init.trueSettings.get('Ghost Tapping'))
+					if (!Init.getSetting('Ghost Tapping'))
 					{
 						if (startingSong) // mash warning
 							uiHUD.tweenScoreColor('miss', false);
@@ -1014,7 +1014,7 @@ class PlayState extends MusicBeatState
 		}
 
 		// set the notes x and y
-		var downscrollMultiplier = (Init.trueSettings.get('Downscroll') ? -1 : 1) * FlxMath.signOf(get_songSpeed());
+		var downscrollMultiplier = (Init.getSetting('Downscroll') ? -1 : 1) * FlxMath.signOf(get_songSpeed());
 		if (generatedMusic && startedCountdown)
 		{
 			for (strumline in strumLines)
@@ -1023,7 +1023,7 @@ class PlayState extends MusicBeatState
 				{
 					// set custom note speeds and stuff;
 					if (strumNote.useCustomSpeed)
-						strumNote.noteSpeed = Init.trueSettings.get('Scroll Speed');
+						strumNote.noteSpeed = Init.getSetting('Scroll Speed');
 					else
 						strumNote.noteSpeed = Math.abs(get_songSpeed());
 
@@ -1137,7 +1137,7 @@ class PlayState extends MusicBeatState
 
 								callFunc('noteMiss', [strumNote]);
 
-								missNoteCheck((Init.trueSettings.get('Ghost Tapping') && !startingSong) ? true : false, strumNote.noteData, boyfriend, true);
+								missNoteCheck((Init.getSetting('Ghost Tapping') && !startingSong) ? true : false, strumNote.noteData, boyfriend, true);
 								// ambiguous name
 								Timings.updateAccuracy(0);
 							}
@@ -1151,7 +1151,7 @@ class PlayState extends MusicBeatState
 										var breakFromLate:Bool = false;
 										if (!breakFromLate)
 										{
-											missNoteCheck((Init.trueSettings.get('Ghost Tapping') && !startingSong) ? true : false, strumNote.noteData, boyfriend, true);
+											missNoteCheck((Init.getSetting('Ghost Tapping') && !startingSong) ? true : false, strumNote.noteData, boyfriend, true);
 											for (note in parentNote.childrenNotes)
 												note.tooLate = true;
 										}
@@ -1162,8 +1162,8 @@ class PlayState extends MusicBeatState
 					}
 
 					// if the note is off screen (above)
-					if ((((!Init.trueSettings.get('Downscroll')) && (strumNote.y < -strumNote.height))
-						|| ((Init.trueSettings.get('Downscroll')) && (strumNote.y > (FlxG.height + strumNote.height))))
+					if ((((!Init.getSetting('Downscroll')) && (strumNote.y < -strumNote.height))
+						|| ((Init.getSetting('Downscroll')) && (strumNote.y > (FlxG.height + strumNote.height))))
 						&& (strumNote.tooLate || strumNote.wasGoodHit))
 						destroyNote(strumline, strumNote);
 				});
@@ -1554,7 +1554,7 @@ class PlayState extends MusicBeatState
 
 	function strumCameraRoll(cStrum:FlxTypedSpriteGroup<UIStaticArrow>, mustHit:Bool)
 	{
-		if (!Init.trueSettings.get('No Camera Note Movement'))
+		if (!Init.getSetting('No Camera Note Movement'))
 		{
 			var camDisplaceExtend:Float = 15;
 			if (PlayState.SONG.notes[Std.int(curStep / 16)] != null)
@@ -1616,7 +1616,7 @@ class PlayState extends MusicBeatState
 
 	override public function onFocusLost():Void
 	{
-		if (canPause && !paused && !inCutscene && !bfStrums.autoplay && !Init.trueSettings.get('Auto Pause') && startedCountdown)
+		if (canPause && !paused && !inCutscene && !bfStrums.autoplay && !Init.getSetting('Auto Pause') && startedCountdown)
 		{
 			pauseGame();
 			// open pause substate
@@ -1684,7 +1684,7 @@ class PlayState extends MusicBeatState
 
 		if (!cached)
 		{
-			if (!Init.trueSettings.get('Judgement Stacking'))
+			if (!Init.getSetting('Judgement Stacking'))
 			{
 				if (lastJudgement != null)
 					lastJudgement.kill();
@@ -1709,7 +1709,7 @@ class PlayState extends MusicBeatState
 			}
 		}
 
-		if (Init.trueSettings.get('Fixed Judgements'))
+		if (Init.getSetting('Fixed Judgements'))
 		{
 			// bound to camera
 			if (!cached)
@@ -1740,13 +1740,13 @@ class PlayState extends MusicBeatState
 			var comboNum = ForeverAssets.generateCombo('combo_numbers', stringArray[scoreInt], (!negative ? perfect : false), comboGroup, assetModifier,
 				changeableSkin, 'UI', negative, createdColor, scoreInt);
 
-			if (!Init.trueSettings.get('Judgement Stacking'))
+			if (!Init.getSetting('Judgement Stacking'))
 			{
 				for (i in 0...comboGroup.members.length)
 					lastCombo.push(comboGroup.members[i]);
 			}
 
-			if (Init.trueSettings.get('Fixed Judgements'))
+			if (Init.getSetting('Fixed Judgements'))
 			{
 				if (!cached)
 					comboNum.cameras = [comboHUD];
@@ -1953,7 +1953,7 @@ class PlayState extends MusicBeatState
 	{
 		super.beatHit();
 
-		if ((FlxG.camera.zoom < 1.35 && curBeat % 4 == 0) && (!Init.trueSettings.get('Reduced Movements')))
+		if ((FlxG.camera.zoom < 1.35 && curBeat % 4 == 0) && (!Init.getSetting('Reduced Movements')))
 		{
 			FlxG.camera.zoom += 0.015;
 			camHUD.zoom += 0.05;
@@ -2318,9 +2318,9 @@ class PlayState extends MusicBeatState
 	public static function skipCutscenes():Bool
 	{
 		// pretty messy but an if statement is messier
-		if (Init.trueSettings.get('Skip Text') != null && Std.isOfType(Init.trueSettings.get('Skip Text'), String))
+		if (Init.getSetting('Skip Text') != null && Std.isOfType(Init.getSetting('Skip Text'), String))
 		{
-			switch (cast(Init.trueSettings.get('Skip Text'), String))
+			switch (cast(Init.getSetting('Skip Text'), String))
 			{
 				case 'never':
 					return false;
@@ -2349,25 +2349,25 @@ class PlayState extends MusicBeatState
 		precacheImages();
 		precacheSounds();
 
-		if (Init.trueSettings.get('Opacity Type') == 'Notes')
+		if (Init.getSetting('Opacity Type') == 'Notes')
 		{
 			darknessBG.x = bfStrums.receptors.members[0].x + 20;
 			darknessLine1.x = darknessBG.x - 5;
 			darknessLine2.x = FlxG.width - darknessBG.x + 2;
-			FlxTween.tween(darknessBG, {alpha: (Init.trueSettings.get('Darkness Opacity') * 0.01)}, 0.5, {ease: FlxEase.circOut});
-			if (Init.trueSettings.get('Darkness Opacity') > 0)
+			FlxTween.tween(darknessBG, {alpha: (Init.getSetting('Darkness Opacity') * 0.01)}, 0.5, {ease: FlxEase.circOut});
+			if (Init.getSetting('Darkness Opacity') > 0)
 			{
 				FlxTween.tween(darknessLine1, {alpha: 1}, 0.5, {ease: FlxEase.circOut});
 				FlxTween.tween(darknessLine2, {alpha: 1}, 0.5, {ease: FlxEase.circOut});
 			}
 
-			if (!Init.trueSettings.get('Centered Receptors'))
+			if (!Init.getSetting('Centered Receptors'))
 			{
 				darknessOpponent.x = dadStrums.receptors.members[0].x + 20;
 				darknessLine3.x = darknessOpponent.x - 5;
 				darknessLine4.x = FlxG.width - darknessOpponent.x + 2;
-				FlxTween.tween(darknessOpponent, {alpha: (Init.trueSettings.get('Darkness Opacity') * 0.01)}, 0.5, {ease: FlxEase.circOut});
-				if (Init.trueSettings.get('Darkness Opacity') > 0)
+				FlxTween.tween(darknessOpponent, {alpha: (Init.getSetting('Darkness Opacity') * 0.01)}, 0.5, {ease: FlxEase.circOut});
+				if (Init.getSetting('Darkness Opacity') > 0)
 				{
 					FlxTween.tween(darknessLine3, {alpha: 1}, 0.5, {ease: FlxEase.circOut});
 					FlxTween.tween(darknessLine4, {alpha: 1}, 0.5, {ease: FlxEase.circOut});
@@ -2500,7 +2500,7 @@ class PlayState extends MusicBeatState
 
 	override function add(Object:FlxBasic):FlxBasic
 	{
-		if (Init.trueSettings.get('Disable Antialiasing') && Std.isOfType(Object, FlxSprite))
+		if (Init.getSetting('Disable Antialiasing') && Std.isOfType(Object, FlxSprite))
 			cast(Object, FlxSprite).antialiasing = false;
 		return super.add(Object);
 	}

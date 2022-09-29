@@ -96,6 +96,6 @@ class HealthIcon extends FlxSprite
 		initialWidth = width;
 		initialHeight = height;
 
-		antialiasing = (!icon.endsWith('-pixel') || !Init.trueSettings.get('Disable Antialiasing'));
+		antialiasing = (!icon.endsWith('-pixel') || !Init.getSetting('Disable Antialiasing'));
 	}
 }

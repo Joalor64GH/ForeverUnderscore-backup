@@ -4,10 +4,10 @@ import sys.FileSystem;
 import base.MusicBeat.MusicBeatState;
 import base.ScriptHandler;
 import dependency.Discord;
+import flixel.FlxCamera;
 import flixel.FlxG;
 import flixel.FlxObject;
 import flixel.FlxSprite;
-import flixel.FlxCamera;
 import flixel.addons.transition.FlxTransitionableState;
 import flixel.effects.FlxFlicker;
 import flixel.graphics.frames.FlxAtlasFrames;
@@ -106,7 +106,7 @@ class MainMenuState extends MusicBeatState
 		bg.setGraphicSize(Std.int(bg.width * 1.175));
 		bg.updateHitbox();
 		bg.screenCenter();
-		bg.antialiasing = !Init.trueSettings.get('Disable Antialiasing');
+		bg.antialiasing = !Init.getSetting('Disable Antialiasing');
 		add(bg);
 
 		camFollow = new FlxObject(0, 0, 1, 1);
@@ -118,7 +118,7 @@ class MainMenuState extends MusicBeatState
 		magenta.updateHitbox();
 		magenta.screenCenter();
 		magenta.visible = false;
-		magenta.antialiasing = !Init.trueSettings.get('Disable Antialiasing');
+		magenta.antialiasing = !Init.getSetting('Disable Antialiasing');
 		magenta.color = 0xFFfd719b;
 		add(magenta);
 
@@ -151,7 +151,7 @@ class MainMenuState extends MusicBeatState
 
 			menuItems.add(menuItem);
 			menuItem.scrollFactor.set(0, newScroll);
-			menuItem.antialiasing = !Init.trueSettings.get('Disable Antialiasing');
+			menuItem.antialiasing = !Init.getSetting('Disable Antialiasing');
 			menuItem.updateHitbox();
 
 			var vertLimit:Float = (Math.max(optionShit.length, 4) - 4) * 80;
@@ -240,9 +240,9 @@ class MainMenuState extends MusicBeatState
 
 				var flickerVal:Float = 0.06;
 
-				if (Init.trueSettings.get('Disable Flashing Lights'))
+				if (Init.getSetting('Disable Flashing Lights'))
 					flickerVal = 1;
-				if (!Init.trueSettings.get('Disable Flashing Lights'))
+				if (!Init.getSetting('Disable Flashing Lights'))
 					FlxFlicker.flicker(magenta, 0.8, 0.1, false);
 
 				menuItems.forEach(function(spr:FlxSprite)

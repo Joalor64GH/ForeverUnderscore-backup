@@ -156,7 +156,7 @@ class Console extends TextField
 
 	public function log(str:String)
 	{
-		if (FlxG.save.data != null && !Init.trueSettings.get('Allow Console Window'))
+		if (FlxG.save.data != null && !Init.getSetting('Allow Console Window'))
 			return;
 		// text += "\n-" + lineCount + ": " + str;
 		lineCount++;
@@ -176,7 +176,7 @@ class Console extends TextField
 	@:noCompletion
 	private #if !flash override #end function __enterFrame(deltaTime:Float):Void
 	{
-		if (FlxG.keys == null || FlxG.save.data == null || !Init.trueSettings.get('Allow Console Window'))
+		if (FlxG.keys == null || FlxG.save.data == null || !Init.getSetting('Allow Console Window'))
 			return;
 		if (FlxG.keys.pressed.SHIFT && FlxG.keys.pressed.CONTROL && FlxG.keys.justPressed.F10)
 		{

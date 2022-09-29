@@ -32,7 +32,7 @@ function generateStage()
 	windowLight.scrollFactor.set(0.3, 0.3);
 	windowLight.setGraphicSize(Std.int(windowLight.width * 0.85));
 	windowLight.updateHitbox();
-	windowLight.antialiasing = !Init.trueSettings.get('Disable Antialiasing');
+	windowLight.antialiasing = !Init.getSetting('Disable Antialiasing');
 	windowLight.alpha = 0;
 	add(windowLight);
 
