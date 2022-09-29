@@ -39,12 +39,14 @@ jobs:
           sudo apt-get -y install libidn12
           haxelib setup ~/haxelib
           haxelib install hxcpp > /dev/null
+          haxelib remove lime
           haxelib install lime 7.9.0
           haxelib install openfl
           haxelib install flixel
           haxelib install flixel-ui
           haxelib run lime setup flixel
           haxelib run lime setup
+          haxelib install lime 7.9.0 -y
           haxelib install flixel-tools
           haxelib install flixel-addons
           haxelib install hscript
@@ -76,12 +78,14 @@ jobs:
         run: |
           haxelib setup C:/haxelib
           haxelib install hxcpp > /dev/null
+          haxelib remove lime
           haxelib install lime 7.9.0
           haxelib install openfl
           haxelib install flixel
           haxelib install flixel-ui
           haxelib run lime setup flixel
           haxelib run lime setup
+          haxelib install lime 7.9.0 -y
           haxelib install flixel-tools
           haxelib install flixel-addons
           haxelib install hscript
@@ -114,12 +118,14 @@ jobs:
         run: |
           haxelib setup ~/haxelib
           haxelib install hxcpp > /dev/null
+          haxelib remove lime
           haxelib install lime 7.9.0
           haxelib install openfl
           haxelib install flixel
           haxelib install flixel-ui
           haxelib run lime setup flixel
           haxelib run lime setup
+          haxelib install lime 7.9.0 -y
           haxelib install flixel-tools
           haxelib install flixel-addons
           haxelib install hscript
