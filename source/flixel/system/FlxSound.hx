@@ -228,6 +228,7 @@ class FlxSound extends FlxBasic
 		_time = 0;
 		_paused = false;
 		_volume = 1.0;
+		_pitch = 1.0;
 		_volumeAdjust = 1.0;
 		looped = false;
 		loopTime = 0.0;
@@ -592,11 +593,17 @@ class FlxSound extends FlxBasic
 		{
 			_channel.soundTransform = _transform;
 
-			#if cpp
 			@:privateAccess
-			lime.media.openal.AL.sourcef(this._channel.__source.__backend.handle, lime.media.openal.AL.PITCH, _pitch);
-			// trace('changing $name pitch new $_pitch');
-			#end
+			if(_channel.__source != null)
+			{
+				#if cpp
+				@:privateAccess
+				lime.media.openal.AL.sourcef(this._channel.__source.__backend.handle, lime.media.openal.AL.PITCH, _pitch);
+				if(_updatePitch) this._channel.__source.__backend.updatePitch(_pitch);
+				_updatePitch = false;
+				// trace('changing $name pitch new $_pitch');
+				#end
+			}
 		}
 	}
 
@@ -746,8 +753,10 @@ class FlxSound extends FlxBasic
 		return _pitch;
 	}
 
+	var _updatePitch:Bool = false;
 	function set_pitch(v:Float):Float
 	{
+		_updatePitch = true;
 		return _pitch = v;
 	}
 
@@ -787,7 +796,8 @@ class FlxSound extends FlxBasic
 			LabelValuePair.weak("playing", playing),
 			LabelValuePair.weak("time", time),
 			LabelValuePair.weak("length", length),
-			LabelValuePair.weak("volume", volume)
+			LabelValuePair.weak("volume", volume),
+			LabelValuePair.weak("pitch", pitch)
 		]);
 	}
 }
