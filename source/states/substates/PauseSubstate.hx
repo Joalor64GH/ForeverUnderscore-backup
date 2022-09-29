@@ -60,6 +60,9 @@ class PauseSubstate extends MusicBeatSubstate
 			difficultyArray.push('BACK');
 		}
 
+		if (!PlayState.isStoryMode)
+			menuItems.insert(3, 'Debug Menus');
+
 		if (PlayState.chartingMode)
 		{
 			menuItems.insert(3, 'Leave Charting Mode');
@@ -237,6 +240,10 @@ class PauseSubstate extends MusicBeatSubstate
 						Main.switchState(this, new StoryMenuState());
 					else
 						Main.switchState(this, new FreeplayState());
+						
+				case 'Debug Menus':
+					close();
+					openSubState(new EditorMenuSubstate());
 
 				case 'Leave Charting Mode':
 					disableCheats(true);

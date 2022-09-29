@@ -54,9 +54,10 @@ class OptionsMenuState extends MusicBeatState
 				[
 					['preferences', callNewGroup],
 					['appearance', callNewGroup],
+					#if mobile ['mobile controls', openMobileControls], #end
 					['controls', openControlmenu],
 					['adjust combo', openJudgeState],
-					['note colors', openNotemenu],
+					#if unstableBuild ['note colors', openNotemenu], #end
 					['exit', exitMenu]
 				]
 			],
@@ -409,7 +410,11 @@ class OptionsMenuState extends MusicBeatState
 				var thisOption:Alphabet = new Alphabet(0, 0, categoryMap.get(groupName)[0][i][0], true, false);
 				thisOption.screenCenter();
 				thisOption.y += (80 * (i - Math.floor(categoryMap.get(groupName)[0].length / 2)));
+				#if unstableBuild
 				thisOption.y += 50;
+				#else
+				thisOption.y += 10;
+				#end
 				thisOption.targetY = i;
 				thisOption.disableX = true;
 				// hardcoded main so it doesnt have scroll
@@ -648,6 +653,22 @@ class OptionsMenuState extends MusicBeatState
 			});
 		}
 	}
+	
+	#if mobile
+	public function openMobileControls()
+	{
+		if (controls.ACCEPT || FlxG.mouse.justPressed)
+		{
+			playSound('confirmMenu');
+			lockedMovement = true;
+			FlxFlicker.flicker(activeSubgroup.members[curSelection], 0.5, 0.06 * 2, true, false, function(flick:FlxFlicker)
+			{
+				openSubState(new mobile.controls.MobileControlsSubState());
+				lockedMovement = false;
+			});
+		}
+	}
+	#end
 	
 	public function openNotemenu()
 	{

@@ -22,6 +22,7 @@
 
 	<window width="1280" height="720" background="#000000" hardware="true" vsync="false" />
 	<window if="desktop" orientation="landscape" fullscreen="false" resizable="true" />
+	<window if="mobile" orientation="landscape" fullscreen="true" width="1280" height="720" resizable="false" allow-shaders="true" require-shaders="true" />
 
 	<!-- _____________________________ Custom Defines ____________________________ -->
 
@@ -43,6 +44,7 @@
 	<source path="source" />
 
 	<assets path="assets" />
+	<assets path="assets/mobile" if="android" /> <!-- to not have the android assets in another builds -saw -->
 
 	<!-- _______________________________ Libraries ______________________________ -->
 
@@ -56,6 +58,7 @@
 	<haxelib name="SScript" if="HAXE_EXTENSION" />
 
 	<haxelib name="hxcpp-debug-server" if="debug" />
+	<haxelib name="extension-androidtools" if="android" />
 
 	<!-- ______________________________ Haxedefines _____________________________ -->
 
@@ -73,6 +76,11 @@
 	<haxedef name="HXCPP_CHECK_POINTER" unless="debug" />
 
 	<haxedef name="HXC_DEBUG_TRACE" if="debug" />
+
+	<!-- _________________________________ Android Permissions _______________________________ -->
+
+	<android permission="android.permission.ACCESS_NETWORK_STATE" />
+	<android permission="android.permission.INTERNET" />
 
 	<!-- _________________________________ Custom _______________________________ -->
 

@@ -218,7 +218,7 @@ class TitleState extends MusicBeatState
 				titleText.alpha = FlxMath.lerp(titleTextAlphas[0], titleTextAlphas[1], timer);
 			}
 
-			if (FlxG.keys.justPressed.ESCAPE && !pressedEnter)
+			if (FlxG.keys.justPressed.ESCAPE #if android || FlxG.android.justReleased.BACK #end && !pressedEnter)
 				Sys.exit(0);
 
 			if (pressedEnter)
