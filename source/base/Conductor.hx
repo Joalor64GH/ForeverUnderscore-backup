@@ -1,16 +1,16 @@
 package base;
 
+import haxe.Json;
+import haxe.format.JsonParser;
+import sys.FileSystem;
+import sys.io.File;
+import flixel.FlxG;
+import flixel.system.FlxSound;
+import openfl.utils.Assets;
+import states.PlayState;
 import base.SongLoader.LegacySection;
 import base.SongLoader.LegacySong;
 import base.SongLoader.Song;
-import flixel.FlxG;
-import flixel.system.FlxSound;
-import haxe.Json;
-import haxe.format.JsonParser;
-import openfl.utils.Assets;
-import states.PlayState;
-import sys.FileSystem;
-import sys.io.File;
 
 using StringTools;
 
@@ -163,6 +163,7 @@ class Conductor
 
 		songVocals.pause();
 		songMusic.play();
+		songMusic.pitch = playbackRate;
 
 		songPosition = songMusic.time;
 
@@ -170,7 +171,10 @@ class Conductor
 		for (i in vocalArray)
 		{
 			if (songPosition <= i.length)
+			{
 				i.time = songPosition;
+				i.pitch = playbackRate;
+			}
 			i.play();
 		}
 		#if DEBUG_TRACES trace('new vocal time: ${songPosition}, playback rate: ${playbackRate}'); #end
