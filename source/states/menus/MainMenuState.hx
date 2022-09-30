@@ -103,11 +103,9 @@ class MainMenuState extends MusicBeatState
 		if (optionShit.length < 1) // so you can't hardlock someone on the menu
 			optionShit = ['story mode', 'freeplay', 'credits', 'options'];
 
-		var vertScroll:Float = Math.max(0.25 - (0.05 * (optionShit.length - 4)), 0.1);
-
-		bg = new FlxSprite(-80).loadGraphic(Paths.image('menus/base/menuBG'));
-		bg.scrollFactor.set(0, vertScroll);
-		bg.setGraphicSize(Std.int(bg.width * 1.175));
+		bg = new FlxSprite().loadGraphic(Paths.image('menus/base/menuBG'));
+		bg.scrollFactor.set(0, 0.17);
+		bg.setGraphicSize(Std.int(bg.width * 1.2));
 		bg.updateHitbox();
 		bg.screenCenter();
 		bg.antialiasing = !Init.getSetting('Disable Antialiasing');
@@ -117,8 +115,8 @@ class MainMenuState extends MusicBeatState
 		add(camFollow);
 
 		magenta = new FlxSprite(-80).loadGraphic(Paths.image('menus/base/menuDesat'));
-		magenta.scrollFactor.set(0, vertScroll);
-		magenta.setGraphicSize(Std.int(magenta.width * 1.175));
+		magenta.scrollFactor.set(bg.scrollFactor.x, bg.scrollFactor.y);
+		magenta.setGraphicSize(Std.int(bg.width));
 		magenta.updateHitbox();
 		magenta.screenCenter();
 		magenta.visible = false;
@@ -132,7 +130,8 @@ class MainMenuState extends MusicBeatState
 		for (i in 0...optionShit.length)
 		{
 			callFunc('optionSetup', []);
-			var menuItem:FlxSprite = new FlxSprite(0, FlxG.height * 1.1);
+			var maxLength:Float = 58 - (Math.max(optionShit.length, 4) - 4) * 80;
+			var menuItem:FlxSprite = new FlxSprite(0, (i * 160) + maxLength);
 			menuItem.frames = Paths.getSparrowAtlas('menus/base/menuItems/' + optionShit[i]);
 
 			menuItem.scale.set(menuItemScale, menuItemScale);
@@ -149,17 +148,14 @@ class MainMenuState extends MusicBeatState
 			else
 				menuItem.x -= 1000;
 
-			var newScroll:Float = (optionShit.length - 4) * 0.135;
-			if (optionShit.length < 6)
-				newScroll = 0;
-
 			menuItems.add(menuItem);
-			menuItem.scrollFactor.set(0, newScroll);
+			var scr:Float = (optionShit.length - 4) * 0.135;
+			if (optionShit.length < 6)
+				scr = 0;
+			menuItem.scrollFactor.set(0, scr);
 			menuItem.antialiasing = !Init.getSetting('Disable Antialiasing');
 			menuItem.updateHitbox();
 
-			var vertLimit:Float = (Math.max(optionShit.length, 4) - 4) * 80;
-			menuItem.y = 60 + (i * 160) + vertLimit;
 			setVar('menuItem', menuItem);
 			callFunc('postOptionSetup', []);
 		}
@@ -169,17 +165,19 @@ class MainMenuState extends MusicBeatState
 
 		updateSelection();
 
-		var versionShit:FlxText = new FlxText(5, FlxG.height - 38, 0, "Friday Night Funkin v" + Application.current.meta.get('version'), 12);
-		versionShit.scrollFactor.set();
-		versionShit.setFormat(Paths.font('vcr.ttf'), 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
-		add(versionShit);
-
 		var hash:String = '';
 		if (Main.showCommitHash && Main.commitHash.length > 3)
 			hash = Main.commitHash;
 
-		var versionShit:FlxText = new FlxText(5, FlxG.height - 18, 0,
-			"Forever Engine v" + Main.foreverVersion + " • Underscore v" + Main.underscoreVersion + hash, 12);
+		var versionShit:FlxText = new FlxText(5, FlxG.height
+			- 18, 0,
+			"Funkin' v"
+			+ Application.current.meta.get('version')
+			+ " • Forever Engine v"
+			+ Main.foreverVersion
+			+ " • Underscore v"
+			+ Main.underscoreVersion
+			+ hash, 12);
 		versionShit.scrollFactor.set();
 		versionShit.setFormat(Paths.font('vcr.ttf'), 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		add(versionShit);
