@@ -53,7 +53,7 @@ class MainMenuState extends MusicBeatState
 		ForeverTools.resetMenuMusic();
 
 		#if mobile
-		addVirtualPad(LEFT_FULL, A_B);
+		addVirtualPad(LEFT_FULL, A_B_C);
 		#end
 
 		#if DISCORD_RPC
@@ -203,6 +203,13 @@ class MainMenuState extends MusicBeatState
 			{
 				FlxG.sound.play(Paths.sound('cancelMenu'), 0.4);
 				Main.switchState(this, new TitleState());
+			}
+
+			if (controls.CHEAT #if android || virtualPad.buttonC.justPressed #end)
+			{
+				persistentUpdate = false;
+				persistentDraw = true;
+				openSubState(new states.substates.EditorMenuSubstate());
 			}
 
 			var controlArray:Array<Bool> = [
