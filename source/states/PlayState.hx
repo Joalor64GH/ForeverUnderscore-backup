@@ -690,7 +690,7 @@ class PlayState extends MusicBeatState
 					{
 						if (startingSong) // mash warning
 							uiHUD.tweenScoreColor('miss', false);
-						else
+						else if (!inCutscene || !endingSong)
 							missNoteCheck(true, key, boyfriend, true);
 					}
 				}
