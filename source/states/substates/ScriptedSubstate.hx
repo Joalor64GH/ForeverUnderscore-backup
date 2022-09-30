@@ -22,6 +22,7 @@ class ScriptedSubstate extends MusicBeatSubstate
 	public function new(stateName:Null<String>)
 	{
 		ScriptedSubstate.stateName = stateName;
+		PlayState.contents.callFunc('newSubstate', [stateName]);
 		super();
 		cameras = [FlxG.cameras.list[FlxG.cameras.list.length - 1]];
 	}
