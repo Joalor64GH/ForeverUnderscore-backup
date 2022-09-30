@@ -805,8 +805,7 @@ class PlayState extends MusicBeatState
 			// make sure you're not cheating lol
 			if (!isStoryMode)
 			{
-				// charting state (more on that later)
-				if (controls.DEBUG1)
+				if (controls.CHEAT)
 				{
 					pauseGame();
 					openSubState(new EditorMenuSubstate());
@@ -1019,7 +1018,7 @@ class PlayState extends MusicBeatState
 		if (controls.gamepadsAdded.length > 0)
 		{
 			var gamepad:FlxGamepad = FlxG.gamepads.getByID(controls.gamepadsAdded[0]);
-			var directions:Array<Control> = [LEFT, DOWN, UP, RIGHT];
+			var directions:Array<Control> = [NOTE_LEFT, NOTE_DOWN, NOTE_UP, NOTE_RIGHT];
 			for (i in 0...directions.length)
 			{
 				var bind:Array<Int> = controls.getInputsFor(directions[i], Gamepad(gamepad.id));

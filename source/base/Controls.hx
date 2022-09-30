@@ -30,24 +30,23 @@ enum abstract Action(String) to String from String
 	var UI_LEFT_R = "ui_left-release";
 	var UI_RIGHT_R = "ui_right-release";
 	var UI_DOWN_R = "ui_down-release";
-	var UP = "up";
-	var LEFT = "left";
-	var RIGHT = "right";
-	var DOWN = "down";
-	var UP_P = "up-press";
-	var LEFT_P = "left-press";
-	var RIGHT_P = "right-press";
-	var DOWN_P = "down-press";
-	var UP_R = "up-release";
-	var LEFT_R = "left-release";
-	var RIGHT_R = "right-release";
-	var DOWN_R = "down-release";
+	var NOTE_UP = "note_up";
+	var NOTE_LEFT = "note_left";
+	var NOTE_RIGHT = "note_right";
+	var NOTE_DOWN = "note_down";
+	var NOTE_UP_P = "note_up-press";
+	var NOTE_LEFT_P = "note_left-press";
+	var NOTE_RIGHT_P = "note_right-press";
+	var NOTE_DOWN_P = "note_down-press";
+	var NOTE_UP_R = "note_up-release";
+	var NOTE_LEFT_R = "note_left-release";
+	var NOTE_RIGHT_R = "note_right-release";
+	var NOTE_DOWN_R = "note_down-release";
 	var ACCEPT = "accept";
 	var BACK = "back";
 	var PAUSE = "pause";
 	var RESET = "reset";
 	var CHEAT = "cheat";
-	var DEBUG1 = "debug1";
 }
 
 enum Device
@@ -63,10 +62,10 @@ enum Device
  */
 enum Control
 {
-	UP;
-	LEFT;
-	RIGHT;
-	DOWN;
+	NOTE_UP;
+	NOTE_LEFT;
+	NOTE_RIGHT;
+	NOTE_DOWN;
 	UI_UP;
 	UI_LEFT;
 	UI_RIGHT;
@@ -76,7 +75,6 @@ enum Control
 	BACK;
 	PAUSE;
 	CHEAT;
-	DEBUG1;
 }
 
 enum KeyboardScheme
@@ -105,24 +103,23 @@ class Controls extends FlxActionSet
 	var _ui_leftR = new FlxActionDigital(Action.UI_LEFT_R);
 	var _ui_rightR = new FlxActionDigital(Action.UI_RIGHT_R);
 	var _ui_downR = new FlxActionDigital(Action.UI_DOWN_R);
-	var _up = new FlxActionDigital(Action.UP);
-	var _left = new FlxActionDigital(Action.LEFT);
-	var _right = new FlxActionDigital(Action.RIGHT);
-	var _down = new FlxActionDigital(Action.DOWN);
-	var _upP = new FlxActionDigital(Action.UP_P);
-	var _leftP = new FlxActionDigital(Action.LEFT_P);
-	var _rightP = new FlxActionDigital(Action.RIGHT_P);
-	var _downP = new FlxActionDigital(Action.DOWN_P);
-	var _upR = new FlxActionDigital(Action.UP_R);
-	var _leftR = new FlxActionDigital(Action.LEFT_R);
-	var _rightR = new FlxActionDigital(Action.RIGHT_R);
-	var _downR = new FlxActionDigital(Action.DOWN_R);
+	var _note_up = new FlxActionDigital(Action.NOTE_UP);
+	var _note_left = new FlxActionDigital(Action.NOTE_LEFT);
+	var _note_right = new FlxActionDigital(Action.NOTE_RIGHT);
+	var _note_down = new FlxActionDigital(Action.NOTE_DOWN);
+	var _note_upP = new FlxActionDigital(Action.NOTE_UP_P);
+	var _note_leftP = new FlxActionDigital(Action.NOTE_LEFT_P);
+	var _note_rightP = new FlxActionDigital(Action.NOTE_RIGHT_P);
+	var _note_downP = new FlxActionDigital(Action.NOTE_DOWN_P);
+	var _note_upR = new FlxActionDigital(Action.NOTE_UP_R);
+	var _note_leftR = new FlxActionDigital(Action.NOTE_LEFT_R);
+	var _note_rightR = new FlxActionDigital(Action.NOTE_RIGHT_R);
+	var _note_downR = new FlxActionDigital(Action.NOTE_DOWN_R);
 	var _accept = new FlxActionDigital(Action.ACCEPT);
 	var _back = new FlxActionDigital(Action.BACK);
 	var _pause = new FlxActionDigital(Action.PAUSE);
 	var _reset = new FlxActionDigital(Action.RESET);
 	var _cheat = new FlxActionDigital(Action.CHEAT);
-	var _debug1 = new FlxActionDigital(Action.DEBUG1);
 
 	#if (haxe >= "4.0.0")
 	var byName:Map<String, FlxActionDigital> = [];
@@ -193,65 +190,65 @@ class Controls extends FlxActionSet
 	inline function get_UI_DOWN_R()
 		return _ui_downR.check();
 
-	public var UP(get, never):Bool;
+	public var NOTE_UP(get, never):Bool;
 
-	inline function get_UP()
-		return _up.check();
+	inline function get_NOTE_UP()
+		return _note_up.check();
 
-	public var LEFT(get, never):Bool;
+	public var NOTE_LEFT(get, never):Bool;
 
-	inline function get_LEFT()
-		return _left.check();
+	inline function get_NOTE_LEFT()
+		return _note_left.check();
 
-	public var RIGHT(get, never):Bool;
+	public var NOTE_RIGHT(get, never):Bool;
 
-	inline function get_RIGHT()
-		return _right.check();
+	inline function get_NOTE_RIGHT()
+		return _note_right.check();
 
-	public var DOWN(get, never):Bool;
+	public var NOTE_DOWN(get, never):Bool;
 
-	inline function get_DOWN()
-		return _down.check();
+	inline function get_NOTE_DOWN()
+		return _note_down.check();
 
-	public var UP_P(get, never):Bool;
+	public var NOTE_UP_P(get, never):Bool;
 
-	inline function get_UP_P()
-		return _upP.check();
+	inline function get_NOTE_UP_P()
+		return _note_upP.check();
 
-	public var LEFT_P(get, never):Bool;
+	public var NOTE_LEFT_P(get, never):Bool;
 
-	inline function get_LEFT_P()
-		return _leftP.check();
+	inline function get_NOTE_LEFT_P()
+		return _note_leftP.check();
 
-	public var RIGHT_P(get, never):Bool;
+	public var NOTE_RIGHT_P(get, never):Bool;
 
-	inline function get_RIGHT_P()
-		return _rightP.check();
+	inline function get_NOTE_RIGHT_P()
+		return _note_rightP.check();
 
-	public var DOWN_P(get, never):Bool;
+	public var NOTE_DOWN_P(get, never):Bool;
 
-	inline function get_DOWN_P()
-		return _downP.check();
+	inline function get_NOTE_DOWN_P()
+		return _note_downP.check();
 
-	public var UP_R(get, never):Bool;
+	public var NOTE_UP_R(get, never):Bool;
 
-	inline function get_UP_R()
-		return _upR.check();
+	inline function get_NOTE_UP_R()
+		return _note_upR.check();
 
-	public var LEFT_R(get, never):Bool;
+	public var NOTE_LEFT_R(get, never):Bool;
 
-	inline function get_LEFT_R()
-		return _leftR.check();
+	inline function get_NOTE_LEFT_R()
+		return _note_leftR.check();
 
-	public var RIGHT_R(get, never):Bool;
+	public var NOTE_RIGHT_R(get, never):Bool;
 
-	inline function get_RIGHT_R()
-		return _rightR.check();
+	inline function get_NOTE_RIGHT_R()
+		return _note_rightR.check();
 
-	public var DOWN_R(get, never):Bool;
+	public var NOTE_DOWN_R(get, never):Bool;
 
-	inline function get_DOWN_R()
-		return _downR.check();
+	inline function get_NOTE_DOWN_R()
+		return _note_downR.check();
 
 	public var ACCEPT(get, never):Bool;
 
@@ -278,27 +275,22 @@ class Controls extends FlxActionSet
 	inline function get_CHEAT()
 		return _cheat.check();
 
-	public var DEBUG1(get, never):Bool;
-
-	inline function get_DEBUG1()
-		return _debug1.check();
-
 	public function new(name, scheme = None)
 	{
 		super(name);
 
-		add(_up);
-		add(_left);
-		add(_right);
-		add(_down);
-		add(_upP);
-		add(_leftP);
-		add(_rightP);
-		add(_downP);
-		add(_upR);
-		add(_leftR);
-		add(_rightR);
-		add(_downR);
+		add(_note_up);
+		add(_note_left);
+		add(_note_right);
+		add(_note_down);
+		add(_note_upP);
+		add(_note_leftP);
+		add(_note_rightP);
+		add(_note_downP);
+		add(_note_upR);
+		add(_note_leftR);
+		add(_note_rightR);
+		add(_note_downR);
 		add(_ui_up);
 		add(_ui_left);
 		add(_ui_right);
@@ -316,7 +308,6 @@ class Controls extends FlxActionSet
 		add(_pause);
 		add(_reset);
 		add(_cheat);
-		add(_debug1);
 
 		for (action in digitalActions)
 			byName[action.name] = action;
@@ -344,10 +335,10 @@ class Controls extends FlxActionSet
 
 	public function setHitBox(Hitbox:FlxHitbox)
 	{
-		inline forEachBound(Control.UP, (action, state) -> addbuttonNOTES(action, Hitbox.buttonUp, state));
-		inline forEachBound(Control.DOWN, (action, state) -> addbuttonNOTES(action, Hitbox.buttonDown, state));
-		inline forEachBound(Control.LEFT, (action, state) -> addbuttonNOTES(action, Hitbox.buttonLeft, state));
-		inline forEachBound(Control.RIGHT, (action, state) -> addbuttonNOTES(action, Hitbox.buttonRight, state));
+		inline forEachBound(Control.NOTE_UP, (action, state) -> addbuttonNOTES(action, Hitbox.buttonUp, state));
+		inline forEachBound(Control.NOTE_DOWN, (action, state) -> addbuttonNOTES(action, Hitbox.buttonDown, state));
+		inline forEachBound(Control.NOTE_LEFT, (action, state) -> addbuttonNOTES(action, Hitbox.buttonLeft, state));
+		inline forEachBound(Control.NOTE_RIGHT, (action, state) -> addbuttonNOTES(action, Hitbox.buttonRight, state));
 	}
 
 	public function setVirtualPadUI(VirtualPad:FlxVirtualPad, DPad:FlxDPadMode, Action:FlxActionMode)
@@ -399,29 +390,29 @@ class Controls extends FlxActionSet
 		switch (DPad)
 		{
 			case UP_DOWN:
-				inline forEachBound(Control.UP, (action, state) -> addbuttonNOTES(action, VirtualPad.buttonUp, state));
-				inline forEachBound(Control.DOWN, (action, state) -> addbuttonNOTES(action, VirtualPad.buttonDown, state));
+				inline forEachBound(Control.NOTE_UP, (action, state) -> addbuttonNOTES(action, VirtualPad.buttonUp, state));
+				inline forEachBound(Control.NOTE_DOWN, (action, state) -> addbuttonNOTES(action, VirtualPad.buttonDown, state));
 			case LEFT_RIGHT:
-				inline forEachBound(Control.LEFT, (action, state) -> addbuttonNOTES(action, VirtualPad.buttonLeft, state));
-				inline forEachBound(Control.RIGHT, (action, state) -> addbuttonNOTES(action, VirtualPad.buttonRight, state));
+				inline forEachBound(Control.NOTE_LEFT, (action, state) -> addbuttonNOTES(action, VirtualPad.buttonLeft, state));
+				inline forEachBound(Control.NOTE_RIGHT, (action, state) -> addbuttonNOTES(action, VirtualPad.buttonRight, state));
 			case UP_LEFT_RIGHT:
-				inline forEachBound(Control.UP, (action, state) -> addbuttonNOTES(action, VirtualPad.buttonUp, state));
-				inline forEachBound(Control.LEFT, (action, state) -> addbuttonNOTES(action, VirtualPad.buttonLeft, state));
-				inline forEachBound(Control.RIGHT, (action, state) -> addbuttonNOTES(action, VirtualPad.buttonRight, state));
+				inline forEachBound(Control.NOTE_UP, (action, state) -> addbuttonNOTES(action, VirtualPad.buttonUp, state));
+				inline forEachBound(Control.NOTE_LEFT, (action, state) -> addbuttonNOTES(action, VirtualPad.buttonLeft, state));
+				inline forEachBound(Control.NOTE_RIGHT, (action, state) -> addbuttonNOTES(action, VirtualPad.buttonRight, state));
 			case LEFT_FULL | RIGHT_FULL:
-				inline forEachBound(Control.UP, (action, state) -> addbuttonNOTES(action, VirtualPad.buttonUp, state));
-				inline forEachBound(Control.DOWN, (action, state) -> addbuttonNOTES(action, VirtualPad.buttonDown, state));
-				inline forEachBound(Control.LEFT, (action, state) -> addbuttonNOTES(action, VirtualPad.buttonLeft, state));
-				inline forEachBound(Control.RIGHT, (action, state) -> addbuttonNOTES(action, VirtualPad.buttonRight, state));
+				inline forEachBound(Control.NOTE_UP, (action, state) -> addbuttonNOTES(action, VirtualPad.buttonUp, state));
+				inline forEachBound(Control.NOTE_DOWN, (action, state) -> addbuttonNOTES(action, VirtualPad.buttonDown, state));
+				inline forEachBound(Control.NOTE_LEFT, (action, state) -> addbuttonNOTES(action, VirtualPad.buttonLeft, state));
+				inline forEachBound(Control.NOTE_RIGHT, (action, state) -> addbuttonNOTES(action, VirtualPad.buttonRight, state));
 			case BOTH_FULL:
-				inline forEachBound(Control.UP, (action, state) -> addbuttonNOTES(action, VirtualPad.buttonUp, state));
-				inline forEachBound(Control.DOWN, (action, state) -> addbuttonNOTES(action, VirtualPad.buttonDown, state));
-				inline forEachBound(Control.LEFT, (action, state) -> addbuttonNOTES(action, VirtualPad.buttonLeft, state));
-				inline forEachBound(Control.RIGHT, (action, state) -> addbuttonNOTES(action, VirtualPad.buttonRight, state));
-				inline forEachBound(Control.UP, (action, state) -> addbuttonNOTES(action, VirtualPad.buttonUp2, state));
-				inline forEachBound(Control.DOWN, (action, state) -> addbuttonNOTES(action, VirtualPad.buttonDown2, state));
-				inline forEachBound(Control.LEFT, (action, state) -> addbuttonNOTES(action, VirtualPad.buttonLeft2, state));
-				inline forEachBound(Control.RIGHT, (action, state) -> addbuttonNOTES(action, VirtualPad.buttonRight2, state));
+				inline forEachBound(Control.NOTE_UP, (action, state) -> addbuttonNOTES(action, VirtualPad.buttonUp, state));
+				inline forEachBound(Control.NOTE_DOWN, (action, state) -> addbuttonNOTES(action, VirtualPad.buttonDown, state));
+				inline forEachBound(Control.NOTE_LEFT, (action, state) -> addbuttonNOTES(action, VirtualPad.buttonLeft, state));
+				inline forEachBound(Control.NOTE_RIGHT, (action, state) -> addbuttonNOTES(action, VirtualPad.buttonRight, state));
+				inline forEachBound(Control.NOTE_UP, (action, state) -> addbuttonNOTES(action, VirtualPad.buttonUp2, state));
+				inline forEachBound(Control.NOTE_DOWN, (action, state) -> addbuttonNOTES(action, VirtualPad.buttonDown2, state));
+				inline forEachBound(Control.NOTE_LEFT, (action, state) -> addbuttonNOTES(action, VirtualPad.buttonLeft2, state));
+				inline forEachBound(Control.NOTE_RIGHT, (action, state) -> addbuttonNOTES(action, VirtualPad.buttonRight2, state));
 			case NONE: // do nothing
 		}
 
@@ -491,10 +482,10 @@ class Controls extends FlxActionSet
 	{
 		return switch (control)
 		{
-			case UP: _up;
-			case DOWN: _down;
-			case LEFT: _left;
-			case RIGHT: _right;
+			case NOTE_UP: _note_up;
+			case NOTE_DOWN: _note_down;
+			case NOTE_LEFT: _note_left;
+			case NOTE_RIGHT: _note_right;
 			case UI_UP: _ui_up;
 			case UI_DOWN: _ui_down;
 			case UI_LEFT: _ui_left;
@@ -504,7 +495,6 @@ class Controls extends FlxActionSet
 			case PAUSE: _pause;
 			case RESET: _reset;
 			case CHEAT: _cheat;
-			case DEBUG1: _debug1;
 		}
 	}
 
@@ -524,22 +514,22 @@ class Controls extends FlxActionSet
 	{
 		switch (control)
 		{
-			case UP:
-				func(_up, PRESSED);
-				func(_upP, JUST_PRESSED);
-				func(_upR, JUST_RELEASED);
-			case LEFT:
-				func(_left, PRESSED);
-				func(_leftP, JUST_PRESSED);
-				func(_leftR, JUST_RELEASED);
-			case RIGHT:
-				func(_right, PRESSED);
-				func(_rightP, JUST_PRESSED);
-				func(_rightR, JUST_RELEASED);
-			case DOWN:
-				func(_down, PRESSED);
-				func(_downP, JUST_PRESSED);
-				func(_downR, JUST_RELEASED);
+			case NOTE_UP:
+				func(_note_up, PRESSED);
+				func(_note_upP, JUST_PRESSED);
+				func(_note_upR, JUST_RELEASED);
+			case NOTE_LEFT:
+				func(_note_left, PRESSED);
+				func(_note_leftP, JUST_PRESSED);
+				func(_note_leftR, JUST_RELEASED);
+			case NOTE_RIGHT:
+				func(_note_right, PRESSED);
+				func(_note_rightP, JUST_PRESSED);
+				func(_note_rightR, JUST_RELEASED);
+			case NOTE_DOWN:
+				func(_note_down, PRESSED);
+				func(_note_downP, JUST_PRESSED);
+				func(_note_downR, JUST_RELEASED);
 			case UI_UP:
 				func(_ui_up, PRESSED);
 				func(_ui_upP, JUST_PRESSED);
@@ -566,8 +556,6 @@ class Controls extends FlxActionSet
 				func(_reset, JUST_PRESSED);
 			case CHEAT:
 				func(_cheat, JUST_PRESSED);
-			case DEBUG1:
-				func(_debug1, JUST_PRESSED);
 		}
 	}
 
@@ -706,14 +694,15 @@ class Controls extends FlxActionSet
 		removeKeyboard();
 
 		// keyboardScheme = scheme;
-		inline bindKeys(Control.UP, [Init.gameControls.get('UP')[0][0], Init.gameControls.get('UP')[0][1]]);
-		inline bindKeys(Control.DOWN, [Init.gameControls.get('DOWN')[0][0], Init.gameControls.get('DOWN')[0][1]]);
-		inline bindKeys(Control.LEFT, [Init.gameControls.get('LEFT')[0][0], Init.gameControls.get('LEFT')[0][1]]);
-		inline bindKeys(Control.RIGHT, [Init.gameControls.get('RIGHT')[0][0], Init.gameControls.get('RIGHT')[0][1]]);
+		inline bindKeys(Control.NOTE_UP, [Init.gameControls.get('UP')[0][0], Init.gameControls.get('UP')[0][1]]);
+		inline bindKeys(Control.NOTE_DOWN, [Init.gameControls.get('DOWN')[0][0], Init.gameControls.get('DOWN')[0][1]]);
+		inline bindKeys(Control.NOTE_LEFT, [Init.gameControls.get('LEFT')[0][0], Init.gameControls.get('LEFT')[0][1]]);
+		inline bindKeys(Control.NOTE_RIGHT, [Init.gameControls.get('RIGHT')[0][0], Init.gameControls.get('RIGHT')[0][1]]);
 		inline bindKeys(Control.UI_UP, [Init.gameControls.get('UI_UP')[0][0], Init.gameControls.get('UI_UP')[0][1]]);
 		inline bindKeys(Control.UI_DOWN, [Init.gameControls.get('UI_DOWN')[0][0], Init.gameControls.get('UI_DOWN')[0][1]]);
 		inline bindKeys(Control.UI_LEFT, [Init.gameControls.get('UI_LEFT')[0][0], Init.gameControls.get('UI_LEFT')[0][1]]);
 		inline bindKeys(Control.UI_RIGHT, [Init.gameControls.get('UI_RIGHT')[0][0], Init.gameControls.get('UI_RIGHT')[0][1]]);
+
 		inline bindKeys(Control.ACCEPT, [
 			Init.gameControls.get('ACCEPT')[0][0],
 			Init.gameControls.get('ACCEPT')[0][1],
@@ -726,77 +715,7 @@ class Controls extends FlxActionSet
 		]);
 		inline bindKeys(Control.PAUSE, [Init.gameControls.get('PAUSE')[0][0], Init.gameControls.get('PAUSE')[0][1]]);
 		inline bindKeys(Control.RESET, [Init.gameControls.get('RESET')[0][0], Init.gameControls.get('RESET')[0][1]]);
-		inline bindKeys(Control.DEBUG1, [Init.gameControls.get('DEBUG1')[0][0], Init.gameControls.get('DEBUG1')[0][1]]);
-
-		/* 
-			#if (haxe >= "4.0.0")
-			switch (scheme)
-			{
-				case Solo:
-					inline bindKeys(Control.UP, [J, FlxKey.UP]);
-					inline bindKeys(Control.DOWN, [F, FlxKey.DOWN]);
-					inline bindKeys(Control.LEFT, [D, FlxKey.LEFT]);
-					inline bindKeys(Control.RIGHT, [K, FlxKey.RIGHT]);
-					inline bindKeys(Control.ACCEPT, [Z, SPACE, ENTER]);
-					inline bindKeys(Control.BACK, [BACKSPACE, ESCAPE]);
-					inline bindKeys(Control.PAUSE, [P, ENTER, ESCAPE]);
-					inline bindKeys(Control.RESET, [R]);
-				case Duo(true):
-					inline bindKeys(Control.UP, [W]);
-					inline bindKeys(Control.DOWN, [S]);
-					inline bindKeys(Control.LEFT, [A]);
-					inline bindKeys(Control.RIGHT, [D]);
-					inline bindKeys(Control.ACCEPT, [G, Z]);
-					inline bindKeys(Control.BACK, [H, X]);
-					inline bindKeys(Control.PAUSE, [ONE]);
-					inline bindKeys(Control.RESET, [R]);
-				case Duo(false):
-					inline bindKeys(Control.UP, [FlxKey.UP]);
-					inline bindKeys(Control.DOWN, [FlxKey.DOWN]);
-					inline bindKeys(Control.LEFT, [FlxKey.LEFT]);
-					inline bindKeys(Control.RIGHT, [FlxKey.RIGHT]);
-					inline bindKeys(Control.ACCEPT, [O]);
-					inline bindKeys(Control.BACK, [P]);
-					inline bindKeys(Control.PAUSE, [ENTER]);
-					inline bindKeys(Control.RESET, [BACKSPACE]);
-				case None: // nothing
-				case Custom: // nothing
-			}
-			#else
-			switch (scheme)
-			{
-				case Solo:
-					bindKeys(Control.UP, [W, FlxKey.UP]);
-					bindKeys(Control.DOWN, [S, FlxKey.DOWN]);
-					bindKeys(Control.LEFT, [A, FlxKey.LEFT]);
-					bindKeys(Control.RIGHT, [D, FlxKey.RIGHT]);
-					bindKeys(Control.ACCEPT, [Z, SPACE, ENTER]);
-					bindKeys(Control.BACK, [BACKSPACE, ESCAPE]);
-					bindKeys(Control.PAUSE, [P, ENTER, ESCAPE]);
-					bindKeys(Control.RESET, [R]);
-				case Duo(true):
-					bindKeys(Control.UP, [W]);
-					bindKeys(Control.DOWN, [S]);
-					bindKeys(Control.LEFT, [A]);
-					bindKeys(Control.RIGHT, [D]);
-					bindKeys(Control.ACCEPT, [G, Z]);
-					bindKeys(Control.BACK, [H, X]);
-					bindKeys(Control.PAUSE, [ONE]);
-					bindKeys(Control.RESET, [R]);
-				case Duo(false):
-					bindKeys(Control.UP, [FlxKey.UP]);
-					bindKeys(Control.DOWN, [FlxKey.DOWN]);
-					bindKeys(Control.LEFT, [FlxKey.LEFT]);
-					bindKeys(Control.RIGHT, [FlxKey.RIGHT]);
-					bindKeys(Control.ACCEPT, [O]);
-					bindKeys(Control.BACK, [P]);
-					bindKeys(Control.PAUSE, [ENTER]);
-					bindKeys(Control.RESET, [BACKSPACE]);
-				case None: // nothing
-				case Custom: // nothing
-			}
-			#end
-		 */
+		inline bindKeys(Control.CHEAT, [Init.gameControls.get('CHEAT')[0][0], Init.gameControls.get('CHEAT')[0][1]]);
 	}
 
 	function removeKeyboard()
@@ -844,40 +763,31 @@ class Controls extends FlxActionSet
 
 	public function addDefaultGamepad(id):Void
 	{
-		#if !switch
 		addGamepad(id, [
+			#if !switch
 			Control.ACCEPT => [A],
 			Control.BACK => [B],
-			Control.UI_UP => [DPAD_UP, LEFT_STICK_DIGITAL_UP, RIGHT_STICK_DIGITAL_UP],
-			Control.UI_DOWN => [DPAD_DOWN, LEFT_STICK_DIGITAL_DOWN, RIGHT_STICK_DIGITAL_DOWN],
-			Control.UI_LEFT => [DPAD_LEFT, LEFT_STICK_DIGITAL_LEFT, RIGHT_STICK_DIGITAL_LEFT],
-			Control.UI_RIGHT => [DPAD_RIGHT, LEFT_STICK_DIGITAL_RIGHT, RIGHT_STICK_DIGITAL_RIGHT],
-			Control.UP => [DPAD_UP, LEFT_STICK_DIGITAL_UP, RIGHT_STICK_DIGITAL_UP],
-			Control.DOWN => [DPAD_DOWN, LEFT_STICK_DIGITAL_DOWN, RIGHT_STICK_DIGITAL_DOWN],
-			Control.LEFT => [DPAD_LEFT, LEFT_STICK_DIGITAL_LEFT, RIGHT_STICK_DIGITAL_LEFT],
-			Control.RIGHT => [DPAD_RIGHT, LEFT_STICK_DIGITAL_RIGHT, RIGHT_STICK_DIGITAL_RIGHT],
-			Control.PAUSE => [START],
-			Control.RESET => [Y]
-		]);
-		#else
-		addGamepad(id, [
-			// Swap A and B for switch
+			#else
 			Control.ACCEPT => [B],
 			Control.BACK => [A],
+			#end
 			Control.UI_UP => [DPAD_UP, LEFT_STICK_DIGITAL_UP, RIGHT_STICK_DIGITAL_UP],
 			Control.UI_DOWN => [DPAD_DOWN, LEFT_STICK_DIGITAL_DOWN, RIGHT_STICK_DIGITAL_DOWN],
 			Control.UI_LEFT => [DPAD_LEFT, LEFT_STICK_DIGITAL_LEFT, RIGHT_STICK_DIGITAL_LEFT],
 			Control.UI_RIGHT => [DPAD_RIGHT, LEFT_STICK_DIGITAL_RIGHT, RIGHT_STICK_DIGITAL_RIGHT],
-			Control.UP => [DPAD_UP, LEFT_STICK_DIGITAL_UP, RIGHT_STICK_DIGITAL_UP],
-			Control.DOWN => [DPAD_DOWN, LEFT_STICK_DIGITAL_DOWN, RIGHT_STICK_DIGITAL_DOWN],
-			Control.LEFT => [DPAD_LEFT, LEFT_STICK_DIGITAL_LEFT, RIGHT_STICK_DIGITAL_LEFT],
-			Control.RIGHT => [DPAD_RIGHT, LEFT_STICK_DIGITAL_RIGHT, RIGHT_STICK_DIGITAL_RIGHT],
+			Control.NOTE_UP => [DPAD_UP, LEFT_STICK_DIGITAL_UP, RIGHT_STICK_DIGITAL_UP],
+			Control.NOTE_DOWN => [DPAD_DOWN, LEFT_STICK_DIGITAL_DOWN, RIGHT_STICK_DIGITAL_DOWN],
+			Control.NOTE_LEFT => [DPAD_LEFT, LEFT_STICK_DIGITAL_LEFT, RIGHT_STICK_DIGITAL_LEFT],
+			Control.NOTE_RIGHT => [DPAD_RIGHT, LEFT_STICK_DIGITAL_RIGHT, RIGHT_STICK_DIGITAL_RIGHT],
 			Control.PAUSE => [START],
-			// Swap Y and X for switch
+			#if !switch
+			Control.RESET => [X],
+			Control.CHEAT => [Y],
+			#else
 			Control.RESET => [Y],
-			Control.CHEAT => [X]
+			Control.CHEAT => [X],
+			#end
 		]);
-		#end
 	}
 
 	/**
