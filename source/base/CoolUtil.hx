@@ -11,6 +11,11 @@ class CoolUtil
 {
 	public static var baseDifficulties:Array<String> = ["EASY", "NORMAL", "HARD"];
 
+	/*
+		a Map for Difficulty Suffixes, used to specify which difficulty is currently set on a song
+	*/
+	public static var difficultyMap:Map<String, Int> = ["EASY" => 0, "NORMAL" => 1, "HARD" => 2];
+
 	public static var difficulties:Array<String> = [];
 
 	public static var difficultyLength = difficulties.length;
@@ -143,7 +148,7 @@ class CoolUtil
 		if (!file.endsWith('/'))
 			file = '$file/';
 
-		var path:String = Paths.getPreloadPath(file);
+		var path:String = Paths.getPath(file);
 
 		var absolutePath:String = FileSystem.absolutePath(path);
 		var directory:Array<String> = FileSystem.readDirectory(absolutePath);

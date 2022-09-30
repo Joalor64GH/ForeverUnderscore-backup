@@ -82,7 +82,7 @@ class Character extends FNFSprite
 		if (icon == null)
 			icon = character;
 
-		var psychChar = FileSystem.exists(Paths.getPreloadPath('characters/$character/' + character + '.json'));
+		var psychChar = FileSystem.exists(Paths.getPath('characters/$character/' + character + '.json'));
 
 		switch (character)
 		{
@@ -299,7 +299,7 @@ class Character extends FNFSprite
 	private var settingCharacterUp:Bool = true;
 
 	/**
-	 * for Psych Engine Characters;
+	 * mostly used for Psych Engine Characters;
 	 * @author Shadow_Mario_
 	**/
 	public function recalcDance()
@@ -327,8 +327,8 @@ class Character extends FNFSprite
 	function generateBaseChar(char:String = 'bf')
 	{
 		var scripts:Array<String> = [
-			Paths.getPreloadPath('characters/$char/config.hx'),
-			Paths.getPreloadPath('characters/$char/config.hxs')
+			Paths.getPath('characters/$char/config.hx'),
+			Paths.getPath('characters/$char/config.hxs')
 		];
 
 		var pushedScripts:Array<String> = [];
@@ -494,12 +494,13 @@ class Character extends FNFSprite
 
 	public var psychAnimationsArray:Array<PsychAnimArray> = [];
 
+	/*
+		Compatibility Layer for Psych Engine Characters
+		@author Shadow_Mario_
+	*/
 	function generatePsychChar(char:String = 'bf')
 	{
-		/**
-		 * @author Shadow_Mario_
-		 */
-		var path = Paths.getPreloadPath('characters/$char/' + character + '.json');
+		var path = Paths.getPath('characters/$char/' + character + '.json');
 
 		var rawJson = File.getContent(path);
 

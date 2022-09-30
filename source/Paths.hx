@@ -209,6 +209,35 @@ final class Paths
 		return getPreloadPath(file);
 	}
 
+	public static function getModPath(file:String)
+	{
+		/*
+			grabs every folder inside the "mods" folder and adds it to an array
+			Work in progress.
+		*/
+
+		var modFolders:Array<String> = [];
+		var modRoot = FileSystem.readDirectory('mods');
+
+		for (mod in modRoot)
+		{
+			trace(mod);
+			if (!mod.contains('.'))
+				modFolders.push(mod);
+		}
+
+		for (folders in modFolders)
+		{
+			var modPath:String = 'mods/$folders/$file';
+			if (!FileSystem.exists(modPath))
+				modPath = CoolUtil.swapSpaceDash(modPath);
+			return modPath;
+		}
+
+		trace('Mod $file is null');
+		return null;
+	}
+
 	static public function getLibraryPath(file:String, library = "preload")
 	{
 		return if (library == "preload" || library == "default") getPreloadPath(file); else getLibraryPathForce(file, library);
