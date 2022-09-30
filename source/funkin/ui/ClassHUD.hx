@@ -189,19 +189,19 @@ class ClassHUD extends FlxTypedGroup<FlxBasic>
 
 		var unrated = (Timings.comboDisplay == null || Timings.comboDisplay == '');
 
-		var comboDisplay = ' [' + Timings.comboDisplay + ']';
+		var comboDisplay:String = Timings.comboDisplay;
+		var rankingDisplay:String = Timings.returnScoreRating().toUpperCase();
+		var rankLabel:String = (!unrated ? ' [$comboDisplay | $rankingDisplay]' : ' [$rankingDisplay]');
 
 		// testing purposes
 		var displayAccuracy:Bool = Init.getSetting('Display Accuracy');
 
 		scoreBar.text = 'Score: $importSongScore';
-		if (displayAccuracy)
-			scoreBar.text += divider + 'Accuracy: ${(Math.floor(Timings.getAccuracy() * 100) / 100)}%' + (!unrated ? comboDisplay : '');
-
 		scoreBar.text += divider + 'Combo Breaks: $importMisses';
 
 		if (displayAccuracy)
-			scoreBar.text += divider + 'Rank: ${Timings.returnScoreRating().toUpperCase()}';
+			scoreBar.text += divider + 'Accuracy: ${(Math.floor(Timings.getAccuracy() * 100) / 100)}%' + rankLabel;
+
 		scoreBar.text += '\n';
 		scoreBar.x = Math.floor((FlxG.width / 2) - (scoreBar.width / 2));
 
