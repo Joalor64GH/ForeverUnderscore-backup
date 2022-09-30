@@ -294,7 +294,7 @@ class Alphabet extends FlxSpriteGroup
 									FlxG.sound.play(daSound);
 							}
 						}
-						catch(e)
+						catch (e)
 						{
 							trace('Dialogue Error: ' + e);
 						}

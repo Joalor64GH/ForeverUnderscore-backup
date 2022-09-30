@@ -31,8 +31,8 @@ class NoteColorsSubstate extends MusicBeatSubstate
 	{
 		super.update(elapsed);
 
-        if (controls.ACCEPT)
-            close();
+		if (controls.ACCEPT)
+			close();
 
 		if (controls.BACK)
 			close();

@@ -86,15 +86,13 @@ class MobileControlsSubState extends FlxSubState
 		add(inputvari);
 
 		leftArrow = new FlxSprite(inputvari.x - 60, inputvari.y - 25);
-		leftArrow.frames = FlxAtlasFrames.fromSparrow(Assets.getBitmapData('assets/mobile/menu/arrows.png'),
-			Assets.getText('assets/mobile/menu/arrows.xml'));
+		leftArrow.frames = FlxAtlasFrames.fromSparrow(Assets.getBitmapData('assets/mobile/menu/arrows.png'), Assets.getText('assets/mobile/menu/arrows.xml'));
 		leftArrow.animation.addByPrefix('idle', 'arrow left');
 		leftArrow.animation.play('idle');
 		add(leftArrow);
 
 		rightArrow = new FlxSprite(inputvari.x + inputvari.width + 10, inputvari.y - 25);
-		rightArrow.frames = FlxAtlasFrames.fromSparrow(Assets.getBitmapData('assets/mobile/menu/arrows.png'),
-			Assets.getText('assets/mobile/menu/arrows.xml'));
+		rightArrow.frames = FlxAtlasFrames.fromSparrow(Assets.getBitmapData('assets/mobile/menu/arrows.png'), Assets.getText('assets/mobile/menu/arrows.xml'));
 		rightArrow.animation.addByPrefix('idle', 'arrow right');
 		rightArrow.animation.play('idle');
 		add(rightArrow);

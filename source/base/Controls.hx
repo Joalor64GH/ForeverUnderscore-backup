@@ -765,11 +765,9 @@ class Controls extends FlxActionSet
 	{
 		addGamepad(id, [
 			#if !switch
-			Control.ACCEPT => [A],
-			Control.BACK => [B],
+			Control.ACCEPT => [A], Control.BACK => [B],
 			#else
-			Control.ACCEPT => [B],
-			Control.BACK => [A],
+			Control.ACCEPT => [B], Control.BACK => [A],
 			#end
 			Control.UI_UP => [DPAD_UP, LEFT_STICK_DIGITAL_UP, RIGHT_STICK_DIGITAL_UP],
 			Control.UI_DOWN => [DPAD_DOWN, LEFT_STICK_DIGITAL_DOWN, RIGHT_STICK_DIGITAL_DOWN],
@@ -781,11 +779,9 @@ class Controls extends FlxActionSet
 			Control.NOTE_RIGHT => [DPAD_RIGHT, LEFT_STICK_DIGITAL_RIGHT, RIGHT_STICK_DIGITAL_RIGHT],
 			Control.PAUSE => [START],
 			#if !switch
-			Control.RESET => [X],
-			Control.CHEAT => [Y],
+			Control.RESET => [X], Control.CHEAT => [Y],
 			#else
-			Control.RESET => [Y],
-			Control.CHEAT => [X],
+			Control.RESET => [Y], Control.CHEAT => [X],
 			#end
 		]);
 	}

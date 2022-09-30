@@ -428,7 +428,13 @@ class Init extends FlxState
 			|| trueSettings.get("Framerate Cap") > 360)
 			trueSettings.set("Framerate Cap", 30);
 
-		var similarSettings:Array<String> = ["Darkness Opacity", "Hitsound Volume", "Arrow Opacity", "Splash Opacity", "Hold Opacity"];
+		var similarSettings:Array<String> = [
+			"Darkness Opacity",
+			"Hitsound Volume",
+			"Arrow Opacity",
+			"Splash Opacity",
+			"Hold Opacity"
+		];
 
 		for (i in similarSettings)
 		{

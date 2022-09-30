@@ -653,7 +653,7 @@ class OptionsMenuState extends MusicBeatState
 			});
 		}
 	}
-	
+
 	#if mobile
 	public function openMobileControls()
 	{
@@ -669,7 +669,7 @@ class OptionsMenuState extends MusicBeatState
 		}
 	}
 	#end
-	
+
 	public function openNotemenu()
 	{
 		if (controls.ACCEPT || FlxG.mouse.justPressed)

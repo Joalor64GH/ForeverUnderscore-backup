@@ -4,13 +4,12 @@ package base.data;
 	FOR SUPER ENGINE CHARACTER COMPATIBILITY
 	WIP.
 	author @superpowers04
-*/
-
+ */
 typedef CharacterJson =
 {
 	var flip_x:Bool;
 	var flip:Dynamic; // Controls if the character should be flipped when on the player's side
-	var offset_flip:Dynamic; // Flips the offsets on the left, 0/not specififed = off completely, 1 = use player2, 2 = flip left, 3 = flip right  
+	var offset_flip:Dynamic; // Flips the offsets on the left, 0/not specififed = off completely, 1 = use player2, 2 = flip left, 3 = flip right
 	var asset_files:Array<CharacterAssetFiles>;
 	var clone:String;
 	var like:String; // Clone but without stealing the offsets
@@ -41,15 +40,19 @@ typedef CharacterJson =
 	var genBy:String; // This should not be provided manually
 	var ?boneChar:BoneChar;
 }
-typedef IfStatement = {
+
+typedef IfStatement =
+{
 	var ?func:Dynamic->Void;
 	var ?isFunc:Bool;
-	var	variable:String;
-	var	type:String;
-	var	value:Dynamic;
+	var variable:String;
+	var type:String;
+	var value:Dynamic;
 	var check:Int; // 0 = beat, 1 = step
-} 
-typedef CharJsonAnimation = {
+}
+
+typedef CharJsonAnimation =
+{
 	var ?ifstate:Null<IfStatement>;
 	var anim:String;
 	var name:String;
@@ -66,7 +69,8 @@ typedef CharJsonAnimation = {
 	var ?priority:Null<Int>; // Animation priority, 0 is idle, 10 is sing, 5 is hey, and the rest is up to you. The engine will handle the rest
 }
 
-typedef CharacterAssetFiles = {
+typedef CharacterAssetFiles =
+{
 	var xml:String;
 	var png:String;
 	var stage:String; // Set on specific stage
@@ -77,17 +81,21 @@ typedef CharacterAssetFiles = {
 	var animations_offsets:Array<CharJsonAnimOffsets>;
 }
 
-typedef CharJsonAnimOffsets = {
+typedef CharJsonAnimOffsets =
+{
 	var anim:String;
 	var player1:Array<Float>;
 	var player2:Array<Float>;
 	var player3:Array<Float>;
 }
-typedef BoneChar = {
+
+typedef BoneChar =
+{
 	var anims:Array<BCAnim>;
 }
 
-typedef BCAnim = {
+typedef BCAnim =
+{
 	var keyframes:Array<BCAnimKeyFrame>;
 	var name:String;
 	var length:Float;
@@ -95,7 +103,9 @@ typedef BCAnim = {
 	var priority:Int;
 	var blend:Float;
 }
-typedef BCAnimKeyFrame = {
+
+typedef BCAnimKeyFrame =
+{
 	var time:Float; // Time in seconds
 	var bone:String;
 	var type:Int; // 1 = position, 2 = angle, 3 = frame

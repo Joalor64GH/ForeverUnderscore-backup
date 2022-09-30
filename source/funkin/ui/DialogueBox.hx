@@ -467,7 +467,7 @@ class DialogueBox extends FlxSpriteGroup
 						var daSound:String = alphabetText.beginPath + portraitData.sounds[cur] + "." + Paths.SOUND_EXT;
 
 						pixelText.sounds = [];
-						
+
 						if (daSound.endsWith(Paths.SOUND_EXT))
 						{
 							if (daSound == null)

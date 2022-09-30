@@ -16,11 +16,11 @@ import openfl.events.UncaughtErrorEvent;
 import openfl.utils.Assets;
 
 using StringTools;
+
 #if (sys && !ios)
 import sys.FileSystem;
 import sys.io.File;
 #end
-
 
 /**
  * ...

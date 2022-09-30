@@ -497,7 +497,7 @@ class Character extends FNFSprite
 	/*
 		Compatibility Layer for Psych Engine Characters
 		@author Shadow_Mario_
-	*/
+	 */
 	function generatePsychChar(char:String = 'bf')
 	{
 		var path = Paths.getPath('characters/$char/' + character + '.json');

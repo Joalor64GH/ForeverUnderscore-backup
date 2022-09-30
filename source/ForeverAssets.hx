@@ -315,8 +315,7 @@ class ForeverAssets
 				// genuinely more programmers should make their code more modular
 				var framesArgument:String = "arrows-pixels";
 				newStaticArrow.loadGraphic(Paths.image(ForeverTools.returnSkin('$framesArgument', assetModifier, Init.getSetting("Note Skin"),
-					'noteskins/notes')), true, 17,
-					17);
+					'noteskins/notes')), true, 17, 17);
 				newStaticArrow.animation.add('static', [staticArrowType]);
 				newStaticArrow.animation.add('pressed', [4 + staticArrowType, 8 + staticArrowType], 12, false);
 				newStaticArrow.animation.add('confirm', [12 + staticArrowType, 16 + staticArrowType], 24, false);

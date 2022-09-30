@@ -563,7 +563,7 @@ class PlayState extends MusicBeatState
 
 		callFunc('postCreate', []);
 	}
-	
+
 	public function playVideo(name:String)
 	{
 		#if VIDEO_PLUGIN
@@ -629,8 +629,7 @@ class PlayState extends MusicBeatState
 	/*
 		input system functions
 		for pressing and releasing notes
-	*/
-
+	 */
 	public function onKeyPress(event:KeyboardEvent):Void
 	{
 		var eventKey:FlxKey = event.keyCode;
@@ -992,14 +991,14 @@ class PlayState extends MusicBeatState
 
 		callFunc('postUpdate', [elapsed]);
 	}
-	
+
 	function noteCleanup(time:Float)
 	{
 		var i:Int = unspawnNotes.length - 1;
 		while (i >= 0)
 		{
 			var daNote:Note = unspawnNotes[i];
-			if(daNote.strumTime - 350 < time)
+			if (daNote.strumTime - 350 < time)
 			{
 				daNote.active = false;
 				daNote.visible = false;
@@ -1186,7 +1185,8 @@ class PlayState extends MusicBeatState
 										var breakFromLate:Bool = false;
 										if (!breakFromLate)
 										{
-											missNoteCheck((Init.getSetting('Ghost Tapping') && !startingSong) ? true : false, strumNote.noteData, boyfriend, true);
+											missNoteCheck((Init.getSetting('Ghost Tapping') && !startingSong) ? true : false, strumNote.noteData, boyfriend,
+												true);
 											for (note in parentNote.childrenNotes)
 												note.tooLate = true;
 										}

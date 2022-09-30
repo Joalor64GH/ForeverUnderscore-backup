@@ -3,8 +3,7 @@ package base.data;
 /*
 	FOR PSYCH ENGINE CHARACTER COMPATIBILITY
 	author @Shadow_Mario_
-*/
-
+ */
 typedef PsychEngineChar =
 {
 	var animations:Array<PsychAnimArray>;

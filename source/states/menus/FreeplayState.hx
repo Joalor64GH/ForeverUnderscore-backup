@@ -346,7 +346,7 @@ class FreeplayState extends MusicBeatState
 				/*
 					else if (ctrl)
 						openSubState(new FreeplaySubstate());
-				*/
+				 */
 				else if (controls.RESET && presses < 3 && !shiftP)
 				{
 					presses++;

@@ -240,7 +240,7 @@ class PauseSubstate extends MusicBeatSubstate
 						Main.switchState(this, new StoryMenuState());
 					else
 						Main.switchState(this, new FreeplayState());
-						
+
 				case 'Open Editors':
 					EditorMenuSubstate.fromPause = true;
 					openSubState(new EditorMenuSubstate());

@@ -411,16 +411,14 @@ class Note extends FNFSprite
 			if (newNote.isSustainNote)
 			{
 				newNote.loadGraphic(Paths.image(ForeverTools.returnSkin(texture, assetModifier, (changeable ? Init.getSetting("Note Skin") : ''),
-					texturePath)), true,
-					7, 6);
+					texturePath)), true, 7, 6);
 				newNote.animation.add(UIStaticArrow.getColorFromNumber(newNote.noteData) + 'holdend', [pixelNoteID[newNote.noteData]]);
 				newNote.animation.add(UIStaticArrow.getColorFromNumber(newNote.noteData) + 'hold', [pixelNoteID[newNote.noteData] - 4]);
 			}
 			else
 			{
 				newNote.loadGraphic(Paths.image(ForeverTools.returnSkin(texture, assetModifier, (changeable ? Init.getSetting("Note Skin") : ''),
-					texturePath)), true,
-					17, 17);
+					texturePath)), true, 17, 17);
 				newNote.animation.add(UIStaticArrow.getColorFromNumber(newNote.noteData) + 'Scroll', [pixelNoteID[newNote.noteData]], 12);
 			}
 		}

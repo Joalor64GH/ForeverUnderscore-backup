@@ -200,7 +200,7 @@ final class Paths
 			we're in (if a library is not specified), say like week 1 or something, 
 			then checks if the assets you're looking for are there.
 			if not, it checks the shared assets folder.
-		*/
+		 */
 
 		if (library != null)
 			return getLibraryPath(file, library);
@@ -217,7 +217,7 @@ final class Paths
 		/*
 			grabs every folder inside the "mods" folder and adds it to an array
 			Work in progress.
-		*/
+		 */
 
 		var modFolders:Array<String> = [];
 		var modRoot = FileSystem.readDirectory('mods');
