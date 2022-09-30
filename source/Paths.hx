@@ -86,7 +86,7 @@ final class Paths
 						FlxG.bitmap._cache.remove(key);
 					}
 					#if DEBUG_TRACES trace('removed $key, ' + (isTexture ? 'is a texture' : 'is not a texture')); #end
-					obj.bitmap.disposeImage();
+					obj.bitmap.disposeImage(); // bpm shoutouts to Raltyro :)
 					obj.destroy();
 					currentTrackedAssets.remove(key);
 					counter++;
