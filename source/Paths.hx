@@ -12,7 +12,7 @@ import flixel.graphics.FlxGraphic;
 import flixel.graphics.frames.FlxAtlasFrames;
 import lime.utils.Assets;
 import openfl.display.BitmapData;
-import openfl.display3D.textures.Texture;
+import openfl.display3D.textures.RectangleTexture;
 import openfl.media.Sound;
 import openfl.system.System;
 import openfl.utils.AssetType;
@@ -43,7 +43,7 @@ final class Paths
 
 	// stealing my own code from psych engine
 	public static var currentTrackedAssets:Map<String, FlxGraphic> = [];
-	public static var currentTrackedTextures:Map<String, Texture> = [];
+	public static var currentTrackedTextures:Map<String, RectangleTexture> = [];
 	public static var currentTrackedSounds:Map<String, Sound> = [];
 
 	public static function excludeAsset(key:String)
@@ -70,6 +70,7 @@ final class Paths
 				var obj = currentTrackedAssets.get(key);
 				if (obj != null)
 				{
+					obj.bitmap.lock();
 					var isTexture:Bool = currentTrackedTextures.exists(key);
 					if (isTexture)
 					{
@@ -85,6 +86,7 @@ final class Paths
 						FlxG.bitmap._cache.remove(key);
 					}
 					#if DEBUG_TRACES trace('removed $key, ' + (isTexture ? 'is a texture' : 'is not a texture')); #end
+					obj.bitmap.disposeImage();
 					obj.destroy();
 					currentTrackedAssets.remove(key);
 					counter++;
@@ -99,7 +101,7 @@ final class Paths
 	// define the locally tracked assets
 	public static var localTrackedAssets:Array<String> = [];
 
-	public static function clearStoredMemory(?cleanUnused:Bool = false)
+	public static function clearStoredMemory()
 	{
 		// clear anything not in the tracked assets list
 		@:privateAccess
@@ -139,7 +141,8 @@ final class Paths
 				var newGraphic:FlxGraphic;
 				if (Init.getSetting('GPU Rendering'))
 				{
-					var texture = FlxG.stage.context3D.createTexture(bitmap.width, bitmap.height, BGRA, true, 0);
+					bitmap.lock();
+					var texture = FlxG.stage.context3D.createRectangleTexture(bitmap.width, bitmap.height, BGRA, true);
 					texture.uploadFromBitmapData(bitmap);
 					currentTrackedTextures.set(key, texture);
 					bitmap.dispose();
