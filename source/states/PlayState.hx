@@ -738,6 +738,11 @@ class PlayState extends MusicBeatState
 
 	var lastSection:Int = 0;
 
+	public static var songSpeed(get, default):Float = 0;
+
+	static function get_songSpeed() // TODO: fix sustains on high rates;
+		return songSpeed * Conductor.playbackRate;
+
 	override public function update(elapsed:Float)
 	{
 		super.update(elapsed);
@@ -1048,7 +1053,7 @@ class PlayState extends MusicBeatState
 		}
 
 		// set the notes x and y
-		var downscrollMultiplier = (Init.getSetting('Downscroll') ? -1 : 1) * FlxMath.signOf(get_songSpeed());
+		var downscrollMultiplier = (Init.getSetting('Downscroll') ? -1 : 1) * FlxMath.signOf(songSpeed);
 		if (generatedMusic && startedCountdown)
 		{
 			for (strumline in strumLines)
@@ -1059,7 +1064,7 @@ class PlayState extends MusicBeatState
 					if (strumNote.useCustomSpeed)
 						strumNote.noteSpeed = Init.getSetting('Scroll Speed');
 					else
-						strumNote.noteSpeed = Math.abs(get_songSpeed());
+						strumNote.noteSpeed = Math.abs(songSpeed);
 
 					var roundedSpeed = FlxMath.roundDecimal(strumNote.noteSpeed, 2);
 					var receptorX:Float = strumline.receptors.members[Math.floor(strumNote.noteData)].x;
@@ -1658,11 +1663,6 @@ class PlayState extends MusicBeatState
 		}
 		super.onFocusLost();
 	}
-
-	public static var songSpeed(get, default):Float = 0;
-
-	static function get_songSpeed() // TODO: fix sustains on high rates;
-		return songSpeed * Conductor.playbackRate;
 
 	public static function updateRPC(pausedRPC:Bool)
 	{

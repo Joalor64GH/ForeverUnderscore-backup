@@ -156,11 +156,12 @@ class Note extends FNFSprite
 	{
 		if (isSustainNote)
 		{
-			if (prevNote != null)
+			if (prevNote != null && prevNote.exists)
 			{
 				if (prevNote.isSustainNote)
 				{
 					// listen I dont know what i was doing but I was onto something
+					// yoshubs this literally works properly -gabi
 					prevNote.scale.y = (prevNote.width / prevNote.frameWidth) * ((Conductor.stepCrochet / 100) * (1.07 / 0.8)) * noteSpeed;
 					prevNote.updateHitbox();
 					offsetX = prevNote.offsetX;
