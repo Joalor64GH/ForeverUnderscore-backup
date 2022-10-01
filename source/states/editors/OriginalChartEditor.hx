@@ -21,6 +21,7 @@ import flixel.addons.ui.FlxUICheckBox;
 import flixel.addons.ui.FlxUIDropDownMenu;
 import flixel.addons.ui.FlxUIInputText;
 import flixel.addons.ui.FlxUINumericStepper;
+import flixel.addons.ui.FlxUISlider;
 import flixel.addons.ui.FlxUITabMenu;
 import flixel.addons.ui.FlxUITooltip.FlxUITooltipStyle;
 import flixel.group.FlxGroup.FlxTypedGroup;
@@ -141,6 +142,13 @@ class OriginalChartEditor extends MusicBeatState
 	var gridGroup:FlxTypedGroup<FlxObject>;
 
 	var tempBpm:Float = 0;
+	var playbackSpeed(default, set):Float = 1;
+
+	function set_playbackSpeed(value:Float)
+	{
+		playbackSpeed = value;
+		return playbackSpeed;
+	}
 
 	var vocals:FlxSound;
 
@@ -202,10 +210,10 @@ class OriginalChartEditor extends MusicBeatState
 		add(dummyArrow);
 
 		var tabs:Array<{name:String, label:String}> = [
-			{name: "Song", label: 'Song'},
-			{name: "Section", label: 'Section'},
-			{name: "Notes", label: 'Notes'},
-			{name: "Events", label: 'Events'},
+			{name: "Song", label: 'Song Data'},
+			{name: "Section", label: 'Section Data'},
+			{name: "Notes", label: 'Note Data'},
+			{name: "Events", label: 'Event Data'},
 		];
 
 		UI_box = new FlxUITabMenu(null, tabs, true);
@@ -229,6 +237,7 @@ class OriginalChartEditor extends MusicBeatState
 		FlxG.mouse.useSystemCursor = true;
 	}
 
+	var sliderRate:FlxUISlider;
 	var stepperSpeed:FlxUINumericStepper;
 	var stepperBPM:FlxUINumericStepper;
 
@@ -309,6 +318,8 @@ class OriginalChartEditor extends MusicBeatState
 		stepperBPM.value = Conductor.bpm;
 		stepperBPM.name = 'song_bpm';
 		blockPressWhileTypingOnStepper.push(stepperBPM);
+
+		sliderRate = new FlxUISlider(this, 'playbackSpeed', 50, 250, 0.5, 3, 150, null, 5, FlxColor.WHITE, FlxColor.BLACK);
 
 		var baseChars:Array<String> = CoolUtil.returnAssetsLibrary('characters', 'assets');
 		var baseStages:Array<String> = CoolUtil.returnAssetsLibrary('stages', 'assets');
@@ -401,6 +412,7 @@ class OriginalChartEditor extends MusicBeatState
 		tab_group_song.add(loadAutosaveBtn);
 		tab_group_song.add(stepperBPM);
 		tab_group_song.add(stepperSpeed);
+		tab_group_song.add(sliderRate);
 		tab_group_song.add(new FlxText(player1DropDown.x, player1DropDown.y - 15, 0, 'Boyfriend:'));
 		tab_group_song.add(new FlxText(gfVersionDropDown.x, gfVersionDropDown.y - 15, 0, 'Girlfriend:'));
 		tab_group_song.add(new FlxText(player2DropDown.x, player2DropDown.y - 15, 0, 'Opponent:'));
@@ -794,6 +806,15 @@ class OriginalChartEditor extends MusicBeatState
 				}
 			}
 		}
+		else if (id == FlxUISlider.CHANGE_EVENT && (sender is FlxUISlider))
+		{
+			switch (sender)
+			{
+				case 'playbackSpeed':
+					set_playbackSpeed(Std.int(sliderRate.value));
+				default:
+			}
+		}
 
 		// FlxG.log.add(id + " WEED " + sender + " WEED " + data + " WEED " + params);
 	}
@@ -1099,35 +1120,8 @@ class OriginalChartEditor extends MusicBeatState
 		if (FlxG.keys.justPressed.LEFT || FlxG.keys.justPressed.A)
 			changeSection(curSection - shiftThing);
 
-		if (FlxG.keys.pressed.CONTROL && FlxG.keys.justPressed.Z)
-		{
-			songMusic.pitch += 0.1;
-			vocals.pitch += 0.1;
-		}
-
-		if (FlxG.keys.pressed.CONTROL && FlxG.keys.justPressed.X)
-		{
-			songMusic.pitch -= 0.1;
-			vocals.pitch -= 0.1;
-		}
-
-		if (FlxG.keys.pressed.CONTROL && FlxG.keys.justPressed.C)
-		{
-			songMusic.pitch = 1;
-			vocals.pitch = 1;
-		}
-
-		if (songMusic.pitch >= 6)
-		{
-			songMusic.pitch = 6;
-			vocals.pitch = 6;
-		}
-
-		if (songMusic.pitch <= 0.1)
-		{
-			songMusic.pitch = 0.1;
-			vocals.pitch = 0.1;
-		}
+		songMusic.pitch = playbackSpeed;
+		vocals.pitch = playbackSpeed;
 
 		bpmTxt.text = 'Song: ${_song.song}'
 			+ '\nDiff: ${_diff.replace('-', '')}'
@@ -1140,9 +1134,7 @@ class OriginalChartEditor extends MusicBeatState
 			+ "\nBeat: "
 			+ curBeat
 			+ "\nStep: "
-			+ curStep
-			+ "\nRate: "
-			+ songMusic.pitch;
+			+ curStep;
 		super.update(elapsed);
 
 		if (metronomeTick.checked && lastSongPos != Conductor.songPosition)
