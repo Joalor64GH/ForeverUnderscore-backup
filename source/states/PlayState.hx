@@ -31,7 +31,7 @@ import flixel.util.FlxColor;
 import flixel.util.FlxSort;
 import flixel.util.FlxTimer;
 import funkin.*;
-import funkin.Strumline.UIStaticArrow;
+import funkin.Strumline.Receptor;
 import funkin.ui.*;
 import lime.app.Application;
 import openfl.display.BlendMode;
@@ -1043,7 +1043,7 @@ class PlayState extends MusicBeatState
 				for (i in 0...strumline.splashNotes.length)
 				{
 					strumline.splashNotes.members[i].x = strumline.receptors.members[i].x - 48;
-					strumline.splashNotes.members[i].y = strumline.receptors.members[i].y + (UIStaticArrow.swagWidth / 6) - 56;
+					strumline.splashNotes.members[i].y = strumline.receptors.members[i].y + (Receptor.swagWidth / 6) - 56;
 				}
 		}
 
@@ -1079,7 +1079,7 @@ class PlayState extends MusicBeatState
 					strumNote.angle = -strumNote.noteDirection;
 
 					// shitty note hack I hate it so much
-					var center:Float = receptorY + UIStaticArrow.swagWidth / (1.85 * (assetModifier == 'pixel' ? 3 : 1));
+					var center:Float = receptorY + Receptor.swagWidth / (1.85 * (assetModifier == 'pixel' ? 3 : 1));
 					if (strumNote.isSustainNote)
 					{
 						strumNote.y -= ((strumNote.height / 2) * downscrollMultiplier);
@@ -1464,7 +1464,7 @@ class PlayState extends MusicBeatState
 
 		if (includeAnimation)
 		{
-			var stringDirection:String = UIStaticArrow.getArrowFromNumber(direction);
+			var stringDirection:String = Receptor.arrowDir[direction];
 
 			FlxG.sound.play(Paths.soundRandom('missnote', 1, 3), FlxG.random.float(0.1, 0.2));
 			character.playAnim('sing' + stringDirection.toUpperCase() + 'miss', lockMiss);
@@ -1479,7 +1479,7 @@ class PlayState extends MusicBeatState
 		var stringArrow:String = '';
 		var altString:String = '';
 
-		var baseString = 'sing' + UIStaticArrow.getArrowFromNumber(coolNote.noteData).toUpperCase();
+		var baseString = 'sing' + Receptor.arrowDir[coolNote.noteData].toUpperCase();
 
 		// I tried doing xor and it didnt work lollll
 		if (coolNote.noteAlt > 0)
@@ -1520,7 +1520,7 @@ class PlayState extends MusicBeatState
 		character.holdTimer = 0;
 	}
 
-	function strumCallsAuto(cStrum:UIStaticArrow, ?callType:Int = 1, ?daNote:Note):Void
+	function strumCallsAuto(cStrum:Receptor, ?callType:Int = 1, ?daNote:Note):Void
 	{
 		switch (callType)
 		{
@@ -1586,7 +1586,7 @@ class PlayState extends MusicBeatState
 		}
 	}
 
-	function strumCameraRoll(cStrum:FlxTypedSpriteGroup<UIStaticArrow>, mustHit:Bool)
+	function strumCameraRoll(cStrum:FlxTypedSpriteGroup<Receptor>, mustHit:Bool)
 	{
 		if (!Init.getSetting('No Camera Note Movement'))
 		{

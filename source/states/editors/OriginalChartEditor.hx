@@ -37,7 +37,7 @@ import flixel.ui.FlxButton;
 import flixel.ui.FlxSpriteButton;
 import flixel.util.FlxColor;
 import funkin.*;
-import funkin.Strumline.UIStaticArrow;
+import funkin.Strumline.Receptor;
 import funkin.ui.*;
 import lime.utils.Assets;
 import openfl.events.Event;

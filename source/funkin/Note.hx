@@ -5,7 +5,7 @@ import dependency.FNFSprite;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import states.PlayState;
-import funkin.Strumline.UIStaticArrow;
+import funkin.Strumline.Receptor;
 
 using StringTools;
 
@@ -34,11 +34,20 @@ class Note extends FNFSprite
 	public var hitboxLength:Float = 1;
 
 	public var useCustomSpeed:Bool = Init.getSetting('Use Custom Note Speed');
+	public var noteSpeed(default, set):Float;
 
-	// not set initially
+	public function set_noteSpeed(value:Float):Float
+	{
+		if (noteSpeed != value)
+		{
+			noteSpeed = value;
+			updateSustainScale();
+		}
+		return noteSpeed;
+	}
+
 	public var noteQuant:Int = -1;
 	public var noteVisualOffset:Float = 0;
-	public var noteSpeed:Float = 0;
 	public var noteDirection:Float = 0;
 
 	public var parentNote:Note;
@@ -143,12 +152,22 @@ class Note extends FNFSprite
 			alpha = 0.3;
 	}
 
-	public function rescaleSustain(newScale:Float)
+	public function updateSustainScale()
 	{
-		if (animation.curAnim != null && !animation.curAnim.name.endsWith('end') && isSustainNote)
+		if (isSustainNote)
 		{
-			scale.y *= newScale;
-			updateHitbox();
+			if (prevNote != null)
+			{
+				if (prevNote.isSustainNote)
+				{
+					// listen I dont know what i was doing but I was onto something
+					prevNote.scale.y = (prevNote.width / prevNote.frameWidth) * ((Conductor.stepCrochet / 100) * (1.07 / 0.8)) * noteSpeed;
+					prevNote.updateHitbox();
+					offsetX = prevNote.offsetX;
+				}
+				else
+					offsetX = ((prevNote.width / 2) - (width / 2));
+			}
 		}
 	}
 
@@ -184,7 +203,7 @@ class Note extends FNFSprite
 					{
 						case 3: // pixel mines;
 							newNote.loadGraphic(Paths.image(ForeverTools.returnSkin('mines', assetModifier, '', 'noteskins/mines')), true, 17, 17);
-							newNote.animation.add(UIStaticArrow.getColorFromNumber(noteData) + 'Scroll', [0, 1, 2, 3, 4, 5, 6, 7], 12);
+							newNote.animation.add(Receptor.arrowCol[noteData] + 'Scroll', [0, 1, 2, 3, 4, 5, 6, 7], 12);
 
 						default: // pixel notes default
 							reloadPrefixes('arrows-pixels', 'noteskins/notes', true, assetModifier, newNote);
@@ -199,7 +218,7 @@ class Note extends FNFSprite
 				{
 					case 3: // mines
 						newNote.loadGraphic(Paths.image(ForeverTools.returnSkin('mines', assetModifier, '', 'noteskins/mines')), true, 133, 128);
-						newNote.animation.add(UIStaticArrow.getColorFromNumber(noteData) + 'Scroll', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]);
+						newNote.animation.add(Receptor.arrowCol[noteData] + 'Scroll', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]);
 
 						if (isSustainNote)
 							newNote.kill();
@@ -213,22 +232,22 @@ class Note extends FNFSprite
 		}
 		//
 		if (!isSustainNote)
-			newNote.animation.play(UIStaticArrow.getColorFromNumber(noteData) + 'Scroll');
+			newNote.animation.play(Receptor.arrowCol[noteData] + 'Scroll');
 
 		if (isSustainNote && prevNote != null)
 		{
 			newNote.noteSpeed = prevNote.noteSpeed;
 			newNote.alpha = Init.getSetting('Hold Opacity') * 0.01;
 
-			newNote.animation.play(UIStaticArrow.getColorFromNumber(noteData) + 'holdend');
+			newNote.animation.play(Receptor.arrowCol[noteData] + 'holdend');
 
 			newNote.updateHitbox();
 			if (prevNote.isSustainNote)
 			{
-				prevNote.animation.play(UIStaticArrow.getColorFromNumber(prevNote.noteData) + 'hold');
+				prevNote.animation.play(Receptor.arrowCol[prevNote.noteData] + 'hold');
 
-				prevNote.scale.y *= Conductor.stepCrochet / 100 * 1.5 * prevNote.noteSpeed;
-				prevNote.updateHitbox();
+				//prevNote.scale.y *= Conductor.stepCrochet / 100 * 1.5 * prevNote.noteSpeed;
+				//prevNote.updateHitbox();
 			}
 		}
 
@@ -297,12 +316,12 @@ class Note extends FNFSprite
 							if (assetModifier == 'pixel')
 							{
 								newNote.loadGraphic(Paths.image(ForeverTools.returnSkin('mines', assetModifier, '', 'noteskins/mines')), true, 17, 17);
-								newNote.animation.add(UIStaticArrow.getArrowFromNumber(noteData) + 'Scroll', [0, 1, 2, 3, 4, 5, 6, 7], 12);
+								newNote.animation.add(Receptor.arrowDir[noteData] + 'Scroll', [0, 1, 2, 3, 4, 5, 6, 7], 12);
 							}
 							else
 							{
 								newNote.loadGraphic(Paths.image(ForeverTools.returnSkin('mines', assetModifier, '', 'noteskins/mines')), true, 133, 128);
-								newNote.animation.add(UIStaticArrow.getArrowFromNumber(noteData) + 'Scroll', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9], 12);
+								newNote.animation.add(Receptor.arrowDir[noteData] + 'Scroll', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9], 12);
 							}
 
 						default:
@@ -356,7 +375,7 @@ class Note extends FNFSprite
 		}
 
 		if (!isSustainNote)
-			newNote.animation.play(UIStaticArrow.getArrowFromNumber(noteData) + 'Scroll');
+			newNote.animation.play(Receptor.arrowDir[noteData] + 'Scroll');
 
 		if (isSustainNote && prevNote != null)
 		{
@@ -370,8 +389,8 @@ class Note extends FNFSprite
 			{
 				prevNote.animation.play('hold');
 
-				prevNote.scale.y *= Conductor.stepCrochet / 100 * (43 / 52) * 1.5 * prevNote.noteSpeed;
-				prevNote.updateHitbox();
+				//prevNote.scale.y *= Conductor.stepCrochet / 100 * (43 / 52) * 1.5 * prevNote.noteSpeed;
+				//prevNote.updateHitbox();
 			}
 		}
 
@@ -393,12 +412,12 @@ class Note extends FNFSprite
 			newNote.frames = Paths.getSparrowAtlas(ForeverTools.returnSkin(texture, assetModifier, (changeable ? Init.getSetting("Note Skin") : ''),
 				texturePath));
 
-			newNote.animation.addByPrefix(UIStaticArrow.getColorFromNumber(newNote.noteData) + 'Scroll',
-				UIStaticArrow.getColorFromNumber(newNote.noteData) + '0');
-			newNote.animation.addByPrefix(UIStaticArrow.getColorFromNumber(newNote.noteData) + 'holdend',
-				UIStaticArrow.getColorFromNumber(newNote.noteData) + ' hold end');
-			newNote.animation.addByPrefix(UIStaticArrow.getColorFromNumber(newNote.noteData) + 'hold',
-				UIStaticArrow.getColorFromNumber(newNote.noteData) + ' hold piece');
+			newNote.animation.addByPrefix(Receptor.arrowCol[newNote.noteData] + 'Scroll',
+				Receptor.arrowCol[newNote.noteData] + '0');
+			newNote.animation.addByPrefix(Receptor.arrowCol[newNote.noteData] + 'holdend',
+				Receptor.arrowCol[newNote.noteData] + ' hold end');
+			newNote.animation.addByPrefix(Receptor.arrowCol[newNote.noteData] + 'hold',
+				Receptor.arrowCol[newNote.noteData] + ' hold piece');
 
 			newNote.animation.addByPrefix('purpleholdend', 'pruple end hold'); // PA god dammit.
 
@@ -412,14 +431,14 @@ class Note extends FNFSprite
 			{
 				newNote.loadGraphic(Paths.image(ForeverTools.returnSkin(texture, assetModifier, (changeable ? Init.getSetting("Note Skin") : ''),
 					texturePath)), true, 7, 6);
-				newNote.animation.add(UIStaticArrow.getColorFromNumber(newNote.noteData) + 'holdend', [pixelNoteID[newNote.noteData]]);
-				newNote.animation.add(UIStaticArrow.getColorFromNumber(newNote.noteData) + 'hold', [pixelNoteID[newNote.noteData] - 4]);
+				newNote.animation.add(Receptor.arrowCol[newNote.noteData] + 'holdend', [pixelNoteID[newNote.noteData]]);
+				newNote.animation.add(Receptor.arrowCol[newNote.noteData] + 'hold', [pixelNoteID[newNote.noteData] - 4]);
 			}
 			else
 			{
 				newNote.loadGraphic(Paths.image(ForeverTools.returnSkin(texture, assetModifier, (changeable ? Init.getSetting("Note Skin") : ''),
 					texturePath)), true, 17, 17);
-				newNote.animation.add(UIStaticArrow.getColorFromNumber(newNote.noteData) + 'Scroll', [pixelNoteID[newNote.noteData]], 12);
+				newNote.animation.add(Receptor.arrowCol[newNote.noteData] + 'Scroll', [pixelNoteID[newNote.noteData]], 12);
 			}
 		}
 	}

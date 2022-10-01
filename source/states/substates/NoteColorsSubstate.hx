@@ -4,7 +4,7 @@ import base.MusicBeat.MusicBeatSubstate;
 import flixel.FlxSprite;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import funkin.Note;
-import funkin.Strumline.UIStaticArrow;
+import funkin.Strumline.Receptor;
 
 class NoteColorsSubstate extends MusicBeatSubstate
 {

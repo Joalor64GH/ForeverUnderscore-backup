@@ -13,7 +13,7 @@ import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
 import flixel.util.FlxSort;
 import funkin.*;
-import funkin.Strumline.UIStaticArrow;
+import funkin.Strumline.Receptor;
 import funkin.Timings;
 import funkin.ui.menu.*;
 import states.PlayState;
@@ -221,14 +221,14 @@ class ForeverAssets
 						tempSplash.frames = Paths.getSparrowAtlas(ForeverTools.returnSkin(asset, assetModifier, changeableSkin, baseLibrary));
 
 						// week 7 format
-						tempSplash.animation.addByPrefix('anim1', 'note impact 1 ' + UIStaticArrow.getColorFromNumber(noteData), 24, false);
-						tempSplash.animation.addByPrefix('anim2', 'note impact 2 ' + UIStaticArrow.getColorFromNumber(noteData), 24, false);
+						tempSplash.animation.addByPrefix('anim1', 'note impact 1 ' + Receptor.arrowCol[noteData], 24, false);
+						tempSplash.animation.addByPrefix('anim2', 'note impact 2 ' + Receptor.arrowCol[noteData], 24, false);
 
 						tempSplash.animation.addByPrefix('anim1', 'note impact 1  blue', 24, false); // HE DID IT AGAIN MY BOYS;
 
 						// psych format
-						tempSplash.animation.addByPrefix('anim1', 'note splash ' + UIStaticArrow.getColorFromNumber(noteData) + ' 1', 24, false);
-						tempSplash.animation.addByPrefix('anim2', 'note splash ' + UIStaticArrow.getColorFromNumber(noteData) + ' 2', 24, false);
+						tempSplash.animation.addByPrefix('anim1', 'note splash ' + Receptor.arrowCol[noteData] + ' 1', 24, false);
+						tempSplash.animation.addByPrefix('anim2', 'note splash ' + Receptor.arrowCol[noteData] + ' 2', 24, false);
 						tempSplash.updateHitbox();
 
 					default:
@@ -257,14 +257,14 @@ class ForeverAssets
 						tempSplash.frames = Paths.getSparrowAtlas(ForeverTools.returnSkin(asset, assetModifier, changeableSkin, baseLibrary));
 
 						// week 7 format
-						tempSplash.animation.addByPrefix('anim1', 'note impact 1 ' + UIStaticArrow.getColorFromNumber(noteData), 24, false);
-						tempSplash.animation.addByPrefix('anim2', 'note impact 2 ' + UIStaticArrow.getColorFromNumber(noteData), 24, false);
+						tempSplash.animation.addByPrefix('anim1', 'note impact 1 ' + Receptor.arrowCol[noteData], 24, false);
+						tempSplash.animation.addByPrefix('anim2', 'note impact 2 ' + Receptor.arrowCol[noteData], 24, false);
 
 						tempSplash.animation.addByPrefix('anim1', 'note impact 1  blue', 24, false); // HE DID IT AGAIN MY BOYS;
 
 						// psych format
-						tempSplash.animation.addByPrefix('anim1', 'note splash ' + UIStaticArrow.getColorFromNumber(noteData) + ' 1', 24, false);
-						tempSplash.animation.addByPrefix('anim2', 'note splash ' + UIStaticArrow.getColorFromNumber(noteData) + ' 2', 24, false);
+						tempSplash.animation.addByPrefix('anim1', 'note splash ' + Receptor.arrowCol[noteData] + ' 1', 24, false);
+						tempSplash.animation.addByPrefix('anim2', 'note splash ' + Receptor.arrowCol[noteData] + ' 2', 24, false);
 						tempSplash.updateHitbox();
 
 					default:
@@ -304,9 +304,9 @@ class ForeverAssets
 		return tempSplash;
 	}
 
-	public static function generateUIArrows(x:Float, y:Float, ?staticArrowType:Int = 0, assetModifier:String):UIStaticArrow
+	public static function generateUIArrows(x:Float, y:Float, ?staticArrowType:Int = 0, assetModifier:String):Receptor
 	{
-		var newStaticArrow:UIStaticArrow = new UIStaticArrow(x, y, staticArrowType);
+		var newStaticArrow:Receptor = new Receptor(x, y, staticArrowType);
 		switch (assetModifier)
 		{
 			case 'pixel':
@@ -342,7 +342,7 @@ class ForeverAssets
 				// probably gonna revise this and make it possible to add other arrow types but for now it's just pixel and normal
 				var stringSect:String = '';
 				// call arrow type I think
-				stringSect = UIStaticArrow.getArrowFromNumber(staticArrowType);
+				stringSect = Receptor.arrowDir[staticArrowType];
 
 				var framesArgument:String = "NOTE_assets";
 

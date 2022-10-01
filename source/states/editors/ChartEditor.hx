@@ -38,7 +38,7 @@ import flixel.ui.FlxButton;
 import flixel.util.FlxColor;
 import flixel.util.FlxGradient;
 import funkin.Note;
-import funkin.Strumline.UIStaticArrow;
+import funkin.Strumline.Receptor;
 import funkin.ui.HealthIcon;
 import lime.media.AudioBuffer;
 import openfl.events.Event;
@@ -114,7 +114,7 @@ class ChartEditor extends MusicBeatState
 
 	final scrollArray:Array<Float> = [0.5, 0.75, 1, 1.05, 1.5, 2, 2.05, 2.5, 3, 3.05, 3.5];
 
-	var arrowGroup:FlxTypedSpriteGroup<UIStaticArrow>;
+	var arrowGroup:FlxTypedSpriteGroup<Receptor>;
 
 	var buttonTextGroup:FlxTypedGroup<AbsoluteText>;
 	var buttonGroup:FlxTypedGroup<ChartingButton>;
@@ -204,14 +204,14 @@ class ChartEditor extends MusicBeatState
 		add(dummyArrow);
 
 		// and now the epic note thingies
-		arrowGroup = new FlxTypedSpriteGroup<UIStaticArrow>(0, 0);
+		arrowGroup = new FlxTypedSpriteGroup<Receptor>(0, 0);
 		for (i in 0...keysTotal)
 		{
 			var typeReal:Int = i;
 			if (typeReal > 3)
 				typeReal -= 4;
 
-			var newArrow:UIStaticArrow = ForeverAssets.generateUIArrows(((FlxG.width / 2) - ((keysTotal / 2) * gridSize)) + ((i - 1) * gridSize),
+			var newArrow:Receptor = ForeverAssets.generateUIArrows(((FlxG.width / 2) - ((keysTotal / 2) * gridSize)) + ((i - 1) * gridSize),
 				_song.assetModifier == 'pixel' ? -55 : -80, typeReal, _song.assetModifier);
 
 			newArrow.ID = i;

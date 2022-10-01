@@ -15,7 +15,6 @@ import dependency.Discord;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.addons.display.FlxGridOverlay;
-import flixel.effects.FlxFlicker;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.math.FlxMath;
 import flixel.system.FlxSound;
@@ -71,8 +70,6 @@ class FreeplayState extends MusicBeatState
 	var mainColor:FlxColor = FlxColor.WHITE;
 	var bg:FlxSprite;
 	var scoreBG:FlxSprite;
-
-	var lockedMovement:Bool = false;
 
 	var existingSongs:Array<String> = [];
 	var existingDifficulties:Array<Array<String>> = [];
@@ -278,94 +275,91 @@ class FreeplayState extends MusicBeatState
 
 		if (songs.length > 1)
 		{
-			if (!lockedMovement)
+			if (upP)
 			{
-				if (upP)
-				{
-					changeSelection(-shiftMult);
-					holdTime = 0;
-				}
-				if (downP)
-				{
-					changeSelection(shiftMult);
-					holdTime = 0;
-				}
+				changeSelection(-shiftMult);
+				holdTime = 0;
+			}
+			if (downP)
+			{
+				changeSelection(shiftMult);
+				holdTime = 0;
+			}
 
-				/**
-				 * Hold Scrolling Code
-				 * @author ShadowMario
-				**/
+			/**
+			 * Hold Scrolling Code
+			 * @author ShadowMario
+			**/
 
-				if (controls.UI_DOWN || controls.UI_UP)
+			if (controls.UI_DOWN || controls.UI_UP)
+			{
+				var checkLastHold:Int = Math.floor((holdTime - 0.5) * 10);
+				holdTime += elapsed;
+				var checkNewHold:Int = Math.floor((holdTime - 0.5) * 10);
+
+				if (holdTime > 0.5 && checkNewHold - checkLastHold > 0)
 				{
-					var checkLastHold:Int = Math.floor((holdTime - 0.5) * 10);
-					holdTime += elapsed;
-					var checkNewHold:Int = Math.floor((holdTime - 0.5) * 10);
-
-					if (holdTime > 0.5 && checkNewHold - checkLastHold > 0)
-					{
-						changeSelection((checkNewHold - checkLastHold) * (controls.UI_UP ? -shiftMult : shiftMult));
-						changeDiff();
-					}
-				}
-
-				if (FlxG.mouse.wheel != 0)
-				{
-					changeSelection(-shiftMult * FlxG.mouse.wheel);
+					changeSelection((checkNewHold - checkLastHold) * (controls.UI_UP ? -shiftMult : shiftMult));
 					changeDiff();
 				}
-
-				if (controls.BACK || FlxG.mouse.justPressedRight)
-				{
-					if (presses <= 0)
-					{
-						if (FlxG.sound.music != null && !shiftP)
-							FlxG.sound.music.stop();
-						threadActive = false;
-						// CoolUtil.difficulties = CoolUtil.baseDifficulties;
-						FlxG.sound.play(Paths.sound('cancelMenu'), 0.4);
-						Main.switchState(this, new MainMenuState());
-					}
-
-					if (presses > 0)
-					{
-						FlxG.sound.play(Paths.sound('confirmMenu'), 0.4);
-						endBullshit();
-					}
-				}
-
-				if (accepted || FlxG.mouse.justPressed)
-					loadSong(true, true);
-				else if (seven)
-				{
-					loadSong(false, true);
-					PlayState.chartingMode = true;
-					PlayState.lastEditor == (shiftP ? 1 : 0);
-					Main.switchState(this, (shiftP ? new ChartEditor() : new OriginalChartEditor()));
-				}
-				/*
-					else if (ctrl)
-						openSubState(new FreeplaySubstate());
-				 */
-				else if (controls.RESET && presses < 3 && !shiftP)
-				{
-					presses++;
-					resetScore();
-				}
-
-				if (controls.UI_LEFT_P && !shiftP)
-					changeDiff(-1);
-				else if (controls.UI_RIGHT_P && !shiftP)
-					changeDiff(1);
-
-				if (controls.UI_LEFT_P && shiftP)
-					songRate -= 0.05;
-				else if (controls.UI_RIGHT_P && shiftP)
-					songRate += 0.05;
-
-				if (controls.RESET && shiftP)
-					songRate = 1;
 			}
+
+			if (FlxG.mouse.wheel != 0)
+			{
+				changeSelection(-shiftMult * FlxG.mouse.wheel);
+				changeDiff();
+			}
+
+			if (controls.BACK || FlxG.mouse.justPressedRight)
+			{
+				if (presses <= 0)
+				{
+					if (FlxG.sound.music != null && !shiftP)
+						FlxG.sound.music.stop();
+					threadActive = false;
+					// CoolUtil.difficulties = CoolUtil.baseDifficulties;
+					FlxG.sound.play(Paths.sound('cancelMenu'), 0.4);
+					Main.switchState(this, new MainMenuState());
+				}
+
+				if (presses > 0)
+				{
+					FlxG.sound.play(Paths.sound('confirmMenu'), 0.4);
+					endBullshit();
+				}
+			}
+
+			if (accepted || FlxG.mouse.justPressed)
+				loadSong(true, true);
+			else if (seven)
+			{
+				loadSong(false, true);
+				PlayState.chartingMode = true;
+				PlayState.lastEditor == (shiftP ? 1 : 0);
+				Main.switchState(this, (shiftP ? new ChartEditor() : new OriginalChartEditor()));
+			}
+			/*
+				else if (ctrl)
+					openSubState(new FreeplaySubstate());
+			 */
+			else if (controls.RESET && presses < 3 && !shiftP)
+			{
+				presses++;
+				resetScore();
+			}
+
+			if (controls.UI_LEFT_P && !shiftP)
+				changeDiff(-1);
+			else if (controls.UI_RIGHT_P && !shiftP)
+				changeDiff(1);
+
+			if (controls.UI_LEFT_P && shiftP)
+				songRate -= 0.05;
+			else if (controls.UI_RIGHT_P && shiftP)
+				songRate += 0.05;
+
+			if (controls.RESET && shiftP)
+				songRate = 1;
 		}
 
 		if (songRate <= 0.5)
@@ -425,12 +419,7 @@ class FreeplayState extends MusicBeatState
 			if (songRate < 1)
 				PlayState.preventScoring = true; // lmao.
 			Conductor.playbackRate = songRate;
-			lockedMovement = true;
-			FlxG.sound.play(Paths.sound('confirmMenu'));
-			FlxFlicker.flicker(grpSongs.members[curSelected], 0.5, 0.06 * 2, true, false, function(flick:FlxFlicker)
-			{
-				Main.switchState(this, new PlayState());
-			});
+			Main.switchState(this, new PlayState());
 		}
 	}
 

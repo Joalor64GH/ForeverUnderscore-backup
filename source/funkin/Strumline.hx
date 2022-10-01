@@ -17,7 +17,93 @@ import funkin.Timings;
 
 using StringTools;
 
-class UIStaticArrow extends FlxSprite
+class Strumline extends FlxSpriteGroup
+{
+	public var receptors:FlxTypedSpriteGroup<Receptor>;
+	public var splashNotes:FlxTypedSpriteGroup<NoteSplash>;
+	public var notesGroup:FlxTypedSpriteGroup<Note>;
+	public var holdsGroup:FlxTypedSpriteGroup<Note>;
+	public var allNotes:FlxTypedSpriteGroup<Note>;
+
+	public var state:FlxState;
+	public var character:Character;
+
+	public var autoplay:Bool = true;
+	public var displayJudgements:Bool = false;
+	public var noteSplashes:Bool = false;
+
+	public function new(xPos:Float = 0, yPos:Float = 0, state:FlxState, ?character:Character, ?displayJudgements:Bool = true, ?autoplay:Bool = true,
+			?noteSplashes:Bool = false, ?keyAmount:Int = 4, ?parent:Strumline)
+	{
+		super();
+
+		this.autoplay = autoplay;
+		this.character = character;
+		this.state = state;
+		this.displayJudgements = displayJudgements;
+		this.noteSplashes = noteSplashes;
+
+		receptors = new FlxTypedSpriteGroup<Receptor>();
+		splashNotes = new FlxTypedSpriteGroup<NoteSplash>();
+		notesGroup = new FlxTypedSpriteGroup<Note>();
+		holdsGroup = new FlxTypedSpriteGroup<Note>();
+		allNotes = new FlxTypedSpriteGroup<Note>();
+
+		for (i in 0...keyAmount)
+		{
+			var receptor:Receptor = ForeverAssets.generateUIArrows(-20 + xPos, 25 + yPos, i, PlayState.assetModifier);
+			receptor.ID = i;
+
+			receptor.x -= ((keyAmount / 2) * Receptor.swagWidth);
+			receptor.x += (Receptor.swagWidth * i);
+			receptors.add(receptor);
+
+			receptor.initialX = Math.floor(receptor.x);
+			receptor.initialY = Math.floor(receptor.y);
+			receptor.angleTo = 0;
+			receptor.y -= 10;
+			receptor.playAnim('static');
+
+			if (receptor.doReceptorTween || !PlayState.contents.skipCountdown)
+			{
+				receptor.alpha = 0;
+				FlxTween.tween(receptor, {y: receptor.initialY, alpha: receptor.setAlpha}, 1, {ease: FlxEase.circOut, startDelay: 0.5 + (0.2 * i)});
+			}
+
+			if (noteSplashes)
+			{
+				var noteSplash:NoteSplash = ForeverAssets.generateNoteSplashes('noteSplashes', splashNotes, PlayState.assetModifier, 'noteskins/notes', i);
+				splashNotes.add(noteSplash);
+			}
+		}
+
+		if (Init.getSetting("Clip Style").toLowerCase() == 'stepmania')
+			add(holdsGroup);
+		add(receptors);
+		if (Init.getSetting("Clip Style").toLowerCase() == 'fnf')
+			add(holdsGroup);
+		add(notesGroup);
+		if (splashNotes != null)
+			add(splashNotes);
+	}
+
+	public function createSplash(coolNote:Note)
+	{
+		// play animation in existing notesplashes
+		var noteSplashRandom:String = (Std.string((FlxG.random.int(0, 1) + 1)));
+		splashNotes.members[coolNote.noteData].playAnim('anim' + noteSplashRandom);
+	}
+
+	public function push(newNote:Note)
+	{
+		var chosenGroup = (newNote.isSustainNote ? holdsGroup : notesGroup);
+		chosenGroup.add(newNote);
+		allNotes.add(newNote);
+		chosenGroup.sort(FlxSort.byY, (!Init.getSetting('Downscroll')) ? FlxSort.DESCENDING : FlxSort.ASCENDING);
+	}
+}
+
+class Receptor extends FlxSprite
 {
 	/*  Oh hey, just gonna port this code from the previous Skater engine 
 		(depending on the release of this you might not have it cus I might rewrite skater to use this engine instead)
@@ -45,6 +131,9 @@ class UIStaticArrow extends FlxSprite
 	public var lightConfirms:Bool = true;
 
 	public var resetAnim:Float = 0;
+
+	public static var arrowDir:Array<String> = ['left', 'down', 'up', 'right'];
+	public static var arrowCol:Array<String> = ['purple', 'blue', 'green', 'red'];
 
 	public function new(x:Float, y:Float, ?babyArrowType:Int = 0)
 	{
@@ -96,128 +185,4 @@ class UIStaticArrow extends FlxSprite
 
 	public function addOffset(name:String, x:Float = 0, y:Float = 0)
 		animOffsets[name] = [x, y];
-
-	public static function getArrowFromNumber(numb:Int)
-	{
-		// yeah no I'm not writing the same shit 4 times over
-		// take it or leave it my guy
-		var stringSect:String = '';
-		switch (numb)
-		{
-			case(0):
-				stringSect = 'left';
-			case(1):
-				stringSect = 'down';
-			case(2):
-				stringSect = 'up';
-			case(3):
-				stringSect = 'right';
-		}
-		return stringSect;
-		//
-	}
-
-	// that last function was so useful I gave it a sequel
-	public static function getColorFromNumber(numb:Int)
-	{
-		var stringSect:String = '';
-		switch (numb)
-		{
-			case(0):
-				stringSect = 'purple';
-			case(1):
-				stringSect = 'blue';
-			case(2):
-				stringSect = 'green';
-			case(3):
-				stringSect = 'red';
-		}
-		return stringSect;
-	}
-}
-
-class Strumline extends FlxSpriteGroup
-{
-	public var receptors:FlxTypedSpriteGroup<UIStaticArrow>;
-	public var splashNotes:FlxTypedSpriteGroup<NoteSplash>;
-	public var notesGroup:FlxTypedSpriteGroup<Note>;
-	public var holdsGroup:FlxTypedSpriteGroup<Note>;
-	public var allNotes:FlxTypedSpriteGroup<Note>;
-
-	public var state:FlxState;
-	public var character:Character;
-
-	public var autoplay:Bool = true;
-	public var displayJudgements:Bool = false;
-	public var noteSplashes:Bool = false;
-
-	public function new(xPos:Float = 0, yPos:Float = 0, state:FlxState, ?character:Character, ?displayJudgements:Bool = true, ?autoplay:Bool = true,
-			?noteSplashes:Bool = false, ?keyAmount:Int = 4, ?parent:Strumline)
-	{
-		super();
-
-		this.autoplay = autoplay;
-		this.character = character;
-		this.state = state;
-		this.displayJudgements = displayJudgements;
-		this.noteSplashes = noteSplashes;
-
-		receptors = new FlxTypedSpriteGroup<UIStaticArrow>();
-		splashNotes = new FlxTypedSpriteGroup<NoteSplash>();
-		notesGroup = new FlxTypedSpriteGroup<Note>();
-		holdsGroup = new FlxTypedSpriteGroup<Note>();
-		allNotes = new FlxTypedSpriteGroup<Note>();
-
-		for (i in 0...keyAmount)
-		{
-			var receptor:UIStaticArrow = ForeverAssets.generateUIArrows(-20 + xPos, 25 + yPos, i, PlayState.assetModifier);
-			receptor.ID = i;
-
-			receptor.x -= ((keyAmount / 2) * UIStaticArrow.swagWidth);
-			receptor.x += (UIStaticArrow.swagWidth * i);
-			receptors.add(receptor);
-
-			receptor.initialX = Math.floor(receptor.x);
-			receptor.initialY = Math.floor(receptor.y);
-			receptor.angleTo = 0;
-			receptor.y -= 10;
-			receptor.playAnim('static');
-
-			if (receptor.doReceptorTween || !PlayState.contents.skipCountdown)
-			{
-				receptor.alpha = 0;
-				FlxTween.tween(receptor, {y: receptor.initialY, alpha: receptor.setAlpha}, 1, {ease: FlxEase.circOut, startDelay: 0.5 + (0.2 * i)});
-			}
-
-			if (noteSplashes)
-			{
-				var noteSplash:NoteSplash = ForeverAssets.generateNoteSplashes('noteSplashes', splashNotes, PlayState.assetModifier, 'noteskins/notes', i);
-				splashNotes.add(noteSplash);
-			}
-		}
-
-		if (Init.getSetting("Clip Style").toLowerCase() == 'stepmania')
-			add(holdsGroup);
-		add(receptors);
-		if (Init.getSetting("Clip Style").toLowerCase() == 'fnf')
-			add(holdsGroup);
-		add(notesGroup);
-		if (splashNotes != null)
-			add(splashNotes);
-	}
-
-	public function createSplash(coolNote:Note)
-	{
-		// play animation in existing notesplashes
-		var noteSplashRandom:String = (Std.string((FlxG.random.int(0, 1) + 1)));
-		splashNotes.members[coolNote.noteData].playAnim('anim' + noteSplashRandom);
-	}
-
-	public function push(newNote:Note)
-	{
-		var chosenGroup = (newNote.isSustainNote ? holdsGroup : notesGroup);
-		chosenGroup.add(newNote);
-		allNotes.add(newNote);
-		chosenGroup.sort(FlxSort.byY, (!Init.getSetting('Downscroll')) ? FlxSort.DESCENDING : FlxSort.ASCENDING);
-	}
 }
