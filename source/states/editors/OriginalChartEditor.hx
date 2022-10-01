@@ -50,6 +50,13 @@ import states.menus.FreeplayState;
 
 using StringTools;
 
+// typedef for Tabs used on the UI Box
+typedef ChartingBoxTab =
+{
+	var name:String;
+	var label:String;
+}
+
 /**
 	In case you dont like the forever engine chart editor, here's the base game one instead.
 **/
@@ -59,6 +66,13 @@ class OriginalChartEditor extends MusicBeatState
 	var _diff:String = '';
 
 	var UI_box:FlxUITabMenu;
+
+	var tabs:Array<ChartingBoxTab> = [
+		{name: "Song", label: 'Song Data'},
+		{name: "Section", label: 'Section Data'},
+		{name: "Notes", label: 'Note Data'},
+		{name: "Events", label: 'Event Data'},
+	];
 
 	/**
 	 * Array of notes showing when each section STARTS in STEPS
@@ -209,18 +223,12 @@ class OriginalChartEditor extends MusicBeatState
 		dummyArrow = new FlxSprite().makeGraphic(GRID_SIZE, GRID_SIZE);
 		add(dummyArrow);
 
-		var tabs:Array<{name:String, label:String}> = [
-			{name: "Song", label: 'Song Data'},
-			{name: "Section", label: 'Section Data'},
-			{name: "Notes", label: 'Note Data'},
-			{name: "Events", label: 'Event Data'},
-		];
-
 		UI_box = new FlxUITabMenu(null, tabs, true);
 
 		UI_box.resize(300, 400);
 		UI_box.x = FlxG.width / 2 + GRID_SIZE / 2;
 		UI_box.y = 25;
+		UI_box.selected_tab = 4;
 		add(UI_box);
 
 		addSongUI();
@@ -413,12 +421,12 @@ class OriginalChartEditor extends MusicBeatState
 		tab_group_song.add(stepperBPM);
 		tab_group_song.add(stepperSpeed);
 		tab_group_song.add(sliderRate);
-		tab_group_song.add(new FlxText(player1DropDown.x, player1DropDown.y - 15, 0, 'Boyfriend:'));
+		tab_group_song.add(new FlxText(player1DropDown.x, player1DropDown.y - 15, 0, 'Player:'));
 		tab_group_song.add(new FlxText(gfVersionDropDown.x, gfVersionDropDown.y - 15, 0, 'Girlfriend:'));
 		tab_group_song.add(new FlxText(player2DropDown.x, player2DropDown.y - 15, 0, 'Opponent:'));
 		tab_group_song.add(new FlxText(stageDropDown.x, stageDropDown.y - 15, 0, 'Stage:'));
 		tab_group_song.add(new FlxText(difficultyDropDown.x, difficultyDropDown.y - 15, 0, 'Difficulty:'));
-		tab_group_song.add(new FlxText(assetModifierDropDown.x, assetModifierDropDown.y - 15, 0, 'Asset Skin:'));
+		tab_group_song.add(new FlxText(assetModifierDropDown.x, assetModifierDropDown.y - 15, 0, 'Asset Modifier:'));
 		tab_group_song.add(player2DropDown);
 		tab_group_song.add(gfVersionDropDown);
 		tab_group_song.add(player1DropDown);
@@ -1009,13 +1017,13 @@ class OriginalChartEditor extends MusicBeatState
 				{
 					UI_box.selected_tab -= 1;
 					if (UI_box.selected_tab < 0)
-						UI_box.selected_tab = 2;
+						UI_box.selected_tab = tabs.length - 1; // reset position to last tab;
 				}
 				else
 				{
 					UI_box.selected_tab += 1;
-					if (UI_box.selected_tab >= 3)
-						UI_box.selected_tab = 0;
+					if (UI_box.selected_tab > 4)
+						UI_box.selected_tab = 0; // reset position to the first tab;
 				}
 			}
 
