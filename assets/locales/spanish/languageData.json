@@ -1,0 +1,10 @@
+{
+    "difficulties": ["FÁCIL", "NORMAL", "DIFÍCIL"],
+    "personalBest": "MEJOR PERSONAL:",
+    "tracksText": "CANCIONES",
+    "weekScoreText": "PUNTUACIÓN DE SEMANA:",
+
+    "scoreTxt": "Puntuación:",
+    "missTxt": "Fallos:",
+    "accTxt": "Precisión:"
+}
