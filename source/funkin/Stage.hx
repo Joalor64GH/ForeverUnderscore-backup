@@ -30,6 +30,16 @@ import funkin.background.*;
 
 using StringTools;
 
+typedef StageDataDef =
+{
+	var spawnGirlfriend:Bool;
+	var defaultZoom:Float;
+	var camSpeed:Float;
+	var dadPos:Array<Int>;
+	var gfPos:Array<Int>;
+	var bfPos:Array<Int>;
+}
+
 /**
 	This is the stage class. It sets up everything you need for stages in a more organised and clean manner than the
 	base game. It's not too bad, just very crowded. I'll be adding stages as a separate
@@ -50,11 +60,24 @@ class Stage extends FlxTypedGroup<FlxBasic>
 	public var spawnGirlfriend:Bool = true;
 
 	public var stageScript:ScriptHandler;
+	public var stageJson:StageDataDef;
 
 	public function new(curStage:String = 'unknown', stageDebug:Bool = false)
 	{
 		super();
 		this.curStage = curStage;
+
+		stageJson = haxe.Json.parse(Paths.getTextFromFile('stages/$curStage/$curStage.json'));
+
+		if (stageJson == null)
+		{
+			stageJson = haxe.Json.parse(Paths.getTextFromFile('stages/stage/stage.json'));
+		}
+		else
+		{
+			spawnGirlfriend = stageJson.spawnGirlfriend;
+			PlayState.cameraSpeed = stageJson.camSpeed;
+		}
 
 		if (curStage == null || curStage.length < 1)
 		{
@@ -130,7 +153,9 @@ class Stage extends FlxTypedGroup<FlxBasic>
 
 	public function repositionPlayers(curStage:String, boyfriend:Character, gf:Character, dad:Character)
 	{
-		callFunc('repositionPlayers', [boyfriend, gf, dad]);
+		boyfriend.setPosition(stageJson.bfPos[0], stageJson.bfPos[1]);
+		dad.setPosition(stageJson.dadPos[0], stageJson.dadPos[1]);
+		gf.setPosition(stageJson.gfPos[0], stageJson.gfPos[1]);
 	}
 
 	public function stageUpdate(curBeat:Int, boyfriend:Character, gf:Character, dad:Character)

@@ -5,7 +5,6 @@ var santa:FNFSprite;
 function generateStage()
 {
     curStage = 'mall';
-    PlayState.defaultCamZoom = 0.80;
 
     var bg:FNFSprite = new FNFSprite(-1000, -500).loadGraphic(Paths.image('bgWalls', 'stages/' + curStage + '/images'));
     bg.antialiasing = !Init.getSetting('Disable Antialiasing');
@@ -56,13 +55,6 @@ function generateStage()
     santa.animation.addByPrefix('idle', 'santa idle in fear', 24, false);
     santa.antialiasing = !Init.getSetting('Disable Antialiasing');
     add(santa);
-}
-
-function repositionPlayers(boyfriend:Character, gf:Character, dad:Character)
-{
-    boyfriend.x += 200;
-	dad.x -= 400;
-	dad.y += 20;
 }
 
 function updateStage(curBeat:Int, boyfriend:Character, gf:Character, dadOpponent:Character)

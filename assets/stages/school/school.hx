@@ -3,7 +3,6 @@ var bgGirls:FNFSprite;
 function generateStage()
 {
     curStage = 'school';
-    PlayState.defaultCamZoom = 1.05;
 
     var bgSky = new FNFSprite().loadGraphic(Paths.image('weebSky', 'stages/' + curStage + '/images'));
     bgSky.scrollFactor.set(0.1, 0.1);
@@ -83,16 +82,6 @@ function girlsGetScared()
     bgGirls.animation.addByIndices('danceLeft', 'BG fangirls dissuaded', CoolUtil.numberArray(14), "", 24, false);
     bgGirls.animation.addByIndices('danceRight', 'BG fangirls dissuaded', CoolUtil.numberArray(30, 15), "", 24, false);
     girlsDance();
-}
-
-function repositionPlayers(boyfriend:Character, gf:Character, dad:Character)
-{
-	boyfriend.x += 200;
-    boyfriend.y += 220;
-    dad.x += 200;
-    dad.y += 580;
-    gf.x += 200;
-    gf.y += 320;
 }
 
 function updateStage(curBeat:Int, boyfriend:Character, gf:Character, dadOpponent:Character)

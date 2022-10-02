@@ -1,8 +1,6 @@
 function generateStage()
 {
     curStage = 'exampleStage';
-    PlayState.defaultCamZoom = 0.9;
-    spawnGirlfriend(true);
 
 	// create stage graphics, just haxe code!
 
@@ -47,14 +45,4 @@ function updateStageConst(elapsed:Float, boyfriend:Character, gf:Character, dad:
 function dadPosition(boyfriend:Character, gf:Character, dad:Character, camPos:FlxPoint)
 {
 	// used for adding special parameters on stages, e.g: Spirit Trail, Hide Girlfriend on Tutorial;
-}
-
-function repositionPlayers(boyfriend:Character, gf:Character, dad:Character)
-{
-	// boyfriend.x += 0;
-	// boyfriend.y += 0;
-	// gf.x += 0;
-	// gf.y += 0;
-	// dad.x += 0;
-	// dad.y += 0;
 }

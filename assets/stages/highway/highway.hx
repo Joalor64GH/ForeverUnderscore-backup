@@ -4,7 +4,6 @@ var grpLimoDancers:FlxSpriteGroup;
 function generateStage()
 {
     curStage = 'highway';
-    PlayState.defaultCamZoom = 0.90;
 
     var skyBG:FNFSprite = new FNFSprite(-120, -50).loadGraphic(Paths.image('limoSunset', 'stages/' + curStage + '/images'));
     skyBG.scrollFactor.set(0.1, 0.1);
@@ -37,12 +36,6 @@ function generateStage()
     layers.add(limo);
 
     fastCar = new FNFSprite(-300, 160).loadGraphic(Paths.image('fastCarLol', 'stages/' + curStage + '/images'));
-}
-
-function repositionPlayers(boyfriend:Character, gf:Character, dad:Character)
-{
-	boyfriend.y -= 220;
-	boyfriend.x += 260;
 }
 
 function updateStage(curBeat:Int, boyfriend:Character, gf:Character, dadOpponent:Character)

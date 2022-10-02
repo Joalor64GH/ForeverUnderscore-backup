@@ -13,7 +13,6 @@ var trainFinishing:Bool = false;
 function generateStage()
 {
 	curStage = 'philly';
-	PlayState.defaultCamZoom = 1.05;
 
 	var bg:FNFSprite = new FNFSprite(-100, 0);
 	bg.loadGraphic(Paths.image('sky', 'stages/' + curStage + '/images'));

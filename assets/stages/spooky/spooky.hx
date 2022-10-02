@@ -3,7 +3,6 @@ var halloweenBG:FNFSprite;
 function generateStage()
 {
 	curStage = 'spooky';
-	PlayState.defaultCamZoom = 1.05;
 
 	var hallowTex = Paths.getSparrowAtlas('halloween_bg', 'stages/' + curStage + '/images');
 	halloweenBG = new FNFSprite(-200, -100);

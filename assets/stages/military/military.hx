@@ -30,7 +30,6 @@ function moveTank()
 function generateStage()
 {
     curStage = 'military';
-    PlayState.defaultCamZoom = 0.9;
 
     var sky:FNFSprite = new FNFSprite(-400, -400).loadGraphic(Paths.image('tankSky', 'stages/' + curStage + '/images'));
     sky.scrollFactor.set(0, 0);
@@ -166,21 +165,6 @@ function generateStage()
                 tankmanRun.add(man);
             }
         }
-    }
-}
-
-function repositionPlayers(boyfriend:Character, gf:Character, dad:Character)
-{
-    gf.y -= 90;
-    gf.x -= 30;
-    boyfriend.x += 40;
-    boyfriend.y += 0;
-    dad.y += 100;
-    dad.x -= 80;
-    if (gfVersion != 'pico-speaker')
-    {
-        gf.x -= 50;
-        gf.y -= 10;
     }
 }
 

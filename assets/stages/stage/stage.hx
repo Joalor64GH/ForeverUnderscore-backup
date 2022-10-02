@@ -17,7 +17,6 @@ function tweenCamIn()
 function generateStage()
 {
     curStage = 'stage';
-    PlayState.defaultCamZoom = 0.9;
 
     var bg:FNFSprite = new FNFSprite(-600, -200).loadGraphic(Paths.image('stageback', 'stages/' + curStage + '/images'));
     bg.antialiasing = true;

@@ -331,6 +331,8 @@ class PlayState extends MusicBeatState
 		stageBuild = new Stage(PlayState.curStage);
 		add(stageBuild);
 
+		defaultCamZoom = stageBuild.stageJson.defaultZoom;
+
 		// set up characters here too
 
 		if (SONG.gfVersion.length < 1 || SONG.gfVersion == null)

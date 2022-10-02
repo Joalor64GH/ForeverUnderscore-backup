@@ -1,7 +1,6 @@
 function generateStage()
 {
 	curStage = 'mallEvil';
-    PlayState.defaultCamZoom = 0.90;
 
 	var bg:FNFSprite = new FNFSprite(-500, -500).loadGraphic(Paths.image('evilBG', 'stages/' + curStage + '/images'));
 	bg.antialiasing = true;
