@@ -33,7 +33,7 @@ class Discord
 			details: "",
 			state: null,
 			largeImageKey: 'iconog',
-			largeImageText: "Forever Engine"
+			largeImageText: 'Forever Engine v${Main.foreverVersion} • Underscore v${Main.underscoreVersion}',
 		});
 	}
 
@@ -49,8 +49,7 @@ class Discord
 
 	//
 
-	public static function changePresence(details:String = '', state:Null<String> = '', ?largeImageKey:Null<String> = 'iconog',
-			?largeImageText:Null<String> = 'Forever Engine', ?smallImageKey:String, ?hasStartTimestamp:Bool, ?endTimestamp:Float)
+	public static function changePresence(details:String = '', state:Null<String> = '', ?largeImageKey:Null<String> = 'iconog', ?largeImageText:Null<String>, ?smallImageKey:String, ?hasStartTimestamp:Bool, ?endTimestamp:Float)
 	{
 		var startTimestamp:Float = (hasStartTimestamp) ? Date.now().getTime() : 0;
 

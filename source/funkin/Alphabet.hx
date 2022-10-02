@@ -445,8 +445,7 @@ class AlphaCharacter extends FlxSprite
 
 	public function createNumber(letter:String):Void
 	{
-		if (CreditsMenuState.addSymbY)
-			y += 58;
+		y += 58;
 
 		animation.addByPrefix(letter, letter, 24);
 		animation.play(letter);
@@ -462,48 +461,40 @@ class AlphaCharacter extends FlxSprite
 				animation.addByPrefix(letter, 'period', 24);
 				animation.play(letter);
 				setGraphicSize(8, 8);
-				if (!CreditsMenuState.addSymbY)
-					y += 44;
+				y += 44;
 			case '-':
 				animation.addByPrefix(letter, '-', 24);
 				animation.play(letter);
-				if (!CreditsMenuState.addSymbY)
-					y += 30;
+				y += 30;
 			case "'":
 				animation.addByPrefix(letter, 'apostraphie', 24);
 				animation.play(letter);
 				setGraphicSize(10, 10);
-				if (!CreditsMenuState.addSymbY)
-					y += 20;
+				y += 20;
 			case "?":
 				animation.addByPrefix(letter, 'question mark', 24);
 				animation.play(letter);
 				setGraphicSize(20, 40);
-				if (!CreditsMenuState.addSymbY)
-					y += 16;
+				y += 16;
 			case "$":
 				animation.addByPrefix(letter, 'dollarsign', 24);
 				animation.play(letter);
 				setGraphicSize(20, 40);
-				if (!CreditsMenuState.addSymbY)
-					y += 16;
+				y += 16;
 			case "!":
 				animation.addByPrefix(letter, 'exclamation point', 24);
 				animation.play(letter);
 				setGraphicSize(10, 40);
-				if (!CreditsMenuState.addSymbY)
-					y += 16;
+				y += 16;
 			case ",":
 				animation.addByPrefix(letter, 'comma', 24);
 				animation.play(letter);
 				setGraphicSize(10, 10);
-				if (!CreditsMenuState.addSymbY)
-					y += 44;
+				y += 44;
 			default:
 				animation.addByPrefix(letter, letter, 24);
 				animation.play(letter);
-				if (CreditsMenuState.addSymbY)
-					y += 58;
+				y += 58;
 		}
 		updateHitbox();
 	}

@@ -67,6 +67,7 @@ class Note extends FNFSprite
 	public var hitsoundSuffix = '';
 
 	static var pixelNoteID:Array<Int> = [4, 5, 6, 7];
+	static var noteHoldHeight:Float = 0.72;
 
 	public function new(strumTime:Float, noteData:Int, noteAlt:Float, ?prevNote:Note, ?sustainNote:Bool = false, ?noteType:Int = 0)
 	{
@@ -162,7 +163,7 @@ class Note extends FNFSprite
 				{
 					// listen I dont know what i was doing but I was onto something
 					// yoshubs this literally works properly -gabi
-					prevNote.scale.y = (prevNote.width / prevNote.frameWidth) * ((Conductor.stepCrochet / 100) * (1.07 / 0.86)) * noteSpeed;
+					prevNote.scale.y = (prevNote.width / prevNote.frameWidth) * ((Conductor.stepCrochet / 100) * (1.07 / noteHoldHeight)) * noteSpeed;
 					prevNote.updateHitbox();
 					offsetX = prevNote.offsetX;
 				}
@@ -183,6 +184,7 @@ class Note extends FNFSprite
 	public static function returnDefaultNote(assetModifier, strumTime, noteData, noteAlt, ?isSustainNote:Bool = false, ?prevNote:Note, noteType:Int = 0):Note
 	{
 		var newNote:Note = new Note(strumTime, noteData, noteAlt, prevNote, isSustainNote, noteType);
+		noteHoldHeight = 0.72;
 
 		// frames originally go here
 		switch (assetModifier)
@@ -259,6 +261,7 @@ class Note extends FNFSprite
 			noteType:Int = 0):Note
 	{
 		var newNote:Note = new Note(strumTime, noteData, noteAlt, prevNote, isSustainNote, noteType);
+		noteHoldHeight = 0.86;
 
 		// actually determine the quant of the note
 		if (newNote.noteQuant == -1)
@@ -357,7 +360,7 @@ class Note extends FNFSprite
 					}
 				}
 
-				var sizeThing = 0.7;
+				var sizeThing = 0.75;
 				if (noteType == 5)
 					sizeThing = 0.8;
 

@@ -1,24 +1,25 @@
 package states.menus;
 
-import haxe.Json;
 import base.MusicBeat.MusicBeatState;
-import dependency.AbsoluteSprite;
 import dependency.Discord;
 import flixel.FlxG;
 import flixel.FlxSprite;
-import flixel.effects.FlxFlicker;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.math.FlxMath;
+import flixel.system.FlxSound;
 import flixel.text.FlxText;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
 import funkin.Alphabet;
+import funkin.ui.CreditsIcon;
+
+using StringTools;
 
 typedef CreditsUserDef =
 {
 	var name:String;
-	var iconData:Array<Dynamic>;
+	var icon:String;
 	var textData:Array<String>;
 	var colors:Array<Int>;
 	var urlData:Array<Array<String>>;
@@ -33,281 +34,218 @@ typedef CreditsPrefDef =
 	var users:Array<CreditsUserDef>;
 }
 
+/*
+	New Credits Menu
+	Written by: @DiogoTVV and @iamteles
+*/
 class CreditsMenuState extends MusicBeatState
 {
-	static var curSelection = -1;
-
-	var curSocial = -1;
-
-	var alphabetGroup:FlxTypedGroup<Alphabet>;
-
-	var menuBG:FlxSprite = new FlxSprite();
-	var menuColorTween:FlxTween;
+	var groupText:FlxText;
+	static var curSelected:Int = -1;
+	var curSocial:Int = -1;
 
 	var userData:CreditsUserDef;
 	var credData:CreditsPrefDef;
 
-	var iconArray:Array<AbsoluteSprite> = [];
+	private var grpCharacters:FlxTypedGroup<Alphabet>;
 
-	public static var addSymbY:Bool = false;
+	private var iconArray:Array<CreditsIcon> = [];
+
+	private var bgTween:FlxTween;
+	private var bg:FlxSprite;
+
+	private var socialIcon:FlxSprite;
+
+	private var descBG:FlxSprite;
+	private var desc:FlxText;
 
 	override function create()
 	{
 		super.create();
 
-		addSymbY = true;
-
-		credData = Json.parse(Paths.getTextFromFile('credits.json'));
+		credData = haxe.Json.parse(Paths.getTextFromFile('credits.json'));
 
 		#if DISCORD_RPC
 		Discord.changePresence('READING THE CREDITS', 'Credits Menu');
 		#end
 
-		if (credData.menuBG != null && credData.menuBG.length > 0)
-			menuBG.loadGraphic(Paths.image(credData.menuBG));
-		else
-			menuBG.loadGraphic(Paths.image('menus/base/menuDesat'));
+		bg = new FlxSprite().loadGraphic(Paths.image('menus/base/menuDesat'));
+		add(bg);
+		
+		var white:FlxSprite = new FlxSprite().makeGraphic(FlxG.width * 2, FlxG.height * 2, FlxColor.WHITE);
+		white.scrollFactor.set();
+		white.screenCenter();
+		white.antialiasing = true;
+		white.alpha = 0.25;
+		add(white);
 
-		menuBG.antialiasing = !Init.getSetting('Disable Antialiasing');
-		menuBG.screenCenter();
-		add(menuBG);
-
-		var finalColor:FlxColor = FlxColor.fromRGB(credData.menuBGColor[0], credData.menuBGColor[1], credData.menuBGColor[2]);
-		if (!credData.tweenColor)
-			menuBG.color = finalColor;
-
-		alphabetGroup = new FlxTypedGroup<Alphabet>();
-		add(alphabetGroup);
+		grpCharacters = new FlxTypedGroup<Alphabet>();
+		add(grpCharacters);
 
 		for (i in 0...credData.users.length)
 		{
-			var personName:Alphabet = new Alphabet(0, (70 * i) + 30, credData.users[i].name, false, false);
+			var personName:Alphabet = new Alphabet(0, (50 * i) + 30, credData.users[i].name, true, false, 0.85);
 			personName.isMenuItem = true;
 			personName.disableX = true;
 			personName.targetY = i;
-			alphabetGroup.add(personName);
+			personName.ID = i;
+			grpCharacters.add(personName);
 
-			var iconGraphic = 'credits/' + credData.users[i].iconData[0];
-			var icon:AbsoluteSprite = new AbsoluteSprite(iconGraphic, personName, credData.users[i].iconData[1], credData.users[i].iconData[2]);
-
-			if (credData.users[i].iconData[3] != null)
-				icon.setGraphicSize(Std.int(icon.width * credData.users[i].iconData[3]));
-
-			if (credData.users[i].iconData.length <= 1 || credData.users[i].iconData == null)
-				icon.visible = false;
+			var icon:CreditsIcon = new CreditsIcon(credData.users[i].icon);
+			icon.sprTracker = personName;
+			icon.scale.set(0.85, 0.85);
+			icon.updateHitbox();
 
 			// using a FlxGroup is too much fuss!
 			iconArray.push(icon);
 			add(icon);
 
-			if (curSelection == -1)
-				curSelection = i;
+			personName.x += 40;
+			curSelected = 0;
+			curSocial = 0;
 		}
 
-		if (curSocial == -1)
-			curSocial = 0;
+		descBG = new FlxSprite(0, 0).makeGraphic(FlxG.width, FlxG.height, 0xFF000000);
+		descBG.alpha = 0.6;
+		add(descBG);
 
-		generateMarkers();
-		updateSelection();
-	}
+		desc = new FlxText(40, 40, 1180, "Description.", 32);
+		desc.setFormat(Paths.font("vcr.ttf"), 32, FlxColor.WHITE, CENTER);
+		desc.setBorderStyle(OUTLINE, FlxColor.BLACK, 1.5);
+		desc.scrollFactor.set();
+		desc.antialiasing = true;
+		add(desc);
 
-	var topBar:FlxSprite;
-	var topMarker:FlxText;
-	var rightMarker:FlxText;
-	var bottomMarker:FlxText;
-	var centerMarker:FlxText;
+		groupText = new FlxText(0, 40, 1180, "Group", 36);
+		groupText.setFormat(Paths.font("vcr.ttf"), 36, FlxColor.WHITE, CENTER);
+		groupText.setBorderStyle(OUTLINE, FlxColor.BLACK, 3);
+		groupText.bold = true;
+		groupText.scrollFactor.set();
+		groupText.antialiasing = true;
+		add(groupText);
 
-	function generateMarkers()
-	{
-		topBar = new FlxSprite().makeGraphic(1, 1, FlxColor.BLACK);
-		topBar.setGraphicSize(FlxG.width, 48);
-		topBar.updateHitbox();
-		topBar.screenCenter(X);
+		socialIcon = new FlxSprite(0,0);
+		socialIcon.frames = Paths.getSparrowAtlas('credits/PlatformIcons');
+		socialIcon.animation.addByPrefix('NG', 'NG', 24, false);
+		socialIcon.animation.addByPrefix('Twitter', 'Twitter', 24, false);
+		socialIcon.animation.addByPrefix('Twitch', 'Twitch', 24, false);
+		socialIcon.animation.addByPrefix('YouTube', 'YT', 24, false);
+		socialIcon.animation.play('base');
+		socialIcon.scale.set(0.8,0.8);
+		socialIcon.updateHitbox();
+		add(socialIcon);
 
-		add(topBar);
-		topBar.y -= topBar.height;
-
-		topMarker = new FlxText(8, 8, 0, "CREDITS").setFormat(Paths.font('vcr.ttf'), 32, FlxColor.WHITE);
-		topMarker.alpha = 0;
-		add(topMarker);
-
-		centerMarker = new FlxText(8, 8, 0, "<NEWGROUNDS>").setFormat(Paths.font('vcr.ttf'), 32, FlxColor.WHITE);
-		centerMarker.screenCenter(X);
-		centerMarker.alpha = 0;
-		add(centerMarker);
-
-		rightMarker = new FlxText(8, 8, 0, "FOREVER ENGINE: UNDERSCORE").setFormat(Paths.font('vcr.ttf'), 32, FlxColor.WHITE);
-		rightMarker.x = FlxG.width - (rightMarker.width + 16);
-		rightMarker.alpha = 0;
-		add(rightMarker);
-
-		bottomMarker = new FlxText(5, FlxG.height - 24, 0, "", 32);
-		bottomMarker.setFormat(Paths.font('vcr.ttf'), 20, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
-		bottomMarker.textField.background = true;
-		bottomMarker.textField.backgroundColor = FlxColor.BLACK;
-		add(bottomMarker);
-
-		FlxTween.tween(topMarker, {alpha: 1}, 0.4, {ease: FlxEase.quartInOut, startDelay: 0.6});
-		FlxTween.tween(centerMarker, {alpha: 1}, 0.4, {ease: FlxEase.quartInOut, startDelay: 0.6});
-		FlxTween.tween(rightMarker, {alpha: 1}, 0.4, {ease: FlxEase.quartInOut, startDelay: 0.6});
+		changeSelection();
 	}
 
 	override function update(elapsed:Float)
 	{
 		super.update(elapsed);
 
-		topBar.y = FlxMath.lerp(topBar.y, 0, elapsed * 6);
-		topMarker.y = topBar.y + 5;
-		centerMarker.y = topBar.y + 5;
-
-		rightMarker.y = topBar.y + 5;
-
-		rightMarker.x = FlxG.width - (rightMarker.width + 16);
-
-		bottomMarker.screenCenter(X);
-
-		// CONTROLS //
-
-		var controlArray:Array<Bool> = [
-			controls.UI_UP,
-			controls.UI_DOWN,
-			controls.UI_UP_P,
-			controls.UI_DOWN_P,
-			FlxG.mouse.wheel == 1,
-			FlxG.mouse.wheel == -1
-		];
-		if ((controlArray.contains(true)))
-		{
-			for (i in 0...controlArray.length)
-			{
-				if (controlArray[i] == true)
-				{
-					if (i > 1)
-					{
-						if (i == 2 || i == 4)
-							curSelection--;
-						else if (i == 3 || i == 5)
-							curSelection++;
-
-						FlxG.sound.play(Paths.sound('scrollMenu'));
-					}
-					if (curSelection < 0)
-						curSelection = credData.users.length - 1;
-					else if (curSelection >= credData.users.length)
-						curSelection = 0;
-					updateSelection();
-				}
-			}
-		}
+		if (controls.UI_UP_P)
+			changeSelection(-1);
+		else if (controls.UI_DOWN_P)
+			changeSelection(1);
 
 		if (controls.UI_LEFT_P)
 			updateSocial(-1);
-
-		if (controls.UI_RIGHT_P)
+		else if (controls.UI_RIGHT_P)
 			updateSocial(1);
 
-		if (controls.ACCEPT)
-		{
-			FlxG.sound.play(Paths.sound('confirmMenu'));
-			FlxFlicker.flicker(alphabetGroup.members[curSelection], 0.5, 0.06 * 2, true, false, function(flick:FlxFlicker)
-			{
-				if (credData.users[curSelection].urlData[curSocial][1] != null)
-					CoolUtil.browserLoad(credData.users[curSelection].urlData[curSocial][1]);
-			});
-		}
-
 		if (controls.BACK)
-		{
-			FlxG.sound.play(Paths.sound('cancelMenu'));
 			Main.switchState(this, new MainMenuState());
-			Paths.clearUnusedMemory();
-		}
 
-		updateBottomMarker();
+		if (controls.ACCEPT && credData.users[curSelected].urlData[curSocial][1] != null)
+			CoolUtil.browserLoad(credData.users[curSelected].urlData[curSocial][1]);
+		
+		for (item in grpCharacters)
+		{
+			if(item.ID == curSelected)
+				item.x = FlxMath.lerp(item.x, 100 + 20, 0.3);
+			else if(item.ID == curSelected - 1 || item.ID == curSelected + 1)
+				item.x = FlxMath.lerp(item.x, 50 + 20, 0.3);
+			else
+				item.x = FlxMath.lerp(item.x, 20, 0.3);
+		}
 	}
 
-	function updateSelection()
+	function changeSelection(change:Int = 0)
 	{
+		FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
+
+		curSelected += change;
+
+		if (curSelected < 0)
+			curSelected = credData.users.length - 1;
+		if (curSelected >= credData.users.length)
+			curSelected = 0;
+
+		var newColor:FlxColor = FlxColor.fromRGB(credData.users[curSelected].colors[0], credData.users[curSelected].colors[1],
+			credData.users[curSelected].colors[2]);
+
+		if(bgTween != null)
+			bgTween.cancel();
+		bgTween = FlxTween.color(bg, 0.35, bg.color, newColor);
+
 		var bullShit:Int = 0;
-		for (item in alphabetGroup.members)
+
+		for (i in 0...iconArray.length)
+			iconArray[i].alpha = 0.6;
+
+		iconArray[curSelected].alpha = 1;
+
+		for (item in grpCharacters.members)
 		{
-			item.targetY = bullShit - curSelection;
+			item.targetY = bullShit - curSelected;
 			bullShit++;
 
 			item.alpha = 0.6;
+			item.color = FlxColor.fromRGB(155,155,155);
 
 			if (item.targetY == 0)
 			{
 				item.alpha = 1;
+				item.color = FlxColor.WHITE;
 			}
 		}
 
-		if (credData.users[curSelection].sectionName.length > 1)
+		var quoteText:String;
+		var validQuote = (credData.users[curSelected].textData[1] != null || credData.users[curSelected].textData[1].length >= 2);
+		quoteText = (validQuote ? '\n' + credData.users[curSelected].textData[1] : '');
+
+		desc.text = credData.users[curSelected].textData[0] + quoteText;
+		desc.x = Math.floor((FlxG.width / 2) - (desc.width / 2));
+		desc.y = FlxG.height - desc.height - 10;
+
+		if (credData.users[curSelected].sectionName != null)
 		{
-			var textValue = credData.users[curSelection].sectionName;
-			if (credData.users[curSelection].sectionName == null)
+			var textValue = credData.users[curSelected].sectionName;
+			if (credData.users[curSelected].sectionName == null)
 				textValue = "";
-			rightMarker.text = textValue;
+			groupText.text = textValue;
 		}
 
-		if (credData.tweenColor)
-		{
-			var color:FlxColor = FlxColor.fromRGB(credData.users[curSelection].colors[0], credData.users[curSelection].colors[1],
-				credData.users[curSelection].colors[2]);
+		groupText.x = Math.floor((FlxG.width / 2) - (groupText.width / 2));
+		groupText.y = desc.y - groupText.height - 10;
+		descBG.y = groupText.y - 10;
 
-			if (menuColorTween != null)
-				menuColorTween.cancel();
-
-			if (color != menuBG.color)
-			{
-				menuColorTween = FlxTween.color(menuBG, 0.35, menuBG.color, color, {
-					onComplete: function(tween:FlxTween) menuColorTween = null
-				});
-			}
-		}
-
-		// reset social;
-		curSocial = 0;
 		updateSocial(0, false);
 	}
 
-	public function updateBottomMarker()
+	public function updateSocial(huh:Int = 0, playSound:Bool = true)
 	{
-		var textData = credData.users[curSelection].textData;
-		var fullText:String = '';
-
-		// description
-		if (textData[0] != null && textData[0].length >= 1)
-			fullText += textData[0];
-
-		// quotes
-		if (textData[1] != null && textData[1].length >= 1)
-			fullText += ' - "' + textData[1] + '"';
-
-		bottomMarker.text = fullText;
-	}
-
-	public function updateSocial(huh:Int = 0, playSound:Bool = true) // HUH???
-	{
-		if (credData.users[curSelection].urlData[curSocial][0] == null)
-			return;
-
-		// prevent loud scroll sounds
 		if (playSound)
 			FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
 
 		curSocial += huh;
+
 		if (curSocial < 0)
-			curSocial = credData.users[curSelection].urlData[0].length - 1;
-		if (curSocial >= credData.users[curSelection].urlData.length)
+			curSocial = credData.users[curSelected].urlData[0].length - 1;
+		if (curSocial >= credData.users[curSelected].urlData.length)
 			curSocial = 0;
 
-		if (credData.users[curSelection].urlData[curSocial][0] != null)
-		{
-			var textValue = '< ' + credData.users[curSelection].urlData[curSocial][0] + ' >';
-			if (credData.users[curSelection].urlData[curSocial][0] == null)
-				textValue = "";
-			centerMarker.text = textValue;
-		}
+		socialIcon.x = FlxG.width - socialIcon.width - 8;
+		socialIcon.y = descBG.y - socialIcon.height - 8;
+		socialIcon.animation.play(credData.users[curSelected].urlData[curSocial][0]);
 	}
 }
