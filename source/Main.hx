@@ -45,7 +45,7 @@ class Main extends Sprite
 	{
 		super();
 
-		commitHash = getGitCommitHash();
+		commitHash = returnGitHash();
 
 		Lib.current.loaderInfo.uncaughtErrorEvents.addEventListener(UncaughtErrorEvent.UNCAUGHT_ERROR, onCrash);
 		FlxTransitionableState.skipNextTransIn = true;
@@ -165,7 +165,7 @@ class Main extends Sprite
 		Sys.exit(1);
 	}
 
-	public static function getGitCommitHash()
+	public static function returnGitHash()
 	{
 		var process = new sys.io.Process('git', ['rev-parse', 'HEAD']);
 
