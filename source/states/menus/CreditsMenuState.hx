@@ -4,6 +4,7 @@ import base.MusicBeat.MusicBeatState;
 import dependency.Discord;
 import flixel.FlxG;
 import flixel.FlxSprite;
+import flixel.addons.display.FlxBackdrop;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.math.FlxMath;
 import flixel.system.FlxSound;
@@ -15,7 +16,6 @@ import funkin.Alphabet;
 import funkin.ui.CreditsIcon;
 
 using StringTools;
-
 typedef CreditsUserDef =
 {
 	var name:String;
@@ -53,6 +53,7 @@ class CreditsMenuState extends MusicBeatState
 
 	private var bgTween:FlxTween;
 	private var bg:FlxSprite;
+	private var bDrop:FlxBackdrop;
 
 	private var socialIcon:FlxSprite;
 
@@ -71,6 +72,12 @@ class CreditsMenuState extends MusicBeatState
 
 		bg = new FlxSprite().loadGraphic(Paths.image('menus/base/menuDesat'));
 		add(bg);
+
+		bDrop = new FlxBackdrop(Paths.image('menus/base/grid'), 8, 8, true, true, 1, 1);
+		bDrop.velocity.x = 10;
+		bDrop.screenCenter();
+		bDrop.alpha = 0.8;
+		add(bDrop);
 		
 		var white:FlxSprite = new FlxSprite().makeGraphic(FlxG.width * 2, FlxG.height * 2, FlxColor.WHITE);
 		white.scrollFactor.set();
