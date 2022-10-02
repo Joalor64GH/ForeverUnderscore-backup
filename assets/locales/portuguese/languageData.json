@@ -3,8 +3,23 @@
     "personalBest": "RECORDE PESSOAL:",
     "tracksText": "FAIXAS",
     "weekScoreText": "PONTUAÇÃO DA SEMANA:",
+    "rateText": "TAXA:",
+
+    "resumeSong": "Resumir Musica",
+	"restartSong": "Reiniciar Musica",
+	"editors": "Abrir Editores",
+	"changeDiff": "Mudar Dificuldade",
+	"leaveChartingMode": "Sair do Charting Mode",
+	"togglePractice": "Ligar Modo Pratica",
+	"toggleAutoplay": "Ligar Autoplay",
+	"exitOptions": "Sair para o Menu de Opçoes",
+	"exitMenu": "Sair para o Menu Principal",
+	"songByTxt": "Por:",
+	"blueballedTxt": "Mortes:",
+	"backButton": "VOLTAR",
 
     "scoreTxt": "Pontuação:",
     "missTxt": "Erros:",
-    "accTxt": "Precisão:"
+    "accTxt": "Precisão:",
+    "botTxt": "[AUTO]"
 }

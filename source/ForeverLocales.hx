@@ -2,16 +2,32 @@ package;
 
 typedef LangDataDef =
 {
-	// GENERAL
+	// MENUS
 	var difficulties:Array<String>;
 	var personalBest:String;
 	var tracksText:String;
 	var weekScoreText:String;
+	var rateText:String;
+
+	// PAUSE MENU
+	var resumeSong:String;
+	var restartSong:String;
+	var editors:String;
+	var changeDiff:String;
+	var leaveChartingMode:String;
+	var togglePractice:String;
+	var toggleAutoplay:String;
+	var exitOptions:String;
+	var exitMenu:String;
+	var songByTxt:String;
+	var blueballedTxt:String;
+	var backButton:String;
 
 	// HUD INFO BAR
 	var scoreTxt:String;
 	var missTxt:String;
 	var accTxt:String;
+	var botTxt:String;
 }
 
 class ForeverLocales

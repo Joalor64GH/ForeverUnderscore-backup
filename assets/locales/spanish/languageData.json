@@ -3,8 +3,23 @@
     "personalBest": "MEJOR PERSONAL:",
     "tracksText": "CANCIONES",
     "weekScoreText": "PUNTUACIÓN DE SEMANA:",
+    "rateText": "TASA:",
+
+    "resumeSong": "Resume",
+	"restartSong": "Restart Song",
+	"editors": "Open Editors",
+	"changeDiff": "Change Difficulty",
+	"leaveChartingMode": "Leave Charting Mode",
+	"togglePractice": "Toggle Practice Mode",
+	"toggleAutoplay": "Toggle Autoplay",
+	"exitOptions": "Exit to Options Menu",
+	"exitMenu": "Exit to Main Menu",
+	"songByTxt": "By:",
+	"blueballedTxt": "Blue balled:",
+	"backButton": "BACK",
 
     "scoreTxt": "Puntuación:",
     "missTxt": "Fallos:",
-    "accTxt": "Precisión:"
+    "accTxt": "Precisión:",
+    "botTxt": "[AUTO]"
 }

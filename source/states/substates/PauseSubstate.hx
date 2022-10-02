@@ -34,6 +34,7 @@ class PauseSubstate extends MusicBeatSubstate
 	public static var levelPractice:FlxText;
 
 	private var levelError:FlxText;
+	private var language = ForeverLocales.curLang;
 
 	public function new(x:Float, y:Float)
 	{
@@ -61,7 +62,7 @@ class PauseSubstate extends MusicBeatSubstate
 		}
 
 		if (!PlayState.isStoryMode)
-			menuItems.insert(3, 'Open Editors');
+			menuItems.insert(2, 'Open Editors');
 
 		if (PlayState.chartingMode)
 		{
@@ -90,14 +91,14 @@ class PauseSubstate extends MusicBeatSubstate
 		add(levelInfo);
 
 		var levelAuthor:FlxText = new FlxText(20, 15 + 32, 0, "", 32);
-		levelAuthor.text += 'By: ' + PlayState.SONG.author;
+		levelAuthor.text += '${language.songByTxt} ' + PlayState.SONG.author;
 		levelAuthor.scrollFactor.set();
 		levelAuthor.setFormat(Paths.font('vcr.ttf'), 32);
 		levelAuthor.updateHitbox();
 		add(levelAuthor);
 
 		var levelDeaths:FlxText = new FlxText(20, 15 + 64, 0, "", 32);
-		levelDeaths.text += "Blue balled: " + PlayState.deaths;
+		levelDeaths.text += '${language.blueballedTxt} ' + PlayState.deaths;
 		levelDeaths.scrollFactor.set();
 		levelDeaths.setFormat(Paths.font('vcr.ttf'), 32);
 		levelDeaths.updateHitbox();

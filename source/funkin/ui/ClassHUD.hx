@@ -34,17 +34,18 @@ class ClassHUD extends FlxTypedGroup<FlxBasic>
 
 	public var infoDisplay:String = CoolUtil.dashToSpace(PlayState.SONG.song);
 	public var diffDisplay:String = CoolUtil.difficultyFromString();
-	public var engineDisplay:String = "FE UNDERSCORE v" + Main.underscoreVersion;
+	public var engineDisplay:String = "UNDERSCORE v" + Main.underscoreVersion;
 
 	public var autoplayMark:FlxText;
 	public var autoplaySine:Float = 0;
 
 	var timingsMap:Map<String, FlxText> = [];
 
-	var barFillDir = RIGHT_TO_LEFT;
+	private var barFillDir = RIGHT_TO_LEFT;
+	private var language = ForeverLocales.curLang;
 
-	var bfBar = FlxColor.fromRGB(PlayState.boyfriend.barColor[0], PlayState.boyfriend.barColor[1], PlayState.boyfriend.barColor[2]);
-	var dadBar = FlxColor.fromRGB(PlayState.dadOpponent.barColor[0], PlayState.dadOpponent.barColor[1], PlayState.dadOpponent.barColor[2]);
+	private var bfBar = FlxColor.fromRGB(PlayState.boyfriend.barColor[0], PlayState.boyfriend.barColor[1], PlayState.boyfriend.barColor[2]);
+	private var dadBar = FlxColor.fromRGB(PlayState.dadOpponent.barColor[0], PlayState.dadOpponent.barColor[1], PlayState.dadOpponent.barColor[2]);
 
 	public function new()
 	{
@@ -53,7 +54,7 @@ class ClassHUD extends FlxTypedGroup<FlxBasic>
 		var hash:String = '';
 		if (Main.showCommitHash && Main.commitHash.length > 3)
 			hash = Main.commitHash;
-		engineDisplay = "FE UNDERSCORE v" + Main.underscoreVersion + hash;
+		engineDisplay = "UNDERSCORE v" + Main.underscoreVersion + hash;
 
 		// le healthbar setup
 		var barY = FlxG.height * 0.875;
@@ -108,7 +109,7 @@ class ClassHUD extends FlxTypedGroup<FlxBasic>
 		centerMark.x = Math.floor((FlxG.width / 2) - (centerMark.width / 2));
 		add(centerMark);
 
-		autoplayMark = new FlxText(-5, (Init.getSetting('Downscroll') ? centerMark.y - 60 : centerMark.y + 60), FlxG.width - 800, "[AUTOPLAY]\n", 32);
+		autoplayMark = new FlxText(-5, (Init.getSetting('Downscroll') ? centerMark.y - 60 : centerMark.y + 60), FlxG.width - 800, '${language.botTxt}\n', 32);
 		autoplayMark.setFormat(Paths.font("vcr.ttf"), 32, FlxColor.WHITE, CENTER);
 		autoplayMark.setBorderStyle(OUTLINE, FlxColor.BLACK, 2);
 		autoplayMark.screenCenter(X);
@@ -186,13 +187,12 @@ class ClassHUD extends FlxTypedGroup<FlxBasic>
 	{
 		var importSongScore = PlayState.songScore;
 		var importMisses = PlayState.misses;
-		var language = ForeverLocales.curLang;
 
 		var unrated = (Timings.comboDisplay == null || Timings.comboDisplay == '');
 
 		var comboDisplay:String = Timings.comboDisplay;
 		var rankingDisplay:String = Timings.returnScoreRating().toUpperCase();
-		var rankLabel:String = (!unrated ? ' [$comboDisplay | $rankingDisplay]' : ' [$rankingDisplay]');
+		var rankString:String = (!unrated ? ' [$comboDisplay | $rankingDisplay]' : ' [$rankingDisplay]');
 
 		// testing purposes
 		var displayAccuracy:Bool = Init.getSetting('Display Accuracy');
@@ -201,7 +201,7 @@ class ClassHUD extends FlxTypedGroup<FlxBasic>
 		scoreBar.text += divider + '${language.missTxt} $importMisses';
 
 		if (displayAccuracy)
-			scoreBar.text += divider + '${language.accTxt} ${(Math.floor(Timings.getAccuracy() * 100) / 100)}%' + rankLabel;
+			scoreBar.text += divider + '${language.accTxt} ${(Math.floor(Timings.getAccuracy() * 100) / 100)}%' + rankString;
 
 		scoreBar.text += '\n';
 		scoreBar.x = Math.floor((FlxG.width / 2) - (scoreBar.width / 2));
