@@ -203,7 +203,7 @@ class StoryMenuState extends MusicBeatState
 		var lerpVal = Main.framerateAdjust(0.5);
 		lerpScore = Math.floor(FlxMath.lerp(lerpScore, intendedScore, lerpVal));
 
-		scoreText.text = "WEEK SCORE:" + lerpScore;
+		scoreText.text = '${ForeverLocales.curLang.weekScoreText}' + lerpScore;
 
 		grpLocks.forEach(function(lock:FlxSprite)
 		{
@@ -393,7 +393,7 @@ class StoryMenuState extends MusicBeatState
 		{
 			grpWeekCharacters.members[i].createCharacter(weekChars[i], true);
 		}
-		txtTracklist.text = "Tracks\n";
+		txtTracklist.text = '${ForeverLocales.curLang.tracksText}\n';
 
 		var baseWeek = WeekParser.loadedWeeks.get(WeekParser.weeksList[curWeek]);
 		var stringThing:Array<String> = [];

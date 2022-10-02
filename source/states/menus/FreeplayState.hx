@@ -370,7 +370,7 @@ class FreeplayState extends MusicBeatState
 		// for pitch playback
 		FlxG.sound.music.pitch = songRate;
 
-		scoreText.text = "PERSONAL BEST:" + lerpScore;
+		scoreText.text = '${ForeverLocales.curLang.personalBest}' + lerpScore;
 		rateText.text = "RATE: " + songRate + "x";
 		rateText.x = FlxG.width - rateText.width;
 		repositionHighscore();
