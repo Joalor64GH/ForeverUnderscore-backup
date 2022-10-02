@@ -1,0 +1,25 @@
+{
+    "difficulties": ["FACILE", "NORMAL", "DIFFICILE"],
+    "personalBest": "MEILLEUR SCORE PERSONNEL :",
+    "tracksText": "PISTES",
+    "weekScoreText": "SCORE DE LA SEMAINE :",
+    "rateText": "TAUX :",
+
+    "resumeSong": "Résumer",
+	"restartSong": "Relancer la Piste",
+	"editors": "Ouvrir les Éditeurs",
+	"changeDiff": "Changer la Difficulté",
+	"leaveChartingMode": "Quitter le Mode Charteur",
+	"togglePractice": "Basculer le Mode Pratique",
+	"toggleAutoplay": "Basculer l'Autoplay",
+	"exitOptions": "Quitter vers les Options",
+	"exitMenu": "Quitter vers le Menu Principal",
+	"songByTxt": "Par :",
+	"blueballedTxt": "Balles bleues :",
+	"backButton": "RETOUR",
+
+    "scoreTxt": "Score :",
+    "missTxt": "Breaks de Combo :",
+    "accTxt": "Acc :",
+    "botTxt": "[AUTOPLAY]"
+}
