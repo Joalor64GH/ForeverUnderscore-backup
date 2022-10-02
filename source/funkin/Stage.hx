@@ -156,6 +156,7 @@ class Stage extends FlxTypedGroup<FlxBasic>
 		boyfriend.setPosition(stageJson.bfPos[0], stageJson.bfPos[1]);
 		dad.setPosition(stageJson.dadPos[0], stageJson.dadPos[1]);
 		gf.setPosition(stageJson.gfPos[0], stageJson.gfPos[1]);
+		callFunc('repositionPlayers', [boyfriend, gf, dad]);
 	}
 
 	public function stageUpdate(curBeat:Int, boyfriend:Character, gf:Character, dad:Character)
