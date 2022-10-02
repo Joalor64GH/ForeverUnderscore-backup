@@ -7,7 +7,7 @@ A custom-made Forever Engine build which aims to maintain Forever Engine Legacy.
 ----------------------------------------------
 Forever Engine Underscore attempts to take on the challenge of maintaining Forever Engine Legacy while adding more features to it along the way, making a lot easier for coders to work with it.
 
-Contributions for further improving and expanding upon the project are and will always be appreciated.
+Suggestions and Contributions for further improving and expanding upon the project are and will always be appreciated.
 
 ----------------------------------------------
 # Planned Features:
