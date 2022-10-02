@@ -162,7 +162,7 @@ class Note extends FNFSprite
 				{
 					// listen I dont know what i was doing but I was onto something
 					// yoshubs this literally works properly -gabi
-					prevNote.scale.y = (prevNote.width / prevNote.frameWidth) * ((Conductor.stepCrochet / 100) * (1.07 / 0.7)) * noteSpeed;
+					prevNote.scale.y = (prevNote.width / prevNote.frameWidth) * ((Conductor.stepCrochet / 100) * (1.07 / 0.86)) * noteSpeed;
 					prevNote.updateHitbox();
 					offsetX = prevNote.offsetX;
 				}
