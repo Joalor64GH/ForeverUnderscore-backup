@@ -33,7 +33,7 @@ typedef CreditsPrefDef =
 	var users:Array<CreditsUserDef>;
 }
 
-class CreditsState extends MusicBeatState
+class CreditsMenuState extends MusicBeatState
 {
 	static var curSelection = -1;
 

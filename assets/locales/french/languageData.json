@@ -21,5 +21,8 @@
     "scoreTxt": "Score :",
     "missTxt": "Breaks de Combo :",
     "accTxt": "Acc :",
-    "botTxt": "[AUTOPLAY]"
+    "botTxt": "[AUTOPLAY]",
+
+	"dialogueFile": "dialogueFrench",
+	"dialogueFileEnd": "dialogueFrenchEnd"
 }

@@ -162,7 +162,7 @@ class GameOverSubstate extends MusicBeatSubstate
 				if (PlayState.isStoryMode)
 					Main.switchState(this, new StoryMenuState());
 				else
-					Main.switchState(this, new FreeplayState());
+					Main.switchState(this, new FreeplayMenuState());
 			}
 		}
 	}

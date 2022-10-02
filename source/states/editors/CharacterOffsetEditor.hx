@@ -24,7 +24,7 @@ import openfl.events.Event;
 import openfl.events.IOErrorEvent;
 import openfl.net.FileReference;
 import states.editors.data.PsychDropDown;
-import states.menus.FreeplayState;
+import states.menus.FreeplayMenuState;
 
 using StringTools;
 
@@ -265,7 +265,7 @@ class CharacterOffsetEditor extends MusicBeatState
 		if (FlxG.keys.justPressed.BACKSPACE)
 		{
 			FlxG.mouse.visible = false;
-			Main.switchState(this, new FreeplayState());
+			Main.switchState(this, new FreeplayMenuState());
 		}
 
 		// camera controls

@@ -141,6 +141,7 @@ class PlayState extends MusicBeatState
 	public static var forceZoom:Array<Float>;
 
 	public static var songScore:Int = 0;
+	public static var accuracy:Float = 0.00;
 	public static var rank:String = 'N/A';
 
 	var storyDifficultyText:String = "";
@@ -2079,6 +2080,7 @@ class PlayState extends MusicBeatState
 
 		// set ranking
 		rank = Timings.returnScoreRating().toUpperCase();
+		accuracy = Math.floor(Timings.getAccuracy() * 100) / 100;
 
 		canPause = false;
 		endingSong = true;
@@ -2097,6 +2099,7 @@ class PlayState extends MusicBeatState
 		{
 			Highscore.saveScore(SONG.song, songScore, storyDifficulty);
 			Highscore.saveRank(SONG.song, rank, storyDifficulty);
+			Highscore.saveAccuracy(SONG.song, accuracy, storyDifficulty);
 		}
 
 		// CoolUtil.difficulties = CoolUtil.baseDifficulties;
@@ -2106,7 +2109,7 @@ class PlayState extends MusicBeatState
 		else if (!isStoryMode)
 		{
 			if ((!endSongEvent))
-				Main.switchState(this, new FreeplayState());
+				Main.switchState(this, new FreeplayMenuState());
 			else if (!skipCutscenes())
 				songEndCutscene();
 		}
@@ -2191,7 +2194,7 @@ class PlayState extends MusicBeatState
 		}
 		else
 		{
-			Main.switchState(this, new FreeplayState());
+			Main.switchState(this, new FreeplayMenuState());
 		}
 	}
 
@@ -2287,7 +2290,9 @@ class PlayState extends MusicBeatState
 
 	function checkTextbox():Bool
 	{
-		var dialogPath = Paths.json('songs/' + SONG.song.toLowerCase() + (endingSong ? '/dialogueEnd' : '/dialogue'));
+		var dialogueFileStr:String = 'dialogue';
+		dialogueFileStr = (endingSong ? '${ForeverLocales.curLang.dialogueFileEnd}' : '${ForeverLocales.curLang.dialogueFile}');
+		var dialogPath = Paths.json('songs/' + SONG.song.toLowerCase() + '/$dialogueFileStr');
 
 		if (sys.FileSystem.exists(dialogPath))
 			return true;
@@ -2302,8 +2307,10 @@ class PlayState extends MusicBeatState
 			if (!endingSong)
 				startedCountdown = false;
 
-			dialogueBox = DialogueBox.createDialogue(sys.io.File.getContent(Paths.json('songs/' + SONG.song.toLowerCase()
-				+ (endingSong ? '/dialogueEnd' : '/dialogue'))));
+			var dialogueFileStr:String = 'dialogue';
+			dialogueFileStr = (endingSong ? '${ForeverLocales.curLang.dialogueFileEnd}' : '${ForeverLocales.curLang.dialogueFile}');
+
+			dialogueBox = DialogueBox.createDialogue(sys.io.File.getContent(Paths.json('songs/' + SONG.song.toLowerCase() + '/$dialogueFileStr')));
 			dialogueBox.cameras = [dialogueHUD];
 			dialogueBox.whenDaFinish = (endingSong ? callDefaultSongEnd : startCountdown);
 

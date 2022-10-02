@@ -28,6 +28,10 @@ typedef LangDataDef =
 	var missTxt:String;
 	var accTxt:String;
 	var botTxt:String;
+
+	// FILES
+	var dialogueFileEnd:String;
+	var dialogueFile:String;
 }
 
 class ForeverLocales

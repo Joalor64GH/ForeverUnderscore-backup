@@ -11,7 +11,7 @@ import flixel.input.keyboard.FlxKey;
 import flixel.text.FlxText;
 import flixel.util.FlxColor;
 import funkin.Alphabet;
-import states.menus.CreditsState;
+import states.menus.CreditsMenuState;
 
 using StringTools;
 
@@ -38,7 +38,7 @@ class ControlsSubstate extends MusicBeatSubstate
 		bg.antialiasing = !Init.getSetting('Disable Antialiasing');
 		add(bg);
 
-		CreditsState.addSymbY = true;
+		CreditsMenuState.addSymbY = true;
 
 		super.create();
 
@@ -305,7 +305,7 @@ class ControlsSubstate extends MusicBeatSubstate
 
 	override public function close()
 	{
-		CreditsState.addSymbY = false;
+		CreditsMenuState.addSymbY = false;
 		Init.saveControls(); // for controls
 		Init.saveSettings(); // for offset
 		super.close();

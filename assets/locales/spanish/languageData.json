@@ -21,5 +21,8 @@
     "scoreTxt": "Puntuación:",
     "missTxt": "Fallos:",
     "accTxt": "Precisión:",
-    "botTxt": "[AUTO]"
+    "botTxt": "[AUTOPLAY]",
+
+	"dialogueFile": "dialogueSpn",
+	"dialogueFileEnd": "dialogueSpnEnd"
 }

@@ -46,7 +46,7 @@ import openfl.media.Sound;
 import openfl.net.FileReference;
 import openfl.utils.ByteArray;
 import states.editors.data.*;
-import states.menus.FreeplayState;
+import states.menus.FreeplayMenuState;
 
 using StringTools;
 
@@ -1000,7 +1000,7 @@ class OriginalChartEditor extends MusicBeatState
 			if (FlxG.keys.justPressed.ENTER)
 				saveAndClose('PlayState');
 			else if (FlxG.keys.justPressed.BACKSPACE)
-				saveAndClose('FreeplayState');
+				saveAndClose('FreeplayMenuState');
 
 			if (FlxG.keys.justPressed.E)
 			{
@@ -1217,7 +1217,7 @@ class OriginalChartEditor extends MusicBeatState
 		else
 		{
 			PlayState.chartingMode = false;
-			Main.switchState(this, new FreeplayState());
+			Main.switchState(this, new FreeplayMenuState());
 		}
 	}
 

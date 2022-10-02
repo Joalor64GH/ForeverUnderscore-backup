@@ -63,7 +63,7 @@ class MainMenuState extends MusicBeatState
 		transIn = FlxTransitionableState.defaultTransIn;
 		transOut = FlxTransitionableState.defaultTransOut;
 
-		CreditsState.addSymbY = false;
+		CreditsMenuState.addSymbY = false;
 
 		// uh
 		persistentUpdate = persistentDraw = true;
@@ -276,9 +276,12 @@ class MainMenuState extends MusicBeatState
 								case 'story mode':
 									Main.switchState(this, new StoryMenuState());
 								case 'freeplay':
-									Main.switchState(this, new FreeplayState());
+									if (FlxG.keys.pressed.SHIFT)
+										Main.switchState(this, new FreeplayMenuState());
+									else
+										Main.switchState(this, new FreeplayMenuState());
 								case 'credits':
-									Main.switchState(this, new CreditsState());
+									Main.switchState(this, new CreditsMenuState());
 								case 'options':
 									PauseSubstate.toOptions = false;
 									transIn = FlxTransitionableState.defaultTransIn;

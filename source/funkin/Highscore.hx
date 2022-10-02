@@ -10,10 +10,12 @@ class Highscore
 	public static var weekScores:Map<String, Int> = new Map();
 	public static var songScores:Map<String, Int> = new Map();
 	public static var songRanks:Map<String, String> = new Map();
+	public static var songAccuracy:Map<String, Float> = new Map();
 	#else
 	public static var weekScores:Map<String, Int> = new Map<String, Int>();
 	public static var songScores:Map<String, Int> = new Map<String, Int>();
 	public static var songRanks:Map<String, String> = new Map<String, String>();
+	public static var songAccuracy:Map<String, Float> = new Map<String, Float>();
 	#end
 
 	public static function clearData(song:String, diff:Int = 0):Void
@@ -23,6 +25,7 @@ class Highscore
 		var daSong:String = formatSong(song, diff);
 		setScore(daSong, 0);
 		setRank(daSong, 'N/A');
+		setAccuracy(daSong, 0.00);
 	}
 
 	public static function saveScore(song:String, score:Int = 0, ?diff:Int = 0):Void
@@ -62,6 +65,19 @@ class Highscore
 		}
 		else
 			setRank(daSong, rank);
+	}
+
+	public static function saveAccuracy(song:String, accuracy:Float = 0.00, ?diff:Int = 0):Void
+	{
+		var daSong:String = formatSong(song, diff);
+
+		if (songAccuracy.exists(daSong))
+		{
+			if (songAccuracy.get(daSong) < accuracy)
+				setAccuracy(daSong, accuracy);
+		}
+		else
+			setAccuracy(daSong, accuracy);
 	}
 
 	static function getRankInt(rank:String):Int
@@ -132,6 +148,16 @@ class Highscore
 		return songRanks.get(formatSong(song, diff));
 	}
 
+	public static function getAccuracy(song:String, diff:Int):Float
+	{
+		FlxG.save.bind('forever-highscores', 'BeastlyGhost');
+
+		if (!songAccuracy.exists(formatSong(song, diff)))
+			setScore(formatSong(song, diff), 0);
+
+		return songAccuracy.get(formatSong(song, diff));
+	}
+
 	static function setScore(song:String, score:Int):Void
 	{
 		FlxG.save.bind('forever-highscores', 'BeastlyGhost');
@@ -162,6 +188,16 @@ class Highscore
 		FlxG.save.flush();
 	}
 
+	static function setAccuracy(song:String, accuracy:Float):Void
+	{
+		FlxG.save.bind('forever-highscores', 'BeastlyGhost');
+
+		// Reminder that I don't need to format this song, it should come formatted!
+		songAccuracy.set(song, accuracy);
+		FlxG.save.data.songAccuracy = songAccuracy;
+		FlxG.save.flush();
+	}
+
 	public static function load():Void
 	{
 		FlxG.save.bind('forever-highscores', 'BeastlyGhost');
@@ -176,6 +212,10 @@ class Highscore
 		if (FlxG.save.data.songRanks != null)
 		{
 			songRanks = FlxG.save.data.songRanks;
+		}
+		if (FlxG.save.data.songAccuracy != null)
+		{
+			songAccuracy = FlxG.save.data.songAccuracy;
 		}
 		FlxG.save.flush();
 	}
