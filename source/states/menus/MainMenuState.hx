@@ -207,7 +207,7 @@ class MainMenuState extends MusicBeatState
 			{
 				persistentUpdate = false;
 				persistentDraw = true;
-				openSubState(new states.substates.EditorMenuSubstate());
+				openSubState(new states.substates.EditorMenuSubstate(false));
 			}
 
 			var controlArray:Array<Bool> = [

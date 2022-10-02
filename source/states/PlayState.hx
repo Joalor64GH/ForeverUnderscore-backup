@@ -814,7 +814,7 @@ class PlayState extends MusicBeatState
 				if (controls.CHEAT)
 				{
 					pauseGame();
-					openSubState(new EditorMenuSubstate());
+					openSubState(new EditorMenuSubstate(true));
 				}
 
 				if (FlxG.keys.pressed.SHIFT && FlxG.keys.justPressed.FIVE)

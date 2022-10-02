@@ -67,13 +67,16 @@ class Stage extends FlxTypedGroup<FlxBasic>
 		super();
 		this.curStage = curStage;
 
-		stageJson = haxe.Json.parse(Paths.getTextFromFile('stages/$curStage/$curStage.json'));
-
-		if (stageJson == null)
+		try
+		{
+			stageJson = haxe.Json.parse(Paths.getTextFromFile('stages/$curStage/$curStage.json'));
+		}
+		catch(e)
 		{
 			stageJson = haxe.Json.parse(Paths.getTextFromFile('stages/stage/stage.json'));
 		}
-		else
+
+		if (stageJson != null)
 		{
 			spawnGirlfriend = stageJson.spawnGirlfriend;
 			PlayState.cameraSpeed = stageJson.camSpeed;

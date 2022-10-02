@@ -24,17 +24,19 @@ class EditorMenuSubstate extends MusicBeatSubstate
 
 	public static var fromPause:Bool = false;
 
-	public function new()
+	public function new(playMusic:Bool = true)
 	{
 		super();
 
 		cameras = [FlxG.cameras.list[FlxG.cameras.list.length - 1]];
 
-		music = new FlxSound().loadEmbedded(Paths.music('menus/prototype/prototype'), true, true);
-		music.volume = 0;
-		music.play(false, FlxG.random.int(0, Std.int(music.length / 2)));
-
-		FlxG.sound.list.add(music);
+		if (playMusic)
+		{
+			music = new FlxSound().loadEmbedded(Paths.music('menus/prototype/prototype'), true, true);
+			music.volume = 0;
+			music.play(false, FlxG.random.int(0, Std.int(music.length / 2)));
+			FlxG.sound.list.add(music);
+		}
 
 		var bg:FlxSprite = new FlxSprite().makeGraphic(FlxG.width, FlxG.height, 0xFF000000);
 		bg.alpha = 0;
@@ -62,7 +64,7 @@ class EditorMenuSubstate extends MusicBeatSubstate
 	{
 		super.update(elapsed);
 
-		if (music.volume < 0.5)
+		if (music != null && music.playing && music.volume < 0.5)
 			music.volume += 0.01 * elapsed;
 
 		if (controls.UI_UP_P)
@@ -80,6 +82,8 @@ class EditorMenuSubstate extends MusicBeatSubstate
 		{
 			var daSelected:String = optionsArray[curSelected];
 			base.Conductor.stopMusic();
+			if (FlxG.sound.music.playing)
+				FlxG.sound.music.stop();
 
 			switch (daSelected)
 			{
@@ -113,7 +117,8 @@ class EditorMenuSubstate extends MusicBeatSubstate
 
 	override function destroy()
 	{
-		music.destroy();
+		if (music != null)
+			music.destroy();
 		super.destroy();
 	}
 

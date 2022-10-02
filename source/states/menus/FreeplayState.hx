@@ -30,7 +30,6 @@ import funkin.ui.HealthIcon;
 import lime.utils.Assets;
 import openfl.media.Sound;
 import states.editors.*;
-import states.substates.FreeplaySubstate;
 
 using StringTools;
 
@@ -204,7 +203,6 @@ class FreeplayState extends MusicBeatState
 		add(scoreText);
 
 		changeSelection();
-		changeDiff();
 		resetScore(true);
 	}
 
@@ -333,15 +331,11 @@ class FreeplayState extends MusicBeatState
 				loadSong(true, true);
 			else if (seven)
 			{
-				loadSong(false, true);
-				PlayState.chartingMode = true;
-				PlayState.lastEditor == (shiftP ? 1 : 0);
-				Main.switchState(this, (shiftP ? new ChartEditor() : new OriginalChartEditor()));
+				loadSong(false, false);
+				persistentUpdate = false;
+				persistentDraw = true;
+				openSubState(new states.substates.EditorMenuSubstate(false));
 			}
-			/*
-				else if (ctrl)
-					openSubState(new FreeplaySubstate());
-			 */
 			else if (controls.RESET && presses < 3 && !shiftP)
 			{
 				presses++;
@@ -385,7 +379,6 @@ class FreeplayState extends MusicBeatState
 
 			FlxG.sound.music.volume = 0.0;
 			FlxG.sound.music.fadeIn(1.0, 0.0, 1.0);
-
 			songToPlay = null;
 		}
 		mutex.release();
@@ -489,7 +482,6 @@ class FreeplayState extends MusicBeatState
 		#if DEBUG_TRACES trace("curSelected: " + curSelected); #end
 
 		changeDiff();
-
 		changeSongPlaying();
 	}
 
@@ -553,20 +545,18 @@ class FreeplayState extends MusicBeatState
 	}
 
 	function resetScore(noSound:Bool = false)
-	{
+	{ // NOTE TO SELF: replace this with a something more fancy later maybe
 		if (!noSound)
 			FlxG.sound.play(Paths.sound('cancelMenu'), 0.4);
 
-		if (!noSound && !Init.getSetting('Disable Flashing Lights')) // shut.
+		if (!Init.getSetting('Disable Flashing Lights'))
 			FlxTween.color(bg, 0.50, FlxColor.GRAY, bg.color);
 
 		if (presses < 0 || presses > 3)
 			presses = 0;
 
 		if (presses == 2)
-		{
 			FlxG.sound.music.volume = 0.3;
-		}
 
 		if (presses == 3)
 		{
