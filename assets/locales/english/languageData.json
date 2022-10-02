@@ -1,0 +1,10 @@
+{
+    "difficulties": ["EASY", "NORMAL", "HARD"],
+    "personalBest": "PERSONAL BEST:",
+    "tracksText": "TRACKS",
+    "weekScoreText": "WEEK SCORE:",
+
+    "scoreTxt": "Score:",
+    "missTxt": "Combo Breaks:",
+    "accTxt": "Accuracy:"
+}

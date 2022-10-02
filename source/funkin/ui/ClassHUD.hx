@@ -186,6 +186,7 @@ class ClassHUD extends FlxTypedGroup<FlxBasic>
 	{
 		var importSongScore = PlayState.songScore;
 		var importMisses = PlayState.misses;
+		var language = ForeverLocales.curLang;
 
 		var unrated = (Timings.comboDisplay == null || Timings.comboDisplay == '');
 
@@ -196,11 +197,11 @@ class ClassHUD extends FlxTypedGroup<FlxBasic>
 		// testing purposes
 		var displayAccuracy:Bool = Init.getSetting('Display Accuracy');
 
-		scoreBar.text = 'Score: $importSongScore';
-		scoreBar.text += divider + 'Combo Breaks: $importMisses';
+		scoreBar.text = '${language.scoreTxt} $importSongScore';
+		scoreBar.text += divider + '${language.missTxt} $importMisses';
 
 		if (displayAccuracy)
-			scoreBar.text += divider + 'Accuracy: ${(Math.floor(Timings.getAccuracy() * 100) / 100)}%' + rankLabel;
+			scoreBar.text += divider + '${language.accTxt} ${(Math.floor(Timings.getAccuracy() * 100) / 100)}%' + rankLabel;
 
 		scoreBar.text += '\n';
 		scoreBar.x = Math.floor((FlxG.width / 2) - (scoreBar.width / 2));

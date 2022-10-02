@@ -201,6 +201,13 @@ class Init extends FlxState
 			"Whether the Score Bar should have an Animation for Hitting, based on your current ranking.",
 			NOT_FORCED
 		],
+		"Game Language" => [
+			'english',
+			Selector,
+			'Choose a language for the Main UI [REQUIRES RESTART].',
+			NOT_FORCED,
+			''
+		],
 		'Counter' => [
 			'None',
 			Selector,
@@ -396,6 +403,8 @@ class Init extends FlxState
 		if (FlxG.save.data.ratingOffset != null)
 			ratingOffset = FlxG.save.data.ratingOffset;
 
+		ForeverLocales.getLocale(trueSettings.get('Game Language'));
+
 		CoolUtil.difficulties = CoolUtil.baseDifficulties.copy();
 
 		Main.switchState(this, cast Type.createInstance(Main.initialState, []));
@@ -472,6 +481,10 @@ class Init extends FlxState
 		gameSettings.get("Menu Song")[4] = CoolUtil.returnAssetsLibrary('menus', 'assets/music');
 		if (!gameSettings.get("Menu Song")[4].contains(trueSettings.get("Menu Song")))
 			trueSettings.set("Menu Song", 'freakyMenu');
+
+		gameSettings.get("Game Language")[4] = CoolUtil.returnAssetsLibrary('locales', 'assets');
+		if (!gameSettings.get("Game Language")[4].contains(trueSettings.get("Game Language")))
+			trueSettings.set("Game Language", 'english');
 
 		if (FlxG.save.data.volume != null)
 			FlxG.sound.volume = FlxG.save.data.volume;

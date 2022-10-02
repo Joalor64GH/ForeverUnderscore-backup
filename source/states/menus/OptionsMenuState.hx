@@ -102,6 +102,7 @@ class OptionsMenuState extends MusicBeatState
 					['Fixed Judgements', getFromOption],
 					['Colored Health Bar', getFromOption],
 					['Animated Score Color', getFromOption],
+					['Game Language', getFromOption],
 					['Counter', getFromOption],
 					['', null],
 					['Notes and Holds', null],
