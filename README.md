@@ -22,12 +22,12 @@ help to finish these would be extremely appreciated!
 
 # Features:
 * a Full Scripting System, SScript! which uses hscript as a basis;
-* Custom Notetypes;
-* Scripted Stages;
+* Custom Notetypes (SOURCE BASED);
+* Custom Stages through Scripts;
 * Custom Credits Menu with Customizable Credit Entries via JSON files;
 * Psych Engine Character Support;
 * Strumline Manipulation (position, angle, speed, etc.);
-* Custom Dialogue Text Support;
+* Custom Dialogue Text Support (font, color, etc);
 
 and much more to come in the future!
 
