@@ -492,6 +492,12 @@ class Character extends FNFSprite
 		return true;
 	}
 
+	public function noteHit()
+	{
+		for (i in charScripts)
+			i.call('noteHit', []);
+	}
+
 	public var psychAnimationsArray:Array<PsychAnimArray> = [];
 
 	/*
