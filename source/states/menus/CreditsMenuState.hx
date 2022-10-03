@@ -6,6 +6,7 @@ import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.addons.display.FlxBackdrop;
 import flixel.group.FlxGroup.FlxTypedGroup;
+import flixel.group.FlxGroup;
 import flixel.math.FlxMath;
 import flixel.system.FlxSound;
 import flixel.text.FlxText;
@@ -47,18 +48,24 @@ class CreditsMenuState extends MusicBeatState
 	var userData:CreditsUserDef;
 	var credData:CreditsPrefDef;
 
-	private var grpCharacters:FlxTypedGroup<Alphabet>;
+	var grpCharacters:FlxTypedGroup<Alphabet>;
 
-	private var iconArray:Array<CreditsIcon> = [];
+	var iconArray:Array<CreditsIcon> = [];
 
-	private var bgTween:FlxTween;
-	private var bg:FlxSprite;
-	private var bDrop:FlxBackdrop;
+	var mediaAnimsArray:Array<String> = ['NG', 'Twitter', 'Twitch', 'YT', 'GitHub'];
 
-	private var socialIcon:FlxSprite;
+	var bgTween:FlxTween;
+	var bg:FlxSprite;
+	var bDrop:FlxBackdrop;
 
-	private var descBG:FlxSprite;
-	private var desc:FlxText;
+	var socialIcon:FlxSprite;
+	var leftArrow:FlxSprite;
+	var rightArrow:FlxSprite;
+
+	var grpCreditSocials:FlxGroup;
+
+	var descBG:FlxSprite;
+	var desc:FlxText;
 
 	override function create()
 	{
@@ -78,6 +85,8 @@ class CreditsMenuState extends MusicBeatState
 		bDrop.screenCenter();
 		bDrop.alpha = 0.8;
 		add(bDrop);
+
+		var ui_tex = Paths.getSparrowAtlas('menus/base/storymenu/campaign_menu_UI_assets');
 		
 		var white:FlxSprite = new FlxSprite().makeGraphic(FlxG.width * 2, FlxG.height * 2, FlxColor.WHITE);
 		white.scrollFactor.set();
@@ -88,6 +97,9 @@ class CreditsMenuState extends MusicBeatState
 
 		grpCharacters = new FlxTypedGroup<Alphabet>();
 		add(grpCharacters);
+
+		grpCreditSocials = new FlxGroup();
+		add(grpCreditSocials);
 
 		for (i in 0...credData.users.length)
 		{
@@ -129,16 +141,27 @@ class CreditsMenuState extends MusicBeatState
 		groupText.antialiasing = true;
 		add(groupText);
 
-		socialIcon = new FlxSprite(0,0);
+		socialIcon = new FlxSprite(0, 0);
 		socialIcon.frames = Paths.getSparrowAtlas('credits/PlatformIcons');
-		socialIcon.animation.addByPrefix('NG', 'NG', 24, false);
-		socialIcon.animation.addByPrefix('Twitter', 'Twitter', 24, false);
-		socialIcon.animation.addByPrefix('Twitch', 'Twitch', 24, false);
-		socialIcon.animation.addByPrefix('YouTube', 'YT', 24, false);
-		socialIcon.animation.play('base');
+		for (anim in mediaAnimsArray)
+			socialIcon.animation.addByPrefix('$anim', '$anim', 24, false);
 		socialIcon.scale.set(0.8,0.8);
 		socialIcon.updateHitbox();
-		add(socialIcon);
+		grpCreditSocials.add(socialIcon);
+
+		leftArrow = new FlxSprite(0, 0);
+		leftArrow.frames = ui_tex;
+		leftArrow.animation.addByPrefix('idle', "arrow left");
+		leftArrow.animation.addByPrefix('press', "arrow push left");
+		leftArrow.animation.play('idle');
+		grpCreditSocials.add(leftArrow);
+
+		rightArrow = new FlxSprite(0, 0);
+		rightArrow.frames = ui_tex;
+		rightArrow.animation.addByPrefix('idle', 'arrow right');
+		rightArrow.animation.addByPrefix('press', "arrow push right", 24, false);
+		rightArrow.animation.play('idle');
+		grpCreditSocials.add(rightArrow);
 
 		curSelected = 0;
 		curSocial = 0;
@@ -159,6 +182,16 @@ class CreditsMenuState extends MusicBeatState
 			updateSocial(-1);
 		else if (controls.UI_RIGHT_P)
 			updateSocial(1);
+
+		if (controls.UI_RIGHT)
+			rightArrow.animation.play('press')
+		else
+			rightArrow.animation.play('idle');
+
+		if (controls.UI_LEFT)
+			leftArrow.animation.play('press');
+		else
+			leftArrow.animation.play('idle');
 
 		if (controls.BACK)
 			Main.switchState(this, new MainMenuState());
@@ -238,7 +271,7 @@ class CreditsMenuState extends MusicBeatState
 		descBG.y = groupText.y - 10;
 
 		curSocial = 0;
-		updateSocial();
+		updateSocial(0, false);
 	}
 
 	public function updateSocial(huh:Int = 0, playSound:Bool = true)
@@ -249,12 +282,18 @@ class CreditsMenuState extends MusicBeatState
 		curSocial += huh;
 
 		if (curSocial < 0)
-			curSocial = credData.users[curSelected].urlData[0].length - 1;
+			curSocial = credData.users[curSelected].urlData.length - 1;
 		if (curSocial >= credData.users[curSelected].urlData.length)
 			curSocial = 0;
 
-		socialIcon.x = FlxG.width - socialIcon.width - 8;
+		socialIcon.x = FlxG.width - socialIcon.width - 78;
 		socialIcon.y = descBG.y - socialIcon.height - 8;
+
+		leftArrow.x = FlxG.width - leftArrow.width - 238;
+		leftArrow.y = descBG.y - socialIcon.height + 15;
+		rightArrow.x = FlxG.width - rightArrow.width - 28;
+		rightArrow.y = descBG.y - socialIcon.height + 15;
+
 		socialIcon.animation.play(credData.users[curSelected].urlData[curSocial][0]);
 	}
 }

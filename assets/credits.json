@@ -38,7 +38,7 @@
 			"name": "Jigsaw",
 			"icon": "jigsaw",
 			"textData": ["Base Android Support Tools, Engine Misc Fixes"],
-			"urlData": [["Twitter", "https://twitter.com/jigsaw1_ma"], ["Git", "https://github.com/MAJigsaw77"]],
+			"urlData": [["Twitter", "https://twitter.com/jigsaw1_ma"], ["GitHub", "https://github.com/MAJigsaw77"]],
 			"colors": [212, 212, 212]
 		},
 		{
@@ -54,7 +54,7 @@
 			"name": "Luisinho01",
 			"icon": "",
 			"textData": ["Additional Coder"],
-			"urlData": [["Github", "https://github.com/Luisinhi010"]],
+			"urlData": [["GitHub", "https://github.com/Luisinhi010"]],
 			"colors": [182, 84, 82]
 		},
 		{
@@ -105,7 +105,7 @@
 			"name": "superpowers04",
 			"icon": "",
 			"textData": ["Code for the Console used for debug traces (F10)", "Insert funny quote here (play super engine)"],
-			"urlData": [["Git", "https://github.com/superpowers04"]],
+			"urlData": [["GitHub", "https://github.com/superpowers04"]],
 			"colors": [255, 255, 255]
 		},
 		{
@@ -123,7 +123,7 @@
 			"name": "BoloVEVO",
 			"icon": "bolo",
 			"textData": ["Made a KE fork with lots of performance improvements.", "Big Black Male Chicken"],
-			"urlData": [["Git (KE)", "https://github.com/BoloVEVO/Kade-Engine-Public"], ["Git (User)", "https://github.com/BoloVEVO"]],
+			"urlData": [["GitHub1", "https://github.com/BoloVEVO/Kade-Engine-Public"], ["GitHub2", "https://github.com/BoloVEVO"]],
 			"colors": [255, 0, 49]
 		},
 		{
@@ -135,7 +135,7 @@
 			"urlData": [
 				["Twitch", "https://www.twitch.tv/abo_bora"],
 				["Twitter", "https://twitter.com/abo_bora"], 
-				["YouTube", "https://www.youtube.com/channel/UC4i6dpPE_6porNTxdzEiPXQ"]
+				["YT", "https://www.youtube.com/channel/UC4i6dpPE_6porNTxdzEiPXQ"]
 			],
 			"colors": [90, 49, 187]
 		},
@@ -152,21 +152,21 @@
 			"name": "Pixloen",
 			"icon": "",
 			"textData": ["Forever Engine's Custom Assets"],
-			"urlData": [["Git", "https://github.com/PixlJacket"]],
+			"urlData": [["GitHub", "https://github.com/PixlJacket"]],
 			"colors": [172, 117, 244]
 		},
 		{
 			"name": "Gedehari",
 			"icon": "",
 			"textData": ["Programmer"],
-			"urlData": [["Git", "https://github.com/gedehari"]],
+			"urlData": [["GitHub", "https://github.com/gedehari"]],
 			"colors": [254, 219, 127]
 		},
 		{
 			"name": "Scarlett",
 			"icon": "",
 			"textData": ["Programmer, Wrote the Math Formula for Note Quants"],
-			"urlData": [["Git", "https://github.com/SomeKitten"]],
+			"urlData": [["GitHub", "https://github.com/SomeKitten"]],
 			"colors": [247, 147, 30]
 		},
 		{
@@ -180,7 +180,7 @@
 			"name": "ImCodist",
 			"icon": "",
 			"textData": ["Issue Fixes"],
-			"urlData": [["Git", "https://github.com/ImCodist"]],
+			"urlData": [["GitHub", "https://github.com/ImCodist"]],
 			"colors": [175, 68, 65]
 		},
 		{
@@ -189,7 +189,7 @@
 			"name": "HelloSammu",
 			"icon": "",
 			"textData": ["Engine Misc Fixes, Scaleable Text for Dialogue"],
-			"urlData": [["Git", "https://github.com/hellosammu"]],
+			"urlData": [["GitHub", "https://github.com/hellosammu"]],
 			"colors": [204, 177, 73]
 		},
 		{
