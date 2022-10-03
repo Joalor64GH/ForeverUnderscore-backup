@@ -82,7 +82,10 @@ class JudgementOffsetState extends MusicBeatState
 		infoBar.antialiasing = !Init.getSetting('Disable Antialiasing');
 		add(infoBar);
 
-		judge = ForeverAssets.generateRating('sick', true, false, null, 'base', Init.getSetting('UI Skin'), 'UI', true);
+		var assetModifier = PlayState.assetModifier;
+		if (PlayState.assetModifier == null) assetModifier = 'base';
+
+		judge = ForeverAssets.generateRating('sick', true, false, null, assetModifier, Init.getSetting('UI Skin'), 'UI', true);
 		judge.cameras = [_camUI];
 		add(judge);
 
@@ -93,7 +96,7 @@ class JudgementOffsetState extends MusicBeatState
 
 		for (scoreInt in 0...stringArray.length)
 		{
-			combo = ForeverAssets.generateCombo('combo_numbers', stringArray[scoreInt], true, null, 'base', Init.getSetting('UI Skin'), 'UI', false,
+			combo = ForeverAssets.generateCombo('combo_numbers', stringArray[scoreInt], true, null, assetModifier, Init.getSetting('UI Skin'), 'UI', false,
 				FlxColor.WHITE, scoreInt, true);
 			combo.cameras = [_camUI];
 			combo.y += 50;
