@@ -90,8 +90,8 @@ class ForeverAssets
 			if (Init.getSetting('Judgement Stacking') && !debug)
 			{
 				combo.acceleration.y = FlxG.random.int(100, 200) * Conductor.playbackRate * Conductor.playbackRate;
-				combo.velocity.y = -FlxG.random.int(140, 160) * Conductor.playbackRate * Conductor.playbackRate;
-				combo.velocity.x = FlxG.random.float(-5, 5) * Conductor.playbackRate * Conductor.playbackRate;
+				combo.velocity.y = -FlxG.random.int(140, 160) * Conductor.playbackRate;
+				combo.velocity.x = FlxG.random.float(-5, 5) * Conductor.playbackRate;
 
 				FlxTween.tween(combo, {alpha: 0}, (Conductor.stepCrochet * 2) / 1000 / Conductor.playbackRate, {
 					onComplete: function(tween:FlxTween)
@@ -157,8 +157,8 @@ class ForeverAssets
 		{
 			if (Init.getSetting('Judgement Stacking') && !debug)
 			{
-				rating.velocity.y = -FlxG.random.int(140, 175) * Conductor.playbackRate * Conductor.playbackRate;
-				rating.velocity.x = -FlxG.random.int(0, 10) * Conductor.playbackRate * Conductor.playbackRate;
+				rating.velocity.y = -FlxG.random.int(140, 175) * Conductor.playbackRate;
+				rating.velocity.x = -FlxG.random.int(0, 10) * Conductor.playbackRate;
 				rating.acceleration.y = 550 * Conductor.playbackRate * Conductor.playbackRate;
 
 				FlxTween.tween(rating, {alpha: 0}, (Conductor.stepCrochet) / 1000, {

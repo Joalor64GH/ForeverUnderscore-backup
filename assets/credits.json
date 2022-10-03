@@ -102,6 +102,13 @@
 			"colors": [255, 255, 255]
 		},
 		{
+			"name": "superpowers04",
+			"icon": "",
+			"textData": ["Code for the Console used for debug traces (F10)", "Insert funny quote here (play super engine)"],
+			"urlData": [["Git", "https://github.com/superpowers04"]],
+			"colors": [255, 255, 255]
+		},
+		{
 			"sectionName": "SPECIAL THANKS",
 
 			"name": "PolybiusProxy",
