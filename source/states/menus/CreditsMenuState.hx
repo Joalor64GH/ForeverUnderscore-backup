@@ -236,7 +236,7 @@ class CreditsMenuState extends MusicBeatState
 		groupText.y = desc.y - groupText.height - 10;
 		descBG.y = groupText.y - 10;
 
-		updateSocial(0, false);
+		curSocial = 0;
 	}
 
 	public function updateSocial(huh:Int = 0, playSound:Bool = true)

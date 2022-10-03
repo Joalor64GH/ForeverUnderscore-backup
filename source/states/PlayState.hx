@@ -2078,10 +2078,6 @@ class PlayState extends MusicBeatState
 	{
 		callFunc('endSong', []);
 
-		// set ranking
-		rank = Timings.returnScoreRating().toUpperCase();
-		accuracy = Math.floor(Timings.getAccuracy() * 100) / 100;
-
 		canPause = false;
 		endingSong = true;
 
@@ -2092,8 +2088,11 @@ class PlayState extends MusicBeatState
 		}
 
 		Conductor.stopMusic();
-
 		deaths = 0;
+
+		// set ranking
+		rank = Timings.returnScoreRating().toUpperCase();
+		accuracy = Math.floor(Timings.getAccuracy() * 100) / 100;
 
 		if (SONG.validScore && !preventScoring)
 		{
@@ -2138,7 +2137,7 @@ class PlayState extends MusicBeatState
 				Main.switchState(this, new StoryMenuState());
 
 				// save the week's score if the score is valid
-				if (SONG.validScore)
+				if (SONG.validScore && !preventScoring)
 					Highscore.saveWeekScore(storyWeek, campaignScore, storyDifficulty);
 
 				// flush the save
