@@ -44,6 +44,7 @@ class FreeplayMenuState extends MusicBeatState
 	var intendedScore:Int = 0;
 	var lerpAcc:Float = 0.00;
 	var intendedAcc:Float = 0.00;
+	var intendedRank:String = 'N/A';
 
 	// song variables
 	var songThread:Thread;
@@ -247,17 +248,6 @@ class FreeplayMenuState extends MusicBeatState
 		if (Math.abs(lerpAcc - intendedAcc) <= 0.01)
 			lerpAcc = intendedAcc;
 
-		var splitAccuracy:Array<String> = Std.string(lerpAcc).split('.');
-		if (splitAccuracy.length < 2)
-		{ // No decimals, add an empty space
-			splitAccuracy.push('');
-		}
-
-		while (splitAccuracy[1].length < 2)
-		{ // Less than 2 decimals in it, add decimals then
-			splitAccuracy[1] += '0';
-		}
-
 		var upP = controls.UI_UP_P;
 		var downP = controls.UI_DOWN_P;
 		var accepted = controls.ACCEPT;
@@ -345,8 +335,11 @@ class FreeplayMenuState extends MusicBeatState
 		// for pitch playback
 		FlxG.sound.music.pitch = songRate;
 
-		scoreText.text = '${ForeverLocales.curLang.personalBest}' + lerpScore + ' (' + splitAccuracy.join('.') + '%)';
-		rateText.text = '${ForeverLocales.curLang.rateText} ' + songRate + "x";
+		var accStr:String = '$lerpAcc';
+		var croppedAcc:String = '${accStr.substr(0, 4)}';
+
+		scoreText.text = '${ForeverLocales.curLang.personalBest}' + lerpScore;
+		rateText.text = '${ForeverLocales.curLang.accTxt.toUpperCase()} $croppedAcc% | ${ForeverLocales.curLang.rateText} ' + songRate + "x";
 		rateText.x = FlxG.width - rateText.width;
 		repositionHighscore();
 
@@ -410,8 +403,10 @@ class FreeplayMenuState extends MusicBeatState
 			curDifficulty = 0;
 
 		intendedScore = Highscore.getScore(songs[curSelected].songName, curDifficulty);
+		intendedAcc = Highscore.getAccuracy(songs[curSelected].songName, curDifficulty);
+		intendedRank = Highscore.getRank(songs[curSelected].songName, curDifficulty);
 
-		diffText.text = '< ' + existingDifficulties[curSelected][curDifficulty] + ' >';
+		diffText.text = '< ' + existingDifficulties[curSelected][curDifficulty] + ' - ' + intendedRank + ' >';
 		lastDifficulty = existingDifficulties[curSelected][curDifficulty];
 	}
 
@@ -428,6 +423,7 @@ class FreeplayMenuState extends MusicBeatState
 
 		intendedScore = Highscore.getScore(songs[curSelected].songName, curDifficulty);
 		intendedAcc = Highscore.getAccuracy(songs[curSelected].songName, curDifficulty);
+		intendedRank = Highscore.getRank(songs[curSelected].songName, curDifficulty);
 
 		mainColor = songs[curSelected].songColor;
 
@@ -495,6 +491,7 @@ class FreeplayMenuState extends MusicBeatState
 		scoreBG.width = scoreText.width + 8;
 		scoreBG.x = FlxG.width - scoreBG.width;
 		diffText.x = scoreBG.x + (scoreBG.width / 2) - (diffText.width / 2);
+		rateText.x = scoreBG.x + (scoreBG.width / 2) - (rateText.width / 2);
 	}
 }
 
