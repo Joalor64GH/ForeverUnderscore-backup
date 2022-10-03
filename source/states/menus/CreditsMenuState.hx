@@ -108,8 +108,6 @@ class CreditsMenuState extends MusicBeatState
 			add(icon);
 
 			personName.x += 40;
-			curSelected = 0;
-			curSocial = 0;
 		}
 
 		descBG = new FlxSprite(0, 0).makeGraphic(FlxG.width, FlxG.height, 0xFF000000);
@@ -142,7 +140,10 @@ class CreditsMenuState extends MusicBeatState
 		socialIcon.updateHitbox();
 		add(socialIcon);
 
+		curSelected = 0;
+		curSocial = 0;
 		changeSelection();
+		updateSocial();
 	}
 
 	override function update(elapsed:Float)
@@ -237,6 +238,7 @@ class CreditsMenuState extends MusicBeatState
 		descBG.y = groupText.y - 10;
 
 		curSocial = 0;
+		updateSocial();
 	}
 
 	public function updateSocial(huh:Int = 0, playSound:Bool = true)
