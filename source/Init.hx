@@ -204,7 +204,7 @@ class Init extends FlxState
 		"Game Language" => [
 			'english',
 			Selector,
-			'Choose a language for the Main UI [REQUIRES RESTART].',
+			'Choose a language for the Main UI.',
 			NOT_FORCED,
 			''
 		],
