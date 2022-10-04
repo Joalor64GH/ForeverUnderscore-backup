@@ -21,7 +21,7 @@ Suggestions and Contributions for further improving and expanding upon the proje
 help to finish these would be extremely appreciated!
 
 # Features:
-* a Full Scripting System, [SScript](https://github.com/TheWorldMachine/SScript)! which uses hscript as a basis;
+* a Full Scripting System, [SScript](https://github.com/TheWorldMachinima/SScript)! which uses hscript as a basis;
 * Custom Notetypes (SOURCE BASED);
 * Custom Stages through Scripts;
 * Custom Credits Menu with Customizable Credit Entries via JSON files;
