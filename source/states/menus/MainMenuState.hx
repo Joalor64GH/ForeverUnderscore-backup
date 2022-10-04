@@ -2,7 +2,6 @@ package states.menus;
 
 import sys.FileSystem;
 import base.MusicBeat.MusicBeatState;
-import base.ScriptHandler;
 import dependency.Discord;
 import flixel.FlxCamera;
 import flixel.FlxG;
@@ -41,7 +40,6 @@ class MainMenuState extends MusicBeatState
 	public var optionShit:Array<String> = ['story mode', 'freeplay', 'credits', 'options'];
 
 	public var forceCenter:Bool = true;
-	public var menuScript:ScriptHandler;
 
 	public var menuItemScale:Int = 1;
 
@@ -80,30 +78,6 @@ class MainMenuState extends MusicBeatState
 		FlxG.cameras.add(camHUD, false);
 		FlxG.cameras.setDefaultDrawTarget(camGame, true);
 
-		var paths:Array<String> = [
-			Paths.getPreloadPath('classes/MainMenu.hx'),
-			Paths.getPreloadPath('classes/MainMenu.hxs')
-		];
-
-		for (path in paths)
-		{
-			if (FileSystem.exists(path))
-				menuScript = new ScriptHandler(path);
-		}
-
-		setVar('MainMenuState', this);
-		setVar('add', add);
-		setVar('remove', remove);
-
-		callFunc('create', []);
-
-		var createOver:Dynamic = callFunc('overrideCreate', []);
-		if (createOver != null)
-			return;
-
-		if (optionShit.length < 1) // so you can't hardlock someone on the menu
-			optionShit = ['story mode', 'freeplay', 'credits', 'options'];
-
 		bg = new FlxSprite().loadGraphic(Paths.image('menus/base/menuBG'));
 		bg.scrollFactor.set(0, 0.17);
 		bg.setGraphicSize(Std.int(bg.width * 1.2));
@@ -130,7 +104,6 @@ class MainMenuState extends MusicBeatState
 
 		for (i in 0...optionShit.length)
 		{
-			callFunc('optionSetup', []);
 			var maxLength:Float = 58 - (Math.max(optionShit.length, 4) - 4) * 80;
 			var menuItem:FlxSprite = new FlxSprite(0, (i * 160) + maxLength);
 			menuItem.frames = Paths.getSparrowAtlas('menus/base/menuItems/' + optionShit[i]);
@@ -156,9 +129,6 @@ class MainMenuState extends MusicBeatState
 			menuItem.scrollFactor.set(0, scr);
 			menuItem.antialiasing = !Init.getSetting('Disable Antialiasing');
 			menuItem.updateHitbox();
-
-			setVar('menuItem', menuItem);
-			callFunc('postOptionSetup', []);
 		}
 
 		var camLerp = Main.framerateAdjust(0.10);
@@ -182,20 +152,12 @@ class MainMenuState extends MusicBeatState
 		versionShit.scrollFactor.set();
 		versionShit.setFormat(Paths.font('vcr.ttf'), 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		add(versionShit);
-
-		callFunc('postCreate', []);
 	}
 
 	var selectedSomethin:Bool = false;
 
 	override function update(elapsed:Float)
 	{
-		callFunc('update', [elapsed]);
-
-		var setupOver:Dynamic = callFunc('overrideUpdate', [elapsed]);
-		if (setupOver != null)
-			return;
-
 		if (!selectedSomethin)
 		{
 			if (controls.BACK || FlxG.mouse.justPressedRight)
@@ -269,7 +231,6 @@ class MainMenuState extends MusicBeatState
 					}
 					else
 					{
-						callFunc('stateSwitch', []);
 						FlxFlicker.flicker(spr, 1, flickerVal, false, false, function(flick:FlxFlicker)
 						{
 							switch (optionShit[Math.floor(curSelected)])
@@ -289,7 +250,6 @@ class MainMenuState extends MusicBeatState
 									else
 										Main.switchState(this, new OptionsMenuState());
 							}
-							callFunc('postStateSwitch', []);
 						});
 					}
 				});
@@ -306,29 +266,12 @@ class MainMenuState extends MusicBeatState
 			if (forceCenter)
 				menuItem.screenCenter(X);
 		});
-		callFunc('postUpdate', [elapsed]);
-	}
-
-	override function beatHit()
-	{
-		super.beatHit();
-		callFunc('beatHit', [curBeat]);
-	}
-
-	override function stepHit()
-	{
-		super.stepHit();
-		callFunc('stepHit', [curStep]);
 	}
 
 	var lastCurSelected:Int = 0;
 
 	function updateSelection()
 	{
-		callFunc('updateSelection', []);
-		var selOver:Dynamic = callFunc('overrideUpdateSelection', []);
-		if (selOver != null)
-			return;
 		// reset all selections
 		menuItems.forEach(function(spr:FlxSprite)
 		{
@@ -352,22 +295,5 @@ class MainMenuState extends MusicBeatState
 		menuItems.members[Math.floor(curSelected)].updateHitbox();
 
 		lastCurSelected = Math.floor(curSelected);
-		callFunc('postUpdateSelection', []);
-	}
-
-	public function callFunc(key:String, args:Array<Dynamic>)
-	{
-		if (menuScript == null)
-			return null;
-		else
-			return menuScript.call(key, args);
-	}
-
-	public function setVar(key:String, value:Dynamic)
-	{
-		if (menuScript == null)
-			return null;
-		else
-			return menuScript.set(key, value);
 	}
 }
