@@ -28,7 +28,6 @@ using StringTools;
 class FreeplayMenuState extends MusicBeatState
 {
 	static var curSelected:Int = 0;
-	var curSongPlaying:Int = -1;
 	var curDifficulty:Int = 1;
 
 	// background variables
@@ -52,6 +51,7 @@ class FreeplayMenuState extends MusicBeatState
 	var mutex:Mutex;
 	var songToPlay:Sound;
 	var songRate:Float = 1;
+	var curSongPlaying:Int = -1;
 	var curPlaying:Bool = false;
 
 	var grpSongs:FlxTypedGroup<Alphabet>;
@@ -406,7 +406,8 @@ class FreeplayMenuState extends MusicBeatState
 		intendedAcc = Highscore.getAccuracy(songs[curSelected].songName, curDifficulty);
 		intendedRank = Highscore.getRank(songs[curSelected].songName, curDifficulty);
 
-		diffText.text = '< ' + existingDifficulties[curSelected][curDifficulty] + ' - ' + intendedRank + ' >';
+		//existingDifficulties[curSelected][curDifficulty]
+		diffText.text = '< ' + ForeverLocales.curLang.difficulties[curDifficulty] + ' - ' + intendedRank + ' >';
 		lastDifficulty = existingDifficulties[curSelected][curDifficulty];
 	}
 
