@@ -2570,6 +2570,10 @@ class PlayState extends MusicBeatState
 	function setPlayStateVars()
 	{
 		setVar('game', PlayState.contents);
+		setVar('songName', PlayState.SONG.song.toLowerCase());
+		setVar('dadName', PlayState.dadOpponent.curCharacter);
+		setVar('gfName', PlayState.gf.curCharacter);
+		setVar('bfName', PlayState.boyfriend.curCharacter);
 		setVar('add', add);
 		setVar('remove', remove);
 		setVar('openSubState', openSubState);

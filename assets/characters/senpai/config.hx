@@ -1,6 +1,6 @@
 function loadAnimations()
 {
-	if (StringTools.startsWith(song, 'roses'))
+	if (StringTools.startsWith(songName, 'roses'))
 		getMad();
 	else
 		setupAnims();

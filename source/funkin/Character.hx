@@ -8,11 +8,11 @@ import haxe.Json;
 import sys.FileSystem;
 import sys.io.File;
 import base.*;
-import base.data.SuperChar;
-import base.data.PsychChar;
 import base.SongLoader.LegacySection;
 import base.SongLoader.LegacySong;
 import base.SongLoader.Song;
+import base.data.PsychChar;
+import base.data.SuperChar;
 import dependency.FNFSprite;
 import flixel.FlxG;
 import flixel.addons.util.FlxSimplex;
@@ -458,7 +458,7 @@ class Character extends FNFSprite
 
 		setVar('isPlayer', isPlayer);
 		setVar('curStage', PlayState.curStage);
-		setVar('song', PlayState.SONG.song.toLowerCase());
+		setVar('songName', PlayState.SONG.song.toLowerCase());
 		setVar('flipLeftRight', flipLeftRight);
 
 		for (i in charScripts)
