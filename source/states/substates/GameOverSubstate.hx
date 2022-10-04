@@ -13,8 +13,8 @@ import states.menus.*;
 
 class GameOverSubstate extends MusicBeatSubstate
 {
-	var bf:Character;
-	var camFollow:FlxObject;
+	public var bf:Character;
+	public var camFollow:FlxObject;
 
 	var deathSong:FlxSound;
 	var tankNoise:FlxSound;

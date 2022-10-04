@@ -235,13 +235,14 @@ class PlayState extends MusicBeatState
 		}
 	}
 
-	/**
-	 * a Function to Precache Images;
-	**/
+	/*
+		a Function to Precache Images;
+		will improve this system eventually;
+	*/
 	private function precacheImages()
 	{
 		Paths.image('UI/default/base/alphabet');
-		Paths.getSparrowAtlas(GameOverSubstate.character, 'characters/' + GameOverSubstate.character);
+		//Paths.getSparrowAtlas(GameOverSubstate.character, 'characters/' + GameOverSubstate.character);
 	}
 
 	/**
