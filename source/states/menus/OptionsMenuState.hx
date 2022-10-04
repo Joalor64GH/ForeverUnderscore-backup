@@ -136,6 +136,9 @@ class OptionsMenuState extends MusicBeatState
 		// make sure the music is playing
 		ForeverTools.resetMenuMusic();
 
+		// reload locales
+		ForeverLocales.getLocale(Init.trueSettings.get('Game Language'));
+
 		// call the options menu
 		var bg = new FlxSprite(-85).loadGraphic(Paths.image('menus/base/menuDesat'));
 		bg.scrollFactor.set(0, 0.18);
@@ -343,6 +346,9 @@ class OptionsMenuState extends MusicBeatState
 
 		if (controls.BACK || FlxG.mouse.justPressedRight)
 		{
+			// reload locales
+			ForeverLocales.getLocale(Init.trueSettings.get('Game Language'));
+
 			FlxG.sound.play(Paths.sound('cancelMenu'));
 
 			if (curCategory != 'main')

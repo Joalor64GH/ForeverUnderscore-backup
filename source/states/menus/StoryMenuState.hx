@@ -72,6 +72,9 @@ class StoryMenuState extends MusicBeatState
 		// freeaaaky
 		ForeverTools.resetMenuMusic();
 
+		// reload locales
+		ForeverLocales.getLocale(Init.trueSettings.get('Game Language'));
+
 		persistentUpdate = persistentDraw = true;
 
 		scoreText = new FlxText(10, 10, 0, "SCORE: 49324858", 36);

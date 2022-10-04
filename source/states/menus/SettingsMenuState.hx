@@ -45,6 +45,9 @@ class SettingsMenuState extends BaseSettingsMenu
 		// make sure the music is playing
 		ForeverTools.resetMenuMusic();
 
+		// reload locales
+		ForeverLocales.getLocale(Init.trueSettings.get('Game Language'));
+
 		generateBackground();
 		reloadObjects();
 
