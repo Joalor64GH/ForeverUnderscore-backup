@@ -18,6 +18,7 @@ import flixel.system.FlxSound;
 import flixel.text.FlxText;
 import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
+import flixel.util.FlxTimer;
 import funkin.*;
 import funkin.Alphabet;
 import funkin.ui.HealthIcon;
@@ -53,6 +54,10 @@ class FreeplayMenuState extends MusicBeatState
 	var songRate:Float = 1;
 	var curSongPlaying:Int = -1;
 	var curPlaying:Bool = false;
+
+	// reset score variables
+	var lockedMovement:Bool = false;
+	var isResetting:Bool = false;
 
 	var grpSongs:FlxTypedGroup<Alphabet>;
 	var songs:Array<SongMetadata> = [];
@@ -260,47 +265,61 @@ class FreeplayMenuState extends MusicBeatState
 
 		if (songs.length > 1)
 		{
-			if (upP)
+			if (!lockedMovement)
 			{
-				changeSelection(-shiftMult);
-				holdTime = 0;
-			}
-			if (downP)
-			{
-				changeSelection(shiftMult);
-				holdTime = 0;
-			}
-
-			/*
-				Hold Scrolling Code
-				@author ShadowMario
-			*/
-
-			if (controls.UI_DOWN || controls.UI_UP)
-			{
-				var checkLastHold:Int = Math.floor((holdTime - 0.5) * 10);
-				holdTime += elapsed;
-				var checkNewHold:Int = Math.floor((holdTime - 0.5) * 10);
-
-				if (holdTime > 0.5 && checkNewHold - checkLastHold > 0)
+				if (upP)
 				{
-					changeSelection((checkNewHold - checkLastHold) * (controls.UI_UP ? -shiftMult : shiftMult));
+					changeSelection(-shiftMult);
+					holdTime = 0;
+				}
+				if (downP)
+				{
+					changeSelection(shiftMult);
+					holdTime = 0;
+				}
+	
+				/*
+					Hold Scrolling Code
+					@author ShadowMario
+				*/
+	
+				if (controls.UI_DOWN || controls.UI_UP)
+				{
+					var checkLastHold:Int = Math.floor((holdTime - 0.5) * 10);
+					holdTime += elapsed;
+					var checkNewHold:Int = Math.floor((holdTime - 0.5) * 10);
+	
+					if (holdTime > 0.5 && checkNewHold - checkLastHold > 0)
+					{
+						changeSelection((checkNewHold - checkLastHold) * (controls.UI_UP ? -shiftMult : shiftMult));
+						changeDiff();
+					}
+				}
+	
+				if (FlxG.mouse.wheel != 0)
+				{
+					changeSelection(-shiftMult * FlxG.mouse.wheel);
 					changeDiff();
 				}
 			}
 
-			if (FlxG.mouse.wheel != 0)
-			{
-				changeSelection(-shiftMult * FlxG.mouse.wheel);
-				changeDiff();
-			}
-
 			if (controls.BACK || FlxG.mouse.justPressedRight)
 			{
-				threadActive = false;
-				// CoolUtil.difficulties = CoolUtil.baseDifficulties;
-				FlxG.sound.play(Paths.sound('cancelMenu'), 0.4);
-				Main.switchState(this, new MainMenuState());
+				if (!isResetting)
+				{
+					threadActive = false;
+					// CoolUtil.difficulties = CoolUtil.baseDifficulties;
+					FlxG.sound.play(Paths.sound('cancelMenu'), 0.4);
+					Main.switchState(this, new MainMenuState());
+				}
+				else
+				{
+					FlxG.sound.play(Paths.sound('confirmMenu'), 0.4);
+					isResetting = false;
+					lockedMovement = false;
+					diffText.text = '< ' + ForeverLocales.curLang.difficulties[curDifficulty] + ' - ' + intendedRank + ' >';
+					diffText.color = FlxColor.WHITE;
+				}
 			}
 
 			if (accepted || FlxG.mouse.justPressed)
@@ -325,6 +344,34 @@ class FreeplayMenuState extends MusicBeatState
 
 			if (controls.RESET && shiftP)
 				songRate = 1;
+			if (controls.RESET && !shiftP)
+			{
+				if (!isResetting)
+				{
+					lockedMovement = true;
+					isResetting = true;
+					diffText.text = "DELETE SCORE?";
+					diffText.color = FlxColor.RED;
+					rateText.text = 'R = CONFIRM';
+				}
+				else
+				{
+					diffText.text = 'DATA CLEARED';
+					rateText.text = '';
+					Highscore.clearData(songs[curSelected].songName, curDifficulty);
+					FlxG.sound.play(Paths.sound('ANGRY'));
+					iconArray[curSelected].animation.play('losing');
+					isResetting = false;
+					new FlxTimer().start(1, function(tmr:FlxTimer)
+					{
+						lockedMovement = false;
+						diffText.text = '< ' + ForeverLocales.curLang.difficulties[curDifficulty] + ' - ' + intendedRank + ' >';
+						diffText.color = FlxColor.WHITE;
+						iconArray[curSelected].animation.play('static');
+						changeSelection();
+					});
+				}
+			}
 		}
 
 		if (songRate <= 0.5)
@@ -338,8 +385,11 @@ class FreeplayMenuState extends MusicBeatState
 		var accStr:String = '$lerpAcc';
 		var croppedAcc:String = '${accStr.substr(0, 4)}';
 
-		scoreText.text = '${ForeverLocales.curLang.personalBest}' + lerpScore;
-		rateText.text = '$croppedAcc% | ${ForeverLocales.curLang.rateText} ' + songRate + "x";
+		if (!isResetting)
+		{
+			scoreText.text = '${ForeverLocales.curLang.personalBest}' + lerpScore;
+			rateText.text = '$croppedAcc% | ${ForeverLocales.curLang.rateText} ' + songRate + "x";
+		}
 		rateText.x = FlxG.width - rateText.width;
 		repositionHighscore();
 
