@@ -202,9 +202,9 @@ class OptionsMenuState extends MusicBeatState
 		selectOption(curSelection);
 	}
 
-	function selectOption(newSelection:Int, playSound:Bool = true)
+	function selectOption(newSelection:Int, shouldPlaySound:Bool = true)
 	{
-		if ((newSelection != curSelection) && (playSound))
+		if ((newSelection != curSelection) && (shouldPlaySound))
 			playSound('scrollMenu');
 
 		// direction increment finder
