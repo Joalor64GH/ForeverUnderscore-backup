@@ -2,6 +2,7 @@ package base.debug;
 
 import haxe.Timer;
 import flixel.FlxG;
+import flixel.math.FlxMath;
 import openfl.Lib;
 import openfl.events.Event;
 import openfl.system.System;
@@ -56,6 +57,8 @@ class Overlay extends TextField
 		return size + " " + intervalArray[data];
 	}
 
+	private var _ms:Float = 0.0;
+
 	function update(_:Event)
 	{
 		var now:Float = Timer.stamp();
@@ -72,10 +75,12 @@ class Overlay extends TextField
 		if (mem > memPeak)
 			memPeak = mem;
 
+		_ms = FlxMath.lerp(_ms, 1 / Math.round(times.length) * 1000, CoolUtil.boundTo(FlxG.elapsed * 3.75 * ((Math.abs(_ms - 1 / Math.round(times.length) * 1000) < 0.45) ? 2.5 : 1.0), 0, 1));
+
 		if (visible)
 		{
 			text = '' // set up the text itself
-				+ (displayFps ? times.length + " FPS\n" : '') // Framerate
+				+ (displayFps ? times.length + ' FPS (${FlxMath.roundDecimal(_ms, 2)}ms)\n' : '') // Framerate and Framerate Milliseconds
 				+ (displayMemory ? '${getInterval(mem)} / ${getInterval(memPeak)}\n' : '') // Current and Total Memory Usage
 				+ (displayExtra ? 'State Object Count: ${FlxG.state.members.length}\n' : ''); // Current Game State Object Count
 		}

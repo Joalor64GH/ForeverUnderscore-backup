@@ -34,6 +34,11 @@ typedef LangDataDef =
 	var dialogueFile:String;
 }
 
+/*
+	a class used to set up typedefs for Game Localizations
+	these are used by the game language option!
+*/
+
 class ForeverLocales
 {
     public static var curLang:LangDataDef;

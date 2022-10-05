@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.2.3] - [SEP-27-2022]
 
 ### Added
+- Dynamic Sustain Note Sizes (thanks Yoshubs for letting me borrow your scripts);
+- Custom Language Support;
 - Automatic Gamepad Detection (by: Stilic);
 - Newer Runtime Shader Support (by: MasterEric);
 * this basically means psych engine shaders now work
@@ -15,6 +17,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ### Adjusted
+- Freeplay now displays Accuracy and Ranking;
+* Additionally, you can also Reset your Score, Accuracy and Ranking on Freeplay by pressing R;
+- Player Positions on Stages now use a JSON File;
+- Characters now have a `noteHit` function on their scripts, it is executed everytime they hit a note;
+
 
 
 ## [0.2.2] - [SEP-8-2022 - SEP-27-2022]

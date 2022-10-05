@@ -197,11 +197,13 @@ class PlayState extends MusicBeatState
 	{
 		var soundArray:Array<String> = [];
 
-		var pauseMusic:FlxSound = new FlxSound().loadEmbedded(Paths.music('breakfast'), true, true);
+		var pauseSong = Init.trueSettings.get('Pause Song');
+
+		var pauseMusic:FlxSound = new FlxSound().loadEmbedded(Paths.music('menus/pause/$pauseSong/$pauseSong'), true, true);
 		pauseMusic.volume = 0.000001;
 		pauseMusic.play();
 
-		var editorMusic:FlxSound = new FlxSound().loadEmbedded(Paths.music('menus/prototype/prototype'), true, true);
+		var editorMusic:FlxSound = new FlxSound().loadEmbedded(Paths.music('menus/main/prototype/prototype'), true, true);
 		editorMusic.volume = 0.000001;
 		editorMusic.play();
 

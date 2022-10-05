@@ -26,19 +26,21 @@ class Main extends Sprite
 {
 	public static var defaultFramerate = 120;
 
-	// transition image, enabled when transitioning to a song (currently disabled by default;
+	// transition image, enabled when transitioning to a song (currently disabled by default);
 	public static var isSongTrans:Bool;
 
 	public static final initialState:Class<FlxState> = TitleState; // specify the state where the game should start at;
 
 	public static final foreverVersion:String = '0.3.1'; // current forever engine version;
-	public static final underscoreVersion:String = '0.2.3 B2'; // current forever engine underscore version;
+	public static final underscoreVersion:String = '0.2.3 B3'; // current forever engine underscore version;
 
 	public static var commitHash:Null<String>; // commit hash, for github builds;
 	public static var showCommitHash:Bool = true; // whether to actually show the commit hash;
 
-	public static var overlay:Overlay;
-	public static var console:Console;
+	public static var overlay:Overlay; // info counter that usually appears at the top left corner;
+	public static var console:Console; // console that appears when you press F10 (if allowed);
+
+	public static var letterOffset:Bool = false; // alphabet offset workaround idk;
 
 	// calls a function to set the game up
 	public function new()

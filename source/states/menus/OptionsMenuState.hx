@@ -55,7 +55,7 @@ class OptionsMenuState extends MusicBeatState
 					['preferences', callNewGroup],
 					['appearance', callNewGroup],
 					#if mobile ['mobile controls', openMobileControls], #end
-					['controls', openControlmenu],
+					['controls', openDesktopControls],
 					['adjust combo', openJudgeState],
 					#if unstableBuild ['note colors', openNotemenu], #end
 					['exit', exitMenu]
@@ -86,10 +86,11 @@ class OptionsMenuState extends MusicBeatState
 					#if GAME_UPDATER ['Check for Updates', getFromOption], #end
 					['GPU Rendering', getFromOption],
 					['Menu Song', getFromOption],
+					['Pause Song', getFromOption],
 					#if !neko ["Framerate Cap", getFromOption], #end
 					['FPS Counter', getFromOption],
 					['Memory Counter', getFromOption],
-					#if !neko ['State Object Count', getFromOption], #end
+					['State Object Count', getFromOption],
 					['Engine Mark', getFromOption],
 				]
 			],
@@ -204,7 +205,7 @@ class OptionsMenuState extends MusicBeatState
 	function selectOption(newSelection:Int, playSound:Bool = true)
 	{
 		if ((newSelection != curSelection) && (playSound))
-			FlxG.sound.play(Paths.sound('scrollMenu'));
+			playSound('scrollMenu');
 
 		// direction increment finder
 		var directionIncrement = ((newSelection < curSelection) ? -1 : 1);
@@ -348,8 +349,17 @@ class OptionsMenuState extends MusicBeatState
 		{
 			// reload locales
 			ForeverLocales.getLocale(Init.trueSettings.get('Game Language'));
+			playSound('cancelMenu');
 
-			FlxG.sound.play(Paths.sound('cancelMenu'));
+			if (lastChanged == 'pauseSong')
+			{
+				if (FlxG.sound.music != null && FlxG.sound.music.playing)
+				{
+					FlxG.sound.music.stop();
+					ForeverTools.resetMenuMusic();
+				}
+				lastChanged = '';
+			}
 
 			if (curCategory != 'main')
 			{
@@ -524,6 +534,7 @@ class OptionsMenuState extends MusicBeatState
 		}
 	}
 
+	var lastChanged:String = '';
 	function onChangeSelector()
 	{
 		switch (activeSubgroup.members[curSelection].text)
@@ -531,6 +542,10 @@ class OptionsMenuState extends MusicBeatState
 			case 'Menu Song':
 				FlxG.sound.music.stop();
 				ForeverTools.resetMenuMusic();
+			case 'Pause Song':
+				lastChanged = 'pauseSong';
+				FlxG.sound.music.stop();
+				FlxG.sound.playMusic(Paths.music('menus/pause/${Init.trueSettings.get('Pause Song')}/${Init.trueSettings.get('Pause Song')}'));
 		}
 	}
 
@@ -598,7 +613,7 @@ class OptionsMenuState extends MusicBeatState
 			else
 				selector.selectorPlay('right', 'press');
 
-			FlxG.sound.play(Paths.sound('scrollMenu'));
+			playSound('scrollMenu');
 
 			selector.chosenOptionString = selector.options[newSelection];
 			selector.optionChosen.text = selector.chosenOptionString;
@@ -625,7 +640,7 @@ class OptionsMenuState extends MusicBeatState
 		else
 			selector.selectorPlay('right', 'press');
 
-		FlxG.sound.play(Paths.sound('scrollMenu'));
+		playSound('scrollMenu');
 
 		originalValue += increase;
 		selector.chosenOptionString = Std.string(originalValue);
@@ -647,88 +662,55 @@ class OptionsMenuState extends MusicBeatState
 		}
 	}
 
-	public function openControlmenu()
+	public function openDesktopControls()
 	{
-		if (controls.ACCEPT || FlxG.mouse.justPressed)
+		doFlickerOption(function()
 		{
-			playSound('confirmMenu');
-			lockedMovement = true;
-			FlxFlicker.flicker(activeSubgroup.members[curSelection], 0.5, 0.06 * 2, true, false, function(flick:FlxFlicker)
-			{
-				openSubState(new states.substates.ControlsSubstate());
-				lockedMovement = false;
-			});
-		}
+			openSubState(new states.substates.ControlsSubstate());
+		});
 	}
 
-	#if mobile
 	public function openMobileControls()
 	{
-		if (controls.ACCEPT || FlxG.mouse.justPressed)
+		doFlickerOption(function()
 		{
-			playSound('confirmMenu');
-			lockedMovement = true;
-			FlxFlicker.flicker(activeSubgroup.members[curSelection], 0.5, 0.06 * 2, true, false, function(flick:FlxFlicker)
-			{
-				openSubState(new mobile.controls.MobileControlsSubState());
-				lockedMovement = false;
-			});
-		}
-	}
-	#end
-
-	public function openNotemenu()
-	{
-		if (controls.ACCEPT || FlxG.mouse.justPressed)
-		{
-			playSound('confirmMenu');
-			lockedMovement = true;
-			FlxFlicker.flicker(activeSubgroup.members[curSelection], 0.5, 0.06 * 2, true, false, function(flick:FlxFlicker)
-			{
-				openSubState(new states.substates.NoteColorsSubstate());
-				lockedMovement = false;
-			});
-		}
+			openSubState(new mobile.controls.MobileControlsSubState());
+		});
 	}
 
 	public function openJudgeState()
 	{
-		if (controls.ACCEPT || FlxG.mouse.justPressed)
+		doFlickerOption(function()
 		{
-			playSound('confirmMenu');
-			lockedMovement = true;
-			FlxFlicker.flicker(activeSubgroup.members[curSelection], 0.5, 0.06 * 2, true, false, function(flick:FlxFlicker)
-			{
-				Main.switchState(this, new states.JudgementOffsetState());
-				lockedMovement = false;
-			});
-		}
-	}
-
-	public function resetGame()
-	{
-		TitleState.initialized = false;
-		FlxG.sound.music.fadeOut(0.3);
-		FlxG.camera.fade(FlxColor.BLACK, 0.5, false, FlxG.resetGame, false);
+			Main.switchState(this, new states.JudgementOffsetState());
+		});
 	}
 
 	public function exitMenu()
 	{
+		doFlickerOption(function()
+		{
+			if (states.substates.PauseSubstate.toOptions)
+			{
+				Conductor.stopMusic();
+				Main.switchState(this, new PlayState());
+			}
+			else
+			{
+				Main.switchState(this, new MainMenuState());
+			}
+		});
+	}
+
+	function doFlickerOption(onComplete:Dynamic)
+	{
 		if (controls.ACCEPT || FlxG.mouse.justPressed)
 		{
 			playSound('confirmMenu');
 			lockedMovement = true;
 			FlxFlicker.flicker(activeSubgroup.members[curSelection], 0.5, 0.06 * 2, true, false, function(flick:FlxFlicker)
 			{
-				if (states.substates.PauseSubstate.toOptions)
-				{
-					Conductor.stopMusic();
-					Main.switchState(this, new PlayState());
-				}
-				else
-				{
-					Main.switchState(this, new MainMenuState());
-				}
+				onComplete();
 				lockedMovement = false;
 			});
 		}

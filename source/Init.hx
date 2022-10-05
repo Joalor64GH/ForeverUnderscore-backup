@@ -143,6 +143,13 @@ class Init extends FlxState
 			NOT_FORCED,
 			''
 		],
+		'Pause Song' => [
+			'breakfast',
+			Selector,
+			'Which song should we use for the Pause Menu?',
+			NOT_FORCED,
+			''
+		],
 		"Framerate Cap" => [120, Selector, 'Define your maximum FPS.', NOT_FORCED, ['']],
 		'FPS Counter' => [true, Checkmark, 'Whether to display the FPS counter.', NOT_FORCED],
 		'Memory Counter' => [
@@ -478,9 +485,13 @@ class Init extends FlxState
 		if (!gameSettings.get("Hitsound Type")[4].contains(trueSettings.get("Hitsound Type")))
 			trueSettings.set("Hitsound Type", 'default');
 
-		gameSettings.get("Menu Song")[4] = CoolUtil.returnAssetsLibrary('menus', 'assets/music');
+		gameSettings.get("Menu Song")[4] = CoolUtil.returnAssetsLibrary('menus/main', 'assets/music');
 		if (!gameSettings.get("Menu Song")[4].contains(trueSettings.get("Menu Song")))
 			trueSettings.set("Menu Song", 'freakyMenu');
+			
+		gameSettings.get("Pause Song")[4] = CoolUtil.returnAssetsLibrary('menus/pause', 'assets/music');
+		if (!gameSettings.get("Pause Song")[4].contains(trueSettings.get("Pause Song")))
+			trueSettings.set("Pause Song", 'breakfast');
 
 		gameSettings.get("Game Language")[4] = CoolUtil.returnAssetsLibrary('locales', 'assets');
 		if (!gameSettings.get("Game Language")[4].contains(trueSettings.get("Game Language")))

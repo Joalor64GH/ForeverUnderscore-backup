@@ -39,6 +39,7 @@ class Alphabet extends FlxSpriteGroup
 	public var xTo = 100;
 
 	public var isMenuItem:Bool = false;
+	public var boldOffset:Bool = false;
 
 	public var text:String = "";
 	public var _finalText:String = "";
@@ -445,6 +446,8 @@ class AlphaCharacter extends FlxSprite
 
 	public function createNumber(letter:String):Void
 	{
+		if (Main.letterOffset)
+			y += 58;
 		animation.addByPrefix(letter, letter, 24);
 		animation.play(letter);
 

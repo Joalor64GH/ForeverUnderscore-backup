@@ -1,6 +1,5 @@
 package mobile.controls;
 
-#if mobile
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.FlxSubState;
@@ -18,6 +17,7 @@ import mobile.flixel.FlxVirtualPad;
 
 class MobileControlsSubState extends FlxSubState
 {
+	#if mobile
 	final controlsItems:Array<String> = ['Pad-Right', 'Pad-Left', 'Pad-Custom', 'Pad-Duo', 'Hitbox', 'Keyboard'];
 	var virtualPad:FlxVirtualPad;
 	var hitbox:FlxHitbox;
@@ -261,5 +261,5 @@ class MobileControlsSubState extends FlxSubState
 		bindButton.y = touch.y - Std.int(bindButton.height / 2);
 		buttonBinded = true;
 	}
+	#end
 }
-#end

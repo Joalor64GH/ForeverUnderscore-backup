@@ -15,7 +15,6 @@ typedef LegacySong =
 {
 	var song:String;
 	var notes:Array<LegacySection>;
-	var events:Array<Array<Dynamic>>;
 	var bpm:Float;
 	var needsVoices:Bool;
 	var speed:Float;
@@ -50,7 +49,6 @@ typedef SongInfo =
 	var assetModifier:String;
 	var ?offset:Int;
 	var ?color:Array<Int>;
-	var ?difficulties:Array<String>;
 }
 
 class Song
@@ -107,14 +105,6 @@ class Song
 				rawMeta = rawMeta.substr(0, rawMeta.length - 1);
 		}
 
-		try
-		{
-			rawEvent = File.getContent(Paths.songJson(folder.toLowerCase(), 'events').trim()).trim();
-		}
-		catch (e)
-		{
-			rawEvent = null;
-		}
 		if (rawMeta == null)
 		{
 			rawMeta = '{
@@ -166,27 +156,7 @@ class Song
 				oldSong.color = oldSong.color;
 			else
 				oldSong.color = [255, 255, 255];
-
-			// temporary custom difficulty things;
-			if (songMeta.difficulties != null)
-			{
-				for (i in songMeta.difficulties)
-				{
-					if (i != null && i.length > 1 && !CoolUtil.difficulties.contains(i))
-					{
-						// clear previous difficulties;
-						// CoolUtil.difficulties = [];
-						// add new ones;
-						// CoolUtil.difficulties.push(i);
-					}
-				}
-			}
 		}
-
-		if (rawEvent != null)
-			oldSong.events = Json.parse(rawEvent).events;
-		else
-			oldSong.events = [];
 
 		return oldSong;
 	}
