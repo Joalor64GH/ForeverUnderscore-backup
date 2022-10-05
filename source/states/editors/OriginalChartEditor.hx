@@ -1457,14 +1457,6 @@ class OriginalChartEditor extends MusicBeatState
 		trace(_song.notes);
 	}
 
-	function setAllLabelsOffset(button:FlxButton, x:Float, y:Float)
-	{
-		for (point in button.labelOffsets)
-		{
-			point.set(x, y);
-		}
-	}
-
 	function getNotes():Array<Dynamic>
 	{
 		var noteData:Array<Dynamic> = [];
