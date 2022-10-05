@@ -78,8 +78,6 @@ class PlayState extends MusicBeatState
 	public var notes:FlxTypedGroup<Note> = new FlxTypedGroup<Note>();
 	public var unspawnNotes:Array<Note> = [];
 
-	public var unspawnEvents:Array<EventNote> = [];
-
 	// if you ever wanna add more keys
 	public var numberOfKeys:Int = 4;
 
@@ -996,8 +994,6 @@ class PlayState extends MusicBeatState
 			}
 		}
 
-		checkSongEvents();
-
 		callFunc('postUpdate', [elapsed]);
 	}
 
@@ -1288,116 +1284,6 @@ class PlayState extends MusicBeatState
 		if (chosenGroup.members.contains(daNote))
 			chosenGroup.remove(daNote, true);
 		daNote.destroy();
-	}
-
-	function checkSongEvents()
-	{
-		while (unspawnEvents.length > 0)
-		{
-			var leStrumTime:Float = unspawnEvents[0].strumTime;
-			if (Conductor.songPosition < leStrumTime)
-				break;
-
-			var value1:String = '';
-			if (unspawnEvents[0].val1 != null)
-				value1 = unspawnEvents[0].val1;
-
-			var value2:String = '';
-			if (unspawnEvents[0].val2 != null)
-				value2 = unspawnEvents[0].val2;
-
-			eventNoteHit(unspawnEvents[0].event, value1, value2);
-			unspawnEvents.shift();
-		}
-	}
-
-	function eventNoteHit(eventName:String, ?val1:String, ?val2:String)
-	{
-		switch (eventName)
-		{
-			case 'Change Character':
-				var ogPosition:Array<Float> = [770, 450];
-				switch (val1)
-				{
-					case 'dad' | 'opponent' | 'dadOpponent':
-						ogPosition = [100, 100];
-					case 'gf' | 'player3' | 'girlfriend':
-						ogPosition = [300, 100];
-					case 'bf' | 'player' | 'boyfriend':
-						ogPosition = [770, 450];
-				}
-				changeCharacter(val2, val1, ogPosition[0], ogPosition[1]);
-
-			case 'Set GF Speed':
-				var speed:Int = Std.parseInt(val1);
-				if (Math.isNaN(speed) || speed < 1)
-					speed = 1;
-				gfSpeed = speed;
-
-			case 'Hey!':
-				var who:Int = -1;
-				switch (val1.toLowerCase().trim())
-				{
-					case 'bf' | 'boyfriend' | 'player':
-						who = 0;
-					case 'gf' | 'girlfriend' | 'player3':
-						who = 1;
-				}
-
-				var tmr:Float = Std.parseFloat(val2);
-				if (Math.isNaN(tmr) || tmr <= 0)
-					tmr = 0.6;
-
-				if (who != 0)
-				{
-					if (dadOpponent.curCharacter.startsWith('gf'))
-					{
-						dadOpponent.playAnim('cheer', true);
-						dadOpponent.specialAnim = true;
-						dadOpponent.heyTimer = tmr;
-					}
-					else if (gf != null)
-					{
-						gf.playAnim('cheer', true);
-						gf.specialAnim = true;
-						gf.heyTimer = tmr;
-					}
-				}
-				if (who != 1)
-				{
-					boyfriend.playAnim('hey', true);
-					boyfriend.specialAnim = true;
-					boyfriend.heyTimer = tmr;
-				}
-
-			case 'Play Animation':
-				var char:Character = dadOpponent;
-				switch (val2.toLowerCase().trim())
-				{
-					case 'bf' | 'boyfriend':
-						char = boyfriend;
-					case 'gf' | 'girlfriend':
-						char = gf;
-					default:
-						var val2:Int = Std.parseInt(val2);
-						if (Math.isNaN(val2))
-							val2 = 0;
-
-						switch (val2)
-						{
-							case 1: char = boyfriend;
-							case 2: char = gf;
-						}
-				}
-
-				if (char != null)
-				{
-					char.playAnim(val1, true);
-					char.specialAnim = true;
-				}
-		}
-
-		callFunc('eventNoteHit', [eventName, val1, val2]);
 	}
 
 	function goodNoteHit(coolNote:Note, character:Character, strumline:Strumline)
@@ -1901,13 +1787,8 @@ class PlayState extends MusicBeatState
 
 		// generate the chart and sort through notes
 		unspawnNotes = ChartParser.loadChart(SONG);
-		unspawnEvents = ChartParser.loadEvents(SONG);
 
 		songSpeed = SONG.speed;
-
-		// trace(unspawnEvents);
-
-		checkSongEvents();
 
 		generatedMusic = true;
 	}

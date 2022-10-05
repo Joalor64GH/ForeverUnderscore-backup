@@ -2,7 +2,6 @@ package base;
 
 import base.SongLoader;
 import flixel.util.FlxSort;
-import funkin.EventNote;
 import funkin.Note;
 import states.PlayState;
 
@@ -84,33 +83,5 @@ class ChartParser
 		});
 
 		return unspawnNotes;
-	}
-
-	public static function loadEvents(eventData:LegacySong):Array<EventNote>
-	{
-		var unspawnEvents:Array<EventNote> = [];
-
-		if (eventData.events != null && eventData.events.length > 0)
-		{
-			for (i in 0...eventData.events.length)
-			{
-				if (eventData.events[i] != null && eventData.events[i].length > 0)
-				{
-					for (event in eventData.events[i])
-					{
-						var eventNote:EventNote = new EventNote(event[1], event[0], event[2], event[3]);
-						eventNote.visible = false;
-						unspawnEvents.push(eventNote);
-					}
-				}
-			}
-		}
-
-		unspawnEvents.sort(function(event1:EventNote, event2:EventNote):Int
-		{
-			return FlxSort.byValues(FlxSort.ASCENDING, event1.strumTime, event2.strumTime);
-		});
-
-		return unspawnEvents;
 	}
 }
