@@ -540,6 +540,7 @@ class OptionsMenuState extends MusicBeatState
 		switch (activeSubgroup.members[curSelection].text)
 		{
 			case 'Menu Song':
+				lastChanged = 'menuSong';
 				FlxG.sound.music.stop();
 				ForeverTools.resetMenuMusic();
 			case 'Pause Song':
