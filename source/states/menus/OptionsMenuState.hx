@@ -704,7 +704,7 @@ class OptionsMenuState extends MusicBeatState
 		});
 	}
 
-	function doFlickerOption(onComplete:Dynamic = null)
+	function doFlickerOption(onComplete:Void->Void = null)
 	{
 		if (controls.ACCEPT || FlxG.mouse.justPressed)
 		{
