@@ -22,13 +22,11 @@ typedef LangDataDef =
 	var songByTxt:String;
 	var blueballedTxt:String;
 	var backButton:String;
-
 	// HUD INFO BAR
 	var scoreTxt:String;
 	var missTxt:String;
 	var accTxt:String;
 	var botTxt:String;
-
 	// FILES
 	var dialogueFileEnd:String;
 	var dialogueFile:String;
@@ -37,14 +35,13 @@ typedef LangDataDef =
 /*
 	a class used to set up typedefs for Game Localizations
 	these are used by the game language option!
-*/
-
+ */
 class ForeverLocales
 {
-    public static var curLang:LangDataDef;
+	public static var curLang:LangDataDef;
 
-    public static function getLocale(language:String = 'english')
-    {
+	public static function getLocale(language:String = 'english')
+	{
 		curLang = haxe.Json.parse(Paths.getTextFromFile('locales/$language/languageData.json'));
-    }
+	}
 }

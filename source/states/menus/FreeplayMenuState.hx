@@ -29,6 +29,7 @@ using StringTools;
 class FreeplayMenuState extends MusicBeatState
 {
 	static var curSelected:Int = 0;
+
 	var curDifficulty:Int = 1;
 
 	// background variables
@@ -277,25 +278,25 @@ class FreeplayMenuState extends MusicBeatState
 					changeSelection(shiftMult);
 					holdTime = 0;
 				}
-	
+
 				/*
 					Hold Scrolling Code
 					@author ShadowMario
-				*/
-	
+				 */
+
 				if (controls.UI_DOWN || controls.UI_UP)
 				{
 					var checkLastHold:Int = Math.floor((holdTime - 0.5) * 10);
 					holdTime += elapsed;
 					var checkNewHold:Int = Math.floor((holdTime - 0.5) * 10);
-	
+
 					if (holdTime > 0.5 && checkNewHold - checkLastHold > 0)
 					{
 						changeSelection((checkNewHold - checkLastHold) * (controls.UI_UP ? -shiftMult : shiftMult));
 						changeDiff();
 					}
 				}
-	
+
 				if (FlxG.mouse.wheel != 0)
 				{
 					changeSelection(-shiftMult * FlxG.mouse.wheel);
@@ -458,7 +459,7 @@ class FreeplayMenuState extends MusicBeatState
 		intendedAcc = Highscore.getAccuracy(songs[curSelected].songName, curDifficulty);
 		intendedRank = Highscore.getRank(songs[curSelected].songName, curDifficulty);
 
-		//existingDifficulties[curSelected][curDifficulty]
+		// existingDifficulties[curSelected][curDifficulty]
 		diffText.text = '< ' + ForeverLocales.curLang.difficulties[curDifficulty] + ' - ' + intendedRank + ' >';
 		lastDifficulty = existingDifficulties[curSelected][curDifficulty];
 	}

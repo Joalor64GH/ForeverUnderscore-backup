@@ -535,6 +535,7 @@ class OptionsMenuState extends MusicBeatState
 	}
 
 	var lastChanged:String = '';
+
 	function onChangeSelector()
 	{
 		switch (activeSubgroup.members[curSelection].text)
@@ -703,7 +704,7 @@ class OptionsMenuState extends MusicBeatState
 		});
 	}
 
-	function doFlickerOption(onComplete:Dynamic)
+	function doFlickerOption(onComplete:Dynamic = null)
 	{
 		if (controls.ACCEPT || FlxG.mouse.justPressed)
 		{

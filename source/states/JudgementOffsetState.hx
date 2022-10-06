@@ -83,7 +83,8 @@ class JudgementOffsetState extends MusicBeatState
 		add(infoBar);
 
 		var assetModifier = PlayState.assetModifier;
-		if (PlayState.assetModifier == null) assetModifier = 'base';
+		if (PlayState.assetModifier == null)
+			assetModifier = 'base';
 
 		judge = ForeverAssets.generateRating('sick', true, false, null, assetModifier, Init.getSetting('UI Skin'), 'UI', true);
 		judge.cameras = [_camUI];

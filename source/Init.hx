@@ -208,13 +208,7 @@ class Init extends FlxState
 			"Whether the Score Bar should have an Animation for Hitting, based on your current ranking.",
 			NOT_FORCED
 		],
-		"Game Language" => [
-			'english',
-			Selector,
-			'Choose a language for the Main UI.',
-			NOT_FORCED,
-			''
-		],
+		"Game Language" => ['english', Selector, 'Choose a language for the Main UI.', NOT_FORCED, ''],
 		'Counter' => [
 			'None',
 			Selector,
@@ -488,7 +482,7 @@ class Init extends FlxState
 		gameSettings.get("Menu Song")[4] = CoolUtil.returnAssetsLibrary('menus/main', 'assets/music');
 		if (!gameSettings.get("Menu Song")[4].contains(trueSettings.get("Menu Song")))
 			trueSettings.set("Menu Song", 'freakyMenu');
-			
+
 		gameSettings.get("Pause Song")[4] = CoolUtil.returnAssetsLibrary('menus/pause', 'assets/music');
 		if (!gameSettings.get("Pause Song")[4].contains(trueSettings.get("Pause Song")))
 			trueSettings.set("Pause Song", 'breakfast');

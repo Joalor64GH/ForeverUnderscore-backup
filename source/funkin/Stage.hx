@@ -71,7 +71,7 @@ class Stage extends FlxTypedGroup<FlxBasic>
 		{
 			stageJson = haxe.Json.parse(Paths.getTextFromFile('stages/$curStage/$curStage.json'));
 		}
-		catch(e)
+		catch (e)
 		{
 			stageJson = haxe.Json.parse(Paths.getTextFromFile('stages/stage/stage.json'));
 		}

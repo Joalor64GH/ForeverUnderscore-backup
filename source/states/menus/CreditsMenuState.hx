@@ -17,6 +17,7 @@ import funkin.Alphabet;
 import funkin.ui.CreditsIcon;
 
 using StringTools;
+
 typedef CreditsUserDef =
 {
 	var name:String;
@@ -38,11 +39,13 @@ typedef CreditsPrefDef =
 /*
 	New Credits Menu
 	Written by: @DiogoTVV and @iamteles
-*/
+ */
 class CreditsMenuState extends MusicBeatState
 {
 	var groupText:FlxText;
+
 	static var curSelected:Int = -1;
+
 	var curSocial:Int = -1;
 
 	var userData:CreditsUserDef;
@@ -87,7 +90,7 @@ class CreditsMenuState extends MusicBeatState
 		add(bDrop);
 
 		var ui_tex = Paths.getSparrowAtlas('menus/base/storymenu/campaign_menu_UI_assets');
-		
+
 		var white:FlxSprite = new FlxSprite().makeGraphic(FlxG.width * 2, FlxG.height * 2, FlxColor.WHITE);
 		white.scrollFactor.set();
 		white.screenCenter();
@@ -145,7 +148,7 @@ class CreditsMenuState extends MusicBeatState
 		socialIcon.frames = Paths.getSparrowAtlas('credits/PlatformIcons');
 		for (anim in mediaAnimsArray)
 			socialIcon.animation.addByPrefix('$anim', '$anim', 24, false);
-		socialIcon.scale.set(0.8,0.8);
+		socialIcon.scale.set(0.8, 0.8);
 		socialIcon.updateHitbox();
 		grpCreditSocials.add(socialIcon);
 
@@ -198,12 +201,12 @@ class CreditsMenuState extends MusicBeatState
 
 		if (controls.ACCEPT && credData.users[curSelected].urlData[curSocial][1] != null)
 			CoolUtil.browserLoad(credData.users[curSelected].urlData[curSocial][1]);
-		
+
 		for (item in grpCharacters)
 		{
-			if(item.ID == curSelected)
+			if (item.ID == curSelected)
 				item.x = FlxMath.lerp(item.x, 100 + 20, 0.3);
-			else if(item.ID == curSelected - 1 || item.ID == curSelected + 1)
+			else if (item.ID == curSelected - 1 || item.ID == curSelected + 1)
 				item.x = FlxMath.lerp(item.x, 50 + 20, 0.3);
 			else
 				item.x = FlxMath.lerp(item.x, 20, 0.3);
@@ -224,7 +227,7 @@ class CreditsMenuState extends MusicBeatState
 		var newColor:FlxColor = FlxColor.fromRGB(credData.users[curSelected].colors[0], credData.users[curSelected].colors[1],
 			credData.users[curSelected].colors[2]);
 
-		if(bgTween != null)
+		if (bgTween != null)
 			bgTween.cancel();
 		bgTween = FlxTween.color(bg, 0.35, bg.color, newColor);
 
@@ -241,7 +244,7 @@ class CreditsMenuState extends MusicBeatState
 			bullShit++;
 
 			item.alpha = 0.6;
-			item.color = FlxColor.fromRGB(155,155,155);
+			item.color = FlxColor.fromRGB(155, 155, 155);
 
 			if (item.targetY == 0)
 			{

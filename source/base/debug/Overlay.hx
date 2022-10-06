@@ -75,7 +75,8 @@ class Overlay extends TextField
 		if (mem > memPeak)
 			memPeak = mem;
 
-		_ms = FlxMath.lerp(_ms, 1 / Math.round(times.length) * 1000, CoolUtil.boundTo(FlxG.elapsed * 3.75 * ((Math.abs(_ms - 1 / Math.round(times.length) * 1000) < 0.45) ? 2.5 : 1.0), 0, 1));
+		_ms = FlxMath.lerp(_ms, 1 / Math.round(times.length) * 1000,
+			CoolUtil.boundTo(FlxG.elapsed * 3.75 * ((Math.abs(_ms - 1 / Math.round(times.length) * 1000) < 0.45) ? 2.5 : 1.0), 0, 1));
 
 		if (visible)
 		{

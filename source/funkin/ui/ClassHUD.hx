@@ -33,9 +33,9 @@ class ClassHUD extends FlxTypedGroup<FlxBasic>
 	var stupidHealth:Float = 0;
 
 	public var infoDisplay:String = CoolUtil.dashToSpace(PlayState.SONG.song);
-	//public var diffDisplay:String = CoolUtil.difficultyFromString();
+	// public var diffDisplay:String = CoolUtil.difficultyFromString();
 	public var diffDisplay:String = ForeverLocales.curLang.difficulties[PlayState.storyDifficulty];
-	public var engineDisplay:String = "UNDERSCORE v" + Main.underscoreVersion;
+	public var engineDisplay:String = "UNDERSCORE v" + Main.underscoreVersion + (Main.commitHash.length > 3 ? Main.commitHash : '');
 
 	public var autoplayMark:FlxText;
 	public var autoplaySine:Float = 0;
@@ -51,11 +51,6 @@ class ClassHUD extends FlxTypedGroup<FlxBasic>
 	public function new()
 	{
 		super();
-
-		var hash:String = '';
-		if (Main.showCommitHash && Main.commitHash.length > 3)
-			hash = Main.commitHash;
-		engineDisplay = "UNDERSCORE v" + Main.underscoreVersion + hash;
 
 		// le healthbar setup
 		var barY = FlxG.height * 0.875;
@@ -264,7 +259,7 @@ class ClassHUD extends FlxTypedGroup<FlxBasic>
 					rankColor = perfect ? FlxColor.fromString('#F8D482') : FlxColor.CYAN;
 			}
 
-			scoreColorTween = FlxTween.color(scoreBar, 0.3, scoreBar.color, rankColor, {
+			scoreColorTween = FlxTween.color(scoreBar, 0.1, scoreBar.color, rankColor, {
 				onComplete: function(twn:FlxTween)
 				{
 					FlxTween.color(scoreBar, 0.75, scoreBar.color, FlxColor.WHITE);

@@ -9,8 +9,8 @@ import flixel.tweens.FlxTween;
 using StringTools;
 
 /*
-    a copy of HealthIcon
-*/
+	a copy of HealthIcon
+ */
 class CreditsIcon extends FlxSprite
 {
 	// rewrite using da new icon system as ninjamuffin would say it

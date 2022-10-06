@@ -249,8 +249,8 @@ class Note extends FNFSprite
 			{
 				prevNote.animation.play(Receptor.arrowCol[prevNote.noteData] + 'hold');
 
-				//prevNote.scale.y *= Conductor.stepCrochet / 100 * 1.5 * prevNote.noteSpeed;
-				//prevNote.updateHitbox();
+				// prevNote.scale.y *= Conductor.stepCrochet / 100 * 1.5 * prevNote.noteSpeed;
+				// prevNote.updateHitbox();
 			}
 		}
 
@@ -393,8 +393,8 @@ class Note extends FNFSprite
 			{
 				prevNote.animation.play('hold');
 
-				//prevNote.scale.y *= Conductor.stepCrochet / 100 * (43 / 52) * 1.5 * prevNote.noteSpeed;
-				//prevNote.updateHitbox();
+				// prevNote.scale.y *= Conductor.stepCrochet / 100 * (43 / 52) * 1.5 * prevNote.noteSpeed;
+				// prevNote.updateHitbox();
 			}
 		}
 
@@ -416,12 +416,9 @@ class Note extends FNFSprite
 			newNote.frames = Paths.getSparrowAtlas(ForeverTools.returnSkin(texture, assetModifier, (changeable ? Init.getSetting("Note Skin") : ''),
 				texturePath));
 
-			newNote.animation.addByPrefix(Receptor.arrowCol[newNote.noteData] + 'Scroll',
-				Receptor.arrowCol[newNote.noteData] + '0');
-			newNote.animation.addByPrefix(Receptor.arrowCol[newNote.noteData] + 'holdend',
-				Receptor.arrowCol[newNote.noteData] + ' hold end');
-			newNote.animation.addByPrefix(Receptor.arrowCol[newNote.noteData] + 'hold',
-				Receptor.arrowCol[newNote.noteData] + ' hold piece');
+			newNote.animation.addByPrefix(Receptor.arrowCol[newNote.noteData] + 'Scroll', Receptor.arrowCol[newNote.noteData] + '0');
+			newNote.animation.addByPrefix(Receptor.arrowCol[newNote.noteData] + 'holdend', Receptor.arrowCol[newNote.noteData] + ' hold end');
+			newNote.animation.addByPrefix(Receptor.arrowCol[newNote.noteData] + 'hold', Receptor.arrowCol[newNote.noteData] + ' hold piece');
 
 			newNote.animation.addByPrefix('purpleholdend', 'pruple end hold'); // PA god dammit.
 

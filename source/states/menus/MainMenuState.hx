@@ -136,19 +136,16 @@ class MainMenuState extends MusicBeatState
 
 		updateSelection();
 
-		var hash:String = '';
-		if (Main.showCommitHash && Main.commitHash.length > 3)
-			hash = Main.commitHash;
-
 		var versionShit:FlxText = new FlxText(5, FlxG.height
-			- 18, 0,
+			- 38, 0,
 			"Funkin' v"
 			+ Application.current.meta.get('version')
-			+ " • Forever Engine v"
+			+ "\nForever Engine v"
 			+ Main.foreverVersion
-			+ " • Underscore v"
+			+ " - Underscore v"
 			+ Main.underscoreVersion
-			+ hash, 12);
+			+ (Main.commitHash.length > 3 ? Main.commitHash : ''),
+			12);
 		versionShit.scrollFactor.set();
 		versionShit.setFormat(Paths.font('vcr.ttf'), 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		add(versionShit);

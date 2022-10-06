@@ -131,7 +131,7 @@ class Main extends Sprite
 		path = "crash/" + "FE_" + dateNow + ".txt";
 
 		errMsg = "Friday Night Funkin' v" + Lib.application.meta["version"] + "\n";
-		errMsg += "Forever Engine Underscore v" + Main.underscoreVersion + (showCommitHash ? '${commitHash}' : '') + "\n";
+		errMsg += "Forever Engine Underscore v" + Main.underscoreVersion + (commitHash.length > 2 ? '${commitHash}' : '') + "\n";
 
 		for (stackItem in callStack)
 		{
