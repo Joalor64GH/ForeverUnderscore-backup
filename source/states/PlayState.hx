@@ -327,7 +327,7 @@ class PlayState extends MusicBeatState
 		else
 			curStage = 'unknown';
 
-		setupScripts();
+		ScriptHandler.callScripts(scriptArray);
 		callFunc('create', []);
 
 		stageBuild = new Stage(PlayState.curStage);
@@ -2427,28 +2427,6 @@ class PlayState extends MusicBeatState
 			}
 		}
 		return allSucceed;
-	}
-
-	function setupScripts()
-	{
-		var dirs:Array<Array<String>> = [
-			CoolUtil.absoluteDirectory('scripts'),
-			CoolUtil.absoluteDirectory('songs/${CoolUtil.swapSpaceDash(SONG.song.toLowerCase())}')
-		];
-
-		for (dir in dirs)
-		{
-			for (script in dir)
-			{
-				if (dir.length > 0)
-				{
-					if (script.length > 0 && script.endsWith('.hx') || script.endsWith('.hxs'))
-					{
-						scriptArray.push(new ScriptHandler(script));
-					}
-				}
-			}
-		}
 	}
 
 	function setPlayStateVars()

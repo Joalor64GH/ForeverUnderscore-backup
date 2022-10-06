@@ -108,10 +108,17 @@ class Character extends FNFSprite
 					flipX = true;
 			 */
 			default:
-				if (psychChar)
-					generatePsychChar(character);
-				else
-					generateBaseChar(character);
+				try
+				{
+					if (psychChar)
+						generatePsychChar(character);
+					else
+						generateBaseChar(character);
+				}
+				catch (e)
+				{
+					generateBaseChar('bf');
+				}
 		}
 
 		recalcDance();

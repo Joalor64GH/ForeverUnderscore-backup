@@ -26,6 +26,8 @@ import states.PlayState;
 import states.substates.ScriptedSubstate;
 import base.*;
 
+using StringTools;
+
 class ScriptHandler extends SScript
 {
 	public function new(file:String, ?preset:Bool = true)
@@ -97,5 +99,27 @@ class ScriptHandler extends SScript
 		set('Paths', Paths);
 		set('Stage', Stage);
 		set('Timings', Timings);
+	}
+
+	public static function callScripts(array:Array<ScriptHandler>)
+	{
+		var dirs:Array<Array<String>> = [
+			CoolUtil.absoluteDirectory('scripts'),
+			CoolUtil.absoluteDirectory('songs/${CoolUtil.swapSpaceDash(PlayState.SONG.song.toLowerCase())}')
+		];
+
+		for (dir in dirs)
+		{
+			for (script in dir)
+			{
+				if (dir.length > 0)
+				{
+					if (script.length > 0 && script.endsWith('.hx') || script.endsWith('.hxs'))
+					{
+						array.push(new ScriptHandler(script));
+					}
+				}
+			}
+		}
 	}
 }
