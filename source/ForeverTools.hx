@@ -50,25 +50,15 @@ class ForeverTools
 		FlxG.camera.fade(FlxColor.BLACK, 0.5, false, FlxG.resetGame, false);
 	}
 
-	/**
-	 * [Returns a skin asset with the given parameters]
-	 * @param asset the asset we should get from the asset skin folders
-	 * @param assetModifier the asset modifier from the skin folders, usually `base`
-	 * @param changeableSkin the changeable default skin for the asset we should get
-	 * @param baseLibrary the base folder where we should grab the assets from, usually `UI`
-	 * @param defaultChangeableSkin optional, specifies the default folder for the `changeableSkin` parameter
-	 * @param defaultBaseAsset optional, specifies the default folder for the `assetModifier` parameter
-	 * @return String, which references your custom Asset
-	 */
-	public static function returnSkin(asset:String, assetModifier:String = 'base', changeableSkin:String = 'default', baseLibrary:String,
+	public static function returnSkin(skinAsset:String, assetModifier:String = 'base', changeableSkin:String = 'default', baseLibrary:String,
 			?defaultChangeableSkin:String = 'default', ?defaultBaseAsset:String = 'base'):String
 	{
-		var realAsset = '$baseLibrary/$changeableSkin/$assetModifier/$asset';
+		var realAsset = '$baseLibrary/$changeableSkin/$assetModifier/$skinAsset';
 		if (!FileSystem.exists(Paths.getPath('images/' + realAsset + '.png', IMAGE)))
 		{
-			realAsset = '$baseLibrary/$defaultChangeableSkin/$assetModifier/$asset';
+			realAsset = '$baseLibrary/$defaultChangeableSkin/$assetModifier/$skinAsset';
 			if (!FileSystem.exists(Paths.getPath('images/' + realAsset + '.png', IMAGE)))
-				realAsset = '$baseLibrary/$defaultChangeableSkin/$defaultBaseAsset/$asset';
+				realAsset = '$baseLibrary/$defaultChangeableSkin/$defaultBaseAsset/$skinAsset';
 		}
 
 		return realAsset;

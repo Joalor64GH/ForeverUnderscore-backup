@@ -58,8 +58,11 @@ class Main extends Sprite
 
 		// begin the discord rich presence
 		#if DISCORD_RPC
-		Discord.initializeRPC();
-		Discord.changePresence('');
+		if (Init.getSetting('Discord Rich Presence'))
+		{
+			Discord.initializeRPC();
+			Discord.changePresence('');
+		}
 		#end
 
 		#if desktop

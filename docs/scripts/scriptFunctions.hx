@@ -40,7 +40,7 @@ function startCountdown()
 
 function countdownTick(swagCounter:Int)
 {
-	// when the countdown is ticking (e.g: three(0), two(1), one(2), go(3))
+	// when the countdown is ticking
 }
 
 function startSong()

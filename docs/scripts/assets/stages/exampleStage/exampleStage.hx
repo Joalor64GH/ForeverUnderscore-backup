@@ -27,6 +27,11 @@ function generateStage()
 	add(stageCurtains);
 }
 
+function repositionPlayers(boyfriend, dad, gf)
+{
+	// function used to reposition players;
+}
+
 function updateStage(curBeat:Int, boyfriend:Character, gf:Character, dad:Character)
 {
 	// similar to beatHit, this function is used for stage updates *on beats*;

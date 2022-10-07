@@ -56,9 +56,31 @@ class OptionsMenuState extends MusicBeatState
 					['appearance', callNewGroup],
 					#if mobile ['mobile controls', openMobileControls], #end
 					['controls', openDesktopControls],
-					['adjust combo', openJudgeState],
+					['accessibility', callNewGroup],
 					#if unstableBuild ['note colors', openNotemenu], #end
 					['exit', exitMenu]
+				]
+			],
+			'accessibility' => [
+				[
+					['Graphic Settings', null],
+
+					['Disable Antialiasing', getFromOption],
+					['Disable Flashing Lights', getFromOption],
+					['Disable Shaders', getFromOption],
+					['', null],
+					['Screen Settings', null],
+					['Filter', getFromOption],
+					["Darkness Opacity", getFromOption],
+					["Opacity Type", getFromOption],
+					['Reduced Movements', getFromOption],
+					['No Camera Note Movement', getFromOption],
+					['', null],
+					['Miscellaneous Settings', null],
+
+					['Menu Song', getFromOption],
+					['Pause Song', getFromOption],
+					['Discord Rich Presence', getFromOption],
 				]
 			],
 			'preferences' => [
@@ -85,8 +107,6 @@ class OptionsMenuState extends MusicBeatState
 					['Allow Console Window', getFromOption],
 					#if GAME_UPDATER ['Check for Updates', getFromOption], #end
 					['GPU Rendering', getFromOption],
-					['Menu Song', getFromOption],
-					['Pause Song', getFromOption],
 					#if !neko ["Framerate Cap", getFromOption], #end
 					['FPS Counter', getFromOption],
 					['Memory Counter', getFromOption],
@@ -101,6 +121,7 @@ class OptionsMenuState extends MusicBeatState
 					["UI Skin", getFromOption],
 					['Judgement Stacking', getFromOption],
 					['Fixed Judgements', getFromOption],
+					['Reposition Judgements', openJudgeState],
 					['Colored Health Bar', getFromOption],
 					['Animated Score Color', getFromOption],
 					['Game Language', getFromOption],
@@ -113,17 +134,6 @@ class OptionsMenuState extends MusicBeatState
 					['Splash Opacity', getFromOption],
 					['Hold Opacity', getFromOption],
 					["Clip Style", getFromOption],
-					['No Camera Note Movement', getFromOption],
-					['', null],
-					['Accessibility Settings', null],
-
-					['Disable Antialiasing', getFromOption],
-					['Disable Flashing Lights', getFromOption],
-					['Disable Shaders', getFromOption],
-					['Reduced Movements', getFromOption],
-					["Darkness Opacity", getFromOption],
-					["Opacity Type", getFromOption],
-					['Filter', getFromOption],
 				]
 			]
 		];
@@ -245,7 +255,7 @@ class OptionsMenuState extends MusicBeatState
 						decreaseVal = 360;
 					case 'Notes':
 						decreaseVal = 450;
-					case 'Accessibility Settings':
+					case 'Miscellaneous Settings':
 						decreaseVal = 55;
 						divideVal = 50;
 					default:
@@ -351,15 +361,16 @@ class OptionsMenuState extends MusicBeatState
 			ForeverLocales.getLocale(Init.trueSettings.get('Game Language'));
 			playSound('cancelMenu');
 
-			if (lastChanged == 'pauseSong')
+			switch (lastChanged)
 			{
-				if (FlxG.sound.music != null && FlxG.sound.music.playing)
-				{
-					FlxG.sound.music.stop();
-					ForeverTools.resetMenuMusic();
-				}
-				lastChanged = '';
+				case 'pauseSong':
+					if (FlxG.sound.music != null && FlxG.sound.music.playing)
+					{
+						FlxG.sound.music.stop();
+						ForeverTools.resetMenuMusic();
+					}
 			}
+			lastChanged = '';
 
 			if (curCategory != 'main')
 			{
@@ -506,7 +517,16 @@ class OptionsMenuState extends MusicBeatState
 						lockedMovement = true;
 						FlxFlicker.flicker(activeSubgroup.members[curSelection], 0.5, 0.06 * 2, true, false, function(flick:FlxFlicker)
 						{
-							checkmarkBasics();
+							// LMAO THIS IS HUGE
+							Init.setSetting(activeSubgroup.members[curSelection].text, !Init.getSetting(activeSubgroup.members[curSelection].text));
+							updateCheckmark(currentAttachmentMap.get(activeSubgroup.members[curSelection]),
+								Init.getSetting(activeSubgroup.members[curSelection].text));
+
+							// save the setting
+							Init.saveSettings();
+
+							optionOnChange();
+							lockedMovement = false;
 						});
 					}
 				case Init.SettingTypes.Selector:
@@ -520,12 +540,12 @@ class OptionsMenuState extends MusicBeatState
 					if (controls.UI_RIGHT_P)
 					{
 						updateSelector(selector, 1);
-						onChangeSelector();
+						optionOnChange();
 					}
 					else if (controls.UI_LEFT_P)
 					{
 						updateSelector(selector, -1);
-						onChangeSelector();
+						optionOnChange();
 					}
 					#end
 				default:
@@ -536,36 +556,28 @@ class OptionsMenuState extends MusicBeatState
 
 	var lastChanged:String = '';
 
-	function onChangeSelector()
-	{
-		switch (activeSubgroup.members[curSelection].text)
-		{
-			case 'Menu Song':
-				lastChanged = 'menuSong';
-				FlxG.sound.music.stop();
-				ForeverTools.resetMenuMusic();
-			case 'Pause Song':
-				lastChanged = 'pauseSong';
-				FlxG.sound.music.stop();
-				FlxG.sound.playMusic(Paths.music('menus/pause/${Init.trueSettings.get('Pause Song')}/${Init.trueSettings.get('Pause Song')}'));
-		}
-	}
-
-	function checkmarkBasics()
-	{
-		// LMAO THIS IS HUGE
-		Init.setSetting(activeSubgroup.members[curSelection].text, !Init.getSetting(activeSubgroup.members[curSelection].text));
-		updateCheckmark(currentAttachmentMap.get(activeSubgroup.members[curSelection]), Init.getSetting(activeSubgroup.members[curSelection].text));
-
-		// save the setting
-		Init.saveSettings();
-		lockedMovement = false;
-	}
-
 	function updateCheckmark(checkmark:FNFSprite, animation:Bool)
 	{
 		if (checkmark != null)
 			checkmark.playAnim(Std.string(animation));
+	}
+
+	function optionOnChange()
+	{
+		switch (activeSubgroup.members[curSelection].text.toLowerCase())
+		{
+			case 'menu song':
+				lastChanged = 'menuSong';
+				FlxG.sound.music.stop();
+				ForeverTools.resetMenuMusic();
+			case 'pause song':
+				lastChanged = 'pauseSong';
+				FlxG.sound.music.stop();
+				FlxG.sound.playMusic(Paths.music('menus/pause/${Init.trueSettings.get('Pause Song')}/${Init.trueSettings.get('Pause Song')}'));
+
+			case 'discord rich presence':
+				lastChanged = 'discordPresence';
+		}
 	}
 
 	function updateSelector(selector:Selector, updateBy:Int)

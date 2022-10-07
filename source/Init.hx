@@ -136,20 +136,6 @@ class Init extends FlxState
 			"Whether the game should use your GPU to render images. [EXPERIMENTAL, takes effect after restart]",
 			NOT_FORCED
 		],
-		'Menu Song' => [
-			'freakyMenu',
-			Selector,
-			'Which song should we use for the Main Menu?',
-			NOT_FORCED,
-			''
-		],
-		'Pause Song' => [
-			'breakfast',
-			Selector,
-			'Which song should we use for the Pause Menu?',
-			NOT_FORCED,
-			''
-		],
 		"Framerate Cap" => [120, Selector, 'Define your maximum FPS.', NOT_FORCED, ['']],
 		'FPS Counter' => [true, Checkmark, 'Whether to display the FPS counter.', NOT_FORCED],
 		'Memory Counter' => [
@@ -300,15 +286,28 @@ class Init extends FlxState
 			NOT_FORCED,
 			['none', 'Deuteranopia', 'Protanopia', 'Tritanopia']
 		],
+		'Menu Song' => [
+			'freakyMenu',
+			Selector,
+			'Which song should we use for the Main Menu?',
+			NOT_FORCED,
+			''
+		],
+		'Pause Song' => [
+			'breakfast',
+			Selector,
+			'Which song should we use for the Pause Menu?',
+			NOT_FORCED,
+			''
+		],
+		'Discord Rich Presence' => [
+			true,
+			Checkmark,
+			"Whether to have your current game status displayed on Discord. [REQUIRES RESTART]",
+			NOT_FORCED
+		],
 		// custom ones lol
 		'Offset' => [Checkmark, 3],
-	];
-
-	public static var gameModifiers:Map<String, Dynamic> = [
-		// GAMEPLAY;
-		'Scroll Speed' => [false, Selector, NOT_FORCED],
-		'Autoplay' => [false, Checkmark, NOT_FORCED],
-		'Practice Mode' => [false, Checkmark, NOT_FORCED],
 	];
 
 	public static var trueSettings:Map<String, Dynamic> = [];
