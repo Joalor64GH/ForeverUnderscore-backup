@@ -32,3 +32,24 @@ function loadAnimations()
 	setBarColor([165, 0, 77]);
 	setOffsets(0, 580);
 }
+
+var isAlt:Bool = false;
+
+function update(elapsed:Float)
+{
+	if (FlxG.keys.justPressed.NINE)
+	{
+		isAlt = !isAlt;
+		if (!isPlayer)
+		{
+			PlayState.uiHUD.iconP2.suffix = (isAlt ? '-alt' : '');
+			PlayState.uiHUD.iconP2.updateIcon();
+		}
+		else
+		{
+			PlayState.uiHUD.iconP1.suffix = (isAlt ? '-alt' : '');
+			PlayState.uiHUD.iconP1.updateIcon();
+			PlayState.uiHUD.iconP1.flipX = true;
+		}
+	}
+}
