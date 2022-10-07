@@ -38,10 +38,14 @@ class ModsMenuState extends MusicBeatState
 		bg.antialiasing = !Init.getSetting('Disable Antialiasing');
 		add(bg);
 
-		for (mod in FileSystem.readDirectory('mods'))
+		try
 		{
-			if (!mod.contains('.'))
+			for (mod in ModManager.getModFolders())
 				alphabetModlist.push(mod);
+		}
+		catch (e)
+		{
+			lime.app.Application.current.window.alert('Sorry, a fatal error has occurred!', "Fatal Error!");
 		}
 
 		alphaGroup = new FlxTypedGroup<Alphabet>();

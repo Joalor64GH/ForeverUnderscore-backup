@@ -27,13 +27,11 @@ final class Paths
 	inline public static var SOUND_EXT = "ogg";
 	inline public static var VIDEO_EXT = "mp4";
 
-	public static var currentPack:Null<String>;
-
-	// in case anything goes wrong with your mods
-	public static var defaultPack:String = 'default';
-
 	// level we're loading
-	static var currentLevel:String;
+	public static var currentLevel:String;
+
+	// mod level
+	public static var currentMod:String = 'default';
 
 	// set the current level top the condition of this function if called
 	static public function setCurrentLevel(name:String)
@@ -131,6 +129,37 @@ final class Paths
 
 	public static function returnGraphic(key:String, folder:String = 'images', ?library:String)
 	{
+		var modFile = ModManager.getModFile('$folder/$key.png');
+
+		if (FileSystem.exists(modFile))
+		{
+			if (!currentTrackedAssets.exists(key))
+			{
+				var bitmap = BitmapData.fromFile(modFile);
+				var newGraphic:FlxGraphic;
+				if (Init.getSetting('GPU Rendering'))
+				{
+					bitmap.lock();
+					var texture = FlxG.stage.context3D.createRectangleTexture(bitmap.width, bitmap.height, BGRA, true);
+					texture.uploadFromBitmapData(bitmap);
+					currentTrackedTextures.set(key, texture);
+					bitmap.dispose();
+					bitmap.disposeImage();
+					bitmap = null;
+					#if DEBUG_TRACES trace('new texture $key, bitmap is $bitmap'); #end
+					newGraphic = FlxGraphic.fromBitmapData(BitmapData.fromTexture(texture), false, key, false);
+				}
+				else
+				{
+					newGraphic = FlxGraphic.fromBitmapData(bitmap, false, key, false);
+					#if DEBUG_TRACES trace('new bitmap $key, not textured'); #end
+				}
+				currentTrackedAssets.set(key, newGraphic);
+			}
+			localTrackedAssets.push(key);
+			return currentTrackedAssets.get(key);
+		}
+
 		var path = getPath('$folder/$key.png', IMAGE, library);
 
 		if (FileSystem.exists(path))
@@ -167,6 +196,9 @@ final class Paths
 
 	static public function getTextFromFile(key:String, ignoreMods:Bool = false):String
 	{
+		if (FileSystem.exists(ModManager.getModFile(key)))
+			return File.getContent(ModManager.getModFile(key));
+
 		if (FileSystem.exists(getPreloadPath(key)))
 			return File.getContent(getPreloadPath(key));
 
@@ -182,6 +214,16 @@ final class Paths
 
 	public static function returnSound(path:String, key:String, ?library:String)
 	{
+		var modFile:String = ModManager.getModFile('$path/$key.$SOUND_EXT');
+		modFile = modFile.substring(modFile.indexOf(':') + 1, modFile.length);
+		if (FileSystem.exists(modFile))
+		{
+			if (!currentTrackedSounds.exists(modFile))
+				currentTrackedSounds.set(modFile, Sound.fromFile(modFile));
+			localTrackedAssets.push(key);
+			return currentTrackedSounds.get(modFile);
+		}
+
 		// I hate this so god damn much
 		var gottenPath:String = getPath('$path/$key.$SOUND_EXT', SOUND, library);
 		gottenPath = gottenPath.substring(gottenPath.indexOf(':') + 1, gottenPath.length);
@@ -195,13 +237,6 @@ final class Paths
 	//
 	inline public static function getPath(file:String, ?type:AssetType, ?library:Null<String>)
 	{
-		/*
-			Okay so, from what I understand, this loads in the current path based on the level
-			we're in (if a library is not specified), say like week 1 or something, 
-			then checks if the assets you're looking for are there.
-			if not, it checks the shared assets folder.
-		 */
-
 		if (library != null)
 			return getLibraryPath(file, library);
 
@@ -210,35 +245,6 @@ final class Paths
 			return levelPath;
 
 		return getPreloadPath(file);
-	}
-
-	public static function getModPath(file:String)
-	{
-		/*
-			grabs every folder inside the "mods" folder and adds it to an array
-			Work in progress.
-		 */
-
-		var modFolders:Array<String> = [];
-		var modRoot = FileSystem.readDirectory('mods');
-
-		for (mod in modRoot)
-		{
-			trace(mod);
-			if (!mod.contains('.'))
-				modFolders.push(mod);
-		}
-
-		for (folders in modFolders)
-		{
-			var modPath:String = 'mods/$folders/$file';
-			if (!FileSystem.exists(modPath))
-				modPath = CoolUtil.swapSpaceDash(modPath);
-			return modPath;
-		}
-
-		trace('Mod $file is null');
-		return null;
 	}
 
 	static public function getLibraryPath(file:String, library = "preload")
@@ -337,6 +343,11 @@ final class Paths
 
 	inline static public function video(key:String)
 	{
+		var modFile:String = ModManager.getModFile('videos/$key.$VIDEO_EXT');
+		if (FileSystem.exists(modFile))
+		{
+			return modFile;
+		}
 		return 'assets/videos/$key.$VIDEO_EXT';
 	}
 

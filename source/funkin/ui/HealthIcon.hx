@@ -61,7 +61,7 @@ class HealthIcon extends FlxSprite
 			trimmedChar = trimmedChar.substring(0, trimmedChar.indexOf('-'));
 
 		var iconPath = char;
-		if (!FileSystem.exists(Paths.getPath('characters/$char/icon.png', IMAGE)))
+		if (!ForeverTools.fileExists('characters/$char/icon.png', IMAGE))
 		{
 			if (iconPath != trimmedChar)
 			{

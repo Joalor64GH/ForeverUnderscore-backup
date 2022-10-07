@@ -37,7 +37,7 @@ class MainMenuState extends MusicBeatState
 	public var camGame:FlxCamera;
 	public var camHUD:FlxCamera;
 
-	public var optionShit:Array<String> = ['story mode', 'freeplay', 'credits', 'options'];
+	public var optionShit:Array<String> = ['story mode', 'freeplay', /*'mods',*/ 'credits', 'options'];
 
 	public var forceCenter:Bool = true;
 
@@ -236,6 +236,8 @@ class MainMenuState extends MusicBeatState
 									Main.switchState(this, new StoryMenuState());
 								case 'freeplay':
 									Main.switchState(this, new FreeplayMenuState());
+								case 'mods':
+									Main.switchState(this, new ModsMenuState());
 								case 'credits':
 									Main.switchState(this, new CreditsMenuState());
 								case 'options':

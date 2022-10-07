@@ -2393,6 +2393,14 @@ class PlayState extends MusicBeatState
 		FlxG.stage.removeEventListener(KeyboardEvent.KEY_DOWN, onKeyPress);
 		FlxG.stage.removeEventListener(KeyboardEvent.KEY_UP, onKeyRelease);
 
+		/*
+			make sure we destroy character scripts before initializing new ones
+			mostly made for mods to work with them
+		 */
+		boyfriend.charScripts = [];
+		gf.charScripts = [];
+		dadOpponent.charScripts = [];
+
 		super.destroy();
 	}
 

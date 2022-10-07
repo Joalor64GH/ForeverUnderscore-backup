@@ -23,6 +23,7 @@ class EditorMenuSubstate extends MusicBeatSubstate
 	var music:FlxSound;
 
 	public static var fromPause:Bool = false;
+
 	var playState:Bool = false;
 
 	var player:String = 'bf';
@@ -36,14 +37,20 @@ class EditorMenuSubstate extends MusicBeatSubstate
 
 		cameras = [FlxG.cameras.list[FlxG.cameras.list.length - 1]];
 
-		try{
+		try
+		{
 			player = PlayState.SONG.player2;
-		}catch(e){
+		}
+		catch (e)
+		{
 			player = 'bf';
 		}
-		try{
+		try
+		{
 			stage = PlayState.curStage;
-		}catch(e){
+		}
+		catch (e)
+		{
 			stage = 'stage';
 		}
 

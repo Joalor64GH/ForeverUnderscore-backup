@@ -87,9 +87,23 @@ class CoolUtil
 		#if sys
 		var unfilteredLibrary = FileSystem.readDirectory('$subDir/$library');
 
-		for (folder in unfilteredLibrary)
-			if (!folder.contains('.'))
-				libraryArray.push(folder);
+		if (FileSystem.exists('$subDir/$library'))
+		{
+			for (folder in unfilteredLibrary)
+				if (!folder.contains('.'))
+					libraryArray.push(folder);
+		}
+
+		// mods, will change this later
+		var modRoot = ModManager.getModFile('$library');
+		var unfilteredMod = FileSystem.readDirectory(modRoot);
+
+		if (FileSystem.exists(modRoot))
+		{
+			for (folder in unfilteredMod)
+				if (!folder.contains('.'))
+					libraryArray.push(folder);
+		}
 
 		#if DEBUG_TRACES trace(libraryArray); #end
 		#end
@@ -143,7 +157,9 @@ class CoolUtil
 		if (!file.endsWith('/'))
 			file = '$file/';
 
-		var path:String = Paths.getPath(file);
+		var path:String = ModManager.getModFile(file);
+		if (!FileSystem.exists(path))
+			path = Paths.getPath(file);
 
 		var absolutePath:String = FileSystem.absolutePath(path);
 		var directory:Array<String> = FileSystem.readDirectory(absolutePath);

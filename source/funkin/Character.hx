@@ -82,7 +82,7 @@ class Character extends FNFSprite
 		if (icon == null)
 			icon = character;
 
-		var psychChar = FileSystem.exists(Paths.getPath('characters/$character/' + character + '.json'));
+		var psychChar = ForeverTools.fileExists('characters/$character/' + character + '.json', TEXT);
 
 		switch (character)
 		{
@@ -117,6 +117,7 @@ class Character extends FNFSprite
 				}
 				catch (e)
 				{
+					trace('$character is invalid!');
 					generateBaseChar('bf');
 				}
 		}
@@ -335,7 +336,9 @@ class Character extends FNFSprite
 	{
 		var scripts:Array<String> = [
 			Paths.getPath('characters/$char/config.hx'),
-			Paths.getPath('characters/$char/config.hxs')
+			Paths.getPath('characters/$char/config.hxs'),
+			ModManager.getModFile('characters/$char/config.hx'),
+			ModManager.getModFile('characters/$char/config.hxs'),
 		];
 
 		var pushedScripts:Array<String> = [];
@@ -361,12 +364,12 @@ class Character extends FNFSprite
 
 		var spriteType = "SparrowAtlas";
 
-		if (FileSystem.exists(Paths.getPath('characters/$char/$char.txt', TEXT)))
+		if (ForeverTools.fileExists('characters/$char/$char.txt', TEXT))
 			spriteType = "PackerAtlas";
-		else if (FileSystem.exists(Paths.getPath('characters/$char/$char.json', TEXT)))
+		else if (ForeverTools.fileExists('characters/$char/$char.json', TEXT))
 			spriteType = "JsonAtlas";
 
-		trace('Atlas Type: ' + spriteType + ' for Character: ' + char);
+		// trace('Atlas Type: ' + spriteType + ' for Character: ' + char);
 
 		if (spriteType == "PackerAtlas")
 			tex = Paths.getPackerAtlas(char, 'characters/$char');
@@ -516,7 +519,9 @@ class Character extends FNFSprite
 	 */
 	function generatePsychChar(char:String = 'bf')
 	{
-		var path = Paths.getPath('characters/$char/' + character + '.json');
+		var path = ModManager.getModFile('characters/$char/' + char + '.json');
+		if (!FileSystem.exists(path))
+			path = Paths.getPreloadPath('characters/$char/' + char + '.json');
 
 		var rawJson = File.getContent(path);
 
@@ -524,14 +529,17 @@ class Character extends FNFSprite
 
 		var tex:FlxFramesCollection;
 
-		var spriteType = "SparrowAtlas";
+		var spriteType:String = "SparrowAtlas";
+		var characterPath:String = 'characters/$char/' + json.image.replace('characters/', '');
 
-		if (FileSystem.exists(Paths.getPath('characters/$char/' + json.image.replace('characters/', '') + '.txt', TEXT)))
+		if (ForeverTools.fileExists('$characterPath.txt', TEXT))
 			spriteType = "PackerAtlas";
-		// else if (FileSystem.exists(Paths.getPath('characters/$char/' + json.image.replace('characters/', '') + '.json', TEXT)))
-		//	spriteType = "JsonAtlas";
+		/*
+		else if (ForeverTools.fileExists('$characterPath.json', TEXT))
+			spriteType = "JsonAtlas";
+		*/
 
-		trace('Atlas Type: ' + spriteType + ' for Character: ' + char);
+		// trace('Atlas Type: ' + spriteType + ' for Character: ' + char);
 
 		if (spriteType == "PackerAtlas")
 			tex = Paths.getPackerAtlas(json.image.replace('characters/', ''), 'characters/$char');

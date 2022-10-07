@@ -9,6 +9,7 @@ import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween.FlxTweenType;
 import flixel.util.FlxColor;
 import openfl.display.BlendMode;
+import openfl.utils.AssetType;
 import states.PlayState;
 
 using StringTools;
@@ -82,6 +83,16 @@ class ForeverTools
 			songsArray[i].stop();
 			songsArray[i].destroy();
 		}
+	}
+
+	public static function fileExists(path:String, type:AssetType):Bool
+	{
+		var base = FileSystem.exists(Paths.getPath(path, type));
+		var mod = FileSystem.exists(ModManager.getModFile(path));
+
+		if (base || mod)
+			return true;
+		return false;
 	}
 
 	public static function checkUpdates()
