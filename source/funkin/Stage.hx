@@ -82,34 +82,36 @@ class Stage extends FlxTypedGroup<FlxBasic>
 			PlayState.cameraSpeed = stageJson.camSpeed;
 		}
 
-		if (curStage == null || curStage.length < 1)
-		{
-			switch (CoolUtil.spaceToDash(PlayState.SONG.song.toLowerCase()))
-			{
-				case 'bopeebo' | 'fresh' | 'dadbattle' | 'dad-battle':
-					curStage = 'stage';
-				case 'spookeez' | 'south' | 'monster':
-					curStage = 'spooky';
-				case 'pico' | 'philly-nice' | 'philly' | 'blammed':
-					curStage = 'philly';
-				case 'satin-panties' | 'high' | 'milf':
-					curStage = 'highway';
-				case 'cocoa' | 'eggnog':
-					curStage = 'mall';
-				case 'winter-horrorland':
-					curStage = 'mallEvil';
-				case 'senpai' | 'roses':
-					curStage = 'school';
-				case 'thorns':
-					curStage = 'schoolEvil';
-				case 'ugh' | 'guns' | 'stress':
-					curStage = 'military';
-				default:
-					curStage = 'unknown';
-			}
-		}
 		if (!stageDebug)
+		{
+			if (curStage == null || curStage.length < 1)
+			{
+				switch (CoolUtil.spaceToDash(PlayState.SONG.song.toLowerCase()))
+				{
+					case 'bopeebo' | 'fresh' | 'dadbattle' | 'dad-battle':
+						curStage = 'stage';
+					case 'spookeez' | 'south' | 'monster':
+						curStage = 'spooky';
+					case 'pico' | 'philly-nice' | 'philly' | 'blammed':
+						curStage = 'philly';
+					case 'satin-panties' | 'high' | 'milf':
+						curStage = 'highway';
+					case 'cocoa' | 'eggnog':
+						curStage = 'mall';
+					case 'winter-horrorland':
+						curStage = 'mallEvil';
+					case 'senpai' | 'roses':
+						curStage = 'school';
+					case 'thorns':
+						curStage = 'schoolEvil';
+					case 'ugh' | 'guns' | 'stress':
+						curStage = 'military';
+					default:
+						curStage = 'unknown';
+				}
+			}
 			PlayState.curStage = PlayState.SONG.stage;
+		}
 
 		// to apply to foreground use foreground.add(); instead of add();
 		foreground = new FlxTypedGroup<FlxBasic>();

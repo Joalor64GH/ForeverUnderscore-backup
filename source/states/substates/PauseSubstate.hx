@@ -243,7 +243,7 @@ class PauseSubstate extends MusicBeatSubstate
 
 				case 'Open Editors':
 					EditorMenuSubstate.fromPause = true;
-					openSubState(new EditorMenuSubstate(false));
+					openSubState(new EditorMenuSubstate(false, true));
 
 				case 'Leave Charting Mode':
 					disableCheats(true);

@@ -24,7 +24,6 @@ import openfl.events.Event;
 import openfl.events.IOErrorEvent;
 import openfl.net.FileReference;
 import states.editors.data.PsychDropDown;
-import states.menus.FreeplayMenuState;
 
 using StringTools;
 
@@ -47,6 +46,8 @@ class CharacterOffsetEditor extends MusicBeatState
 
 	var isPlayer:Bool = false;
 
+	var fromPlayState:Bool = false;
+
 	var curAnim:Int = 0;
 
 	var textAnim:FlxText;
@@ -65,10 +66,11 @@ class CharacterOffsetEditor extends MusicBeatState
 
 	var UI_box:FlxUITabMenu;
 
-	public function new(curCharacter:String, isPlayer:Bool = false, curStage:String)
+	public function new(curCharacter:String = 'bf', curStage:String = 'stage', isPlayer:Bool = false, fromPlayState:Bool = false)
 	{
 		super();
 		curGhost = curCharacter;
+		this.fromPlayState = fromPlayState;
 		this.curCharacter = curCharacter;
 		this.isPlayer = isPlayer;
 		this.curStage = curStage;
@@ -98,7 +100,7 @@ class CharacterOffsetEditor extends MusicBeatState
 		FlxG.camera.follow(camFollow);
 
 		// add stage
-		stageBuild = new Stage(curStage);
+		stageBuild = new Stage(curStage, true);
 		add(stageBuild);
 
 		generateGhost(!curCharacter.startsWith('bf'));
@@ -185,7 +187,8 @@ class CharacterOffsetEditor extends MusicBeatState
 		{
 			var prevStage = curStage;
 			var prevCharacter = curCharacter;
-			Main.switchState(this, new CharacterOffsetEditor(prevCharacter, !prevCharacter.startsWith('bf'), curStage));
+			var isPlayState = fromPlayState;
+			Main.switchState(this, new CharacterOffsetEditor(prevCharacter, curStage, !prevCharacter.startsWith('bf'), isPlayState));
 		});
 
 		showGhostBttn = new FlxButton(140, 50, "Show Ghost", function()
@@ -259,13 +262,16 @@ class CharacterOffsetEditor extends MusicBeatState
 		if (FlxG.keys.justPressed.ESCAPE)
 		{
 			FlxG.mouse.visible = false;
-			Main.switchState(this, new PlayState());
+			if (fromPlayState)
+				Main.switchState(this, new states.PlayState());
+			else
+				Main.switchState(this, new states.menus.MainMenuState());
 		}
 
 		if (FlxG.keys.justPressed.BACKSPACE)
 		{
 			FlxG.mouse.visible = false;
-			Main.switchState(this, new FreeplayMenuState());
+			Main.switchState(this, new states.menus.FreeplayMenuState());
 		}
 
 		// camera controls
@@ -390,7 +396,8 @@ class CharacterOffsetEditor extends MusicBeatState
 		if (curCharacter.startsWith('gf'))
 			genOffset = [300, 100];
 
-		remove(char);
+		if (char != null)
+			remove(char);
 		char = new Character(0, 0, !isDad, curCharacter);
 		char.setPosition(genOffset[0], genOffset[1]);
 		char.debugMode = true;
@@ -407,7 +414,8 @@ class CharacterOffsetEditor extends MusicBeatState
 		if (curGhost.startsWith('gf'))
 			genOffset = [300, 100];
 
-		remove(ghost);
+		if (ghost != null)
+			remove(ghost);
 		ghost = new Character(0, 0, !isDad, curGhost);
 		ghost.setPosition(genOffset[0], genOffset[1]);
 		ghost.debugMode = true;
