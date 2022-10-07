@@ -24,6 +24,9 @@ class EditorMenuSubstate extends MusicBeatSubstate
 
 	public static var fromPause:Bool = false;
 
+	var player:String = 'bf';
+	var stage:String = 'stage';
+
 	public function new(playMusic:Bool = true)
 	{
 		super();
@@ -100,7 +103,7 @@ class EditorMenuSubstate extends MusicBeatSubstate
 					Main.switchState(this, new states.editors.ChartEditor());
 
 				case 'Character Offset Editor':
-					Main.switchState(this, new states.editors.CharacterOffsetEditor(PlayState.SONG.player2, false, PlayState.curStage));
+					Main.switchState(this, new states.editors.CharacterOffsetEditor((player == null ? 'bf' : player), false, (stage == null ? 'stage' : PlayState.curStage)));
 			}
 		}
 
