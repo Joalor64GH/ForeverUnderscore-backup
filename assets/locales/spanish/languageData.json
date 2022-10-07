@@ -3,6 +3,8 @@
     "personalBest": "MEJOR PERSONAL:",
     "tracksText": "CANCIONES",
     "weekScoreText": "PUNTUACIÓN DE SEMANA:",
+    "delScore": "¿BORRAR PUNTOS?",
+	"delConfirm": "CONFIRMAR",
     "rateText": "TASA:",
 
     "resumeSong": "Resume",

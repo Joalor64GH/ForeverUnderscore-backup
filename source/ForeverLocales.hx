@@ -5,6 +5,8 @@ typedef LangDataDef =
 	// MENUS
 	var difficulties:Array<String>;
 	var personalBest:String;
+	var delScore:String;
+	var delConfirm:String;
 	var tracksText:String;
 	var weekScoreText:String;
 	var rateText:String;

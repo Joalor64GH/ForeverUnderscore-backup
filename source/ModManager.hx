@@ -9,6 +9,11 @@ final class ModManager
 		return 'mods/$key';
 	}
 
+	inline public static function getModImage(key:String):String
+	{
+		return getModFile(key + '.png');
+	}
+
 	public static function getModFolders():Array<String>
 	{
 		var modFolders:Array<String> = [];

@@ -348,7 +348,7 @@ class Character extends FNFSprite
 		{
 			if (ForeverTools.fileExists(i) && !pushedScripts.contains(i))
 			{
-				var script:ScriptHandler = new ScriptHandler(ForeverTools.getPaths(i));
+				var script:ScriptHandler = new ScriptHandler(Paths.getPreloadPath(i));
 
 				if (script.interp == null)
 				{
@@ -523,9 +523,7 @@ class Character extends FNFSprite
 	 */
 	function generatePsychChar(char:String = 'bf')
 	{
-		var path = ModManager.getModFile('characters/$char/' + char + '.json');
-		if (!FileSystem.exists(path))
-			path = Paths.getPreloadPath('characters/$char/' + char + '.json');
+		var path = Paths.getPreloadPath('characters/$char/' + char + '.json');
 
 		var rawJson = File.getContent(path);
 

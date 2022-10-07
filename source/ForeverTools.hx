@@ -75,25 +75,15 @@ class ForeverTools
 		}
 	}
 
-	public static function fileExists(path:String, type:AssetType = TEXT):Bool
+	inline public static function fileExists(path:String, type:AssetType = TEXT, ?library:Null<String>):Bool
 	{
-		var base = FileSystem.exists(Paths.getPath(path, type));
-		var mod = FileSystem.exists(ModManager.getModFile(path));
+		var assetExists = FileSystem.exists(Paths.getPath(path, type, library));
+		var modExists = FileSystem.exists(ModManager.getModFile(path));
 
-		if (base || mod)
+		if (assetExists || modExists)
 			return true;
+
 		return false;
-	}
-
-	public static function getPaths(path:String, type:AssetType = TEXT):String
-	{
-		var base = Paths.getPath(path, type);
-		var mod = ModManager.getModFile(path);
-
-		if (FileSystem.exists(mod))
-			return mod;
-
-		return base;
 	}
 
 	public static function checkUpdates()

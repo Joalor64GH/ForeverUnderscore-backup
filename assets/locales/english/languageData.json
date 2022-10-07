@@ -3,6 +3,8 @@
     "personalBest": "PERSONAL BEST:",
     "tracksText": "TRACKS",
     "weekScoreText": "WEEK SCORE:",
+	"delScore": "RESET SCORE?",
+	"delConfirm": "CONFIRM",
     "rateText": "RATE:",
 
     "resumeSong": "Resume",

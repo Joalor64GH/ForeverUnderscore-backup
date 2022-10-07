@@ -129,7 +129,7 @@ final class Paths
 
 	public static function returnGraphic(key:String, folder:String = 'images', ?library:String)
 	{
-		var modFile = ModManager.getModFile('$folder/$key.png');
+		var modFile = ModManager.getModImage('$folder/$key');
 
 		if (FileSystem.exists(modFile))
 		{

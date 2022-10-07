@@ -353,9 +353,9 @@ class FreeplayMenuState extends MusicBeatState
 				{
 					lockedMovement = true;
 					isResetting = true;
-					diffText.text = "DELETE SCORE?";
+					diffText.text = '${ForeverLocales.curLang.delScore}';
 					diffText.color = FlxColor.RED;
-					rateText.text = 'R = CONFIRM';
+					rateText.text = 'R = ${ForeverLocales.curLang.delConfirm}';
 				}
 				else
 				{

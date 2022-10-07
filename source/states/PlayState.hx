@@ -1766,8 +1766,6 @@ class PlayState extends MusicBeatState
 
 	function generateSong(dataPath:String):Void
 	{
-		// FlxG.log.add(ChartParser.parse());
-
 		Conductor.changeBPM(SONG.bpm);
 
 		songDetails = CoolUtil.dashToSpace(SONG.song)

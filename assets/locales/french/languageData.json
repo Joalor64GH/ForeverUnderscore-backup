@@ -3,6 +3,8 @@
     "personalBest": "RECORD PERSONNEL :",
     "tracksText": "PISTES",
     "weekScoreText": "SCORE DE LA SEMAINE :",
+    "delScore": "RESET SCORE?",
+	"delConfirm": "CONFIRM",
     "rateText": "TAUX :",
 
     "resumeSong": "Résumer",
