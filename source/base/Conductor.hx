@@ -107,22 +107,25 @@ class Conductor
 		songVocals = new FlxSound();
 
 		songMusic.loadEmbedded(Paths.songSounds(songData.song, 'Inst'), false, true);
+		FlxG.sound.list.add(songMusic);
+		songMusic.pitch = playbackRate;
 
 		if (songData.needsVoices)
+		{
+			// im assuming a lot of things here
 			songVocals.loadEmbedded(Paths.songSounds(songData.song, 'Voices'), false, true);
-
-		FlxG.sound.list.add(songMusic);
-		FlxG.sound.list.add(songVocals);
-		vocalArray.push(songVocals);
-
-		songMusic.pitch = playbackRate;
-		songVocals.pitch = playbackRate;
+			FlxG.sound.list.add(songVocals);
+			songVocals.pitch = playbackRate;
+		}
+		if (songVocals != null)
+			vocalArray.push(songVocals);
 	}
 
 	public static function startMusic()
 	{
 		songMusic.play();
-		songVocals.play();
+		for (vocals in vocalArray)
+			vocals.play();
 		resyncVocals();
 	}
 
@@ -161,7 +164,8 @@ class Conductor
 
 		#if DEBUG_TRACES trace('resyncing vocal time: ${songVocals.time}'); #end
 
-		songVocals.pause();
+		for (i in vocalArray)
+			i.pause();
 		songMusic.play();
 		songMusic.pitch = playbackRate;
 
@@ -183,9 +187,16 @@ class Conductor
 	public static function resyncBySteps()
 	{
 		if (Math.abs(songMusic.time - (songPosition - offset)) > 20 * playbackRate
-			|| (PlayState.SONG.needsVoices && Math.abs(songVocals.time - (songPosition - offset)) > 20 * playbackRate))
+			|| (PlayState.SONG.needsVoices && Math.abs(getAllVocals().time - (songPosition - offset)) > 20 * playbackRate))
 		{
 			resyncVocals();
 		}
+	}
+
+	public static function getAllVocals():FlxSound
+	{
+		for (v in vocalArray)
+			return v;
+		return null;
 	}
 }

@@ -155,7 +155,7 @@ class TitleState extends MusicBeatState
 
 	function getIntroTextShit():Array<Array<String>>
 	{
-		var swagGoodArray:Array<Array<String>> = [['no idea what psych engine is', 'vine boom sfx']];
+		var swagGoodArray:Array<Array<String>> = [['no idea what\npsych engine is', 'vine boom sfx']];
 		if (Assets.exists(Paths.txt('introText')))
 		{
 			var fullText:String = Assets.getText(Paths.txt('introText'));
@@ -219,7 +219,11 @@ class TitleState extends MusicBeatState
 			}
 
 			if (FlxG.keys.justPressed.ESCAPE #if android || FlxG.android.justReleased.BACK #end && !pressedEnter)
+			{
+				FlxG.sound.music.fadeOut(0.3);
+				FlxG.camera.fade(FlxColor.BLACK, 0.5, false, FlxG.resetGame, false);
 				Sys.exit(0);
+			}
 
 			if (pressedEnter)
 			{
@@ -259,16 +263,19 @@ class TitleState extends MusicBeatState
 			var money:Alphabet = new Alphabet(0, 0, textArray[i], true, false);
 			money.screenCenter(X);
 			money.y += (i * 60) + 200;
-			credGroup.add(money);
-			textGroup.add(money);
+			if (credGroup != null && textGroup != null)
+			{
+				credGroup.add(money);
+				textGroup.add(money);
+			}
 		}
 	}
 
-	function addMoreText(text:String)
+	function addMoreText(text:String, ?offset:Float = 0)
 	{
 		var coolText:Alphabet = new Alphabet(0, 0, text, true, false);
 		coolText.screenCenter(X);
-		coolText.y += (textGroup.length * 60) + 200;
+		coolText.y += (textGroup.length * 60) + 200 + offset;
 		credGroup.add(coolText);
 		textGroup.add(coolText);
 	}
