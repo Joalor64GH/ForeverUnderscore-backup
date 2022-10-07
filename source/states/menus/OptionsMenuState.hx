@@ -575,8 +575,9 @@ class OptionsMenuState extends MusicBeatState
 				FlxG.sound.music.stop();
 				FlxG.sound.playMusic(Paths.music('menus/pause/${Init.trueSettings.get('Pause Song')}/${Init.trueSettings.get('Pause Song')}'));
 
-			case 'discord rich presence':
-				lastChanged = 'discordPresence';
+			default:
+				if (lastChanged != 'pauseSong')
+					lastChanged = '';
 		}
 	}
 
