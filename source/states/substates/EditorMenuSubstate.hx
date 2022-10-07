@@ -103,7 +103,7 @@ class EditorMenuSubstate extends MusicBeatSubstate
 					Main.switchState(this, new states.editors.ChartEditor());
 
 				case 'Character Offset Editor':
-					Main.switchState(this, new states.editors.CharacterOffsetEditor((player == null ? 'bf' : player), false, (stage == null ? 'stage' : PlayState.curStage)));
+					Main.switchState(this, new states.editors.CharacterOffsetEditor((player == null ? 'bf' : PlayState.SONG.player2), false, (stage == null ? 'stage' : PlayState.curStage)));
 			}
 		}
 
