@@ -345,7 +345,7 @@ class CharacterOffsetEditor extends MusicBeatState
 					var negaMult:Int = 1;
 					if (i % 2 == 1)
 						negaMult = -1;
-					if (char.animOffsets.get(animList[curAnim] != null))
+					if (char.animOffsets.get(animList[curAnim]) != null)
 						char.animOffsets.get(animList[curAnim])[arrayVal] += negaMult * multiplier;
 
 					updateTexts();
