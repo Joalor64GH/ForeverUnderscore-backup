@@ -334,20 +334,15 @@ class Character extends FNFSprite
 
 	function generateBaseChar(char:String = 'bf')
 	{
-		var scripts:Array<String> = [
-			Paths.getPath('characters/$char/config.hx'),
-			Paths.getPath('characters/$char/config.hxs'),
-			ModManager.getModFile('characters/$char/config.hx'),
-			ModManager.getModFile('characters/$char/config.hxs'),
-		];
+		var scripts:Array<String> = ['characters/$char/config.hx', 'characters/$char/config.hxs'];
 
 		var pushedScripts:Array<String> = [];
 
 		for (i in scripts)
 		{
-			if (FileSystem.exists(i) && !pushedScripts.contains(i))
+			if (ForeverTools.fileExists(i) && !pushedScripts.contains(i))
 			{
-				var script:ScriptHandler = new ScriptHandler(i);
+				var script:ScriptHandler = new ScriptHandler(ForeverTools.getPaths(i));
 
 				if (script.interp == null)
 				{
@@ -371,12 +366,15 @@ class Character extends FNFSprite
 
 		// trace('Atlas Type: ' + spriteType + ' for Character: ' + char);
 
-		if (spriteType == "PackerAtlas")
-			tex = Paths.getPackerAtlas(char, 'characters/$char');
-		else if (spriteType == "JsonAtlas")
-			tex = Paths.getJsonAtlas(char, 'characters/$char');
-		else
-			tex = Paths.getSparrowAtlas(char, 'characters/$char');
+		switch (spriteType)
+		{
+			case "PackerAtlas":
+				tex = Paths.getPackerAtlas(char, 'characters/$char');
+			case "JsonAtlas":
+				tex = Paths.getJsonAtlas(char, 'characters/$char');
+			default:
+				tex = Paths.getSparrowAtlas(char, 'characters/$char');
+		}
 
 		frames = tex;
 
@@ -541,12 +539,15 @@ class Character extends FNFSprite
 
 		// trace('Atlas Type: ' + spriteType + ' for Character: ' + char);
 
-		if (spriteType == "PackerAtlas")
-			tex = Paths.getPackerAtlas(json.image.replace('characters/', ''), 'characters/$char');
-		else if (spriteType == "JsonAtlas")
-			tex = Paths.getJsonAtlas(json.image.replace('characters/', ''), 'characters/$char');
-		else
-			tex = Paths.getSparrowAtlas(json.image.replace('characters/', ''), 'characters/$char');
+		switch (spriteType)
+		{
+			case "PackerAtlas":
+				tex = Paths.getPackerAtlas(json.image.replace('characters/', ''), 'characters/$char');
+			case "JsonAtlas":
+				tex = Paths.getJsonAtlas(json.image.replace('characters/', ''), 'characters/$char');
+			default:
+				tex = Paths.getSparrowAtlas(json.image.replace('characters/', ''), 'characters/$char');
+		}
 
 		frames = tex;
 

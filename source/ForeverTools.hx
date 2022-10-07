@@ -85,7 +85,7 @@ class ForeverTools
 		}
 	}
 
-	public static function fileExists(path:String, type:AssetType):Bool
+	public static function fileExists(path:String, type:AssetType = TEXT):Bool
 	{
 		var base = FileSystem.exists(Paths.getPath(path, type));
 		var mod = FileSystem.exists(ModManager.getModFile(path));
@@ -93,6 +93,17 @@ class ForeverTools
 		if (base || mod)
 			return true;
 		return false;
+	}
+
+	public static function getPaths(path:String, type:AssetType = TEXT):String
+	{
+		var base = Paths.getPath(path, type);
+		var mod = ModManager.getModFile(path);
+
+		if (FileSystem.exists(mod))
+			return mod;
+
+		return base;
 	}
 
 	public static function checkUpdates()
