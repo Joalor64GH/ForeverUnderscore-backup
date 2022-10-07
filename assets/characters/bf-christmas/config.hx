@@ -57,3 +57,16 @@ function loadAnimations()
 			setCamOffsets(15, -45);
 	}
 }
+
+var isOld:Bool = false;
+
+function update(elapsed:Float)
+{
+	if (FlxG.keys.justPressed.NINE)
+	{
+		isOld = !isOld;
+		PlayState.uiHUD.iconP1.suffix = (isOld ? '-old' : '');
+		PlayState.uiHUD.iconP1.updateIcon();
+		PlayState.uiHUD.iconP1.flipX = true;
+	}
+}

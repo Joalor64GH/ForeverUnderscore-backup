@@ -159,6 +159,9 @@ class Character extends FNFSprite
 
 	override function update(elapsed:Float)
 	{
+		for (i in charScripts)
+			i.call('update', [elapsed]);
+
 		/**
 		 * Special Animations Code.
 		 * @author: Shadow_Mario_
@@ -244,6 +247,9 @@ class Character extends FNFSprite
 					animation.play('idlePost', true, false, 0);
 			}
 		}
+
+		for (i in charScripts)
+			i.call('postUpdate', [elapsed]);
 
 		super.update(elapsed);
 	}

@@ -55,3 +55,18 @@ function loadAnimations()
 	// from left to right, character that has the death animations, sound effect that plays when dying, game over song, jingle that plays on retry, and song bpm!
 	setDeathChar('bf-dead', 'fnf_loss_sfx', 'gameOver', 'gameOverEnd', 100);
 }
+
+function noteHit()
+{
+	// what should we do when the character hits a note?
+}
+
+function update(elapsed:Float)
+{
+	// constant updates (before setting animation parameters and such);
+}
+
+function postUpdate(elapsed:Float)
+{
+	// constant update (after setting animation parameters);
+}

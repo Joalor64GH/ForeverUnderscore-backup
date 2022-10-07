@@ -17,7 +17,8 @@ class HealthIcon extends FlxSprite
 	public var initialWidth:Float = 0;
 	public var initialHeight:Float = 0;
 
-	public var icon = 'bf';
+	public var icon:String = 'bf';
+	public var suffix:String = '';
 
 	public function new(icon:String = 'bf', isPlayer:Bool = false)
 	{
@@ -61,7 +62,7 @@ class HealthIcon extends FlxSprite
 			trimmedChar = trimmedChar.substring(0, trimmedChar.indexOf('-'));
 
 		var iconPath = char;
-		if (!ForeverTools.fileExists('characters/$char/icon.png', IMAGE))
+		if (!ForeverTools.fileExists('characters/$char/icon$suffix.png', IMAGE))
 		{
 			if (iconPath != trimmedChar)
 			{
@@ -75,7 +76,7 @@ class HealthIcon extends FlxSprite
 			}
 		}
 
-		var iconGraphic:FlxGraphic = (iconPath != 'face' ? Paths.image('$iconPath/icon', 'characters') : Paths.image('$iconPath', 'characters'));
+		var iconGraphic:FlxGraphic = (iconPath != 'face' ? Paths.image('$iconPath/icon$suffix', 'characters') : Paths.image('$iconPath', 'characters'));
 		var iconWidth = 1;
 
 		iconWidth = Std.int(iconGraphic.width / 150) - 1;
