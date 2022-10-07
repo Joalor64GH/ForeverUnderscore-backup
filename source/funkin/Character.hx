@@ -533,9 +533,9 @@ class Character extends FNFSprite
 		if (ForeverTools.fileExists('$characterPath.txt', TEXT))
 			spriteType = "PackerAtlas";
 		/*
-		else if (ForeverTools.fileExists('$characterPath.json', TEXT))
-			spriteType = "JsonAtlas";
-		*/
+			else if (ForeverTools.fileExists('$characterPath.json', TEXT))
+				spriteType = "JsonAtlas";
+		 */
 
 		// trace('Atlas Type: ' + spriteType + ' for Character: ' + char);
 

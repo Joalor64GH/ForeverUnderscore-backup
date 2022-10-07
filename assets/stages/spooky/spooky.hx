@@ -34,7 +34,7 @@ function updateStage(curBeat:Int, boyfriend:Character, gf:Character, dadOpponent
 			boyfriend.specialAnim = true;
 			boyfriend.heyTimer = 0.4;
 		}
-	
+
 		if (gf.animOffsets.exists('scared'))
 		{
 			gf.playAnim('scared', true);

@@ -5,17 +5,18 @@ var text:FlxText;
 
 function postCreate()
 {
-    trace('Initialized Base Script');
+	trace('Initialized Base Script');
 }
 
 function update(elapsed:Float)
 {
-    if (FlxG.keys.justPressed.U)
-    {
-        game.paused = true;
+	if (FlxG.keys.justPressed.U)
+	{
+		game.paused = true;
 		openSubState(new ScriptedSubstate('example'));
-    }
+	}
 }
+
 function newSubstate(name:String = 'test')
 {
 	switch (name)
@@ -59,28 +60,28 @@ function substateCreate()
 
 function substatePostCreate()
 {
-    trace('Post Create on Scripted Substate.');
+	trace('Post Create on Scripted Substate.');
 }
 
 function substateUpdate(elapsed:Float)
 {
-    //trace('Custom Substate Update.');
+	// trace('Custom Substate Update.');
 
-    if (FlxG.keys.justPressed.ESCAPE)
-    {
-        close();
-    }
+	if (FlxG.keys.justPressed.ESCAPE)
+	{
+		close();
+	}
 }
 
 function substatePostUpdate(elapsed:Float)
 {
-    //trace('Post Custom Substate Update.');
+	// trace('Post Custom Substate Update.');
 }
 
 function substateDestroy()
 {
-    trace('Custom Substate Destroyed.');
-    game.remove(subBG);
-    game.remove(text);
-    game.paused = false;
+	trace('Custom Substate Destroyed.');
+	game.remove(subBG);
+	game.remove(text);
+	game.paused = false;
 }
