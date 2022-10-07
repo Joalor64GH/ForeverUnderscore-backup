@@ -121,7 +121,7 @@ class OptionsMenuState extends MusicBeatState
 					["UI Skin", getFromOption],
 					['Judgement Stacking', getFromOption],
 					['Fixed Judgements', getFromOption],
-					['Reposition Judgements', openJudgeState],
+					['Adjust Judgements', openJudgeState],
 					['Colored Health Bar', getFromOption],
 					['Animated Score Color', getFromOption],
 					['Game Language', getFromOption],

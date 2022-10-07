@@ -20,6 +20,7 @@ enum SettingTypes
 {
 	Checkmark;
 	Selector;
+	Custom;
 }
 
 /**
@@ -180,6 +181,12 @@ class Init extends FlxState
 			true,
 			Checkmark,
 			"Fixes the judgements to the camera instead of to the world itself, making them easier to read.",
+			NOT_FORCED
+		],
+		'Adjust Judgements' => [
+			'',
+			Custom,
+			"Choose where your judgements should be, requires \"Fixed Judgements\" enabled.",
 			NOT_FORCED
 		],
 		'Colored Health Bar' => [
