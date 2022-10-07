@@ -24,8 +24,8 @@ class EditorMenuSubstate extends MusicBeatSubstate
 
 	public static var fromPause:Bool = false;
 
-	var player:String = 'bf';
-	var stage:String = 'stage';
+	var player:String = null;
+	var stage:String = null;
 
 	public function new(playMusic:Bool = true)
 	{
