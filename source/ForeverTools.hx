@@ -122,7 +122,8 @@ class ForeverTools
 			case 'camhud' | 'camHUD' | 'hud' | 'ui':
 				return PlayState.camHUD;
 			case 'strumhud' | 'strumHUD' | 'strum' | 'strumlines':
-				return PlayState.strumHUD;
+				for (strumhud in PlayState.strumHUD)
+					return strumhud;
 		}
 		return PlayState.camGame;
 	}

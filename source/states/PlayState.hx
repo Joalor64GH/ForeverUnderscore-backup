@@ -129,7 +129,7 @@ class PlayState extends MusicBeatState
 	public static var camAlt:FlxCamera;
 	public static var dialogueHUD:FlxCamera;
 	public static var comboHUD:FlxCamera;
-	public static var strumHUD:FlxCamera;
+	public static var strumHUD:Array<FlxCamera>;
 
 	public var camDisplaceX:Float = 0;
 	public var camDisplaceY:Float = 0; // might not use depending on result
@@ -167,6 +167,8 @@ class PlayState extends MusicBeatState
 	// strumlines
 	public static var dadStrums:Strumline;
 	public static var bfStrums:Strumline;
+
+	public static var controlledStrumlines:Array<Strumline> = [];
 
 	public static var strumLines:FlxTypedGroup<Strumline>;
 
@@ -511,15 +513,22 @@ class PlayState extends MusicBeatState
 		strumLines.add(bfStrums);
 
 		// generate a new strum camera
-		strumHUD = new FlxCamera();
-		strumHUD.bgColor.alpha = 0;
-		strumHUD.cameras = [camHUD];
-		allUIs.push(strumHUD);
+		strumHUD = [];
+		for (i in 0...strumLines.length)
+		{
+			// generate a new strum camera
+			strumHUD[i] = new FlxCamera();
+			strumHUD[i].bgColor.alpha = 0;
 
-		FlxG.cameras.add(strumHUD, false);
-
-		// set this strumline's camera to the designated camera
-		strumLines.cameras = [strumHUD];
+			strumHUD[i].cameras = [camHUD];
+			allUIs.push(strumHUD[i]);
+			FlxG.cameras.add(strumHUD[i], false);
+			// set this strumline's camera to the designated camera
+			strumLines.members[i].cameras = [strumHUD[i]];
+			// for whatever reason notes would spawn outside the strumline camera
+			strumLines.members[i].allNotes.cameras = [strumHUD[i]];
+		}
+		controlledStrumlines = [bfStrums];
 
 		add(strumLines);
 
@@ -626,6 +635,13 @@ class PlayState extends MusicBeatState
 		return copiedArray;
 	}
 
+	public function getControlledStrum()
+	{
+		for (strumline in controlledStrumlines)
+			return strumline;
+		return bfStrums;
+	}
+
 	var keysArray:Array<Array<FlxKey>>;
 
 	var holdControls:Array<Bool> = [];
@@ -639,71 +655,74 @@ class PlayState extends MusicBeatState
 		var eventKey:FlxKey = event.keyCode;
 		var key:Int = getKeyFromEvent(eventKey);
 
-		if (key >= 0
-			&& !holdControls[key]
-			&& !bfStrums.autoplay
-			&& (FlxG.keys.enabled && !paused && (FlxG.state.active || FlxG.state.persistentUpdate)))
+		for (strumline in controlledStrumlines)
 		{
-			holdControls[key] = true;
-
-			if (generatedMusic)
+			if (key >= 0
+				&& !holdControls[key]
+				&& !strumline.autoplay
+				&& (FlxG.keys.enabled && !paused && (FlxG.state.active || FlxG.state.persistentUpdate)))
 			{
-				var previousTime:Float = Conductor.songPosition;
-				Conductor.songPosition = Conductor.songMusic.time;
-				// improved this a little bit, maybe its a lil
-				var possibleNoteList:Array<Note> = [];
-				var pressedNotes:Array<Note> = [];
-
-				bfStrums.allNotes.forEachAlive(function(daNote:Note)
+				holdControls[key] = true;
+	
+				if (generatedMusic)
 				{
-					if ((daNote.noteData == key) && daNote.canBeHit && !daNote.isSustainNote && !daNote.tooLate && !daNote.wasGoodHit)
-						possibleNoteList.push(daNote);
-				});
-				possibleNoteList.sort(sortHitNotes);
-
-				// if there is a list of notes that exists for that control
-				if (possibleNoteList.length > 0)
-				{
-					var eligable = true;
-					var firstNote = true;
-					// loop through the possible notes
-					for (coolNote in possibleNoteList)
+					var previousTime:Float = Conductor.songPosition;
+					Conductor.songPosition = Conductor.songMusic.time;
+					// improved this a little bit, maybe its a lil
+					var possibleNoteList:Array<Note> = [];
+					var pressedNotes:Array<Note> = [];
+	
+					strumline.allNotes.forEachAlive(function(daNote:Note)
 					{
-						for (noteDouble in pressedNotes)
-						{
-							if (Math.abs(noteDouble.strumTime - coolNote.strumTime) < 10)
-								firstNote = false;
-							else
-								eligable = false;
-						}
-
-						var gfSec = (SONG.notes[Math.floor(curStep / 16)] != null) && (SONG.notes[Math.floor(curStep / 16)].gfSection);
-
-						if (eligable)
-						{
-							goodNoteHit(coolNote, (coolNote.gfNote || gfSec ? gf : bfStrums.character), bfStrums); // then hit the note
-							pressedNotes.push(coolNote);
-						}
-						// end of this little check
-					}
-					//
-				}
-				else
-				{ // else just call bad notes
-					if (!Init.getSetting('Ghost Tapping'))
+						if ((daNote.noteData == key) && (strumline.character != boyfriend ? !daNote.canBeHit : daNote.canBeHit) && !daNote.isSustainNote && !daNote.tooLate && !daNote.wasGoodHit)
+							possibleNoteList.push(daNote);
+					});
+					possibleNoteList.sort(sortHitNotes);
+	
+					// if there is a list of notes that exists for that control
+					if (possibleNoteList.length > 0)
 					{
-						if (startingSong) // mash warning
-							uiHUD.tweenScoreColor('miss', false);
-						else if (!inCutscene || !endingSong)
-							missNoteCheck(true, key, boyfriend, true);
+						var eligable = true;
+						var firstNote = true;
+						// loop through the possible notes
+						for (coolNote in possibleNoteList)
+						{
+							for (noteDouble in pressedNotes)
+							{
+								if (Math.abs(noteDouble.strumTime - coolNote.strumTime) < 10)
+									firstNote = false;
+								else
+									eligable = false;
+							}
+	
+							var gfSec = (SONG.notes[Math.floor(curStep / 16)] != null) && (SONG.notes[Math.floor(curStep / 16)].gfSection);
+	
+							if (eligable)
+							{
+								goodNoteHit(coolNote, (coolNote.gfNote || gfSec ? gf : strumline.character), strumline); // then hit the note
+								pressedNotes.push(coolNote);
+							}
+							// end of this little check
+						}
+						//
 					}
+					else
+					{ // else just call bad notes
+						if (!Init.getSetting('Ghost Tapping'))
+						{
+							if (startingSong) // mash warning
+								uiHUD.tweenScoreColor('miss', false);
+							else if (!inCutscene || !endingSong)
+								missNoteCheck(true, key, boyfriend, true);
+						}
+					}
+	
+					Conductor.songPosition = previousTime;
 				}
-
-				Conductor.songPosition = previousTime;
+	
+				if (strumline.receptors.members[key] != null && strumline.receptors.members[key].animation.curAnim.name != 'confirm')
+					strumline.receptors.members[key].playAnim('pressed', true);
 			}
-
-			if (bfStrums.receptors.members[key] != null && bfStrums.receptors.members[key].animation.curAnim.name != 'confirm')
-				bfStrums.receptors.members[key].playAnim('pressed', true);
 		}
 	}
 
@@ -712,13 +731,16 @@ class PlayState extends MusicBeatState
 		var eventKey:FlxKey = event.keyCode;
 		var key:Int = getKeyFromEvent(eventKey);
 
-		if (key >= 0 && !bfStrums.autoplay && (FlxG.keys.enabled && !paused && (FlxG.state.active || FlxG.state.persistentUpdate)))
+		for (strumline in controlledStrumlines)
 		{
-			holdControls[key] = false;
-
-			// receptor reset
-			if (key >= 0 && bfStrums.receptors.members[key] != null)
-				bfStrums.receptors.members[key].playAnim('static');
+			if (key >= 0 && !strumline.autoplay && (FlxG.keys.enabled && !paused && (FlxG.state.active || FlxG.state.persistentUpdate)))
+			{
+				holdControls[key] = false;
+	
+				// receptor reset
+				if (key >= 0 && strumline.receptors.members[key] != null)
+					strumline.receptors.members[key].playAnim('static');
+			}
 		}
 	}
 
@@ -828,8 +850,8 @@ class PlayState extends MusicBeatState
 				if (FlxG.keys.pressed.SHIFT && FlxG.keys.justPressed.SIX)
 				{
 					preventScoring = true;
-					bfStrums.autoplay = !bfStrums.autoplay;
-					uiHUD.autoplayMark.visible = bfStrums.autoplay;
+					getControlledStrum().autoplay = !getControlledStrum().autoplay;
+					uiHUD.autoplayMark.visible = getControlledStrum().autoplay;
 					uiHUD.autoplayMark.alpha = 1;
 					uiHUD.autoplaySine = 0;
 				}
@@ -959,13 +981,9 @@ class PlayState extends MusicBeatState
 				// push note to its correct strumline
 				strumLines.members[Math.floor((dunceNote.noteData + (dunceNote.mustPress ? 4 : 0)) / numberOfKeys)].push(dunceNote);
 				unspawnNotes.splice(unspawnNotes.indexOf(dunceNote), 1);
-				notes.add(dunceNote);
 			}
 
 			noteCalls();
-
-			if (!bfStrums.autoplay)
-				controllerInput();
 		}
 
 		if (!isStoryMode && !startingSong && !endingSong && scriptDebugMode)
@@ -1012,7 +1030,6 @@ class PlayState extends MusicBeatState
 
 				daNote.kill();
 				unspawnNotes.remove(daNote);
-				notes.remove(daNote, true);
 				daNote.destroy();
 			}
 			--i;
@@ -1142,6 +1159,8 @@ class PlayState extends MusicBeatState
 
 					// hell breaks loose here, we're using nested scripts!
 					mainControls(strumNote, strumline.character, strumline, strumline.autoplay);
+					if (!strumline.autoplay)
+						controllerInput();
 
 					for (receptor in strumline.receptors)
 					{
@@ -1178,7 +1197,7 @@ class PlayState extends MusicBeatState
 
 								callFunc('noteMiss', [strumNote]);
 
-								missNoteCheck((Init.getSetting('Ghost Tapping') && !startingSong) ? true : false, strumNote.noteData, boyfriend, true);
+								missNoteCheck((Init.getSetting('Ghost Tapping') && !startingSong) ? true : false, strumNote.noteData, strumline.character, true);
 								// ambiguous name
 								Timings.updateAccuracy(0);
 							}
@@ -1192,7 +1211,7 @@ class PlayState extends MusicBeatState
 										var breakFromLate:Bool = false;
 										if (!breakFromLate)
 										{
-											missNoteCheck((Init.getSetting('Ghost Tapping') && !startingSong) ? true : false, strumNote.noteData, boyfriend,
+											missNoteCheck((Init.getSetting('Ghost Tapping') && !startingSong) ? true : false, strumNote.noteData, strumline.character,
 												true);
 											for (note in parentNote.childrenNotes)
 												note.tooLate = true;
@@ -1211,17 +1230,18 @@ class PlayState extends MusicBeatState
 				});
 
 				// unoptimised asf camera control based on strums
-				strumCameraRoll(strumline.receptors, (strumline == bfStrums));
+				strumCameraRoll(strumline.receptors, (strumline == getControlledStrum()));
 			}
 		}
 
 		// reset bf's animation
-		if ((boyfriend != null && boyfriend.animation != null)
-			&& (boyfriend.holdTimer > Conductor.stepCrochet * (0.0011 / Conductor.playbackRate) * boyfriend.singDuration
-				&& (!holdControls.contains(true) || bfStrums.autoplay)))
+		if ((getControlledStrum().character != null && getControlledStrum().character.animation != null)
+			&& (getControlledStrum().character.holdTimer > Conductor.stepCrochet * (0.0011 / Conductor.playbackRate) * getControlledStrum().character.singDuration
+				&& (!holdControls.contains(true) || getControlledStrum().autoplay)))
 		{
-			if (boyfriend.animation.curAnim.name.startsWith('sing') && !boyfriend.animation.curAnim.name.endsWith('miss'))
-				boyfriend.dance();
+			if (getControlledStrum().character.animation.curAnim.name.startsWith('sing')
+				&& !getControlledStrum().character.animation.curAnim.name.endsWith('miss'))
+				getControlledStrum().character.dance();
 		}
 	}
 
@@ -1280,7 +1300,6 @@ class PlayState extends MusicBeatState
 		var chosenGroup = (daNote.isSustainNote ? strumline.holdsGroup : strumline.notesGroup);
 		// note damage here I guess
 		daNote.kill();
-		notes.remove(daNote);
 		if (strumline.allNotes.members.contains(daNote))
 			strumline.allNotes.remove(daNote, true);
 		if (chosenGroup.members.contains(daNote))
@@ -1357,7 +1376,7 @@ class PlayState extends MusicBeatState
 
 	public function missNoteCheck(?includeAnimation:Bool = false, direction:Int = 0, character:Character, popMiss:Bool = false, lockMiss:Bool = false)
 	{
-		if (bfStrums.autoplay)
+		if (getControlledStrum().autoplay)
 			return;
 
 		if (includeAnimation)
@@ -1548,7 +1567,7 @@ class PlayState extends MusicBeatState
 
 	override public function onFocusLost():Void
 	{
-		if (canPause && !paused && !inCutscene && !bfStrums.autoplay && !Init.getSetting('Auto Pause') && startedCountdown)
+		if (canPause && !paused && !inCutscene && !getControlledStrum().autoplay && !Init.getSetting('Auto Pause') && startedCountdown)
 		{
 			pauseGame();
 			// open pause substate
@@ -1581,7 +1600,7 @@ class PlayState extends MusicBeatState
 		if (baseRating == "sick")
 			popNoteSplash(coolNote, strumline);
 
-		if (!bfStrums.autoplay)
+		if (!strumline.autoplay)
 			popJudgement(baseRating, timing, perfect);
 		else
 			popJudgement('sick', false, Timings.perfectSicks);
@@ -1688,7 +1707,7 @@ class PlayState extends MusicBeatState
 
 	public function decreaseCombo(?popMiss:Bool = false)
 	{
-		if (bfStrums.autoplay)
+		if (getControlledStrum().autoplay)
 			return;
 
 		if (combo > 5 && gf.animOffsets.exists('sad'))
@@ -1877,7 +1896,8 @@ class PlayState extends MusicBeatState
 		{
 			FlxG.camera.zoom += 0.015;
 			camHUD.zoom += 0.05;
-			strumHUD.zoom += 0.05;
+			for (hud in strumHUD)
+				hud.zoom += 0.05;
 		}
 
 		if (SONG.notes[Math.floor(curStep / 16)] != null)
