@@ -30,8 +30,7 @@ class Strumline extends FlxSpriteGroup
 	public var autoplay:Bool = true;
 	public var displayJudgements:Bool = false;
 
-	public function new(xPos:Float = 0, yPos:Float = 0, ?character:Character, ?autoplay:Bool = true, ?displayJudgements:Bool = false, ?keyAmount:Int = 4,
-			?parent:Strumline)
+	public function new(xPos:Float = 0, yPos:Float = 0, ?character:Character, ?autoplay:Bool = true, ?displayJudgements:Bool = false, ?keyAmount:Int = 4)
 	{
 		super();
 
