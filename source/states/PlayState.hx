@@ -137,6 +137,7 @@ class PlayState extends MusicBeatState
 	public static var cameraSpeed:Float = 1;
 	public static var defaultCamZoom:Float = 1.05;
 	public static var forceZoom:Array<Float>;
+	public static var camZooming:Bool = true;
 
 	public static var songScore:Int = 0;
 	public static var accuracy:Float = 0.00;
@@ -486,28 +487,11 @@ class PlayState extends MusicBeatState
 
 		var strumVertPos:Int = (Init.getSetting('Downscroll') ? FlxG.height - 200 : 0);
 
-		dadStrums = new Strumline(dadPlacement, strumVertPos, this, dadOpponent, false, true, false, 4);
-		bfStrums = new Strumline(bfPlacement, strumVertPos, this, boyfriend, true, false, true, 4);
-
-		if (Init.getSetting('Centered Receptors'))
-		{
-			// psych-like Opponent Strumlines;
-			for (i in 0...dadStrums.receptors.members.length)
-			{
-				if (i > 1)
-				{
-					dadStrums.receptors.members[i].x += FlxG.width / 2 + 25;
-				}
-
-				dadStrums.members[i].alpha = 0.35; // notes, splashes, etc;
-				dadStrums.receptors.members[i].setAlpha = 0.35; // strumline, in case it still follows the settings alpha;
-				dadStrums.receptors.members[i].lightConfirms = false; // disable automatic strumline confirm animation going fully visible;
-			}
-
-			// have fun messing with these on scripts now;
-		}
+		dadStrums = new Strumline(dadPlacement, strumVertPos, dadOpponent, true, false, 4);
+		bfStrums = new Strumline(bfPlacement, strumVertPos, boyfriend, false, true, 4);
 
 		dadStrums.visible = !Init.getSetting('Hide Opponent Receptors');
+		controlledStrumlines = [bfStrums];
 
 		strumLines.add(dadStrums);
 		strumLines.add(bfStrums);
@@ -528,7 +512,12 @@ class PlayState extends MusicBeatState
 			// for whatever reason notes would spawn outside the strumline camera
 			strumLines.members[i].allNotes.cameras = [strumHUD[i]];
 		}
-		controlledStrumlines = [bfStrums];
+
+		if (Init.getSetting('Centered Receptors'))
+		{
+			PlayState.strumLines.members[0].cameras = [PlayState.camGame];
+			PlayState.strumLines.members[0].allNotes.cameras = [PlayState.camGame];
+		}
 
 		add(strumLines);
 
@@ -644,7 +633,7 @@ class PlayState extends MusicBeatState
 
 	var keysArray:Array<Array<FlxKey>>;
 
-	var holdControls:Array<Bool> = [];
+	var holdingKeys:Array<Bool> = [];
 
 	/*
 		input system functions
@@ -657,12 +646,15 @@ class PlayState extends MusicBeatState
 
 		for (strumline in controlledStrumlines)
 		{
+			if (strumline.autoplay)
+				return;
+
 			if (key >= 0
-				&& !holdControls[key]
+				&& !holdingKeys[key]
 				&& !strumline.autoplay
 				&& (FlxG.keys.enabled && !paused && (FlxG.state.active || FlxG.state.persistentUpdate)))
 			{
-				holdControls[key] = true;
+				holdingKeys[key] = true;
 	
 				if (generatedMusic)
 				{
@@ -674,7 +666,7 @@ class PlayState extends MusicBeatState
 	
 					strumline.allNotes.forEachAlive(function(daNote:Note)
 					{
-						if ((daNote.noteData == key) && (strumline.character != boyfriend ? !daNote.canBeHit : daNote.canBeHit) && !daNote.isSustainNote && !daNote.tooLate && !daNote.wasGoodHit)
+						if ((daNote.noteData == key) && daNote.canBeHit && !daNote.isSustainNote && !daNote.tooLate && !daNote.wasGoodHit)
 							possibleNoteList.push(daNote);
 					});
 					possibleNoteList.sort(sortHitNotes);
@@ -733,9 +725,12 @@ class PlayState extends MusicBeatState
 
 		for (strumline in controlledStrumlines)
 		{
+			if (strumline.autoplay)
+				return;
+
 			if (key >= 0 && !strumline.autoplay && (FlxG.keys.enabled && !paused && (FlxG.state.active || FlxG.state.persistentUpdate)))
 			{
-				holdControls[key] = false;
+				holdingKeys[key] = false;
 	
 				// receptor reset
 				if (key >= 0 && strumline.receptors.members[key] != null)
@@ -955,9 +950,12 @@ class PlayState extends MusicBeatState
 			var easeLerp = 1 - Main.framerateAdjust(0.05);
 
 			// camera stuffs
-			FlxG.camera.zoom = FlxMath.lerp(defaultCamZoom + forceZoom[0], FlxG.camera.zoom, easeLerp);
-			for (hud in allUIs)
-				hud.zoom = FlxMath.lerp(1 + forceZoom[1], hud.zoom, easeLerp);
+			if (camZooming)
+			{
+				FlxG.camera.zoom = FlxMath.lerp(defaultCamZoom + forceZoom[0], FlxG.camera.zoom, easeLerp);
+				for (hud in allUIs)
+					hud.zoom = FlxMath.lerp(1 + forceZoom[1], hud.zoom, easeLerp);
+			}
 
 			// not even forcezoom anymore but still
 			FlxG.camera.angle = FlxMath.lerp(0 + forceZoom[2], FlxG.camera.angle, easeLerp);
@@ -1158,7 +1156,7 @@ class PlayState extends MusicBeatState
 					}
 
 					// hell breaks loose here, we're using nested scripts!
-					mainControls(strumNote, strumline.character, strumline, strumline.autoplay);
+					mainControls(strumNote, strumline.character, strumline);
 					if (!strumline.autoplay)
 						controllerInput();
 
@@ -1199,7 +1197,8 @@ class PlayState extends MusicBeatState
 
 								missNoteCheck((Init.getSetting('Ghost Tapping') && !startingSong) ? true : false, strumNote.noteData, strumline.character, true);
 								// ambiguous name
-								Timings.updateAccuracy(0);
+								if (strumNote.updateAccuracy)
+									Timings.updateAccuracy(0);
 							}
 							else if (strumNote.isSustainNote)
 							{
@@ -1230,18 +1229,8 @@ class PlayState extends MusicBeatState
 				});
 
 				// unoptimised asf camera control based on strums
-				strumCameraRoll(strumline.receptors, (strumline == getControlledStrum()));
+				strumCameraRoll(strumline.receptors, (strumline == bfStrums));
 			}
-		}
-
-		// reset bf's animation
-		if ((getControlledStrum().character != null && getControlledStrum().character.animation != null)
-			&& (getControlledStrum().character.holdTimer > Conductor.stepCrochet * (0.0011 / Conductor.playbackRate) * getControlledStrum().character.singDuration
-				&& (!holdControls.contains(true) || getControlledStrum().autoplay)))
-		{
-			if (getControlledStrum().character.animation.curAnim.name.startsWith('sing')
-				&& !getControlledStrum().character.animation.curAnim.name.endsWith('miss'))
-				getControlledStrum().character.dance();
 		}
 	}
 
@@ -1349,21 +1338,22 @@ class PlayState extends MusicBeatState
 					{
 						increaseCombo(foundRating, coolNote.noteData, character);
 						popUpScore(foundRating, coolNote.strumTime < Conductor.songPosition, Timings.perfectSicks, strumline, coolNote);
-
+	
 						if (coolNote.childrenNotes.length > 0)
 							Timings.notesHit++;
-
+	
 						healthCall(Timings.judgementsMap.get(foundRating)[3]);
 					}
 					else
 					{
 						// call updated accuracy stuffs
-						if (coolNote.parentNote != null && coolNote.updateAccuracy)
+						if (coolNote.parentNote != null)
 						{
-							Timings.updateAccuracy(100, true, coolNote.parentNote.childrenNotes.length);
+							if (coolNote.updateAccuracy)
+								Timings.updateAccuracy(100, true, coolNote.parentNote.childrenNotes.length);
 							healthCall(100 / coolNote.parentNote.childrenNotes.length);
 						}
-
+	
 						hits++;
 					}
 				}
@@ -1460,15 +1450,15 @@ class PlayState extends MusicBeatState
 		}
 	}
 
-	function mainControls(daNote:Note, char:Character, strumline:Strumline, autoplay:Bool):Void
+	function mainControls(daNote:Note, character:Character, strumline:Strumline):Void
 	{
 		var notesPressedAutoplay = [];
 
 		// here I'll set up the autoplay functions
-		if (autoplay)
+		if (strumline.autoplay)
 		{
 			// check if the note was a good hit
-			if (daNote.strumTime <= Conductor.songPosition && !daNote.canHurt)
+			if (daNote.strumTime <= Conductor.songPosition)
 			{
 				// kill the note, then remove it from the array
 				if (strumline.displayJudgements)
@@ -1477,29 +1467,38 @@ class PlayState extends MusicBeatState
 				var curSection = Std.int(curStep / 16);
 
 				if (daNote.gfNote || (SONG.notes[curSection] != null) && (SONG.notes[curSection].gfSection))
-					char = gf;
+					character = gf;
 
-				goodNoteHit(daNote, char, strumline);
+				if (!daNote.canHurt)
+					goodNoteHit(daNote, character, strumline);
 			}
 		}
 
-		if (!autoplay)
+		if (!strumline.autoplay)
 		{
-			// check if anything is held
-			if (holdControls.contains(true))
+			// check if keys are being held
+			if (holdingKeys.contains(true))
 			{
-				// check notes that are alive
-				strumline.allNotes.forEachAlive(function(coolNote:Note)
+				// check for hold notes
+				strumline.holdsGroup.forEachAlive(function(coolNote:Note)
 				{
 					if ((coolNote.parentNote != null && coolNote.parentNote.wasGoodHit)
 						&& coolNote.canBeHit
 						&& coolNote.mustPress
 						&& !coolNote.tooLate
-						&& coolNote.isSustainNote
-						&& holdControls[coolNote.noteData])
-						goodNoteHit(coolNote, char, strumline);
+						&& holdingKeys[coolNote.noteData])
+						goodNoteHit(coolNote, character, strumline);
 				});
 			}
+		}
+
+		// reset animation
+		if ((character != null && character.animation != null)
+			&& (character.holdTimer > Conductor.stepCrochet * (0.0011 / Conductor.playbackRate) * character.singDuration
+				&& (!holdingKeys.contains(true) || strumline.autoplay)))
+		{
+			if (character.animation.curAnim.name.startsWith('sing') && !character.animation.curAnim.name.endsWith('miss'))
+				character.dance();
 		}
 	}
 
@@ -1604,7 +1603,8 @@ class PlayState extends MusicBeatState
 			popJudgement(baseRating, timing, perfect);
 		else
 			popJudgement('sick', false, Timings.perfectSicks);
-		Timings.updateAccuracy(Timings.judgementsMap.get(baseRating)[3]);
+		if (coolNote.updateAccuracy)
+			Timings.updateAccuracy(Timings.judgementsMap.get(baseRating)[3]);
 		score = Std.int(Timings.judgementsMap.get(baseRating)[2]);
 
 		if (!practiceMode)
@@ -1833,28 +1833,24 @@ class PlayState extends MusicBeatState
 			&& !gf.stunned)
 			gf.dance();
 
-		if (curBeat % boyfriend.bopSpeed == 0
-			&& (boyfriend.animation.curAnim != null && !boyfriend.animation.curAnim.name.startsWith('sing'))
-			&& (boyfriend.animation.curAnim.name.startsWith("idle")
-				|| boyfriend.animation.curAnim.name.startsWith("dance")
-				|| boyfriend.quickDancer)
-			&& !boyfriend.stunned)
-			boyfriend.dance();
-
-		if (curBeat % dadOpponent.bopSpeed == 0
-			&& (dadOpponent.animation.curAnim != null && !dadOpponent.animation.curAnim.name.startsWith('sing'))
-			&& (dadOpponent.animation.curAnim.name.startsWith("idle")
-				|| dadOpponent.animation.curAnim.name.startsWith("dance")
-				|| dadOpponent.quickDancer)
-			&& !dadOpponent.stunned)
-			dadOpponent.dance();
-
 		for (char in characterArray)
 		{
 			if (curBeat % char.bopSpeed == 0
 				&& (char.animation.curAnim != null && !char.animation.curAnim.name.startsWith('sing'))
 				&& (char.animation.curAnim.name.startsWith("idle") || char.animation.curAnim.name.startsWith("dance") || char.quickDancer))
 				char.dance();
+		}
+
+		for (strumline in strumLines)
+		{
+			var character = strumline.character;
+			if (curBeat % character.bopSpeed == 0
+				&& (character.animation.curAnim != null && !character.animation.curAnim.name.startsWith('sing'))
+				&& (character.animation.curAnim.name.startsWith("idle")
+					|| character.animation.curAnim.name.startsWith("dance")
+					|| character.quickDancer)
+				&& !character.stunned)
+				character.dance();
 		}
 	}
 
@@ -1892,12 +1888,15 @@ class PlayState extends MusicBeatState
 	{
 		super.beatHit();
 
-		if ((FlxG.camera.zoom < 1.35 && curBeat % 4 == 0) && (!Init.getSetting('Reduced Movements')))
+		if (camZooming)
 		{
-			FlxG.camera.zoom += 0.015;
-			camHUD.zoom += 0.05;
-			for (hud in strumHUD)
-				hud.zoom += 0.05;
+			if ((FlxG.camera.zoom < 1.35 && curBeat % 4 == 0) && (!Init.getSetting('Reduced Movements')))
+			{
+				FlxG.camera.zoom += 0.015;
+				camHUD.zoom += 0.05;
+				for (hud in strumHUD)
+					hud.zoom += 0.05;
+			}
 		}
 
 		if (SONG.notes[Math.floor(curStep / 16)] != null)

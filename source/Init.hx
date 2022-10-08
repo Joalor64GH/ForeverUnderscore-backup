@@ -235,13 +235,6 @@ class Init extends FlxState
 			"Set the opacity for your hold notes.. Huh, why isnt the trail cut off?",
 			NOT_FORCED
 		],
-		"Clip Style" => [
-			'stepmania',
-			Selector,
-			"Chooses a style for hold note clippings; StepMania: Holds under Receptors; FNF: Holds over receptors",
-			NOT_FORCED,
-			['StepMania', 'FNF']
-		],
 		'No Camera Note Movement' => [
 			false,
 			Checkmark,

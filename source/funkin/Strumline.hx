@@ -25,23 +25,18 @@ class Strumline extends FlxSpriteGroup
 	public var holdsGroup:FlxTypedSpriteGroup<Note>;
 	public var allNotes:FlxTypedSpriteGroup<Note>;
 
-	public var state:FlxState;
 	public var character:Character;
 
 	public var autoplay:Bool = true;
 	public var displayJudgements:Bool = false;
-	public var noteSplashes:Bool = false;
 
-	public function new(xPos:Float = 0, yPos:Float = 0, state:FlxState, ?character:Character, ?displayJudgements:Bool = true, ?autoplay:Bool = true,
-			?noteSplashes:Bool = false, ?keyAmount:Int = 4, ?parent:Strumline)
+	public function new(xPos:Float = 0, yPos:Float = 0, ?character:Character, ?autoplay:Bool = true, ?displayJudgements:Bool = true, ?keyAmount:Int = 4, ?parent:Strumline)
 	{
 		super();
 
 		this.autoplay = autoplay;
 		this.character = character;
-		this.state = state;
 		this.displayJudgements = displayJudgements;
-		this.noteSplashes = noteSplashes;
 
 		receptors = new FlxTypedSpriteGroup<Receptor>();
 		splashNotes = new FlxTypedSpriteGroup<NoteSplash>();
@@ -70,18 +65,15 @@ class Strumline extends FlxSpriteGroup
 				FlxTween.tween(receptor, {y: receptor.initialY, alpha: receptor.setAlpha}, 1, {ease: FlxEase.circOut, startDelay: 0.5 + (0.2 * i)});
 			}
 
-			if (noteSplashes)
+			if (displayJudgements)
 			{
 				var noteSplash:NoteSplash = ForeverAssets.generateNoteSplashes('noteSplashes', splashNotes, PlayState.assetModifier, 'noteskins/notes', i);
 				splashNotes.add(noteSplash);
 			}
 		}
 
-		if (Init.getSetting("Clip Style").toLowerCase() == 'stepmania')
-			add(holdsGroup);
+		add(holdsGroup);
 		add(receptors);
-		if (Init.getSetting("Clip Style").toLowerCase() == 'fnf')
-			add(holdsGroup);
 		add(notesGroup);
 		if (splashNotes != null)
 			add(splashNotes);

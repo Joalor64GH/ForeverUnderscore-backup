@@ -133,7 +133,6 @@ class OptionsMenuState extends MusicBeatState
 					['Arrow Opacity', getFromOption],
 					['Splash Opacity', getFromOption],
 					['Hold Opacity', getFromOption],
-					["Clip Style", getFromOption],
 				]
 			]
 		];

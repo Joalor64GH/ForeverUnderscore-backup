@@ -54,8 +54,8 @@ class JudgementOffsetState extends MusicBeatState
 
 		var strumVertPos:Int = (Init.getSetting('Downscroll') ? FlxG.height - 200 : 0);
 
-		dadStrums = new Strumline(dadPlacement, strumVertPos, this, null, false, true, false, 4);
-		bfStrums = new Strumline(bfPlacement, strumVertPos, this, null, true, false, true, 4);
+		dadStrums = new Strumline(dadPlacement, strumVertPos, true, false, 4);
+		bfStrums = new Strumline(bfPlacement, strumVertPos, false, true, 4);
 		bfStrums.cameras = [_camUI];
 		dadStrums.cameras = [_camUI];
 

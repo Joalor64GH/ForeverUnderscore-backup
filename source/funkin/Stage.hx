@@ -188,15 +188,12 @@ class Stage extends FlxTypedGroup<FlxBasic>
 
 	function callStageScript()
 	{
-		var paths:Array<String> = [
-			Paths.getPreloadPath('stages/$curStage/$curStage.hx'),
-			Paths.getPreloadPath('stages/$curStage/$curStage.hxs')
-		];
+		var paths:Array<String> = ['stages/$curStage/$curStage.hx', 'stages/$curStage/$curStage.hxs'];
 
 		for (path in paths)
 		{
-			if (FileSystem.exists(path))
-				stageScript = new ScriptHandler(path);
+			if (ForeverTools.fileExists(path))
+				stageScript = new ScriptHandler(Paths.getPreloadPath(path));
 		}
 
 		setVar('add', add);
@@ -209,6 +206,8 @@ class Stage extends FlxTypedGroup<FlxBasic>
 		{
 			spawnGirlfriend = blah;
 		});
+		if (PlayState.contents != null)
+			setVar('songName', PlayState.SONG.song.toLowerCase());
 		setVar('BackgroundDancer', BackgroundDancer);
 		setVar('BackgroundGirls', BackgroundGirls);
 		setVar('TankmenBG', TankmenBG);

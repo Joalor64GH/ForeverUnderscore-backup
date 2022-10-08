@@ -58,6 +58,7 @@ class Note extends FNFSprite
 
 	public var healthGain:Float = 0.023;
 	public var healthLoss:Float = 0.0475;
+	public var noteHoldHeight:Float = 0.72;
 
 	public var hitSounds:Bool = true;
 	public var canHurt:Bool = false;
@@ -67,7 +68,6 @@ class Note extends FNFSprite
 	public var hitsoundSuffix = '';
 
 	static var pixelNoteID:Array<Int> = [4, 5, 6, 7];
-	static var noteHoldHeight:Float = 0.72;
 
 	public function new(strumTime:Float, noteData:Int, noteAlt:Float, ?prevNote:Note, ?sustainNote:Bool = false, ?noteType:Int = 0)
 	{
@@ -184,7 +184,7 @@ class Note extends FNFSprite
 	public static function returnDefaultNote(assetModifier, strumTime, noteData, noteAlt, ?isSustainNote:Bool = false, ?prevNote:Note, noteType:Int = 0):Note
 	{
 		var newNote:Note = new Note(strumTime, noteData, noteAlt, prevNote, isSustainNote, noteType);
-		noteHoldHeight = 0.72;
+		newNote.noteHoldHeight = 0.72;
 
 		// frames originally go here
 		switch (assetModifier)
@@ -261,7 +261,7 @@ class Note extends FNFSprite
 			noteType:Int = 0):Note
 	{
 		var newNote:Note = new Note(strumTime, noteData, noteAlt, prevNote, isSustainNote, noteType);
-		noteHoldHeight = 0.86;
+		newNote.noteHoldHeight = 0.86;
 
 		// actually determine the quant of the note
 		if (newNote.noteQuant == -1)
