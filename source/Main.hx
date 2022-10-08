@@ -92,12 +92,8 @@ class Main extends Sprite
 			};
 			return #if DEBUG_TRACES trace('changed state') #end;
 		}
-		else
-		{
-			FlxTransitionableState.skipNextTransIn = false;
-			FlxTransitionableState.skipNextTransOut = false;
-		}
 		FlxTransitionableState.skipNextTransIn = false;
+		FlxTransitionableState.skipNextTransOut = false;
 		// load the state
 		FlxG.switchState(target);
 	}

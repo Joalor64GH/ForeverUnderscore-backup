@@ -391,7 +391,7 @@ class FreeplayMenuState extends MusicBeatState
 		if (!isResetting)
 		{
 			scoreText.text = '${ForeverLocales.curLang.personalBest}' + lerpScore;
-			rateText.text = '$croppedAcc% | ${ForeverLocales.curLang.rateText} ' + songRate + "x";
+			rateText.text = '$croppedAcc% [R] | ${ForeverLocales.curLang.rateText} ' + songRate + "x";
 		}
 		rateText.x = FlxG.width - rateText.width;
 		repositionHighscore();

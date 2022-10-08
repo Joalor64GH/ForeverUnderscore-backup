@@ -1,7 +1,7 @@
 package states.menus;
 
 import base.Conductor;
-import base.MusicBeat.MusicBeatState;
+import base.MusicBeat;
 import dependency.Discord;
 import dependency.FNFSprite;
 import flixel.FlxBasic;
@@ -177,7 +177,13 @@ class OptionsMenuState extends MusicBeatState
 	function loadSubgroup(subgroupName:String)
 	{
 		// unlock the movement
-		lockedMovement = false;
+		if (lockedMovement)
+		{
+			new FlxTimer().start(0.3, function(timer:FlxTimer)
+			{
+				lockedMovement = false;
+			}, 1);
+		}
 
 		// lol we wanna kill infotext so it goes over checkmarks later
 		if (infoText != null)
@@ -258,7 +264,7 @@ class OptionsMenuState extends MusicBeatState
 						decreaseVal = 360;
 					case 'Notes':
 						decreaseVal = 450;
-					case 'Miscellaneous Settings':
+					case 'Miscellaneous Settings' | 'Judgements and Combo':
 						decreaseVal = 55;
 						divideVal = 50;
 					default:
@@ -268,7 +274,6 @@ class OptionsMenuState extends MusicBeatState
 
 				sepMem.alpha = 1;
 				sepMem.xTo = Std.int((FlxG.width / 2) - ((sepMem.text.length / 2) * divideVal)) - decreaseVal;
-				// sepMem.xTo += Std.int((FlxG.width / 2) - ((sepMem.text.length / 2) * divideVal)) - decreaseVal;
 			}
 		}
 
@@ -308,14 +313,11 @@ class OptionsMenuState extends MusicBeatState
 
 		// just uses my outdated code for the main menu state where I wanted to implement
 		// hold scrolling but I couldnt because I'm dumb and lazy
-		if (!lockedMovement)
-		{
-			// check for the current selection
-			if (curSelectedScript != null)
-				curSelectedScript();
+		// check for the current selection
+		if (curSelectedScript != null)
+			curSelectedScript();
 
-			updateSelections();
-		}
+		updateSelections();
 
 		if (Init.gameSettings.get(activeSubgroup.members[curSelection].text) != null)
 		{
@@ -516,21 +518,16 @@ class OptionsMenuState extends MusicBeatState
 					// checkmark basics lol
 					if (controls.ACCEPT || FlxG.mouse.justPressed)
 					{
-						playSound('confirmMenu');
+						playSound('scrollMenu');
 						lockedMovement = true;
-						FlxFlicker.flicker(activeSubgroup.members[curSelection], 0.5, 0.06 * 2, true, false, function(flick:FlxFlicker)
-						{
-							// LMAO THIS IS HUGE
-							Init.setSetting(activeSubgroup.members[curSelection].text, !Init.getSetting(activeSubgroup.members[curSelection].text));
-							updateCheckmark(currentAttachmentMap.get(activeSubgroup.members[curSelection]),
-								Init.getSetting(activeSubgroup.members[curSelection].text));
+						// LMAO THIS IS HUGE
+						Init.setSetting(activeSubgroup.members[curSelection].text, !Init.getSetting(activeSubgroup.members[curSelection].text));
+						updateCheckmark(currentAttachmentMap.get(activeSubgroup.members[curSelection]),
+							Init.getSetting(activeSubgroup.members[curSelection].text));
 
-							// save the setting
-							Init.saveSettings();
-
-							optionOnChange();
-							lockedMovement = false;
-						});
+						// save the setting
+						Init.saveSettings();
+						optionOnChange();
 					}
 				case Init.SettingTypes.Selector:
 					#if !html5
@@ -567,6 +564,14 @@ class OptionsMenuState extends MusicBeatState
 
 	function optionOnChange()
 	{
+		if (lockedMovement)
+		{
+			new FlxTimer().start(0.3, function(timer:FlxTimer)
+			{
+				lockedMovement = false;
+			}, 1);
+		}
+
 		switch (activeSubgroup.members[curSelection].text.toLowerCase())
 		{
 			case 'menu song':
@@ -671,43 +676,44 @@ class OptionsMenuState extends MusicBeatState
 	{
 		if (controls.ACCEPT || FlxG.mouse.justPressed)
 		{
-			playSound('confirmMenu');
+			playSound('scrollMenu');
 			lockedMovement = true;
-			FlxFlicker.flicker(activeSubgroup.members[curSelection], 0.5, 0.06 * 2, true, false, function(flick:FlxFlicker)
-			{
-				loadSubgroup(activeSubgroup.members[curSelection].text);
-			});
+			loadSubgroup(activeSubgroup.members[curSelection].text);
 		}
 	}
 
 	public function openDesktopControls()
 	{
-		doFlickerOption(function()
+		if (controls.ACCEPT || FlxG.mouse.justPressed)
 		{
+			playSound('scrollMenu');
 			openSubState(new states.substates.ControlsSubstate());
-		});
+		}
 	}
 
 	public function openMobileControls()
 	{
-		doFlickerOption(function()
+		if (controls.ACCEPT || FlxG.mouse.justPressed)
 		{
+			playSound('scrollMenu');
 			openSubState(new mobile.controls.MobileControlsSubState());
-		});
+		}
 	}
 
 	public function openJudgeState()
 	{
-		doFlickerOption(function()
+		if (controls.ACCEPT)
 		{
+			playSound('scrollMenu');
 			Main.switchState(this, new states.JudgementOffsetState());
-		});
+		}
 	}
 
 	public function exitMenu()
 	{
-		doFlickerOption(function()
+		if (controls.ACCEPT || FlxG.mouse.justPressed)
 		{
+			playSound('cancelMenu');
 			if (states.substates.PauseSubstate.toOptions)
 			{
 				Conductor.stopMusic();
@@ -717,20 +723,6 @@ class OptionsMenuState extends MusicBeatState
 			{
 				Main.switchState(this, new MainMenuState());
 			}
-		});
-	}
-
-	function doFlickerOption(onComplete:Void->Void = null)
-	{
-		if (controls.ACCEPT || FlxG.mouse.justPressed)
-		{
-			playSound('confirmMenu');
-			lockedMovement = true;
-			FlxFlicker.flicker(activeSubgroup.members[curSelection], 0.5, 0.06 * 2, true, false, function(flick:FlxFlicker)
-			{
-				onComplete();
-				lockedMovement = false;
-			});
 		}
 	}
 

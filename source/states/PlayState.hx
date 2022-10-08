@@ -59,6 +59,7 @@ class PlayState extends MusicBeatState
 	public static var curStage:String = '';
 	public static var SONG:LegacySong;
 	public static var isStoryMode:Bool = false;
+	public static var clearStored:Bool = true;
 	public static var storyWeek:Int = 0;
 	public static var storyPlaylist:Array<String> = [];
 	public static var storyDifficulty:Int = 2;
@@ -319,9 +320,6 @@ class PlayState extends MusicBeatState
 		Conductor.changeBPM(SONG.bpm);
 
 		GameOverSubstate.resetGameOver();
-
-		// set up a class for the stage type in here afterwards
-		curStage = "";
 
 		// call the song's stage if it exists
 		if (SONG.stage != null)
@@ -1990,11 +1988,19 @@ class PlayState extends MusicBeatState
 		// CoolUtil.difficulties = CoolUtil.baseDifficulties;
 
 		if (chartingMode)
+		{
+			// enable memory cleaning
+			clearStored = true;
 			Main.switchState(this, (lastEditor == 1 ? new ChartEditor() : new OriginalChartEditor()));
+		}
 		else if (!isStoryMode)
 		{
 			if ((!endSongEvent))
+			{
+				// enable memory cleaning
+				clearStored = true;
 				Main.switchState(this, new FreeplayMenuState());
+			}
 			else if (!skipCutscenes())
 				songEndCutscene();
 		}
@@ -2012,6 +2018,9 @@ class PlayState extends MusicBeatState
 			{
 				// play menu music
 				ForeverTools.resetMenuMusic();
+
+				// enable memory
+				clearStored = true;
 
 				// set up transitions
 				transIn = FlxTransitionableState.defaultTransIn;
@@ -2073,12 +2082,15 @@ class PlayState extends MusicBeatState
 
 			FlxTransitionableState.skipNextTransIn = true;
 			FlxTransitionableState.skipNextTransOut = true;
+			clearStored = false;
 
 			// deliberately did not use the main.switchstate as to not unload the assets
 			FlxG.switchState(new PlayState());
 		}
 		else
 		{
+			// enable memory cleaning
+			clearStored = true;
 			Main.switchState(this, new FreeplayMenuState());
 		}
 	}
@@ -2395,10 +2407,7 @@ class PlayState extends MusicBeatState
 		FlxG.stage.removeEventListener(KeyboardEvent.KEY_DOWN, onKeyPress);
 		FlxG.stage.removeEventListener(KeyboardEvent.KEY_UP, onKeyRelease);
 
-		/*
-			make sure we destroy character scripts before initializing new ones
-			mostly made for mods to work with them
-		 */
+		// make sure we destroy character scripts before initializing new ones
 		boyfriend.charScripts = [];
 		gf.charScripts = [];
 		dad.charScripts = [];

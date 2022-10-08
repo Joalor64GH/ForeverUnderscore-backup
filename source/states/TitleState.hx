@@ -1,7 +1,7 @@
 package states;
 
 import base.*;
-import base.MusicBeat.MusicBeatState;
+import base.MusicBeat;
 import dependency.Discord;
 import flixel.FlxG;
 import flixel.FlxSprite;
@@ -239,7 +239,7 @@ class TitleState extends MusicBeatState
 
 				gameLogo.setGraphicSize(Std.int(initLogowidth * 1.15));
 
-				new FlxTimer().start(2, function(tmr:FlxTimer)
+				new FlxTimer().start(1, function(tmr:FlxTimer)
 				{
 					if (ForeverTools.mustUpdate && !OutdatedState.leftState)
 						Main.switchState(this, new OutdatedState());

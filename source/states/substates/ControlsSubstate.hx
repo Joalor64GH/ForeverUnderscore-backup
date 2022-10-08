@@ -1,11 +1,10 @@
 package states.substates;
 
 import base.KeyFormatter;
-import base.MusicBeat.MusicBeatSubstate;
+import base.MusicBeat;
 import flixel.FlxBasic;
 import flixel.FlxG;
 import flixel.FlxSprite;
-import flixel.effects.FlxFlicker;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.input.keyboard.FlxKey;
 import flixel.text.FlxText;
@@ -22,6 +21,7 @@ class ControlsSubstate extends MusicBeatSubstate
 	var submenuoffsetGroup:FlxTypedGroup<FlxBasic>;
 
 	var offsetTemp:Float;
+	var lockAccept:Bool = true;
 
 	// the controls class thingy
 	override public function create():Void
@@ -39,6 +39,11 @@ class ControlsSubstate extends MusicBeatSubstate
 		add(bg);
 
 		Main.letterOffset = true;
+
+		new flixel.util.FlxTimer().start(0.5, function(timer:flixel.util.FlxTimer)
+		{
+			lockAccept = false;
+		}, 1);
 
 		super.create();
 
@@ -285,16 +290,13 @@ class ControlsSubstate extends MusicBeatSubstate
 
 			updateHorizontalSelection();
 
-			if (controls.ACCEPT || FlxG.mouse.justPressed)
+			if (controls.ACCEPT || FlxG.mouse.justPressed && !lockAccept)
 			{
 				FlxG.sound.play(Paths.sound('confirmMenu'));
 				submenuOpen = true;
 
-				FlxFlicker.flicker(otherKeys.members[(curSelection * 2) + curHorizontalSelection], 0.5, 0.06 * 2, true, false, function(flick:FlxFlicker)
-				{
-					if (submenuOpen)
-						openSubmenu();
-				});
+				if (submenuOpen)
+					openSubmenu();
 			}
 			else if (controls.BACK || FlxG.mouse.justPressedRight)
 				close();
@@ -366,7 +368,7 @@ class ControlsSubstate extends MusicBeatSubstate
 		}
 		else
 		{
-			if (controls.ACCEPT)
+			if (controls.ACCEPT || FlxG.mouse.justPressed && !lockAccept)
 			{
 				Init.trueSettings['Offset'] = offsetTemp;
 				closeSubmenu();
