@@ -81,7 +81,7 @@ class Overlay extends TextField
 		if (visible)
 		{
 			text = '' // set up the text itself
-				+ (displayFps ? times.length + ' FPS (${FlxMath.roundDecimal(_ms, 2)}ms)\n' : '') // Framerate and Framerate Milliseconds
+				+ (displayFps ? times.length + ' FPS\n' : '') /*(${FlxMath.roundDecimal(_ms, 2)}ms)\n' : '')*/ // Current Framerate
 				+ (displayMemory ? '${getInterval(mem)} / ${getInterval(memPeak)}\n' : '') // Current and Total Memory Usage
 				+ (displayExtra ? 'State Object Count: ${FlxG.state.members.length}\n' : ''); // Current Game State Object Count
 		}
