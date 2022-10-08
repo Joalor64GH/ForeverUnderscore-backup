@@ -513,8 +513,18 @@ class PlayState extends MusicBeatState
 
 		if (Init.getSetting('Centered Receptors'))
 		{
-			PlayState.strumLines.members[0].cameras = [PlayState.camGame];
-			PlayState.strumLines.members[0].allNotes.cameras = [PlayState.camGame];
+			// psych-like Opponent Strumlines;
+			for (i in 0...dadStrums.receptors.members.length)
+			{
+				if (i > 1)
+				{
+					dadStrums.receptors.members[i].x += FlxG.width / 2 + 25;
+				}
+
+				dadStrums.members[i].alpha = 0.35;
+				dadStrums.receptors.members[i].setAlpha = 0.35;
+				dadStrums.receptors.members[i].lightConfirms = false;
+			}
 		}
 
 		add(strumLines);
