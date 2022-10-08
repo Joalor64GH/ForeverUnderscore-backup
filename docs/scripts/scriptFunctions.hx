@@ -23,7 +23,7 @@ function postUpdate()
 	// after playstate's update function
 }
 
-function goodNoteHit(coolNote:Note, strumline:Character)
+function goodNoteHit(coolNote:Note, strumline:Strumline)
 {
 	// called when you hit a note on PlayState
 }
