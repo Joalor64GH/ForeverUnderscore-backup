@@ -58,7 +58,7 @@ class Note extends FNFSprite
 
 	public var healthGain:Float = 0.023;
 	public var healthLoss:Float = 0.0475;
-	public var noteHoldHeight:Float = 0.72;
+	public var holdHeight:Float = 0.72;
 
 	public var hitSounds:Bool = true;
 	public var canHurt:Bool = false;
@@ -161,9 +161,9 @@ class Note extends FNFSprite
 			{
 				if (prevNote.isSustainNote)
 				{
-					// listen I dont know what i was doing but I was onto something
-					// yoshubs this literally works properly -gabi
-					prevNote.scale.y = (prevNote.width / prevNote.frameWidth) * ((Conductor.stepCrochet / 100) * (1.07 / noteHoldHeight)) * noteSpeed;
+					// listen I dont know what i was doing but I was onto something (-yoshubs)
+					// yoshubs this literally works properly (-gabi)
+					prevNote.scale.y = (prevNote.width / prevNote.frameWidth) * ((Conductor.stepCrochet / 100) * (1.07 / holdHeight)) * noteSpeed;
 					prevNote.updateHitbox();
 					offsetX = prevNote.offsetX;
 				}
@@ -184,7 +184,7 @@ class Note extends FNFSprite
 	public static function returnDefaultNote(assetModifier, strumTime, noteData, noteAlt, ?isSustainNote:Bool = false, ?prevNote:Note, noteType:Int = 0):Note
 	{
 		var newNote:Note = new Note(strumTime, noteData, noteAlt, prevNote, isSustainNote, noteType);
-		newNote.noteHoldHeight = 0.72;
+		newNote.holdHeight = 0.72;
 
 		// frames originally go here
 		switch (assetModifier)
@@ -197,7 +197,7 @@ class Note extends FNFSprite
 						case 3:
 							newNote.kill();
 						default: // pixel holds default
-							reloadPrefixes('arrowEnds', 'noteskins/notes', true, assetModifier, newNote);
+							reloadPrefixes('arrowEnds', 'noteskins/notes', Init.getSetting("Note Skin"), assetModifier, newNote);
 					}
 				}
 				else
@@ -209,7 +209,7 @@ class Note extends FNFSprite
 							newNote.animation.add(Receptor.arrowCol[noteData] + 'Scroll', [0, 1, 2, 3, 4, 5, 6, 7], 12);
 
 						default: // pixel notes default
-							reloadPrefixes('arrows-pixels', 'noteskins/notes', true, assetModifier, newNote);
+							reloadPrefixes('arrows-pixels', 'noteskins/notes', Init.getSetting("Note Skin"), assetModifier, newNote);
 					}
 				}
 				newNote.antialiasing = false;
@@ -230,7 +230,7 @@ class Note extends FNFSprite
 						newNote.updateHitbox();
 						newNote.antialiasing = !Init.getSetting('Disable Antialiasing');
 					default: // anything else
-						reloadPrefixes("NOTE_assets", 'noteskins/notes', true, assetModifier, newNote);
+						reloadPrefixes("NOTE_assets", 'noteskins/notes', Init.getSetting("Note Skin"), assetModifier, newNote);
 				}
 		}
 		//
@@ -261,7 +261,7 @@ class Note extends FNFSprite
 			noteType:Int = 0):Note
 	{
 		var newNote:Note = new Note(strumTime, noteData, noteAlt, prevNote, isSustainNote, noteType);
-		newNote.noteHoldHeight = 0.86;
+		newNote.holdHeight = 0.92;
 
 		// actually determine the quant of the note
 		if (newNote.noteQuant == -1)
@@ -401,19 +401,11 @@ class Note extends FNFSprite
 		return newNote;
 	}
 
-	/**
-	 * [reloads default note prefixes, useful for notetypes that use those same animation prefixes and such]
-	 * @param texture [the texture we should use for your notes];
-	 * @param texturePath [the directory that the texture is located in];
-	 * @param changeable [whether the noteskin option should affect `this` note];
-	 * @param assetModifier [the note's current asset modifier, usually just grabs from `returnDefaultNote` rather than specifying one];
-	 * @param newNote [specifies the current note];
-	 */
-	static function reloadPrefixes(texture:String, texturePath:String, changeable:Bool = true, assetModifier:String, newNote:Note)
+	static function reloadPrefixes(texture:String, texturePath:String, changeable:String = '', assetModifier:String, newNote:Note)
 	{
 		if (assetModifier != 'pixel')
 		{
-			newNote.frames = Paths.getSparrowAtlas(ForeverTools.returnSkin(texture, assetModifier, (changeable ? Init.getSetting("Note Skin") : ''),
+			newNote.frames = Paths.getSparrowAtlas(ForeverTools.returnSkin(texture, assetModifier, changeable,
 				texturePath));
 
 			newNote.animation.addByPrefix(Receptor.arrowCol[newNote.noteData] + 'Scroll', Receptor.arrowCol[newNote.noteData] + '0');
@@ -430,14 +422,14 @@ class Note extends FNFSprite
 		{
 			if (newNote.isSustainNote)
 			{
-				newNote.loadGraphic(Paths.image(ForeverTools.returnSkin(texture, assetModifier, (changeable ? Init.getSetting("Note Skin") : ''),
+				newNote.loadGraphic(Paths.image(ForeverTools.returnSkin(texture, assetModifier, changeable,
 					texturePath)), true, 7, 6);
 				newNote.animation.add(Receptor.arrowCol[newNote.noteData] + 'holdend', [pixelNoteID[newNote.noteData]]);
 				newNote.animation.add(Receptor.arrowCol[newNote.noteData] + 'hold', [pixelNoteID[newNote.noteData] - 4]);
 			}
 			else
 			{
-				newNote.loadGraphic(Paths.image(ForeverTools.returnSkin(texture, assetModifier, (changeable ? Init.getSetting("Note Skin") : ''),
+				newNote.loadGraphic(Paths.image(ForeverTools.returnSkin(texture, assetModifier, changeable,
 					texturePath)), true, 17, 17);
 				newNote.animation.add(Receptor.arrowCol[newNote.noteData] + 'Scroll', [pixelNoteID[newNote.noteData]], 12);
 			}
