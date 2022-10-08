@@ -201,6 +201,12 @@ class Init extends FlxState
 			"Whether the Score Bar should have an Animation for Hitting, based on your current ranking.",
 			NOT_FORCED
 		],
+		'Hide HUD' => [
+			false,
+			Checkmark,
+			"Whether the Game HUD should be hidden during gameplay.",
+			NOT_FORCED
+		],
 		"Game Language" => ['english', Selector, 'Choose a language for the Main UI.', NOT_FORCED, ''],
 		'Counter' => [
 			'None',

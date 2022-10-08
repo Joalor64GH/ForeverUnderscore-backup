@@ -26,9 +26,6 @@ class Main extends Sprite
 {
 	public static var defaultFramerate = 120;
 
-	// transition image, enabled when transitioning to a song (currently disabled by default);
-	public static var isSongTrans:Bool;
-
 	public static final initialState:Class<FlxState> = TitleState; // specify the state where the game should start at;
 
 	public static final foreverVersion:String = '0.3.1'; // current forever engine version;
@@ -91,7 +88,6 @@ class Main extends Sprite
 			curState.openSubState(new FNFTransition(0.35, false));
 			FNFTransition.finishCallback = function()
 			{
-				isSongTrans = false;
 				FlxG.switchState(target);
 			};
 			return #if DEBUG_TRACES trace('changed state') #end;

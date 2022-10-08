@@ -245,7 +245,8 @@ class PlayState extends MusicBeatState
 	private function precacheImages()
 	{
 		Paths.image('UI/default/base/alphabet');
-		// Paths.getSparrowAtlas(GameOverSubstate.character, 'characters/' + GameOverSubstate.character);
+		if (!boyfriend.psychChar)
+			Paths.getSparrowAtlas(GameOverSubstate.character, 'characters/' + GameOverSubstate.character);
 	}
 
 	/**
@@ -523,6 +524,7 @@ class PlayState extends MusicBeatState
 
 		uiHUD = new ClassHUD();
 		add(uiHUD);
+		uiHUD.visible = !Init.getSetting('Hide HUD');
 		uiHUD.cameras = [camHUD];
 
 		ratingsGroup = new FlxTypedGroup<FNFSprite>();

@@ -66,6 +66,7 @@ class Character extends FNFSprite
 	public var specialAnim:Bool = false;
 	public var singDuration:Float = 4; // Multiplier of how long a character holds the sing pose
 	public var heyTimer:Float = 0;
+	public var psychChar:Bool = false;
 
 	public function new(?x:Float = 0, ?y:Float = 0, ?isPlayer:Bool = false, ?character:String = 'bf')
 	{
@@ -82,7 +83,7 @@ class Character extends FNFSprite
 		if (icon == null)
 			icon = character;
 
-		var psychChar = ForeverTools.fileExists('characters/$character/' + character + '.json', TEXT);
+		psychChar = ForeverTools.fileExists('characters/$character/' + character + '.json', TEXT);
 
 		switch (character)
 		{

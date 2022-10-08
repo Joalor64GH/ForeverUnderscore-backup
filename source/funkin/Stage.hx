@@ -85,31 +85,8 @@ class Stage extends FlxTypedGroup<FlxBasic>
 		if (!stageDebug)
 		{
 			if (curStage == null || curStage.length < 1)
-			{
-				switch (CoolUtil.spaceToDash(PlayState.SONG.song.toLowerCase()))
-				{
-					case 'bopeebo' | 'fresh' | 'dadbattle' | 'dad-battle':
-						curStage = 'stage';
-					case 'spookeez' | 'south' | 'monster':
-						curStage = 'spooky';
-					case 'pico' | 'philly-nice' | 'philly' | 'blammed':
-						curStage = 'philly';
-					case 'satin-panties' | 'high' | 'milf':
-						curStage = 'highway';
-					case 'cocoa' | 'eggnog':
-						curStage = 'mall';
-					case 'winter-horrorland':
-						curStage = 'mallEvil';
-					case 'senpai' | 'roses':
-						curStage = 'school';
-					case 'thorns':
-						curStage = 'schoolEvil';
-					case 'ugh' | 'guns' | 'stress':
-						curStage = 'military';
-					default:
-						curStage = 'unknown';
-				}
-			}
+				curStage = 'unknown';
+
 			PlayState.curStage = PlayState.SONG.stage;
 		}
 
@@ -125,7 +102,14 @@ class Stage extends FlxTypedGroup<FlxBasic>
 				PlayState.defaultCamZoom = 0.9;
 		}
 
-		callStageScript();
+		try
+		{
+			callStageScript();
+		}
+		catch (e)
+		{
+			lime.app.Application.current.window.alert('$e in Stage Script', "Stage Error!");
+		}
 	}
 
 	// return the girlfriend's type

@@ -23,7 +23,7 @@ echo Press any key to install necessary libraries.
 pause >nul
 title FNF Setup - Installing Git libraries
 haxelib git discord_rpc https://github.com/Aidan63/linc_discord-rpc
-haxelib git SScript https://github.com/TheWorldMachinima/SScript
+haxelib git SScript https://github.com/BeastlyGhost/Forever-SScript
 cls
 goto CommunitySetup
 
