@@ -405,8 +405,7 @@ class Note extends FNFSprite
 	{
 		if (assetModifier != 'pixel')
 		{
-			newNote.frames = Paths.getSparrowAtlas(ForeverTools.returnSkin(texture, assetModifier, changeable,
-				texturePath));
+			newNote.frames = Paths.getSparrowAtlas(ForeverTools.returnSkin(texture, assetModifier, changeable, texturePath));
 
 			newNote.animation.addByPrefix(Receptor.arrowCol[newNote.noteData] + 'Scroll', Receptor.arrowCol[newNote.noteData] + '0');
 			newNote.animation.addByPrefix(Receptor.arrowCol[newNote.noteData] + 'holdend', Receptor.arrowCol[newNote.noteData] + ' hold end');
@@ -422,15 +421,13 @@ class Note extends FNFSprite
 		{
 			if (newNote.isSustainNote)
 			{
-				newNote.loadGraphic(Paths.image(ForeverTools.returnSkin(texture, assetModifier, changeable,
-					texturePath)), true, 7, 6);
+				newNote.loadGraphic(Paths.image(ForeverTools.returnSkin(texture, assetModifier, changeable, texturePath)), true, 7, 6);
 				newNote.animation.add(Receptor.arrowCol[newNote.noteData] + 'holdend', [pixelNoteID[newNote.noteData]]);
 				newNote.animation.add(Receptor.arrowCol[newNote.noteData] + 'hold', [pixelNoteID[newNote.noteData] - 4]);
 			}
 			else
 			{
-				newNote.loadGraphic(Paths.image(ForeverTools.returnSkin(texture, assetModifier, changeable,
-					texturePath)), true, 17, 17);
+				newNote.loadGraphic(Paths.image(ForeverTools.returnSkin(texture, assetModifier, changeable, texturePath)), true, 17, 17);
 				newNote.animation.add(Receptor.arrowCol[newNote.noteData] + 'Scroll', [pixelNoteID[newNote.noteData]], 12);
 			}
 		}
