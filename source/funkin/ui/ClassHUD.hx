@@ -46,7 +46,7 @@ class ClassHUD extends FlxTypedGroup<FlxBasic>
 	private var language = ForeverLocales.curLang;
 
 	private var bfBar = FlxColor.fromRGB(PlayState.boyfriend.barColor[0], PlayState.boyfriend.barColor[1], PlayState.boyfriend.barColor[2]);
-	private var dadBar = FlxColor.fromRGB(PlayState.dadOpponent.barColor[0], PlayState.dadOpponent.barColor[1], PlayState.dadOpponent.barColor[2]);
+	private var dadBar = FlxColor.fromRGB(PlayState.dad.barColor[0], PlayState.dad.barColor[1], PlayState.dad.barColor[2]);
 
 	public function new()
 	{
@@ -79,7 +79,7 @@ class ClassHUD extends FlxTypedGroup<FlxBasic>
 		iconP1.y = healthBar.y - (iconP1.height / 2);
 		add(iconP1);
 
-		iconP2 = new HealthIcon(PlayState.dadOpponent.icon, false);
+		iconP2 = new HealthIcon(PlayState.dad.icon, false);
 		iconP2.y = healthBar.y - (iconP2.height / 2);
 		add(iconP2);
 
