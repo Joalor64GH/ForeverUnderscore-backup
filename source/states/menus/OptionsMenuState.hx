@@ -685,10 +685,7 @@ class OptionsMenuState extends MusicBeatState
 	public function openDesktopControls()
 	{
 		if (controls.ACCEPT || FlxG.mouse.justPressed)
-		{
-			playSound('scrollMenu');
 			openSubState(new states.substates.ControlsSubstate());
-		}
 	}
 
 	public function openMobileControls()

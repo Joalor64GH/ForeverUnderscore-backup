@@ -5,6 +5,7 @@ import base.MusicBeat;
 import flixel.FlxBasic;
 import flixel.FlxG;
 import flixel.FlxSprite;
+import flixel.util.FlxTimer;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.input.keyboard.FlxKey;
 import flixel.text.FlxText;
@@ -40,7 +41,7 @@ class ControlsSubstate extends MusicBeatSubstate
 
 		Main.letterOffset = true;
 
-		new flixel.util.FlxTimer().start(0.5, function(timer:flixel.util.FlxTimer)
+		new FlxTimer().start(0.6, function(timer:FlxTimer)
 		{
 			lockAccept = false;
 		}, 1);
@@ -290,13 +291,15 @@ class ControlsSubstate extends MusicBeatSubstate
 
 			updateHorizontalSelection();
 
-			if (controls.ACCEPT || FlxG.mouse.justPressed && !lockAccept)
+			if (controls.ACCEPT || FlxG.mouse.justPressed)
 			{
-				FlxG.sound.play(Paths.sound('confirmMenu'));
-				submenuOpen = true;
-
-				if (submenuOpen)
-					openSubmenu();
+				if (!lockAccept)
+				{
+					submenuOpen = true;
+	
+					if (submenuOpen)
+						openSubmenu();
+				}
 			}
 			else if (controls.BACK || FlxG.mouse.justPressedRight)
 				close();
@@ -344,10 +347,12 @@ class ControlsSubstate extends MusicBeatSubstate
 			// be able to close the submenu
 			if (FlxG.keys.justPressed.ESCAPE)
 				closeSubmenu();
-			else if (FlxG.keys.justPressed.ANY && !FlxG.keys.justPressed.ENTER && !FlxG.keys.justPressed.PRINTSCREEN)
+			else if (FlxG.keys.justPressed.ANY && !FlxG.keys.justPressed.PRINTSCREEN)
 			{
 				// loop through existing keys and see if there are any alike
 				var checkKey = FlxG.keys.getIsDown()[0].ID;
+
+				FlxG.sound.play(Paths.sound('scrollMenu'));
 
 				// now check if its the key we want to change
 				Init.gameControls.get(keyOptions.members[curSelection].text)[0][curHorizontalSelection] = checkKey;
