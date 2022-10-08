@@ -655,7 +655,7 @@ class PlayState extends MusicBeatState
 				&& (FlxG.keys.enabled && !paused && (FlxG.state.active || FlxG.state.persistentUpdate)))
 			{
 				holdingKeys[key] = true;
-	
+
 				if (generatedMusic)
 				{
 					var previousTime:Float = Conductor.songPosition;
@@ -663,14 +663,14 @@ class PlayState extends MusicBeatState
 					// improved this a little bit, maybe its a lil
 					var possibleNoteList:Array<Note> = [];
 					var pressedNotes:Array<Note> = [];
-	
+
 					strumline.allNotes.forEachAlive(function(daNote:Note)
 					{
 						if ((daNote.noteData == key) && daNote.canBeHit && !daNote.isSustainNote && !daNote.tooLate && !daNote.wasGoodHit)
 							possibleNoteList.push(daNote);
 					});
 					possibleNoteList.sort(sortHitNotes);
-	
+
 					// if there is a list of notes that exists for that control
 					if (possibleNoteList.length > 0)
 					{
@@ -686,9 +686,9 @@ class PlayState extends MusicBeatState
 								else
 									eligable = false;
 							}
-	
+
 							var gfSec = (SONG.notes[Math.floor(curStep / 16)] != null) && (SONG.notes[Math.floor(curStep / 16)].gfSection);
-	
+
 							if (eligable)
 							{
 								goodNoteHit(coolNote, (coolNote.gfNote || gfSec ? gf : strumline.character), strumline); // then hit the note
@@ -708,10 +708,10 @@ class PlayState extends MusicBeatState
 								missNoteCheck(true, key, boyfriend, true);
 						}
 					}
-	
+
 					Conductor.songPosition = previousTime;
 				}
-	
+
 				if (strumline.receptors.members[key] != null && strumline.receptors.members[key].animation.curAnim.name != 'confirm')
 					strumline.receptors.members[key].playAnim('pressed', true);
 			}
@@ -731,7 +731,7 @@ class PlayState extends MusicBeatState
 			if (key >= 0 && !strumline.autoplay && (FlxG.keys.enabled && !paused && (FlxG.state.active || FlxG.state.persistentUpdate)))
 			{
 				holdingKeys[key] = false;
-	
+
 				// receptor reset
 				if (key >= 0 && strumline.receptors.members[key] != null)
 					strumline.receptors.members[key].playAnim('static');
@@ -1195,7 +1195,8 @@ class PlayState extends MusicBeatState
 
 								callFunc('noteMiss', [strumNote]);
 
-								missNoteCheck((Init.getSetting('Ghost Tapping') && !startingSong) ? true : false, strumNote.noteData, strumline.character, true);
+								missNoteCheck((Init.getSetting('Ghost Tapping') && !startingSong) ? true : false, strumNote.noteData, strumline.character,
+									true);
 								// ambiguous name
 								if (strumNote.updateAccuracy)
 									Timings.updateAccuracy(0);
@@ -1210,8 +1211,8 @@ class PlayState extends MusicBeatState
 										var breakFromLate:Bool = false;
 										if (!breakFromLate)
 										{
-											missNoteCheck((Init.getSetting('Ghost Tapping') && !startingSong) ? true : false, strumNote.noteData, strumline.character,
-												true);
+											missNoteCheck((Init.getSetting('Ghost Tapping') && !startingSong) ? true : false, strumNote.noteData,
+												strumline.character, true);
 											for (note in parentNote.childrenNotes)
 												note.tooLate = true;
 										}
@@ -1338,10 +1339,10 @@ class PlayState extends MusicBeatState
 					{
 						increaseCombo(foundRating, coolNote.noteData, character);
 						popUpScore(foundRating, coolNote.strumTime < Conductor.songPosition, Timings.perfectSicks, strumline, coolNote);
-	
+
 						if (coolNote.childrenNotes.length > 0)
 							Timings.notesHit++;
-	
+
 						healthCall(Timings.judgementsMap.get(foundRating)[3]);
 					}
 					else
@@ -1353,7 +1354,7 @@ class PlayState extends MusicBeatState
 								Timings.updateAccuracy(100, true, coolNote.parentNote.childrenNotes.length);
 							healthCall(100 / coolNote.parentNote.childrenNotes.length);
 						}
-	
+
 						hits++;
 					}
 				}
@@ -1566,7 +1567,12 @@ class PlayState extends MusicBeatState
 
 	override public function onFocusLost():Void
 	{
-		if (canPause && !paused && !inCutscene && !getControlledStrum().autoplay && !Init.getSetting('Auto Pause') && startedCountdown)
+		if (canPause
+			&& !paused
+			&& !inCutscene
+			&& !getControlledStrum().autoplay
+			&& !Init.getSetting('Auto Pause')
+			&& startedCountdown)
 		{
 			pauseGame();
 			// open pause substate
