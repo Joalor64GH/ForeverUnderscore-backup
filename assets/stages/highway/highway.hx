@@ -5,12 +5,14 @@ function generateStage()
 {
 	curStage = 'highway';
 
-	var skyBG:FNFSprite = new FNFSprite(-120, -50).loadGraphic(Paths.image('limoSunset', 'stages/' + curStage + '/images'));
+	var stageDir:String = 'stages/' + curStage + '/images';
+
+	var skyBG:FNFSprite = new FNFSprite(-120, -50).loadGraphic(Paths.image('limoSunset', stageDir));
 	skyBG.scrollFactor.set(0.1, 0.1);
 	add(skyBG);
 
 	var bgLimo:FNFSprite = new FNFSprite(-200, 480);
-	bgLimo.frames = Paths.getSparrowAtlas('bgLimo', 'stages/' + curStage + '/images');
+	bgLimo.frames = Paths.getSparrowAtlas('bgLimo', stageDir);
 	bgLimo.animation.addByPrefix('drive', "background limo pink", 24);
 	bgLimo.animation.play('drive');
 	bgLimo.scrollFactor.set(0.4, 0.4);
@@ -26,7 +28,7 @@ function generateStage()
 		grpLimoDancers.add(dancer);
 	}
 
-	var limoTex = Paths.getSparrowAtlas('limoDrive', 'stages/' + curStage + '/images');
+	var limoTex = Paths.getSparrowAtlas('limoDrive', stageDir);
 
 	limo = new FNFSprite(-120, 550);
 	limo.frames = limoTex;
@@ -35,7 +37,7 @@ function generateStage()
 	limo.antialiasing = !Init.getSetting('Disable Antialiasing');
 	layers.add(limo);
 
-	fastCar = new FNFSprite(-300, 160).loadGraphic(Paths.image('fastCarLol', 'stages/' + curStage + '/images'));
+	fastCar = new FNFSprite(-300, 160).loadGraphic(Paths.image('fastCarLol', stageDir));
 }
 
 function updateStage(curBeat:Int, boyfriend:Character, gf:Character, dadOpponent:Character)

@@ -4,7 +4,9 @@ function generateStage()
 {
 	curStage = 'spooky';
 
-	var hallowTex = Paths.getSparrowAtlas('halloween_bg', 'stages/' + curStage + '/images');
+	var stageDir:String = 'stages/' + curStage + '/images';
+
+	var hallowTex = Paths.getSparrowAtlas('halloween_bg', stageDir);
 	halloweenBG = new FNFSprite(-200, -100);
 	halloweenBG.frames = hallowTex;
 	halloweenBG.animation.addByPrefix('idle', 'halloweem bg0');
