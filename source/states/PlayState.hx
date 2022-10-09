@@ -1070,16 +1070,6 @@ class PlayState extends MusicBeatState
 		{
 			for (strumline in strumLines)
 			{
-				// reset the character's animation
-				if (strumline.character != null
-					&& strumline.character.animation.curAnim != null
-					&& (strumline.character.holdTimer > Conductor.stepCrochet * (0.0011 / FlxG.sound.music.pitch) * strumline.character.singDuration)
-					&& (!holdingKeys.contains(true) || strumline.autoplay))
-				{
-					if (strumline.character.animation.curAnim.name.startsWith('sing') && !strumline.character.animation.curAnim.name.endsWith('miss'))
-						strumline.character.dance();
-				}
-
 				strumline.allNotes.forEachAlive(function(strumNote:Note)
 				{
 					// set custom note speeds and stuff;
@@ -1230,6 +1220,15 @@ class PlayState extends MusicBeatState
 				// unoptimised asf camera control based on strums
 				strumCameraRoll(strumline.receptors, (strumline == bfStrums));
 			}
+		}
+
+		// reset boyfriend's animation
+		if ((boyfriend != null && boyfriend.animation != null)
+			&& (boyfriend.holdTimer > Conductor.stepCrochet * (0.0011 / FlxG.sound.music.pitch) * boyfriend.singDuration)
+			&& (!holdingKeys.contains(true) || bfStrums.autoplay))
+		{
+			if (boyfriend.animation.curAnim.name.startsWith('sing') && !boyfriend.animation.curAnim.name.endsWith('miss'))
+				boyfriend.dance();
 		}
 	}
 
@@ -1443,7 +1442,7 @@ class PlayState extends MusicBeatState
 			}
 		}
 
-		if (!strumline.autoplay && startedCountdown && !strumline.character.stunned)
+		if (!strumline.autoplay)
 		{
 			// check for hold notes
 			strumline.holdsGroup.forEachAlive(function(coolNote:Note)
@@ -1808,7 +1807,7 @@ class PlayState extends MusicBeatState
 		if (!practiceMode && health <= 0 && !isDead)
 		{
 			paused = true;
-			// startTimer.active = false;
+			boyfriend.stunned = true;
 			persistentUpdate = false;
 			persistentDraw = false;
 

@@ -53,9 +53,9 @@ final class ModManager
 					modFile = base.CoolUtil.swapSpaceDash(modFile);
 				return modFile;
 			}
-			catch(e)
+			catch (e)
 			{
-				//trace('$modFile is null, trying method 2');
+				// trace('$modFile is null, trying method 2');
 				try
 				{
 					if (OpenFlAssets.exists(modFile, type))
@@ -63,12 +63,12 @@ final class ModManager
 				}
 				catch (e)
 				{
-					//trace('$file is null');
+					// trace('$file is null');
 					return null;
 				}
 			}
 		}
-		//trace('$file is null');
+		// trace('$file is null');
 		return null;
 	}
 }

@@ -95,16 +95,16 @@ class CoolUtil
 
 		// mods, will change this later
 		/*
-		var modRoot = ModManager.getModFile('$subDir/$library');
-		var unfilteredMod = FileSystem.readDirectory(modRoot);
+			var modRoot = ModManager.getModFile('$subDir/$library');
+			var unfilteredMod = FileSystem.readDirectory(modRoot);
 
-		if (FileSystem.exists(modRoot))
-		{
-			for (folder in unfilteredMod)
-				if (!folder.contains('.'))
-					libraryArray.push(folder);
-		}
-		*/
+			if (FileSystem.exists(modRoot))
+			{
+				for (folder in unfilteredMod)
+					if (!folder.contains('.'))
+						libraryArray.push(folder);
+			}
+		 */
 
 		#if DEBUG_TRACES trace(libraryArray); #end
 
@@ -158,7 +158,7 @@ class CoolUtil
 			file = '$file/';
 
 		var path:String = Paths.getPath(file);
-		//if (!ForeverTools.fileExists(file))
+		// if (!ForeverTools.fileExists(file))
 		//	path = ModManager.getModFile(file);
 
 		var absolutePath:String = FileSystem.absolutePath(path);

@@ -56,7 +56,7 @@ class Character extends FNFSprite
 
 	public var idleSuffix:String = '';
 
-	public var stunned:Bool = false;
+	public var stunned:Bool = false; // whether the Character is dead or not
 
 	public var bopSpeed:Int = 2;
 

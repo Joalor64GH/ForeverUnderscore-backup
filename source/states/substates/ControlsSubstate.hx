@@ -296,7 +296,7 @@ class ControlsSubstate extends MusicBeatSubstate
 				if (!lockAccept)
 				{
 					submenuOpen = true;
-	
+
 					if (submenuOpen)
 						openSubmenu();
 				}

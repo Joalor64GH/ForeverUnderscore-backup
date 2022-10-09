@@ -298,9 +298,9 @@ final class Paths
 		var songPath:String = 'songs/${song.toLowerCase()}/${secondSong.toLowerCase()}.json';
 
 		/*
-		if (FileSystem.exists(ModManager.getModFile(songPath, TEXT)))
-			return ModManager.getModFile(songPath, TEXT);
-		*/
+			if (FileSystem.exists(ModManager.getModFile(songPath, TEXT)))
+				return ModManager.getModFile(songPath, TEXT);
+		 */
 
 		return getPath(songPath, TEXT, library);
 	}
