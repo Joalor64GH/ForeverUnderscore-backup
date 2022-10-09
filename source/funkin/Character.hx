@@ -134,6 +134,13 @@ class Character extends FNFSprite
 				playAnim("shoot1");
 		}
 
+		setPosition(x, y);
+		if (adjustPos)
+		{
+			this.x += charOffsets[0];
+			this.y += (charOffsets[1] - (frameHeight * scale.y));
+		}
+
 		return this;
 	}
 
@@ -479,13 +486,6 @@ class Character extends FNFSprite
 
 		for (i in charScripts)
 			i.call('loadAnimations', []);
-
-		if (adjustPos)
-		{
-			x += charOffsets[0];
-			#if DEBUG_TRACES trace('character ${curCharacter} scale ${scale.y}'); #end
-			y += (charOffsets[1] - (frameHeight * scale.y));
-		}
 
 		if (isPlayer) // fuck you ninjamuffin lmao
 		{
