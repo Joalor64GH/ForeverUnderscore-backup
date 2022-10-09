@@ -261,7 +261,7 @@ class Note extends FNFSprite
 			noteType:Int = 0):Note
 	{
 		var newNote:Note = new Note(strumTime, noteData, noteAlt, prevNote, isSustainNote, noteType);
-		newNote.holdHeight = 0.92;
+		newNote.holdHeight = 0.87;
 
 		// actually determine the quant of the note
 		if (newNote.noteQuant == -1)
@@ -360,7 +360,7 @@ class Note extends FNFSprite
 					}
 				}
 
-				var sizeThing = 0.75;
+				var sizeThing = 0.7;
 				if (noteType == 5)
 					sizeThing = 0.8;
 

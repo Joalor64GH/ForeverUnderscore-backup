@@ -27,7 +27,7 @@ class ChartParser
 		{
 			for (songNotes in section.sectionNotes)
 			{
-				var daStrumTime:Float = songNotes[0]#if !neko - Init.trueSettings['Offset'] #end - songData.offset; // - | late, + | early
+				var daStrumTime:Float = songNotes[0] - songData.offset #if !neko - Init.trueSettings['Offset'] #end; // - | late, + | early
 				var daNoteData:Int = Std.int(songNotes[1] % 4);
 				var daNoteAlt:Float = 0;
 				var daNoteType:Int = 0; // define the note's type
@@ -83,5 +83,12 @@ class ChartParser
 		});
 
 		return unspawnNotes;
+	}
+
+	public static function loadChartEvents(songData:LegacySong):Array<Note>
+	{
+		// placeholder;
+		var unspawnedEvents:Array<Note> = [];
+		return unspawnedEvents;
 	}
 }

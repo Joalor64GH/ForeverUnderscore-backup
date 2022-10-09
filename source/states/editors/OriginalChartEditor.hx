@@ -5,9 +5,7 @@ import base.*;
 import base.Conductor.BPMChangeEvent;
 import base.CoolUtil;
 import base.MusicBeat.MusicBeatState;
-import base.SongLoader.LegacySection;
-import base.SongLoader.LegacySong;
-import base.SongLoader.Song;
+import base.SongLoader;
 import dependency.AbsoluteText.EventText;
 import dependency.Discord;
 import flixel.FlxG;
@@ -129,6 +127,7 @@ class OriginalChartEditor extends MusicBeatState
 	var gridBG:FlxSprite;
 
 	var _song:LegacySong;
+	var _meta:SongInfo;
 
 	var typingShit:FlxInputText;
 	/*
@@ -226,6 +225,7 @@ class OriginalChartEditor extends MusicBeatState
 
 	var sliderRate:FlxUISlider;
 	var stepperSpeed:FlxUINumericStepper;
+	var stepperOffset:FlxUINumericStepper;
 	var stepperBPM:FlxUINumericStepper;
 
 	function addSongUI():Void
@@ -243,7 +243,7 @@ class OriginalChartEditor extends MusicBeatState
 			#if DEBUG_TRACES trace('CHECKED!'); #end
 		};
 
-		var check_mute_inst = new FlxUICheckBox(10, 335, null, null, "Mute Instrumental (in editor)", 100);
+		var check_mute_inst = new FlxUICheckBox(10, 340, null, null, "Mute Instrumental (in editor)", 100);
 		check_mute_inst.checked = false;
 		check_mute_inst.callback = function()
 		{
@@ -255,7 +255,7 @@ class OriginalChartEditor extends MusicBeatState
 			songMusic.volume = vol;
 		};
 
-		var check_mute_vocals = new FlxUICheckBox(check_mute_inst.x + 120, check_mute_inst.y, null, null, "Mute Vocals (in editor)", 100);
+		var check_mute_vocals = new FlxUICheckBox(check_mute_inst.x + 120, check_mute_inst.y - 4, null, null, "Mute Vocals (in editor)", 100);
 		check_mute_vocals.checked = false;
 		check_mute_vocals.callback = function()
 		{
@@ -285,22 +285,27 @@ class OriginalChartEditor extends MusicBeatState
 		var reloadSongJson:FlxButton = new FlxButton(reloadSong.x, saveButton.y + 30, "Reload JSON", function()
 		{
 			pauseMusic();
-			loadJson(_song.song.toLowerCase());
+			loadAutosaveData(_song.song.toLowerCase());
 		});
 
 		var loadAutosaveBtn:FlxButton = new FlxButton(reloadSongJson.x, reloadSongJson.y + 30, 'load autosave', loadAutosave);
 
-		stepperSpeed = new FlxUINumericStepper(10, 80, 0.1, 1, 0.1, 10, 1);
+		stepperSpeed = new FlxUINumericStepper(10, 125, 0.1, 1, 0.1, 10, 1);
 		stepperSpeed.value = _song.speed;
 		stepperSpeed.name = 'song_speed';
 		blockPressWhileTypingOnStepper.push(stepperSpeed);
 
-		stepperBPM = new FlxUINumericStepper(10, 65, 1, 1, 1, 350, 0);
+		stepperBPM = new FlxUINumericStepper(10, 95, 1, 1, 1, 350, 0);
 		stepperBPM.value = Conductor.bpm;
 		stepperBPM.name = 'song_bpm';
 		blockPressWhileTypingOnStepper.push(stepperBPM);
 
-		sliderRate = new FlxUISlider(this, 'playbackSpeed', 50, 250, 0.5, 3, 150, null, 5, FlxColor.WHITE, FlxColor.BLACK);
+		stepperOffset = new FlxUINumericStepper(10, 65, 1, 0, -999, 999, 1);
+		stepperOffset.value = 0;
+		stepperOffset.name = 'song_offset';
+		blockPressWhileTypingOnStepper.push(stepperOffset);
+
+		sliderRate = new FlxUISlider(this, 'playbackSpeed', 50, 280, 0.5, 3, 150, null, 5, FlxColor.WHITE, FlxColor.BLACK);
 
 		var baseChars:Array<String> = CoolUtil.returnAssetsLibrary('characters', '');
 		var baseStages:Array<String> = CoolUtil.returnAssetsLibrary('stages', '');
@@ -392,6 +397,7 @@ class OriginalChartEditor extends MusicBeatState
 		tab_group_song.add(loadAutosaveBtn);
 		tab_group_song.add(stepperBPM);
 		tab_group_song.add(stepperSpeed);
+		tab_group_song.add(stepperOffset);
 		tab_group_song.add(sliderRate);
 		tab_group_song.add(new FlxText(player1DropDown.x, player1DropDown.y - 15, 0, 'Player:'));
 		tab_group_song.add(new FlxText(gfVersionDropDown.x, gfVersionDropDown.y - 15, 0, 'Girlfriend:'));
@@ -399,6 +405,9 @@ class OriginalChartEditor extends MusicBeatState
 		tab_group_song.add(new FlxText(stageDropDown.x, stageDropDown.y - 15, 0, 'Stage:'));
 		tab_group_song.add(new FlxText(difficultyDropDown.x, difficultyDropDown.y - 15, 0, 'Difficulty:'));
 		tab_group_song.add(new FlxText(assetModifierDropDown.x, assetModifierDropDown.y - 15, 0, 'Asset Modifier:'));
+		tab_group_song.add(new FlxText(stepperBPM.x, stepperBPM.y - 15, 0, 'Song BPM:'));
+		tab_group_song.add(new FlxText(stepperSpeed.x, stepperSpeed.y - 15, 0, 'Song Speed:'));
+		tab_group_song.add(new FlxText(stepperOffset.x, stepperOffset.y - 15, 0, 'Song Offset:'));
 		tab_group_song.add(player2DropDown);
 		tab_group_song.add(gfVersionDropDown);
 		tab_group_song.add(player1DropDown);
@@ -678,6 +687,8 @@ class OriginalChartEditor extends MusicBeatState
 					tempBpm = Std.int(nums.value);
 					Conductor.mapBPMChanges(_song);
 					Conductor.changeBPM(Std.int(nums.value));
+				case 'song_offset':
+					_song.offset = nums.value;
 				case 'note_susLength': // STOP POSTING ABOUT AMONG US
 					curSelectedNote[2] = nums.value; // change the currently selected note's length
 					updateGrid(); // oh btw I know sus stands for sustain it just bothers me
@@ -1480,7 +1491,7 @@ class OriginalChartEditor extends MusicBeatState
 		return val != null ? val : 4;
 	}
 
-	function loadJson(song:String):Void
+	function loadAutosaveData(song:String):Void
 	{
 		try
 		{

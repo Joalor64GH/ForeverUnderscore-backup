@@ -27,7 +27,7 @@ typedef LegacySong =
 	var author:String;
 	var assetModifier:String;
 	var validScore:Bool;
-	var ?offset:Int;
+	var ?offset:Float;
 	var ?color:Array<Int>;
 }
 
@@ -47,7 +47,7 @@ typedef SongInfo =
 {
 	var author:String;
 	var assetModifier:String;
-	var ?offset:Int;
+	var ?offset:Float;
 	var ?color:Array<Int>;
 }
 
