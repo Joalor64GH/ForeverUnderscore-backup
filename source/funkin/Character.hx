@@ -206,27 +206,25 @@ class Character extends FNFSprite
 						playAnim(animation.curAnim.name, false, false, animation.curAnim.frames.length - 3);
 			}
 
-			if (!isPlayer)
+			if (!skipDance && !specialAnim && !debugMode)
 			{
-				if (animation.curAnim.name.startsWith('sing'))
+				if (!isPlayer)
 				{
-					holdTimer += elapsed;
-				}
-
-				if (holdTimer >= Conductor.stepCrochet * (0.0011 / (FlxG.sound.music != null ? FlxG.sound.music.pitch : 1)) * singDuration)
-				{
-					dance();
-					holdTimer = 0;
-				}
-			}
-			else if (isPlayer && !skipDance && !specialAnim && !debugMode)
-			{
-				if (animation.curAnim.name.startsWith('sing'))
-				{
-					holdTimer += elapsed;
+					if (animation.curAnim.name.startsWith('sing'))
+						holdTimer += elapsed;
+					if (holdTimer >= (Conductor.stepCrochet * 4) / 1000 / (FlxG.sound.music != null ? FlxG.sound.music.pitch : 1) * singDuration)
+					{
+						dance();
+						holdTimer = 0;
+					}
 				}
 				else
-					holdTimer = 0;
+				{
+					if (animation.curAnim.name.startsWith('sing'))
+						holdTimer += elapsed;
+					else
+						holdTimer = 0;
+				}
 			}
 
 			if (animation.curAnim.name.endsWith('miss') && animation.curAnim.finished)

@@ -472,7 +472,7 @@ class Init extends FlxState
 		}
 
 		// 'hardcoded' ui skins
-		gameSettings.get("UI Skin")[4] = CoolUtil.returnAssetsLibrary('UI');
+		gameSettings.get("UI Skin")[4] = CoolUtil.returnAssetsLibrary('UI', 'images');
 		if (!gameSettings.get("UI Skin")[4].contains(trueSettings.get("UI Skin")))
 			trueSettings.set("UI Skin", 'default');
 

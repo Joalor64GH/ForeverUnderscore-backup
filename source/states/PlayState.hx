@@ -1457,27 +1457,22 @@ class PlayState extends MusicBeatState
 			}
 		}
 
-		if (!strumline.autoplay)
+		if (!strumline.autoplay && startedCountdown && !character.stunned)
 		{
-			// check if keys are being held
-			if (holdingKeys.contains(true))
+			// check for hold notes
+			strumline.holdsGroup.forEachAlive(function(coolNote:Note)
 			{
-				// check for hold notes
-				strumline.holdsGroup.forEachAlive(function(coolNote:Note)
-				{
-					if ((coolNote.parentNote != null && coolNote.parentNote.wasGoodHit)
-						&& coolNote.canBeHit
-						&& coolNote.mustPress
-						&& !coolNote.tooLate
-						&& holdingKeys[coolNote.noteData])
-						goodNoteHit(coolNote, strumline);
-				});
-			}
+				if ((coolNote.parentNote != null && coolNote.parentNote.wasGoodHit)
+					&& coolNote.canBeHit
+					&& coolNote.mustPress
+					&& !coolNote.tooLate
+					&& holdingKeys[coolNote.noteData])
+					goodNoteHit(coolNote, strumline);
+			});
 		}
 
-		// reset animation
 		if ((character != null && character.animation != null)
-			&& (character.holdTimer > Conductor.stepCrochet * (0.0011 / Conductor.playbackRate) * character.singDuration
+			&& (character.holdTimer > Conductor.stepCrochet * (0.0011 / Conductor.songMusic.pitch) * character.singDuration
 				&& (!holdingKeys.contains(true) || strumline.autoplay)))
 		{
 			if (character.animation.curAnim.name.startsWith('sing') && !character.animation.curAnim.name.endsWith('miss'))
@@ -1806,34 +1801,23 @@ class PlayState extends MusicBeatState
 		callFunc('stepHit', [curStep]);
 	}
 
-	public var characterArray:Array<Character> = [];
-
 	function charactersDance(curBeat:Int)
 	{
-		if (curBeat % Math.round(gfSpeed * gf.bopSpeed) == 0
-			&& (gf.animation.curAnim != null && !gf.animation.curAnim.name.startsWith('sing'))
-			&& (gf.animation.curAnim.name.startsWith("idle") || gf.animation.curAnim.name.startsWith("dance") || gf.quickDancer)
-			&& !gf.stunned)
-			gf.dance();
-
-		for (char in characterArray)
+		for (i in strumLines)
 		{
-			if (curBeat % char.bopSpeed == 0
-				&& (char.animation.curAnim != null && !char.animation.curAnim.name.startsWith('sing'))
-				&& (char.animation.curAnim.name.startsWith("idle") || char.animation.curAnim.name.startsWith("dance") || char.quickDancer))
-				char.dance();
+			if (curBeat % i.character.bopSpeed == 0)
+			{
+				if (i.character != null && i.character.animation.curAnim.name.startsWith("idle") // check the idle before dancing
+					|| i.character.animation.curAnim.name.startsWith("dance"))
+					i.character.dance();
+			}
 		}
 
-		for (strumline in strumLines)
+		if (curBeat % Math.round(gfSpeed * gf.bopSpeed) == 0)
 		{
-			var character = strumline.character;
-			if (curBeat % character.bopSpeed == 0
-				&& (character.animation.curAnim != null && !character.animation.curAnim.name.startsWith('sing'))
-				&& (character.animation.curAnim.name.startsWith("idle")
-					|| character.animation.curAnim.name.startsWith("dance")
-					|| character.quickDancer)
-				&& !character.stunned)
-				character.dance();
+			if (gf != null && gf.animation.curAnim.name.startsWith("idle") // check the idle before dancing
+				|| gf.animation.curAnim.name.startsWith("dance"))
+				gf.dance();
 		}
 	}
 

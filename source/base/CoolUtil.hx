@@ -84,7 +84,6 @@ class CoolUtil
 	{
 		var libraryArray:Array<String> = [];
 
-		#if sys
 		var unfilteredLibrary = FileSystem.readDirectory('assets/$subDir/$library');
 
 		if (FileSystem.exists('assets/$subDir/$library'))
@@ -95,6 +94,7 @@ class CoolUtil
 		}
 
 		// mods, will change this later
+		/*
 		var modRoot = ModManager.getModFile('$subDir/$library');
 		var unfilteredMod = FileSystem.readDirectory(modRoot);
 
@@ -104,9 +104,9 @@ class CoolUtil
 				if (!folder.contains('.'))
 					libraryArray.push(folder);
 		}
+		*/
 
 		#if DEBUG_TRACES trace(libraryArray); #end
-		#end
 
 		return libraryArray;
 	}

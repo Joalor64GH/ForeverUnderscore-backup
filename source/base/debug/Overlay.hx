@@ -42,7 +42,7 @@ class Overlay extends TextField
 		addEventListener(Event.ENTER_FRAME, update);
 	}
 
-	static final intervalArray:Array<String> = ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB']; // tb support for the myth engine modders :)
+	static final intervalArray:Array<String> = ['B', 'KB', 'MB', 'GB', 'HOW']; // tb support for the myth engine modders :)
 
 	public static function getInterval(size:Float):String
 	{
@@ -145,7 +145,7 @@ class Console extends TextField
 
 		selectable = false;
 		mouseEnabled = mouseWheelEnabled = true;
-		defaultTextFormat = new TextFormat("_sans", 12, color);
+		defaultTextFormat = new TextFormat(Paths.font("vcr.ttf"), 18, color);
 		text = "Start of log";
 		alpha = 0;
 
