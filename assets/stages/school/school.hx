@@ -84,7 +84,7 @@ function girlsGetScared()
 	girlsDance();
 }
 
-function updateStage(curBeat:Int, boyfriend:Character, gf:Character, dadOpponent:Character)
+function updateStage(curBeat:Int, boyfriend:Character, gf:Character, dad:Character)
 {
 	girlsDance();
 }

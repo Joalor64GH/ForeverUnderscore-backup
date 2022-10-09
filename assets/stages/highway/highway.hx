@@ -38,7 +38,7 @@ function generateStage()
 	fastCar = new FNFSprite(-300, 160).loadGraphic(Paths.image('fastCarLol', stageDir));
 }
 
-function updateStage(curBeat:Int, boyfriend:Character, gf:Character, dadOpponent:Character)
+function updateStage(curBeat:Int, boyfriend:Character, gf:Character, dad:Character)
 {
 	grpLimoDancers.forEach(function(dancer:BackgroundDancer)
 	{

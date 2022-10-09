@@ -106,7 +106,6 @@ class Receptor extends FlxSprite
 	 */
 	public var animOffsets:Map<String, Array<Dynamic>>;
 	public var babyArrowType:Int = 0;
-	public var canFinishAnimation:Bool = true;
 
 	public static var swagWidth:Float = 160 * 0.7;
 

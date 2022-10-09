@@ -219,10 +219,10 @@ class Character extends FNFSprite
 				{
 					if (animation.curAnim.name.startsWith('sing'))
 						holdTimer += elapsed;
-					if (holdTimer >= (Conductor.stepCrochet * 4) / 1000 / (FlxG.sound.music != null ? FlxG.sound.music.pitch : 1) * singDuration)
+					if (holdTimer >= Conductor.stepCrochet * (0.0011 / (FlxG.sound.music != null ? FlxG.sound.music.pitch : 1)) * singDuration)
 					{
-						dance();
 						holdTimer = 0;
+						dance();
 					}
 				}
 				else

@@ -17,7 +17,7 @@ function generateStage()
 var lightningStrikeBeat:Int = 0;
 var lightningOffset:Int = 8;
 
-function updateStage(curBeat:Int, boyfriend:Character, gf:Character, dadOpponent:Character)
+function updateStage(curBeat:Int, boyfriend:Character, gf:Character, dad:Character)
 {
 	if (FlxG.random.bool(10) && curBeat > lightningStrikeBeat + lightningOffset)
 	{

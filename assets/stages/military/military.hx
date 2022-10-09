@@ -165,7 +165,7 @@ function generateStage()
 	}
 }
 
-function updateStage(curBeat:Int, boyfriend:Character, gf:Character, dadOpponent:Character)
+function updateStage(curBeat:Int, boyfriend:Character, gf:Character, dad:Character)
 {
 	smokeL.playAnim('smokeLeft');
 	smokeR.playAnim('smokeRight');
@@ -174,7 +174,7 @@ function updateStage(curBeat:Int, boyfriend:Character, gf:Character, dadOpponent
 		groupDudes.members[i].playAnim('fg');
 }
 
-function updateStageConst(elapsed:Float, boyfriend:Character, gf:Character, dadOpponent:Character)
+function updateStageConst(elapsed:Float, boyfriend:Character, gf:Character, dad:Character)
 {
 	moveTank();
 }

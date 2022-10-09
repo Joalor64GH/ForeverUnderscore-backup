@@ -1050,10 +1050,10 @@ class PlayState extends MusicBeatState
 	{
 		for (strumline in strumLines)
 		{
-			for (uiNote in strumline.receptors)
+			for (receptor in strumline.receptors)
 			{
-				if (strumline.autoplay)
-					strumCallsAuto(uiNote);
+				if (strumline.autoplay && receptor.animation.curAnim.name == 'confirm' && receptor.animation.curAnim.finished)
+					receptor.playAnim('static', true);
 			}
 
 			if (strumline.splashNotes != null)
@@ -1070,6 +1070,16 @@ class PlayState extends MusicBeatState
 		{
 			for (strumline in strumLines)
 			{
+				// reset the character's animation
+				if (strumline.character != null
+					&& strumline.character.animation.curAnim != null
+					&& (strumline.character.holdTimer > Conductor.stepCrochet * (0.0011 / FlxG.sound.music.pitch) * strumline.character.singDuration)
+					&& (!holdingKeys.contains(true) || strumline.autoplay))
+				{
+					if (strumline.character.animation.curAnim.name.startsWith('sing') && !strumline.character.animation.curAnim.name.endsWith('miss'))
+						strumline.character.dance();
+				}
+
 				strumline.allNotes.forEachAlive(function(strumNote:Note)
 				{
 					// set custom note speeds and stuff;
@@ -1151,15 +1161,9 @@ class PlayState extends MusicBeatState
 					}
 
 					// hell breaks loose here, we're using nested scripts!
-					mainControls(strumNote, strumline.character, strumline);
+					mainControls(strumNote, strumline);
 					if (!strumline.autoplay)
 						controllerInput();
-
-					for (receptor in strumline.receptors)
-					{
-						if (strumline.autoplay && receptor.animation.curAnim.name == 'confirm' && receptor.animation.curAnim.finished)
-							receptor.playAnim('static', true);
-					}
 
 					// check where the note is and make sure it is either active or inactive
 					if (strumNote.y > FlxG.height)
@@ -1413,34 +1417,14 @@ class PlayState extends MusicBeatState
 				character.specialAnim = false;
 		}
 
-		character.playAnim(stringArrow, true);
-		character.holdTimer = 0;
-	}
-
-	function strumCallsAuto(cStrum:Receptor, ?callType:Int = 1, ?daNote:Note):Void
-	{
-		switch (callType)
+		if (character != null)
 		{
-			case 1:
-				// end the animation if the calltype is 1 and it is done
-				if ((cStrum.animation.finished) && (cStrum.canFinishAnimation))
-					cStrum.playAnim('static');
-			default:
-				// check if it is the correct strum
-				if (daNote.noteData == cStrum.ID)
-				{
-					cStrum.playAnim('confirm', true); // play the correct strum's confirmation animation (haha rhymes)
-
-					// stuff for sustain notes
-					if ((daNote.isSustainNote) && (!daNote.animation.curAnim.name.endsWith('holdend')))
-						cStrum.canFinishAnimation = false; // basically, make it so the animation can't be finished if there's a sustain note below
-					else
-						cStrum.canFinishAnimation = true;
-				}
+			character.playAnim(stringArrow, true);
+			character.holdTimer = 0;
 		}
 	}
 
-	function mainControls(daNote:Note, character:Character, strumline:Strumline):Void
+	function mainControls(daNote:Note, strumline:Strumline):Void
 	{
 		var notesPressedAutoplay = [];
 
@@ -1459,7 +1443,7 @@ class PlayState extends MusicBeatState
 			}
 		}
 
-		if (!strumline.autoplay && startedCountdown && !character.stunned)
+		if (!strumline.autoplay && startedCountdown && !strumline.character.stunned)
 		{
 			// check for hold notes
 			strumline.holdsGroup.forEachAlive(function(coolNote:Note)
@@ -1471,14 +1455,6 @@ class PlayState extends MusicBeatState
 					&& holdingKeys[coolNote.noteData])
 					goodNoteHit(coolNote, strumline);
 			});
-		}
-
-		if ((character != null && character.animation != null)
-			&& (character.holdTimer > Conductor.stepCrochet * (0.0011 / Conductor.songMusic.pitch) * character.singDuration
-				&& (!holdingKeys.contains(true) || strumline.autoplay)))
-		{
-			if (character.animation.curAnim.name.startsWith('sing') && !character.animation.curAnim.name.endsWith('miss'))
-				character.dance();
 		}
 	}
 
@@ -2442,6 +2418,8 @@ class PlayState extends MusicBeatState
 		setVar('gfName', PlayState.gf.curCharacter);
 		setVar('bfName', PlayState.boyfriend.curCharacter);
 		setVar('dadOpponent', dad);
+		setVar('PlayState.dadOpponent', dad);
+		setVar('game.dadOpponent', dad);
 		setVar('add', add);
 		setVar('remove', remove);
 		setVar('openSubState', openSubState);

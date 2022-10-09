@@ -1,10 +1,10 @@
 package flixel.system.ui;
 
 #if FLX_SOUND_SYSTEM
+import flash.Lib;
 import flash.display.Bitmap;
 import flash.display.BitmapData;
 import flash.display.Sprite;
-import flash.Lib;
 import flash.text.TextField;
 import flash.text.TextFormat;
 import flash.text.TextFormatAlign;
@@ -133,9 +133,9 @@ class FlxSoundTray extends Sprite
 	{
 		if (!Silent)
 		{
-			var sound = Paths.sound('scrollMenu');
-			if (sound != null)
-				FlxG.sound.load(sound).play();
+			var sound:FlxSound = new FlxSound().loadEmbedded(Paths.sound('scrollMenu'), false, true);
+			if (sound != null && !sound.playing)
+				sound.play();
 		}
 
 		_timer = 1;

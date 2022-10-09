@@ -91,7 +91,7 @@ function trainReset(gf:Character)
 	startedMoving = false;
 }
 
-function updateStage(curBeat:Int, boyfriend:Character, gf:Character, dadOpponent:Character)
+function updateStage(curBeat:Int, boyfriend:Character, gf:Character, dad:Character)
 {
 	if (!trainMoving)
 		trainCooldown += 1;
@@ -110,7 +110,7 @@ function updateStage(curBeat:Int, boyfriend:Character, gf:Character, dadOpponent
 	}
 }
 
-function updateStageConst(elapsed:Float, boyfriend:Character, gf:Character, dadOpponent:Character)
+function updateStageConst(elapsed:Float, boyfriend:Character, gf:Character, dad:Character)
 {
 	windowLight.alpha -= (Conductor.crochet / 1000) * FlxG.elapsed * 1.5;
 

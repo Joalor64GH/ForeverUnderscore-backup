@@ -6,8 +6,8 @@ function beatHit(curBeat:Int)
 		PlayState.boyfriend.specialAnim = true;
 		PlayState.boyfriend.heyTimer = 0.6;
 
-		PlayState.dadOpponent.playAnim('cheer', true);
-		PlayState.dadOpponent.specialAnim = true;
-		PlayState.dadOpponent.heyTimer = 0.6;
+		PlayState.dad.playAnim('cheer', true);
+		PlayState.dad.specialAnim = true;
+		PlayState.dad.heyTimer = 0.6;
 	}
 }
