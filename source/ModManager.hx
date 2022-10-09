@@ -1,5 +1,8 @@
 package;
 
+import openfl.utils.AssetType;
+import openfl.utils.Assets as OpenFlAssets;
+
 using StringTools;
 
 final class ModManager
@@ -39,17 +42,33 @@ final class ModManager
 		return modFolders;
 	}
 
-	public static function getModFile(file:String)
+	public static function getModFile(file:String, ?type:AssetType)
 	{
-		for (folders in getModFolders())
+		for (folder in getModFolders())
 		{
-			var modFile:String = 'mods/$folders/$file';
-			if (!sys.FileSystem.exists(modFile))
-				modFile = base.CoolUtil.swapSpaceDash(modFile);
-			return modFile;
+			var modFile:String = 'mods/$folder/$file';
+			try
+			{
+				if (!sys.FileSystem.exists(modFile))
+					modFile = base.CoolUtil.swapSpaceDash(modFile);
+				return modFile;
+			}
+			catch(e)
+			{
+				trace('$modFile is null, trying method 2');
+				try
+				{
+					if (OpenFlAssets.exists(modFile, type))
+						return modFile;
+				}
+				catch (e)
+				{
+					trace('$file is null');
+					return null;
+				}
+			}
 		}
 		trace('$file is null');
-		lime.app.Application.current.window.alert('$file is null', "Error!");
 		return null;
 	}
 }

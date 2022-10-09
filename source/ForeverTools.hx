@@ -54,10 +54,10 @@ class ForeverTools
 			?defaultChangeableSkin:String = 'default', ?defaultBaseAsset:String = 'base'):String
 	{
 		var realAsset = '$baseLibrary/$changeableSkin/$assetModifier/$skinAsset';
-		if (!FileSystem.exists(Paths.getPath('images/' + realAsset + '.png', IMAGE)))
+		if (!fileExists('images/' + realAsset + '.png', IMAGE))
 		{
 			realAsset = '$baseLibrary/$defaultChangeableSkin/$assetModifier/$skinAsset';
-			if (!FileSystem.exists(Paths.getPath('images/' + realAsset + '.png', IMAGE)))
+			if (!fileExists('images/' + realAsset + '.png', IMAGE))
 				realAsset = '$baseLibrary/$defaultChangeableSkin/$defaultBaseAsset/$skinAsset';
 		}
 
@@ -75,10 +75,11 @@ class ForeverTools
 		}
 	}
 
+	// does this even work at all?
 	inline public static function fileExists(path:String, type:AssetType = TEXT, ?library:Null<String>):Bool
 	{
 		var assetExists = FileSystem.exists(Paths.getPath(path, type, library));
-		var modExists = FileSystem.exists(ModManager.getModFile(path));
+		var modExists = FileSystem.exists(ModManager.getModFile(path, type));
 
 		if (assetExists || modExists)
 			return true;

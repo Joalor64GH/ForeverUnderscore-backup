@@ -37,7 +37,7 @@ class WeekParser
 		{
 			if (!loadedWeeks.exists(list[i]))
 			{
-				var week:WeekDataDef = parseJson(Paths.json('weeks/' + list[i]));
+				var week:WeekDataDef = parseJson(Paths.file('weeks/' + list[i] + '.json'));
 				if (week != null)
 				{
 					if (week != null && (isStoryMode && !week.hideStoryMode) || (!isStoryMode && !week.hideFreeplay))

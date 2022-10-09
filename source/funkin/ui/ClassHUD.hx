@@ -66,11 +66,7 @@ class ClassHUD extends FlxTypedGroup<FlxBasic>
 
 		healthBar = new FlxBar(healthBarBG.x + 4, healthBarBG.y + 4, barFillDir, Std.int(healthBarBG.width - 8), Std.int(healthBarBG.height - 8));
 		healthBar.scrollFactor.set();
-
-		if (Init.getSetting('Colored Health Bar'))
-			healthBar.createFilledBar(dadBar, bfBar);
-		else
-			healthBar.createFilledBar(0xFFFF0000, 0xFF66FF33);
+		updateBar();
 
 		// healthBar
 		add(healthBar);

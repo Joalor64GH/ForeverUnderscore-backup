@@ -80,14 +80,14 @@ class CoolUtil
 		return swagOffsets;
 	}
 
-	public static function returnAssetsLibrary(library:String, ?subDir:String = 'assets/images'):Array<String>
+	public static function returnAssetsLibrary(library:String, ?subDir:String = 'images'):Array<String>
 	{
 		var libraryArray:Array<String> = [];
 
 		#if sys
-		var unfilteredLibrary = FileSystem.readDirectory('$subDir/$library');
+		var unfilteredLibrary = FileSystem.readDirectory('assets/$subDir/$library');
 
-		if (FileSystem.exists('$subDir/$library'))
+		if (FileSystem.exists('assets/$subDir/$library'))
 		{
 			for (folder in unfilteredLibrary)
 				if (!folder.contains('.'))
@@ -95,7 +95,7 @@ class CoolUtil
 		}
 
 		// mods, will change this later
-		var modRoot = ModManager.getModFile('$library');
+		var modRoot = ModManager.getModFile('$subDir/$library');
 		var unfilteredMod = FileSystem.readDirectory(modRoot);
 
 		if (FileSystem.exists(modRoot))
@@ -158,6 +158,8 @@ class CoolUtil
 			file = '$file/';
 
 		var path:String = Paths.getPath(file);
+		//if (!ForeverTools.fileExists(file))
+		//	path = ModManager.getModFile(file);
 
 		var absolutePath:String = FileSystem.absolutePath(path);
 		var directory:Array<String> = FileSystem.readDirectory(absolutePath);

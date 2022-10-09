@@ -194,7 +194,7 @@ final class Paths
 		return null;
 	}
 
-	static public function getTextFromFile(key:String, ignoreMods:Bool = false):String
+	static public function getTextFromFile(key:String, type:AssetType = TEXT, ?library:Null<String>):String
 	{
 		if (FileSystem.exists(ModManager.getModFile(key)))
 			return File.getContent(ModManager.getModFile(key));
@@ -209,7 +209,7 @@ final class Paths
 			if (FileSystem.exists(levelPath))
 				return File.getContent(levelPath);
 		}
-		return Assets.getText(getPath(key, TEXT));
+		return Assets.getText(getPath(key, type, library));
 	}
 
 	public static function returnSound(path:String, key:String, ?library:String)
@@ -261,28 +261,48 @@ final class Paths
 	{
 		var returnPath:String = 'assets/$file';
 		if (!FileSystem.exists(returnPath))
-			returnPath = CoolUtil.swapSpaceDash(returnPath);
+		{
+			try
+			{
+				returnPath = CoolUtil.swapSpaceDash(returnPath);
+			}
+			catch (e)
+			{
+				trace('$file not found, trying to search for mods...');
+				returnPath = ModManager.getModFile('$file');
+				if (!FileSystem.exists(returnPath))
+					returnPath = CoolUtil.swapSpaceDash(ModManager.getModFile('$file'));
+			}
+		}
 		return returnPath;
 	}
 
 	inline static public function file(file:String, type:AssetType = TEXT, ?library:String)
 	{
+		if (FileSystem.exists(ModManager.getModFile(file, type)))
+			return ModManager.getModFile(file, type);
+
 		return getPath(file, type, library);
 	}
 
 	inline static public function txt(key:String, ?library:String)
 	{
-		return getPath('$key.txt', TEXT, library);
-	}
+		if (FileSystem.exists(ModManager.getModFile(key, TEXT)))
+			return ModManager.getModFile(key, TEXT);
 
-	inline static public function json(key:String, ?library:String)
-	{
-		return getPath('$key.json', TEXT, library);
+		return getPath('$key.txt', TEXT, library);
 	}
 
 	inline static public function songJson(song:String, secondSong:String, ?library:String)
 	{
-		return getPath('songs/${song.toLowerCase()}/${secondSong.toLowerCase()}.json', TEXT, library);
+		var songPath:String = 'songs/${song.toLowerCase()}/${secondSong.toLowerCase()}.json';
+
+		/*
+		if (FileSystem.exists(ModManager.getModFile(songPath, TEXT)))
+			return ModManager.getModFile(songPath, TEXT);
+		*/
+
+		return getPath(songPath, TEXT, library);
 	}
 
 	static public function sound(key:String, ?library:String):Dynamic

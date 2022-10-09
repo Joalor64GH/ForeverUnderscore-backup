@@ -172,7 +172,7 @@ class FreeplayMenuState extends MusicBeatState
 
 		if (includeCustom)
 		{
-			for (i in CoolUtil.returnAssetsLibrary('songs', 'assets'))
+			for (i in CoolUtil.returnAssetsLibrary('songs', ''))
 			{
 				if (!existingSongs.contains(i.toLowerCase()))
 				{

@@ -480,19 +480,19 @@ class Init extends FlxState
 		if (!gameSettings.get("Note Skin")[4].contains(trueSettings.get("Note Skin")))
 			trueSettings.set("Note Skin", 'default');
 
-		gameSettings.get("Hitsound Type")[4] = CoolUtil.returnAssetsLibrary('hitsounds', 'assets/sounds');
+		gameSettings.get("Hitsound Type")[4] = CoolUtil.returnAssetsLibrary('hitsounds', 'sounds');
 		if (!gameSettings.get("Hitsound Type")[4].contains(trueSettings.get("Hitsound Type")))
 			trueSettings.set("Hitsound Type", 'default');
 
-		gameSettings.get("Menu Song")[4] = CoolUtil.returnAssetsLibrary('menus/main', 'assets/music');
+		gameSettings.get("Menu Song")[4] = CoolUtil.returnAssetsLibrary('menus/main', 'music');
 		if (!gameSettings.get("Menu Song")[4].contains(trueSettings.get("Menu Song")))
 			trueSettings.set("Menu Song", 'freakyMenu');
 
-		gameSettings.get("Pause Song")[4] = CoolUtil.returnAssetsLibrary('menus/pause', 'assets/music');
+		gameSettings.get("Pause Song")[4] = CoolUtil.returnAssetsLibrary('menus/pause', 'music');
 		if (!gameSettings.get("Pause Song")[4].contains(trueSettings.get("Pause Song")))
 			trueSettings.set("Pause Song", 'breakfast');
 
-		gameSettings.get("Game Language")[4] = CoolUtil.returnAssetsLibrary('locales', 'assets');
+		gameSettings.get("Game Language")[4] = CoolUtil.returnAssetsLibrary('locales', '');
 		if (!gameSettings.get("Game Language")[4].contains(trueSettings.get("Game Language")))
 			trueSettings.set("Game Language", 'english');
 

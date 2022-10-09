@@ -302,9 +302,9 @@ class OriginalChartEditor extends MusicBeatState
 
 		sliderRate = new FlxUISlider(this, 'playbackSpeed', 50, 250, 0.5, 3, 150, null, 5, FlxColor.WHITE, FlxColor.BLACK);
 
-		var baseChars:Array<String> = CoolUtil.returnAssetsLibrary('characters', 'assets');
-		var baseStages:Array<String> = CoolUtil.returnAssetsLibrary('stages', 'assets');
-		var baseAssets:Array<String> = CoolUtil.returnAssetsLibrary('UI/default', 'assets/images');
+		var baseChars:Array<String> = CoolUtil.returnAssetsLibrary('characters', '');
+		var baseStages:Array<String> = CoolUtil.returnAssetsLibrary('stages', '');
+		var baseAssets:Array<String> = CoolUtil.returnAssetsLibrary('UI/default', 'images');
 
 		var characters:Array<String> = baseChars;
 

@@ -1,30 +1,10 @@
 package funkin;
 
-import sys.FileSystem;
 import base.*;
-import dependency.FNFSprite;
 import flixel.FlxBasic;
-import flixel.FlxCamera;
-import flixel.FlxG;
-import flixel.FlxObject;
 import flixel.FlxSprite;
-import flixel.FlxState;
-import flixel.OverlayShader;
-import flixel.addons.effects.FlxTrail;
-import flixel.addons.effects.chainable.FlxWaveEffect;
 import flixel.group.FlxGroup.FlxTypedGroup;
-import flixel.group.FlxSpriteGroup;
 import flixel.math.FlxPoint;
-import flixel.system.FlxSound;
-import flixel.system.scaleModes.*;
-import flixel.text.FlxText;
-import flixel.tweens.FlxEase;
-import flixel.tweens.FlxTween;
-import flixel.util.FlxColor;
-import openfl.Assets;
-import openfl.display.BlendMode;
-import openfl.display.GraphicsShader;
-import openfl.filters.ShaderFilter;
 import states.PlayState;
 import funkin.background.*;
 
@@ -73,7 +53,14 @@ class Stage extends FlxTypedGroup<FlxBasic>
 		}
 		catch (e)
 		{
-			stageJson = haxe.Json.parse(Paths.getTextFromFile('stages/stage/stage.json'));
+			stageJson = haxe.Json.parse('{
+			    "spawnGirlfriend": true,
+			    "defaultZoom": 0.9,
+			    "camSpeed": 1,
+			    "dadPos": [100, 100],
+			    "gfPos": [300, 100],
+			    "bfPos": [770, 450]
+			}');
 		}
 
 		if (stageJson != null)
@@ -177,7 +164,7 @@ class Stage extends FlxTypedGroup<FlxBasic>
 		for (path in paths)
 		{
 			if (ForeverTools.fileExists(path))
-				stageScript = new ScriptHandler(Paths.getPreloadPath(path));
+				stageScript = new ScriptHandler(Paths.getTextFromFile(path));
 		}
 
 		setVar('add', add);
@@ -186,6 +173,7 @@ class Stage extends FlxTypedGroup<FlxBasic>
 		setVar('layers', layers);
 		setVar('gfVersion', gfVersion);
 		setVar('game', PlayState.contents);
+		setVar('curStage', curStage);
 		setVar('spawnGirlfriend', function(blah:Bool)
 		{
 			spawnGirlfriend = blah;

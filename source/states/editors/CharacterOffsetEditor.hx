@@ -181,7 +181,7 @@ class CharacterOffsetEditor extends MusicBeatState
 		var tab_group = new FlxUI(null, UI_box);
 		tab_group.name = "Characters";
 
-		var characters:Array<String> = CoolUtil.returnAssetsLibrary('characters', 'assets');
+		var characters:Array<String> = CoolUtil.returnAssetsLibrary('characters', '');
 
 		var resetBttn:FlxButton = new FlxButton(140, 30, "Reset Offsets", function()
 		{

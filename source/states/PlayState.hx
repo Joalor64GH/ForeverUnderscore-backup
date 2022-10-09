@@ -2189,7 +2189,7 @@ class PlayState extends MusicBeatState
 	{
 		var dialogueFileStr:String = 'dialogue';
 		dialogueFileStr = (endingSong ? '${ForeverLocales.curLang.dialogueFileEnd}' : '${ForeverLocales.curLang.dialogueFile}');
-		var dialogPath = Paths.json('songs/' + SONG.song.toLowerCase() + '/$dialogueFileStr');
+		var dialogPath = Paths.file('songs/' + SONG.song.toLowerCase() + '/$dialogueFileStr.json');
 
 		if (sys.FileSystem.exists(dialogPath))
 			return true;
@@ -2207,7 +2207,7 @@ class PlayState extends MusicBeatState
 			var dialogueFileStr:String = 'dialogue';
 			dialogueFileStr = (endingSong ? '${ForeverLocales.curLang.dialogueFileEnd}' : '${ForeverLocales.curLang.dialogueFile}');
 
-			dialogueBox = DialogueBox.createDialogue(sys.io.File.getContent(Paths.json('songs/' + SONG.song.toLowerCase() + '/$dialogueFileStr')));
+			dialogueBox = DialogueBox.createDialogue(sys.io.File.getContent(Paths.file('songs/' + SONG.song.toLowerCase() + '/$dialogueFileStr.json')));
 			dialogueBox.cameras = [dialogueHUD];
 			dialogueBox.whenDaFinish = (endingSong ? callDefaultSongEnd : startCountdown);
 
