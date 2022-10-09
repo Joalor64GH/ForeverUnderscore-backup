@@ -2,9 +2,7 @@ var halloweenBG:FNFSprite;
 
 function generateStage()
 {
-	curStage = 'spooky';
-
-	var stageDir:String = 'stages/' + curStage + '/images';
+	var stageDir:String = 'stages/spooky/images';
 
 	var hallowTex = Paths.getSparrowAtlas('halloween_bg', stageDir);
 	halloweenBG = new FNFSprite(-200, -100);

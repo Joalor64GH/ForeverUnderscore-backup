@@ -3,9 +3,7 @@ var grpLimoDancers:FlxSpriteGroup;
 
 function generateStage()
 {
-	curStage = 'highway';
-
-	var stageDir:String = 'stages/' + curStage + '/images';
+	var stageDir:String = 'stages/highway/images';
 
 	var skyBG:FNFSprite = new FNFSprite(-120, -50).loadGraphic(Paths.image('limoSunset', stageDir));
 	skyBG.scrollFactor.set(0.1, 0.1);

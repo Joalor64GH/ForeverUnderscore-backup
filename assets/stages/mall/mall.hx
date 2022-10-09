@@ -4,9 +4,7 @@ var santa:FNFSprite;
 
 function generateStage()
 {
-	curStage = 'mall';
-
-	var stageDir:String = 'stages/' + curStage + '/images';
+	var stageDir:String = 'stages/mall/images';
 
 	var bg:FNFSprite = new FNFSprite(-1000, -500).loadGraphic(Paths.image('bgWalls', stageDir));
 	bg.antialiasing = !Init.getSetting('Disable Antialiasing');

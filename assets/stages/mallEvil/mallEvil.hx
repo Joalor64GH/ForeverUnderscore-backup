@@ -1,8 +1,6 @@
 function generateStage()
 {
-	curStage = 'mallEvil';
-
-	var stageDir:String = 'stages/' + curStage + '/images';
+	var stageDir:String = 'stages/mallEvil/images';
 
 	var bg:FNFSprite = new FNFSprite(-500, -500).loadGraphic(Paths.image('evilBG', stageDir));
 	bg.antialiasing = true;

@@ -26,9 +26,7 @@ function moveTank()
 
 function generateStage()
 {
-	curStage = 'military';
-
-	var stageDir:String = 'stages/' + curStage + '/images';
+	var stageDir:String = 'stages/military/images';
 
 	var sky:FNFSprite = new FNFSprite(-400, -400).loadGraphic(Paths.image('tankSky', stageDir));
 	sky.scrollFactor.set(0, 0);

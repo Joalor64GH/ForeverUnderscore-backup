@@ -2,9 +2,7 @@ var bgGirls:FNFSprite;
 
 function generateStage()
 {
-	curStage = 'school';
-
-	var stageDir:String = 'stages/' + curStage + '/images';
+	var stageDir:String = 'stages/school/images';
 
 	var bgSky = new FNFSprite().loadGraphic(Paths.image('weebSky', stageDir));
 	bgSky.scrollFactor.set(0.1, 0.1);

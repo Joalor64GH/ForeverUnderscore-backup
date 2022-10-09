@@ -73,8 +73,8 @@ class Stage extends FlxTypedGroup<FlxBasic>
 		{
 			if (curStage == null || curStage.length < 1)
 				curStage = 'unknown';
-
-			PlayState.curStage = PlayState.SONG.stage;
+			else
+				curStage = PlayState.SONG.stage;
 		}
 
 		// to apply to foreground use foreground.add(); instead of add();
@@ -173,7 +173,6 @@ class Stage extends FlxTypedGroup<FlxBasic>
 		setVar('layers', layers);
 		setVar('gfVersion', gfVersion);
 		setVar('game', PlayState.contents);
-		setVar('curStage', curStage);
 		setVar('spawnGirlfriend', function(blah:Bool)
 		{
 			spawnGirlfriend = blah;

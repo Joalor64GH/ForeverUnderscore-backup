@@ -522,7 +522,7 @@ class Character extends FNFSprite
 	 */
 	function generatePsychChar(char:String = 'bf')
 	{
-		var path = Paths.getTextFromFile('characters/$char/' + char + '.json');
+		var path = Paths.getPath('characters/$char/' + char + '.json');
 
 		var rawJson = File.getContent(path);
 

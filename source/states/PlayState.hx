@@ -321,6 +321,8 @@ class PlayState extends MusicBeatState
 
 		GameOverSubstate.resetGameOver();
 
+		curStage = "";
+
 		// call the song's stage if it exists
 		if (SONG.stage != null)
 			curStage = SONG.stage;

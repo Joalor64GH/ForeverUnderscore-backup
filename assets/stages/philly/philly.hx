@@ -12,9 +12,7 @@ var trainFinishing:Bool = false;
 
 function generateStage()
 {
-	curStage = 'philly';
-
-	var stageDir:String = 'stages/' + curStage + '/images';
+	var stageDir:String = 'stages/philly/images';
 
 	var bg:FNFSprite = new FNFSprite(-100, 0);
 	bg.loadGraphic(Paths.image('sky', stageDir));

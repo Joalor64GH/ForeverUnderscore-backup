@@ -1,8 +1,6 @@
 function generateStage()
 {
-	curStage = 'schoolEvil';
-
-	var stageDir:String = 'stages/' + curStage + '/images';
+	var stageDir:String = 'stages/schoolEvil/images';
 
 	var bg:FNFSprite = new FNFSprite(400, 200);
 	bg.frames = Paths.getSparrowAtlas('animatedEvilSchool', stageDir);

@@ -16,9 +16,7 @@ function tweenCamIn()
 
 function generateStage()
 {
-	curStage = 'stage';
-
-	var stageDir:String = 'stages/' + curStage + '/images';
+	var stageDir:String = 'stages/stage/images';
 
 	var bg:FNFSprite = new FNFSprite(-600, -200).loadGraphic(Paths.image('stageback', stageDir));
 	bg.antialiasing = true;

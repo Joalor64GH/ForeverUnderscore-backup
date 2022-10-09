@@ -22,7 +22,7 @@
 
     "scoreTxt": "Score:",
     "missTxt": "Combo Breaks:",
-    "accTxt": "Acc:",
+    "accTxt": "Accuracy:",
     "botTxt": "[AUTOPLAY]",
 
 	"dialogueFile": "dialogue",
