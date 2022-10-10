@@ -165,6 +165,12 @@ function generateStage()
 	}
 }
 
+function repositionPlayers(boyfriend:Character, gf:Character, dad:Character)
+{
+	if (songName == 'stress')
+		gf.y -= 150;
+}
+
 function updateStage(curBeat:Int, boyfriend:Character, gf:Character, dad:Character)
 {
 	smokeL.playAnim('smokeLeft');
