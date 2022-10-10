@@ -1,7 +1,5 @@
 function generateStage()
 {
-	curStage = 'exampleStage';
-
 	// create stage graphics, just haxe code!
 
 	var bg:FNFSprite = new FNFSprite(-600, -200).loadGraphic(Paths.image('stageback', stageDir));

@@ -27,19 +27,19 @@ function loadAnimations()
 
 	setBarColor([123, 214, 246]);
 
-	if (curStage == 'stage')
+	if (PlayState.curStage == 'stage')
 	{
 		setOffsets(0, 910);
 		setCamOffsets(-30, -150);
 	}
 
-	if (curStage == 'school' || curStage == 'schoolEvil')
+	if (PlayState.curStage == 'school' || curStage == 'schoolEvil')
 		setOffsets(15, 400);
 
-	if (curStage == 'school')
+	if (PlayState.curStage == 'school')
 		setCamOffsets(50, -100);
 
-	if (curStage == 'schoolEvil')
+	if (PlayState.curStage == 'schoolEvil')
 		setCamOffsets(200, -100);
 
 	if (isPlayer)
@@ -52,13 +52,13 @@ function loadAnimations()
 		set('flipX', true);
 		flipLeftRight();
 
-		if (curStage == 'school')
+		if (PlayState.curStage == 'school')
 		{
 			setOffsets(-135, 400);
 			setCamOffsets(-80, -200);
 		}
 
-		if (curStage == 'schoolEvil')
+		if (PlayState.curStage == 'schoolEvil')
 		{
 			setOffsets(150, 900);
 			setCamOffsets(0, -230);

@@ -11,16 +11,16 @@ function loadAnimations()
 	setGraphicSize(get('width') * 6);
 	set('antialiasing', false);
 
-	if (curStage == 'stage')
+	if (PlayState.curStage == 'stage')
 	{
 		setOffsets(0, 910);
 		setCamOffsets(-30, -150);
 	}
-	if (curStage == 'school' || curStage == 'schoolEvil')
+	if (PlayState.curStage == 'school' || curStage == 'schoolEvil')
 		setOffsets(15, 480);
-	if (curStage == 'school')
+	if (PlayState.curStage == 'school')
 		setCamOffsets(50, -80);
-	if (curStage == 'schoolEvil')
+	if (PlayState.curStage == 'schoolEvil')
 		setCamOffsets(200, -80);
 
 	if (isPlayer)

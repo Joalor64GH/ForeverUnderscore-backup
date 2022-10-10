@@ -31,7 +31,7 @@ function loadAnimations()
 	var charX = 0;
 	var opponentX = 250;
 
-	if (curStage == 'mallEvil')
+	if (PlayState.curStage == 'mallEvil')
 	{
 		charX = 50;
 		opponentX = -155;
@@ -50,10 +50,10 @@ function loadAnimations()
 		setOffsets(opponentX, 750);
 		flipLeftRight();
 
-		if (curStage == 'mall')
+		if (PlayState.curStage == 'mall')
 			setCamOffsets(15, -95);
 
-		if (curStage == 'mallEvil')
+		if (PlayState.curStage == 'mallEvil')
 			setCamOffsets(15, -45);
 	}
 }
