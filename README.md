@@ -1,5 +1,5 @@
 # [Forever Engine Underscore](https://github.com/BeastlyGhost/Forever-Engine-Underscore)
-A custom-made Forever Engine build which aims to maintain Forever Engine Legacy.
+A custom-made Forever Engine build which aims to unofficially maintain Forever Engine Legacy.
 ----------------------------------------------
 
 ![PLACEHOLDER_LOGO](https://media.discordapp.net/attachments/821758818135572491/884267252357156934/FELogo.png)
