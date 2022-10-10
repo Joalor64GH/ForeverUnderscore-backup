@@ -48,8 +48,9 @@ class PauseSubstate extends MusicBeatSubstate
 		for (i in CoolUtil.difficulties)
 		{
 			// check for existance of difficulty files, and then push said files to the difficulty array as an entry;
-			if (FileSystem.exists(Paths.songJson(CoolUtil.dashToSpace(PlayState.SONG.song), CoolUtil.dashToSpace(PlayState.SONG.song) + '-' + i))
-				|| (FileSystem.exists(Paths.songJson(CoolUtil.dashToSpace(PlayState.SONG.song), CoolUtil.dashToSpace(PlayState.SONG.song)))
+			var songName = CoolUtil.spaceToDash(PlayState.SONG.song);
+			if (FileSystem.exists(Paths.songJson(songName, songName + '-' + i))
+				|| (FileSystem.exists(Paths.songJson(songName, songName))
 					&& i == "NORMAL"))
 				difficultyArray.push(i);
 		}
@@ -86,7 +87,7 @@ class PauseSubstate extends MusicBeatSubstate
 		add(bg);
 
 		var levelInfo:FlxText = new FlxText(20, 15, 0, "", 32);
-		levelInfo.text += CoolUtil.dashToSpace(PlayState.SONG.song) + ' [' + ForeverLocales.curLang.difficulties[PlayState.storyDifficulty] + ']';
+		levelInfo.text += CoolUtil.dashToSpace(PlayState.SONG.song) + ' [' + language.difficultyNames[PlayState.storyDifficulty] + ']';
 		levelInfo.scrollFactor.set();
 		levelInfo.setFormat(Paths.font('vcr.ttf'), 32);
 		levelInfo.updateHitbox();

@@ -1,5 +1,5 @@
 {
-    "difficulties": ["FÁCIL", "NORMAL", "DIFÍCIL"],
+    "difficultyNames": ["FÁCIL", "NORMAL", "DIFÍCIL"],
     "personalBest": "RECORDE PESSOAL:",
     "tracksText": "FAIXAS",
     "weekScoreText": "PONTUAÇÃO DA SEMANA:",

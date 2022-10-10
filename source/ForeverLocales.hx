@@ -3,7 +3,7 @@ package;
 typedef LangDataDef =
 {
 	// MENUS
-	var difficulties:Array<String>;
+	var difficultyNames:Array<String>;
 	var personalBest:String;
 	var delScore:String;
 	var delConfirm:String;

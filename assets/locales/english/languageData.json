@@ -1,5 +1,5 @@
 {
-    "difficulties": ["EASY", "NORMAL", "HARD"],
+    "difficultyNames": ["EASY", "NORMAL", "HARD"],
     "personalBest": "PERSONAL BEST:",
     "tracksText": "TRACKS",
     "weekScoreText": "WEEK SCORE:",

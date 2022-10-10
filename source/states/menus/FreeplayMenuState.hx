@@ -207,9 +207,11 @@ class FreeplayMenuState extends MusicBeatState
 	{
 		var coolDiffs = [];
 		for (i in CoolUtil.difficulties)
+		{
 			if (FileSystem.exists(Paths.songJson(songName, songName + '-' + i))
 				|| (FileSystem.exists(Paths.songJson(songName, songName)) && i == "NORMAL"))
 				coolDiffs.push(i);
+		}
 
 		if (coolDiffs.length > 0)
 		{
@@ -320,7 +322,7 @@ class FreeplayMenuState extends MusicBeatState
 					FlxG.sound.play(Paths.sound('confirmMenu'), 0.4);
 					isResetting = false;
 					lockedMovement = false;
-					diffText.text = '< ' + ForeverLocales.curLang.difficulties[curDifficulty] + ' - ' + intendedRank + ' >';
+					diffText.text = '< ' + ForeverLocales.curLang.difficultyNames[curDifficulty] + ' - ' + intendedRank + ' >';
 					diffText.color = FlxColor.WHITE;
 				}
 			}
@@ -368,7 +370,7 @@ class FreeplayMenuState extends MusicBeatState
 					new FlxTimer().start(1, function(tmr:FlxTimer)
 					{
 						lockedMovement = false;
-						diffText.text = '< ' + ForeverLocales.curLang.difficulties[curDifficulty] + ' - ' + intendedRank + ' >';
+						diffText.text = '< ' + ForeverLocales.curLang.difficultyNames[curDifficulty] + ' - ' + intendedRank + ' >';
 						diffText.color = FlxColor.WHITE;
 						iconArray[curSelected].animation.play('static');
 						changeSelection();
@@ -458,7 +460,7 @@ class FreeplayMenuState extends MusicBeatState
 		intendedRank = Highscore.getRank(songs[curSelected].songName, curDifficulty);
 
 		// existingDifficulties[curSelected][curDifficulty]
-		diffText.text = '< ' + ForeverLocales.curLang.difficulties[curDifficulty] + ' - ' + intendedRank + ' >';
+		diffText.text = '< ' + ForeverLocales.curLang.difficultyNames[curDifficulty] + ' - ' + intendedRank + ' >';
 		lastDifficulty = existingDifficulties[curSelected][curDifficulty];
 	}
 
