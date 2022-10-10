@@ -3,7 +3,6 @@ package funkin;
 import base.*;
 import dependency.FNFSprite;
 import flixel.FlxG;
-import flixel.FlxSprite;
 import states.PlayState;
 import funkin.Strumline.Receptor;
 
@@ -262,45 +261,7 @@ class Note extends FNFSprite
 		newNote.holdHeight = 0.862;
 
 		// actually determine the quant of the note
-		if (newNote.noteQuant == -1)
-		{
-			/*
-				I have to credit like 3 different people for these LOL they were a hassle
-				but its gede pixl and scarlett, thank you SO MUCH for baring with me
-			 */
-			final quantArray:Array<Int> = [4, 8, 12, 16, 20, 24, 32, 48, 64, 192]; // different quants
-
-			var curBPM:Float = Conductor.bpm;
-			var newTime = strumTime;
-			for (i in 0...Conductor.bpmChangeMap.length)
-			{
-				if (strumTime > Conductor.bpmChangeMap[i].songTime)
-				{
-					curBPM = Conductor.bpmChangeMap[i].bpm;
-					newTime = strumTime - Conductor.bpmChangeMap[i].songTime;
-				}
-			}
-
-			final beatTimeSeconds:Float = (60 / curBPM); // beat in seconds
-			final beatTime:Float = beatTimeSeconds * 1000; // beat in milliseconds
-			// assumed 4 beats per measure?
-			final measureTime:Float = beatTime * 4;
-
-			final smallestDeviation:Float = measureTime / quantArray[quantArray.length - 1];
-
-			for (quant in 0...quantArray.length)
-			{
-				// please generate this ahead of time and put into array :)
-				// I dont think I will im scared of those
-				final quantTime = (measureTime / quantArray[quant]);
-				if ((newTime #if !neko + Init.trueSettings['Offset'] #end + smallestDeviation) % quantTime < smallestDeviation * 2)
-				{
-					// here it is, the quant, finally!
-					newNote.noteQuant = quant;
-					break;
-				}
-			}
-		}
+		determineQuantIndex(strumTime, newNote);
 
 		// note quants
 		switch (assetModifier)
@@ -463,5 +424,53 @@ class Note extends FNFSprite
 			default:
 				// do nothing;
 		}
+	}
+
+	public static function determineQuantIndex(strumTime:Float, newNote:Note)
+	{
+		/*
+			I have to credit like 3 different people for these LOL they were a hassle
+			but its gede pixl and scarlett, thank you SO MUCH for baring with me
+		 */
+		final quantArray:Array<Int> = [4, 8, 12, 16, 20, 24, 32, 48, 64, 192]; // different quants
+
+		var songOffset:Float = 0;
+		var curBPM:Float = Conductor.bpm;
+		var newTime = strumTime;
+
+		final beatTimeSeconds:Float = (60 / curBPM); // beat in seconds
+		final beatTime:Float = beatTimeSeconds * 1000; // beat in milliseconds
+		final measureTime:Float = beatTime * 4; // assumed 4 beats per measure?
+
+		final smallestDeviation:Float = measureTime / quantArray[quantArray.length - 1];
+
+		songOffset = (PlayState.SONG != null ? PlayState.SONG.offset : 0);
+
+		if (newNote.noteQuant == -1)
+		{
+			for (i in 0...Conductor.bpmChangeMap.length)
+			{
+				if (strumTime > Conductor.bpmChangeMap[i].songTime)
+				{
+					curBPM = Conductor.bpmChangeMap[i].bpm;
+					newTime = strumTime - Conductor.bpmChangeMap[i].songTime;
+				}
+			}
+
+			for (quant in 0...quantArray.length)
+			{
+				// please generate this ahead of time and put into array :)
+				// I dont think I will im scared of those
+				final quantTime = (measureTime / quantArray[quant]);
+				if ((newTime + songOffset #if !neko + Init.trueSettings['Offset'] #end + smallestDeviation) % quantTime < smallestDeviation * 2)
+				{
+					// here it is, the quant, finally!
+					newNote.noteQuant = quant;
+					break;
+				}
+			}
+		}
+
+		return quantArray.length - 1;
 	}
 }

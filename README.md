@@ -14,9 +14,10 @@ Suggestions and Contributions for further improving and expanding upon the proje
 * Customizable Note Colors through options menu;
 * More Modular Source Codebase (idk sounds fun)
 * Custom Language Support;
-* Scripted Notetypes;
+* Scripted Custom Notetypes;
 * Revamped Chart Editor;
   * BETA Version of it can be found by selecting `Chart Editor` on the Editor Selector Menu
+  * said menu can be accessed by pressing Seven during songs or in the Freeplay Menu
 
 help to finish these would be extremely appreciated!
 

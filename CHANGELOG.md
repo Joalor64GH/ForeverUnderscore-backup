@@ -14,13 +14,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * this basically means psych engine shaders now work
 
 ### Fixed
-
+- Note Hold Offsets;
+- Infinite Beeping Sound when increasing or decreasing your volume;
+* additionally, the beeping sound was replaced with a menu scroll sound (because the default one is annoying lol)
 
 ### Adjusted
 - Freeplay now displays Accuracy and Ranking;
 * Additionally, you can also Reset your Score, Accuracy and Ranking on Freeplay by pressing R;
 - Player Positions on Stages now use a JSON File;
 - Characters now have a `noteHit` function on their scripts, it is executed everytime they hit a note;
+- Menus should now be overall faster;
+
+### Removed
+- Menu Scripts;
 
 
 

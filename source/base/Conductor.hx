@@ -1,16 +1,9 @@
 package base;
 
-import haxe.Json;
-import haxe.format.JsonParser;
-import sys.FileSystem;
-import sys.io.File;
 import flixel.FlxG;
 import flixel.system.FlxSound;
-import openfl.utils.Assets;
 import states.PlayState;
-import base.SongLoader.LegacySection;
 import base.SongLoader.LegacySong;
-import base.SongLoader.Song;
 
 using StringTools;
 

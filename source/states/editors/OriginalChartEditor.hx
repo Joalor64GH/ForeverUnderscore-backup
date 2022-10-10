@@ -490,7 +490,6 @@ class OriginalChartEditor extends MusicBeatState
 		check_mustHitSection = new FlxUICheckBox(10, 30, null, null, "Must hit section", 100);
 		check_mustHitSection.name = 'check_mustHit';
 		check_mustHitSection.checked = true;
-		// _song.needsVoices = check_mustHit.checked;
 
 		check_altAnim = new FlxUICheckBox(10, 400, null, null, "Alt Animation Section", 100);
 		check_altAnim.name = 'check_altAnim';
@@ -1178,7 +1177,7 @@ class OriginalChartEditor extends MusicBeatState
 		Conductor.songPosition = songMusic.time;
 	}
 
-	function copySection(?sectionNum:Int = 1)
+	function copySection(?sectionNum:Int = 1):Void
 	{
 		var daSec = FlxMath.maxInt(curSection, sectionNum);
 
@@ -1207,16 +1206,26 @@ class OriginalChartEditor extends MusicBeatState
 		updateHeads();
 	}
 
+	function getCharacter(string:String):Character 
+	{
+		var bf:Character = new Character(0, 0, (_song.player1 == null ? 'bf' : _song.player1));
+		var dad:Character = new Character(0, 0, (_song.player2 == null ? 'dad' : _song.player2));
+		var gf:Character = new Character(0, 0, (_song.gfVersion == null ? 'gf' : _song.gfVersion));
+
+		switch (string)
+		{
+			case 'bf' | 'boyfriend' | 'player1': return bf;
+			case 'gf' | 'girlfriend' | 'player3': return gf;
+			case 'dad' | 'dadOpponent' | 'cpu': return dad;
+		}
+		return null;
+	}
 	function generateHeads()
 	{
-		// stupid.
-		var bf:Character = new Character(0, 0, _song.player1);
-		var dad:Character = new Character(0, 0, _song.player2);
-
 		var eventIcon:FlxSprite = new FlxSprite(-GRID_SIZE - 5, -90);
 		eventIcon.loadGraphic(Paths.image(ForeverTools.returnSkin('eventNote', PlayState.assetModifier, PlayState.changeableSkin, 'UI')));
-		leftIcon = new HealthIcon(bf.icon);
-		rightIcon = new HealthIcon(dad.icon);
+		leftIcon = new HealthIcon(getCharacter('bf').icon, true);
+		rightIcon = new HealthIcon(getCharacter('dad').icon, false);
 
 		eventIcon.scrollFactor.set(1, 1);
 		leftIcon.scrollFactor.set(1, 1);

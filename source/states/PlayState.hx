@@ -343,7 +343,6 @@ class PlayState extends MusicBeatState
 			gf = new Character(300, 100, false, stageBuild.returnGFtype(curStage));
 		else
 			gf = new Character(300, 100, false, SONG.gfVersion);
-		gf.adjustPos = false;
 		gf.scrollFactor.set(0.95, 0.95);
 		gf.dance(true);
 
@@ -897,7 +896,7 @@ class PlayState extends MusicBeatState
 					var getCenterX = char.getMidpoint().x + 100;
 					var getCenterY = char.getMidpoint().y - 100;
 
-					camFollow.setPosition(getCenterX + camDisplaceX + char.camOffsets[0], getCenterY + camDisplaceY + char.camOffsets[1]);
+					camFollow.setPosition(getCenterX + camDisplaceX + char.cameraOffset.x, getCenterY + camDisplaceY + char.cameraOffset.y);
 
 					if (char.curCharacter == 'mom')
 						Conductor.songVocals.volume = 1;
@@ -922,7 +921,7 @@ class PlayState extends MusicBeatState
 							getCenterY = char.getMidpoint().y - 200;
 					}
 
-					camFollow.setPosition(getCenterX + camDisplaceX - char.camOffsets[0], getCenterY + camDisplaceY + char.camOffsets[1]);
+					camFollow.setPosition(getCenterX + camDisplaceX - char.cameraOffset.x, getCenterY + camDisplaceY + char.cameraOffset.y);
 				}
 				else if (gfSection && !mustHit || gfSection && mustHit)
 				{
@@ -931,7 +930,7 @@ class PlayState extends MusicBeatState
 					var getCenterX = char.getMidpoint().x + 100;
 					var getCenterY = char.getMidpoint().y - 100;
 
-					camFollow.setPosition(getCenterX + camDisplaceX + char.camOffsets[0], getCenterY + camDisplaceY + char.camOffsets[1]);
+					camFollow.setPosition(getCenterX + camDisplaceX + char.cameraOffset.x, getCenterY + camDisplaceY + char.cameraOffset.y);
 				}
 			}
 

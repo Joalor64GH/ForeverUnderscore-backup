@@ -5,26 +5,19 @@ package funkin;
 	stay the same as it was in the original source of the game. I'll most likely make some changes afterwards though!
 **/
 import haxe.Json;
-import sys.FileSystem;
 import sys.io.File;
 import base.*;
 import base.SongLoader.LegacySection;
-import base.SongLoader.LegacySong;
 import base.SongLoader.Song;
 import base.data.PsychChar;
-import base.data.SuperChar;
 import dependency.FNFSprite;
 import flixel.FlxG;
-import flixel.addons.util.FlxSimplex;
-import flixel.animation.FlxBaseAnimation;
 import flixel.graphics.frames.FlxFramesCollection;
+import flixel.math.FlxPoint;
 import flixel.util.FlxSort;
-import openfl.Assets;
-import openfl.utils.Assets as OpenFlAssets;
 import states.PlayState;
 import states.substates.GameOverSubstate;
 import funkin.background.TankmenBG;
-import funkin.ui.HealthIcon;
 
 using StringTools;
 
@@ -34,19 +27,16 @@ class Character extends FNFSprite
 
 	public var curCharacter:String = 'bf';
 
+	public var icon:String = null;
+
 	public var holdTimer:Float = 0;
-
-	public var adjustPos:Bool = true;
-
-	public var icon:String;
 
 	public var barColor:Array<Float> = [];
 	public var animationNotes:Array<Dynamic> = [];
 	public var idlePos:Array<Float> = [0, 0];
 
-	public var charOffsets:Array<Float> = [0, 0];
-	public var camOffsets:Array<Float> = [0, 0];
-	public var scales:Array<Float> = [0, 0];
+	public var cameraOffset:FlxPoint;
+	public var characterOffset:FlxPoint;
 
 	public var debugMode:Bool = false;
 	public var isPlayer:Bool = false;
@@ -78,10 +68,21 @@ class Character extends FNFSprite
 
 	public function setCharacter(x:Float, y:Float, character:String):Character
 	{
+		cameraOffset = new FlxPoint(0, 0);
+		characterOffset = new FlxPoint(0, 0);
+
 		this.character = character;
 
 		if (icon == null)
 			icon = character;
+
+		switch (character)
+		{
+			case 'pico-speaker':
+				skipDance = true;
+				loadMappedAnims();
+				playAnim("shoot1");
+		}
 
 		psychChar = ForeverTools.fileExists('characters/$character/' + character + '.json', TEXT);
 
@@ -126,20 +127,9 @@ class Character extends FNFSprite
 		recalcDance();
 		dance();
 
-		switch (character)
-		{
-			case 'pico-speaker':
-				skipDance = true;
-				loadMappedAnims();
-				playAnim("shoot1");
-		}
-
 		setPosition(x, y);
-		if (adjustPos)
-		{
-			this.x += charOffsets[0];
-			this.y += (charOffsets[1] - (frameHeight * scale.y));
-		}
+		this.x += characterOffset.x;
+		this.y += (characterOffset.y - (frameHeight * scale.y));
 
 		return this;
 	}
@@ -344,6 +334,10 @@ class Character extends FNFSprite
 		settingCharacterUp = false;
 	}
 
+	/**
+	 * [Generates a Character in the Forever Engine Underscore Format]
+	 * @param char returns the character that should be generated
+	 */
 	function generateBaseChar(char:String = 'bf')
 	{
 		var scripts:Array<String> = ['characters/$char/config.hx', 'characters/$char/config.hxs'];
@@ -375,8 +369,6 @@ class Character extends FNFSprite
 			spriteType = "PackerAtlas";
 		else if (ForeverTools.fileExists('characters/$char/$char.json', TEXT))
 			spriteType = "JsonAtlas";
-
-		// trace('Atlas Type: ' + spriteType + ' for Character: ' + char);
 
 		switch (spriteType)
 		{
@@ -420,18 +412,17 @@ class Character extends FNFSprite
 
 		setVar('setOffsets', function(?x:Float = 0, ?y:Float = 0)
 		{
-			charOffsets = [x, y];
+			characterOffset.set(x, y);
 		});
 
 		setVar('setCamOffsets', function(?x:Float = 0, ?y:Float = 0)
 		{
-			camOffsets = [x, y];
+			cameraOffset.set(x, y);
 		});
 
 		setVar('setScale', function(?x:Float = 1, ?y:Float = 1)
 		{
-			scales = [x, y];
-			scale.set(scales[0], scales[1]);
+			scale.set(x, y);
 		});
 
 		setVar('setIcon', function(swag:String = 'face') icon = swag);
@@ -512,9 +503,10 @@ class Character extends FNFSprite
 
 	public var psychAnimationsArray:Array<PsychAnimArray> = [];
 
-	/*
-		Compatibility Layer for Psych Engine Characters
-		@author Shadow_Mario_
+	/**
+	 * [Generates a Character in the Psych Engine Format, as a Compatibility Layer for them]
+	 * [@author Shadow_Mario_]
+	 * @param char returns the character that should be generated
 	 */
 	function generatePsychChar(char:String = 'bf')
 	{
@@ -535,8 +527,6 @@ class Character extends FNFSprite
 			else if (ForeverTools.fileExists('$characterPath.json', TEXT))
 				spriteType = "JsonAtlas";
 		 */
-
-		// trace('Atlas Type: ' + spriteType + ' for Character: ' + char);
 
 		switch (spriteType)
 		{
@@ -568,8 +558,8 @@ class Character extends FNFSprite
 		}
 		flipX = json.flip_x;
 		antialiasing = !json.no_antialiasing;
-		charOffsets = json.position;
-		camOffsets = json.camera_position;
+		characterOffset.set(json.position[0], json.position[1]);
+		cameraOffset.set(json.camera_position[0], json.camera_position[1]);
 
 		if (isPlayer) // fuck you ninjamuffin lmao
 		{
