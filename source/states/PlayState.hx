@@ -752,7 +752,7 @@ class PlayState extends MusicBeatState
 
 	public static var songSpeed(get, default):Float = 0;
 
-	static function get_songSpeed() // TODO: fix sustains on high rates;
+	static function get_songSpeed()
 		return songSpeed * Conductor.playbackRate;
 
 	override public function update(elapsed:Float)
@@ -1057,11 +1057,13 @@ class PlayState extends MusicBeatState
 			}
 
 			if (strumline.splashNotes != null)
+			{
 				for (i in 0...strumline.splashNotes.length)
 				{
 					strumline.splashNotes.members[i].x = strumline.receptors.members[i].x - 48;
 					strumline.splashNotes.members[i].y = strumline.receptors.members[i].y + (Receptor.swagWidth / 6) - 56;
 				}
+			}
 		}
 
 		// set the notes x and y
@@ -1078,13 +1080,12 @@ class PlayState extends MusicBeatState
 					else
 						strumNote.noteSpeed = Math.abs(songSpeed);
 
-					var roundedSpeed = FlxMath.roundDecimal(strumNote.noteSpeed, 2);
 					var receptorX:Float = strumline.receptors.members[Math.floor(strumNote.noteData)].x;
 					var receptorY:Float = strumline.receptors.members[Math.floor(strumNote.noteData)].y;
-					var psuedoY:Float = (downscrollMultiplier * -((Conductor.songPosition - strumNote.strumTime) * (0.45 * roundedSpeed)));
+					var psuedoY:Float = (downscrollMultiplier * -((Conductor.songPosition - strumNote.strumTime) * (0.45 * strumNote.noteSpeed)));
 					var psuedoX = 25 + strumNote.noteVisualOffset;
 
-					strumNote.y = receptorY
+					strumNote.y = receptorY + strumNote.offsetY
 						+ (Math.cos(flixel.math.FlxAngle.asRadians(strumNote.noteDirection)) * psuedoY)
 						+ (Math.sin(flixel.math.FlxAngle.asRadians(strumNote.noteDirection)) * psuedoX);
 					// painful math equation
@@ -1108,11 +1109,7 @@ class PlayState extends MusicBeatState
 							{
 								strumNote.y += (strumNote.height * 2);
 								if (strumNote.endHoldOffset == Math.NEGATIVE_INFINITY)
-								{
-									// set the end hold offset yeah I hate that I fix this like this
-									strumNote.endHoldOffset = (strumNote.prevNote.y - (strumNote.y + strumNote.height - 1));
-									// trace(strumNote.endHoldOffset);
-								}
+									strumNote.endHoldOffset = (strumNote.prevNote.y - (strumNote.y + strumNote.height));
 								else
 									strumNote.y += strumNote.endHoldOffset;
 							}
@@ -1124,10 +1121,9 @@ class PlayState extends MusicBeatState
 						if (downscrollMultiplier < 0)
 						{
 							strumNote.flipY = true;
-							if ((strumNote.parentNote != null && strumNote.parentNote.wasGoodHit)
-								&& strumNote.y - strumNote.offset.y * strumNote.scale.y + strumNote.height >= center
+							if (strumNote.y - strumNote.offset.y * strumNote.scale.y + strumNote.height >= center
 								&& (strumline.autoplay
-									|| (strumNote.wasGoodHit || (strumNote.prevNote.wasGoodHit && !strumNote.canBeHit))))
+									|| (strumNote.wasGoodHit || (strumNote.prevNote != null && strumNote.prevNote.wasGoodHit))))
 							{
 								var swagRect = new FlxRect(0, 0, strumNote.frameWidth, strumNote.frameHeight);
 								swagRect.height = (center - strumNote.y) / strumNote.scale.y;
@@ -1137,10 +1133,9 @@ class PlayState extends MusicBeatState
 						}
 						else if (downscrollMultiplier > 0)
 						{
-							if ((strumNote.parentNote != null && strumNote.parentNote.wasGoodHit)
-								&& strumNote.y + strumNote.offset.y * strumNote.scale.y <= center
+							if (strumNote.y + strumNote.offset.y * strumNote.scale.y <= center
 								&& (strumline.autoplay
-									|| (strumNote.wasGoodHit || (strumNote.prevNote.wasGoodHit && !strumNote.canBeHit))))
+									|| (strumNote.wasGoodHit || (strumNote.prevNote != null && strumNote.prevNote.wasGoodHit))))
 							{
 								var swagRect = new FlxRect(0, 0, strumNote.width / strumNote.scale.x, strumNote.height / strumNote.scale.y);
 								swagRect.y = (center - strumNote.y) / strumNote.scale.y;

@@ -243,14 +243,12 @@ class Note extends FNFSprite
 			newNote.alpha = Init.getSetting('Hold Opacity') * 0.01;
 
 			newNote.animation.play(Receptor.arrowCol[noteData] + 'holdend');
-
 			newNote.updateHitbox();
-			if (prevNote.isSustainNote)
+
+			if (prevNote != null && prevNote.isSustainNote)
 			{
 				prevNote.animation.play(Receptor.arrowCol[prevNote.noteData] + 'hold');
-
-				// prevNote.scale.y *= Conductor.stepCrochet / 100 * 1.5 * prevNote.noteSpeed;
-				// prevNote.updateHitbox();
+				prevNote.updateHitbox();
 			}
 		}
 
@@ -261,7 +259,7 @@ class Note extends FNFSprite
 			noteType:Int = 0):Note
 	{
 		var newNote:Note = new Note(strumTime, noteData, noteAlt, prevNote, isSustainNote, noteType);
-		newNote.holdHeight = 0.87;
+		newNote.holdHeight = 0.862;
 
 		// actually determine the quant of the note
 		if (newNote.noteQuant == -1)
