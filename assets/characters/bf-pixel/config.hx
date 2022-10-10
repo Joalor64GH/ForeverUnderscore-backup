@@ -33,7 +33,7 @@ function loadAnimations()
 		setCamOffsets(-30, -150);
 	}
 
-	if (PlayState.curStage == 'school' || curStage == 'schoolEvil')
+	if (PlayState.curStage == 'school' || PlayState.curStage == 'schoolEvil')
 		setOffsets(15, 400);
 
 	if (PlayState.curStage == 'school')
