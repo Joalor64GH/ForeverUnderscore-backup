@@ -396,18 +396,9 @@ class Init extends FlxState
 
 		// Some additional changes to default HaxeFlixel settings, both for ease of debugging and usability.
 		FlxG.fixedTimestep = false; // This ensures that the game is not tied to the FPS
-		FlxG.mouse.useSystemCursor = true; // Use system cursor because it's prettier
+		//FlxG.mouse.useSystemCursor = true; // Use system cursor because it's prettier
 		FlxG.mouse.visible = false; // Hide mouse on start
 		FlxGraphic.defaultPersist = true; // make sure we control all of the memory
-
-		if (FlxG.save.data.volume != null)
-			FlxG.sound.volume = FlxG.save.data.volume;
-		if (FlxG.save.data.mute != null)
-			FlxG.sound.muted = FlxG.save.data.mute;
-		if (FlxG.save.data.comboOffset != null)
-			comboOffset = FlxG.save.data.comboOffset;
-		if (FlxG.save.data.ratingOffset != null)
-			ratingOffset = FlxG.save.data.ratingOffset;
 
 		ForeverLocales.getLocale(trueSettings.get('Game Language'));
 

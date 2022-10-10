@@ -177,8 +177,8 @@ class Stage extends FlxTypedGroup<FlxBasic>
 		{
 			spawnGirlfriend = blah;
 		});
-		if (PlayState.contents != null)
-			setVar('songName', PlayState.SONG.song.toLowerCase());
+		setVar('songName', PlayState.SONG.song.toLowerCase());
+		setVar('curStage', PlayState.curStage);
 		setVar('BackgroundDancer', BackgroundDancer);
 		setVar('BackgroundGirls', BackgroundGirls);
 		setVar('TankmenBG', TankmenBG);

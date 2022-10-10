@@ -81,7 +81,11 @@ class CharacterOffsetEditor extends MusicBeatState
 		super.create();
 
 		FlxG.sound.music.stop();
+		var cursorAsset = ForeverTools.returnSkin('cursor', 'base', Init.trueSettings.get('UI Skin'), 'UI');
+		var cursor:FlxSprite = new FlxSprite().loadGraphic(Paths.image(cursorAsset));
+
 		FlxG.mouse.visible = true;
+		FlxG.mouse.load(cursor.pixels);
 
 		camGame = new FlxCamera();
 		camHUD = new FlxCamera();

@@ -244,8 +244,11 @@ class ChartEditor extends MusicBeatState
 
 		generateHUD();
 
-		FlxG.mouse.useSystemCursor = true; // Use system cursor because it's prettier
-		FlxG.mouse.visible = true; // Hide mouse on start
+		var cursorAsset = ForeverTools.returnSkin('cursor', 'base', Init.trueSettings.get('UI Skin'), 'UI');
+		var cursor:FlxSprite = new FlxSprite().loadGraphic(Paths.image(cursorAsset));
+
+		FlxG.mouse.visible = true;
+		FlxG.mouse.load(cursor.pixels);
 	}
 
 	var songText:FlxText;
@@ -837,7 +840,7 @@ class ChartEditor extends MusicBeatState
 			hold.y = prevNote.y + prevNote.height - hold.height * 0.5;
 			hold.scale.x = 0.5;
 			hold.updateHitbox();
-			holdsGroup.add(hold);
+			//holdsGroup.add(hold);
 			note.destroy();
 
 			/*

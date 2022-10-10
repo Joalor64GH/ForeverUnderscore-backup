@@ -219,8 +219,11 @@ class OriginalChartEditor extends MusicBeatState
 		add(curRenderedSustains);
 		add(curRenderedTexts);
 
+		var cursorAsset = ForeverTools.returnSkin('cursor', 'base', Init.trueSettings.get('UI Skin'), 'UI');
+		var cursor:FlxSprite = new FlxSprite().loadGraphic(Paths.image(cursorAsset));
+
 		FlxG.mouse.visible = true;
-		FlxG.mouse.useSystemCursor = true;
+		FlxG.mouse.load(cursor.pixels);
 	}
 
 	var sliderRate:FlxUISlider;

@@ -34,7 +34,11 @@ class JudgementOffsetState extends MusicBeatState
 	override function create()
 	{
 		super.create();
+		var cursorAsset = ForeverTools.returnSkin('cursor', 'base', Init.trueSettings.get('UI Skin'), 'UI');
+		var cursor:flixel.FlxSprite = new flixel.FlxSprite().loadGraphic(Paths.image(cursorAsset));
+
 		FlxG.mouse.visible = true;
+		FlxG.mouse.load(cursor.pixels);
 
 		judgeDefPos = FlxPoint.get();
 		comboDefPos = FlxPoint.get();

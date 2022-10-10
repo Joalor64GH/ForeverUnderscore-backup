@@ -1,5 +1,6 @@
 package states.editors;
 
+import haxe.io.Bytes;
 import base.MusicBeat.MusicBeatState;
 import flixel.FlxBasic;
 import flixel.FlxG;
@@ -20,7 +21,6 @@ import flixel.util.FlxGradient;
 import funkin.Note;
 import funkin.ui.menu.DebugUI.UIBox;
 import funkin.ui.menu.DebugUI;
-import haxe.io.Bytes;
 import lime.media.AudioBuffer;
 import lime.media.vorbis.VorbisFile;
 import openfl.display.BitmapData;
@@ -43,8 +43,11 @@ class TestState extends MusicBeatState
 	override public function create()
 	{
 		super.create();
-		FlxG.mouse.useSystemCursor = false;
+		var cursorAsset = ForeverTools.returnSkin('cursor', 'base', Init.trueSettings.get('UI Skin'), 'UI');
+		var cursor:FlxSprite = new FlxSprite().loadGraphic(Paths.image(cursorAsset));
+
 		FlxG.mouse.visible = true;
+		FlxG.mouse.load(cursor.pixels);
 
 		generateBackground();
 

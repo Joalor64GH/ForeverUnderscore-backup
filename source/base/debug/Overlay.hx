@@ -196,7 +196,11 @@ class Console extends TextField
 			if (showConsole)
 			{
 				wasMouseDisabled = FlxG.mouse.visible;
+				var cursorAsset = ForeverTools.returnSkin('cursor', 'base', Init.trueSettings.get('UI Skin'), 'UI');
+				var cursor:flixel.FlxSprite = new flixel.FlxSprite().loadGraphic(Paths.image(cursorAsset));
+
 				FlxG.mouse.visible = true;
+				FlxG.mouse.load(cursor.pixels);
 				requestUpdate = true;
 				scaleX = lime.app.Application.current.window.width / 1280;
 				scaleY = lime.app.Application.current.window.height / 720;
