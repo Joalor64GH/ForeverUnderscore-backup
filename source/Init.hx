@@ -89,7 +89,7 @@ class Init extends FlxState
 			NOT_FORCED
 		],
 		"Hitsound Type" => ['default', Selector, 'Choose the Note Hitsound you prefer.', NOT_FORCED, ''],
-		'Hitsound Volume' => [Checkmark, Selector, 'The volume for your Note Hitsounds.', NOT_FORCED],
+		'Hitsound Volume' => [0, Selector, 'The volume for your Hitsounds.', NOT_FORCED],
 		'Use Custom Note Speed' => [
 			false,
 			Checkmark,
@@ -201,13 +201,13 @@ class Init extends FlxState
 			"Whether the Score Bar should have an Animation for Hitting, based on your current ranking.",
 			NOT_FORCED
 		],
-		'Hide HUD' => [
+		'Hide User Interface' => [
 			false,
 			Checkmark,
 			"Whether the Game HUD should be hidden during gameplay.",
 			NOT_FORCED
 		],
-		"Game Language" => ['english', Selector, 'Choose a language for the Main UI.', NOT_FORCED, ''],
+		"Language" => ['english', Selector, 'Choose a language for the Main UI.', NOT_FORCED, ''],
 		'Counter' => [
 			'None',
 			Selector,
@@ -273,7 +273,7 @@ class Init extends FlxState
 			NOT_FORCED
 		],
 		'Darkness Opacity' => [
-			Checkmark,
+			0,
 			Selector,
 			'Darkens non-ui elements, useful if you find the characters and backgrounds distracting.',
 			NOT_FORCED
@@ -407,7 +407,7 @@ class Init extends FlxState
 		FlxG.mouse.visible = false; // Hide mouse on start
 		FlxGraphic.defaultPersist = true; // make sure we control all of the memory
 
-		ForeverLocales.getLocale(trueSettings.get('Game Language'));
+		ForeverLocales.getLocale(trueSettings.get('Language'));
 
 		CoolUtil.difficulties = CoolUtil.baseDifficulties.copy();
 
@@ -570,8 +570,8 @@ class Init extends FlxState
 		if (!gameSettings.get("Pause Song")[4].contains(trueSettings.get("Pause Song")))
 			trueSettings.set("Pause Song", 'breakfast');
 
-		gameSettings.get("Game Language")[4] = CoolUtil.returnAssetsLibrary('locales', '');
-		if (!gameSettings.get("Game Language")[4].contains(trueSettings.get("Game Language")))
-			trueSettings.set("Game Language", 'english');
+		gameSettings.get("Language")[4] = CoolUtil.returnAssetsLibrary('locales', '');
+		if (!gameSettings.get("Language")[4].contains(trueSettings.get("Language")))
+			trueSettings.set("Language", 'english');
 	}
 }

@@ -535,7 +535,7 @@ class PlayState extends MusicBeatState
 
 		uiHUD = new ClassHUD();
 		add(uiHUD);
-		uiHUD.visible = !Init.getSetting('Hide HUD');
+		uiHUD.visible = !Init.getSetting('Hide User Interface');
 		uiHUD.cameras = [camHUD];
 
 		ratingsGroup = new FlxTypedGroup<FNFSprite>();

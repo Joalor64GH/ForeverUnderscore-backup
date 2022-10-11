@@ -35,16 +35,20 @@ class Selector extends FlxTypedSpriteGroup<FlxSprite>
 		// generate multiple pieces
 		this.optionBooleans = optionBooleans;
 
+		var offset:Int = 0;
+		if (optionBooleans[0] || optionBooleans[1])
+			offset = 20;
+
 		#if html5
 		// lol heres how we fuck with everyone
-		var lock = new FlxSprite(shiftX + ((word.length) * 50) + (shiftX / 4) + ((optionBooleans[0]) ? 20 : 0), shiftY);
+		var lock = new FlxSprite(shiftX + ((word.length) * 50) + (shiftX / 4) + offset, shiftY);
 		lock.frames = Paths.getSparrowAtlas('menus/base/storymenu/campaign_menu_UI_assets');
 		lock.animation.addByPrefix('lock', 'lock', 24, false);
 		lock.animation.play('lock');
 		add(lock);
 		#else
 		leftSelector = createSelector(shiftX, shiftY, word, 'left');
-		rightSelector = createSelector(shiftX + ((word.length) * 50) + (shiftX / 4) + ((optionBooleans[0]) ? 20 : 0), shiftY, word, 'right');
+		rightSelector = createSelector(shiftX + ((word.length) * 50) + (shiftX / 4) + offset, shiftY, word, 'right');
 
 		add(leftSelector);
 		add(rightSelector);
@@ -54,10 +58,10 @@ class Selector extends FlxTypedSpriteGroup<FlxSprite>
 		if (optionBooleans.contains(true))
 		{
 			chosenOptionString = Std.string(Init.getSetting(word));
-			optionChosen = new Alphabet(FlxG.width / 2 + 200, shiftY + 20, chosenOptionString, false, false);
+			optionChosen = new Alphabet(FlxG.width / 2 + (word.length > 10 ? 300 : 200), shiftY + 20, chosenOptionString, false, false);
 		}
 		else
-			optionChosen = new Alphabet(FlxG.width / 2, shiftY + 20, chosenOptionString, true, false);
+			optionChosen = new Alphabet(FlxG.width / 2 + (word.length > 10 ? chosenOptionString.length * 20 : 0), shiftY + 15, chosenOptionString, true, false);
 
 		add(optionChosen);
 	}

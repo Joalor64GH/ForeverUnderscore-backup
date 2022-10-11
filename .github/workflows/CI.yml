@@ -55,7 +55,7 @@ jobs:
           haxelib install hxcpp-debug-server
           haxelib list
       - name: Compile
-        run: haxelib run lime build Project.xml linux -release -d enableUpdater
+        run: haxelib run lime build Project.xml linux -release
       - name: Publish Artifact
         uses: actions/upload-artifact@v2.2.4
         with:
@@ -93,7 +93,7 @@ jobs:
           haxelib list
         shell: cmd
       - name: Compile
-        run: haxelib run lime build windows -release -d enableUpdater
+        run: haxelib run lime build windows -release
       - name: Publish Artifact
         uses: actions/upload-artifact@v2.2.4
         with:
@@ -130,7 +130,7 @@ jobs:
           haxelib install hxcpp-debug-server
           haxelib list
       - name: Compile
-        run: haxelib run lime build mac -release -d enableUpdater
+        run: haxelib run lime build mac -release
       - name: Publish Artifact
         uses: actions/upload-artifact@v2.2.4
         with:

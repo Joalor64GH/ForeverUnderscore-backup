@@ -121,8 +121,8 @@ class OptionsMenuState extends MusicBeatState
 					["UI Skin", getFromOption],
 					['Colored Health Bar', getFromOption],
 					['Animated Score Color', getFromOption],
-					['Game Language', getFromOption],
-					['Hide HUD', getFromOption],
+					['Language', getFromOption],
+					['Hide User Interface', getFromOption],
 					['', null],
 					["Judgements and Combo", null],
 
@@ -151,7 +151,7 @@ class OptionsMenuState extends MusicBeatState
 		ForeverTools.resetMenuMusic();
 
 		// reload locales
-		ForeverLocales.getLocale(Init.trueSettings.get('Game Language'));
+		ForeverLocales.getLocale(Init.trueSettings.get('Language'));
 
 		// call the options menu
 		var bg = new FlxSprite(-85).loadGraphic(Paths.image('menus/base/menuDesat'));
@@ -363,7 +363,7 @@ class OptionsMenuState extends MusicBeatState
 		if (controls.BACK || FlxG.mouse.justPressedRight)
 		{
 			// reload locales
-			ForeverLocales.getLocale(Init.trueSettings.get('Game Language'));
+			ForeverLocales.getLocale(Init.trueSettings.get('Language'));
 			playSound('cancelMenu');
 
 			switch (lastChanged)
