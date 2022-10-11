@@ -2,21 +2,16 @@ package funkin;
 
 import flixel.FlxG;
 import flixel.FlxSprite;
-import flixel.graphics.frames.FlxAtlasFrames;
-import flixel.group.FlxGroup.FlxTypedGroup;
-import flixel.group.FlxSpriteGroup;
+import flixel.group.FlxSpriteGroup.FlxTypedSpriteGroup;
 import flixel.math.FlxMath;
-import flixel.tweens.FlxEase;
-import flixel.tweens.FlxTween;
 import flixel.util.FlxTimer;
-import states.menus.CreditsMenuState;
 
 using StringTools;
 
 /**
  * Loosley based on FlxTypeText lolol
  */
-class Alphabet extends FlxSpriteGroup
+class Alphabet extends FlxTypedSpriteGroup<AlphaCharacter>
 {
 	public var textSpeed:Float = 0.06;
 	public var randomSpeed:Bool = false; // When enabled, it'll change the speed of the text speed randomly between 80% and 180%
@@ -31,24 +26,19 @@ class Alphabet extends FlxSpriteGroup
 	public var yOffset:Float = 0;
 	public var targetY:Float = 0;
 	public var disableX:Bool = false;
-	public var controlGroupID:Int = 0;
-	public var extensionJ:Int = 0;
 
-	public var textInit:String;
+	var textInit:String;
 
 	public var xTo = 100;
 
 	public var isMenuItem:Bool = false;
-	public var boldOffset:Bool = false;
 
 	public var text:String = "";
 	public var _finalText:String = "";
 	public var _curText:String = "";
 
-	public var widthOfWords:Float = FlxG.width;
-
 	public var finishedLine:Bool = false;
-	public var typed:Bool = false;
+	public var typed(default, null):Bool = false;
 
 	var yMulti:Float = 1;
 
@@ -68,7 +58,7 @@ class Alphabet extends FlxSpriteGroup
 	public var playSounds:Bool = true;
 	public var lastPlayed:Int = 0;
 
-	public function new(x:Float, y:Float, text:String = "", ?bold:Bool = false, typed:Bool = false, ?textSize:Float = 1)
+	public function new(x:Float = 0, y:Float = 0, text:String = "", ?bold:Bool = false, typed:Bool = false, ?textSize:Float = 1)
 	{
 		super(x, y);
 		forceX = Math.NEGATIVE_INFINITY;
@@ -80,8 +70,11 @@ class Alphabet extends FlxSpriteGroup
 		startText(text, typed);
 	}
 
-	public function startText(newText, typed)
+	public function startText(newText:String, ?typed:Bool)
 	{
+		if (typed == null)
+			typed = this.typed;
+
 		yMulti = 1;
 		finishedLine = false;
 		xPosResetted = true;
@@ -101,14 +94,11 @@ class Alphabet extends FlxSpriteGroup
 				addText();
 			}
 		}
-		else
+		else if (swagTypingTimer != null)
 		{
-			if (swagTypingTimer != null)
-			{
-				destroyText();
-				swagTypingTimer.cancel();
-				swagTypingTimer.destroy();
-			}
+			destroyText();
+			swagTypingTimer.cancel();
+			swagTypingTimer.destroy();
 		}
 	}
 
@@ -120,10 +110,12 @@ class Alphabet extends FlxSpriteGroup
 		clear();
 	}
 
-	public var arrayLetters:Array<AlphaCharacter>;
+	public var arrayLetters:Array<AlphaCharacter> = [];
 
 	public function addText()
 	{
+		typed = false;
+
 		doSplitWords();
 
 		arrayLetters = [];
@@ -191,12 +183,12 @@ class Alphabet extends FlxSpriteGroup
 	function doSplitWords():Void
 		splitWords = _finalText.split("");
 
-	public var personTalking:String = 'gf';
-
 	public var swagTypingTimer:FlxTimer;
 
 	public function startTypedText():Void
 	{
+		typed = true;
+
 		_finalText = text;
 		doSplitWords();
 
@@ -342,7 +334,7 @@ class Alphabet extends FlxSpriteGroup
 					arrayLetters[i].destroy();
 			//
 			lastSprite = null;
-			startText(text, false);
+			startText(text, typed);
 		}
 
 		super.update(elapsed);

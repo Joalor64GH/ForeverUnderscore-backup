@@ -474,26 +474,10 @@ class OptionsMenuState extends MusicBeatState
 						// checkmark
 						var checkmark = ForeverAssets.generateCheckmark(10, letter.y, 'checkboxThingie', 'base', 'default', 'UI');
 						checkmark.playAnim(Std.string(Init.getSetting(letter.text)) + ' finished');
-
 						extrasMap.set(letter, checkmark);
 					case Init.SettingTypes.Selector:
 						// selector
-						var selector:Selector = new Selector(10, letter.y, letter.text, Init.gameSettings.get(letter.text)[4], [
-							// wow this SUCKS, I need to rewrite this already;
-							(letter.text == 'Framerate Cap') ? true : false,
-							(letter.text == 'Darkness Opacity')
-							? true : false,
-							(letter.text == 'Hitsound Volume')
-							? true : false,
-							(letter.text == 'Scroll Speed')
-							? true : false,
-							(letter.text == 'Arrow Opacity')
-							? true : false,
-							(letter.text == 'Splash Opacity')
-							? true : false,
-							(letter.text == 'Hold Opacity' ? true : false)
-						]);
-
+						var selector:Selector = new Selector(10, letter.y, letter.text, Init.gameSettings.get(letter.text)[4]);
 						extrasMap.set(letter, selector);
 					default:
 						// dont do ANYTHING
@@ -530,7 +514,6 @@ class OptionsMenuState extends MusicBeatState
 						optionOnChange();
 					}
 				case Init.SettingTypes.Selector:
-					#if !html5
 					var selector:Selector = currentAttachmentMap.get(activeSubgroup.members[curSelection]);
 					if (!controls.UI_LEFT)
 						selector.selectorPlay('left');
@@ -547,7 +530,6 @@ class OptionsMenuState extends MusicBeatState
 						updateSelector(selector, -1);
 						optionOnChange();
 					}
-					#end
 				default:
 					// none
 			}
@@ -591,27 +573,27 @@ class OptionsMenuState extends MusicBeatState
 
 	function updateSelector(selector:Selector, updateBy:Int)
 	{
-		var fps = selector.optionBooleans[0];
-		var bgdark = selector.optionBooleans[1];
-		var hitVol = selector.optionBooleans[2];
-		var scrollspeed = selector.optionBooleans[3];
-		var strumlineOp = selector.optionBooleans[4];
-		var notesplashOp = selector.optionBooleans[5];
-		var holdOp = selector.optionBooleans[6];
-
-		/**
-		 * left to right, minimum value, maximum value, change value
-		 * rest is default stuff that I needed to keep
-		**/
-		if (fps)
-			generateSelector(30, 360, 15, updateBy, selector);
-		else if (bgdark || hitVol)
-			generateSelector(0, 100, 5, updateBy, selector);
-		else if (scrollspeed)
-			generateSelector(1, 6, 0.1, updateBy, selector);
-		else if (strumlineOp || notesplashOp || holdOp)
-			generateSelector(0, 100, 10, updateBy, selector);
-		if (!fps && !bgdark && !hitVol && !scrollspeed && !strumlineOp && !notesplashOp && !holdOp)
+		if (selector.isNumber)
+		{
+			/**
+			 * left to right, minimum value, maximum value, change value
+			 * rest is default stuff that I needed to keep
+			**/
+			switch (selector.name)
+			{
+				case 'Framerate Cap':
+					generateSelector(updateBy, selector, 30, 360, 15);
+				case 'Darkness Opacity' | 'Hitsound Volume':
+					generateSelector(updateBy, selector, 0, 100, 5);
+				case 'Scroll Speed':
+					generateSelector(updateBy, selector, 1, 6, 0.1);
+				case 'Arrow Opacity':
+					generateSelector(updateBy, selector, 0, 100, 10);
+				default:
+					generateSelector(updateBy, selector);
+			}
+		}
+		else
 		{
 			// get the current option as a number
 			var storedNumber:Int = 0;
@@ -620,7 +602,7 @@ class OptionsMenuState extends MusicBeatState
 			{
 				for (curOption in 0...selector.options.length)
 				{
-					if (selector.options[curOption] == selector.optionChosen.text)
+					if (selector.options[curOption] == selector.chosenOptionString)
 						storedNumber = curOption;
 				}
 
@@ -639,17 +621,16 @@ class OptionsMenuState extends MusicBeatState
 			playSound('scrollMenu');
 
 			selector.chosenOptionString = selector.options[newSelection];
-			selector.optionChosen.text = selector.chosenOptionString;
 
-			Init.setSetting(activeSubgroup.members[curSelection].text, selector.chosenOptionString);
+			Init.setSetting(selector.name, selector.chosenOptionString);
 			Init.saveSettings();
 		}
 	}
 
-	function generateSelector(min:Float = 0, max:Float = 100, inc:Float = 5, updateBy:Int, selector:Selector)
+	function generateSelector(updateBy:Int, selector:Selector, min:Float = 0, max:Float = 100, inc:Float = 5)
 	{
 		// lazily hardcoded selector generator.
-		var originalValue = Init.getSetting(activeSubgroup.members[curSelection].text);
+		var originalValue = Init.getSetting(selector.name);
 		var increase = inc * updateBy;
 		// min
 		if (originalValue + increase < min)
@@ -667,8 +648,7 @@ class OptionsMenuState extends MusicBeatState
 
 		originalValue += increase;
 		selector.chosenOptionString = Std.string(originalValue);
-		selector.optionChosen.text = Std.string(originalValue);
-		Init.setSetting(activeSubgroup.members[curSelection].text, originalValue);
+		Init.setSetting(selector.name, originalValue);
 		Init.saveSettings();
 	}
 

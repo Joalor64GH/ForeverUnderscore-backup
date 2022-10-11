@@ -564,6 +564,8 @@ class PlayState extends MusicBeatState
 			copyKey(Init.gameControls.get('UP')[0]),
 			copyKey(Init.gameControls.get('RIGHT')[0])
 		];
+		for (i in 0...noteControls.length)
+			bindsArray[i] = controls.getInputsFor(noteControls[i], Gamepad(0));
 
 		FlxG.stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyPress);
 		FlxG.stage.addEventListener(KeyboardEvent.KEY_UP, onKeyRelease);
@@ -637,26 +639,19 @@ class PlayState extends MusicBeatState
 		return copiedArray;
 	}
 
-	var keysArray:Array<Array<FlxKey>>;
-
-	var holdingKeys:Array<Bool> = [];
-
 	/*
 		input system functions
 		for pressing and releasing notes
 	 */
-	public function onKeyPress(event:KeyboardEvent):Void
+	public var keysArray:Array<Array<FlxKey>>;
+	public var holdingKeys:Array<Bool> = [];
+
+	public function handleInput(key:Int, down:Bool)
 	{
-		var eventKey:FlxKey = event.keyCode;
-		var key:Int = getKeyFromEvent(eventKey);
+		holdingKeys[key] = down;
 
-		if (bfStrums.autoplay)
-			return;
-
-		if (key >= 0 && !holdingKeys[key] && (FlxG.keys.enabled && !paused && (FlxG.state.active || FlxG.state.persistentUpdate)))
+		if (down)
 		{
-			holdingKeys[key] = true;
-
 			if (generatedMusic)
 			{
 				var previousTime:Float = Conductor.songPosition;
@@ -676,15 +671,12 @@ class PlayState extends MusicBeatState
 				if (possibleNoteList.length > 0)
 				{
 					var eligable = true;
-					var firstNote = true;
 					// loop through the possible notes
 					for (coolNote in possibleNoteList)
 					{
 						for (noteDouble in pressedNotes)
 						{
-							if (Math.abs(noteDouble.strumTime - coolNote.strumTime) < 10)
-								firstNote = false;
-							else
+							if (Math.abs(noteDouble.strumTime - coolNote.strumTime) >= 10)
 								eligable = false;
 						}
 
@@ -714,23 +706,33 @@ class PlayState extends MusicBeatState
 			if (bfStrums.receptors.members[key] != null && bfStrums.receptors.members[key].animation.curAnim.name != 'confirm')
 				bfStrums.receptors.members[key].playAnim('pressed', true);
 		}
+		else
+			// receptor reset
+			if (key >= 0 && bfStrums.receptors.members[key] != null)
+				bfStrums.receptors.members[key].playAnim('static');
+	}
+
+	public function onKeyPress(event:KeyboardEvent):Void
+	{
+		if (!bfStrums.autoplay && FlxG.keys.enabled && !paused && (FlxG.state.active || FlxG.state.persistentUpdate))
+		{
+			var eventKey:FlxKey = event.keyCode;
+			var key:Int = getKeyFromEvent(eventKey);
+
+			if (key >= 0 && !holdingKeys[key])
+				handleInput(key, true);
+		}
 	}
 
 	public function onKeyRelease(event:KeyboardEvent):Void
 	{
-		var eventKey:FlxKey = event.keyCode;
-		var key:Int = getKeyFromEvent(eventKey);
-
-		if (bfStrums.autoplay)
-			return;
-
-		if (key >= 0 && (FlxG.keys.enabled && !paused && (FlxG.state.active || FlxG.state.persistentUpdate)))
+		if (!bfStrums.autoplay && FlxG.keys.enabled && !paused && (FlxG.state.active || FlxG.state.persistentUpdate))
 		{
-			holdingKeys[key] = false;
+			var eventKey:FlxKey = event.keyCode;
+			var key:Int = getKeyFromEvent(eventKey);
 
-			// receptor reset
-			if (key >= 0 && bfStrums.receptors.members[key] != null)
-				bfStrums.receptors.members[key].playAnim('static');
+			if (key >= 0)
+				handleInput(key, false);
 		}
 	}
 
@@ -750,7 +752,27 @@ class PlayState extends MusicBeatState
 		return -1;
 	}
 
-	var staticDisplace:Int = 0;
+	var noteControls:Array<Control> = [NOTE_LEFT, NOTE_DOWN, NOTE_UP, NOTE_RIGHT];
+	var bindsArray:Array<Array<Int>> = [];
+
+	function controllerInput()
+	{
+		if (controls.gamepadsAdded.length > 0)
+		{
+			var gamepad:FlxGamepad = FlxG.gamepads.getByID(controls.gamepadsAdded[0]);
+			if (gamepad != null)
+			{
+				for (i in 0...noteControls.length)
+				{
+					var bind:Array<Int> = bindsArray[i];
+					if (gamepad.anyJustPressed(bind))
+						onKeyPress(new KeyboardEvent(KeyboardEvent.KEY_DOWN, true, true, -1, keysArray[i][0]));
+					if (gamepad.anyJustReleased(bind))
+						onKeyRelease(new KeyboardEvent(KeyboardEvent.KEY_DOWN, true, true, -1, keysArray[i][0]));
+				}
+			}
+		}
+	}
 
 	var lastSection:Int = 0;
 
@@ -1026,26 +1048,6 @@ class PlayState extends MusicBeatState
 				daNote.destroy();
 			}
 			--i;
-		}
-	}
-
-	function controllerInput()
-	{
-		if (controls.gamepadsAdded.length > 0)
-		{
-			var gamepad:FlxGamepad = FlxG.gamepads.getByID(controls.gamepadsAdded[0]);
-			if (gamepad != null)
-			{
-				var directions:Array<Control> = [NOTE_LEFT, NOTE_DOWN, NOTE_UP, NOTE_RIGHT];
-				for (i in 0...directions.length)
-				{
-					var bind:Array<Int> = controls.getInputsFor(directions[i], Gamepad(gamepad.id));
-					if (gamepad.anyJustPressed(bind))
-						onKeyPress(new KeyboardEvent(KeyboardEvent.KEY_DOWN, true, true, -1, keysArray[i][0]));
-					if (gamepad.anyJustReleased(bind))
-						onKeyRelease(new KeyboardEvent(KeyboardEvent.KEY_DOWN, true, true, -1, keysArray[i][0]));
-				}
-			}
 		}
 	}
 

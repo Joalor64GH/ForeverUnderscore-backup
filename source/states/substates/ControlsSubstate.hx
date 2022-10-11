@@ -173,8 +173,6 @@ class ControlsSubstate extends MusicBeatSubstate
 				secondaryText.isMenuItem = true;
 				secondaryText.alpha = 0.6;
 
-				secondaryText.controlGroupID = i;
-				secondaryText.extensionJ = j;
 				otherKeys.add(secondaryText);
 			}
 		}
