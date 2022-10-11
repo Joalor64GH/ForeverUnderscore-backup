@@ -77,14 +77,6 @@ enum Control
 	CHEAT;
 }
 
-enum KeyboardScheme
-{
-	Solo;
-	Duo(first:Bool);
-	None;
-	Custom;
-}
-
 /**
  * A list of actions that a player would invoke via some input device.
  * Uses FlxActions to funnel various inputs to a single action.
@@ -128,7 +120,6 @@ class Controls extends FlxActionSet
 	#end
 
 	public var gamepadsAdded:Array<Int> = [];
-	public var keyboardScheme = KeyboardScheme.None;
 
 	public var UI_UP(get, never):Bool;
 
@@ -275,7 +266,7 @@ class Controls extends FlxActionSet
 	inline function get_CHEAT()
 		return _cheat.check();
 
-	public function new(name, scheme = None)
+	public function new(name)
 	{
 		super(name);
 
@@ -311,8 +302,6 @@ class Controls extends FlxActionSet
 
 		for (action in digitalActions)
 			byName[action.name] = action;
-
-		setKeyboardScheme(scheme, false);
 	}
 
 	#if mobile
@@ -580,71 +569,6 @@ class Controls extends FlxActionSet
 		}
 	}
 
-	public function copyFrom(controls:Controls, ?device:Device)
-	{
-		#if (haxe >= "4.0.0")
-		for (name => action in controls.byName)
-		{
-			for (input in action.inputs)
-			{
-				if (device == null || isDevice(input, device))
-					byName[name].add(cast input);
-			}
-		}
-		#else
-		for (name in controls.byName.keys())
-		{
-			var action = controls.byName[name];
-			for (input in action.inputs)
-			{
-				if (device == null || isDevice(input, device))
-					byName[name].add(cast input);
-			}
-		}
-		#end
-
-		switch (device)
-		{
-			case null:
-				// add all
-				#if (haxe >= "4.0.0")
-				for (gamepad in controls.gamepadsAdded)
-					if (!gamepadsAdded.contains(gamepad))
-						gamepadsAdded.push(gamepad);
-				#else
-				for (gamepad in controls.gamepadsAdded)
-					if (gamepadsAdded.indexOf(gamepad) == -1)
-						gamepadsAdded.push(gamepad);
-				#end
-
-				mergeKeyboardScheme(controls.keyboardScheme);
-
-			case Gamepad(id):
-				gamepadsAdded.push(id);
-			case Keys:
-				mergeKeyboardScheme(controls.keyboardScheme);
-		}
-	}
-
-	inline public function copyTo(controls:Controls, ?device:Device)
-	{
-		controls.copyFrom(this, device);
-	}
-
-	function mergeKeyboardScheme(scheme:KeyboardScheme):Void
-	{
-		if (scheme != None)
-		{
-			switch (keyboardScheme)
-			{
-				case None:
-					keyboardScheme = scheme;
-				default:
-					keyboardScheme = Custom;
-			}
-		}
-	}
-
 	/**
 	 * Sets all actions that pertain to the binder to trigger when the supplied keys are used.
 	 * If binder is a literal you can inline this
@@ -688,12 +612,10 @@ class Controls extends FlxActionSet
 		}
 	}
 
-	public function setKeyboardScheme(scheme:KeyboardScheme, reset = true)
+	public function loadKeyboardScheme()
 	{
-		// if (reset)
 		removeKeyboard();
 
-		// keyboardScheme = scheme;
 		inline bindKeys(Control.NOTE_UP, [Init.gameControls.get('UP')[0][0], Init.gameControls.get('UP')[0][1]]);
 		inline bindKeys(Control.NOTE_DOWN, [Init.gameControls.get('DOWN')[0][0], Init.gameControls.get('DOWN')[0][1]]);
 		inline bindKeys(Control.NOTE_LEFT, [Init.gameControls.get('LEFT')[0][0], Init.gameControls.get('LEFT')[0][1]]);
@@ -718,7 +640,24 @@ class Controls extends FlxActionSet
 		inline bindKeys(Control.CHEAT, [Init.gameControls.get('CHEAT')[0][0], Init.gameControls.get('CHEAT')[0][1]]);
 	}
 
-	function removeKeyboard()
+	public function addGamepad(id:Int, ?buttonMap:Map<Control, Array<FlxGamepadInputID>>):Void
+	{
+		if (!gamepadsAdded.contains(id))
+			gamepadsAdded.push(id);
+
+		if (buttonMap != null)
+		{
+			#if (haxe >= "4.0.0")
+			for (control => buttons in buttonMap)
+			inline bindButtons(control, id, buttons);
+			#else
+			for (control in buttonMap.keys())
+				bindButtons(control, id, buttonMap[control]);
+			#end
+		}
+	}
+
+	public function removeKeyboard()
 	{
 		for (action in this.digitalActions)
 		{
@@ -730,19 +669,6 @@ class Controls extends FlxActionSet
 					action.remove(input);
 			}
 		}
-	}
-
-	public function addGamepad(id:Int, ?buttonMap:Map<Control, Array<FlxGamepadInputID>>):Void
-	{
-		gamepadsAdded.push(id);
-
-		#if (haxe >= "4.0.0")
-		for (control => buttons in buttonMap)
-		inline bindButtons(control, id, buttons);
-		#else
-		for (control in buttonMap.keys())
-			bindButtons(control, id, buttonMap[control]);
-		#end
 	}
 
 	public function removeGamepad(deviceID:Int = FlxInputDeviceID.ALL):Void
@@ -855,7 +781,7 @@ class Controls extends FlxActionSet
 		switch (device)
 		{
 			case Keys:
-				setKeyboardScheme(None);
+				removeKeyboard();
 			case Gamepad(id):
 				removeGamepad(id);
 		}

@@ -1,9 +1,8 @@
 package funkin;
 
 import base.Controls;
-import flixel.FlxCamera;
 import flixel.FlxG;
-import flixel.util.FlxSignal;
+import flixel.input.gamepad.FlxGamepad;
 
 /**
 	I quite honestly have no use for this yet, I just wouldn't like to change how the meta information works
@@ -12,11 +11,11 @@ import flixel.util.FlxSignal;
 **/
 class PlayerSettings
 {
-	static public var numPlayers(default, null) = 0;
-	static public var numAvatars(default, null) = 0;
+	// static public var numPlayers(default, null) = 0;
+	// static public var numAvatars(default, null) = 0;
 	static public var player1(default, null):PlayerSettings;
-	static public var player2(default, null):PlayerSettings;
 
+	// static public var player2(default, null):PlayerSettings;
 	// #if (haxe >= "4.0.0")
 	// static public final onAvatarAdd = new FlxTypedSignal<PlayerSettings->Void>();
 	// static public final onAvatarRemove = new FlxTypedSignal<PlayerSettings->Void>();
@@ -35,15 +34,10 @@ class PlayerSettings
 	// public var avatar:Player;
 	// public var camera(get, never):PlayCamera;
 
-	function new(id, scheme)
+	function new(id)
 	{
 		this.id = id;
-		this.controls = new Controls('player$id', scheme);
-	}
-
-	public function setKeyboardScheme(scheme)
-	{
-		controls.setKeyboardScheme(scheme);
+		this.controls = new Controls('player$id');
 	}
 
 	/* 
@@ -96,7 +90,7 @@ class PlayerSettings
 			{
 				settings = player2;
 				if (player1.controls.keyboardScheme.match(Duo(_)))
-					player1.setKeyboardScheme(Solo);
+					player1.reloadKeyboardScheme();
 			}
 			else
 				throw "Cannot remove avatar that is not for a player";
@@ -121,8 +115,8 @@ class PlayerSettings
 	{
 		if (player1 == null)
 		{
-			player1 = new PlayerSettings(0, Solo);
-			++numPlayers;
+			player1 = new PlayerSettings(0);
+			// ++numPlayers;
 		}
 
 		var numGamepads = FlxG.gamepads.numActiveGamepads;
@@ -135,26 +129,34 @@ class PlayerSettings
 			player1.controls.addDefaultGamepad(0);
 		}
 
-		if (numGamepads > 1)
-		{
-			if (player2 == null)
-			{
-				player2 = new PlayerSettings(1, None);
-				++numPlayers;
-			}
+		// if (numGamepads > 1)
+		// {
+		// 	if (player2 == null)
+		// 	{
+		// 		player2 = new PlayerSettings(1, None);
+		// 		++numPlayers;
+		// 	}
 
-			var gamepad = FlxG.gamepads.getByID(1);
-			if (gamepad == null)
-				throw 'Unexpected null gamepad. id:0';
+		// 	var gamepad = FlxG.gamepads.getByID(1);
+		// 	if (gamepad == null)
+		// 		throw 'Unexpected null gamepad. id:0';
 
-			player2.controls.addDefaultGamepad(1);
-		}
+		// 	player2.controls.addDefaultGamepad(1);
+		// }
+
+		FlxG.gamepads.deviceConnected.add(onGamepadConnection);
+	}
+
+	static function onGamepadConnection(pad:FlxGamepad)
+	{
+		player1.controls.addDefaultGamepad(pad.id);
 	}
 
 	static public function reset()
 	{
 		player1 = null;
-		player2 = null;
-		numPlayers = 0;
+		// player2 = null;
+		// numPlayers = 0;
+		FlxG.gamepads.deviceConnected.remove(onGamepadConnection);
 	}
 }

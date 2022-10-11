@@ -40,8 +40,10 @@ class TitleState extends MusicBeatState
 
 	override public function create():Void
 	{
-		controls.setKeyboardScheme(None, false);
+		controls.loadKeyboardScheme();
+
 		curWacky = FlxG.random.getObject(getIntroTextShit());
+
 		super.create();
 
 		swagShader = new ColorSwap();
