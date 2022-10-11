@@ -69,6 +69,10 @@ class TitleState extends MusicBeatState
 			Discord.changePresence('TITLE SCREEN', 'Main Menu');
 			#end
 
+			#if GAME_UPDATER
+			ForeverTools.checkUpdates();
+			#end
+
 			ForeverTools.resetMenuMusic(true);
 		}
 
@@ -146,10 +150,6 @@ class TitleState extends MusicBeatState
 			skipIntro();
 		else
 			initialized = true;
-
-		#if GAME_UPDATER
-		ForeverTools.checkUpdates();
-		#end
 	}
 
 	function getIntroTextShit():Array<Array<String>>

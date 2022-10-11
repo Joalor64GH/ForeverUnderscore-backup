@@ -42,9 +42,6 @@ class WarningState extends MusicBeatState
 		// uh
 		persistentUpdate = persistentDraw = true;
 
-		if (leftState || Init.getSetting('Left Flashing State'))
-			endState(warningType);
-
 		switch (warningType)
 		{
 			case 'update':
@@ -124,13 +121,12 @@ class WarningState extends MusicBeatState
 		switch (type)
 		{
 			case 'update':
-				leftState = true;
-
 				if (!FlxG.keys.justPressed.ESCAPE)
 				{
 					FlxG.sound.play(Paths.sound('confirmMenu'));
 					FlxFlicker.flicker(warningText, 1, 0.06 * 2, true, false, function(flick:FlxFlicker)
 					{
+						leftState = true;
 						warningText.alpha = 0;
 						for (i in bgSprites)
 							i.alpha = 0;
@@ -146,19 +142,19 @@ class WarningState extends MusicBeatState
 					FlxTween.tween(warningText, {alpha: 0}, 0.6, {
 						onComplete: function(twn:FlxTween)
 						{
+							leftState = true;
 							Main.switchState(this, new MainMenuState());
 						}
 					});
 				}
 			case 'flashing':
-				Init.trueSettings.set('Left Flashing State', true);
-
 				if (!FlxG.keys.justPressed.ESCAPE)
 				{
 					FlxG.sound.play(Paths.sound('confirmMenu'));
 					Init.trueSettings.set('Disable Flashing Lights', true);
 					FlxFlicker.flicker(warningText, 1, 0.06 * 2, true, false, function(flick:FlxFlicker)
 					{
+						Init.trueSettings.set('Left Flashing State', true);
 						warningText.alpha = 0;
 						for (i in bgSprites)
 							i.alpha = 0;
@@ -173,6 +169,7 @@ class WarningState extends MusicBeatState
 					FlxTween.tween(warningText, {alpha: 0}, 0.6, {
 						onComplete: function(twn:FlxTween)
 						{
+							Init.trueSettings.set('Left Flashing State', true);
 							Main.switchState(this, new TitleState());
 						}
 					});
