@@ -178,8 +178,8 @@ class ChartEditor extends MusicBeatState
 		strumGroup.screenCenter(X);
 
 		// add quant markers;
-		markerL = new FlxSprite(-8, -12).loadGraphic(Paths.image('menus/chart editor/marker'));
-		markerR = new FlxSprite((FlxG.width / 2) - 8, -12).loadGraphic(Paths.image('menus/chart editor/marker'));
+		markerL = new FlxSprite(-8, -12).loadGraphic(Paths.image('menus/chart/marker'));
+		markerR = new FlxSprite((FlxG.width / 2) - 8, -12).loadGraphic(Paths.image('menus/chart/marker'));
 		strumGroup.add(markerL);
 		strumGroup.add(markerR);
 
@@ -864,7 +864,7 @@ class ChartEditor extends MusicBeatState
 	private function generateBackground()
 	{
 		coolGrid = new FlxBackdrop(null, 1, 1, true, true, 1, 1);
-		coolGrid.loadGraphic(Paths.image('menus/chart editor/grid'));
+		coolGrid.loadGraphic(Paths.image('menus/chart/grid'));
 		coolGrid.alpha = (32 / 255);
 		add(coolGrid);
 

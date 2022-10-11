@@ -329,7 +329,7 @@ class ForeverAssets
 				newStaticArrow.addOffset('confirm', -67, -50);
 
 			case 'chart editor':
-				newStaticArrow.loadGraphic(Paths.image('menus/chart editor/note_array'), true, 157, 156);
+				newStaticArrow.loadGraphic(Paths.image('menus/chart/note_array'), true, 157, 156);
 				newStaticArrow.animation.add('static', [staticArrowType]);
 				newStaticArrow.animation.add('pressed', [16 + staticArrowType], 12, false);
 				newStaticArrow.animation.add('confirm', [4 + staticArrowType, 8 + staticArrowType, 16 + staticArrowType], 24, false);

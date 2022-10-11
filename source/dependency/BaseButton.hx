@@ -22,7 +22,7 @@ class BaseButton extends FlxShape
 		this.clickThing = clickThing;
 		this.size = size;
 
-		// loadGraphic(Paths.image('menus/chart editor/ui-buttons/charting_button-${size.toLowerCase()}'));
+		// loadGraphic(Paths.image('menus/chart/ui-buttons/charting_button-${size.toLowerCase()}'));
 		antialiasing = !Init.getSetting('Disable Antialiasing');
 		scrollFactor.set();
 	}

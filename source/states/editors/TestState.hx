@@ -61,7 +61,7 @@ class TestState extends MusicBeatState
 				{name: "Note", label: 'Note'}
 			];
 
-			var baseBox = new FlxUI9SliceSprite(0, 0, Paths.image('UI/forever/base/chart editor/box_ui'), new Rectangle(0, 0, 200, 200), [10, 10, 90, 90]);
+			var baseBox = new FlxUI9SliceSprite(0, 0, Paths.image('UI/forever/base/chart/box_ui'), new Rectangle(0, 0, 200, 200), [10, 10, 90, 90]);
 			UI_box = new FlxUITabMenu(baseBox, tabs, true);
 
 			UI_box.resize(300, 400);
@@ -77,7 +77,7 @@ class TestState extends MusicBeatState
 	function generateBackground()
 	{
 		var coolGrid = new FlxBackdrop(null, 1, 1, true, true, 1, 1);
-		coolGrid.loadGraphic(Paths.image('UI/forever/base/chart editor/grid'));
+		coolGrid.loadGraphic(Paths.image('UI/forever/base/chart/grid'));
 		coolGrid.alpha = (32 / 255);
 		add(coolGrid);
 

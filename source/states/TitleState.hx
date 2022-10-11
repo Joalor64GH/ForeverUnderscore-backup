@@ -48,17 +48,6 @@ class TitleState extends MusicBeatState
 
 		swagShader = new ColorSwap();
 
-		if (!initialized)
-		{
-			#if DISCORD_RPC
-			Discord.changePresence('TITLE SCREEN', 'Main Menu');
-			#end
-
-			#if GAME_UPDATER
-			ForeverTools.checkUpdates();
-			#end
-		}
-
 		startIntro();
 	}
 
@@ -76,6 +65,10 @@ class TitleState extends MusicBeatState
 	{
 		if (!initialized)
 		{
+			#if DISCORD_RPC
+			Discord.changePresence('TITLE SCREEN', 'Main Menu');
+			#end
+
 			ForeverTools.resetMenuMusic(true);
 		}
 
@@ -153,6 +146,10 @@ class TitleState extends MusicBeatState
 			skipIntro();
 		else
 			initialized = true;
+
+		#if GAME_UPDATER
+		ForeverTools.checkUpdates();
+		#end
 	}
 
 	function getIntroTextShit():Array<Array<String>>

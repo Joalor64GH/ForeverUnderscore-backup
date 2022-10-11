@@ -8,6 +8,8 @@ import flixel.effects.FlxFlicker;
 import flixel.text.FlxText;
 import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
+import flixel.util.FlxGradient;
+import openfl.display.BlendMode;
 import states.menus.MainMenuState;
 
 /**
@@ -40,6 +42,9 @@ class WarningState extends MusicBeatState
 		// uh
 		persistentUpdate = persistentDraw = true;
 
+		if (leftState || Init.getSetting('Left Flashing State'))
+			endState(warningType);
+
 		switch (warningType)
 		{
 			case 'update':
@@ -59,8 +64,7 @@ class WarningState extends MusicBeatState
 				fieldOffset = 50;
 		}
 
-		var bg:FlxSprite = new FlxSprite().makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
-		add(bg);
+		generateBackground();
 
 		warningText = new FlxText(0, 0, FlxG.width - fieldOffset, textField, 32);
 		warningText.setFormat("VCR OSD Mono", 32, FlxColor.WHITE, CENTER);
@@ -76,77 +80,114 @@ class WarningState extends MusicBeatState
 	{
 		super.update(elapsed);
 
-		if (controls.ACCEPT || controls.BACK)
+		if (FlxG.keys.justPressed.ENTER || FlxG.keys.justPressed.ESCAPE)
 		{
-			textFinishCallback(warningType);
 			FlxTransitionableState.skipNextTransIn = true;
+			textFinishCallback(warningType);
 		}
+	}
+
+	var background:FlxSprite;
+	var darkBackground:FlxSprite;
+	var funkyBack:FlxSprite;
+
+	function generateBackground()
+	{
+		background = FlxGradient.createGradientFlxSprite(FlxG.width, FlxG.height, [FlxColor.fromRGB(167, 103, 225), FlxColor.fromRGB(137, 20, 181)]);
+		background.alpha = 0;
+		add(background);
+
+		darkBackground = new FlxSprite().makeGraphic(1, 1, FlxColor.BLACK);
+		darkBackground.setGraphicSize(Std.int(FlxG.width));
+		darkBackground.scrollFactor.set();
+		darkBackground.screenCenter();
+		darkBackground.alpha = 0;
+		add(darkBackground);
+
+		funkyBack = new FlxSprite().loadGraphic(Paths.image('menus/chart/bg'));
+		funkyBack.setGraphicSize(Std.int(FlxG.width));
+		funkyBack.scrollFactor.set();
+		funkyBack.blend = BlendMode.DIFFERENCE;
+		funkyBack.screenCenter();
+		funkyBack.alpha = 0;
+		add(funkyBack);
+
+		FlxTween.tween(background, {alpha: 0.6}, 0.4);
+		FlxTween.tween(darkBackground, {alpha: 0.7}, 0.4);
+		FlxTween.tween(funkyBack, {alpha: 0.07}, 0.4);
 	}
 
 	function textFinishCallback(type:String = 'flashing')
 	{
+		var bgSprites:Array<FlxSprite> = [background, darkBackground, funkyBack];
+
 		switch (type)
 		{
 			case 'update':
-				if (!leftState)
-				{
-					leftState = true;
+				leftState = true;
 
-					if (!controls.BACK)
+				if (!FlxG.keys.justPressed.ESCAPE)
+				{
+					FlxG.sound.play(Paths.sound('confirmMenu'));
+					FlxFlicker.flicker(warningText, 1, 0.06 * 2, true, false, function(flick:FlxFlicker)
 					{
-						FlxG.sound.play(Paths.sound('confirmMenu'));
-						FlxFlicker.flicker(warningText, 1, 0.06 * 2, true, false, function(flick:FlxFlicker)
-						{
-							warningText.alpha = 0;
-							CoolUtil.browserLoad('https://github.com/BeastlyGhost/Forever-Engine-Underscore');
-							Main.switchState(this, new MainMenuState());
-						});
-					}
-					else
-					{
-						FlxG.sound.play(Paths.sound('cancelMenu'));
-						FlxTween.tween(warningText, {alpha: 0}, 0.6, {
-							onComplete: function(twn:FlxTween)
-							{
-								Main.switchState(this, new MainMenuState());
-							}
-						});
-					}
+						warningText.alpha = 0;
+						for (i in bgSprites)
+							i.alpha = 0;
+						CoolUtil.browserLoad('https://github.com/BeastlyGhost/Forever-Engine-Underscore');
+						Main.switchState(this, new MainMenuState());
+					});
 				}
 				else
 				{
-					Main.switchState(this, new MainMenuState());
+					FlxG.sound.play(Paths.sound('cancelMenu'));
+					for (i in bgSprites)
+						FlxTween.tween(i, {alpha: 0}, 0.6);
+					FlxTween.tween(warningText, {alpha: 0}, 0.6, {
+						onComplete: function(twn:FlxTween)
+						{
+							Main.switchState(this, new MainMenuState());
+						}
+					});
 				}
 			case 'flashing':
-				if (!Init.getSetting('Left Flashing State'))
+				Init.trueSettings.set('Left Flashing State', true);
+
+				if (!FlxG.keys.justPressed.ESCAPE)
 				{
-					Init.trueSettings.set('Left Flashing State', true);
-	
-					if (!controls.BACK)
+					FlxG.sound.play(Paths.sound('confirmMenu'));
+					Init.trueSettings.set('Disable Flashing Lights', true);
+					FlxFlicker.flicker(warningText, 1, 0.06 * 2, true, false, function(flick:FlxFlicker)
 					{
-						FlxG.sound.play(Paths.sound('confirmMenu'));
-						Init.trueSettings.set('Disable Flashing Lights', true);
-						FlxFlicker.flicker(warningText, 1, 0.06 * 2, true, false, function(flick:FlxFlicker)
-						{
-							warningText.alpha = 0;
-							Main.switchState(this, new TitleState());
-						});
-					}
-					else
-					{
-						FlxG.sound.play(Paths.sound('cancelMenu'));
-						FlxTween.tween(warningText, {alpha: 0}, 0.6, {
-							onComplete: function(twn:FlxTween)
-							{
-								Main.switchState(this, new TitleState());
-							}
-						});
-					}
+						warningText.alpha = 0;
+						for (i in bgSprites)
+							i.alpha = 0;
+						Main.switchState(this, new TitleState());
+					});
 				}
 				else
 				{
-					Main.switchState(this, new TitleState());
+					FlxG.sound.play(Paths.sound('cancelMenu'));
+					for (i in bgSprites)
+						FlxTween.tween(i, {alpha: 0}, 0.6);
+					FlxTween.tween(warningText, {alpha: 0}, 0.6, {
+						onComplete: function(twn:FlxTween)
+						{
+							Main.switchState(this, new TitleState());
+						}
+					});
 				}
+		}
+	}
+
+	function endState(type:String)
+	{
+		switch (type)
+		{
+			case 'flashing':
+				Main.switchState(this, new TitleState());
+			case 'update':
+				Main.switchState(this, new MainMenuState());
 		}
 	}
 }
