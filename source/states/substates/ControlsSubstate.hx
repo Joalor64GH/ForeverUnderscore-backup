@@ -365,7 +365,7 @@ class ControlsSubstate extends MusicBeatSubstate
 				}
 
 				// refresh keys
-				controls.setKeyboardScheme(None, false);
+				controls.loadKeyboardScheme();
 
 				// close the submenu
 				closeSubmenu();

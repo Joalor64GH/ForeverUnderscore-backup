@@ -41,4 +41,4 @@ you can also [Read the Documentation](https://github.com/BeastlyGhost/Forever-En
 or check out the [Pre-made Scripts](https://github.com/BeastlyGhost/Forever-Engine-Underscore/tree/master/docs) in case you need them
 
 ----------------------------------------------
-Legacy README can be found [here](/docs/legacy-README.md).
+Legacy README can be found [here](https://github.com/Yoshubs/Forever-Engine-Legacy/blob/master/README.md).
