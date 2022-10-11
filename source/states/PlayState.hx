@@ -792,10 +792,6 @@ class PlayState extends MusicBeatState
 					else
 						FlxG.sound.play(Paths.sound(sound));
 				}
-				catch (e)
-				{
-					trace('Dialogue Error: ' + e);
-				}
 				dialogueBox.curPage += 1;
 
 				if (dialogueBox.curPage == dialogueBox.dialogueData.dialogue.length)

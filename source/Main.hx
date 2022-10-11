@@ -29,7 +29,7 @@ class Main extends Sprite
 	public static final initialState:Class<FlxState> = TitleState; // specify the state where the game should start at;
 
 	public static final foreverVersion:String = '0.3.1'; // current forever engine version;
-	public static final underscoreVersion:String = '0.2.3 UNS (B4)'; // current forever engine underscore version;
+	public static final underscoreVersion:String = '0.2.3'; // current forever engine underscore version;
 
 	public static var commitHash:Null<String>; // commit hash, for github builds;
 	public static var showCommitHash:Bool = true; // whether to actually show the commit hash;
@@ -123,10 +123,7 @@ class Main extends Sprite
 		dateNow = StringTools.replace(dateNow, " ", "_");
 		dateNow = StringTools.replace(dateNow, ":", "'");
 
-		path = "crash/" + "FE_" + dateNow + ".txt";
-
-		errMsg = "Friday Night Funkin' v" + Lib.application.meta["version"] + "\n";
-		errMsg += "Forever Engine Underscore v" + Main.underscoreVersion + (commitHash.length > 2 ? '${commitHash}' : '') + "\n";
+		path = "crash/" + "FE-U_" + dateNow + ".txt";
 
 		for (stackItem in callStack)
 		{
@@ -141,8 +138,10 @@ class Main extends Sprite
 
 		errMsg += "\nUncaught Error: "
 			+ e.error
-			+ "\nPlease report this error to the GitHub page: https://github.com/BeastlyGhost/Forever-Engine-Underscore
-			\n>Crash Handler written by: sqirra-rng\n";
+			+ "\nPlease report this error to the GitHub page"
+			+ "\nhttps://github.com/BeastlyGhost/Forever-Engine-Underscore"
+			+ "\n\nCrash Handler written by: sqirra-rng\n"
+			+ "\nForever Engine Underscore v" + Main.underscoreVersion + (commitHash.length > 2 ? '${commitHash}' : '') + "\n";
 
 		try // to make the game not crash if it can't save the crash file
 		{
@@ -155,7 +154,23 @@ class Main extends Sprite
 		Sys.println(errMsg);
 		Sys.println("Crash dump saved in " + Path.normalize(path));
 
-		Application.current.window.alert(errMsg, "Error!");
+		var crashDialoguePath:String = "FE-CrashDialog";
+
+		#if windows
+		crashDialoguePath += ".exe";
+		#end
+
+		if (FileSystem.exists(crashDialoguePath))
+		{
+			Sys.println("Found crash dialog: " + crashDialoguePath);
+			new Process(crashDialoguePath, [path]);
+		}
+		else
+		{
+			Sys.println("No crash dialog found! Making a simple alert instead...");
+			Application.current.window.alert(errMsg, "Error!");
+		}
+
 		#if DISCORD_RPC
 		Discord.shutdownRPC();
 		#end

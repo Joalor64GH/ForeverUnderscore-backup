@@ -1,0 +1,3 @@
+@echo off
+echo Installing debug libraries...
+haxelib install hxcpp-debug-server

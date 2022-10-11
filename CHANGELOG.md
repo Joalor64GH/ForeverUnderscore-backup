@@ -4,9 +4,10 @@ All notable changes will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [0.2.3] - [SEP-27-2022]
+## [0.2.3] - [SEP-27-2022 - OCT-11-2022]
 
 ### Added
+- (re) Added Crash Dialogue from Forever Engine Legacy (written be sqirra-rng);
 - Dynamic Sustain Note Sizes (thanks Yoshubs for letting me borrow your scripts);
 - Custom Language Support;
 - Automatic Gamepad Detection (by: Stilic);
@@ -19,6 +20,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * additionally, the beeping sound was replaced with a menu scroll sound (because the default one is annoying lol)
 
 ### Adjusted
+- Strumlines now have individual cameras, allowing for them to be manipulated individually;
 - Freeplay now displays Accuracy and Ranking;
 * Additionally, you can also Reset your Score, Accuracy and Ranking on Freeplay by pressing R;
 - Player Positions on Stages now use a JSON File;
