@@ -1034,14 +1034,17 @@ class PlayState extends MusicBeatState
 		if (controls.gamepadsAdded.length > 0)
 		{
 			var gamepad:FlxGamepad = FlxG.gamepads.getByID(controls.gamepadsAdded[0]);
-			var directions:Array<Control> = [NOTE_LEFT, NOTE_DOWN, NOTE_UP, NOTE_RIGHT];
-			for (i in 0...directions.length)
+			if (gamepad != null)
 			{
-				var bind:Array<Int> = controls.getInputsFor(directions[i], Gamepad(gamepad.id));
-				if (gamepad.anyJustPressed(bind))
-					onKeyPress(new KeyboardEvent(KeyboardEvent.KEY_DOWN, true, true, -1, keysArray[i][0]));
-				if (gamepad.anyJustReleased(bind))
-					onKeyRelease(new KeyboardEvent(KeyboardEvent.KEY_DOWN, true, true, -1, keysArray[i][0]));
+				var directions:Array<Control> = [NOTE_LEFT, NOTE_DOWN, NOTE_UP, NOTE_RIGHT];
+				for (i in 0...directions.length)
+				{
+					var bind:Array<Int> = controls.getInputsFor(directions[i], Gamepad(gamepad.id));
+					if (gamepad.anyJustPressed(bind))
+						onKeyPress(new KeyboardEvent(KeyboardEvent.KEY_DOWN, true, true, -1, keysArray[i][0]));
+					if (gamepad.anyJustReleased(bind))
+						onKeyRelease(new KeyboardEvent(KeyboardEvent.KEY_DOWN, true, true, -1, keysArray[i][0]));
+				}
 			}
 		}
 	}
