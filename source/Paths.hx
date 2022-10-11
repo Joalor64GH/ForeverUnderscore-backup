@@ -20,7 +20,7 @@ import openfl.utils.Assets as OpenFlAssets;
 
 using StringTools;
 
-final class Paths
+class Paths
 {
 	// Here we set up the paths class. This will be used to
 	// Return the paths of assets and call on those assets as well.
@@ -129,44 +129,18 @@ final class Paths
 
 	public static function returnGraphic(key:String, folder:String = 'images', ?library:String)
 	{
-		var modFile = ModManager.getModImage('$folder/$key');
-
-		if (FileSystem.exists(modFile))
-		{
-			if (!currentTrackedAssets.exists(key))
-			{
-				var bitmap = BitmapData.fromFile(modFile);
-				var newGraphic:FlxGraphic;
-				if (Init.getSetting('GPU Rendering'))
-				{
-					bitmap.lock();
-					var texture = FlxG.stage.context3D.createRectangleTexture(bitmap.width, bitmap.height, BGRA, true);
-					texture.uploadFromBitmapData(bitmap);
-					currentTrackedTextures.set(key, texture);
-					bitmap.dispose();
-					bitmap.disposeImage();
-					bitmap = null;
-					#if DEBUG_TRACES trace('new texture $key, bitmap is $bitmap'); #end
-					newGraphic = FlxGraphic.fromBitmapData(BitmapData.fromTexture(texture), false, key, false);
-				}
-				else
-				{
-					newGraphic = FlxGraphic.fromBitmapData(bitmap, false, key, false);
-					#if DEBUG_TRACES trace('new bitmap $key, not textured'); #end
-				}
-				currentTrackedAssets.set(key, newGraphic);
-			}
-			localTrackedAssets.push(key);
-			return currentTrackedAssets.get(key);
-		}
+		var isMod:Bool = false;
+		if (FileSystem.exists(ModManager.getModFile('$folder/$key.png', IMAGE)))
+			isMod = true;
 
 		var path = getPath('$folder/$key.png', IMAGE, library);
+		var mod = ModManager.getModFile('$folder/$key.png', IMAGE);
 
-		if (FileSystem.exists(path))
+		if (FileSystem.exists(isMod ? mod : path))
 		{
 			if (!currentTrackedAssets.exists(key))
 			{
-				var bitmap = BitmapData.fromFile(path);
+				var bitmap = BitmapData.fromFile(isMod ? mod : path);
 				var newGraphic:FlxGraphic;
 				if (Init.getSetting('GPU Rendering'))
 				{
@@ -279,9 +253,6 @@ final class Paths
 
 	inline static public function file(file:String, type:AssetType = TEXT, ?library:String)
 	{
-		if (FileSystem.exists(ModManager.getModFile(file, type)))
-			return ModManager.getModFile(file, type);
-
 		return getPath(file, type, library);
 	}
 
@@ -297,12 +268,11 @@ final class Paths
 	{
 		var songPath:String = 'songs/${song.toLowerCase()}/${secondSong.toLowerCase()}.json';
 
-		/*
-			if (FileSystem.exists(ModManager.getModFile(songPath, TEXT)))
-				return ModManager.getModFile(songPath, TEXT);
-		 */
+		var isMod:Bool = false;
+		if (FileSystem.exists(ModManager.getModFile(songPath, TEXT)))
+			isMod = true;
 
-		return getPath(songPath, TEXT, library);
+		return (isMod ? ModManager.getModFile(songPath, TEXT) : getPath(songPath, TEXT, library));
 	}
 
 	static public function sound(key:String, ?library:String):Dynamic

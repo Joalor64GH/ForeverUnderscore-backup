@@ -5,16 +5,11 @@ import openfl.utils.Assets as OpenFlAssets;
 
 using StringTools;
 
-final class ModManager
+class ModManager
 {
 	inline public static function getModRoot(key:String = ''):String
 	{
 		return 'mods/$key';
-	}
-
-	inline public static function getModImage(key:String):String
-	{
-		return getModFile(key + '.png');
 	}
 
 	public static function getModFolders():Array<String>
@@ -46,7 +41,7 @@ final class ModManager
 	{
 		for (folder in getModFolders())
 		{
-			var modFile:String = 'mods/$folder/$file';
+			var modFile:String = '${getModRoot()}$folder/$file';
 			try
 			{
 				if (!sys.FileSystem.exists(modFile))

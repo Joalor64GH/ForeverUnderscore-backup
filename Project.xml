@@ -38,7 +38,7 @@
 	<source path="source" />
 
 	<assets path="assets" />
-	<assets path="mobileDependencies" rename="assets/mobile" if="android" /> <!-- to not have the android assets in another builds -saw -->
+	<assets path="mobile" rename="assets/mobile" if="android" /> <!-- to not have the android assets in another builds -saw -->
 	<assets path="mods" if="desktop unstableBuild || android unstableBuild" />
 
 	<!-- _______________________________ Libraries ______________________________ -->

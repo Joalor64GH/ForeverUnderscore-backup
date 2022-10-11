@@ -191,11 +191,30 @@ class PlayState extends MusicBeatState
 	// stores the last combo sprite objects in an array
 	public static var lastCombo:Array<FNFSprite> = [];
 
+	function resetVariables()
+	{
+		songScore = 0;
+		rank = 'N/A';
+		combo = 0;
+		health = 1;
+		misses = 0;
+		hits = 0;
+		scriptDebugMode = false;
+
+		defaultCamZoom = 1.05;
+		cameraSpeed = 1 * Conductor.playbackRate;
+		forceZoom = [0, 0, 0, 0];
+
+		assetModifier = 'base';
+		changeableSkin = 'default';
+		changeableSound = 'default';
+	}
+
 	/**
 	 * Simply put, a Function to Precache Sounds and Songs;
 	 * when adding yours, make sure to use `FlxSound` and `volume = 0.00000001`;
 	**/
-	private function precacheSounds()
+	function precacheSounds()
 	{
 		var soundArray:Array<String> = [];
 
@@ -241,7 +260,7 @@ class PlayState extends MusicBeatState
 		a Function to Precache Images;
 		will improve this system eventually;
 	 */
-	private function precacheImages()
+	function precacheImages()
 	{
 		Paths.image('UI/default/base/alphabet');
 		if (!boyfriend.psychChar)
@@ -270,23 +289,9 @@ class PlayState extends MusicBeatState
 		contents = this;
 
 		// reset any values and variables that are static
-		songScore = 0;
-		rank = 'N/A';
-		combo = 0;
-		health = 1;
-		misses = 0;
-		hits = 0;
-		scriptDebugMode = false;
-
-		defaultCamZoom = 1.05;
-		cameraSpeed = 1 * Conductor.playbackRate;
-		forceZoom = [0, 0, 0, 0];
+		resetVariables();
 
 		Timings.callAccuracy();
-
-		assetModifier = 'base';
-		changeableSkin = 'default';
-		changeableSound = 'default';
 
 		// stop any existing music tracks playing
 		Conductor.stopMusic();
@@ -2405,17 +2410,25 @@ class PlayState extends MusicBeatState
 
 	function setPlayStateVars()
 	{
+		// GENERAL
 		setVar('game', PlayState.contents);
 		setVar('songName', PlayState.SONG.song.toLowerCase());
-		setVar('dadName', PlayState.dad.curCharacter);
-		setVar('gfName', PlayState.gf.curCharacter);
-		setVar('bfName', PlayState.boyfriend.curCharacter);
-		setVar('dadOpponent', dad);
-		setVar('PlayState.dadOpponent', dad);
-		setVar('game.dadOpponent', dad);
 		setVar('add', add);
 		setVar('remove', remove);
 		setVar('openSubState', openSubState);
+
+		// CHARACTERS
+		setVar('bf', boyfriend);
+		setVar('boyfriend', boyfriend);
+		setVar('dad', dad);
+		setVar('dadOpponent', dad);
+		setVar('PlayState.dadOpponent', dad);
+		setVar('game.dadOpponent', dad);
+		setVar('gf', gf);
+		setVar('girlfriend', gf);
+		setVar('dadName', PlayState.dad.curCharacter);
+		setVar('gfName', PlayState.gf.curCharacter);
+		setVar('bfName', PlayState.boyfriend.curCharacter);
 
 		setVar('setProperty', function(key:String, value:Dynamic)
 		{

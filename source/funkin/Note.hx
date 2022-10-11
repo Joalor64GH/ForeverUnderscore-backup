@@ -67,6 +67,7 @@ class Note extends FNFSprite
 	public var hitsoundSuffix = '';
 
 	static var pixelNoteID:Array<Int> = [4, 5, 6, 7];
+	public static var noteTypeNames:Array<String> = ['Normal Note', 'Alt Animation', 'Hey!', 'Mine Note', 'GF Note', 'No Animation'];
 
 	public function new(strumTime:Float, noteData:Int, noteAlt:Float, ?prevNote:Note, ?sustainNote:Bool = false, ?noteType:Int = 0)
 	{

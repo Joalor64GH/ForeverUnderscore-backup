@@ -4,6 +4,8 @@ A custom-made Forever Engine build which aims to unofficially maintain Forever E
 
 ![PLACEHOLDER_LOGO](https://media.discordapp.net/attachments/821758818135572491/884267252357156934/FELogo.png)
 
+![REPOSITORY SIZE](https://img.shields.io/github/repo-size/BeastlyGhost/Forever-Engine-Underscore)
+
 ----------------------------------------------
 Forever Engine Underscore attempts to take on the challenge of maintaining Forever Engine Legacy while adding more features to it along the way, making a lot easier for coders to work with it.
 

@@ -79,8 +79,6 @@ class OriginalChartEditor extends MusicBeatState
 
 	var curNoteType:Int = 0;
 
-	var curNoteName:Array<String> = ['Normal Note', 'Alt Animation', 'Hey!', 'Mine Note', 'GF Note', 'No Animation'];
-
 	// event name - desciption
 	var eventArray:Array<Dynamic> = [
 		["", ""],
@@ -542,11 +540,11 @@ class OriginalChartEditor extends MusicBeatState
 		blockPressWhileTypingOnStepper.push(stepperSoundTest);
 
 		// note types
-		for (i in 0...curNoteName.length)
+		for (i in 0...Note.noteTypeNames.length)
 		{
-			curNoteName[i] = i + '. ' + curNoteName[i];
+			Note.noteTypeNames[i] = i + '. ' + Note.noteTypeNames[i];
 		}
-		noteTypeDropDown = new PsychDropDown(10, 105, PsychDropDown.makeStrIdLabelArray(curNoteName, false), function(type:String)
+		noteTypeDropDown = new PsychDropDown(10, 105, PsychDropDown.makeStrIdLabelArray(Note.noteTypeNames, false), function(type:String)
 		{
 			curNoteType = Std.parseInt(type);
 			if (curSelectedNote != null && curSelectedNote[1] > -1)
@@ -923,7 +921,7 @@ class OriginalChartEditor extends MusicBeatState
 					}
 				}
 
-				if (FlxG.keys.justPressed.R)
+				if (!FlxG.keys.pressed.ALT && FlxG.keys.justPressed.R)
 				{
 					if (FlxG.keys.pressed.SHIFT)
 						resetSection(true);
@@ -1007,6 +1005,26 @@ class OriginalChartEditor extends MusicBeatState
 			changeSection(curSection + shiftThing);
 		if (FlxG.keys.justPressed.LEFT || FlxG.keys.justPressed.A)
 			changeSection(curSection - shiftThing);
+
+		// PLAYBACK SPEED CONTROLS //
+		var holdingShift = FlxG.keys.pressed.SHIFT;
+		var holdingLB = FlxG.keys.pressed.LBRACKET;
+		var holdingRB = FlxG.keys.pressed.RBRACKET;
+		var pressedLB = FlxG.keys.justPressed.LBRACKET;
+		var pressedRB = FlxG.keys.justPressed.RBRACKET;
+
+		if (!holdingShift && pressedLB || holdingShift && holdingLB)
+			playbackSpeed -= 0.01;
+		if (!holdingShift && pressedRB || holdingShift && holdingRB)
+			playbackSpeed += 0.01;
+		if (FlxG.keys.pressed.ALT && (pressedLB || pressedRB || holdingLB || holdingRB))
+			playbackSpeed = 1;
+		//
+
+		if (playbackSpeed <= 0.5)
+			playbackSpeed = 0.5;
+		if (playbackSpeed >= 3)
+			playbackSpeed = 3;
 
 		songMusic.pitch = playbackSpeed;
 		vocals.pitch = playbackSpeed;
@@ -1264,7 +1282,7 @@ class OriginalChartEditor extends MusicBeatState
 				if (curSelectedNote[3] != null)
 				{
 					curNoteType = Std.parseInt(noteTypeDropDown.selectedLabel);
-					noteTypeDropDown.selectedLabel = (curNoteType <= 0 ? '' : curNoteType + '. ' + curNoteName[curNoteType]);
+					noteTypeDropDown.selectedLabel = (curNoteType <= 0 ? '' : curNoteType + '. ' + Note.noteTypeNames[curNoteType]);
 				}
 				strumTimeInput.text = curSelectedNote[0];
 			}
@@ -1312,7 +1330,7 @@ class OriginalChartEditor extends MusicBeatState
 			var daSus = i[2];
 			var daNoteType:Int = i[3];
 
-			#if DEBUG_TRACES trace('Current note type is ' + curNoteName[daNoteType] + '.'); #end
+			#if DEBUG_TRACES trace('Current note type is ' + Note.noteTypeNames[daNoteType] + '.'); #end
 
 			var note:Note = ForeverAssets.generateArrow(_song.assetModifier, daStrumTime, daNoteInfo % 4, 0, null, null, daNoteType);
 			note.sustainLength = daSus;

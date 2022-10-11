@@ -23,7 +23,7 @@ class NoteSplash extends FNFSprite
 		super.update(elapsed);
 
 		// kill the note splash if it's done
-		if (animation.finished)
+		if (animation != null && animation.finished)
 		{
 			// set the splash to invisible
 			if (alpha != 0.000001)
