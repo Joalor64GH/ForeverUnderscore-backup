@@ -1224,7 +1224,7 @@ class OriginalChartEditor extends MusicBeatState
 		updateHeads();
 	}
 
-	function getCharacter(string:String):Character 
+	function getCharacter(string:String):Character
 	{
 		var bf:Character = new Character(0, 0, (_song.player1 == null ? 'bf' : _song.player1));
 		var dad:Character = new Character(0, 0, (_song.player2 == null ? 'dad' : _song.player2));
@@ -1232,12 +1232,16 @@ class OriginalChartEditor extends MusicBeatState
 
 		switch (string)
 		{
-			case 'bf' | 'boyfriend' | 'player1': return bf;
-			case 'gf' | 'girlfriend' | 'player3': return gf;
-			case 'dad' | 'dadOpponent' | 'cpu': return dad;
+			case 'bf' | 'boyfriend' | 'player1':
+				return bf;
+			case 'gf' | 'girlfriend' | 'player3':
+				return gf;
+			case 'dad' | 'dadOpponent' | 'cpu':
+				return dad;
 		}
 		return null;
 	}
+
 	function generateHeads()
 	{
 		var eventIcon:FlxSprite = new FlxSprite(-GRID_SIZE - 5, -90);

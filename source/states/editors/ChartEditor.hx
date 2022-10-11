@@ -840,7 +840,7 @@ class ChartEditor extends MusicBeatState
 			hold.y = prevNote.y + prevNote.height - hold.height * 0.5;
 			hold.scale.x = 0.5;
 			hold.updateHitbox();
-			//holdsGroup.add(hold);
+			// holdsGroup.add(hold);
 			note.destroy();
 
 			/*

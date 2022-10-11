@@ -50,8 +50,7 @@ class PauseSubstate extends MusicBeatSubstate
 			// check for existance of difficulty files, and then push said files to the difficulty array as an entry;
 			var songName = CoolUtil.spaceToDash(PlayState.SONG.song);
 			if (FileSystem.exists(Paths.songJson(songName, songName + '-' + i))
-				|| (FileSystem.exists(Paths.songJson(songName, songName))
-					&& i == "NORMAL"))
+				|| (FileSystem.exists(Paths.songJson(songName, songName)) && i == "NORMAL"))
 				difficultyArray.push(i);
 		}
 

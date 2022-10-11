@@ -1085,7 +1085,8 @@ class PlayState extends MusicBeatState
 					var psuedoY:Float = (downscrollMultiplier * -((Conductor.songPosition - strumNote.strumTime) * (0.45 * strumNote.noteSpeed)));
 					var psuedoX = 25 + strumNote.noteVisualOffset;
 
-					strumNote.y = receptorY + strumNote.offsetY
+					strumNote.y = receptorY
+						+ strumNote.offsetY
 						+ (Math.cos(flixel.math.FlxAngle.asRadians(strumNote.noteDirection)) * psuedoY)
 						+ (Math.sin(flixel.math.FlxAngle.asRadians(strumNote.noteDirection)) * psuedoX);
 					// painful math equation

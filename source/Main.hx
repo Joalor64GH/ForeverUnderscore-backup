@@ -5,8 +5,7 @@ import haxe.io.Path;
 import sys.FileSystem;
 import sys.io.File;
 import sys.io.Process;
-import base.debug.*;
-import base.debug.Overlay.Console;
+import base.debug.Overlay;
 import dependency.Discord;
 import dependency.FNFTransition;
 import flixel.FlxG;
@@ -17,7 +16,6 @@ import lime.app.Application;
 import openfl.Lib;
 import openfl.display.Sprite;
 import openfl.events.UncaughtErrorEvent;
-import states.*;
 
 // Here we actually import the states and metadata, and just the metadata.
 // It's nice to have modularity so that we don't have ALL elements loaded at the same time.
@@ -26,13 +24,12 @@ class Main extends Sprite
 {
 	public static var defaultFramerate = 120;
 
-	public static final initialState:Class<FlxState> = TitleState; // specify the state where the game should start at;
+	public static var initialState:Class<FlxState> = states.TitleState; // specify the state where the game should start at;
 
 	public static final foreverVersion:String = '0.3.1'; // current forever engine version;
 	public static final underscoreVersion:String = '0.2.3'; // current forever engine underscore version;
 
 	public static var commitHash:Null<String>; // commit hash, for github builds;
-	public static var showCommitHash:Bool = true; // whether to actually show the commit hash;
 
 	public static var overlay:Overlay; // info counter that usually appears at the top left corner;
 	public static var console:Console; // console that appears when you press F10 (if allowed);
@@ -141,7 +138,10 @@ class Main extends Sprite
 			+ "\nPlease report this error to the GitHub page"
 			+ "\nhttps://github.com/BeastlyGhost/Forever-Engine-Underscore"
 			+ "\n\nCrash Handler written by: sqirra-rng\n"
-			+ "\nForever Engine Underscore v" + Main.underscoreVersion + (commitHash.length > 2 ? '${commitHash}' : '') + "\n";
+			+ "\nForever Engine Underscore v"
+			+ Main.underscoreVersion
+			+ (commitHash.length > 2 ? '${commitHash}' : '')
+			+ "\n";
 
 		try // to make the game not crash if it can't save the crash file
 		{

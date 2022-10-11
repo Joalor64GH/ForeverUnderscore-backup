@@ -314,6 +314,13 @@ class Init extends FlxState
 		],
 		// custom ones lol
 		'Offset' => [Checkmark, 3],
+		// USED BY OTHER STATES
+		'Left Flashing State' => [
+			false,
+			Checkmark,
+			"Whether you did left the flashing lights warning state.",
+			NOT_FORCED
+		],
 	];
 
 	public static var trueSettings:Map<String, Dynamic> = [];
@@ -396,7 +403,7 @@ class Init extends FlxState
 
 		// Some additional changes to default HaxeFlixel settings, both for ease of debugging and usability.
 		FlxG.fixedTimestep = false; // This ensures that the game is not tied to the FPS
-		//FlxG.mouse.useSystemCursor = true; // Use system cursor because it's prettier
+		// FlxG.mouse.useSystemCursor = true; // Use system cursor because it's prettier
 		FlxG.mouse.visible = false; // Hide mouse on start
 		FlxGraphic.defaultPersist = true; // make sure we control all of the memory
 
@@ -462,30 +469,7 @@ class Init extends FlxState
 				trueSettings.set(i, defaultValue);
 		}
 
-		// 'hardcoded' ui skins
-		gameSettings.get("UI Skin")[4] = CoolUtil.returnAssetsLibrary('UI', 'images');
-		if (!gameSettings.get("UI Skin")[4].contains(trueSettings.get("UI Skin")))
-			trueSettings.set("UI Skin", 'default');
-
-		gameSettings.get("Note Skin")[4] = CoolUtil.returnAssetsLibrary('noteskins/notes');
-		if (!gameSettings.get("Note Skin")[4].contains(trueSettings.get("Note Skin")))
-			trueSettings.set("Note Skin", 'default');
-
-		gameSettings.get("Hitsound Type")[4] = CoolUtil.returnAssetsLibrary('hitsounds', 'sounds');
-		if (!gameSettings.get("Hitsound Type")[4].contains(trueSettings.get("Hitsound Type")))
-			trueSettings.set("Hitsound Type", 'default');
-
-		gameSettings.get("Menu Song")[4] = CoolUtil.returnAssetsLibrary('menus/main', 'music');
-		if (!gameSettings.get("Menu Song")[4].contains(trueSettings.get("Menu Song")))
-			trueSettings.set("Menu Song", 'freakyMenu');
-
-		gameSettings.get("Pause Song")[4] = CoolUtil.returnAssetsLibrary('menus/pause', 'music');
-		if (!gameSettings.get("Pause Song")[4].contains(trueSettings.get("Pause Song")))
-			trueSettings.set("Pause Song", 'breakfast');
-
-		gameSettings.get("Game Language")[4] = CoolUtil.returnAssetsLibrary('locales', '');
-		if (!gameSettings.get("Game Language")[4].contains(trueSettings.get("Game Language")))
-			trueSettings.set("Game Language", 'english');
+		reloadCustomSkins();
 
 		if (FlxG.save.data.volume != null)
 			FlxG.sound.volume = FlxG.save.data.volume;
@@ -495,6 +479,9 @@ class Init extends FlxState
 			comboOffset = FlxG.save.data.comboOffset;
 		if (FlxG.save.data.ratingOffset != null)
 			ratingOffset = FlxG.save.data.ratingOffset;
+
+		if (!trueSettings.get('Left Flashing State'))
+			Main.initialState = states.WarningState;
 
 		saveSettings();
 		updateAll();
@@ -558,5 +545,33 @@ class Init extends FlxState
 				filters.push(realFilter);
 		}
 		FlxG.game.setFilters(filters);
+	}
+
+	public static function reloadCustomSkins()
+	{
+		// 'hardcoded' ui skins
+		gameSettings.get("UI Skin")[4] = CoolUtil.returnAssetsLibrary('UI', 'images');
+		if (!gameSettings.get("UI Skin")[4].contains(trueSettings.get("UI Skin")))
+			trueSettings.set("UI Skin", 'default');
+
+		gameSettings.get("Note Skin")[4] = CoolUtil.returnAssetsLibrary('noteskins/notes');
+		if (!gameSettings.get("Note Skin")[4].contains(trueSettings.get("Note Skin")))
+			trueSettings.set("Note Skin", 'default');
+
+		gameSettings.get("Hitsound Type")[4] = CoolUtil.returnAssetsLibrary('hitsounds', 'sounds');
+		if (!gameSettings.get("Hitsound Type")[4].contains(trueSettings.get("Hitsound Type")))
+			trueSettings.set("Hitsound Type", 'default');
+
+		gameSettings.get("Menu Song")[4] = CoolUtil.returnAssetsLibrary('menus/main', 'music');
+		if (!gameSettings.get("Menu Song")[4].contains(trueSettings.get("Menu Song")))
+			trueSettings.set("Menu Song", 'freakyMenu');
+
+		gameSettings.get("Pause Song")[4] = CoolUtil.returnAssetsLibrary('menus/pause', 'music');
+		if (!gameSettings.get("Pause Song")[4].contains(trueSettings.get("Pause Song")))
+			trueSettings.set("Pause Song", 'breakfast');
+
+		gameSettings.get("Game Language")[4] = CoolUtil.returnAssetsLibrary('locales', '');
+		if (!gameSettings.get("Game Language")[4].contains(trueSettings.get("Game Language")))
+			trueSettings.set("Game Language", 'english');
 	}
 }
