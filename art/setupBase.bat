@@ -4,19 +4,19 @@ echo Press any key to install required libraries.
 pause >nul
 title FNF Setup - Installing libraries
 echo Installing haxelib libraries...
-haxelib install lime 7.9.0
+haxelib install lime
 haxelib install openfl
 haxelib install flixel
+haxelib install flixel-addons
 haxelib install flixel-ui
 haxelib install flixel-tools
 haxelib install hscript
 haxelib install hxCodec
-haxelib install newgrounds
 haxelib install hxcpp-debug-server
 title FNF Setup - User action required
 cls
-haxelib run flixel-tools setup
 haxelib run lime setup flixel
+haxelib run flixel-tools setup
 cls
 echo Make sure you have git installed. You can download it here: https://git-scm.com/downloads
 echo Press any key to install necessary libraries.
