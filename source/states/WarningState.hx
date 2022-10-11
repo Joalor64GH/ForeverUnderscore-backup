@@ -78,8 +78,8 @@ class WarningState extends MusicBeatState
 
 		if (controls.ACCEPT || controls.BACK)
 		{
-			FlxTransitionableState.skipNextTransIn = true;
 			textFinishCallback(warningType);
+			FlxTransitionableState.skipNextTransIn = true;
 		}
 	}
 
@@ -88,50 +88,64 @@ class WarningState extends MusicBeatState
 		switch (type)
 		{
 			case 'update':
-				leftState = true;
-
-				if (!controls.BACK)
+				if (!leftState)
 				{
-					FlxG.sound.play(Paths.sound('confirmMenu'));
-					FlxFlicker.flicker(warningText, 1, 0.06 * 2, true, false, function(flick:FlxFlicker)
+					leftState = true;
+
+					if (!controls.BACK)
 					{
-						warningText.alpha = 0;
-						CoolUtil.browserLoad('https://github.com/BeastlyGhost/Forever-Engine-Underscore');
-						Main.switchState(this, new MainMenuState());
-					});
+						FlxG.sound.play(Paths.sound('confirmMenu'));
+						FlxFlicker.flicker(warningText, 1, 0.06 * 2, true, false, function(flick:FlxFlicker)
+						{
+							warningText.alpha = 0;
+							CoolUtil.browserLoad('https://github.com/BeastlyGhost/Forever-Engine-Underscore');
+							Main.switchState(this, new MainMenuState());
+						});
+					}
+					else
+					{
+						FlxG.sound.play(Paths.sound('cancelMenu'));
+						FlxTween.tween(warningText, {alpha: 0}, 0.6, {
+							onComplete: function(twn:FlxTween)
+							{
+								Main.switchState(this, new MainMenuState());
+							}
+						});
+					}
 				}
 				else
 				{
-					FlxG.sound.play(Paths.sound('cancelMenu'));
-					FlxTween.tween(warningText, {alpha: 0}, 0.6, {
-						onComplete: function(twn:FlxTween)
-						{
-							Main.switchState(this, new MainMenuState());
-						}
-					});
+					Main.switchState(this, new MainMenuState());
 				}
 			case 'flashing':
-				Init.trueSettings.set('Left Flashing State', true);
-
-				if (!controls.BACK)
+				if (!Init.getSetting('Left Flashing State'))
 				{
-					FlxG.sound.play(Paths.sound('confirmMenu'));
-					Init.trueSettings.set('Disable Flashing Lights', true);
-					FlxFlicker.flicker(warningText, 1, 0.06 * 2, true, false, function(flick:FlxFlicker)
+					Init.trueSettings.set('Left Flashing State', true);
+	
+					if (!controls.BACK)
 					{
-						warningText.alpha = 0;
-						Main.switchState(this, new TitleState());
-					});
+						FlxG.sound.play(Paths.sound('confirmMenu'));
+						Init.trueSettings.set('Disable Flashing Lights', true);
+						FlxFlicker.flicker(warningText, 1, 0.06 * 2, true, false, function(flick:FlxFlicker)
+						{
+							warningText.alpha = 0;
+							Main.switchState(this, new TitleState());
+						});
+					}
+					else
+					{
+						FlxG.sound.play(Paths.sound('cancelMenu'));
+						FlxTween.tween(warningText, {alpha: 0}, 0.6, {
+							onComplete: function(twn:FlxTween)
+							{
+								Main.switchState(this, new TitleState());
+							}
+						});
+					}
 				}
 				else
 				{
-					FlxG.sound.play(Paths.sound('cancelMenu'));
-					FlxTween.tween(warningText, {alpha: 0}, 0.6, {
-						onComplete: function(twn:FlxTween)
-						{
-							Main.switchState(this, new TitleState());
-						}
-					});
+					Main.switchState(this, new TitleState());
 				}
 		}
 	}
