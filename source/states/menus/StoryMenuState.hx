@@ -73,7 +73,7 @@ class StoryMenuState extends MusicBeatState
 		ForeverTools.resetMenuMusic();
 
 		// reload locales
-		ForeverLocales.getLocale(Init.trueSettings.get('Game Language'));
+		ForeverLocales.getLocale(Init.trueSettings.get('Language'));
 
 		persistentUpdate = persistentDraw = true;
 

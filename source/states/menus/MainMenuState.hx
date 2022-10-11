@@ -51,7 +51,7 @@ class MainMenuState extends MusicBeatState
 		ForeverTools.resetMenuMusic();
 
 		// reload locales
-		ForeverLocales.getLocale(Init.trueSettings.get('Game Language'));
+		ForeverLocales.getLocale(Init.trueSettings.get('Language'));
 
 		#if mobile
 		addVirtualPad(LEFT_FULL, A_B_C);
