@@ -1,5 +1,8 @@
-package mobile.controls;
+package mobile;
 
+import mobile.flixel.FlxButton;
+import mobile.flixel.FlxHitbox;
+import mobile.flixel.FlxVirtualPad;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.FlxSubState;
@@ -11,13 +14,9 @@ import flixel.text.FlxText;
 import flixel.util.FlxColor;
 import flixel.util.FlxSave;
 import openfl.utils.Assets;
-import mobile.flixel.FlxButton;
-import mobile.flixel.FlxHitbox;
-import mobile.flixel.FlxVirtualPad;
 
 class MobileControlsSubState extends FlxSubState
 {
-	#if mobile
 	final controlsItems:Array<String> = ['Pad-Right', 'Pad-Left', 'Pad-Custom', 'Pad-Duo', 'Hitbox', 'Keyboard'];
 	var virtualPad:FlxVirtualPad;
 	var hitbox:FlxHitbox;
@@ -36,6 +35,10 @@ class MobileControlsSubState extends FlxSubState
 
 	override function create()
 	{
+		for (i in 0...controlsItems.length)
+			if (controlsItems[i] == MobileControls.getMode())
+				curSelected = i;
+
 		var bg:FlxSprite = new FlxSprite().makeGraphic(FlxG.width, FlxG.height,
 			FlxColor.fromHSB(FlxG.random.int(0, 359), FlxG.random.float(0, 0.8), FlxG.random.float(0.3, 1)));
 		bg.alpha = 0.6;
@@ -86,13 +89,15 @@ class MobileControlsSubState extends FlxSubState
 		add(inputvari);
 
 		leftArrow = new FlxSprite(inputvari.x - 60, inputvari.y - 25);
-		leftArrow.frames = FlxAtlasFrames.fromSparrow(Assets.getBitmapData('assets/mobile/menu/arrows.png'), Assets.getText('assets/mobile/menu/arrows.xml'));
+		leftArrow.frames = FlxAtlasFrames.fromSparrow(Assets.getBitmapData('assets/mobile/menu/arrows.png'),
+			Assets.getText('assets/mobile/menu/arrows.xml'));
 		leftArrow.animation.addByPrefix('idle', 'arrow left');
 		leftArrow.animation.play('idle');
 		add(leftArrow);
 
 		rightArrow = new FlxSprite(inputvari.x + inputvari.width + 10, inputvari.y - 25);
-		rightArrow.frames = FlxAtlasFrames.fromSparrow(Assets.getBitmapData('assets/mobile/menu/arrows.png'), Assets.getText('assets/mobile/menu/arrows.xml'));
+		rightArrow.frames = FlxAtlasFrames.fromSparrow(Assets.getBitmapData('assets/mobile/menu/arrows.png'),
+			Assets.getText('assets/mobile/menu/arrows.xml'));
 		rightArrow.animation.addByPrefix('idle', 'arrow right');
 		rightArrow.animation.play('idle');
 		add(rightArrow);
@@ -261,5 +266,4 @@ class MobileControlsSubState extends FlxSubState
 		bindButton.y = touch.y - Std.int(bindButton.height / 2);
 		buttonBinded = true;
 	}
-	#end
 }

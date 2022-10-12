@@ -10,6 +10,9 @@ import flixel.util.FlxTimer;
 import funkin.Character;
 import states.*;
 import states.menus.*;
+#if android
+import android.Hardware;
+#end
 
 class GameOverSubstate extends MusicBeatSubstate
 {
@@ -76,11 +79,20 @@ class GameOverSubstate extends MusicBeatSubstate
 		camFollow = new FlxObject(bf.getGraphicMidpoint().x + 20, bf.getGraphicMidpoint().y - 40, 1, 1);
 		add(camFollow);
 
+		#if android
+		Hardware.vibrate(500);
+		#end
+
 		FlxG.camera.scroll.set();
 		FlxG.camera.target = null;
 
 		Conductor.changeBPM(deathBPM);
 		bf.playAnim('firstDeath');
+
+		#if android
+		addVirtualPad(NONE, A_B);
+		addPadCamera();
+		#end
 	}
 
 	override function update(elapsed:Float)

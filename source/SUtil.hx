@@ -1,4 +1,4 @@
-package mobile;
+package;
 
 #if android
 import android.Hardware;
@@ -7,20 +7,19 @@ import android.os.Build;
 import android.os.Environment;
 #end
 import flash.system.System;
+import flixel.FlxG;
 import haxe.CallStack.StackItem;
 import haxe.CallStack;
 import haxe.io.Path;
-import flixel.FlxG;
 import openfl.Lib;
 import openfl.events.UncaughtErrorEvent;
 import openfl.utils.Assets;
-
-using StringTools;
-
 #if (sys && !ios)
 import sys.FileSystem;
 import sys.io.File;
 #end
+
+using StringTools;
 
 /**
  * ...
@@ -45,7 +44,7 @@ class SUtil
 				 * Basically for now i can't force the app to stop while its requesting a android permission, so this makes the app to stop while its requesting the specific permission
 				 */
 				Lib.application.window.alert('If you accepted the permissions you are all good!' + "\nIf you didn't then expect a crash"
-					+ 'Press Ok to see what happens',
+					+ '\nPress Ok to see what happens',
 					'Permissions?');
 			}
 			else

@@ -1,11 +1,11 @@
-package mobile.controls;
+package mobile;
 
+import mobile.flixel.FlxHitbox;
+import mobile.flixel.FlxVirtualPad;
 import flixel.FlxG;
 import flixel.group.FlxSpriteGroup;
 import flixel.math.FlxPoint;
 import flixel.util.FlxDestroyUtil;
-import mobile.flixel.FlxHitbox;
-import mobile.flixel.FlxVirtualPad;
 
 /**
  * @author Mihai Alexandru (M.A. Jigsaw)

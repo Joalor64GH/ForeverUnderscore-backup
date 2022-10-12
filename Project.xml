@@ -74,10 +74,13 @@
 
 	<haxedef name="HXC_DEBUG_TRACE" if="debug" />
 
-	<!-- _________________________________ Android Permissions _______________________________ -->
+	<!-- _________________________________ Android permissions _______________________________ -->
 
-	<android permission="android.permission.ACCESS_NETWORK_STATE" />
-	<android permission="android.permission.INTERNET" />
+	<android permission="android.permission.ACCESS_NETWORK_STATE"/>
+	<android permission="android.permission.INTERNET"/>
+	<android permission="android.permission.VIBRATE"/>
+	<android permission="android.permission.WRITE_EXTERNAL_STORAGE"/>
+	<android permission="android.permission.READ_EXTERNAL_STORAGE"/>
 
 	<!-- _________________________________ Custom _______________________________ -->
 

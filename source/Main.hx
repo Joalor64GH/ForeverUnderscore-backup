@@ -122,7 +122,7 @@ class Main extends Sprite
 		dateNow = StringTools.replace(dateNow, " ", "_");
 		dateNow = StringTools.replace(dateNow, ":", "'");
 
-		path = "crash/" + "FE-U_" + dateNow + ".txt";
+		path = SUtil.getPath() + "crash/" + "FE-U_" + dateNow + ".txt";
 
 		for (stackItem in callStack)
 		{
@@ -147,8 +147,8 @@ class Main extends Sprite
 
 		try // to make the game not crash if it can't save the crash file
 		{
-			if (!FileSystem.exists("crash"))
-				FileSystem.createDirectory("crash");
+			if (!FileSystem.exists(SUtil.getPath() + "crash"))
+				FileSystem.createDirectory(SUtil.getPath() + "crash");
 
 			File.saveContent(path, errMsg + "\n");
 		}
@@ -156,7 +156,7 @@ class Main extends Sprite
 		Sys.println(errMsg);
 		Sys.println("Crash dump saved in " + Path.normalize(path));
 
-		var crashDialoguePath:String = "FE-CrashDialog";
+		var crashDialoguePath:String = SUtil.getPath() + "FE-CrashDialog";
 
 		#if windows
 		crashDialoguePath += ".exe";

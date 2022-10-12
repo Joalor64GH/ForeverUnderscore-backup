@@ -10,7 +10,7 @@ import base.Conductor.BPMChangeEvent;
 import flixel.FlxCamera;
 import flixel.input.actions.FlxActionInput;
 import flixel.util.FlxDestroyUtil;
-import mobile.controls.MobileControls;
+import mobile.MobileControls;
 import mobile.flixel.FlxVirtualPad;
 #end
 
