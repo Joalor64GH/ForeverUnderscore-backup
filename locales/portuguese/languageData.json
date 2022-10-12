@@ -25,6 +25,9 @@
     "accTxt": "Precisão:",
     "botTxt": "[AUTOPLAY]",
 
+    "skipText": "PRESSIONE SHIFT PARA PULAR",
+    "skipTextMobile": "TOQUE E SOLTE O BOTÃO VOLTAR PARA PULAR",
+
 	"dialogueFile": "dialoguePT",
 	"dialogueFileEnd": "dialogueEndPT"
 }
