@@ -190,7 +190,7 @@ class DialogueBox extends FlxSpriteGroup
 
 		// skip text
 		#if android
-		var skipText = new FlxText(100, 670, 1000, "PRESS THE BACK BUTTON TO SKIP", 20);
+		var skipText = new FlxText(100, 670, 1000, "TAP AND RELEASE THE BACK BUTTON TO SKIP", 20);
 		#else
 		var skipText = new FlxText(100, 670, 1000, "PRESS SHIFT TO SKIP", 20);
 		#end

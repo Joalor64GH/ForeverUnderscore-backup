@@ -559,7 +559,7 @@ class PlayState extends MusicBeatState
 		FlxG.cameras.add(dialogueHUD, false);
 
 		#if android
-		addAndroidControls();
+		addMobileControls();
 		#end
 
 		keysArray = [
@@ -1937,7 +1937,7 @@ class PlayState extends MusicBeatState
 		callFunc('endSong', []);
 
 		#if android
-		androidControls.visible = false;
+		mobileControls.visible = false;
 		#end
 
 		canPause = false;
@@ -2223,7 +2223,7 @@ class PlayState extends MusicBeatState
 		inCutscene = false;
 
 		#if android
-		androidControls.visible = true;
+		mobileControls.visible = true;
 		#end
 
 		Conductor.songPosition = -(Conductor.crochet * 5);
