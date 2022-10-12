@@ -17,6 +17,7 @@ import openfl.utils.Assets;
 
 class MobileControlsSubState extends FlxSubState
 {
+	#if android
 	final controlsItems:Array<String> = ['Pad-Right', 'Pad-Left', 'Pad-Custom', 'Pad-Duo', 'Hitbox', 'Keyboard'];
 	var virtualPad:FlxVirtualPad;
 	var hitbox:FlxHitbox;
@@ -266,4 +267,5 @@ class MobileControlsSubState extends FlxSubState
 		bindButton.y = touch.y - Std.int(bindButton.height / 2);
 		buttonBinded = true;
 	}
+	#end
 }
