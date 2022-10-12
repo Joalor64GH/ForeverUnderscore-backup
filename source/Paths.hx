@@ -244,7 +244,7 @@ class Paths
 			{
 				trace('$file not found, trying to search for mods...');
 				returnPath = ModManager.getModFile('$file');
-				if (!FileSystem.exists(returnPath))
+				if (!FileSystem.exists(SUtil.getPath() + returnPath))
 					returnPath = CoolUtil.swapSpaceDash(ModManager.getModFile('$file'));
 			}
 		}
