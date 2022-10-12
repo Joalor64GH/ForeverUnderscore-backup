@@ -1,0 +1,30 @@
+{
+    "difficultyNames": ["ЛЕГКО", "НОРМАЛЬНО", "СЛОЖНО"],
+    "personalBest": "ЛУЧШИЙ СЧЁТ:",
+    "tracksText": "ПЕСНИ",
+    "weekScoreText": "СЧЁТ НЕДЕЛИ:",
+	"delScore": "СБРОСИТЬ СЧЁТ?",
+	"delConfirm": "ПОДТВЕРДИТЬ",
+    "rateText": "РЕЙТИНГ:",
+
+    "resumeSong": "Продолжить",
+	"restartSong": "Перезапустить Песню",
+	"editors": "Открыть Редакторы",
+	"changeDiff": "Сменить Сложность",
+	"leaveChartingMode": "Покинуть Режим Чартинга",
+	"togglePractice": "Переключить Режим Практики",
+	"toggleAutoplay": "Переключить Автоигру",
+	"exitOptions": "Выйти в Меню Настроек",
+	"exitMenu": "Выйти в Главное Меню",
+	"songByTxt": "Автор:",
+	"blueballedTxt": "Смертей:",
+	"backButton": "НАЗАД",
+
+    "scoreTxt": "Счёт:",
+    "missTxt": "Пропуски:",
+    "accTxt": "Точность:",
+    "botTxt": "[АВТОИГРА]",
+
+	"dialogueFile": "dialogueRU",
+	"dialogueFileEnd": "dialogueEndRU"
+}
