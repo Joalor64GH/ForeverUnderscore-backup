@@ -3,7 +3,7 @@ color 0a
 title FNF: Forever Engine - Running Game (RELEASE MODE)
 cd ..
 echo BUILDING...
-lime test windows -release
+haxelib run lime test windows -release
 echo.
 echo DONE.
 pause
