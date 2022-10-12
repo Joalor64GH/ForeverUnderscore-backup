@@ -40,6 +40,7 @@
 	<assets path="assets" />
 	<assets path="mobile" rename="assets/mobile" if="android" /> <!-- to not have the android assets in another builds -saw -->
 	<assets path="FE-CrashDialog.exe" type="template" if="windows release" />
+	<assets path="locales" rename="assets/locales" if="includeLocales" /> <!-- will improve this system eventually -->
 	<assets path="mods" if="desktop unstableBuild || android unstableBuild" />
 
 	<!-- _______________________________ Libraries ______________________________ -->

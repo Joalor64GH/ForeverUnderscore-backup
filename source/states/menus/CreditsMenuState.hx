@@ -176,30 +176,30 @@ class CreditsMenuState extends MusicBeatState
 	{
 		super.update(elapsed);
 
-		if (controls.UI_UP_P)
+		if (controls.UI_UP_P || (!FlxG.keys.pressed.SHIFT && FlxG.mouse.wheel == 1))
 			changeSelection(-1);
-		else if (controls.UI_DOWN_P)
+		else if (controls.UI_DOWN_P || (!FlxG.keys.pressed.SHIFT && FlxG.mouse.wheel == -1))
 			changeSelection(1);
 
-		if (controls.UI_LEFT_P)
+		if (controls.UI_LEFT_P || (FlxG.keys.pressed.SHIFT && FlxG.mouse.wheel == 1))
 			updateSocial(-1);
-		else if (controls.UI_RIGHT_P)
+		else if (controls.UI_RIGHT_P || (FlxG.keys.pressed.SHIFT && FlxG.mouse.wheel == -1))
 			updateSocial(1);
 
-		if (controls.UI_RIGHT)
-			rightArrow.animation.play('press')
-		else
-			rightArrow.animation.play('idle');
-
-		if (controls.UI_LEFT)
+		if (controls.UI_LEFT || (FlxG.keys.pressed.SHIFT && FlxG.mouse.wheel == 1))
 			leftArrow.animation.play('press');
 		else
 			leftArrow.animation.play('idle');
 
-		if (controls.BACK)
+		if (controls.UI_RIGHT || (FlxG.keys.pressed.SHIFT && FlxG.mouse.wheel == -1))
+			rightArrow.animation.play('press')
+		else
+			rightArrow.animation.play('idle');
+
+		if (controls.BACK || FlxG.mouse.justPressedRight)
 			Main.switchState(this, new MainMenuState());
 
-		if (controls.ACCEPT && credData.users[curSelected].urlData[curSocial][1] != null)
+		if (controls.ACCEPT || FlxG.mouse.justPressed && credData.users[curSelected].urlData[curSocial][1] != null)
 			CoolUtil.browserLoad(credData.users[curSelected].urlData[curSocial][1]);
 
 		for (item in grpCharacters)
