@@ -176,6 +176,7 @@ jobs:
           haxelib install flixel-tools
           haxelib install flixel-addons
           haxelib install hscript
+          haxelib git SScript https://github.com/BeastlyGhost/Forever-SScript
           haxelib git polymod https://github.com/larsiusprime/polymod.git
           haxelib git discord_rpc https://github.com/Aidan63/linc_discord-rpc
           haxelib git extension-androidtools https://github.com/jigsaw-4277821/extension-androidtools.git
