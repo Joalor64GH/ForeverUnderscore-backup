@@ -191,10 +191,10 @@ class DialogueBox extends FlxSpriteGroup
 		// skip text
 		var gameLang = ForeverLocales.curLang;
 		#if android
-		var displayText:String = (gameLang.skipText == null ? "PRESS SHIFT TO SKIP" : gameLang.skipText);
+		var displayText:String = (gameLang.skipTextMobile == null ? "TAP AND RELEASE THE BACK BUTTON TO SKIP" : gameLang.skipTextMobile);
 		var skipText = new FlxText(100, 670, 1000, displayText, 20);
 		#else
-		var displayText:String = (gameLang.skipTextMobile == null ? "TAP AND RELEASE THE BACK BUTTON TO SKIP" : gameLang.skipTextMobile);
+		var displayText:String = (gameLang.skipText == null ? "PRESS SHIFT TO SKIP" : gameLang.skipText);
 		var skipText = new FlxText(100, 670, 1000, displayText, 20);
 		#end
 		skipText.alignment = FlxTextAlign.CENTER;
