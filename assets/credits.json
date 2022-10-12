@@ -37,7 +37,7 @@
 		{
 			"name": "Jigsaw",
 			"icon": "jigsaw",
-			"textData": ["Base Android Support Tools, Engine Misc Fixes"],
+			"textData": ["Programmer, Engine Misc Fixes"],
 			"urlData": [["Twitter", "https://twitter.com/jigsaw1_ma"], ["GitHub", "https://github.com/MAJigsaw77"]],
 			"colors": [212, 212, 212]
 		},

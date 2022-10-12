@@ -182,12 +182,6 @@ class TitleState extends MusicBeatState
 		var pressedEnter:Bool = controls.ACCEPT;
 		var gamepad:FlxGamepad = FlxG.gamepads.lastActive;
 
-		#if android
-		for (touch in FlxG.touches.list)
-			if (touch.justPressed)
-				pressedEnter = true;
-		#end
-
 		if (swagShader != null)
 		{
 			if (controls.UI_LEFT)
@@ -223,7 +217,7 @@ class TitleState extends MusicBeatState
 				titleText.alpha = FlxMath.lerp(titleTextAlphas[0], titleTextAlphas[1], timer);
 			}
 
-			if (FlxG.keys.justPressed.ESCAPE #if android || FlxG.android.justReleased.BACK #end && !pressedEnter)
+			if (FlxG.keys.justPressed.ESCAPE && !pressedEnter)
 			{
 				FlxG.sound.music.fadeOut(0.3);
 				FlxG.camera.fade(FlxColor.BLACK, 0.5, false, FlxG.resetGame, false);

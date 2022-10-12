@@ -796,19 +796,11 @@ class PlayState extends MusicBeatState
 		if (dialogueBox != null && dialogueBox.alive)
 		{
 			// wheee the shift closes the dialogue
-			if (FlxG.keys.justPressed.SHIFT #if android || FlxG.android.justReleased.BACK #end)
+			if (FlxG.keys.justPressed.SHIFT)
 				dialogueBox.closeDialog();
 
-			var pressedEnter:Bool = controls.ACCEPT;
-
-			#if android
-			for (touch in FlxG.touches.list)
-				if (touch.justPressed)
-					pressedEnter = true;
-			#end
-
 			// the change I made was just so that it would only take accept inputs
-			if (pressedEnter && dialogueBox.textStarted)
+			if (controls.ACCEPT && dialogueBox.textStarted)
 			{
 				var sound = 'cancelMenu';
 
@@ -841,7 +833,7 @@ class PlayState extends MusicBeatState
 		if (!inCutscene)
 		{
 			// pause the game if the game is allowed to pause and enter is pressed
-			if (controls.PAUSE #if android || FlxG.android.justReleased.BACK #end && startedCountdown && canPause)
+			if (controls.PAUSE && startedCountdown && canPause)
 			{
 				pauseGame();
 				// open pause substate

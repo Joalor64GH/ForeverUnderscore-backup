@@ -141,11 +141,6 @@ class PauseSubstate extends MusicBeatSubstate
 		add(grpMenuShit);
 
 		reloadOptions();
-
-		#if android
-		addVirtualPad(UP_DOWN, A);
-		addPadCamera();
-		#end
 	}
 
 	function reloadOptions()

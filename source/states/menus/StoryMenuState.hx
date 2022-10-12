@@ -199,10 +199,6 @@ class StoryMenuState extends MusicBeatState
 		changeWeek();
 		changeDifficulty();
 		updateText();
-
-		#if android
-		addVirtualPad(LEFT_FULL, A_B);
-		#end
 	}
 
 	override function update(elapsed:Float)

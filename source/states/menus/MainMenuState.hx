@@ -159,7 +159,7 @@ class MainMenuState extends MusicBeatState
 				Main.switchState(this, new TitleState());
 			}
 
-			if (controls.CHEAT #if android || virtualPad.buttonC.justPressed #end)
+			if (controls.CHEAT)
 			{
 				persistentUpdate = false;
 				persistentDraw = true;

@@ -169,10 +169,6 @@ class OptionsMenuState extends MusicBeatState
 		add(infoText);
 
 		loadSubgroup('main');
-
-		#if android
-		addVirtualPad(LEFT_FULL, A_B);
-		#end
 	}
 
 	var currentAttachmentMap:Map<Alphabet, Dynamic>;
@@ -668,12 +664,7 @@ class OptionsMenuState extends MusicBeatState
 	public function openDesktopControls()
 	{
 		if (controls.ACCEPT || FlxG.mouse.justPressed)
-		{
-			#if android
-			removeVirtualPad();
-			#end
 			openSubState(new states.substates.ControlsSubstate());
-		}
 	}
 
 	public function openJudgeState()
