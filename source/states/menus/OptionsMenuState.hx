@@ -54,7 +54,6 @@ class OptionsMenuState extends MusicBeatState
 				[
 					['preferences', callNewGroup],
 					['appearance', callNewGroup],
-					#if mobile ['mobile controls', openMobileControls], #end
 					['controls', openDesktopControls],
 					['accessibility', callNewGroup],
 					#if unstableBuild ['note colors', openNotemenu], #end
@@ -674,15 +673,6 @@ class OptionsMenuState extends MusicBeatState
 			removeVirtualPad();
 			#end
 			openSubState(new states.substates.ControlsSubstate());
-		}
-	}
-
-	public function openMobileControls()
-	{
-		if (controls.ACCEPT || FlxG.mouse.justPressed)
-		{
-			playSound('scrollMenu');
-			openSubState(new mobile.MobileControlsSubState());
 		}
 	}
 

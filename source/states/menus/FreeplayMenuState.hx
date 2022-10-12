@@ -109,10 +109,6 @@ class FreeplayMenuState extends MusicBeatState
 
 	function loadUI()
 	{
-		#if mobile
-		addVirtualPad(LEFT_FULL, A_B_C);
-		#end
-
 		scoreText = new FlxText(FlxG.width * 0.7, 5, 0, "", 32);
 		scoreText.setFormat(Paths.font("vcr"), 32, FlxColor.WHITE, RIGHT);
 
@@ -183,7 +179,7 @@ class FreeplayMenuState extends MusicBeatState
 					var icon:String = 'gf';
 					var color:FlxColor = FlxColor.WHITE;
 					var colorArray:Array<Int> = [255, 255, 255];
-					var chartExists:Bool = FileSystem.exists(SUtil.getPath() + Paths.songJson(i, i));
+					var chartExists:Bool = FileSystem.exists(Paths.songJson(i, i));
 					if (chartExists)
 					{
 						var castSong:LegacySong = Song.loadSong(i, i);
@@ -212,8 +208,8 @@ class FreeplayMenuState extends MusicBeatState
 		var coolDiffs = [];
 		for (i in CoolUtil.difficulties)
 		{
-			if (FileSystem.exists(SUtil.getPath() + Paths.songJson(songName, songName + '-' + i))
-				|| (FileSystem.exists(SUtil.getPath() + Paths.songJson(songName, songName)) && i == "NORMAL"))
+			if (FileSystem.exists(Paths.songJson(songName, songName + '-' + i))
+				|| (FileSystem.exists(Paths.songJson(songName, songName)) && i == "NORMAL"))
 				coolDiffs.push(i);
 		}
 

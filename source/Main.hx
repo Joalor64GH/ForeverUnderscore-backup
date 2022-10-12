@@ -43,12 +43,8 @@ class Main extends Sprite
 
 		commitHash = returnGitHash();
 
-		SUtil.uncaughtErrorHandler();
-
 		Lib.current.loaderInfo.uncaughtErrorEvents.addEventListener(UncaughtErrorEvent.UNCAUGHT_ERROR, onCrash);
 		FlxTransitionableState.skipNextTransIn = true;
-
-		SUtil.check();
 
 		addChild(new FlxGame(0, 0, Init, 1, 120, 120, true));
 
@@ -122,7 +118,7 @@ class Main extends Sprite
 		dateNow = StringTools.replace(dateNow, " ", "_");
 		dateNow = StringTools.replace(dateNow, ":", "'");
 
-		path = SUtil.getPath() + "crash/" + "FE-U_" + dateNow + ".txt";
+		path = "crash/" + "FE-U_" + dateNow + ".txt";
 
 		for (stackItem in callStack)
 		{
@@ -147,8 +143,8 @@ class Main extends Sprite
 
 		try // to make the game not crash if it can't save the crash file
 		{
-			if (!FileSystem.exists(SUtil.getPath() + "crash"))
-				FileSystem.createDirectory(SUtil.getPath() + "crash");
+			if (!FileSystem.exists("crash"))
+				FileSystem.createDirectory("crash");
 
 			File.saveContent(path, errMsg + "\n");
 		}
@@ -156,7 +152,7 @@ class Main extends Sprite
 		Sys.println(errMsg);
 		Sys.println("Crash dump saved in " + Path.normalize(path));
 
-		var crashDialoguePath:String = SUtil.getPath() + "FE-CrashDialog";
+		var crashDialoguePath:String = "FE-CrashDialog";
 
 		#if windows
 		crashDialoguePath += ".exe";

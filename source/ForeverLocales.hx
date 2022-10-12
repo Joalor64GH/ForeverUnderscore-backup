@@ -29,10 +29,8 @@ typedef LangDataDef =
 	var missTxt:String;
 	var accTxt:String;
 	var botTxt:String;
-
 	// DIALOGUE
 	var skipText:String;
-	var skipTextMobile:String;
 	var dialogueFileEnd:String;
 	var dialogueFile:String;
 	// OTHER

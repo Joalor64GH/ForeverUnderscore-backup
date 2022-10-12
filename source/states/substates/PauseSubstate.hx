@@ -61,7 +61,7 @@ class PauseSubstate extends MusicBeatSubstate
 			difficultyArray.push('BACK');
 		}
 
-		#if mobile
+		#if debug
 		if (!PlayState.isStoryMode)
 			menuItems.insert(2, 'Open Editors');
 		#end

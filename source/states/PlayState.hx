@@ -558,10 +558,6 @@ class PlayState extends MusicBeatState
 		dialogueHUD.bgColor.alpha = 0;
 		FlxG.cameras.add(dialogueHUD, false);
 
-		#if android
-		addMobileControls();
-		#end
-
 		keysArray = [
 			copyKey(Init.gameControls.get('LEFT')[0]),
 			copyKey(Init.gameControls.get('DOWN')[0]),
@@ -1936,10 +1932,6 @@ class PlayState extends MusicBeatState
 	{
 		callFunc('endSong', []);
 
-		#if android
-		mobileControls.visible = false;
-		#end
-
 		canPause = false;
 		endingSong = true;
 
@@ -2167,7 +2159,7 @@ class PlayState extends MusicBeatState
 	{
 		var dialogueFileStr:String = 'dialogue';
 		dialogueFileStr = (endingSong ? '${ForeverLocales.curLang.dialogueFileEnd}' : '${ForeverLocales.curLang.dialogueFile}');
-		var dialogPath = SUtil.getPath() + Paths.file('songs/' + SONG.song.toLowerCase() + '/$dialogueFileStr.json');
+		var dialogPath = Paths.file('songs/' + SONG.song.toLowerCase() + '/$dialogueFileStr.json');
 
 		if (sys.FileSystem.exists(dialogPath))
 			return true;
@@ -2221,10 +2213,6 @@ class PlayState extends MusicBeatState
 	function startCountdown():Void
 	{
 		inCutscene = false;
-
-		#if android
-		mobileControls.visible = true;
-		#end
 
 		Conductor.songPosition = -(Conductor.crochet * 5);
 		swagCounter = 0;

@@ -26,8 +26,6 @@
     "botTxt": "[AUTOPLAY]",
 
     "skipText": "PRESS SHIFT TO SKIP",
-    "skipTextMobile": "TAP AND RELEASE THE BACK BUTTON TO SKIP",
-
 	"dialogueFile": "dialogueRo",
 	"dialogueFileEnd": "dialogueEndRo"
 }

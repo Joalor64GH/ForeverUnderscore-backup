@@ -41,7 +41,7 @@ class ModManager
 	{
 		for (folder in getModFolders())
 		{
-			var modFile:String = SUtil.getPath() + '${getModRoot()}$folder/$file';
+			var modFile:String = '${getModRoot()}$folder/$file';
 			try
 			{
 				if (!sys.FileSystem.exists(modFile))

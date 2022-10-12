@@ -53,10 +53,6 @@ class MainMenuState extends MusicBeatState
 		// reload locales
 		ForeverLocales.getLocale(Init.trueSettings.get('Language'));
 
-		#if mobile
-		addVirtualPad(LEFT_FULL, A_B_C);
-		#end
-
 		#if DISCORD_RPC
 		Discord.changePresence('MENU SCREEN', 'Main Menu');
 		#end
