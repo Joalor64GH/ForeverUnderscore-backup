@@ -1,0 +1,30 @@
+{
+    "difficultyNames": ["UŞOR", "NORMAL", "GREU"],
+    "personalBest": "RECORDUL PERSONAL:",
+    "tracksText": "MELODII",
+    "weekScoreText": "SCORUL SĂPTĂMÂNI:",
+	"delScore": "RESETEAZĂ SCORUL?",
+	"delConfirm": "CONFIRM",
+    "rateText": "RATĂ:",
+
+    "resumeSong": "Reîncepeți",
+	"restartSong": "Reporniți melodia",
+	"editors": "Schimbă Dificultate",
+	"changeDiff": "Schimbă Dificultatea",
+	"leaveChartingMode": "Părăsiți Charting Mode",
+	"togglePractice": "Comutare Practice Mode",
+	"toggleAutoplay": "Comutare Autoplay",
+	"exitOptions": "Ieșiți în meniul de opțiuni",
+	"exitMenu": "Ieșiți în meniul principal",
+	"songByTxt": "De:",
+	"blueballedTxt": "Bile albastre:",
+	"backButton": "ÎNAPOI",
+
+    "scoreTxt": "Scor:",
+    "missTxt": "Combouri Distruse:",
+    "accTxt": "Acuratețe:",
+    "botTxt": "[AUTOPLAY]",
+
+	"dialogueFile": "dialogueRo",
+	"dialogueFileEnd": "dialogueEndRo"
+}
