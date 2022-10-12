@@ -43,12 +43,14 @@ class Main extends Sprite
 
 		commitHash = returnGitHash();
 
+		SUtil.uncaughtErrorHandler();
+
 		Lib.current.loaderInfo.uncaughtErrorEvents.addEventListener(UncaughtErrorEvent.UNCAUGHT_ERROR, onCrash);
 		FlxTransitionableState.skipNextTransIn = true;
 
-		addChild(new FlxGame(0, 0, Init, 1, 120, 120, true));
+		SUtil.check();
 
-		mobile.SUtil.check();
+		addChild(new FlxGame(0, 0, Init, 1, 120, 120, true));
 
 		// begin the discord rich presence
 		#if DISCORD_RPC
