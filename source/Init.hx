@@ -20,7 +20,7 @@ enum SettingTypes
 {
 	Checkmark;
 	Selector;
-	Custom;
+	State;
 }
 
 /**
@@ -185,7 +185,7 @@ class Init extends FlxState
 		],
 		'Adjust Judgements' => [
 			'',
-			Custom,
+			State,
 			"Choose where your judgements should be, requires \"Fixed Judgements\" enabled.",
 			NOT_FORCED
 		],

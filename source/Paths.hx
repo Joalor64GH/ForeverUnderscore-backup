@@ -133,7 +133,7 @@ class Paths
 		if (FileSystem.exists(ModManager.getModFile('$folder/$key.png', IMAGE)))
 			isMod = true;
 
-		var path = getPath('$folder/$key.png', IMAGE, library);
+		var path = SUtil.getPath() + getPath('$folder/$key.png', IMAGE, library);
 		var mod = ModManager.getModFile('$folder/$key.png', IMAGE);
 
 		if (FileSystem.exists(isMod ? mod : path))
@@ -199,7 +199,7 @@ class Paths
 		}
 
 		// I hate this so god damn much
-		var gottenPath:String = getPath('$path/$key.$SOUND_EXT', SOUND, library);
+		var gottenPath:String = SUtil.getPath() + getPath('$path/$key.$SOUND_EXT', SOUND, library);
 		gottenPath = gottenPath.substring(gottenPath.indexOf(':') + 1, gottenPath.length);
 		// trace(gottenPath);
 		if (!currentTrackedSounds.exists(gottenPath))
@@ -234,7 +234,7 @@ class Paths
 	public inline static function getPreloadPath(file:String)
 	{
 		var returnPath:String = 'assets/$file';
-		if (!FileSystem.exists(returnPath))
+		if (!FileSystem.exists(SUtil.getPath() + returnPath))
 		{
 			try
 			{
@@ -343,7 +343,7 @@ class Paths
 	inline static public function getSparrowAtlas(key:String, folder:String = 'images', ?library:String)
 	{
 		var graphic:FlxGraphic = returnGraphic(key, folder, library);
-		return (FlxAtlasFrames.fromSparrow(graphic, File.getContent(file('$folder/$key.xml', library))));
+		return (FlxAtlasFrames.fromSparrow(graphic, File.getContent(SUtil.getPath() + file('$folder/$key.xml', library))));
 	}
 
 	inline static public function getPackerAtlas(key:String, folder:String = 'images', ?library:String)

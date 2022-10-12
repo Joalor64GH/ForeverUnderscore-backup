@@ -84,7 +84,7 @@ class CoolUtil
 	{
 		var libraryArray:Array<String> = [];
 
-		var unfilteredLibrary = FileSystem.readDirectory('assets/$subDir/$library');
+		var unfilteredLibrary = FileSystem.readDirectory(SUtil.getPath() + 'assets/$subDir/$library');
 
 		if (FileSystem.exists('assets/$subDir/$library'))
 		{
