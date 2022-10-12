@@ -255,7 +255,7 @@ class CreditsMenuState extends MusicBeatState
 
 		var quoteText:String;
 		var validQuote = (credData.users[curSelected].textData[1] != null || credData.users[curSelected].textData[1].length >= 2);
-		quoteText = (validQuote ? '\n' + credData.users[curSelected].textData[1] : '');
+		quoteText = (validQuote ? '\n' + '"' + credData.users[curSelected].textData[1] + '"' : '');
 
 		desc.text = credData.users[curSelected].textData[0] + quoteText;
 		desc.x = Math.floor((FlxG.width / 2) - (desc.width / 2));
