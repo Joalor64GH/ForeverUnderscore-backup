@@ -310,9 +310,34 @@ class Paths
 		return returnAsset;
 	}
 
-	inline static public function font(key:String)
+	public static function font(key:String, ignoreLang:Bool = false)
 	{
-		return 'assets/fonts/$key';
+		var fontPath:String = 'assets/fonts/$key.ttf';
+		var extensions:Array<String> = ['.ttf', '.otf'];
+
+		for (extension in extensions)
+		{
+			var newPath:String = 'assets/fonts/$key$extension';
+			if (!ignoreLang && ForeverLocales.curLang.useCustomFont)
+			{
+				if (ForeverLocales.curLang.fontPath != null)
+					newPath = 'assets/' + ForeverLocales.curLang.fontPath + '/$key$extension';
+				else
+					newPath = 'assets/locales/' + Init.getSetting('Language') + '/fonts/$key$extension';
+
+				if (ForeverLocales.curLang.fontKey != null)
+					key = ForeverLocales.curLang.fontKey;
+			}
+
+			if (FileSystem.exists(newPath))
+			{
+				if (key.contains('.')) // going through the bs of cleaning it;
+					key.substring(0, key.indexOf('.'));
+				return newPath;
+			}
+		}
+
+		return fontPath + '.ttf'; // fallback in case the font or path doesn't exist;
 	}
 
 	inline static public function getSparrowAtlas(key:String, folder:String = 'images', ?library:String)

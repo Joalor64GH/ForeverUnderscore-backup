@@ -18,7 +18,7 @@ class AbsoluteText extends FlxText
 	{
 		super(0, 0, 400, text, size);
 
-		setFormat(Paths.font('vcr.ttf'), size);
+		setFormat(Paths.font('vcr'), size);
 
 		this.parent = parent;
 		this.offsetX = offsetX;

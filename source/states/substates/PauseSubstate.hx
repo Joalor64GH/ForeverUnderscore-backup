@@ -90,34 +90,34 @@ class PauseSubstate extends MusicBeatSubstate
 		var levelInfo:FlxText = new FlxText(20, 15, 0, "", 32);
 		levelInfo.text += CoolUtil.dashToSpace(PlayState.SONG.song) + ' [' + language.difficultyNames[PlayState.storyDifficulty] + ']';
 		levelInfo.scrollFactor.set();
-		levelInfo.setFormat(Paths.font('vcr.ttf'), 32);
+		levelInfo.setFormat(Paths.font('vcr'), 32);
 		levelInfo.updateHitbox();
 		add(levelInfo);
 
 		var levelAuthor:FlxText = new FlxText(20, 15 + 32, 0, "", 32);
 		levelAuthor.text += '${language.songByTxt} ' + PlayState.SONG.author;
 		levelAuthor.scrollFactor.set();
-		levelAuthor.setFormat(Paths.font('vcr.ttf'), 32);
+		levelAuthor.setFormat(Paths.font('vcr'), 32);
 		levelAuthor.updateHitbox();
 		add(levelAuthor);
 
 		var levelDeaths:FlxText = new FlxText(20, 15 + 64, 0, "", 32);
 		levelDeaths.text += '${language.blueballedTxt} ' + PlayState.deaths;
 		levelDeaths.scrollFactor.set();
-		levelDeaths.setFormat(Paths.font('vcr.ttf'), 32);
+		levelDeaths.setFormat(Paths.font('vcr'), 32);
 		levelDeaths.updateHitbox();
 		add(levelDeaths);
 
 		levelPractice = new FlxText(20, 15 + 96, 0, "PRACTICE MODE", 32);
 		levelPractice.scrollFactor.set();
-		levelPractice.setFormat(Paths.font('vcr.ttf'), 32);
+		levelPractice.setFormat(Paths.font('vcr'), 32);
 		levelPractice.updateHitbox();
 		levelPractice.visible = PlayState.practiceMode;
 		add(levelPractice);
 
 		levelError = new FlxText(20, 15 + 102, 0, '', 32);
 		levelError.scrollFactor.set();
-		levelError.setFormat(Paths.font('vcr.ttf'), 32);
+		levelError.setFormat(Paths.font('vcr'), 32);
 		levelError.updateHitbox();
 		add(levelError);
 

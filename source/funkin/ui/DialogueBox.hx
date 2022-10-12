@@ -486,7 +486,7 @@ class DialogueBox extends FlxSpriteGroup
 
 				// custom text
 				if (portraitData.textFont == null)
-					portraitData.textFont = 'pixel.otf';
+					portraitData.textFont = 'pixel';
 				else
 					pixelText.font = Paths.font(portraitData.textFont);
 

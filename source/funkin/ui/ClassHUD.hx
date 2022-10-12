@@ -80,13 +80,13 @@ class ClassHUD extends FlxTypedGroup<FlxBasic>
 		add(iconP2);
 
 		scoreBar = new FlxText(FlxG.width / 2, Math.floor(healthBarBG.y + 40), 0, '');
-		scoreBar.setFormat(Paths.font('vcr.ttf'), 18, FlxColor.WHITE);
+		scoreBar.setFormat(Paths.font('vcr'), 18, FlxColor.WHITE);
 		scoreBar.setBorderStyle(OUTLINE, FlxColor.BLACK, 1.5);
 		scoreBar.antialiasing = !Init.getSetting('Disable Antialiasing');
 		add(scoreBar);
 
 		cornerMark = new FlxText(0, 0, 0, engineDisplay);
-		cornerMark.setFormat(Paths.font('vcr.ttf'), 18, FlxColor.WHITE);
+		cornerMark.setFormat(Paths.font('vcr'), 18, FlxColor.WHITE);
 		cornerMark.setBorderStyle(OUTLINE, FlxColor.BLACK, 2);
 		cornerMark.setPosition(FlxG.width - (cornerMark.width + 5), 5);
 		cornerMark.antialiasing = true;
@@ -94,7 +94,7 @@ class ClassHUD extends FlxTypedGroup<FlxBasic>
 		add(cornerMark);
 
 		centerMark = new FlxText(0, (Init.getSetting('Downscroll') ? FlxG.height - 45 : 20), 0, '- $infoDisplay [$diffDisplay] -');
-		centerMark.setFormat(Paths.font('vcr.ttf'), 24, FlxColor.WHITE);
+		centerMark.setFormat(Paths.font('vcr'), 24, FlxColor.WHITE);
 		centerMark.setBorderStyle(OUTLINE, FlxColor.BLACK, 2);
 		centerMark.antialiasing = !Init.getSetting('Disable Antialiasing');
 		centerMark.screenCenter(X);
@@ -102,7 +102,7 @@ class ClassHUD extends FlxTypedGroup<FlxBasic>
 		add(centerMark);
 
 		autoplayMark = new FlxText(-5, (Init.getSetting('Downscroll') ? centerMark.y - 60 : centerMark.y + 60), FlxG.width - 800, '${language.botTxt}\n', 32);
-		autoplayMark.setFormat(Paths.font("vcr.ttf"), 32, FlxColor.WHITE, CENTER);
+		autoplayMark.setFormat(Paths.font("vcr"), 32, FlxColor.WHITE, CENTER);
 		autoplayMark.setBorderStyle(OUTLINE, FlxColor.BLACK, 2);
 		autoplayMark.screenCenter(X);
 		autoplayMark.visible = PlayState.bfStrums.autoplay;
@@ -149,7 +149,7 @@ class ClassHUD extends FlxTypedGroup<FlxBasic>
 	}
 
 	var counterTextSize:Int = 18;
-	var counterTextFont:String = 'vcr.ttf';
+	var counterTextFont:String = 'vcr';
 
 	var left = (Init.getSetting('Counter') == 'Left');
 

@@ -449,7 +449,7 @@ class CharacterOffsetEditor extends MusicBeatState
 		for (anim => offsets in char.animOffsets)
 		{
 			var text:FlxText = new FlxText(10, 20 + (18 * daLoop), 0, anim + ": " + offsets, 15);
-			text.setFormat(Paths.font('vcr.ttf'), 18, FlxColor.WHITE);
+			text.setFormat(Paths.font('vcr'), 18, FlxColor.WHITE);
 			text.setBorderStyle(OUTLINE, FlxColor.BLACK, 1.5);
 			text.scrollFactor.set();
 			text.cameras = [camHUD];
@@ -475,7 +475,7 @@ class CharacterOffsetEditor extends MusicBeatState
 				has the offsets properly set up
 				\n\nTry: addOffset(\'animationName\', xPosition, yPosition);
 				', 15);
-			text.setFormat(Paths.font('vcr.ttf'), 18, FlxColor.WHITE);
+			text.setFormat(Paths.font('vcr'), 18, FlxColor.WHITE);
 			text.setBorderStyle(OUTLINE, FlxColor.BLACK, 1.5);
 			text.scrollFactor.set();
 			text.color = FlxColor.RED;

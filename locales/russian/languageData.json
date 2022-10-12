@@ -26,5 +26,7 @@
     "botTxt": "[АВТОИГРА]",
 
 	"dialogueFile": "dialogueRU",
-	"dialogueFileEnd": "dialogueEndRU"
+	"dialogueFileEnd": "dialogueEndRU",
+	"useCustomFont": true,
+	"fontKey": "vcr-ru"
 }

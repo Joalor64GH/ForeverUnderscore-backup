@@ -1362,7 +1362,7 @@ class OriginalChartEditor extends MusicBeatState
 			if (daNoteType != 0)
 			{
 				var noteTypeNum:EventText = new EventText(0, 0, 100, Std.string(daNoteType), 24);
-				noteTypeNum.setFormat(Paths.font("vcr.ttf"), 24, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+				noteTypeNum.setFormat(Paths.font("vcr"), 24, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 				noteTypeNum.xAdd = -32;
 				noteTypeNum.yAdd = 6;
 				noteTypeNum.borderSize = 1;

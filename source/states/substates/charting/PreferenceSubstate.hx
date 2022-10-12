@@ -83,7 +83,7 @@ class PreferenceSubstate extends MusicBeatSubstate
 		add(blackTopBar);
 
 		topText = new FlxText(blackTopBar.x + 15, blackTopBar.y + 15, topTextString);
-		topText.setFormat(Paths.font("vcr.ttf"), 24);
+		topText.setFormat(Paths.font("vcr"), 24);
 		add(topText);
 
 		blackBottomBar = new FlxSprite(0, FlxG.height).makeGraphic(FlxG.width, 75, FlxColor.BLACK);

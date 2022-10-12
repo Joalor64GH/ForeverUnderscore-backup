@@ -130,14 +130,14 @@ class CreditsMenuState extends MusicBeatState
 		add(descBG);
 
 		desc = new FlxText(40, 40, 1180, "Description.", 32);
-		desc.setFormat(Paths.font("vcr.ttf"), 32, FlxColor.WHITE, CENTER);
+		desc.setFormat(Paths.font("vcr"), 32, FlxColor.WHITE, CENTER);
 		desc.setBorderStyle(OUTLINE, FlxColor.BLACK, 1.5);
 		desc.scrollFactor.set();
 		desc.antialiasing = true;
 		add(desc);
 
 		groupText = new FlxText(0, 40, 1180, "Group", 36);
-		groupText.setFormat(Paths.font("vcr.ttf"), 36, FlxColor.WHITE, CENTER);
+		groupText.setFormat(Paths.font("vcr"), 36, FlxColor.WHITE, CENTER);
 		groupText.setBorderStyle(OUTLINE, FlxColor.BLACK, 3);
 		groupText.bold = true;
 		groupText.scrollFactor.set();

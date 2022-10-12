@@ -81,7 +81,7 @@ class JudgementOffsetState extends MusicBeatState
 		dadStrums.visible = !Init.getSetting('Hide Opponent Receptors');
 
 		infoBar = new FlxText((Init.getSetting('Downscroll') ? FlxG.height - 45 : 20), 0, '');
-		infoBar.setFormat(Paths.font('vcr.ttf'), 32, FlxColor.WHITE);
+		infoBar.setFormat(Paths.font('vcr'), 32, FlxColor.WHITE);
 		infoBar.setBorderStyle(OUTLINE, FlxColor.BLACK, 1.5);
 		infoBar.antialiasing = !Init.getSetting('Disable Antialiasing');
 		add(infoBar);

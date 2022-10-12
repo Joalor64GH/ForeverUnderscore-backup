@@ -64,7 +64,7 @@ class WarningState extends MusicBeatState
 		generateBackground();
 
 		warningText = new FlxText(0, 0, FlxG.width - fieldOffset, textField, 32);
-		warningText.setFormat("VCR OSD Mono", 32, FlxColor.WHITE, CENTER);
+		warningText.setFormat(Paths.font("vcr"), 32, FlxColor.WHITE, CENTER);
 		warningText.screenCenter();
 		warningText.alpha = 0;
 		warningText.antialiasing = !Init.getSetting('Disable Antialiasing');

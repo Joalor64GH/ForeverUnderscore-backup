@@ -147,7 +147,7 @@ class MainMenuState extends MusicBeatState
 			+ (Main.commitHash.length > 3 ? Main.commitHash : ''),
 			12);
 		versionShit.scrollFactor.set();
-		versionShit.setFormat(Paths.font('vcr.ttf'), 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		versionShit.setFormat(Paths.font('vcr'), 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		add(versionShit);
 	}
 

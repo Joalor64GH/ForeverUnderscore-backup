@@ -32,6 +32,10 @@ typedef LangDataDef =
 	// FILES
 	var dialogueFileEnd:String;
 	var dialogueFile:String;
+	// OTHER
+	var useCustomFont:Bool;
+	var fontPath:String;
+	var fontKey:String;
 }
 
 /*

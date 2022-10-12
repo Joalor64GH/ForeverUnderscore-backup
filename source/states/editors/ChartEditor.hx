@@ -259,7 +259,7 @@ class ChartEditor extends MusicBeatState
 	function generateHUD()
 	{
 		songText = new FlxText(0, 20, 0, "", 16);
-		songText.setFormat(Paths.font("vcr.ttf"), 20, FlxColor.WHITE, LEFT);
+		songText.setFormat(Paths.font("vcr"), 20, FlxColor.WHITE, LEFT);
 		songText.scrollFactor.set();
 		add(songText);
 
@@ -274,18 +274,18 @@ class ChartEditor extends MusicBeatState
 
 		var constTextSize:Int = 24;
 		infoTextChart = new FlxText(5, FlxG.height - (constTextSize * 6) - 5, 0, 'TEST', constTextSize);
-		infoTextChart.setFormat(Paths.font("vcr.ttf"), constTextSize);
+		infoTextChart.setFormat(Paths.font("vcr"), constTextSize);
 		infoTextChart.cameras = [camHUD];
 		add(infoTextChart);
 
 		/*
 			helpTxt = new FlxText(0, 0, 0, "", 16);
-			helpTxt.setFormat(Paths.font("vcr.ttf"), 20, FlxColor.WHITE, LEFT);
+			helpTxt.setFormat(Paths.font("vcr"), 20, FlxColor.WHITE, LEFT);
 			helpTxt.scrollFactor.set();
 			add(helpTxt);
 
 			prefTxt = new FlxText(0, 0, 0, "", 16);
-			prefTxt.setFormat(Paths.font("vcr.ttf"), 20, FlxColor.WHITE, LEFT);
+			prefTxt.setFormat(Paths.font("vcr"), 20, FlxColor.WHITE, LEFT);
 			prefTxt.scrollFactor.set();
 			add(prefTxt);
 
@@ -695,7 +695,7 @@ class ChartEditor extends MusicBeatState
 			if (i == 1)
 				sectionNumber.x = sectionLine.x + sectionLine.width + 5;
 
-			sectionNumber.setFormat(Paths.font("vcr.ttf"), 24, FlxColor.WHITE);
+			sectionNumber.setFormat(Paths.font("vcr"), 24, FlxColor.WHITE);
 			sectionNumber.antialiasing = false;
 			sectionNumber.alpha = sectionLine.alpha;
 			sectionsGroup.add(sectionNumber);
@@ -813,7 +813,7 @@ class ChartEditor extends MusicBeatState
 		if (daNoteType != 0)
 		{
 			var noteTypeNum:EventText = new EventText(0, 0, 100, Std.string(daNoteType), 24);
-			noteTypeNum.setFormat(Paths.font("vcr.ttf"), 24, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+			noteTypeNum.setFormat(Paths.font("vcr"), 24, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 			noteTypeNum.xAdd = -26;
 			noteTypeNum.yAdd = 10;
 			noteTypeNum.borderSize = 1;
