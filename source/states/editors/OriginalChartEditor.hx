@@ -542,7 +542,8 @@ class OriginalChartEditor extends MusicBeatState
 		// note types
 		for (i in 0...Note.noteTypeNames.length)
 		{
-			Note.noteTypeNames[i] = i + '. ' + Note.noteTypeNames[i];
+			if (!Note.noteTypeNames[i].contains('. '))
+				Note.noteTypeNames[i] = i + '. ' + Note.noteTypeNames[i];
 		}
 		noteTypeDropDown = new PsychDropDown(10, 105, PsychDropDown.makeStrIdLabelArray(Note.noteTypeNames, false), function(type:String)
 		{
