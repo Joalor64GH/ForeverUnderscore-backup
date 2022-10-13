@@ -844,7 +844,7 @@ class ChartEditor extends MusicBeatState
 			note.destroy();
 
 			/*
-				if (prevNote != null && prevNote.isSustainNote)
+				if (prevNote != null && prevNote.isSustain)
 				{
 					var end:Note = ForeverAssets.generateArrow(_song.assetModifier, daStrumTime + Conductor.stepCrochet, daNoteInfo % 4, daNoteAlt, true,
 						hold, daNoteType);

@@ -662,7 +662,7 @@ class PlayState extends MusicBeatState
 
 				bfStrums.allNotes.forEachAlive(function(daNote:Note)
 				{
-					if ((daNote.noteData == key) && daNote.canBeHit && !daNote.isSustainNote && !daNote.tooLate && !daNote.wasGoodHit)
+					if ((daNote.noteData == key) && daNote.canBeHit && !daNote.isSustain && !daNote.tooLate && !daNote.wasGoodHit)
 						possibleNoteList.push(daNote);
 				});
 				possibleNoteList.sort(sortHitNotes);
@@ -994,7 +994,7 @@ class PlayState extends MusicBeatState
 				// push note to its correct strumline
 				strumLines.members[Math.floor((dunceNote.noteData + (dunceNote.mustPress ? 4 : 0)) / numberOfKeys)].push(dunceNote);
 
-				callFunc('noteSpawn', [dunceNote, dunceIndex, dunceNote.noteData, dunceNote.noteType, dunceNote.isSustainNote]);
+				callFunc('noteSpawn', [dunceNote, dunceIndex, dunceNote.noteData, dunceNote.noteType, dunceNote.isSustain]);
 				unspawnNotes.splice(dunceIndex, 1);
 			}
 
@@ -1104,7 +1104,7 @@ class PlayState extends MusicBeatState
 
 					// shitty note hack I hate it so much
 					var center:Float = receptorY + Receptor.swagWidth / (1.85 * (assetModifier == 'pixel' ? 3 : 1));
-					if (strumNote.isSustainNote)
+					if (strumNote.isSustain)
 					{
 						strumNote.y -= ((strumNote.height / 2) * downscrollMultiplier);
 						if ((strumNote.animation.curAnim.name.endsWith('holdend') || strumNote.animation.curAnim.name.endsWith('rollend'))
@@ -1174,7 +1174,7 @@ class PlayState extends MusicBeatState
 					{
 						if ((!strumNote.tooLate) && (strumNote.mustPress) && (!strumNote.canHurt))
 						{
-							if (!strumNote.isSustainNote)
+							if (!strumNote.isSustain)
 							{
 								strumNote.tooLate = true;
 								for (note in strumNote.childrenNotes)
@@ -1190,7 +1190,7 @@ class PlayState extends MusicBeatState
 								if (strumNote.updateAccuracy)
 									Timings.updateAccuracy(0);
 							}
-							else if (strumNote.isSustainNote)
+							else if (strumNote.isSustain)
 							{
 								if (strumNote.parentNote != null)
 								{
@@ -1278,7 +1278,7 @@ class PlayState extends MusicBeatState
 		daNote.active = false;
 		daNote.exists = false;
 
-		var chosenGroup = (daNote.isSustainNote ? strumline.holdsGroup : strumline.notesGroup);
+		var chosenGroup = (daNote.isSustain ? strumline.holdsGroup : strumline.notesGroup);
 		// note damage here I guess
 		daNote.kill();
 		if (strumline.allNotes.members.contains(daNote))
@@ -1328,7 +1328,7 @@ class PlayState extends MusicBeatState
 
 				if (!coolNote.canHurt)
 				{
-					if (!coolNote.isSustainNote)
+					if (!coolNote.isSustain)
 					{
 						increaseCombo(foundRating, coolNote.noteData, strumline);
 						popUpScore(foundRating, coolNote.strumTime < Conductor.songPosition, Timings.perfectSicks, strumline, coolNote);
@@ -1353,7 +1353,7 @@ class PlayState extends MusicBeatState
 				}
 			}
 
-			if (!coolNote.isSustainNote)
+			if (!coolNote.isSustain)
 				destroyNote(strumline, coolNote);
 		}
 	}

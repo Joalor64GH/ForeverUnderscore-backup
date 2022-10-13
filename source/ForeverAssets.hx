@@ -387,22 +387,22 @@ class ForeverAssets
 	/**
 		Notes!
 	**/
-	public static function generateArrow(assetModifier, strumTime, noteData, noteAlt, ?isSustainNote:Bool = false, ?prevNote:Note = null,
+	public static function generateArrow(assetModifier, strumTime, noteData, noteAlt, ?isSustain:Bool = false, ?prevNote:Note = null,
 			noteType:Int = 0):Note
 	{
 		var newNote:Note;
 		var changeableSkin:String = Init.getSetting("Note Skin");
 		// gonna improve the system eventually
 		if (changeableSkin.startsWith('quant'))
-			newNote = Note.returnQuantNote(assetModifier, strumTime, noteData, noteAlt, isSustainNote, prevNote, noteType);
+			newNote = Note.returnQuantNote(assetModifier, strumTime, noteData, noteAlt, isSustain, prevNote, noteType);
 		else
-			newNote = Note.returnDefaultNote(assetModifier, strumTime, noteData, noteAlt, isSustainNote, prevNote, noteType);
+			newNote = Note.returnDefaultNote(assetModifier, strumTime, noteData, noteAlt, isSustain, prevNote, noteType);
 
 		// hold note shit
-		if (isSustainNote && prevNote != null)
+		if (isSustain && prevNote != null)
 		{
 			// set note offset
-			if (prevNote.isSustainNote)
+			if (prevNote.isSustain)
 				newNote.noteVisualOffset = prevNote.noteVisualOffset;
 			else // calculate a new visual offset based on that note's width and newnote's width
 				newNote.noteVisualOffset = ((prevNote.width / 2) - (newNote.width / 2));

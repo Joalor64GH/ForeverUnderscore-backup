@@ -23,7 +23,7 @@ class Note extends FNFSprite
 	public var prevNote:Note;
 
 	public var sustainLength:Float = 0;
-	public var isSustainNote:Bool = false;
+	public var isSustain:Bool = false;
 
 	// offsets
 	public var offsetX:Float = 0;
@@ -78,7 +78,7 @@ class Note extends FNFSprite
 
 		this.prevNote = prevNote;
 		this.noteType = noteType;
-		isSustainNote = sustainNote;
+		isSustain = sustainNote;
 
 		if (noteType == null || noteType <= 0)
 			noteType = 0;
@@ -121,7 +121,7 @@ class Note extends FNFSprite
 		this.noteAlt = noteAlt;
 
 		// determine parent note
-		if (isSustainNote && prevNote != null)
+		if (isSustain && prevNote != null)
 		{
 			parentNote = prevNote;
 			while (parentNote.parentNote != null)
@@ -130,7 +130,7 @@ class Note extends FNFSprite
 
 			hitSounds = false;
 		}
-		else if (!isSustainNote)
+		else if (!isSustain)
 			parentNote = null;
 	}
 
@@ -155,11 +155,11 @@ class Note extends FNFSprite
 
 	public function updateSustainScale()
 	{
-		if (isSustainNote)
+		if (isSustain)
 		{
 			if (prevNote != null && prevNote.exists)
 			{
-				if (prevNote.isSustainNote)
+				if (prevNote.isSustain)
 				{
 					// listen I dont know what i was doing but I was onto something (-yoshubs)
 					// yoshubs this literally works properly (-gabi)
@@ -181,16 +181,16 @@ class Note extends FNFSprite
 		at the very bottom of this file you can find the function
 		for setting up custom note behavior when hit and such
 	**/
-	public static function returnDefaultNote(assetModifier, strumTime, noteData, noteAlt, ?isSustainNote:Bool = false, ?prevNote:Note, noteType:Int = 0):Note
+	public static function returnDefaultNote(assetModifier, strumTime, noteData, noteAlt, ?isSustain:Bool = false, ?prevNote:Note, noteType:Int = 0):Note
 	{
-		var newNote:Note = new Note(strumTime, noteData, noteAlt, prevNote, isSustainNote, noteType);
+		var newNote:Note = new Note(strumTime, noteData, noteAlt, prevNote, isSustain, noteType);
 		newNote.holdHeight = 0.72;
 
 		// frames originally go here
 		switch (assetModifier)
 		{
 			case 'pixel':
-				if (isSustainNote)
+				if (isSustain)
 				{
 					switch (noteType)
 					{
@@ -223,7 +223,7 @@ class Note extends FNFSprite
 						newNote.loadGraphic(Paths.image(ForeverTools.returnSkin('mines', assetModifier, '', 'noteskins/mines')), true, 133, 128);
 						newNote.animation.add(Receptor.arrowCol[noteData] + 'Scroll', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]);
 
-						if (isSustainNote)
+						if (isSustain)
 							newNote.kill();
 
 						newNote.setGraphicSize(Std.int(newNote.width * 0.8));
@@ -234,10 +234,10 @@ class Note extends FNFSprite
 				}
 		}
 		//
-		if (!isSustainNote)
+		if (!isSustain)
 			newNote.animation.play(Receptor.arrowCol[noteData] + 'Scroll');
 
-		if (isSustainNote && prevNote != null)
+		if (isSustain && prevNote != null)
 		{
 			newNote.noteSpeed = prevNote.noteSpeed;
 			newNote.alpha = Init.getSetting('Hold Opacity') * 0.01;
@@ -245,7 +245,7 @@ class Note extends FNFSprite
 			newNote.animation.play(Receptor.arrowCol[noteData] + 'holdend');
 			newNote.updateHitbox();
 
-			if (prevNote != null && prevNote.isSustainNote)
+			if (prevNote != null && prevNote.isSustain)
 			{
 				prevNote.animation.play(Receptor.arrowCol[prevNote.noteData] + 'hold');
 				prevNote.updateHitbox();
@@ -255,10 +255,10 @@ class Note extends FNFSprite
 		return newNote;
 	}
 
-	public static function returnQuantNote(assetModifier, strumTime, noteData, noteAlt, ?isSustainNote:Bool = false, ?prevNote:Note = null,
+	public static function returnQuantNote(assetModifier, strumTime, noteData, noteAlt, ?isSustain:Bool = false, ?prevNote:Note = null,
 			noteType:Int = 0):Note
 	{
-		var newNote:Note = new Note(strumTime, noteData, noteAlt, prevNote, isSustainNote, noteType);
+		var newNote:Note = new Note(strumTime, noteData, noteAlt, prevNote, isSustain, noteType);
 		newNote.holdHeight = 0.862;
 
 		// actually determine the quant of the note
@@ -269,10 +269,10 @@ class Note extends FNFSprite
 		{
 			default:
 				// inherit last quant if hold note
-				if (isSustainNote && prevNote != null)
+				if (isSustain && prevNote != null)
 					newNote.noteQuant = prevNote.noteQuant;
 				// base quant notes
-				if (!isSustainNote)
+				if (!isSustain)
 				{
 					switch (noteType)
 					{
@@ -338,10 +338,10 @@ class Note extends FNFSprite
 				}
 		}
 
-		if (!isSustainNote)
+		if (!isSustain)
 			newNote.animation.play(Receptor.arrowDir[noteData] + 'Scroll');
 
-		if (isSustainNote && prevNote != null)
+		if (isSustain && prevNote != null)
 		{
 			newNote.noteSpeed = prevNote.noteSpeed;
 			newNote.alpha = Init.getSetting('Hold Opacity') * 0.01;
@@ -349,7 +349,7 @@ class Note extends FNFSprite
 			newNote.animation.play('holdend');
 			newNote.updateHitbox();
 
-			if (prevNote.isSustainNote)
+			if (prevNote.isSustain)
 			{
 				prevNote.animation.play('hold');
 
@@ -379,7 +379,7 @@ class Note extends FNFSprite
 		}
 		else
 		{
-			if (newNote.isSustainNote)
+			if (newNote.isSustain)
 			{
 				newNote.loadGraphic(Paths.image(ForeverTools.returnSkin(texture, assetModifier, changeable, texturePath)), true, 7, 6);
 				newNote.animation.add(Receptor.arrowCol[newNote.noteData] + 'holdend', [pixelNoteID[newNote.noteData]]);

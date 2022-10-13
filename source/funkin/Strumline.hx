@@ -88,7 +88,7 @@ class Strumline extends FlxSpriteGroup
 
 	public function push(newNote:Note)
 	{
-		var chosenGroup = (newNote.isSustainNote ? holdsGroup : notesGroup);
+		var chosenGroup = (newNote.isSustain ? holdsGroup : notesGroup);
 		chosenGroup.add(newNote);
 		allNotes.add(newNote);
 		chosenGroup.sort(FlxSort.byY, (!Init.getSetting('Downscroll')) ? FlxSort.DESCENDING : FlxSort.ASCENDING);
