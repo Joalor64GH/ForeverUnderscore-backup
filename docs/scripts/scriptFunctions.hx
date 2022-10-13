@@ -23,6 +23,11 @@ function postUpdate()
 	// after playstate's update function
 }
 
+function noteSpawn(dunceNote:Note, index:Int, noteData:Int, noteType:Int, isSustain:Bool)
+{
+	// called when a note is spawned
+}
+
 function goodNoteHit(coolNote:Note, strumline:Strumline)
 {
 	// called when you hit a note on PlayState
