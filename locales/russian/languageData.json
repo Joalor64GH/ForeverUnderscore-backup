@@ -25,7 +25,7 @@
     "accTxt": "Точность:",
     "botTxt": "[АВТОИГРА]",
 
-    "skipText": "PRESS SHIFT TO SKIP",
+    "skipText": "НАЖМИТЕ SHIFT ДЛЯ ПРОПУСКА",
 	"dialogueFile": "dialogueRU",
 	"dialogueFileEnd": "dialogueEndRU",
 	"useCustomFont": true,
