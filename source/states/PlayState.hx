@@ -2256,6 +2256,8 @@ class PlayState extends MusicBeatState
 
 			charactersDance(curBeat);
 
+			stageBuild.stageUpdate(curBeat, boyfriend, gf, dad);
+
 			var introAssets:Map<String, Array<String>> = new Map<String, Array<String>>();
 			introAssets.set('default', [
 				ForeverTools.returnSkin('prepare', assetModifier, changeableSkin, 'UI'),
@@ -2369,11 +2371,6 @@ class PlayState extends MusicBeatState
 
 		FlxG.stage.removeEventListener(KeyboardEvent.KEY_DOWN, onKeyPress);
 		FlxG.stage.removeEventListener(KeyboardEvent.KEY_UP, onKeyRelease);
-
-		// make sure we destroy character scripts before initializing new ones
-		boyfriend.charScripts = [];
-		gf.charScripts = [];
-		dad.charScripts = [];
 
 		super.destroy();
 	}

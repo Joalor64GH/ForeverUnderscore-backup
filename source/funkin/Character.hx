@@ -40,7 +40,7 @@ class Character extends FNFSprite
 	public var isPlayer:Bool = false;
 	public var quickDancer:Bool = false;
 
-	public var charScripts:Array<ScriptHandler> = [];
+	public var characterScript:ScriptHandler;
 
 	public var idleSuffix:String = '';
 
@@ -140,8 +140,7 @@ class Character extends FNFSprite
 
 	override function update(elapsed:Float)
 	{
-		for (i in charScripts)
-			i.call('update', [elapsed]);
+		characterScript.call('update', [elapsed]);
 
 		/**
 		 * Special Animations Code.
@@ -227,8 +226,7 @@ class Character extends FNFSprite
 			}
 		}
 
-		for (i in charScripts)
-			i.call('postUpdate', [elapsed]);
+		characterScript.call('postUpdate', [elapsed]);
 
 		super.update(elapsed);
 	}
@@ -282,7 +280,6 @@ class Character extends FNFSprite
 				animationNotes.push(note);
 			}
 		}
-		TankmenBG.animationNotes = animationNotes;
 		animationNotes.sort(function(Obj1:Array<Dynamic>, Obj2:Array<Dynamic>):Int
 		{
 			return FlxSort.byValues(FlxSort.ASCENDING, Obj1[0], Obj2[0]);
@@ -323,25 +320,12 @@ class Character extends FNFSprite
 	 */
 	function generateBaseChar(char:String = 'bf')
 	{
-		var scripts:Array<String> = ['characters/$char/config.hx', 'characters/$char/config.hxs'];
+		var paths:Array<String> = ['characters/$char/config.hx', 'characters/$char/config.hxs'];
 
-		var pushedScripts:Array<String> = [];
-
-		for (i in scripts)
+		for (path in paths)
 		{
-			if (ForeverTools.fileExists(i) && !pushedScripts.contains(i))
-			{
-				var script:ScriptHandler = new ScriptHandler(Paths.getTextFromFile(i));
-
-				if (script.interp == null)
-				{
-					trace("Something terrible occured! Skipping.");
-					continue;
-				}
-
-				charScripts.push(script);
-				pushedScripts.push(i);
-			}
+			if (ForeverTools.fileExists(path))
+				characterScript = new ScriptHandler(Paths.getTextFromFile(path));
 		}
 
 		var tex:FlxFramesCollection;
@@ -366,56 +350,56 @@ class Character extends FNFSprite
 		frames = tex;
 
 		// trace(interp, script);
-		setVar('addByPrefix', function(name:String, prefix:String, ?frames:Int = 24, ?loop:Bool = false)
+		characterScript.set('addByPrefix', function(name:String, prefix:String, ?frames:Int = 24, ?loop:Bool = false)
 		{
 			animation.addByPrefix(name, prefix, frames, loop);
 		});
 
-		setVar('addByIndices', function(name:String, prefix:String, indices:Array<Int>, ?frames:Int = 24, ?loop:Bool = false)
+		characterScript.set('addByIndices', function(name:String, prefix:String, indices:Array<Int>, ?frames:Int = 24, ?loop:Bool = false)
 		{
 			animation.addByIndices(name, prefix, indices, "", frames, loop);
 		});
 
-		setVar('addOffset', function(?name:String = "idle", ?x:Float = 0, ?y:Float = 0)
+		characterScript.set('addOffset', function(?name:String = "idle", ?x:Float = 0, ?y:Float = 0)
 		{
 			addOffset(name, x, y);
 			if (name == 'idle')
 				idlePos = [x, y];
 		});
 
-		setVar('set', function(name:String, value:Dynamic)
+		characterScript.set('set', function(name:String, value:Dynamic)
 		{
 			Reflect.setProperty(this, name, value);
 		});
 
-		setVar('setSingDuration', function(amount:Int)
+		characterScript.set('setSingDuration', function(amount:Int)
 		{
 			singDuration = amount;
 		});
 
-		setVar('setOffsets', function(?x:Float = 0, ?y:Float = 0)
+		characterScript.set('setOffsets', function(?x:Float = 0, ?y:Float = 0)
 		{
 			characterOffset.set(x, y);
 		});
 
-		setVar('setCamOffsets', function(?x:Float = 0, ?y:Float = 0)
+		characterScript.set('setCamOffsets', function(?x:Float = 0, ?y:Float = 0)
 		{
 			cameraOffset.set(x, y);
 		});
 
-		setVar('setScale', function(?x:Float = 1, ?y:Float = 1)
+		characterScript.set('setScale', function(?x:Float = 1, ?y:Float = 1)
 		{
 			scale.set(x, y);
 		});
 
-		setVar('setIcon', function(swag:String = 'face') icon = swag);
+		characterScript.set('setIcon', function(swag:String = 'face') icon = swag);
 
-		setVar('quickDancer', function(quick:Bool = false)
+		characterScript.set('quickDancer', function(quick:Bool = false)
 		{
 			quickDancer = quick;
 		});
 
-		setVar('setBarColor', function(rgb:Array<Float>)
+		characterScript.set('setBarColor', function(rgb:Array<Float>)
 		{
 			if (barColor != null)
 				barColor = rgb;
@@ -424,7 +408,7 @@ class Character extends FNFSprite
 			return true;
 		});
 
-		setVar('setDeathChar',
+		characterScript.set('setDeathChar',
 			function(char:String = 'bf-dead', lossSfx:String = 'fnf_loss_sfx', song:String = 'gameOver', confirmSound:String = 'gameOverEnd', bpm:Int)
 			{
 				GameOverSubstate.character = char;
@@ -434,29 +418,28 @@ class Character extends FNFSprite
 				GameOverSubstate.deathBPM = bpm;
 			});
 
-		setVar('get', function(variable:String)
+		characterScript.set('get', function(variable:String)
 		{
 			return Reflect.getProperty(this, variable);
 		});
 
-		setVar('setGraphicSize', function(width:Int = 0, height:Int = 0)
+		characterScript.set('setGraphicSize', function(width:Int = 0, height:Int = 0)
 		{
 			setGraphicSize(width, height);
 			updateHitbox();
 		});
 
-		setVar('playAnim', function(name:String, ?force:Bool = false, ?reversed:Bool = false, ?frames:Int = 0)
+		characterScript.set('playAnim', function(name:String, ?force:Bool = false, ?reversed:Bool = false, ?frames:Int = 0)
 		{
 			playAnim(name, force, reversed, frames);
 		});
 
-		setVar('isPlayer', isPlayer);
+		characterScript.set('isPlayer', isPlayer);
 		if (PlayState.SONG != null)
-			setVar('songName', PlayState.SONG.song.toLowerCase());
-		setVar('flipLeftRight', flipLeftRight);
+			characterScript.set('songName', PlayState.SONG.song.toLowerCase());
+		characterScript.set('flipLeftRight', flipLeftRight);
 
-		for (i in charScripts)
-			i.call('loadAnimations', []);
+		characterScript.call('loadAnimations', []);
 
 		if (animation.getByName('danceLeft') != null)
 			playAnim('danceLeft');
@@ -464,18 +447,9 @@ class Character extends FNFSprite
 			playAnim('idle');
 	}
 
-	public function setVar(key:String, value:Dynamic):Bool
-	{
-		for (i in charScripts)
-			i.set(key, value);
-
-		return true;
-	}
-
 	public function noteHit()
 	{
-		for (i in charScripts)
-			i.call('noteHit', []);
+		characterScript.call('noteHit', []);
 	}
 
 	public var psychAnimationsArray:Array<PsychAnimArray> = [];

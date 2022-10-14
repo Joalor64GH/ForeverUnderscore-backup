@@ -1,4 +1,5 @@
 var limo:FNFSprite;
+var dancer:FNFSprite;
 var grpLimoDancers:FlxSpriteGroup;
 
 function generateStage()
@@ -21,15 +22,12 @@ function generateStage()
 
 	for (i in 0...5)
 	{
-		var dancer:BackgroundDancer = new BackgroundDancer((370 * i) + 130, bgLimo.y - 400);
-		dancer.scrollFactor.set(0.4, 0.4);
+		createDancer((370 * i) + 130, bgLimo.y - 380);
 		grpLimoDancers.add(dancer);
 	}
 
-	var limoTex = Paths.getSparrowAtlas('limoDrive', stageDir);
-
 	limo = new FNFSprite(-120, 550);
-	limo.frames = limoTex;
+	limo.frames = Paths.getSparrowAtlas('limoDrive', stageDir);
 	limo.animation.addByPrefix('drive', "Limo stage", 24);
 	limo.animation.play('drive');
 	limo.antialiasing = !Init.getSetting('Disable Antialiasing');
@@ -38,10 +36,29 @@ function generateStage()
 	fastCar = new FNFSprite(-300, 160).loadGraphic(Paths.image('fastCarLol', stageDir));
 }
 
+var danceDir:Bool = false;
+
 function updateStage(curBeat:Int, boyfriend:Character, gf:Character, dad:Character)
 {
-	grpLimoDancers.forEach(function(dancer:BackgroundDancer)
+	grpLimoDancers.forEach(function(dancer:FNFSprite)
 	{
-		dancer.dance();
+		dancer.scrollFactor.set(0.4, 0.4);
+
+		danceDir = !danceDir;
+
+		if (danceDir)
+			dancer.animation.play('danceRight', true);
+		else
+			dancer.animation.play('danceLeft', true);
 	});
+}
+
+function createDancer(x:Float, y:Float)
+{
+	dancer = new FNFSprite(x, y);
+	dancer.frames = Paths.getSparrowAtlas("limoDancer", "stages/highway/images");
+	dancer.animation.addByIndices('danceLeft', 'bg dancer sketch PINK', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14], "", 30, false);
+	dancer.animation.addByIndices('danceRight', 'bg dancer sketch PINK', [15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29], "", 30, false);
+	dancer.animation.play('danceLeft');
+	dancer.antialiasing = !Init.getSetting('Disable Antialiasing');
 }

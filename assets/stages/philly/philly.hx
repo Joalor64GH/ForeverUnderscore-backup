@@ -1,14 +1,6 @@
 var phillyTrain:FNFSprite;
 var trainSound:FlxSound;
 var windowLight:FNFSprite;
-var phillyCityLightColors:Array<Int>;
-var trainFrameTiming:Float = 0;
-var trainCars:Int = 8;
-var trainCooldown:Int = 0;
-var curLight:Int = 0;
-var startedMoving:Bool = false;
-var trainMoving:Bool = false;
-var trainFinishing:Bool = false;
 
 function generateStage()
 {
@@ -47,6 +39,15 @@ function generateStage()
 	var street:FNFSprite = new FNFSprite(-40, streetBehind.y).loadGraphic(Paths.image('street', stageDir));
 	add(street);
 }
+
+var startedMoving:Bool = false;
+var trainMoving:Bool = false;
+var trainFinishing:Bool = false;
+
+var trainCars:Int = 8;
+var trainCooldown:Int = 0;
+var trainFrameTiming:Float = 0;
+var curLight:Int = 0;
 
 function trainStart()
 {

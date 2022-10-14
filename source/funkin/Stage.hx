@@ -179,9 +179,6 @@ class Stage extends FlxTypedGroup<FlxBasic>
 		});
 		if (PlayState.SONG != null)
 			setVar('songName', PlayState.SONG.song.toLowerCase());
-		setVar('BackgroundDancer', BackgroundDancer);
-		setVar('BackgroundGirls', BackgroundGirls);
-		setVar('TankmenBG', TankmenBG);
 
 		callFunc('generateStage', []);
 	}
