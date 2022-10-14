@@ -34,7 +34,39 @@ function generateStage()
 	layers.add(limo);
 
 	fastCar = new FNFSprite(-300, 160).loadGraphic(Paths.image('fastCarLol', stageDir));
+	fastCar.active = true;
+	resetFastCar();
+	layers.add(fastCar);
 }
+
+// fast car lol;
+
+var fastCarCanDrive:Bool = true;
+
+function resetFastCar():Void
+{
+	fastCar.x = -12600;
+	fastCar.y = FlxG.random.int(140, 250);
+	fastCar.velocity.x = 0;
+	fastCarCanDrive = true;
+}
+
+var carTimer:FlxTimer;
+function fastCarDrive()
+{
+	trace('Car drive');
+	FlxG.sound.play(Paths.soundRandom('carPass', 0, 1), 0.7);
+
+	fastCar.velocity.x = (FlxG.random.int(170, 220) / FlxG.elapsed) * 3;
+	fastCarCanDrive = false;
+	carTimer = new FlxTimer().start(2, function(tmr:FlxTimer)
+	{
+		resetFastCar();
+		carTimer = null;
+	});
+}
+
+// BACKGROUND DANCERS;
 
 var danceDir:Bool = false;
 
@@ -51,6 +83,9 @@ function updateStage(curBeat:Int, boyfriend:Character, gf:Character, dad:Charact
 		else
 			dancer.animation.play('danceLeft', true);
 	});
+
+	if (FlxG.random.bool(10) && fastCarCanDrive)
+		fastCarDrive();
 }
 
 function createDancer(x:Float, y:Float)
