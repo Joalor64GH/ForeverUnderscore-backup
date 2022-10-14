@@ -128,6 +128,9 @@ class Character extends FNFSprite
 		if (isPlayer) // reverse player flip
 			flipX = !flipX;
 
+		if(Init.getSetting('Disable Antialiasing'))
+			antialiasing = false;
+
 		setPosition(x, y);
 		this.x += characterOffset.x;
 		this.y += (characterOffset.y - (frameHeight * scale.y));
@@ -560,8 +563,11 @@ class Character extends FNFSprite
 		singDuration = json.sing_duration;
 		characterOffset.set(json.position[0], json.position[1]);
 		cameraOffset.set(json.camera_position[0], json.camera_position[1]);
-		scale.set(json.scale, json.scale);
-		updateHitbox();
+		if (json.scale != 1)
+		{
+			setGraphicSize(Std.int(width * json.scale));
+			updateHitbox();
+		}
 
 		if (animation.getByName('danceLeft') != null)
 			playAnim('danceLeft');
