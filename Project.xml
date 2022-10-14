@@ -18,17 +18,6 @@
 	<window if="desktop" orientation="landscape" fullscreen="false" resizable="true" />
 	<window if="mobile" orientation="landscape" fullscreen="true" width="1280" height="720" resizable="false" allow-shaders="true" require-shaders="true" />
 
-	<!-- _____________________________ Custom Defines ____________________________ -->
-
-	<define name="DISCORD_RPC" if="desktop" unless="neko" />
-	<define name="VIDEO_PLUGIN" if="windows" unless="32bits || neko" />
-	<define name="GAME_UPDATER" if="desktop enableUpdater" /> <!-- thanks shadowmario -->
-	<define name="HAXE_EXTENSION" unless="web" />
-	<define name="DEBUG_TRACES" if="debug || debugTraces" />
-
-	<!-- comment or delete this line to disable Forever Engine developer names on the titlescreen -->
-	<define name="FOREVER_ENGINE_WATERMARKS" />
-
 	<!-- _____________________________ Path Settings ____________________________ -->
 
 	<set name="BUILD_DIR" value="export" />
@@ -76,6 +65,7 @@
 
 	<!-- _________________________________ Custom _______________________________ -->
 
+	<!-- Icons -->
 	<icon path="art/gameIcons/icon16.png" size='16' />
 	<icon path="art/gameIcons/icon32.png" size='32' />
 	<icon path="art/gameIcons/icon64.png" size='64' />
@@ -83,4 +73,14 @@
 	<icon path="art/gameIcons/icon256.png" size='256' />
 	<icon path="art/gameIcons/icon512.png" size='512' />
 	<icon path="art/gameIcons/iconOG.png" />
+
+	<!-- Defines -->
+	<define name="DISCORD_RPC" if="desktop" unless="neko" />
+	<define name="VIDEO_PLUGIN" if="windows" unless="32bits || neko" />
+	<define name="GAME_UPDATER" if="desktop enableUpdater" /> <!-- thanks shadowmario -->
+	<define name="HAXE_EXTENSION" unless="web" />
+	<define name="DEBUG_TRACES" if="debug || debugTraces" />
+
+	<!-- comment or delete this line to disable Forever Engine developer names on the titlescreen -->
+	<define name="FOREVER_ENGINE_WATERMARKS" />
 </project>
