@@ -163,7 +163,7 @@ class Paths
 			localTrackedAssets.push(key);
 			return currentTrackedAssets.get(key);
 		}
-		#if DEBUG_TRACES trace('oh no ' + key + ' is returning null NOOOO'); #end
+		#if DEBUG_TRACES trace('graphic is returning null at $key with gpu rendering ${Init.getSetting('GPU Rendering')}'); #end
 		return null;
 	}
 
@@ -200,7 +200,7 @@ class Paths
 		// I hate this so god damn much
 		var gottenPath:String = getPath('$path/$key.$SOUND_EXT', SOUND, library);
 		gottenPath = gottenPath.substring(gottenPath.indexOf(':') + 1, gottenPath.length);
-		// trace(gottenPath);
+
 		if (!currentTrackedSounds.exists(gottenPath))
 			currentTrackedSounds.set(gottenPath, Sound.fromFile(gottenPath));
 		localTrackedAssets.push(key);
