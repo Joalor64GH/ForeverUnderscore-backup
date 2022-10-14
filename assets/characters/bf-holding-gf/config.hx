@@ -30,14 +30,13 @@ function loadAnimations()
 	setBarColor([49, 176, 209]);
 	setOffsets(0, 340);
 	setIcon('bf-holding-gf');
+	set('flipX', true);
 	if (isPlayer)
 	{
 		setDeathChar('bf-holding-gf-dead');
-		set('flipX', false);
 	}
 	else
 	{
-		set('flipX', true);
 		setOffsets(-90, 580);
 		setCamOffsets(130, 0);
 		flipLeftRight();

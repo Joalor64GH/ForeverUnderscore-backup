@@ -23,8 +23,6 @@ using StringTools;
 
 class Character extends FNFSprite
 {
-	public var character:String;
-
 	public var curCharacter:String = 'bf';
 
 	public var icon:String = null;
@@ -68,10 +66,7 @@ class Character extends FNFSprite
 
 	public function setCharacter(x:Float, y:Float, character:String):Character
 	{
-		cameraOffset = new FlxPoint(0, 0);
-		characterOffset = new FlxPoint(0, 0);
-
-		this.character = character;
+		curCharacter = character;
 
 		if (icon == null)
 			icon = character;
@@ -83,6 +78,9 @@ class Character extends FNFSprite
 				loadMappedAnims();
 				playAnim("shoot1");
 		}
+
+		cameraOffset = new FlxPoint(0, 0);
+		characterOffset = new FlxPoint(0, 0);
 
 		psychChar = ForeverTools.fileExists('characters/$character/' + character + '.json', TEXT);
 
@@ -126,6 +124,9 @@ class Character extends FNFSprite
 
 		recalcDance();
 		dance();
+
+		if (isPlayer) // reverse player flip
+			flipX = !flipX;
 
 		setPosition(x, y);
 		this.x += characterOffset.x;
@@ -474,17 +475,10 @@ class Character extends FNFSprite
 		for (i in charScripts)
 			i.call('loadAnimations', []);
 
-		if (isPlayer) // fuck you ninjamuffin lmao
-		{
-			flipX = !!flipX;
-		}
-
 		if (animation.getByName('danceLeft') != null)
 			playAnim('danceLeft');
 		else
 			playAnim('idle');
-
-		curCharacter = char;
 	}
 
 	public function setVar(key:String, value:Dynamic):Bool
@@ -561,14 +555,11 @@ class Character extends FNFSprite
 		characterOffset.set(json.position[0], json.position[1]);
 		cameraOffset.set(json.camera_position[0], json.camera_position[1]);
 
-		if (isPlayer) // fuck you ninjamuffin lmao
-		{
-			flipX = !flipX;
-		}
-
 		// icon = json.healthicon;
 		barColor = json.healthbar_colors;
 		singDuration = json.sing_duration;
+		characterOffset.set(json.position[0], json.position[1]);
+		cameraOffset.set(json.camera_position[0], json.camera_position[1]);
 		scale.set(json.scale, json.scale);
 		updateHitbox();
 
@@ -576,7 +567,5 @@ class Character extends FNFSprite
 			playAnim('danceLeft');
 		else
 			playAnim('idle');
-
-		curCharacter = char;
 	}
 }

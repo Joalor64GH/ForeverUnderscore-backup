@@ -26,18 +26,17 @@ function loadAnimations()
 	playAnim('idle');
 
 	set('antialiasing', true);
+	set('flipX', true);
 
 	setBarColor([49, 176, 209]);
 	setCamOffsets(0, -50);
 	if (isPlayer)
 	{
 		setOffsets(0, 430);
-		set('flipX', false);
 	}
 	else
 	{
 		setOffsets(-135, 770);
-		set('flipX', true);
 		flipLeftRight();
 	}
 }

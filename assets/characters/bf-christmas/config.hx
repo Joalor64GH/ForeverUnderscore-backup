@@ -27,6 +27,7 @@ function loadAnimations()
 	playAnim('idle');
 
 	set('antialiasing', true);
+	set('flipX', true);
 
 	var charX = 0;
 	var opponentX = 250;
@@ -41,12 +42,10 @@ function loadAnimations()
 	setBarColor([49, 176, 209]);
 	if (isPlayer)
 	{
-		set('flipX', false);
 		setOffsets(charX, 430);
 	}
 	else
 	{
-		set('flipX', true);
 		setOffsets(opponentX, 750);
 		flipLeftRight();
 

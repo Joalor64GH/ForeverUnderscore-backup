@@ -42,14 +42,13 @@ function loadAnimations()
 	if (PlayState.curStage == 'schoolEvil')
 		setCamOffsets(200, -100);
 
+	set('flipX', true);
 	if (isPlayer)
 	{
 		setDeathChar('bf-pixel-dead', 'fnf_loss_sfx-pixel', 'gameOver-pixel', 'gameOverEnd-pixel');
-		set('flipX', false);
 	}
 	else
 	{
-		set('flipX', true);
 		flipLeftRight();
 
 		if (PlayState.curStage == 'school')

@@ -179,8 +179,10 @@ class Conductor
 
 	public static function resyncBySteps()
 	{
-		if (Math.abs(songMusic.time - (songPosition - offset)) > 20 * playbackRate
-			|| (PlayState.SONG.needsVoices && Math.abs(getAllVocals().time - (songPosition - offset)) > 20 * playbackRate))
+		var setOffset = Init.trueSettings['Offset'];
+
+		if (Math.abs(FlxG.sound.music.time - (songPosition - offset)) > (20 * playbackRate)
+			|| (PlayState.SONG.needsVoices && Math.abs(songVocals.time - (songPosition - offset - setOffset)) > (20 * playbackRate)))
 		{
 			resyncVocals();
 		}
