@@ -108,10 +108,13 @@ class Conductor
 			// im assuming a lot of things here
 			songVocals.loadEmbedded(Paths.songSounds(songData.song, 'Voices'), false, true);
 			FlxG.sound.list.add(songVocals);
-			songVocals.pitch = playbackRate;
 		}
+
 		if (songVocals != null)
+		{
+			songVocals.pitch = playbackRate;
 			vocalArray.push(songVocals);
+		}
 	}
 
 	public static function startMusic()
@@ -135,6 +138,8 @@ class Conductor
 
 	public static function stopMusic()
 	{
+		if (songMusic != null)
+			songMusic.stop();
 		for (vocals in vocalArray)
 			if (vocals != null)
 				vocals.stop();
@@ -142,13 +147,7 @@ class Conductor
 
 	public static function killMusic()
 	{
-		for (vocals in vocalArray)
-		{
-			if (vocals != null)
-				ForeverTools.killMusic([songMusic, vocals]);
-			else
-				ForeverTools.killMusic([songMusic]);
-		}
+		ForeverTools.killMusic([songMusic, allVocals()]);
 	}
 
 	public static function resyncVocals():Void
@@ -157,22 +156,18 @@ class Conductor
 
 		#if DEBUG_TRACES trace('resyncing vocal time: ${songVocals.time}'); #end
 
-		for (i in vocalArray)
-			i.pause();
+		allVocals().pause();
+
 		songMusic.play();
 		songMusic.pitch = playbackRate;
 
 		songPosition = songMusic.time;
 
-		// all vocals in the vocal array;
-		for (i in vocalArray)
+		if (songPosition <= songVocals.length)
 		{
-			if (songPosition <= i.length)
-			{
-				i.time = songPosition;
-				i.pitch = playbackRate;
-			}
-			i.play();
+			allVocals().time = songPosition;
+			allVocals().pitch = playbackRate;
+			allVocals().play();
 		}
 		#if DEBUG_TRACES trace('new vocal time: ${songPosition}, playback rate: ${playbackRate}'); #end
 	}
@@ -181,14 +176,14 @@ class Conductor
 	{
 		var setOffset = Init.trueSettings['Offset'];
 
-		if (Math.abs(FlxG.sound.music.time - (songPosition - offset)) > (20 * playbackRate)
+		if (Math.abs(songMusic.time - (songPosition - offset - setOffset)) > (20 * playbackRate)
 			|| (PlayState.SONG.needsVoices && Math.abs(songVocals.time - (songPosition - offset - setOffset)) > (20 * playbackRate)))
 		{
 			resyncVocals();
 		}
 	}
 
-	public static function getAllVocals():FlxSound
+	public static function allVocals():FlxSound
 	{
 		for (v in vocalArray)
 			return v;
