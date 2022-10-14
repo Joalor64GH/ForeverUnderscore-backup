@@ -164,7 +164,7 @@ class Paths
 			return currentTrackedAssets.get(key);
 		}
 		#if DEBUG_TRACES trace('graphic is returning null at $key with gpu rendering ${Init.getSetting('GPU Rendering')}'); #end
-		return null;
+		return FlxGraphic.fromRectangle(0, 0, 0);
 	}
 
 	static public function getTextFromFile(key:String, type:AssetType = TEXT, ?library:Null<String>):String
