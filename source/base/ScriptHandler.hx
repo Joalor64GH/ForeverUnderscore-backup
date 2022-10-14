@@ -80,6 +80,7 @@ class ScriptHandler extends SScript
 
 		// CLASSES (FOREVER);
 		set('Init', Init);
+		set('ColorSwap', ColorSwap);
 		set('ForeverAssets', ForeverAssets);
 		set('ForeverTools', ForeverTools);
 		set('FNFSprite', FNFSprite);
