@@ -472,7 +472,8 @@ class Character extends FNFSprite
 		});
 
 		setVar('isPlayer', isPlayer);
-		setVar('songName', PlayState.SONG.song.toLowerCase());
+		if (PlayState.SONG != null)
+			setVar('songName', PlayState.SONG.song.toLowerCase());
 		setVar('flipLeftRight', flipLeftRight);
 
 		for (i in charScripts)
