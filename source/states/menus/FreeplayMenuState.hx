@@ -387,13 +387,10 @@ class FreeplayMenuState extends MusicBeatState
 		// for pitch playback
 		FlxG.sound.music.pitch = songRate;
 
-		var accStr:String = '$lerpAcc';
-		var croppedAcc:String = '${accStr.substr(0, 4)}';
-
 		if (!isResetting)
 		{
 			scoreText.text = '${ForeverLocales.curLang.personalBest}' + lerpScore;
-			rateText.text = '$croppedAcc% [R] | ${ForeverLocales.curLang.rateText} ' + songRate + "x";
+			rateText.text = '${Std.string(lerpAcc).substr(0, 4)}% [R] | ${ForeverLocales.curLang.rateText} ' + songRate + "x";
 		}
 		rateText.x = FlxG.width - rateText.width;
 		repositionHighscore();
