@@ -1495,6 +1495,9 @@ class PlayState extends MusicBeatState
 		// pause game
 		paused = true;
 
+		// pause music
+		Conductor.pauseMusic();
+
 		// update drawing stuffs
 		persistentUpdate = false;
 		persistentDraw = true;
@@ -1870,11 +1873,6 @@ class PlayState extends MusicBeatState
 
 	override function openSubState(SubState:FlxSubState)
 	{
-		if (paused)
-		{
-			Conductor.pauseMusic();
-		}
-
 		// trace('open substate');
 		super.openSubState(SubState);
 		// trace('open substate end ');
