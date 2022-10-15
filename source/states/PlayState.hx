@@ -1881,7 +1881,7 @@ class PlayState extends MusicBeatState
 		if (paused)
 		{
 			if (Conductor.songMusic != null && !startingSong)
-				Conductor.resyncVocals();
+				Conductor.startMusic();
 
 			// if ((startTimer != null) && (!startTimer.finished))
 			//	startTimer.active = true;

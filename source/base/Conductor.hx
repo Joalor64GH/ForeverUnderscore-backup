@@ -132,8 +132,7 @@ class Conductor
 		songMusic.pause();
 
 		for (vocals in vocalArray)
-			if (vocals != null)
-				vocals.pause();
+			vocals.pause();
 	}
 
 	public static function stopMusic()
