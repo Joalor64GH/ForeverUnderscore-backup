@@ -137,13 +137,7 @@ class OriginalChartEditor extends MusicBeatState
 	var gridGroup:FlxTypedGroup<FlxObject>;
 
 	var tempBpm:Float = 0;
-	var playbackSpeed(default, set):Float = 1;
-
-	function set_playbackSpeed(value:Float)
-	{
-		playbackSpeed = value;
-		return playbackSpeed;
-	}
+	var playbackSpeed:Float = 1;
 
 	var vocals:FlxSound;
 
@@ -720,7 +714,7 @@ class OriginalChartEditor extends MusicBeatState
 			switch (sender)
 			{
 				case 'playbackSpeed':
-					set_playbackSpeed(Std.int(sliderRate.value));
+					playbackSpeed = Std.int(sliderRate.value);
 				default:
 			}
 		}

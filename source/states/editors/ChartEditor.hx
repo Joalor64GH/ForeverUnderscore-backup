@@ -91,6 +91,7 @@ class ChartEditor extends MusicBeatState
 	var curSelectedNote:Array<Dynamic>;
 
 	var curNoteType:Int = 0;
+	var playbackSpeed:Float = 1;
 	var tempBpm:Float = 0;
 
 	var dummyArrow:FlxSprite;
@@ -434,35 +435,28 @@ class ChartEditor extends MusicBeatState
 
 		_song.bpm = tempBpm;
 
-		if (FlxG.keys.pressed.CONTROL && FlxG.keys.justPressed.Z)
-		{
-			songMusic.pitch += 0.1;
-			vocals.pitch += 0.1;
-		}
+		// PLAYBACK SPEED CONTROLS //
+		var holdingShift = FlxG.keys.pressed.SHIFT;
+		var holdingLB = FlxG.keys.pressed.LBRACKET;
+		var holdingRB = FlxG.keys.pressed.RBRACKET;
+		var pressedLB = FlxG.keys.justPressed.LBRACKET;
+		var pressedRB = FlxG.keys.justPressed.RBRACKET;
 
-		if (FlxG.keys.pressed.CONTROL && FlxG.keys.justPressed.X)
-		{
-			songMusic.pitch -= 0.1;
-			vocals.pitch -= 0.1;
-		}
+		if (!holdingShift && pressedLB || holdingShift && holdingLB)
+			playbackSpeed -= 0.01;
+		if (!holdingShift && pressedRB || holdingShift && holdingRB)
+			playbackSpeed += 0.01;
+		if (FlxG.keys.pressed.ALT && (pressedLB || pressedRB || holdingLB || holdingRB))
+			playbackSpeed = 1;
+		//
 
-		if (FlxG.keys.pressed.CONTROL && FlxG.keys.justPressed.C)
-		{
-			songMusic.pitch = 1;
-			vocals.pitch = 1;
-		}
+		if (playbackSpeed <= 0.5)
+			playbackSpeed = 0.5;
+		if (playbackSpeed >= 3)
+			playbackSpeed = 3;
 
-		if (songMusic.pitch >= 6)
-		{
-			songMusic.pitch = 6;
-			vocals.pitch = 6;
-		}
-
-		if (songMusic.pitch <= 0.1)
-		{
-			songMusic.pitch = 0.1;
-			vocals.pitch = 0.1;
-		}
+		songMusic.pitch = playbackSpeed;
+		vocals.pitch = playbackSpeed;
 
 		super.update(elapsed);
 

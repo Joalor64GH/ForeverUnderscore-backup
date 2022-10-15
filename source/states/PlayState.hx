@@ -79,9 +79,6 @@ class PlayState extends MusicBeatState
 	public var notes:FlxTypedGroup<Note> = new FlxTypedGroup<Note>();
 	public var unspawnNotes:Array<Note> = [];
 
-	// if you ever wanna add more keys
-	public var numberOfKeys:Int = 4;
-
 	// get it cus release
 	// I'm funny just trust me
 	var curSection:Int = 0;
@@ -990,9 +987,10 @@ class PlayState extends MusicBeatState
 			{
 				var dunceNote:Note = unspawnNotes[0];
 				var dunceIndex = unspawnNotes.indexOf(dunceNote);
+				var keyAmount = (dunceNote.mustPress ? bfStrums.keyAmount : dadStrums.keyAmount);
 
 				// push note to its correct strumline
-				strumLines.members[Math.floor((dunceNote.noteData + (dunceNote.mustPress ? 4 : 0)) / numberOfKeys)].push(dunceNote);
+				strumLines.members[Math.floor((dunceNote.noteData + (dunceNote.mustPress ? 4 : 0)) / keyAmount)].push(dunceNote);
 
 				callFunc('noteSpawn', [dunceNote, dunceIndex, dunceNote.noteData, dunceNote.noteType, dunceNote.isSustain]);
 				unspawnNotes.splice(dunceIndex, 1);

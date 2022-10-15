@@ -30,6 +30,8 @@ class Strumline extends FlxSpriteGroup
 	public var autoplay:Bool = true;
 	public var displayJudgements:Bool = false;
 
+	public var keyAmount:Int = 4;
+
 	public function new(xPos:Float = 0, yPos:Float = 0, ?character:Character, ?autoplay:Bool = true, ?displayJudgements:Bool = false, ?keyAmount:Int = 4)
 	{
 		super();
@@ -37,6 +39,7 @@ class Strumline extends FlxSpriteGroup
 		this.autoplay = autoplay;
 		this.character = character;
 		this.displayJudgements = displayJudgements;
+		this.keyAmount = keyAmount;
 
 		receptors = new FlxTypedSpriteGroup<Receptor>();
 		splashNotes = new FlxTypedSpriteGroup<NoteSplash>();
