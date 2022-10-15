@@ -59,6 +59,7 @@ class Main extends Sprite
 
 		#if desktop
 		overlay = new Overlay(0, 0);
+		overlay.alpha = 0.6;
 		addChild(overlay);
 
 		console = new Console();
