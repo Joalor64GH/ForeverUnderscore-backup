@@ -3,6 +3,7 @@ color 0a
 title FNF: Forever Engine - Building Game (RELEASE MODE)
 cd ..
 echo BUILDING...
+haxelib update
 haxelib run lime build windows -release -D enableUpdater
 echo.
 echo DONE.
