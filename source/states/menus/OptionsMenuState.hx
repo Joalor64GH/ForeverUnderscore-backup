@@ -109,7 +109,6 @@ class OptionsMenuState extends MusicBeatState
 					#if !neko ["Framerate Cap", getFromOption], #end
 					['FPS Counter', getFromOption],
 					['Memory Counter', getFromOption],
-					['State Object Count', getFromOption],
 					['Engine Mark', getFromOption],
 				]
 			],

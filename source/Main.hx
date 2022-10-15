@@ -24,10 +24,10 @@ class Main extends Sprite
 {
 	public static var defaultFramerate = 120;
 
-	public static var initialState:Class<FlxState> = states.TitleState; // specify the state where the game should start at;
+	public static var mainClassState:Class<FlxState> = states.TitleState; // specify the state where the game should start at;
 
-	public static final foreverVersion:String = '0.3.1'; // current forever engine version;
-	public static final underscoreVersion:String = '0.2.3'; // current forever engine underscore version;
+	public static var foreverVersion:String = '0.3.1'; // current forever engine version;
+	public static var underscoreVersion:String = '0.2.3'; // current forever engine underscore version;
 
 	public static var commitHash:Null<String>; // commit hash, for github builds;
 
@@ -78,6 +78,7 @@ class Main extends Sprite
 	public static function switchState(curState:FlxState, target:FlxState)
 	{
 		// Custom made Trans in
+		mainClassState = Type.getClass(target);
 		if (!FlxTransitionableState.skipNextTransIn)
 		{
 			curState.openSubState(new FNFTransition(0.35, false));

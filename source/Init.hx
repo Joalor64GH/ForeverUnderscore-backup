@@ -145,12 +145,6 @@ class Init extends FlxState
 			'Whether to display approximately how much memory is being used.',
 			NOT_FORCED
 		],
-		'State Object Count' => [
-			false,
-			Checkmark,
-			'Whether to display how many objects there are on a Class / State.',
-			NOT_FORCED
-		],
 		'Engine Mark' => [
 			true,
 			Checkmark,
@@ -411,7 +405,7 @@ class Init extends FlxState
 
 		CoolUtil.difficulties = CoolUtil.baseDifficulties.copy();
 
-		Main.switchState(this, cast Type.createInstance(Main.initialState, []));
+		Main.switchState(this, cast Type.createInstance(Main.mainClassState, []));
 	}
 
 	public static function loadSettings():Void
@@ -481,7 +475,7 @@ class Init extends FlxState
 			ratingOffset = FlxG.save.data.ratingOffset;
 
 		if (!trueSettings.get('Left Flashing State'))
-			Main.initialState = states.WarningState;
+			Main.mainClassState = states.WarningState;
 
 		saveSettings();
 		updateAll();
@@ -525,8 +519,7 @@ class Init extends FlxState
 	{
 		FlxG.autoPause = trueSettings.get('Auto Pause');
 
-		Overlay.updateDisplayInfo(trueSettings.get('FPS Counter'), trueSettings.get('State Object Count'), trueSettings.get('Memory Counter'),
-			trueSettings.get('Forever Mark'));
+		Overlay.updateDisplayInfo(trueSettings.get('FPS Counter'), trueSettings.get('Memory Counter'), trueSettings.get('Forever Mark'));
 
 		#if !html5
 		Main.updateFramerate(trueSettings.get("Framerate Cap"));

@@ -21,10 +21,10 @@ class Overlay extends TextField
 	var memPeak:Float = 0;
 
 	// display info
-	static var displayFps = true;
-	static var displayMemory = true;
-	static var displayExtra = true;
-	static var displayForever = true;
+	static var displayFps:Bool = true;
+	static var displayMemory:Bool = true;
+	static var displayExtra:Bool = false;
+	static var displayForever:Bool = true;
 
 	public function new(x:Float, y:Float)
 	{
@@ -78,19 +78,27 @@ class Overlay extends TextField
 		_ms = FlxMath.lerp(_ms, 1 / Math.round(times.length) * 1000,
 			CoolUtil.boundTo(FlxG.elapsed * 3.75 * ((Math.abs(_ms - 1 / Math.round(times.length) * 1000) < 0.45) ? 2.5 : 1.0), 0, 1));
 
+		if (FlxG.keys.justPressed.F3)
+			displayExtra = !displayExtra;
+
+		var fpsMs = (displayExtra ? ' (${FlxMath.roundDecimal(_ms, 2)}ms)' : '');
+		var memTxt = (displayExtra ? 'Memory: ' : '');
+		var peakTxt = (displayExtra ? 'Peak: ' : '');
+
 		if (visible)
 		{
 			text = '' // set up the text itself
-				+ (displayFps ? times.length + ' FPS\n' : '') /*(${FlxMath.roundDecimal(_ms, 2)}ms)\n' : '')*/ // Current Framerate
-				+ (displayMemory ? '${getInterval(mem)} / ${getInterval(memPeak)}\n' : '') // Current and Total Memory Usage
-				+ (displayExtra ? 'State Object Count: ${FlxG.state.members.length}\n' : ''); // Current Game State Object Count
+				+ (displayFps ? times.length + ' FPS' + fpsMs + '\n' : '') // Current Framerate (and Milliseconds)
+				+ (displayMemory ? memTxt + '${getInterval(mem)} / ' + peakTxt + '${getInterval(memPeak)}\n' : '') // Current and Total Memory Usage
+				+ (displayExtra ? 'State: ${Main.mainClassState}\n' : '') // Current Game State
+				+ (displayExtra ? 'Objects: ${FlxG.state.members.length}\n' : '') // Current Game State Object Count
+				+ (displayExtra ? 'Cameras: ${FlxG.cameras.list.length}\n' : ''); // Current Game State Camera Count
 		}
 	}
 
-	public static function updateDisplayInfo(shouldDisplayFps:Bool, shouldDisplayExtra:Bool, shouldDisplayMemory:Bool, shouldDisplayForever:Bool)
+	public static function updateDisplayInfo(shouldDisplayFps:Bool, shouldDisplayMemory:Bool, shouldDisplayForever:Bool)
 	{
 		displayFps = shouldDisplayFps;
-		displayExtra = shouldDisplayExtra;
 		displayMemory = shouldDisplayMemory;
 		displayForever = shouldDisplayForever;
 	}
