@@ -23,7 +23,7 @@ class Overlay extends TextField
 	// display info
 	static var displayFps:Bool = true;
 	static var displayMemory:Bool = true;
-	static var displayExtra:Bool = false;
+	static var displayExtra:Bool = #if debug true #else false #end;
 	static var displayForever:Bool = true;
 
 	public function new(x:Float, y:Float)
