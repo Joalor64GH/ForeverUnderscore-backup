@@ -12,7 +12,7 @@ class Timings
 	public static var accuracy:Float;
 	public static var trueAccuracy:Float;
 
-	public static var perfectSicks:Bool = true;
+	public static var perfectCombo:Bool = true;
 
 	// from left to right
 	// judgement id, max milliseconds, score from it and percentage
@@ -66,7 +66,7 @@ class Timings
 
 		notesHit = 0;
 		segmentsHit = 0;
-		perfectSicks = true;
+		perfectCombo = true;
 
 		ratingFinal = "N/A";
 		comboDisplay = '';
@@ -108,8 +108,6 @@ class Timings
 			if (PlayState.misses < 10)
 				comboDisplay = 'SDCB';
 		}
-
-		perfectSicks = (comboDisplay == 'MFC');
 
 		// this updates the most so uh
 		PlayState.uiHUD.updateScoreText();

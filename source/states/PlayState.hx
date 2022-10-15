@@ -1329,7 +1329,7 @@ class PlayState extends MusicBeatState
 					if (!coolNote.isSustain)
 					{
 						increaseCombo(foundRating, coolNote.noteData, strumline);
-						popUpScore(foundRating, coolNote.strumTime < Conductor.songPosition, Timings.perfectSicks, strumline, coolNote);
+						popUpScore(foundRating, coolNote.strumTime < Conductor.songPosition, Timings.perfectCombo, strumline, coolNote);
 
 						if (coolNote.childrenNotes.length > 0)
 							Timings.notesHit++;
@@ -1558,11 +1558,15 @@ class PlayState extends MusicBeatState
 		// create the note splash if you hit a sick
 		if (baseRating == "sick")
 			popNoteSplash(coolNote, strumline);
+		else
+			// if it isn't a sick, and you had a sick combo, then it becomes not sick :(
+			if (Timings.perfectCombo)
+				Timings.perfectCombo = false;
 
 		if (!strumline.autoplay)
 			popJudgement(baseRating, timing, perfect);
 		else
-			popJudgement('sick', false, Timings.perfectSicks);
+			popJudgement('sick', false, Timings.perfectCombo);
 		if (coolNote.updateAccuracy)
 			Timings.updateAccuracy(Timings.judgementsMap.get(baseRating)[3]);
 		score = Std.int(Timings.judgementsMap.get(baseRating)[2]);
@@ -1586,6 +1590,11 @@ class PlayState extends MusicBeatState
 
 	function popJudgement(newRating:String, lateHit:Bool, perfect:Bool, ?cached:Bool = false)
 	{
+		/*
+			so you might be asking
+			"oh but if the rating isn't sick why not just reset it"
+			because miss judgements can pop, and they dont mess with your sick combo
+		*/
 		var rating = ForeverAssets.generateRating('$newRating', perfect, lateHit, ratingsGroup, assetModifier, changeableSkin, 'UI');
 
 		if (!cached)
