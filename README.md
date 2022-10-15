@@ -1,31 +1,26 @@
-# [Forever Engine Underscore](https://github.com/BeastlyGhost/Forever-Engine-Underscore)
-A custom-made Forever Engine build which aims to unofficially maintain Forever Engine Legacy.
-----------------------------------------------
+<p align="center">
+  <img src="https://media.discordapp.net/attachments/821758818135572491/884267252357156934/FELogo.png" width="800"/></a>
+  <h1 align="center">Forever Engine Underscore</h1>
+  <h2 align="center">A custom-made Forever Engine build which aims to unofficially maintain Forever Engine Legacy.</h2>
+</p>
 
-![PLACEHOLDER_LOGO](https://media.discordapp.net/attachments/821758818135572491/884267252357156934/FELogo.png)
+***For engine compiling and script documentation, please visit this [project's GitHub Wiki page](https://github.com/BeastlyGhost/Forever-Engine-Underscore/wiki)***.
+
+**Feel free to check out some these [pre-made scripts](https://github.com/BeastlyGhost/Forever-Engine-Underscore/tree/master/docs), in case you need them.**
+
+----------------------------------------------
 
 ![REPOSITORY SIZE](https://img.shields.io/github/repo-size/BeastlyGhost/Forever-Engine-Underscore)
 
 ----------------------------------------------
 Forever Engine Underscore attempts to take on the challenge of maintaining Forever Engine Legacy while adding more features to it along the way, making a lot easier for coders to work with it.
 
-Suggestions and Contributions for further improving and expanding upon the project are and will always be appreciated.
+Suggestions and contributions for further improving and expanding upon the engine are and will always be appreciated.
 
 ----------------------------------------------
-# Planned Features:
-* Customizable Note Colors through options menu;
-* More Modular Source Codebase (idk sounds fun)
-* Custom Language Support;
-* Scripted Custom Notetypes;
-* Revamped Chart Editor;
-  * BETA Version of it can be found by selecting `Chart Editor` on the Editor Selector Menu
-  * said menu can be accessed by pressing Seven during songs or in the Freeplay Menu
-
-help to finish these would be extremely appreciated!
-
 # Features:
-* a Full Scripting System, [SScript](https://github.com/TheWorldMachinima/SScript)! which uses hscript as a basis;
-* Custom Notetypes (SOURCE BASED);
+* A Full Scripting System, which uses HScript as a basis, [SScript](https://github.com/TheWorldMachinima/SScript);
+* Custom Notetypes (SOURCE-BASED);
 * Custom Stages through Scripts;
 * Custom Credits Menu with Customizable Credit Entries via JSON files;
 * Psych Engine Character Support;
@@ -34,11 +29,10 @@ help to finish these would be extremely appreciated!
 
 and much more to come in the future!
 
-----------------------------------------------
-In terms of how Underscore works, if you have *any* questions, feel free to redirect them to [my Discord](https://discord.com/users/597124141530742805) or [on Twitter](https://twitter.com/Fan_de_RPG).
-
-you can also [Read the Documentation](https://github.com/BeastlyGhost/Forever-Engine-Underscore/wiki)
-or check out the [Pre-made Scripts](https://github.com/BeastlyGhost/Forever-Engine-Underscore/tree/master/docs) in case you need them
+## You can read future/planned features for Underscore [here](/docs/PLANNED-FEATURES.md).
 
 ----------------------------------------------
-Legacy README can be found [here](https://github.com/Yoshubs/Forever-Engine-Legacy/blob/master/README.md).
+In terms of how Underscore works, if you have *any* questions, feel free to [message me on Discord](https://discord.com/users/597124141530742805) or [forward them on Twitter](https://twitter.com/Fan_de_RPG).
+
+----------------------------------------------
+*Legacy README can be found [here](https://github.com/Yoshubs/Forever-Engine-Legacy/blob/master/README.md)*.
