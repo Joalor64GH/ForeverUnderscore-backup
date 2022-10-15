@@ -107,9 +107,6 @@ class ForeverAssets
 			}
 		}
 
-		if (group != null)
-			group.sort(FNFSprite.depthSorting, FlxSort.DESCENDING);
-
 		return combo;
 	}
 
@@ -170,9 +167,6 @@ class ForeverAssets
 				});
 			}
 		}
-
-		if (group != null)
-			group.sort(FNFSprite.depthSorting, FlxSort.DESCENDING);
 
 		return rating;
 	}

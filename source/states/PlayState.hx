@@ -1557,7 +1557,7 @@ class PlayState extends MusicBeatState
 
 		// create the note splash if you hit a sick
 		if (baseRating == "sick")
-			popNoteSplash(coolNote, strumline);
+			popNoteSplash(coolNote, coolNote.noteType, strumline);
 		else
 			// if it isn't a sick, and you had a sick combo, then it becomes not sick :(
 			if (Timings.perfectCombo)
@@ -1578,7 +1578,7 @@ class PlayState extends MusicBeatState
 		uiHUD.tweenScoreColor(baseRating, perfect);
 	}
 
-	public function popNoteSplash(coolNote:Note, strumline:Strumline)
+	public function popNoteSplash(coolNote:Note, noteType:Int, strumline:Strumline)
 	{
 		// play animation in existing notesplashes
 		var noteSplashRandom:String = (Std.string((FlxG.random.int(0, 1) + 1)));
@@ -1672,6 +1672,9 @@ class PlayState extends MusicBeatState
 			if (cached)
 				comboNum.alpha = 0.000001;
 		}
+
+		ratingsGroup.sort(FNFSprite.depthSorting, FlxSort.DESCENDING);
+		comboGroup.sort(FNFSprite.depthSorting, FlxSort.DESCENDING);
 	}
 
 	public function decreaseCombo(?popMiss:Bool = false)
