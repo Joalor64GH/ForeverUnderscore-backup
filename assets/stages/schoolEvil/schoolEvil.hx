@@ -10,9 +10,3 @@ function generateStage()
 	bg.scale.set(6, 6);
 	add(bg);
 }
-
-function dadPosition(boyfriend:Character, gf:Character, dad:Character, camPos:FlxPoint)
-{
-	var evilTrail = new FlxTrail(dad, null, 4, 24, 0.3, 0.069);
-	// add(evilTrail);
-}
