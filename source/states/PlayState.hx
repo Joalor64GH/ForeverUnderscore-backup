@@ -1462,11 +1462,11 @@ class PlayState extends MusicBeatState
 	{
 		if (!Init.getSetting('No Camera Note Movement'))
 		{
+			var noteStep = PlayState.SONG.notes[Std.int(curStep / 16)];
 			var camDisplaceExtend:Float = 15;
-			if (PlayState.SONG.notes[Std.int(curStep / 16)] != null)
+			if (noteStep != null)
 			{
-				if ((PlayState.SONG.notes[Std.int(curStep / 16)].mustHitSection && mustHit)
-					|| (!PlayState.SONG.notes[Std.int(curStep / 16)].mustHitSection && !mustHit))
+				if ((noteStep.mustHitSection && mustHit) || (!noteStep.mustHitSection && !mustHit))
 				{
 					camDisplaceX = 0;
 					if (cStrum.members[0].animation.curAnim.name == 'confirm')
