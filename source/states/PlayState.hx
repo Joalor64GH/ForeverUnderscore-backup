@@ -863,31 +863,9 @@ class PlayState extends MusicBeatState
 				}
 			}
 
-			if (startingSong)
-			{
-				if (startedCountdown)
-				{
-					Conductor.songPosition += elapsed * 1000 * Conductor.playbackRate;
-					if (Conductor.songPosition >= 0)
-						startSong();
-				}
-			}
-			else
-			{
-				Conductor.songPosition += elapsed * 1000 * Conductor.playbackRate;
-				if (!paused)
-				{
-					songTime += FlxG.game.ticks - previousFrameTime;
-					previousFrameTime = FlxG.game.ticks;
-
-					// Interpolation type beat
-					if (Conductor.lastSongPos != Conductor.songPosition)
-					{
-						songTime = (songTime + Conductor.songPosition) / 2;
-						Conductor.lastSongPos = Conductor.songPosition;
-					}
-				}
-			}
+			Conductor.songPosition += elapsed * 1000 * Conductor.playbackRate;
+			if (startingSong && startedCountdown && Conductor.songPosition >= 0)
+				startSong();
 
 			if (generatedMusic && PlayState.SONG.notes[Std.int(curStep / 16)] != null)
 			{
