@@ -1,13 +1,16 @@
 {
-    "difficultyNames": ["ЛЕГКО", "НОРМАЛЬНО", "СЛОЖНО"],
-    "personalBest": "ЛУЧШИЙ СЧЁТ:",
-    "tracksText": "ПЕСНИ",
-    "weekScoreText": "СЧЁТ НЕДЕЛИ:",
+	"difficultyNames": [
+		"ЛЕГКО",
+		"НОРМАЛЬНО",
+		"СЛОЖНО"
+	],
+	"personalBest": "ЛУЧШИЙ СЧЁТ:",
+	"tracksText": "ПЕСНИ",
+	"weekScoreText": "СЧЁТ НЕДЕЛИ:",
 	"delScore": "СБРОСИТЬ СЧЁТ?",
 	"delConfirm": "ПОДТВЕРДИТЬ",
-    "rateText": "РЕЙТИНГ:",
-
-    "resumeSong": "Продолжить",
+	"rateText": "РЕЙТИНГ:",
+	"resumeSong": "Продолжить",
 	"restartSong": "Перезапустить Песню",
 	"editors": "Открыть Редакторы",
 	"changeDiff": "Сменить Сложность",
@@ -19,13 +22,11 @@
 	"songByTxt": "Автор:",
 	"blueballedTxt": "Смертей:",
 	"backButton": "НАЗАД",
-
-    "scoreTxt": "Счёт:",
-    "missTxt": "Пропуски:",
-    "accTxt": "Точность:",
-    "botTxt": "[АВТОИГРА]",
-
-    "skipText": "НАЖМИТЕ SHIFT ДЛЯ ПРОПУСКА",
+	"scoreTxt": "Счёт:",
+	"missTxt": "Пропуски:",
+	"accTxt": "Точность:",
+	"botTxt": "[АВТОИГРА]",
+	"skipText": "НАЖМИТЕ SHIFT ДЛЯ ПРОПУСКА",
 	"dialogueFile": "dialogueRU",
 	"dialogueFileEnd": "dialogueEndRU",
 	"useCustomFont": true,

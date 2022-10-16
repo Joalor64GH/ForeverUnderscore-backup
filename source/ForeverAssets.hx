@@ -381,8 +381,7 @@ class ForeverAssets
 	/**
 		Notes!
 	**/
-	public static function generateArrow(assetModifier, strumTime, noteData, noteAlt, ?isSustain:Bool = false, ?prevNote:Note = null,
-			noteType:Int = 0):Note
+	public static function generateArrow(assetModifier, strumTime, noteData, noteAlt, ?isSustain:Bool = false, ?prevNote:Note = null, noteType:Int = 0):Note
 	{
 		var newNote:Note;
 		var changeableSkin:String = Init.getSetting("Note Skin");

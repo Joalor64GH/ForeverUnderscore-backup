@@ -2,20 +2,20 @@
 <TextureAtlas imagePath="PlataformIcons.png">
 	<!-- Created with Adobe Animate version 18.0.2.126 -->
 	<!-- http://www.adobe.com/products/animate.html -->
-	<SubTexture name="NG0000" x="0" y="0" width="193" height="191"/>
-	<SubTexture name="NG0001" x="0" y="0" width="193" height="191"/>
-	<SubTexture name="NG0002" x="193" y="0" width="193" height="191"/>
-	<SubTexture name="NG0003" x="193" y="0" width="193" height="191"/>
-	<SubTexture name="Twitch0000" x="386" y="0" width="182" height="180"/>
-	<SubTexture name="Twitch0001" x="386" y="0" width="182" height="180"/>
-	<SubTexture name="Twitch0002" x="568" y="0" width="182" height="180"/>
-	<SubTexture name="Twitch0003" x="568" y="0" width="182" height="180"/>
-	<SubTexture name="Twitter0000" x="750" y="0" width="193" height="162"/>
-	<SubTexture name="Twitter0001" x="750" y="0" width="193" height="162"/>
-	<SubTexture name="Twitter0002" x="943" y="0" width="193" height="162"/>
-	<SubTexture name="Twitter0003" x="943" y="0" width="193" height="162"/>
-	<SubTexture name="YT0000" x="1136" y="0" width="174" height="126"/>
-	<SubTexture name="YT0001" x="1136" y="0" width="174" height="126"/>
-	<SubTexture name="YT0002" x="1310" y="0" width="174" height="126"/>
-	<SubTexture name="YT0003" x="1310" y="0" width="174" height="126"/>
+	<SubTexture name="NG0000" x="0" y="0" width="193" height="191" />
+	<SubTexture name="NG0001" x="0" y="0" width="193" height="191" />
+	<SubTexture name="NG0002" x="193" y="0" width="193" height="191" />
+	<SubTexture name="NG0003" x="193" y="0" width="193" height="191" />
+	<SubTexture name="Twitch0000" x="386" y="0" width="182" height="180" />
+	<SubTexture name="Twitch0001" x="386" y="0" width="182" height="180" />
+	<SubTexture name="Twitch0002" x="568" y="0" width="182" height="180" />
+	<SubTexture name="Twitch0003" x="568" y="0" width="182" height="180" />
+	<SubTexture name="Twitter0000" x="750" y="0" width="193" height="162" />
+	<SubTexture name="Twitter0001" x="750" y="0" width="193" height="162" />
+	<SubTexture name="Twitter0002" x="943" y="0" width="193" height="162" />
+	<SubTexture name="Twitter0003" x="943" y="0" width="193" height="162" />
+	<SubTexture name="YT0000" x="1136" y="0" width="174" height="126" />
+	<SubTexture name="YT0001" x="1136" y="0" width="174" height="126" />
+	<SubTexture name="YT0002" x="1310" y="0" width="174" height="126" />
+	<SubTexture name="YT0003" x="1310" y="0" width="174" height="126" />
 </TextureAtlas>

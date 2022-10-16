@@ -1,14 +1,21 @@
 {
-    "songs":
-    [
+    "songs": [
         {
             "name": "Tutorial",
             "character": "gf",
-            "colors": [129, 100, 223]
+            "colors": [
+                129,
+                100,
+                223
+            ]
         }
     ],
     "locked": false,
-    "weekCharacters": ["", "bf", "gf"],
+    "weekCharacters": [
+        "",
+        "bf",
+        "gf"
+    ],
     "weekName": "Funky Beginnings",
     "weekImage": "week0",
     "hideStoryMode": false,

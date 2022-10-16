@@ -107,7 +107,7 @@ class Character extends FNFSprite
 		if (isPlayer) // reverse player flip
 			flipX = !flipX;
 
-		if(Init.getSetting('Disable Antialiasing'))
+		if (Init.getSetting('Disable Antialiasing'))
 			antialiasing = false;
 
 		setPosition(x, y);

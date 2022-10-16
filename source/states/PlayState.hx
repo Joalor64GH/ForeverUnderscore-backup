@@ -992,7 +992,13 @@ class PlayState extends MusicBeatState
 				// push note to its correct strumline
 				strumLines.members[Math.floor((dunceNote.noteData + (dunceNote.mustPress ? 4 : 0)) / keyAmount)].push(dunceNote);
 
-				callFunc('noteSpawn', [dunceNote, dunceIndex, dunceNote.noteData, dunceNote.noteType, dunceNote.isSustain]);
+				callFunc('noteSpawn', [
+					dunceNote,
+					dunceIndex,
+					dunceNote.noteData,
+					dunceNote.noteType,
+					dunceNote.isSustain
+				]);
 				unspawnNotes.splice(dunceIndex, 1);
 			}
 
@@ -1594,7 +1600,7 @@ class PlayState extends MusicBeatState
 			so you might be asking
 			"oh but if the rating isn't sick why not just reset it"
 			because miss judgements can pop, and they dont mess with your sick combo
-		*/
+		 */
 		var rating = ForeverAssets.generateRating('$newRating', perfect, lateHit, ratingsGroup, assetModifier, changeableSkin, 'UI');
 
 		if (!cached)

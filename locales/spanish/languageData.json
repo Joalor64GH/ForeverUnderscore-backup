@@ -1,13 +1,16 @@
 {
-    "difficultyNames": ["FÁCIL", "NORMAL", "DIFÍCIL"],
-    "personalBest": "MEJOR PERSONAL:",
-    "tracksText": "CANCIONES",
-    "weekScoreText": "PUNTUACIÓN DE SEMANA:",
-    "delScore": "¿BORRAR PUNTOS?",
+	"difficultyNames": [
+		"FÁCIL",
+		"NORMAL",
+		"DIFÍCIL"
+	],
+	"personalBest": "MEJOR PERSONAL:",
+	"tracksText": "CANCIONES",
+	"weekScoreText": "PUNTUACIÓN DE SEMANA:",
+	"delScore": "¿BORRAR PUNTOS?",
 	"delConfirm": "CONFIRMAR",
-    "rateText": "TASA:",
-
-    "resumeSong": "Reanudar",
+	"rateText": "TASA:",
+	"resumeSong": "Reanudar",
 	"restartSong": "Reiniciar Canción",
 	"editors": "Abrir Editores",
 	"changeDiff": "Cambiar dificultad",
@@ -19,13 +22,11 @@
 	"songByTxt": "Por:",
 	"blueballedTxt": "Bolas azules:",
 	"backButton": "VOLVER",
-
-    "scoreTxt": "Puntuación:",
-    "missTxt": "Fallos:",
-    "accTxt": "Precisión:",
-    "botTxt": "[AUTOPLAY]",
-
-    "skipText": "PRESIONA SHIFT PARA OMITIR",
+	"scoreTxt": "Puntuación:",
+	"missTxt": "Fallos:",
+	"accTxt": "Precisión:",
+	"botTxt": "[AUTOPLAY]",
+	"skipText": "PRESIONA SHIFT PARA OMITIR",
 	"dialogueFile": "dialogueSpn",
 	"dialogueFileEnd": "dialogueSpnEnd"
 }

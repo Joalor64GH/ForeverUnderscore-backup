@@ -43,7 +43,6 @@ function generateStage()
 var startedMoving:Bool = false;
 var trainMoving:Bool = false;
 var trainFinishing:Bool = false;
-
 var trainCars:Int = 8;
 var trainCooldown:Int = 0;
 var trainFrameTiming:Float = 0;

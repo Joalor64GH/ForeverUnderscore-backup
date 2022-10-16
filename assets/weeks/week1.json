@@ -1,24 +1,39 @@
 {
-    "songs":
-    [
+    "songs": [
         {
             "name": "Bopeebo",
             "character": "dad",
-            "colors": [129, 100, 223]
+            "colors": [
+                129,
+                100,
+                223
+            ]
         },
         {
             "name": "Fresh",
             "character": "dad",
-            "colors": [129, 100, 223]
+            "colors": [
+                129,
+                100,
+                223
+            ]
         },
         {
             "name": "Dadbattle",
             "character": "dad",
-            "colors": [129, 100, 223]
+            "colors": [
+                129,
+                100,
+                223
+            ]
         }
     ],
     "locked": false,
-    "weekCharacters": ["dad", "bf", "gf"],
+    "weekCharacters": [
+        "dad",
+        "bf",
+        "gf"
+    ],
     "weekName": "vs. DADDY DEAREST",
     "weekImage": "week1",
     "hideStoryMode": false,

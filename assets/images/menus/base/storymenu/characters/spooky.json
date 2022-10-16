@@ -1,7 +1,14 @@
 {
 	"image": "opponent/spooky",
-	"position": [-60, 30],
+	"position": [
+		-60,
+		30
+	],
 	"scale": 0.6,
 	"flipX": false,
-	"idleAnim": ["spooky idle", 24, true]
+	"idleAnim": [
+		"spooky idle",
+		24,
+		true
+	]
 }

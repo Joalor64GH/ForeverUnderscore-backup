@@ -1,13 +1,16 @@
 {
-    "difficultyNames": ["EASY", "NORMAL", "HARD"],
-    "personalBest": "PERSONAL BEST:",
-    "tracksText": "TRACKS",
-    "weekScoreText": "WEEK SCORE:",
+	"difficultyNames": [
+		"EASY",
+		"NORMAL",
+		"HARD"
+	],
+	"personalBest": "PERSONAL BEST:",
+	"tracksText": "TRACKS",
+	"weekScoreText": "WEEK SCORE:",
 	"delScore": "RESET SCORE?",
 	"delConfirm": "CONFIRM",
-    "rateText": "RATE:",
-
-    "resumeSong": "Resume",
+	"rateText": "RATE:",
+	"resumeSong": "Resume",
 	"restartSong": "Restart Song",
 	"editors": "Open Editors",
 	"changeDiff": "Change Difficulty",
@@ -19,13 +22,11 @@
 	"songByTxt": "By:",
 	"blueballedTxt": "Blue balled:",
 	"backButton": "BACK",
-
-    "scoreTxt": "Score:",
-    "missTxt": "Combo Breaks:",
-    "accTxt": "Accuracy:",
-    "botTxt": "[AUTOPLAY]",
-
-    "skipText": "PRESS SHIFT TO SKIP",
+	"scoreTxt": "Score:",
+	"missTxt": "Combo Breaks:",
+	"accTxt": "Accuracy:",
+	"botTxt": "[AUTOPLAY]",
+	"skipText": "PRESS SHIFT TO SKIP",
 	"dialogueFile": "dialogue",
 	"dialogueFileEnd": "dialogueEnd"
 }

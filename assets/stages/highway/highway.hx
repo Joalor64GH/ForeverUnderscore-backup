@@ -52,9 +52,10 @@ function resetFastCar():Void
 }
 
 var carTimer:FlxTimer;
+
 function fastCarDrive()
 {
-	//trace('Car drive');
+	// trace('Car drive');
 	FlxG.sound.play(Paths.soundRandom('carPass', 0, 1), 0.7);
 
 	fastCar.velocity.x = (FlxG.random.int(170, 220) / FlxG.elapsed) * 3;
