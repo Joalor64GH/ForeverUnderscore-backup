@@ -1,4 +1,4 @@
-package base.data;
+package funkin.compat;
 
 /*
 	FOR SUPER ENGINE CHARACTER COMPATIBILITY

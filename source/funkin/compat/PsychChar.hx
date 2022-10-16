@@ -1,4 +1,4 @@
-package base.data;
+package funkin.compat;
 
 /*
 	FOR PSYCH ENGINE CHARACTER COMPATIBILITY

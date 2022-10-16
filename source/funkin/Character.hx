@@ -9,7 +9,7 @@ import sys.io.File;
 import base.*;
 import base.SongLoader.LegacySection;
 import base.SongLoader.Song;
-import base.data.PsychChar;
+import funkin.compat.PsychChar;
 import dependency.FNFSprite;
 import flixel.FlxG;
 import flixel.graphics.frames.FlxFramesCollection;
@@ -40,7 +40,7 @@ class Character extends FNFSprite
 	public var isPlayer:Bool = false;
 	public var quickDancer:Bool = false;
 
-	public var characterScript:ScriptHandler;
+	public var characterScripts:Array<ScriptHandler> = [];
 
 	public var idleSuffix:String = '';
 
@@ -61,6 +61,9 @@ class Character extends FNFSprite
 		super(x, y);
 		this.isPlayer = isPlayer;
 
+		cameraOffset = new FlxPoint(0, 0);
+		characterOffset = new FlxPoint(0, 0);
+
 		setCharacter(x, y, character);
 	}
 
@@ -79,10 +82,7 @@ class Character extends FNFSprite
 				playAnim("shoot1");
 		}
 
-		cameraOffset = new FlxPoint(0, 0);
-		characterOffset = new FlxPoint(0, 0);
-
-		psychChar = ForeverTools.fileExists('characters/$character/' + character + '.json', TEXT);
+		psychChar = ForeverTools.fileExists('characters/$character/' + character + '.json');
 
 		switch (character)
 		{
@@ -140,7 +140,8 @@ class Character extends FNFSprite
 
 	override function update(elapsed:Float)
 	{
-		characterScript.call('update', [elapsed]);
+		for (i in characterScripts)
+			i.call('update', [elapsed]);
 
 		/**
 		 * Special Animations Code.
@@ -226,7 +227,8 @@ class Character extends FNFSprite
 			}
 		}
 
-		characterScript.call('postUpdate', [elapsed]);
+		for (i in characterScripts)
+			i.call('postUpdate', [elapsed]);
 
 		super.update(elapsed);
 	}
@@ -320,12 +322,24 @@ class Character extends FNFSprite
 	 */
 	function generateBaseChar(char:String = 'bf')
 	{
+		var pushedScripts:Array<String> = [];
 		var paths:Array<String> = ['characters/$char/config.hx', 'characters/$char/config.hxs'];
 
-		for (path in paths)
+		for (i in paths)
 		{
-			if (ForeverTools.fileExists(path))
-				characterScript = new ScriptHandler(Paths.getTextFromFile(path));
+			if (ForeverTools.fileExists(i) && !pushedScripts.contains(i))
+			{
+				var script:ScriptHandler = new ScriptHandler(Paths.getPath(i, TEXT));
+
+				if (script.interp == null)
+				{
+					trace("Something terrible occured! Skipping.");
+					continue;
+				}
+
+				characterScripts.push(script);
+				pushedScripts.push(i);
+			}
 		}
 
 		var tex:FlxFramesCollection;
@@ -350,56 +364,56 @@ class Character extends FNFSprite
 		frames = tex;
 
 		// trace(interp, script);
-		characterScript.set('addByPrefix', function(name:String, prefix:String, ?frames:Int = 24, ?loop:Bool = false)
+		setVar('addByPrefix', function(name:String, prefix:String, ?frames:Int = 24, ?loop:Bool = false)
 		{
 			animation.addByPrefix(name, prefix, frames, loop);
 		});
 
-		characterScript.set('addByIndices', function(name:String, prefix:String, indices:Array<Int>, ?frames:Int = 24, ?loop:Bool = false)
+		setVar('addByIndices', function(name:String, prefix:String, indices:Array<Int>, ?frames:Int = 24, ?loop:Bool = false)
 		{
 			animation.addByIndices(name, prefix, indices, "", frames, loop);
 		});
 
-		characterScript.set('addOffset', function(?name:String = "idle", ?x:Float = 0, ?y:Float = 0)
+		setVar('addOffset', function(?name:String = "idle", ?x:Float = 0, ?y:Float = 0)
 		{
 			addOffset(name, x, y);
 			if (name == 'idle')
 				idlePos = [x, y];
 		});
 
-		characterScript.set('set', function(name:String, value:Dynamic)
+		setVar('set', function(name:String, value:Dynamic)
 		{
 			Reflect.setProperty(this, name, value);
 		});
 
-		characterScript.set('setSingDuration', function(amount:Int)
+		setVar('setSingDuration', function(amount:Int)
 		{
 			singDuration = amount;
 		});
 
-		characterScript.set('setOffsets', function(?x:Float = 0, ?y:Float = 0)
+		setVar('setOffsets', function(?x:Float = 0, ?y:Float = 0)
 		{
 			characterOffset.set(x, y);
 		});
 
-		characterScript.set('setCamOffsets', function(?x:Float = 0, ?y:Float = 0)
+		setVar('setCamOffsets', function(?x:Float = 0, ?y:Float = 0)
 		{
 			cameraOffset.set(x, y);
 		});
 
-		characterScript.set('setScale', function(?x:Float = 1, ?y:Float = 1)
+		setVar('setScale', function(?x:Float = 1, ?y:Float = 1)
 		{
 			scale.set(x, y);
 		});
 
-		characterScript.set('setIcon', function(swag:String = 'face') icon = swag);
+		setVar('setIcon', function(swag:String = 'face') icon = swag);
 
-		characterScript.set('quickDancer', function(quick:Bool = false)
+		setVar('quickDancer', function(quick:Bool = false)
 		{
 			quickDancer = quick;
 		});
 
-		characterScript.set('setBarColor', function(rgb:Array<Float>)
+		setVar('setBarColor', function(rgb:Array<Float>)
 		{
 			if (barColor != null)
 				barColor = rgb;
@@ -408,7 +422,7 @@ class Character extends FNFSprite
 			return true;
 		});
 
-		characterScript.set('setDeathChar',
+		setVar('setDeathChar',
 			function(char:String = 'bf-dead', lossSfx:String = 'fnf_loss_sfx', song:String = 'gameOver', confirmSound:String = 'gameOverEnd', bpm:Int)
 			{
 				GameOverSubstate.character = char;
@@ -418,28 +432,29 @@ class Character extends FNFSprite
 				GameOverSubstate.deathBPM = bpm;
 			});
 
-		characterScript.set('get', function(variable:String)
+		setVar('get', function(variable:String)
 		{
 			return Reflect.getProperty(this, variable);
 		});
 
-		characterScript.set('setGraphicSize', function(width:Int = 0, height:Int = 0)
+		setVar('setGraphicSize', function(width:Int = 0, height:Int = 0)
 		{
 			setGraphicSize(width, height);
 			updateHitbox();
 		});
 
-		characterScript.set('playAnim', function(name:String, ?force:Bool = false, ?reversed:Bool = false, ?frames:Int = 0)
+		setVar('playAnim', function(name:String, ?force:Bool = false, ?reversed:Bool = false, ?frames:Int = 0)
 		{
 			playAnim(name, force, reversed, frames);
 		});
 
-		characterScript.set('isPlayer', isPlayer);
+		setVar('isPlayer', isPlayer);
 		if (PlayState.SONG != null)
-			characterScript.set('songName', PlayState.SONG.song.toLowerCase());
-		characterScript.set('flipLeftRight', flipLeftRight);
+			setVar('songName', PlayState.SONG.song.toLowerCase());
+		setVar('flipLeftRight', flipLeftRight);
 
-		characterScript.call('loadAnimations', []);
+		for (i in characterScripts)
+			i.call('loadAnimations', []);
 
 		if (animation.getByName('danceLeft') != null)
 			playAnim('danceLeft');
@@ -447,9 +462,18 @@ class Character extends FNFSprite
 			playAnim('idle');
 	}
 
-	public function noteHit()
+	public function setVar(key:String, value:Dynamic):Bool
 	{
-		characterScript.call('noteHit', []);
+		for (i in characterScripts)
+			i.set(key, value);
+
+		return true;
+	}
+
+	public function noteHit(dunceNote:funkin.Note)
+	{
+		for (i in characterScripts)
+			i.call('noteHit', [dunceNote]);
 	}
 
 	public var psychAnimationsArray:Array<PsychAnimArray> = [];
@@ -461,9 +485,7 @@ class Character extends FNFSprite
 	 */
 	function generatePsychChar(char:String = 'bf')
 	{
-		var path = Paths.getPath('characters/$char/' + char + '.json');
-
-		var rawJson = File.getContent(path);
+		var rawJson = File.getContent(Paths.getPath('characters/$char/' + char + '.json'));
 
 		var json:PsychEngineChar = cast Json.parse(rawJson);
 

@@ -1299,7 +1299,7 @@ class PlayState extends MusicBeatState
 		{
 			// lmao;
 			callFunc(!coolNote.mustPress ? 'opponentNoteHit' : 'goodNoteHit', [coolNote, strumline]);
-			strumline.character.noteHit();
+			strumline.character.noteHit(coolNote);
 
 			coolNote.wasGoodHit = true;
 			Conductor.songVocals.volume = 1;
