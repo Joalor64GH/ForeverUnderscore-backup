@@ -33,9 +33,8 @@ class ChartParser
 				var daNoteType:Int = 0; // define the note's type
 
 				if (songNotes.length > 2)
-				{
 					daNoteType = songNotes[3];
-				}
+
 				var gottaHitNote:Bool = section.mustHitSection;
 				if (songNotes[1] > 3)
 					gottaHitNote = !section.mustHitSection;
@@ -50,6 +49,7 @@ class ChartParser
 				swagNote.noteSpeed = songData.speed;
 
 				swagNote.sustainLength = songNotes[2];
+				swagNote.noteType = songNotes[3];
 				swagNote.scrollFactor.set(0, 0);
 
 				var susLength:Float = swagNote.sustainLength;

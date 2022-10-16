@@ -856,6 +856,7 @@ class PlayState extends MusicBeatState
 				{
 					preventScoring = true;
 					bfStrums.autoplay = !bfStrums.autoplay;
+					uiHUD.scoreBar.visible = !bfStrums.autoplay;
 					uiHUD.autoplayMark.visible = bfStrums.autoplay;
 					uiHUD.autoplayMark.alpha = 1;
 					uiHUD.autoplaySine = 0;
