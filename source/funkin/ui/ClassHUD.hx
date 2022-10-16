@@ -18,6 +18,7 @@ class ClassHUD extends FlxTypedGroup<FlxBasic>
 {
 	// set up variables and stuff here
 	public var scoreBar:FlxText;
+
 	var scoreColorTween:FlxTween;
 
 	public var cornerMark:FlxText; // engine mark at the upper right corner
