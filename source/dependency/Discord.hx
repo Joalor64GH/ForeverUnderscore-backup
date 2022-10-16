@@ -16,7 +16,7 @@ class Discord
 	public static function initializeRPC()
 	{
 		DiscordRpc.start({
-			clientID: "879525344128925717",
+			clientID: "1031181637863620708",
 			onReady: onReady,
 			onError: onError,
 			onDisconnected: onDisconnected
@@ -32,8 +32,8 @@ class Discord
 		DiscordRpc.presence({
 			details: "",
 			state: null,
-			largeImageKey: 'iconog',
-			largeImageText: 'Forever Engine v${Main.foreverVersion} • Underscore v${Main.underscoreVersion}',
+			largeImageKey: 'fel-logo',
+			largeImageText: 'Forever Engine Legacy v${Main.foreverVersion} • Underscore v${Main.underscoreVersion}',
 		});
 	}
 
@@ -49,7 +49,7 @@ class Discord
 
 	//
 
-	public static function changePresence(details:String = '', state:Null<String> = '', ?largeImageKey:Null<String> = 'iconog', ?largeImageText:Null<String>,
+	public static function changePresence(details:String = '', state:Null<String> = '', ?largeImageKey:Null<String> = 'fel-logo', ?largeImageText:Null<String>,
 			?smallImageKey:String, ?hasStartTimestamp:Bool, ?endTimestamp:Float)
 	{
 		var startTimestamp:Float = (hasStartTimestamp) ? Date.now().getTime() : 0;

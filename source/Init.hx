@@ -465,6 +465,8 @@ class Init extends FlxState
 
 		reloadCustomSkins();
 
+		updateAll();
+
 		if (FlxG.save.data.volume != null)
 			FlxG.sound.volume = FlxG.save.data.volume;
 		if (FlxG.save.data.mute != null)

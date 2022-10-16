@@ -7,7 +7,6 @@
         "player2": "mom-car",
         "gfVersion": "gf-car",
         "stage": "highway",
-        "assetModifier": "base",
         "speed": 1.8,
         "notes": [
             {

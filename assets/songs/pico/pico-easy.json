@@ -7,7 +7,6 @@
         "player2": "pico",
         "gfVersion": "gf",
         "stage": "philly",
-        "assetModifier": "base",
         "speed": 1.2,
         "notes": [
             {

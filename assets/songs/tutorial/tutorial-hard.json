@@ -557,7 +557,6 @@
         "player2": "gf",
         "gfVersion": "gf",
         "stage": "stage",
-        "assetModifier": "base",
         "sectionLengths": [],
         "speed": 1
     },

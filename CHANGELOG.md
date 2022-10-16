@@ -140,4 +140,3 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Improved Notetype Handling, Notetypes can now be fully set up on `Note.hx`;
 - The Codebase has been entirely formatted (thanks @otallynotdoggogit);
 - The `README.md` file has been entirely rewritten (thanks @otallynotdoggogit);
-

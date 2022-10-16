@@ -7,7 +7,6 @@
         "player2": "monster-christmas",
         "gfVersion": "gf-christmas",
         "stage": "mallEvil",
-        "assetModifier": "base",
         "speed": 1.1,
         "notes": [
             {
