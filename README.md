@@ -4,9 +4,9 @@
   <h2 align="center">A custom-made Forever Engine build which aims to unofficially maintain Forever Engine Legacy.</h2>
 </p>
 
-***For engine compiling and script documentation, please visit this [project's GitHub Wiki page](https://github.com/BeastlyGhost/Forever-Engine-Underscore/wiki)***.
+***For engine compiling and script documentation, please visit our [Wiki page](https://github.com/BeastlyGhost/Forever-Engine-Underscore/wiki)***.
 
-**Feel free to check out some these [pre-made scripts](https://github.com/BeastlyGhost/Forever-Engine-Underscore/tree/master/docs), in case you need them.**
+**Feel free to check out our [pre-made scripts](https://github.com/BeastlyGhost/Forever-Engine-Underscore/tree/master/docs), in case you need them.**
 
 ----------------------------------------------
 
