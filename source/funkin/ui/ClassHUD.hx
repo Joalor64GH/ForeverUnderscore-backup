@@ -146,8 +146,8 @@ class ClassHUD extends FlxTypedGroup<FlxBasic>
 		updateBar();
 	}
 
-	var counterTextSize:Int = 18;
-	var counterTextFont:String = 'vcr';
+	public var counterTextSize:Int = 18;
+	public var counterTextFont:String = 'vcr';
 
 	var left = (Init.getSetting('Counter') == 'Left');
 

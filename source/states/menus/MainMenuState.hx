@@ -136,7 +136,7 @@ class MainMenuState extends MusicBeatState
 			- 38, 0,
 			"Funkin' v"
 			+ Application.current.meta.get('version')
-			+ "\nForever Engine v"
+			+ "\nForever Engine Legacy v"
 			+ Main.foreverVersion
 			+ " - Underscore v"
 			+ Main.underscoreVersion
