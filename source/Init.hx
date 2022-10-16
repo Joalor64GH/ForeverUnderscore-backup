@@ -410,7 +410,7 @@ class Init extends FlxState
 
 	public static function loadSettings():Void
 	{
-		FlxG.save.bind('forever-settings', 'BeastlyGhost');
+		FlxG.save.bind('gameSettings');
 
 		// set the true settings array
 		// only the first variable will be saved! the rest are for the menu stuffs
@@ -484,7 +484,7 @@ class Init extends FlxState
 	public static function saveSettings():Void
 	{
 		// ez save lol
-		FlxG.save.bind('forever-settings', 'BeastlyGhost');
+		FlxG.save.bind('gameSettings');
 		FlxG.save.data.comboOffset = comboOffset;
 		FlxG.save.data.ratingOffset = ratingOffset;
 		FlxG.save.data.settings = trueSettings;
@@ -496,7 +496,7 @@ class Init extends FlxState
 
 	public static function saveControls():Void
 	{
-		FlxG.save.bind('forever-controls', 'BeastlyGhost');
+		FlxG.save.bind('gameControls');
 		FlxG.save.data.controls = gameControls;
 		FlxG.save.flush();
 
@@ -505,7 +505,7 @@ class Init extends FlxState
 
 	public static function loadControls():Void
 	{
-		FlxG.save.bind('forever-controls', 'BeastlyGhost');
+		FlxG.save.bind('gameControls');
 		if (FlxG.save != null && FlxG.save.data.controls != null)
 		{
 			if ((FlxG.save.data.controls != null) && (Lambda.count(FlxG.save.data.controls) == Lambda.count(gameControls)))

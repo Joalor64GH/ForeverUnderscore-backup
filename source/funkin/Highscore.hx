@@ -20,7 +20,7 @@ class Highscore
 
 	public static function clearData(song:String, diff:Int = 0):Void
 	{
-		FlxG.save.bind('forever-highscores', 'BeastlyGhost');
+		FlxG.save.bind('gameScores');
 
 		var daSong:String = formatSong(song, diff);
 		setScore(daSong, 0);
@@ -120,7 +120,7 @@ class Highscore
 
 	public static function getScore(song:String, diff:Int):Int
 	{
-		FlxG.save.bind('forever-highscores', 'BeastlyGhost');
+		FlxG.save.bind('gameScores');
 
 		if (!songScores.exists(formatSong(song, diff)))
 			setScore(formatSong(song, diff), 0);
@@ -130,7 +130,7 @@ class Highscore
 
 	public static function getWeekScore(week:Int, diff:Int):Int
 	{
-		FlxG.save.bind('forever-highscores', 'BeastlyGhost');
+		FlxG.save.bind('gameScores');
 
 		if (!weekScores.exists(formatSong('week' + week, diff)))
 			setScore(formatSong('week' + week, diff), 0);
@@ -140,7 +140,7 @@ class Highscore
 
 	public static function getRank(song:String, diff:Int):String
 	{
-		FlxG.save.bind('forever-highscores', 'BeastlyGhost');
+		FlxG.save.bind('gameScores');
 
 		if (!songRanks.exists(formatSong(song, diff)))
 			setRank(formatSong(song, diff), Timings.returnScoreRating().toUpperCase());
@@ -150,7 +150,7 @@ class Highscore
 
 	public static function getAccuracy(song:String, diff:Int):Float
 	{
-		FlxG.save.bind('forever-highscores', 'BeastlyGhost');
+		FlxG.save.bind('gameScores');
 
 		if (!songAccuracy.exists(formatSong(song, diff)))
 			setScore(formatSong(song, diff), 0);
@@ -160,7 +160,7 @@ class Highscore
 
 	static function setScore(song:String, score:Int):Void
 	{
-		FlxG.save.bind('forever-highscores', 'BeastlyGhost');
+		FlxG.save.bind('gameScores');
 
 		// Reminder that I don't need to format this song, it should come formatted!
 		songScores.set(song, score);
@@ -170,7 +170,7 @@ class Highscore
 
 	static function setWeekScore(week:String, score:Int):Void
 	{
-		FlxG.save.bind('forever-highscores', 'BeastlyGhost');
+		FlxG.save.bind('gameScores');
 
 		// Reminder that I don't need to format this song, it should come formatted!
 		weekScores.set(week, score);
@@ -180,7 +180,7 @@ class Highscore
 
 	static function setRank(song:String, rank:String = 'N/A'):Void
 	{
-		FlxG.save.bind('forever-highscores', 'BeastlyGhost');
+		FlxG.save.bind('gameScores');
 
 		// Reminder that I don't need to format this song, it should come formatted!
 		songRanks.set(song, rank);
@@ -190,7 +190,7 @@ class Highscore
 
 	static function setAccuracy(song:String, accuracy:Float):Void
 	{
-		FlxG.save.bind('forever-highscores', 'BeastlyGhost');
+		FlxG.save.bind('gameScores');
 
 		// Reminder that I don't need to format this song, it should come formatted!
 		songAccuracy.set(song, accuracy);
@@ -200,7 +200,7 @@ class Highscore
 
 	public static function load():Void
 	{
-		FlxG.save.bind('forever-highscores', 'BeastlyGhost');
+		FlxG.save.bind('gameScores');
 		if (FlxG.save.data.weekScores != null)
 		{
 			weekScores = FlxG.save.data.weekScores;
