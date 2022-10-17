@@ -33,10 +33,12 @@ and much more to come in the future!
 
 ----------------------------------------------
 
+if you have *any* questions, feel free to [message me on Discord, at BeastlyGhost#9035](https://discord.com/users/597124141530742805) or [forward them on Twitter](https://twitter.com/Fan_de_RPG).
+
+
 <h1 align="center">Thank you for all the support on this little fork!</h1>
 <h2 align="center">It's honestly kinda surreal haha</h2>
 
-if you have *any* questions, feel free to [message me on Discord](https://discord.com/users/597124141530742805) or [forward them on Twitter](https://twitter.com/Fan_de_RPG).
 
 ----------------------------------------------
 *Legacy README can be found [here](https://github.com/Yoshubs/Forever-Engine-Legacy/blob/master/README.md)*.
