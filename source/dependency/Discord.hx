@@ -49,8 +49,8 @@ class Discord
 
 	//
 
-	public static function changePresence(details:String = '', state:Null<String> = '', ?largeImageKey:Null<String> = 'feu-logo', ?largeImageText:Null<String>,
-			?smallImageKey:String, ?hasStartTimestamp:Bool, ?endTimestamp:Float)
+	public static function changePresence(details:String = '', state:Null<String> = '', ?largeImageKey:Null<String> = 'feu-logo',
+			?largeImageText:Null<String>, ?smallImageKey:String, ?hasStartTimestamp:Bool, ?endTimestamp:Float)
 	{
 		var startTimestamp:Float = (hasStartTimestamp) ? Date.now().getTime() : 0;
 
