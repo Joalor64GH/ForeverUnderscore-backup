@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://media.discordapp.net/attachments/821758818135572491/884267252357156934/FELogo.png" width="800"/></a>
+  <img src="https://cdn.discordapp.com/attachments/930661629505466448/1031418430760427530/feULogo.png" width="800"/></a>
   <h1 align="center">Forever Engine Underscore</h1>
   <h2 align="center">A custom-made Forever Engine build which aims to unofficially maintain Forever Engine Legacy.</h2>
 </p>
