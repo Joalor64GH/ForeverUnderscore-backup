@@ -455,7 +455,7 @@ class PlayState extends MusicBeatState
 		}
 		catch (e)
 		{
-			lime.app.Application.current.window.alert('$e in Script', "PlayState Error!");
+			lime.app.Application.current.window.alert('$e', "PlayState Error!");
 		}
 
 		// set the camera position to the center of the stage

@@ -95,7 +95,7 @@ class Stage extends FlxTypedGroup<FlxBasic>
 		}
 		catch (e)
 		{
-			lime.app.Application.current.window.alert('$e in Stage Script', "Stage Error!");
+			lime.app.Application.current.window.alert('$e', "Stage Error!");
 		}
 	}
 
