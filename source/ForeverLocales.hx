@@ -9,29 +9,24 @@ typedef LangDataDef =
 
 	// MENUS
 	var difficultyNames:Array<String>;
-
 	// HUD INFO BAR
 	var scoreTxt:String;
 	var missTxt:String;
 	var accTxt:String;
 	var botTxt:String;
-
 	// DIALOGUE
 	var skipText:String;
 	var dialogueFileEnd:String;
 	var dialogueFile:String;
-
 	// STORY MENU
 	var weekScoreText:String;
 	var tracksText:String;
-
 	// FREEPLAY MENU
 	var personalBest:String;
 	var delScore:String;
 	var delConfirm:String;
 	var rateText:String;
 	var dataCleared:String;
-
 	// PAUSE MENU
 	var resumeSong:String;
 	var restartSong:String;
@@ -101,6 +96,7 @@ class ForeverLocales
 				"blueballedTxt": "Blue balled:",
 				"backButton": "BACK"
 			}');
+
 		}
 	}
 }

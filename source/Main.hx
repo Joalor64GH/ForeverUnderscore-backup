@@ -26,8 +26,8 @@ class Main extends Sprite
 
 	public static var mainClassState:Class<FlxState> = states.TitleState; // specify the state where the game should start at;
 
-	public static var foreverVersion:String = '0.3.1'; // current forever engine version;
-	public static var underscoreVersion:String = '0.2.3'; // current forever engine underscore version;
+	public static final foreverVersion:String = '0.3.1'; // current forever engine version;
+	public static final underscoreVersion:String = '0.2.3'; // current forever engine underscore version;
 
 	public static var commitHash:Null<String>; // commit hash, for github builds;
 
