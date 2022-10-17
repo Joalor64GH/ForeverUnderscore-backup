@@ -89,6 +89,7 @@ class PlayState extends MusicBeatState
 	// camera values
 	var camFollow:FlxObject;
 	var camFollowPos:FlxObject;
+
 	static var prevCamFollow:FlxObject;
 
 	// Discord RPC variables
@@ -179,6 +180,7 @@ class PlayState extends MusicBeatState
 
 	// set only once
 	public static var lastEditor:Int = 0;
+
 	var curSection:Int = 0;
 
 	public var ratingsGroup:FlxTypedGroup<FNFSprite>;
@@ -785,6 +787,7 @@ class PlayState extends MusicBeatState
 
 	public var vaiPra:Int = 0;
 	public var vaiPraAtivo:Bool = false;
+
 	override public function update(elapsed:Float)
 	{
 		if (vaiPraAtivo)
