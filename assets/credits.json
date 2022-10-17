@@ -12,7 +12,7 @@
 			"name": "BeastlyGhost",
 			"icon": "ghost",
 			"textData": [
-				"Main Coder",
+				"Underscore's Lead Programmer",
 				"Boo."
 			],
 			"urlData": [
@@ -32,29 +32,10 @@
 			]
 		},
 		{
-			"name": "Satoru",
-			"icon": "satoru",
-			"textData": [
-				"Additional Artist",
-				"se a vaca bebe água e come mato, pq ela dá leite e não chá?"
-			],
-			"urlData": [
-				[
-					"Twitter",
-					"https://twitter.com/kajizyoficial"
-				]
-			],
-			"colors": [
-				237,
-				215,
-				255
-			]
-		},
-		{
 			"name": "NxtVithor",
 			"icon": "vito",
 			"textData": [
-				"Main Artist",
+				"Lead Designer",
 				"I open the fucking door, and I piss on the floor."
 			],
 			"urlData": [
@@ -73,11 +54,30 @@
 				255
 			]
 		},
+				{
+			"name": "Satoru",
+			"icon": "satoru",
+			"textData": [
+				"Artist.",
+				"se a vaca bebe água e come mato, pq ela dá leite e não chá?"
+			],
+			"urlData": [
+				[
+					"Twitter",
+					"https://twitter.com/kajizyoficial"
+				]
+			],
+			"colors": [
+				237,
+				215,
+				255
+			]
+		},
 		{
 			"name": "TheWorldMachine",
 			"icon": "macxp",
 			"textData": [
-				"Script Backend Coder, Additional Coder"
+				"Additional Coder, made the Script Backend along with helping with a couple of fixes"
 			],
 			"urlData": [
 				[
@@ -159,7 +159,7 @@
 			"name": "ShadowMario",
 			"icon": "",
 			"textData": [
-				"Coding Help, some advices and overall good friend",
+				"Coding Help, some advices and overall good friend, we urge you to check Psych Engine if you haven't (which is kinda unlikely buuut yeah!)",
 				"WikiHow: How to handle fame."
 			],
 			"urlData": [
@@ -175,10 +175,28 @@
 			]
 		},
 		{
+			"name": "PolybiusProxy",
+			"icon": "",
+			"textData": [
+				"Made the Library for Loading Video Cutscenes (hxCodec)"
+			],
+			"urlData": [
+				[
+					"Twitter",
+					"https://twitter.com/polybiusproxy"
+				]
+			],
+			"colors": [
+				255,
+				234,
+				166
+			]
+		},
+		{
 			"name": "MasterEric",
 			"icon": "",
 			"textData": [
-				"Runtime Shader Support"
+				"Made the Runtime Shader Support class for fragment and vertex shaders"
 			],
 			"urlData": [
 				[
@@ -196,7 +214,7 @@
 			"name": "DiogoTTV",
 			"icon": "",
 			"textData": [
-				"New Credits Menu Rewrite"
+				"BANGER coder which deserves more recognition, made the current credits menu"
 			],
 			"urlData": [
 				[
@@ -214,7 +232,7 @@
 			"name": "NooBZiiTo",
 			"icon": "noobziito",
 			"textData": [
-				"Custom Menu Assets",
+				"Sick Artist, made the custom menu assets",
 				"i injected uranium in my veins."
 			],
 			"urlData": [
@@ -233,7 +251,7 @@
 			"name": "Suok",
 			"icon": "",
 			"textData": [
-				"Custom Game Assets",
+				"Cool Friend and great artist, made the custom assets used in-game (such as the prepare sprite for the countdown)",
 				"não faça sexo."
 			],
 			"urlData": [
@@ -252,7 +270,7 @@
 			"name": "ImNotSonic",
 			"icon": "",
 			"textData": [
-				"Custom Pixel Game Assets"
+				"Epic Pixel Artist lady, made the pixel variant for the prepare sprite used on the countdown"
 			],
 			"urlData": [
 				[
@@ -270,7 +288,7 @@
 			"name": "superpowers04",
 			"icon": "",
 			"textData": [
-				"Code for the Console used for debug traces (F10)",
+				"Sick Programmer and Cool Friend, Made the Code for the Console which displays debug information on screen by pressing F10",
 				"Insert funny quote here (play super engine)"
 			],
 			"urlData": [
@@ -287,15 +305,15 @@
 		},
 		{
 			"sectionName": "SPECIAL THANKS",
-			"name": "PolybiusProxy",
+			"name": "doggo",
 			"icon": "",
 			"textData": [
-				"Library for Loading Video Cutscenes"
+				"Helped a lot to make the GitHub Page more apealling for visitors, along with some other engine fixes, haha we owe you one"
 			],
 			"urlData": [
 				[
-					"Twitter",
-					"https://twitter.com/polybiusproxy"
+					"GitHub",
+					"https://github.com/doggogit"
 				]
 			],
 			"colors": [
@@ -309,7 +327,7 @@
 			"name": "BoloVEVO",
 			"icon": "bolo",
 			"textData": [
-				"Made a KE fork with lots of performance improvements.",
+				"Cool Newbie Programmer, Made a Kade Engine custom fork with lots of performance improvements",
 				"Big Black Male Chicken"
 			],
 			"urlData": [
@@ -333,7 +351,7 @@
 			"name": "yoisabo",
 			"icon": "",
 			"textData": [
-				"yoisabo"
+				"Being such a homie in general, she made the Arrow Funk mod which we definitely recommend playing"
 			],
 			"urlData": [
 				[
@@ -356,11 +374,11 @@
 			]
 		},
 		{
-			"sectionName": "FOREVER ENGINE: LEGACY",
+			"sectionName": "FOREVER ENGINE LEGACY",
 			"name": "Yoshubs",
 			"icon": "",
 			"textData": [
-				"Lead Programmer"
+				"Forever Engine's Lead Programmer, also made some fixes for Underscore such as Dynamic Sizes for Hold Note Trails"
 			],
 			"urlData": [
 				[
@@ -378,7 +396,7 @@
 			"name": "Pixloen",
 			"icon": "",
 			"textData": [
-				"Forever Engine's Custom Assets"
+				"Forever Engine's Artist, Made a lot of the Custom Assets that the engine uses"
 			],
 			"urlData": [
 				[
@@ -396,7 +414,7 @@
 			"name": "Gedehari",
 			"icon": "",
 			"textData": [
-				"Programmer"
+				"Great Programmer, made the freeplay loading thread to avoid lag issues in freeplay, along with waveform rendering code, (legacy) external shader support, and so many other things like the Crash Logger"
 			],
 			"urlData": [
 				[
@@ -411,10 +429,28 @@
 			]
 		},
 		{
+			"name": "ImCodist",
+			"icon": "",
+			"textData": [
+				"Made the Base Dialogue System and a couple of issue fixes"
+			],
+			"urlData": [
+				[
+					"GitHub",
+					"https://github.com/ImCodist"
+				]
+			],
+			"colors": [
+				175,
+				68,
+				65
+			]
+		},
+		{
 			"name": "Scarlett",
 			"icon": "",
 			"textData": [
-				"Programmer, Wrote the Math Formula for Note Quants"
+				"Programmer, Wrote the Finalized Math Formula for Note Quants"
 			],
 			"urlData": [
 				[
@@ -432,7 +468,7 @@
 			"name": "Oneilr",
 			"icon": "",
 			"textData": [
-				"Forever Engine's Custom Assets"
+				"Made Forever Engine's Custom Assets, mainly the animated ones like Note Splashes and Option Checkmarks"
 			],
 			"urlData": [
 				[
@@ -447,29 +483,11 @@
 			]
 		},
 		{
-			"name": "ImCodist",
-			"icon": "",
-			"textData": [
-				"Issue Fixes"
-			],
-			"urlData": [
-				[
-					"GitHub",
-					"https://github.com/ImCodist"
-				]
-			],
-			"colors": [
-				175,
-				68,
-				65
-			]
-		},
-		{
-			"sectionName": "FOREVER ENGINE: LEGACY",
+			"sectionName": "FOREVER ENGINE LEGACY",
 			"name": "HelloSammu",
 			"icon": "",
 			"textData": [
-				"Engine Misc Fixes, Scaleable Text for Dialogue"
+				"Made Scaleable Text for Dialogues and some Engine Fixes"
 			],
 			"urlData": [
 				[
@@ -534,7 +552,8 @@
 			"name": "evilsk8r",
 			"icon": "",
 			"textData": [
-				"Artist of Friday Night Funkin'"
+				"Artist of Friday Night Funkin'",
+				"its not an alien"
 			],
 			"urlData": [
 				[
