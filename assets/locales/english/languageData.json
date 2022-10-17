@@ -4,12 +4,25 @@
 		"NORMAL",
 		"HARD"
 	],
-	"personalBest": "PERSONAL BEST:",
-	"tracksText": "TRACKS",
+
+	"scoreTxt": "Score:",
+	"missTxt": "Combo Breaks:",
+	"accTxt": "Accuracy:",
+	"botTxt": "[AUTOPLAY]",
+
+	"skipText": "PRESS SHIFT TO SKIP",
+	"dialogueFile": "dialogue",
+	"dialogueFileEnd": "dialogueEnd",
+
 	"weekScoreText": "WEEK SCORE:",
+	"tracksText": "TRACKS",
+
+	"personalBest": "PERSONAL BEST:",
 	"delScore": "RESET SCORE?",
 	"delConfirm": "CONFIRM",
+	"dataCleared": "DATA CLEARED",
 	"rateText": "RATE:",
+
 	"resumeSong": "Resume",
 	"restartSong": "Restart Song",
 	"editors": "Open Editors",
@@ -21,12 +34,5 @@
 	"exitMenu": "Exit to Main Menu",
 	"songByTxt": "By:",
 	"blueballedTxt": "Blue balled:",
-	"backButton": "BACK",
-	"scoreTxt": "Score:",
-	"missTxt": "Combo Breaks:",
-	"accTxt": "Accuracy:",
-	"botTxt": "[AUTOPLAY]",
-	"skipText": "PRESS SHIFT TO SKIP",
-	"dialogueFile": "dialogue",
-	"dialogueFileEnd": "dialogueEnd"
+	"backButton": "BACK"
 }

@@ -361,7 +361,7 @@ class FreeplayMenuState extends MusicBeatState
 				}
 				else
 				{
-					diffText.text = 'DATA CLEARED';
+					diffText.text = '${ForeverLocales.curLang.dataCleared}';
 					rateText.text = '';
 					Highscore.clearData(songs[curSelected].songName, curDifficulty);
 					FlxG.sound.play(Paths.sound('ANGRY'));

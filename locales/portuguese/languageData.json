@@ -4,12 +4,25 @@
 		"NORMAL",
 		"DIFÍCIL"
 	],
-	"personalBest": "RECORDE PESSOAL:",
-	"tracksText": "FAIXAS",
+
+	"scoreTxt": "Pontuação:",
+	"missTxt": "Erros:",
+	"accTxt": "Precisão:",
+	"botTxt": "[AUTOPLAY]",
+
+	"skipText": "PRESSIONE SHIFT PARA PULAR",
+	"dialogueFile": "dialoguePT",
+	"dialogueFileEnd": "dialogueEndPT",
+
 	"weekScoreText": "PONTUAÇÃO DA SEMANA:",
+	"tracksText": "FAIXAS",
+
+	"personalBest": "RECORDE PESSOAL:",
 	"delScore": "APAGAR PONTOS?",
 	"delConfirm": "CONFIRMAR",
+	"dataCleared": "PONTOS DELETADOS.",
 	"rateText": "TAXA:",
+
 	"resumeSong": "Resumir Musica",
 	"restartSong": "Reiniciar Musica",
 	"editors": "Abrir Editores",
@@ -21,12 +34,5 @@
 	"exitMenu": "Sair para o Menu Principal",
 	"songByTxt": "Por:",
 	"blueballedTxt": "Mortes:",
-	"backButton": "VOLTAR",
-	"scoreTxt": "Pontuação:",
-	"missTxt": "Erros:",
-	"accTxt": "Precisão:",
-	"botTxt": "[AUTOPLAY]",
-	"skipText": "PRESSIONE SHIFT PARA PULAR",
-	"dialogueFile": "dialoguePT",
-	"dialogueFileEnd": "dialogueEndPT"
+	"backButton": "VOLTAR"
 }

@@ -4,12 +4,25 @@
 		"NORMAL",
 		"GREU"
 	],
-	"personalBest": "RECORDUL PERSONAL:",
-	"tracksText": "MELODII",
+
+	"scoreTxt": "Scor:",
+	"missTxt": "Combouri Distruse:",
+	"accTxt": "Acuratețe:",
+	"botTxt": "[AUTOPLAY]",
+
+	"skipText": "PRESS SHIFT TO SKIP",
+	"dialogueFile": "dialogueRo",
+	"dialogueFileEnd": "dialogueEndRo",
+
 	"weekScoreText": "SCORUL SĂPTĂMÂNI:",
+	"tracksText": "MELODII",
+
+	"personalBest": "RECORDUL PERSONAL:",
 	"delScore": "RESETEAZĂ SCORUL?",
 	"delConfirm": "CONFIRM",
+	"dataCleared": "DATA CLEARED",
 	"rateText": "RATĂ:",
+
 	"resumeSong": "Reîncepeți",
 	"restartSong": "Reporniți melodia",
 	"editors": "Schimbă Dificultate",
@@ -21,12 +34,5 @@
 	"exitMenu": "Ieșiți în meniul principal",
 	"songByTxt": "De:",
 	"blueballedTxt": "Bile albastre:",
-	"backButton": "ÎNAPOI",
-	"scoreTxt": "Scor:",
-	"missTxt": "Combouri Distruse:",
-	"accTxt": "Acuratețe:",
-	"botTxt": "[AUTOPLAY]",
-	"skipText": "PRESS SHIFT TO SKIP",
-	"dialogueFile": "dialogueRo",
-	"dialogueFileEnd": "dialogueEndRo"
+	"backButton": "ÎNAPOI"
 }

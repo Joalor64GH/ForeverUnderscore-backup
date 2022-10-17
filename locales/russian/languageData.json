@@ -1,15 +1,31 @@
 {
+	"useCustomFont": true,
+	"fontKey": "vcr-ru",
+
 	"difficultyNames": [
 		"ЛЕГКО",
 		"НОРМАЛЬНО",
 		"СЛОЖНО"
 	],
-	"personalBest": "ЛУЧШИЙ СЧЁТ:",
-	"tracksText": "ПЕСНИ",
+
+	"scoreTxt": "Счёт:",
+	"missTxt": "Пропуски:",
+	"accTxt": "Точность:",
+	"botTxt": "[АВТОИГРА]",
+
+	"skipText": "НАЖМИТЕ SHIFT ДЛЯ ПРОПУСКА",
+	"dialogueFile": "dialogueRU",
+	"dialogueFileEnd": "dialogueEndRU",
+
 	"weekScoreText": "СЧЁТ НЕДЕЛИ:",
+	"tracksText": "ПЕСНИ",
+
+	"personalBest": "ЛУЧШИЙ СЧЁТ:",
 	"delScore": "СБРОСИТЬ СЧЁТ?",
 	"delConfirm": "ПОДТВЕРДИТЬ",
+	"dataCleared": "DATA CLEARED",
 	"rateText": "РЕЙТИНГ:",
+
 	"resumeSong": "Продолжить",
 	"restartSong": "Перезапустить Песню",
 	"editors": "Открыть Редакторы",
@@ -21,14 +37,5 @@
 	"exitMenu": "Выйти в Главное Меню",
 	"songByTxt": "Автор:",
 	"blueballedTxt": "Смертей:",
-	"backButton": "НАЗАД",
-	"scoreTxt": "Счёт:",
-	"missTxt": "Пропуски:",
-	"accTxt": "Точность:",
-	"botTxt": "[АВТОИГРА]",
-	"skipText": "НАЖМИТЕ SHIFT ДЛЯ ПРОПУСКА",
-	"dialogueFile": "dialogueRU",
-	"dialogueFileEnd": "dialogueEndRU",
-	"useCustomFont": true,
-	"fontKey": "vcr-ru"
+	"backButton": "НАЗАД"
 }
