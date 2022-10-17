@@ -166,7 +166,7 @@ class Stage extends FlxTypedGroup<FlxBasic>
 			if (ext != null)
 			{
 				if (ForeverTools.fileExists('stages/$curStage/$curStage.$ext'))
-					stageScript = new ScriptHandler(Paths.getTextFromFile('stages/$curStage/$curStage.$ext'));
+					stageScript = new ScriptHandler(Paths.getPath('stages/$curStage/$curStage.$ext'));
 			}
 		}
 
