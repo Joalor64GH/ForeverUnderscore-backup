@@ -12,10 +12,12 @@ class MenuItem extends FlxSpriteGroup
 	public var targetY:Float = 0;
 	public var flashingInt:Int = 0;
 	public var week:FlxSprite;
+	public var lockY:Bool = true;
 
-	public function new(x:Float, y:Float, weekName:String = '')
+	public function new(x:Float, y:Float, weekName:String = '', lockY:Bool = true)
 	{
 		super(x, y);
+		this.lockY = lockY;
 
 		week = new FlxSprite().loadGraphic(Paths.image('menus/base/storymenu/weeks/$weekName'));
 		add(week);
@@ -39,7 +41,8 @@ class MenuItem extends FlxSpriteGroup
 	{
 		super.update(elapsed);
 		var lerpVal = Main.framerateAdjust(0.17);
-		y = FlxMath.lerp(y, (targetY * 120) + 480, lerpVal);
+		if (lockY)
+			y = FlxMath.lerp(y, (targetY * 120) + 480, lerpVal);
 
 		if (isFlashing)
 			flashingInt += 1;

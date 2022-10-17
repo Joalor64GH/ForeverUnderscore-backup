@@ -16,7 +16,7 @@ class Discord
 	public static function initializeRPC()
 	{
 		DiscordRpc.start({
-			clientID: "1031181637863620708",
+			clientID: "1031357281117409370",
 			onReady: onReady,
 			onError: onError,
 			onDisconnected: onDisconnected
@@ -32,7 +32,7 @@ class Discord
 		DiscordRpc.presence({
 			details: "",
 			state: null,
-			largeImageKey: 'fel-logo',
+			largeImageKey: 'feu-logo',
 			largeImageText: 'Forever Engine Legacy v${Main.foreverVersion} • Underscore v${Main.underscoreVersion}',
 		});
 	}
@@ -49,7 +49,7 @@ class Discord
 
 	//
 
-	public static function changePresence(details:String = '', state:Null<String> = '', ?largeImageKey:Null<String> = 'fel-logo', ?largeImageText:Null<String>,
+	public static function changePresence(details:String = '', state:Null<String> = '', ?largeImageKey:Null<String> = 'feu-logo', ?largeImageText:Null<String>,
 			?smallImageKey:String, ?hasStartTimestamp:Bool, ?endTimestamp:Float)
 	{
 		var startTimestamp:Float = (hasStartTimestamp) ? Date.now().getTime() : 0;
@@ -63,7 +63,7 @@ class Discord
 			// changed these so they can be changed by the user;
 			// scripted ones should also come along sooner or later;
 			largeImageKey: largeImageKey,
-			largeImageText: largeImageText,
+			largeImageText: (largeImageText != null ? largeImageText : 'Forever Engine Legacy v${Main.foreverVersion} • Underscore v${Main.underscoreVersion}'),
 			smallImageKey: smallImageKey,
 			// Obtained times are in milliseconds so they are divided so Discord can use it
 			startTimestamp: Std.int(startTimestamp / 1000),
