@@ -11,6 +11,7 @@
 ----------------------------------------------
 
 ![REPOSITORY SIZE](https://img.shields.io/github/repo-size/BeastlyGhost/Forever-Engine-Underscore)
+for more information and support, visit our [Discord Server](https://discord.gg/kCDrFzpkAZ)
 
 ----------------------------------------------
 Forever Engine Underscore attempts to take on the challenge of maintaining Forever Engine Legacy while adding more features to it along the way, making a lot easier for coders to work with it.
