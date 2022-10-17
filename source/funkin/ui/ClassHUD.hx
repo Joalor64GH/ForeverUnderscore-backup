@@ -56,7 +56,7 @@ class ClassHUD extends FlxTypedGroup<FlxBasic>
 			barY = 64;
 
 		healthBarBG = new FlxSprite(0, barY);
-		healthBarBG.loadGraphic(Paths.image(ForeverTools.returnSkin('healthBar', PlayState.assetModifier, PlayState.changeableSkin, 'UI')));
+		healthBarBG.loadGraphic(Paths.image(ForeverTools.returnSkin('healthBar', PlayState.assetModifier, PlayState.uiModifier, 'UI')));
 
 		healthBarBG.screenCenter(X);
 		healthBarBG.scrollFactor.set();

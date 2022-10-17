@@ -159,12 +159,15 @@ class Stage extends FlxTypedGroup<FlxBasic>
 
 	function callStageScript()
 	{
-		var paths:Array<String> = ['stages/$curStage/$curStage.hx', 'stages/$curStage/$curStage.hxs'];
+		var extensions = ['hx', 'hxs', 'hscript', 'hxc'];
 
-		for (path in paths)
+		for (ext in extensions)
 		{
-			if (ForeverTools.fileExists(path))
-				stageScript = new ScriptHandler(Paths.getTextFromFile(path));
+			if (ext != null)
+			{
+				if (ForeverTools.fileExists('stages/$curStage/$curStage.$ext'))
+					stageScript = new ScriptHandler(Paths.getTextFromFile('stages/$curStage/$curStage.$ext'));
+			}
 		}
 
 		setVar('add', add);

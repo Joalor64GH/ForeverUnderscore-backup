@@ -37,14 +37,10 @@
 
 	<source path="source" />
 	<assets path="assets" />
-	<assets path="assets/songs" />
-	<assets path="assets/music" preload="true" />
-	<assets path="FE-CrashDialog.exe" type="template" if="windows release" />
-
-	<assets path="assets" />
-	<assets path="FE-CrashDialog.exe" type="template" if="windows release" />
-	<assets path="locales" rename="assets/locales" if="includeLocales" /> <!-- will improve this system eventually -->
 	<assets path="mods" if="desktop unstableBuild" />
+	<assets path="locales" rename="assets/locales" if="includeLocales" /> <!-- will improve this system eventually -->
+
+	<assets path="FE-CrashDialog.exe" type="template" if="windows release" />
 
 	<!-- _______________________________ Libraries ______________________________ -->
 

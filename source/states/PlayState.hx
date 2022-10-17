@@ -56,70 +56,71 @@ class PlayState extends MusicBeatState
 {
 	public static var startTimer:FlxTimer;
 
-	public static var curStage:String = '';
-	public static var SONG:LegacySong;
-	public static var isStoryMode:Bool = false;
+	// checks if stored memory should be cleared when leaving this state
 	public static var clearStored:Bool = true;
-	public static var storyWeek:Int = 0;
-	public static var storyPlaylist:Array<String> = [];
-	public static var storyDifficulty:Int = 2;
+
+	// for scripts
 	public static var contents:PlayState;
 
+	// story things
+	public static var storyWeek:Int = 0;
+	public static var storyDifficulty:Int = 1;
+	public static var isStoryMode:Bool = false;
+	public static var storyPlaylist:Array<String> = [];
 	public static var campaignScore:Int = 0;
 	public static var campaignMisses:Int = 0;
 
+	public static var curStage:String = '';
+
+	// song loading
+	public static var SONG:LegacySong;
+	public static var generatedSong:Bool = false;
+	public static var unspawnNotes:Array<Note>;
+
+	// custom assets
+	public static var assetModifier:String = 'base';
+	public static var uiModifier:String = 'default';
+
+	// characters
 	public static var dad:Character;
 	public static var gf:Character;
 	public static var boyfriend:Character;
 
-	public static var assetModifier:String = 'base';
-	public static var changeableSkin:String = 'default';
-	public static var changeableSound:String = 'default';
-
-	public var notes:FlxTypedGroup<Note> = new FlxTypedGroup<Note>();
-	public var unspawnNotes:Array<Note> = [];
-
-	// get it cus release
-	// I'm funny just trust me
-	var curSection:Int = 0;
+	// camera values
 	var camFollow:FlxObject;
 	var camFollowPos:FlxObject;
+	static var prevCamFollow:FlxObject;
 
 	// Discord RPC variables
 	public static var songDetails:String = "";
 	public static var detailsSub:String = "";
 	public static var detailsPausedText:String = "";
 
-	static var prevCamFollow:FlxObject;
-
-	public var curSong:String = "";
-	public var gfSpeed:Int = 1;
-
+	// player status
 	public static var health:Float = 1; // mario
-	public static var combo:Int = 0;
 
-	public static var misses:Int = 0;
+	public static var combo:Int = 0;
 	public static var hits:Int = 0;
 
-	public static var deaths:Int = 0;
+	public static var misses:Int = 0;
 
-	public var generatedMusic:Bool = false;
+	public static var deaths:Int = 0; // luigi
+
+	public var gfSpeed:Int = 1;
+
+	// other gameplay values
+	public var startingSong:Bool = false;
 	public var endingSong:Bool = false;
 
-	public var startingSong:Bool = false;
+	public var canPause:Bool = true;
 	public var paused:Bool = false;
 
 	public var startedCountdown:Bool = false;
 	public var skipCountdown:Bool = false;
 	public var inCutscene:Bool = false;
 
-	public var canPause:Bool = true;
-
-	var previousFrameTime:Int = 0;
-	var lastReportedPlayheadPosition:Int = 0;
-	var songTime:Float = 0;
-
-	public var scriptArray:Array<ScriptHandler> = [];
+	// for scripts later
+	public var scriptArray:Array<ScriptHandler>;
 
 	// cameras
 	public static var camHUD:FlxCamera;
@@ -176,11 +177,12 @@ class PlayState extends MusicBeatState
 	public static var practiceMode:Bool = false;
 	public static var scriptDebugMode:Bool = false;
 
+	// set only once
 	public static var lastEditor:Int = 0;
+	var curSection:Int = 0;
 
 	public var ratingsGroup:FlxTypedGroup<FNFSprite>;
 	public var comboGroup:FlxTypedGroup<FNFSprite>;
-
 	public var charGroup:FlxSpriteGroup;
 
 	// stores the last judgement sprite object
@@ -190,6 +192,8 @@ class PlayState extends MusicBeatState
 
 	function resetVariables()
 	{
+		contents = this;
+
 		songScore = 0;
 		rank = 'N/A';
 		combo = 0;
@@ -203,8 +207,7 @@ class PlayState extends MusicBeatState
 		forceZoom = [0, 0, 0, 0];
 
 		assetModifier = 'base';
-		changeableSkin = 'default';
-		changeableSound = 'default';
+		uiModifier = 'default';
 	}
 
 	/**
@@ -227,7 +230,7 @@ class PlayState extends MusicBeatState
 
 		// push your sound paths to this array
 		if (Init.getSetting('Hitsound Volume') > 0)
-			soundArray.push('hitsounds/$changeableSound/hit');
+			soundArray.push('hitsounds/${Init.getSetting("Hitsound Type")}/hit');
 
 		for (i in soundArray)
 		{
@@ -282,9 +285,6 @@ class PlayState extends MusicBeatState
 	{
 		super.create();
 
-		// for scripts
-		contents = this;
-
 		// reset any values and variables that are static
 		resetVariables();
 
@@ -331,15 +331,12 @@ class PlayState extends MusicBeatState
 		else
 			curStage = 'unknown';
 
-		ScriptHandler.callScripts(scriptArray);
-		callFunc('create', []);
-
 		stageBuild = new Stage(PlayState.curStage);
 		add(stageBuild);
 
 		defaultCamZoom = stageBuild.stageJson.defaultZoom;
 
-		// set up characters here too
+		// set up characters
 
 		if (SONG.gfVersion.length < 1 || SONG.gfVersion == null)
 			gf = new Character(300, 100, false, stageBuild.returnGFtype(curStage));
@@ -359,8 +356,7 @@ class PlayState extends MusicBeatState
 
 		var camPos:FlxPoint = new FlxPoint(gf.getMidpoint().x - 100, boyfriend.getMidpoint().y - 100);
 
-		changeableSkin = Init.getSetting("UI Skin");
-		changeableSound = Init.getSetting("Hitsound Type");
+		uiModifier = Init.getSetting("UI Skin");
 
 		assetModifier = SONG.assetModifier;
 
@@ -451,7 +447,16 @@ class PlayState extends MusicBeatState
 		strumLines = new FlxTypedGroup<Strumline>();
 
 		// generate the song
-		generateSong(SONG.song);
+		generateSong();
+
+		try
+		{
+			callScripts();
+		}
+		catch (e)
+		{
+			lime.app.Application.current.window.alert('$e in Script', "PlayState Error!");
+		}
 
 		// set the camera position to the center of the stage
 		camPos.set(gf.x + (gf.frameWidth / 2), gf.y + (gf.frameHeight / 2));
@@ -649,7 +654,7 @@ class PlayState extends MusicBeatState
 
 		if (down)
 		{
-			if (generatedMusic)
+			if (generatedSong)
 			{
 				var previousTime:Float = Conductor.songPosition;
 				Conductor.songPosition = Conductor.songMusic.time;
@@ -778,8 +783,17 @@ class PlayState extends MusicBeatState
 	static function get_songSpeed()
 		return songSpeed * Conductor.playbackRate;
 
+	public var vaiPra:Int = 0;
+	public var vaiPraAtivo:Bool = false;
 	override public function update(elapsed:Float)
 	{
+		if (vaiPraAtivo)
+		{
+			vaiPra += 1;
+			if (vaiPra >= 80)
+				vaiPra = 80;
+		}
+
 		super.update(elapsed);
 
 		callFunc('update', [elapsed]);
@@ -867,7 +881,7 @@ class PlayState extends MusicBeatState
 			if (startingSong && startedCountdown && Conductor.songPosition >= 0)
 				startSong();
 
-			if (generatedMusic && PlayState.SONG.notes[Std.int(curStep / 16)] != null)
+			if (generatedSong && PlayState.SONG.notes[Std.int(curStep / 16)] != null)
 			{
 				var curSection = Std.int(curStep / 16);
 				if (curSection != lastSection)
@@ -1056,7 +1070,7 @@ class PlayState extends MusicBeatState
 
 		// set the notes x and y
 		var downscrollMultiplier = (Init.getSetting('Downscroll') ? -1 : 1) * FlxMath.signOf(songSpeed);
-		if (generatedMusic && startedCountdown)
+		if (generatedSong && startedCountdown)
 		{
 			for (strumline in strumLines)
 			{
@@ -1287,7 +1301,7 @@ class PlayState extends MusicBeatState
 
 			coolNote.goodNoteHit(coolNote, (coolNote.strumTime < Conductor.songPosition ? "late" : "early"));
 
-			var gfSection = PlayState.SONG.notes[Std.int(curStep / 16)].gfSection;
+			var gfSection = PlayState.SONG.notes[curSection].gfSection;
 			characterPlayAnimation(coolNote, (coolNote.gfNote || gfSection ? gf : strumline.character));
 
 			// special thanks to sam, they gave me the original system which kinda inspired my idea for this new one
@@ -1445,7 +1459,7 @@ class PlayState extends MusicBeatState
 	{
 		if (!Init.getSetting('No Camera Note Movement'))
 		{
-			var noteStep = PlayState.SONG.notes[Std.int(curStep / 16)];
+			var noteStep = PlayState.SONG.notes[curSection];
 			var camDisplaceExtend:Float = 15;
 			if (noteStep != null)
 			{
@@ -1580,7 +1594,7 @@ class PlayState extends MusicBeatState
 			"oh but if the rating isn't sick why not just reset it"
 			because miss judgements can pop, and they dont mess with your sick combo
 		 */
-		var rating = ForeverAssets.generateRating('$newRating', perfect, lateHit, ratingsGroup, assetModifier, changeableSkin, 'UI');
+		var rating = ForeverAssets.generateRating('$newRating', perfect, lateHit, ratingsGroup, assetModifier, uiModifier, 'UI');
 
 		if (!cached)
 		{
@@ -1638,7 +1652,7 @@ class PlayState extends MusicBeatState
 		for (scoreInt in 0...stringArray.length)
 		{
 			var comboNum = ForeverAssets.generateCombo('combo_numbers', stringArray[scoreInt], (!negative ? perfect : false), comboGroup, assetModifier,
-				changeableSkin, 'UI', negative, createdColor, scoreInt);
+				uiModifier, 'UI', negative, createdColor, scoreInt);
 
 			if (!Init.getSetting('Judgement Stacking'))
 			{
@@ -1713,32 +1727,12 @@ class PlayState extends MusicBeatState
 		health += (healthBase * (ratingMultiplier / 100));
 	}
 
-	function startSong():Void
+	function generateSong():Void
 	{
-		callFunc('startSong', []);
+		// set the song speed;
+		songSpeed = SONG.speed;
 
-		startingSong = false;
-
-		previousFrameTime = FlxG.game.ticks;
-		lastReportedPlayheadPosition = 0;
-
-		if (!paused)
-		{
-			Conductor.startMusic();
-			Conductor.songMusic.onComplete = endSong.bind();
-
-			#if DISCORD_RPC
-			// Song duration in a float, useful for the time left feature
-			songLength = Conductor.songMusic.length;
-
-			// Updating Discord Rich Presence (with Time Left)
-			updateRPC(false);
-			#end
-		}
-	}
-
-	function generateSong(dataPath:String):Void
-	{
+		// change bpm
 		Conductor.changeBPM(SONG.bpm);
 
 		songDetails = CoolUtil.dashToSpace(SONG.song)
@@ -1753,17 +1747,35 @@ class PlayState extends MusicBeatState
 
 		updateRPC(false);
 
-		curSong = SONG.song;
-
 		// call song
 		Conductor.bindMusic();
 
-		// generate the chart and sort through notes
+		// push notes to the main note array
 		unspawnNotes = ChartParser.loadChart(SONG);
 
-		songSpeed = SONG.speed;
+		// song is done.
+		generatedSong = true;
+	}
 
-		generatedMusic = true;
+	function startSong():Void
+	{
+		callFunc('startSong', []);
+
+		startingSong = false;
+
+		if (!paused)
+		{
+			Conductor.startMusic();
+			Conductor.songMusic.onComplete = endSong.bind();
+
+			#if DISCORD_RPC
+			// Song duration in a float, useful for the time left feature
+			songLength = Conductor.songMusic.length;
+
+			// Updating Discord Rich Presence (with Time Left)
+			updateRPC(false);
+			#end
+		}
 	}
 
 	override function stepHit()
@@ -2055,7 +2067,7 @@ class PlayState extends MusicBeatState
 	public function songIntroCutscene()
 	{
 		callFunc('songIntroCutscene', []);
-		switch (curSong.toLowerCase())
+		switch (SONG.song.toLowerCase())
 		{
 			case "winter-horrorland":
 				inCutscene = true;
@@ -2253,10 +2265,10 @@ class PlayState extends MusicBeatState
 
 			var introAssets:Map<String, Array<String>> = new Map<String, Array<String>>();
 			introAssets.set('default', [
-				ForeverTools.returnSkin('prepare', assetModifier, changeableSkin, 'UI'),
-				ForeverTools.returnSkin('ready', assetModifier, changeableSkin, 'UI'),
-				ForeverTools.returnSkin('set', assetModifier, changeableSkin, 'UI'),
-				ForeverTools.returnSkin('go', assetModifier, changeableSkin, 'UI')
+				ForeverTools.returnSkin('prepare', assetModifier, uiModifier, 'UI'),
+				ForeverTools.returnSkin('ready', assetModifier, uiModifier, 'UI'),
+				ForeverTools.returnSkin('set', assetModifier, uiModifier, 'UI'),
+				ForeverTools.returnSkin('go', assetModifier, uiModifier, 'UI')
 			]);
 
 			var introAlts:Array<String> = introAssets.get('default');
@@ -2375,53 +2387,101 @@ class PlayState extends MusicBeatState
 		return super.add(Object);
 	}
 
+	function callScripts()
+	{
+		var extensions = ['hx', 'hxs', 'hscript', 'hxc'];
+		var dirs:Array<Array<String>> = [
+			CoolUtil.absoluteDirectory('scripts'),
+			CoolUtil.absoluteDirectory('songs/${CoolUtil.swapSpaceDash(PlayState.SONG.song.toLowerCase())}')
+		];
+
+		for (dir in dirs)
+		{
+			for (script in dir)
+			{
+				if (dir != null && dir.length > 0)
+				{
+					for (ext in extensions)
+					{
+						if (ext != null)
+						{
+							if (script != null && script.length > 0 && script.endsWith('.$ext'))
+								scriptArray.push(new ScriptHandler(script));
+						}
+					}
+				}
+			}
+		}
+
+		callFunc('create', []);
+	}
+
 	public function callFunc(key:String, args:Array<Dynamic>)
 	{
-		for (i in scriptArray)
-			i.call(key, args);
-
-		if (generatedMusic)
-			setPlayStateVars();
+		if (scriptArray != null)
+		{
+			for (i in scriptArray)
+				i.call(key, args);
+			setLocalVars();
+		}
 	}
 
 	public function setVar(key:String, value:Dynamic)
 	{
 		var allSucceed:Bool = true;
-		for (i in scriptArray)
+		if (scriptArray != null)
 		{
-			i.set(key, value);
-
-			if (!i.exists(key))
+			for (i in scriptArray)
 			{
-				trace('${i.scriptFile} failed to set $key for its interpreter, continuing.');
-				allSucceed = false;
-				continue;
+				i.set(key, value);
+
+				if (!i.exists(key))
+				{
+					trace('${i.scriptFile} failed to set $key for its interpreter, continuing.');
+					allSucceed = false;
+					continue;
+				}
 			}
 		}
 		return allSucceed;
 	}
 
-	function setPlayStateVars()
+	function setLocalVars()
 	{
 		// GENERAL
 		setVar('game', PlayState.contents);
-		setVar('songName', PlayState.SONG.song.toLowerCase());
+		setVar('ui', PlayState.uiHUD);
+
 		setVar('add', add);
 		setVar('remove', remove);
 		setVar('openSubState', openSubState);
 
 		// CHARACTERS
-		setVar('bf', boyfriend);
-		setVar('boyfriend', boyfriend);
-		setVar('dad', dad);
-		setVar('dadOpponent', dad);
-		setVar('PlayState.dadOpponent', dad);
-		setVar('game.dadOpponent', dad);
-		setVar('gf', gf);
-		setVar('girlfriend', gf);
-		setVar('dadName', PlayState.dad.curCharacter);
-		setVar('gfName', PlayState.gf.curCharacter);
-		setVar('bfName', PlayState.boyfriend.curCharacter);
+		if (generatedSong)
+		{
+			setVar('songName', PlayState.SONG.song.toLowerCase());
+
+			if (boyfriend != null)
+			{
+				setVar('bf', boyfriend);
+				setVar('boyfriend', boyfriend);
+				setVar('bfName', PlayState.boyfriend.curCharacter);
+			}
+
+			if (dad != null)
+			{
+				setVar('dad', dad);
+				setVar('dadOpponent', dad);
+				setVar('dadName', PlayState.dad.curCharacter);
+			}
+
+			if (gf != null)
+			{
+				setVar('gf', gf);
+				setVar('girlfriend', gf);
+				setVar('gfName', PlayState.gf.curCharacter);
+			}
+		}
 
 		setVar('setProperty', function(key:String, value:Dynamic)
 		{

@@ -323,22 +323,29 @@ class Character extends FNFSprite
 	function generateBaseChar(char:String = 'bf')
 	{
 		var pushedScripts:Array<String> = [];
-		var paths:Array<String> = ['characters/$char/config.hx', 'characters/$char/config.hxs'];
+		var extensions = ['hx', 'hxs', 'hscript', 'hxc'];
+		var paths:Array<String> = ['characters/$char/config', 'characters/$char/config'];
 
 		for (i in paths)
 		{
-			if (ForeverTools.fileExists(i) && !pushedScripts.contains(i))
+			for (j in extensions)
 			{
-				var script:ScriptHandler = new ScriptHandler(Paths.getPath(i, TEXT));
-
-				if (script.interp == null)
+				if (j != null)
 				{
-					trace("Something terrible occured! Skipping.");
-					continue;
-				}
+					if (ForeverTools.fileExists(i + '.$j') && !pushedScripts.contains(i + '.$j'))
+					{
+						var script:ScriptHandler = new ScriptHandler(Paths.getPath(i + '.$j', TEXT));
 
-				characterScripts.push(script);
-				pushedScripts.push(i);
+						if (script.interp == null)
+						{
+							trace("Something terrible occured! Skipping.");
+							continue;
+						}
+
+						characterScripts.push(script);
+						pushedScripts.push(i + '.$j');
+					}
+				}
 			}
 		}
 
@@ -350,6 +357,8 @@ class Character extends FNFSprite
 			spriteType = "PackerAtlas";
 		else if (ForeverTools.fileExists('characters/$char/$char.json', TEXT))
 			spriteType = "JsonAtlas";
+		else
+			spriteType = "SparrowAtlas";
 
 		switch (spriteType)
 		{
@@ -462,18 +471,33 @@ class Character extends FNFSprite
 			playAnim('idle');
 	}
 
-	public function setVar(key:String, value:Dynamic):Bool
+	public function setVar(key:String, value:Dynamic)
 	{
-		for (i in characterScripts)
-			i.set(key, value);
+		var allSucceed:Bool = true;
+		if (characterScripts != null)
+		{
+			for (i in characterScripts)
+			{
+				i.set(key, value);
 
-		return true;
+				if (!i.exists(key))
+				{
+					trace('${i.scriptFile} failed to set $key for its interpreter, continuing.');
+					allSucceed = false;
+					continue;
+				}
+			}
+		}
+		return allSucceed;
 	}
 
 	public function noteHit(dunceNote:funkin.Note)
 	{
-		for (i in characterScripts)
-			i.call('noteHit', [dunceNote]);
+		if (characterScripts != null)
+		{
+			for (i in characterScripts)
+				i.call('noteHit', [dunceNote]);
+		}
 	}
 
 	public var psychAnimationsArray:Array<PsychAnimArray> = [];
@@ -496,6 +520,8 @@ class Character extends FNFSprite
 
 		if (ForeverTools.fileExists('$characterPath.txt', TEXT))
 			spriteType = "PackerAtlas";
+		else
+			spriteType = "SparrowAtlas";
 		/*
 			else if (ForeverTools.fileExists('$characterPath.json', TEXT))
 				spriteType = "JsonAtlas";
