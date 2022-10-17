@@ -785,18 +785,8 @@ class PlayState extends MusicBeatState
 	static function get_songSpeed()
 		return songSpeed * Conductor.playbackRate;
 
-	public var vaiPra:Int = 0;
-	public var vaiPraAtivo:Bool = false;
-
 	override public function update(elapsed:Float)
 	{
-		if (vaiPraAtivo)
-		{
-			vaiPra += 1;
-			if (vaiPra >= 80)
-				vaiPra = 80;
-		}
-
 		super.update(elapsed);
 
 		callFunc('update', [elapsed]);
