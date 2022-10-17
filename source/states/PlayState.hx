@@ -455,7 +455,7 @@ class PlayState extends MusicBeatState
 		}
 		catch (e)
 		{
-			lime.app.Application.current.window.alert('$e', "PlayState Error!");
+			lime.app.Application.current.window.alert('Uncaught Error: $e', "PlayState Error!");
 		}
 
 		// set the camera position to the center of the stage
@@ -2455,6 +2455,12 @@ class PlayState extends MusicBeatState
 		setVar('add', add);
 		setVar('remove', remove);
 		setVar('openSubState', openSubState);
+
+		// debug mode aliases
+		setVar('haxeScriptDebug', PlayState.scriptDebugMode);
+		setVar('hscriptDebug', PlayState.scriptDebugMode);
+		setVar('isDebug', PlayState.scriptDebugMode);
+		setVar('scriptDebugMode', PlayState.scriptDebugMode);
 
 		// CHARACTERS
 		if (generatedSong)
