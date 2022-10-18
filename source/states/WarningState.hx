@@ -48,7 +48,7 @@ class WarningState extends MusicBeatState
 				textField = "Hey, You're running an outdated version of"
 					+ "\nForever Engine Underscore"
 					+ "\n\nPress ENTER to Update from "
-					+ Main.underscoreVersion
+					+ openfl.Lib.application.meta["version"]
 					+ ' to '
 					+ ForeverTools.updateVersion
 					+ '\nPress ESCAPE to ignore this message.'

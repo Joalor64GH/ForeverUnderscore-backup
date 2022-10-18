@@ -139,7 +139,7 @@ class Main extends Sprite
 			+ "\nhttps://github.com/BeastlyGhost/Forever-Engine-Underscore"
 			+ "\n\nCrash Handler written by: sqirra-rng\n"
 			+ "\nForever Engine Underscore v"
-			+ Main.underscoreVersion
+			+ openfl.Lib.application.meta["version"]
 			+ (commitHash.length > 2 ? '${commitHash}' : '')
 			+ "\n";
 

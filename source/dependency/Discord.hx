@@ -33,7 +33,7 @@ class Discord
 			details: "",
 			state: null,
 			largeImageKey: 'feu-logo',
-			largeImageText: 'Forever Engine Legacy v${Main.foreverVersion} • Underscore v${Main.underscoreVersion}',
+			largeImageText: 'Forever Engine Legacy v${Main.foreverVersion} • Underscore v${openfl.Lib.application.meta["version"]}',
 		});
 	}
 
@@ -63,7 +63,7 @@ class Discord
 			// changed these so they can be changed by the user;
 			// scripted ones should also come along sooner or later;
 			largeImageKey: largeImageKey,
-			largeImageText: (largeImageText != null ? largeImageText : 'Forever Engine Legacy v${Main.foreverVersion} • Underscore v${Main.underscoreVersion}'),
+			largeImageText: (largeImageText != null ? largeImageText : 'Forever Engine Legacy v${Main.foreverVersion} • Underscore v${openfl.Lib.application.meta["version"]}'),
 			smallImageKey: smallImageKey,
 			// Obtained times are in milliseconds so they are divided so Discord can use it
 			startTimestamp: Std.int(startTimestamp / 1000),
