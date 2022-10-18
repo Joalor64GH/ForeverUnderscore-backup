@@ -3,6 +3,7 @@
 * More Modular Codebase;
 * Custom Language Support;
 * Custom Scripted Notetypes;
+* Chart Event Lines / Notes;
 * Revamped Chart Editor.
     * The **BETA** version of said editor can be accessed by selecting ``Chart Editor`` in the ``Editor Selector Menu``.
     * Said menu can be accessed by pressing ``7`` during a song or in the ``Freeplay Menu``.
