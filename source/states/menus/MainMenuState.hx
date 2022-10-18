@@ -134,12 +134,11 @@ class MainMenuState extends MusicBeatState
 
 		var versionShit:FlxText = new FlxText(5, FlxG.height
 			- 38, 0,
-			"Funkin' v"
-			+ Application.current.meta.get('version')
+			"Funkin' v0.2.8"
 			+ "\nForever Engine Legacy v"
 			+ Main.foreverVersion
 			+ " - Underscore v"
-			+ Main.underscoreVersion
+			+ openfl.Lib.application.meta["version"]
 			+ (Main.commitHash.length > 3 ? Main.commitHash : ''),
 			12);
 		versionShit.scrollFactor.set();
