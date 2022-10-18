@@ -2,6 +2,9 @@
 	"author": "Song Author",
 	"assetModifier": "song-asset-skin",
 	"offset": 0,
-	"color": [RED, GREEN, BLUE
+	"color": [
+		RED,
+		GREEN,
+		BLUE
 	]
 }
