@@ -321,7 +321,7 @@ class Alphabet extends FlxTypedSpriteGroup<AlphaCharacter>
 
 			y = FlxMath.lerp(y, (scaledY * 120) + (FlxG.height * 0.48), elapsed * 6);
 			// lmao
-			if (forceX)
+			if (forceX != Math.NEGATIVE_INFINITY)
 				x = forceX;
 			else if (!disableX)
 				x = FlxMath.lerp(x, (targetY * 20) + 90, elapsed * 6);
