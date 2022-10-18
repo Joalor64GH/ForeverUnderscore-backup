@@ -19,9 +19,12 @@ var tankX:Float = 400;
 function moveTank()
 {
 	tankAngle += tankSpeed * FlxG.elapsed;
-	tankGround.angle = (tankAngle - 90 + 15);
-	tankGround.x = tankX + 1500 * Math.cos(Math.PI / 180 * (1 * tankAngle + 180));
-	tankGround.y = 1300 + 1100 * Math.sin(Math.PI / 180 * (1 * tankAngle + 180));
+	if (tankGround != null)
+	{
+		tankGround.angle = (tankAngle - 90 + 15);
+		tankGround.x = tankX + 1500 * Math.cos(Math.PI / 180 * (1 * tankAngle + 180));
+		tankGround.y = 1300 + 1100 * Math.sin(Math.PI / 180 * (1 * tankAngle + 180));
+	}
 }
 
 function generateStage()
@@ -152,14 +155,17 @@ function generateStage()
 		tankmen.strumTime = 10;
 		tankmanRun.add(tankmen);
 
-		for (i in 0...TankmenBG.animationNotes.length)
+		if (tankmen != null)
 		{
-			if (FlxG.random.bool(16))
+			for (i in 0...TankmenBG.animationNotes.length)
 			{
-				var man:TankmenBG = tankmanRun.recycle(TankmenBG);
-				man.strumTime = TankmenBG.animationNotes[i][0];
-				man.resetShit(500, 200 + FlxG.random.int(50, 100), TankmenBG.animationNotes[i][1] < 2);
-				tankmanRun.add(man);
+				if (FlxG.random.bool(16))
+				{
+					var man:TankmenBG = tankmanRun.recycle(TankmenBG);
+					man.strumTime = TankmenBG.animationNotes[i][0];
+					man.resetShit(500, 200 + FlxG.random.int(50, 100), TankmenBG.animationNotes[i][1] < 2);
+					tankmanRun.add(man);
+				}
 			}
 		}
 	}
@@ -173,11 +179,20 @@ function repositionPlayers(boyfriend:Character, gf:Character, dad:Character)
 
 function updateStage(curBeat:Int, boyfriend:Character, gf:Character, dad:Character)
 {
-	smokeL.playAnim('smokeLeft');
-	smokeR.playAnim('smokeRight');
-	tankWatchtower.playAnim('watchtower');
-	for (i in 0...groupDudes.length)
-		groupDudes.members[i].playAnim('fg');
+	if (smokeL != null)
+		smokeL.playAnim('smokeLeft');
+	if (smokeR != null)
+		smokeR.playAnim('smokeRight');
+	if (tankWatchtower != null)
+		tankWatchtower.playAnim('watchtower');
+	if (groupDudes != null)
+	{
+		for (i in 0...groupDudes.length)
+		{
+			if (groupDudes.members[i] != null)
+				groupDudes.members[i].playAnim('fg');
+		}
+	}
 }
 
 function updateStageConst(elapsed:Float, boyfriend:Character, gf:Character, dad:Character)

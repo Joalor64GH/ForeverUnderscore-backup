@@ -59,7 +59,10 @@ function generateStage()
 
 function updateStage(curBeat:Int, boyfriend:Character, gf:Character, dad:Character)
 {
-	upperBoppers.animation.play('bop', true);
-	bottomBoppers.animation.play('bop', true);
-	santa.animation.play('idle', true);
+	if (upperBoppers != null)
+		upperBoppers.animation.play('bop', true);
+	if (bottomBoppers != null)
+		bottomBoppers.animation.play('bop', true);
+	if (santa != null)
+		santa.animation.play('idle', true);
 }

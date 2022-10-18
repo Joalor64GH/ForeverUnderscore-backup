@@ -1,6 +1,7 @@
 var phillyTrain:FNFSprite;
 var trainSound:FlxSound;
 var windowLight:FNFSprite;
+var phillyCityLightColors:Array<Int>;
 
 function generateStage()
 {
@@ -51,40 +52,44 @@ var curLight:Int = 0;
 function trainStart()
 {
 	trainMoving = true;
-	if (!trainSound.playing)
+	if (trainSound != null && !trainSound.playing)
 		trainSound.play(true);
 }
 
 function updateTrainPos(gf:Character)
 {
-	if (trainSound.time >= 4700)
+	if (phillyTrain != null)
 	{
-		startedMoving = true;
-		gf.playAnim('hairBlow');
-	}
-
-	if (startedMoving)
-	{
-		phillyTrain.x -= 400;
-
-		if (phillyTrain.x < -2000 && !trainFinishing)
+		if (trainSound.time >= 4700)
 		{
-			phillyTrain.x = -1150;
-			trainCars -= 1;
-
-			if (trainCars <= 0)
-				trainFinishing = true;
+			startedMoving = true;
+			gf.playAnim('hairBlow');
 		}
 
-		if (phillyTrain.x < -4000 && trainFinishing)
-			trainReset(gf);
+		if (startedMoving)
+		{
+			phillyTrain.x -= 400;
+
+			if (phillyTrain.x < -2000 && !trainFinishing)
+			{
+				phillyTrain.x = -1150;
+				trainCars -= 1;
+
+				if (trainCars <= 0)
+					trainFinishing = true;
+			}
+
+			if (phillyTrain.x < -4000 && trainFinishing)
+				trainReset(gf);
+		}
 	}
 }
 
 function trainReset(gf:Character)
 {
 	gf.playAnim('hairFall');
-	phillyTrain.x = FlxG.width + 200;
+	if (phillyTrain != null)
+		phillyTrain.x = FlxG.width + 200;
 	trainMoving = false;
 	trainCars = 8;
 	trainFinishing = false;
@@ -104,17 +109,22 @@ function updateStage(curBeat:Int, boyfriend:Character, gf:Character, dad:Charact
 
 	if (curBeat % 4 == 0)
 	{
-		curLight = FlxG.random.int(0, phillyCityLightColors.length - 1, [curLight]);
-		windowLight.color = phillyCityLightColors[curLight];
-		windowLight.alpha = 1;
+		if (phillyCityLightColors != null)
+			curLight = FlxG.random.int(0, phillyCityLightColors.length - 1, [curLight]);
+		if (windowLight != null)
+		{
+			windowLight.color = phillyCityLightColors[curLight];
+			windowLight.alpha = 1;
+		}
 	}
 }
 
 function updateStageConst(elapsed:Float, boyfriend:Character, gf:Character, dad:Character)
 {
-	windowLight.alpha -= (Conductor.crochet / 1000) * FlxG.elapsed * 1.5;
+	if (windowLight != null)
+		windowLight.alpha -= (Conductor.crochet / 1000) * FlxG.elapsed * 1.5;
 
-	if (trainMoving)
+	if (trainMoving && phillyTrain != null)
 	{
 		trainFrameTiming += elapsed;
 

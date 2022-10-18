@@ -1,5 +1,6 @@
 var limo:FNFSprite;
 var dancer:FNFSprite;
+var fastCar:FNFSprite;
 var grpLimoDancers:FlxSpriteGroup;
 
 function generateStage()
@@ -45,10 +46,13 @@ var fastCarCanDrive:Bool = true;
 
 function resetFastCar():Void
 {
-	fastCar.x = -12600;
-	fastCar.y = FlxG.random.int(140, 250);
-	fastCar.velocity.x = 0;
-	fastCarCanDrive = true;
+	if (fastCar != null)
+	{
+		fastCar.x = -12600;
+		fastCar.y = FlxG.random.int(140, 250);
+		fastCar.velocity.x = 0;
+		fastCarCanDrive = true;
+	}
 }
 
 var carTimer:FlxTimer;
@@ -56,15 +60,18 @@ var carTimer:FlxTimer;
 function fastCarDrive()
 {
 	// trace('Car drive');
-	FlxG.sound.play(Paths.soundRandom('carPass', 0, 1), 0.7);
-
-	fastCar.velocity.x = (FlxG.random.int(170, 220) / FlxG.elapsed) * 3;
-	fastCarCanDrive = false;
-	carTimer = new FlxTimer().start(2, function(tmr:FlxTimer)
+	if (fastCar != null)
 	{
-		resetFastCar();
-		carTimer = null;
-	});
+		FlxG.sound.play(Paths.soundRandom('carPass', 0, 1), 0.7);
+
+		fastCar.velocity.x = (FlxG.random.int(170, 220) / FlxG.elapsed) * 3;
+		fastCarCanDrive = false;
+		carTimer = new FlxTimer().start(2, function(tmr:FlxTimer)
+		{
+			resetFastCar();
+			carTimer = null;
+		});
+	}
 }
 
 // BACKGROUND DANCERS;
@@ -73,17 +80,22 @@ var danceDir:Bool = false;
 
 function updateStage(curBeat:Int, boyfriend:Character, gf:Character, dad:Character)
 {
-	grpLimoDancers.forEach(function(dancer:FNFSprite)
+	if (grpLimoDancers != null)
 	{
-		dancer.scrollFactor.set(0.4, 0.4);
+		grpLimoDancers.forEach(function(dancer:FNFSprite)
+		{
+			if (dancer != null)
+			{
+				dancer.scrollFactor.set(0.4, 0.4);
+				danceDir = !danceDir;
 
-		danceDir = !danceDir;
-
-		if (danceDir)
-			dancer.animation.play('danceRight', true);
-		else
-			dancer.animation.play('danceLeft', true);
-	});
+				if (danceDir)
+					dancer.animation.play('danceRight', true);
+				else
+					dancer.animation.play('danceLeft', true);
+			}
+		});
+	}
 
 	if (FlxG.random.bool(10) && fastCarCanDrive)
 		fastCarDrive();

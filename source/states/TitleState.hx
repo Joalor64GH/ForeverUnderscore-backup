@@ -240,7 +240,7 @@ class TitleState extends MusicBeatState
 
 				new FlxTimer().start(1, function(tmr:FlxTimer)
 				{
-					if (ForeverTools.mustUpdate && !WarningState.leftState)
+					if (ForeverTools.mustUpdate && !WarningState.leftState && !Main.nightly)
 						Main.switchState(this, new WarningState('update'));
 					else
 						Main.switchState(this, new MainMenuState());

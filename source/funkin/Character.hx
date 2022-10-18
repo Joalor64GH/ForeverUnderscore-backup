@@ -296,6 +296,7 @@ class Character extends FNFSprite
 		{
 			return FlxSort.byValues(FlxSort.ASCENDING, Obj1[0], Obj2[0]);
 		});
+		TankmenBG.animationNotes = animationNotes;
 	}
 
 	private var settingCharacterUp:Bool = true;
