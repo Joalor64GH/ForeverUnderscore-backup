@@ -1,6 +1,6 @@
 package states.editors;
 
-import base.MusicBeat.MusicBeatState;
+import base.MusicBeat;
 import dependency.Discord;
 import flixel.FlxCamera;
 import flixel.FlxG;
@@ -13,12 +13,16 @@ import flixel.addons.ui.FlxUICheckBox;
 import flixel.addons.ui.FlxUIDropDownMenu;
 import flixel.addons.ui.FlxUITabMenu;
 import flixel.animation.FlxAnimation;
+import flixel.tweens.FlxEase;
+import flixel.tweens.FlxTween;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.text.FlxText;
 import flixel.ui.FlxButton;
 import flixel.util.FlxColor;
 import flixel.util.FlxGradient;
+import funkin.Alphabet;
 import funkin.Character;
+import funkin.ui.HealthIcon;
 import funkin.Stage;
 import openfl.events.Event;
 import openfl.events.IOErrorEvent;
@@ -37,12 +41,14 @@ class CharacterOffsetEditor extends MusicBeatState
 {
 	var _file:FileReference;
 
+	public static var instance:CharacterOffsetEditor;
+
 	// characters
 	var char:Character;
 	var ghost:Character;
 
-	var curCharacter:String;
-	var curGhost:String;
+	public var curCharacter:String;
+	public var curGhost:String;
 
 	var isPlayer:Bool = false;
 
@@ -69,6 +75,9 @@ class CharacterOffsetEditor extends MusicBeatState
 	public function new(curCharacter:String = 'bf', curStage:String = 'stage', isPlayer:Bool = false, fromPlayState:Bool = false)
 	{
 		super();
+
+		instance = this;
+
 		curGhost = curCharacter;
 		this.fromPlayState = fromPlayState;
 		this.curCharacter = curCharacter;
@@ -141,6 +150,7 @@ class CharacterOffsetEditor extends MusicBeatState
 		UI_box.scrollFactor.set();
 		add(UI_box);
 
+		addTextUI();
 		addPreferencesUI();
 		addCharactersUI();
 	}
@@ -179,6 +189,11 @@ class CharacterOffsetEditor extends MusicBeatState
 
 	var showGhostBttn:FlxButton;
 	var followCharOffsetBttn:FlxButton;
+
+	var characterSelectBttn:FlxButton;
+	var ghostSelectBttn:FlxButton;
+	var characterSelTextField:FlxText;
+	var ghostSelTextField:FlxText;
 
 	function addCharactersUI()
 	{
@@ -225,33 +240,38 @@ class CharacterOffsetEditor extends MusicBeatState
 			}
 		});
 
-		var characterDropDown = new PsychDropDown(10, 30, PsychDropDown.makeStrIdLabelArray(characters, true), function(character:String)
+		characterSelectBttn = new FlxButton(10, 30, "Change", function()
 		{
-			curCharacter = characters[Std.parseInt(character)];
-			generateCharacter(!curCharacter.startsWith('bf'));
-			genCharOffsets(true, false);
+			openSubState(new CharacterSelectorSubstate(false));
 		});
-		characterDropDown.selectedLabel = curCharacter;
 
-		var ghostCharacterDropDown = new PsychDropDown(10, characterDropDown.y + 40, PsychDropDown.makeStrIdLabelArray(characters, true),
-			function(character:String)
-			{
-				curGhost = characters[Std.parseInt(character)];
-				generateGhost(!curCharacter.startsWith('bf'));
-				genCharOffsets(false, true);
-			});
-		ghostCharacterDropDown.selectedLabel = curGhost;
+		ghostSelectBttn = new FlxButton(10, characterSelectBttn.y + 40, "Change", function()
+		{
+			openSubState(new CharacterSelectorSubstate(true));
+		});
 
 		tab_group.add(resetBttn);
 		tab_group.add(showGhostBttn);
 		tab_group.add(followCharOffsetBttn);
 
-		tab_group.add(new FlxText(ghostCharacterDropDown.x, ghostCharacterDropDown.y - 18, 0, 'Ghost Character:'));
-		tab_group.add(ghostCharacterDropDown);
-		tab_group.add(new FlxText(characterDropDown.x, characterDropDown.y - 18, 0, 'Character:'));
-		tab_group.add(characterDropDown);
+		tab_group.add(ghostSelTextField);
+		tab_group.add(ghostSelectBttn);
+		tab_group.add(characterSelTextField);
+		tab_group.add(characterSelectBttn);
+
+		characterSelTextField.setPosition(characterSelectBttn.x, characterSelectBttn.y - 18);
+		ghostSelTextField.setPosition(ghostSelectBttn.x, ghostSelectBttn.y - 18);
 
 		UI_box.addGroup(tab_group);
+	}
+
+	function addTextUI()
+	{
+		characterSelTextField = new FlxText(0, 0, 0, 'Character: $curCharacter');
+		add(characterSelTextField);
+
+		ghostSelTextField = new FlxText(0, 0, 0, 'Ghost: $curGhost');
+		add(ghostSelTextField);
 	}
 
 	override function update(elapsed:Float)
@@ -259,6 +279,9 @@ class CharacterOffsetEditor extends MusicBeatState
 		MusicBeatState.camBeat = camHUD;
 		textAnim.text = (char.animation.curAnim.name != null ? char.animation.curAnim.name : '');
 		ghost.flipX = char.flipX;
+
+		characterSelTextField.text = 'Character: $curCharacter';
+		ghostSelTextField.text = 'Ghost: $curGhost';
 
 		ghost.visible = showGhost;
 		char.alpha = (ghost.visible ? 0.85 : 1);
@@ -390,7 +413,7 @@ class CharacterOffsetEditor extends MusicBeatState
 			curAnim = 0;
 	}
 
-	function generateCharacter(isDad:Bool = true)
+	public function generateCharacter(isDad:Bool = true)
 	{
 		var genOffset:Array<Int> = [100, 100];
 
@@ -402,13 +425,12 @@ class CharacterOffsetEditor extends MusicBeatState
 
 		if (char != null)
 			remove(char);
-		char = new Character(0, 0, !isDad, curCharacter);
-		char.setPosition(genOffset[0], genOffset[1]);
+		char = new Character(genOffset[0], genOffset[1], !isDad, curCharacter);
 		char.debugMode = true;
 		add(char);
 	}
 
-	function generateGhost(isDad:Bool = true)
+	public function generateGhost(isDad:Bool = true)
 	{
 		var genOffset:Array<Int> = [100, 100];
 
@@ -420,15 +442,14 @@ class CharacterOffsetEditor extends MusicBeatState
 
 		if (ghost != null)
 			remove(ghost);
-		ghost = new Character(0, 0, !isDad, curGhost);
-		ghost.setPosition(genOffset[0], genOffset[1]);
+		ghost = new Character(genOffset[0], genOffset[1], !isDad, curGhost);
 		ghost.debugMode = true;
 		ghost.visible = false;
 		ghost.color = 0xFF666688;
 		add(ghost);
 	}
 
-	function genCharOffsets(pushList:Bool = true, pushGhostList:Bool = true):Void
+	public function genCharOffsets(pushList:Bool = true, pushGhostList:Bool = true):Void
 	{
 		var daLoop:Int = 0;
 
@@ -548,5 +569,136 @@ class CharacterOffsetEditor extends MusicBeatState
 			text.kill();
 			dumbTexts.remove(text, true);
 		});
+	}
+}
+
+/*
+	this stinks but whatever.
+ */
+class CharacterSelectorSubstate extends MusicBeatSubstate
+{
+	static var curSelected:Int = 0;
+
+	var grpChars:FlxTypedGroup<Alphabet>;
+
+	var characters:Array<String> = [];
+	var existingCharacters:Array<String> = [];
+	var iconArray:Array<HealthIcon> = [];
+
+	var bg:FlxSprite;
+
+	public var isGhost:Bool = false;
+
+	public function new(isGhost:Bool)
+	{
+		super();
+
+		cameras = [FlxG.cameras.list[FlxG.cameras.list.length - 1]];
+
+		this.isGhost = isGhost;
+
+		var bg:FlxSprite = new FlxSprite().makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
+		bg.alpha = 0;
+		bg.scrollFactor.set();
+		add(bg);
+
+		FlxTween.tween(bg, {alpha: 0.6}, 0.4, {ease: FlxEase.quartInOut});
+
+		for (i in CoolUtil.returnAssetsLibrary('characters', ''))
+		{
+			if (!existingCharacters.contains(i.toLowerCase()) && !i.endsWith('-dead'))
+				characters.push(i);
+		}
+
+		grpChars = new FlxTypedGroup<Alphabet>();
+		add(grpChars);
+
+		for (i in 0...characters.length)
+		{
+			var songText:Alphabet = new Alphabet(0, (70 * i) + 30, CoolUtil.swapSpaceDash(characters[i]), true, false);
+			songText.isMenuItem = true;
+			songText.targetY = i;
+			grpChars.add(songText);
+
+			var icon:HealthIcon = new HealthIcon(characters[i]);
+			icon.sprTracker = songText;
+
+			// using a FlxGroup is too much fuss!
+			iconArray.push(icon);
+			add(icon);
+		}
+		changeSelection();
+	}
+
+	override function update(elapsed:Float)
+	{
+		super.update(elapsed);
+
+		var upP = controls.UI_UP_P;
+		var downP = controls.UI_DOWN_P;
+
+		if (characters.length > 1)
+		{
+			if (upP)
+				changeSelection(-1);
+			if (downP)
+				changeSelection(1);
+			if (FlxG.mouse.wheel != 0)
+				changeSelection(-1 * FlxG.mouse.wheel);
+		}
+
+		if (controls.ACCEPT || FlxG.mouse.justPressed)
+		{
+			var editorInstance = CharacterOffsetEditor.instance;
+			var daSelected = grpChars.members[curSelected].text;
+
+			if (!isGhost)
+			{
+				editorInstance.curCharacter = daSelected;
+				editorInstance.generateCharacter(!daSelected.startsWith('bf'));
+				editorInstance.genCharOffsets(true, false);
+			}
+			else
+			{
+				editorInstance.curGhost = daSelected;
+				editorInstance.generateGhost(!daSelected.startsWith('bf'));
+				editorInstance.genCharOffsets(false, true);
+			}
+
+			close();
+		}
+
+		if (controls.BACK || FlxG.mouse.justPressedRight)
+			close();
+	}
+
+	function changeSelection(change:Int = 0)
+	{
+		FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
+
+		curSelected += change;
+
+		if (curSelected < 0)
+			curSelected = characters.length - 1;
+		if (curSelected >= characters.length)
+			curSelected = 0;
+
+		for (i in 0...iconArray.length)
+			iconArray[i].alpha = 0.6;
+
+		iconArray[curSelected].alpha = 1;
+
+		var bullShit:Int = 0;
+
+		for (item in grpChars.members)
+		{
+			item.targetY = bullShit - curSelected;
+			bullShit++;
+
+			item.alpha = 0.6;
+
+			if (item.targetY == 0)
+				item.alpha = 1;
+		}
 	}
 }

@@ -37,22 +37,8 @@ class EditorMenuSubstate extends MusicBeatSubstate
 
 		cameras = [FlxG.cameras.list[FlxG.cameras.list.length - 1]];
 
-		try
-		{
-			player = PlayState.SONG.player2;
-		}
-		catch (e)
-		{
-			player = 'bf';
-		}
-		try
-		{
-			stage = PlayState.curStage;
-		}
-		catch (e)
-		{
-			stage = 'stage';
-		}
+		player = (PlayState.SONG.player2 != null ? PlayState.SONG.player2 : 'dad');
+		stage = (PlayState.curStage != null ? PlayState.curStage : 'stage');
 
 		if (playMusic)
 		{

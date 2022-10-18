@@ -80,7 +80,8 @@ class GameOverSubstate extends MusicBeatSubstate
 		FlxG.camera.target = null;
 
 		Conductor.changeBPM(deathBPM);
-		bf.playAnim('firstDeath');
+		if (!bf.debugMode)
+			bf.playAnim('firstDeath');
 	}
 
 	override function update(elapsed:Float)
@@ -106,7 +107,8 @@ class GameOverSubstate extends MusicBeatSubstate
 			}
 			else if (bf.animation.curAnim.finished)
 			{
-				bf.playAnim('deathLoop');
+				if (!bf.debugMode)
+					bf.playAnim('deathLoop');
 				deathSong.play(false);
 				deathSong.persist = true;
 				deathSong.looped = true;
@@ -147,7 +149,8 @@ class GameOverSubstate extends MusicBeatSubstate
 			if (!leaving)
 			{
 				isEnding = true;
-				bf.playAnim('deathConfirm', true);
+				if (!bf.debugMode)
+					bf.playAnim('deathConfirm', true);
 				confirmNoise.play(false);
 				new FlxTimer().start(0.9, function(tmr:FlxTimer)
 				{
