@@ -298,17 +298,13 @@ class ForeverAssets
 		return tempSplash;
 	}
 
-	public static function generateUIArrows(x:Float, y:Float, ?staticArrowType:Int = 0, assetModifier:String):Receptor
+	public static function generateUIArrows(x:Float, y:Float, ?staticArrowType:Int = 0, framesArgument:String = 'NOTE_assets', assetModifier:String):Receptor
 	{
 		var newStaticArrow:Receptor = new Receptor(x, y, staticArrowType);
 		switch (assetModifier)
 		{
 			case 'pixel':
-				// look man you know me I fucking hate repeating code
-				// not even just a cleanliness thing it's just so annoying to tweak if something goes wrong like
-				// genuinely more programmers should make their code more modular
-				var framesArgument:String = "arrows-pixels";
-				newStaticArrow.loadGraphic(Paths.image(ForeverTools.returnSkin('$framesArgument', assetModifier, Init.getSetting("Note Skin"),
+				newStaticArrow.loadGraphic(Paths.image(ForeverTools.returnSkin('arrows-pixels', assetModifier, Init.getSetting("Note Skin"),
 					'noteskins/notes')), true, 17, 17);
 				newStaticArrow.animation.add('static', [staticArrowType]);
 				newStaticArrow.animation.add('pressed', [4 + staticArrowType, 8 + staticArrowType], 12, false);
@@ -337,8 +333,6 @@ class ForeverAssets
 				var stringSect:String = '';
 				// call arrow type I think
 				stringSect = Receptor.arrowDir[staticArrowType];
-
-				var framesArgument:String = "NOTE_assets";
 
 				newStaticArrow.frames = Paths.getSparrowAtlas(ForeverTools.returnSkin('$framesArgument', assetModifier, Init.getSetting("Note Skin"),
 					'noteskins/notes'));

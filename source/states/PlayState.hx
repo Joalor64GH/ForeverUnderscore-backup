@@ -80,6 +80,7 @@ class PlayState extends MusicBeatState
 	// custom assets
 	public static var assetModifier:String = 'base';
 	public static var uiModifier:String = 'default';
+	public static var noteModifier:String = 'NOTE_assets';
 
 	// characters
 	public static var dad:Character;
@@ -210,6 +211,7 @@ class PlayState extends MusicBeatState
 
 		assetModifier = 'base';
 		uiModifier = 'default';
+		noteModifier = 'NOTE_assets';
 	}
 
 	/**
@@ -494,8 +496,8 @@ class PlayState extends MusicBeatState
 
 		var strumVertPos:Int = (Init.getSetting('Downscroll') ? FlxG.height - 200 : 0);
 
-		dadStrums = new Strumline(dadPlacement, strumVertPos, dad, true, false, 4);
-		bfStrums = new Strumline(bfPlacement, strumVertPos, boyfriend, false, true, 4);
+		dadStrums = new Strumline(dadPlacement, strumVertPos, dad, noteModifier, true, false, 4);
+		bfStrums = new Strumline(bfPlacement, strumVertPos, boyfriend, noteModifier, false, true, 4);
 
 		dadStrums.visible = !Init.getSetting('Hide Opponent Receptors');
 
@@ -1407,8 +1409,23 @@ class PlayState extends MusicBeatState
 				character.specialAnim = false;
 		}
 
+		var canHold:Bool = false;
+		if (!coolNote.isSustain)
+		{
+			canHold = false;
+			for (hold in coolNote.childrenNotes)
+			{
+				if (hold.wasGoodHit)
+				{
+					canHold = true;
+					break;
+				}
+			}
+		}
+
 		if (character != null)
 		{
+			character.isHolding = canHold;
 			character.playAnim(stringArrow, true);
 			character.holdTimer = 0;
 		}

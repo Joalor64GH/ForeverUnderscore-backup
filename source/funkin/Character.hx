@@ -46,6 +46,8 @@ class Character extends FNFSprite
 
 	public var stunned:Bool = false; // whether the Character is dead or not
 
+	public var isHolding:Bool = false;
+
 	public var bopSpeed:Int = 2;
 
 	// FOR PSYCH COMPATIBILITY
@@ -231,6 +233,10 @@ class Character extends FNFSprite
 			i.call('postUpdate', [elapsed]);
 
 		super.update(elapsed);
+
+		var isSinging:Bool = (animation.curAnim.name.startsWith('sing') && !animation.curAnim.name.endsWith('miss'));
+		if (!debugMode && isSinging && isHolding && animation.curAnim.numFrames > 1 && animation.curAnim.curFrame > 1 && !animation.curAnim.finished)
+			animation.curAnim.curFrame = 0;
 	}
 
 	var danced:Bool = false;
@@ -240,18 +246,22 @@ class Character extends FNFSprite
 	 */
 	public function dance(?forced:Bool = false)
 	{
-		if (!debugMode && !skipDance && !specialAnim && animation.curAnim != null)
+		if (!debugMode)
 		{
-			if (danceIdle)
+			isHolding = false;
+			if (!skipDance && !specialAnim && animation.curAnim != null)
 			{
-				danced = !danced;
-				if (danced)
-					playAnim('danceRight$idleSuffix', forced);
+				if (danceIdle)
+				{
+					danced = !danced;
+					if (danced)
+						playAnim('danceRight$idleSuffix', forced);
+					else
+						playAnim('danceLeft$idleSuffix', forced);
+				}
 				else
-					playAnim('danceLeft$idleSuffix', forced);
+					playAnim('idle$idleSuffix', forced);
 			}
-			else
-				playAnim('idle$idleSuffix', forced);
 		}
 	}
 

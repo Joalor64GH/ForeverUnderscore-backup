@@ -181,7 +181,8 @@ class Note extends FNFSprite
 		at the very bottom of this file you can find the function
 		for setting up custom note behavior when hit and such
 	**/
-	public static function returnDefaultNote(assetModifier, strumTime, noteData, noteAlt, ?isSustain:Bool = false, ?prevNote:Note, noteType:Int = 0):Note
+	public static function returnDefaultNote(assetModifier:String, strumTime:Float, noteData:Int, noteAlt:Float, ?isSustain:Bool = false, ?prevNote:Note,
+			noteType:Int = 0):Note
 	{
 		var newNote:Note = new Note(strumTime, noteData, noteAlt, prevNote, isSustain, noteType);
 		newNote.holdHeight = 0.72;
@@ -255,7 +256,8 @@ class Note extends FNFSprite
 		return newNote;
 	}
 
-	public static function returnQuantNote(assetModifier, strumTime, noteData, noteAlt, ?isSustain:Bool = false, ?prevNote:Note = null, noteType:Int = 0):Note
+	public static function returnQuantNote(assetModifier:String, strumTime:Float, noteData:Int, noteAlt:Float, ?isSustain:Bool = false, ?prevNote:Note = null,
+			noteType:Int = 0):Note
 	{
 		var newNote:Note = new Note(strumTime, noteData, noteAlt, prevNote, isSustain, noteType);
 		newNote.holdHeight = 0.862;

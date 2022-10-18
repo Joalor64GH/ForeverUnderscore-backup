@@ -212,8 +212,10 @@ class ChartEditor extends MusicBeatState
 			if (typeReal > 3)
 				typeReal -= 4;
 
+			var noteModifier:String = (_song.assetModifier == 'pixel' ? 'arrows-pixels' : 'NOTE_assets');
+
 			var newArrow:Receptor = ForeverAssets.generateUIArrows(((FlxG.width / 2) - ((keysTotal / 2) * gridSize)) + ((i - 1) * gridSize),
-				_song.assetModifier == 'pixel' ? -55 : -80, typeReal, _song.assetModifier);
+				_song.assetModifier == 'pixel' ? -55 : -80, typeReal, noteModifier, _song.assetModifier);
 
 			newArrow.ID = i;
 			newArrow.setGraphicSize(gridSize);
