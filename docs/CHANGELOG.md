@@ -4,7 +4,7 @@ All notable changes will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [0.2.3] - [SEP-27-2022 - OCT-11-2022]
+## [0.2.3]
 
 ### Added
 - (re) Added Crash Dialogue from Forever Engine Legacy (written be sqirra-rng);
@@ -32,7 +32,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
-## [0.2.2] - [SEP-8-2022 - SEP-27-2022]
+## [0.2.2]
 
 ### Added
 - a Console for source / script debug traces, press F10 on any screen to enable / disable it, make sure `Allow Console Window` is enabled on preferences in order for it to work;
@@ -75,7 +75,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## DOWN BELOW THERE ARE VERY OUTDATED CHANGES THAT ARE NO LONGER TRUE / WERE CHANGED WITH TIME;
 
 
-## [0.2.1.1] - [AUG-23-2022 - SEP-8-2022]
+## [0.2.1.1]
 
 ### Added
 - Full Video Support (with PolybiusProxy's hxCodec extension, we are currently using the stable version);
@@ -110,7 +110,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * there's also the formatted counterparts for making custom score texts, `formattedAccuracy` and `formattedRanking`;
 - `Hits` variable for Scripts, returns all your hits on the current song;
 
-## [0.2.1] - [AUG-8-2022 - AUG-23-2022]
+## [0.2.1]
 
 ### Added
 - Notetypes were rewritten as an integer, they should properly save on songs now;
