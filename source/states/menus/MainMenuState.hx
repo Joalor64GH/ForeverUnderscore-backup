@@ -138,8 +138,7 @@ class MainMenuState extends MusicBeatState
 			+ "\nForever Engine Legacy v"
 			+ Main.foreverVersion
 			+ " - Underscore v"
-			+ openfl.Lib.application.meta["version"]
-			+ (Main.commitHash.length > 3 ? Main.commitHash : ''),
+			+ openfl.Lib.application.meta["version"],
 			12);
 		versionShit.scrollFactor.set();
 		versionShit.setFormat(Paths.font('vcr'), 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);

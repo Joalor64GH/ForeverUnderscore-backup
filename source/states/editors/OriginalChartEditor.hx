@@ -48,13 +48,6 @@ import states.menus.FreeplayMenuState;
 
 using StringTools;
 
-// typedef for Tabs used on the UI Box
-typedef ChartingBoxTab =
-{
-	var name:String;
-	var label:String;
-}
-
 /**
 	In case you dont like the forever engine chart editor, here's the base game one instead.
 **/
@@ -65,7 +58,7 @@ class OriginalChartEditor extends MusicBeatState
 
 	var UI_box:FlxUITabMenu;
 
-	var tabs:Array<ChartingBoxTab> = [
+	var tabs = [
 		{name: "Song", label: 'Song Data'},
 		{name: "Section", label: 'Section Data'},
 		{name: "Notes", label: 'Note Data'},

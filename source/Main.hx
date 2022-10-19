@@ -29,8 +29,6 @@ class Main extends Sprite
 	public static final foreverVersion:String = '0.3.1'; // current forever engine version;
 	public static final nightly:Bool = true;
 
-	public static var commitHash:Null<String>; // commit hash, for github builds;
-
 	public static var overlay:Overlay; // info counter that usually appears at the top left corner;
 	public static var console:Console; // console that appears when you press F10 (if allowed);
 
@@ -40,8 +38,6 @@ class Main extends Sprite
 	public function new()
 	{
 		super();
-
-		commitHash = returnGitHash();
 
 		Lib.current.loaderInfo.uncaughtErrorEvents.addEventListener(UncaughtErrorEvent.UNCAUGHT_ERROR, onCrash);
 		FlxTransitionableState.skipNextTransIn = true;
@@ -140,7 +136,6 @@ class Main extends Sprite
 			+ "\n\nCrash Handler written by: sqirra-rng\n"
 			+ "\nForever Engine Underscore v"
 			+ openfl.Lib.application.meta["version"]
-			+ (commitHash.length > 2 ? '${commitHash}' : '')
 			+ "\n";
 
 		try // to make the game not crash if it can't save the crash file
@@ -175,25 +170,5 @@ class Main extends Sprite
 		Discord.shutdownRPC();
 		#end
 		Sys.exit(1);
-	}
-
-	public static function returnGitHash()
-	{
-		var process = new sys.io.Process('git', ['rev-parse', 'HEAD']);
-
-		var commitHash:String;
-
-		try // read the output of the process
-		{
-			commitHash = process.stdout.readLine();
-		}
-		catch (e) // leave it as blank in the event of an error
-		{
-			commitHash = '';
-		}
-		var trimmedCommitHash:String = commitHash.substr(0, 7);
-
-		// Generates a string expression
-		return ' (' + trimmedCommitHash + ')';
 	}
 }
