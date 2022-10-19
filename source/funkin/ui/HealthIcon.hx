@@ -61,15 +61,9 @@ class HealthIcon extends FlxSprite
 		if (!ForeverTools.fileExists('characters/$char/icon$suffix.png', IMAGE))
 		{
 			if (iconPath != trimmedChar)
-			{
 				iconPath = trimmedChar;
-				trace('$char is invalid, trying $trimmedChar instead you fuck');
-			}
 			else
-			{
 				iconPath = 'face';
-				trace('$char and $trimmedChar are both invalid, trying face.');
-			}
 		}
 
 		var iconGraphic:FlxGraphic = (iconPath != 'face' ? Paths.image('$iconPath/icon$suffix', 'characters') : Paths.image('$iconPath', 'characters'));

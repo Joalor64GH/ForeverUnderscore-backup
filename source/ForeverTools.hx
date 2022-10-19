@@ -100,7 +100,7 @@ class ForeverTools
 				var curVersion:String = openfl.Lib.application.meta["version"].trim();
 				trace('Your Version: ' + curVersion + ' - Latest Version: ' + updateVersion);
 
-				if (updateVersion != curVersion)
+				if (updateVersion != curVersion && !Main.nightly)
 				{
 					trace('version mismatch!');
 					mustUpdate = true;

@@ -24,7 +24,6 @@
 	<define name="VIDEO_PLUGIN" if="windows" unless="32bits || neko" />
 	<define name="GAME_UPDATER" if="desktop enableUpdater" /> <!-- thanks shadowmario -->
 	<define name="HAXE_EXTENSION" unless="web" />
-	<define name="DEBUG_TRACES" if="debug || debugTraces" />
 
 	<!-- comment or delete this line to disable Forever Engine developer names on the titlescreen -->
 	<define name="FOREVER_ENGINE_WATERMARKS" />

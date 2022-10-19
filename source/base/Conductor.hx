@@ -153,8 +153,6 @@ class Conductor
 	{
 		PlayState.contents.callFunc('resyncVocals', []);
 
-		#if DEBUG_TRACES trace('resyncing vocal time: ${songVocals.time}'); #end
-
 		allVocals().pause();
 
 		songMusic.play();
@@ -168,7 +166,6 @@ class Conductor
 			allVocals().pitch = playbackRate;
 			allVocals().play();
 		}
-		#if DEBUG_TRACES trace('new vocal time: ${songPosition}, playback rate: ${playbackRate}'); #end
 	}
 
 	public static function resyncBySteps()

@@ -106,8 +106,6 @@ class CoolUtil
 			}
 		 */
 
-		#if DEBUG_TRACES trace(libraryArray); #end
-
 		return libraryArray;
 	}
 

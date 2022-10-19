@@ -130,8 +130,6 @@ class DialogueBox extends FlxSpriteGroup
 	{
 		super();
 
-		#if DEBUG_TRACES trace("start"); #end
-
 		// get dialog data from dialogue.json
 		dialogueData = haxe.Json.parse(daDialogue);
 
@@ -541,8 +539,6 @@ class DialogueBox extends FlxSpriteGroup
 				var _scaleX = eventArray[4];
 				var _scaleY = eventArray[5];
 
-				#if DEBUG_TRACES trace(Paths.file(_sprite)); #end
-
 				eventImage = new FlxSprite(_x, _y);
 
 				if (Std.isOfType(_sprite, Array))
@@ -562,9 +558,6 @@ class DialogueBox extends FlxSpriteGroup
 
 			case "sound":
 				var _sound = eventArray[1] + "." + Paths.SOUND_EXT;
-
-				#if DEBUG_TRACES trace(Paths.file(_sound)); #end
-
 				FlxG.sound.play(Paths.file(_sound));
 		}
 	}
@@ -581,10 +574,7 @@ class DialogueBox extends FlxSpriteGroup
 			return;
 
 		for (event in curEvents)
-		{
-			#if DEBUG_TRACES trace(event); #end
 			runEvent(event);
-		}
 	}
 
 	// mario

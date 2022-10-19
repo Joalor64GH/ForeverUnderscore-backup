@@ -35,7 +35,6 @@ class Selector extends FlxTypedSpriteGroup<FlxSprite>
 
 		this.name = name;
 		this.options = options;
-		#if DEBUG_TRACES trace(options); #end
 
 		leftSelector = createSelector('left');
 		rightSelector = createSelector('right');

@@ -491,8 +491,6 @@ class Init extends FlxState
 		FlxG.save.data.ratingOffset = ratingOffset;
 		FlxG.save.data.settings = trueSettings;
 		FlxG.save.flush();
-
-		#if DEBUG_TRACES trace('Settings Saved!'); #end
 		updateAll();
 	}
 
@@ -501,8 +499,6 @@ class Init extends FlxState
 		FlxG.save.bind('gameControls');
 		FlxG.save.data.controls = gameControls;
 		FlxG.save.flush();
-
-		#if DEBUG_TRACES trace('Controls Saved!'); #end
 	}
 
 	public static function loadControls():Void

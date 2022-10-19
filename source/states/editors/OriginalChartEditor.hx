@@ -235,7 +235,6 @@ class OriginalChartEditor extends MusicBeatState
 		check_voices.callback = function()
 		{
 			_song.needsVoices = check_voices.checked;
-			#if DEBUG_TRACES trace('CHECKED!'); #end
 		};
 
 		var check_mute_inst = new FlxUICheckBox(10, 340, null, null, "Mute Instrumental (in editor)", 100);
@@ -361,8 +360,6 @@ class OriginalChartEditor extends MusicBeatState
 			PsychDropDown.makeStrIdLabelArray(CoolUtil.difficulties, true), function(difficulty:String)
 		{
 			var newDifficulty:String = CoolUtil.difficulties[Std.parseInt(difficulty)].toLowerCase();
-			trace("Current difficulty: " + CoolUtil.difficulties[PlayState.storyDifficulty]);
-			trace("New diffculty: " + newDifficulty);
 			PlayState.storyDifficulty = Std.parseInt(difficulty);
 			if (newDifficulty != 'normal')
 				_diff = '-' + newDifficulty;
@@ -796,7 +793,6 @@ class OriginalChartEditor extends MusicBeatState
 						}
 						else
 						{
-							#if DEBUG_TRACES trace('tryin to delete note...'); #end
 							deleteNote(note);
 						}
 					}
@@ -1329,8 +1325,6 @@ class OriginalChartEditor extends MusicBeatState
 			var daSus = i[2];
 			var daNoteType:Int = i[3];
 
-			#if DEBUG_TRACES trace('Current note type is ' + Note.noteTypeNames[daNoteType] + '.'); #end
-
 			var note:Note = ForeverAssets.generateArrow(_song.assetModifier, daStrumTime, daNoteInfo % 4, 0, null, null, daNoteType);
 			note.sustainLength = daSus;
 			note.noteType = daNoteType;
@@ -1491,11 +1485,6 @@ class OriginalChartEditor extends MusicBeatState
 			return daLength;
 	}*/
 	var daSpacing:Float = 0.3;
-
-	function loadLevel():Void
-	{
-		trace(_song.notes);
-	}
 
 	function getNotes():Array<Dynamic>
 	{

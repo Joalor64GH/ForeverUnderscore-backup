@@ -140,8 +140,6 @@ class StoryMenuState extends MusicBeatState
 			}
 		}
 
-		#if DEBUG_TRACES trace("Line 96"); #end
-
 		var weekChars = WeekParser.loadedWeeks.get(WeekParser.weeksList[curWeek]).weekCharacters;
 		for (char in 0...3)
 		{
@@ -152,8 +150,6 @@ class StoryMenuState extends MusicBeatState
 
 		difficultySelectors = new FlxGroup();
 		add(difficultySelectors);
-
-		#if DEBUG_TRACES trace("Line 124"); #end
 
 		leftArrow = new FlxSprite(grpWeekText.members[0].x + grpWeekText.members[0].width + 10, grpWeekText.members[0].y + 10);
 		leftArrow.frames = Paths.getSparrowAtlas('menus/base/storymenu/campaign_menu_UI_assets');
@@ -179,8 +175,6 @@ class StoryMenuState extends MusicBeatState
 		rightArrow.animation.addByPrefix('press', "arrow push right", 24, false);
 		rightArrow.animation.play('idle');
 		difficultySelectors.add(rightArrow);
-
-		#if DEBUG_TRACES trace("Line 150"); #end
 
 		add(yellowBG);
 		add(grpWeekCharacters);

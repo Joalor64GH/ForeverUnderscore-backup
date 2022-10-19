@@ -82,7 +82,7 @@ class Paths
 						openfl.Assets.cache.removeBitmapData(key);
 						FlxG.bitmap._cache.remove(key);
 					}
-					#if DEBUG_TRACES trace('removed $key, ' + (isTexture ? 'is a texture' : 'is not a texture')); #end
+					//trace('removed $key, ' + (isTexture ? 'is a texture' : 'is not a texture'));
 					obj.bitmap.disposeImage(); // btw shoutouts to Raltyro :)
 					obj.destroy();
 					currentTrackedAssets.remove(key);
@@ -90,7 +90,7 @@ class Paths
 				}
 			}
 		}
-		#if DEBUG_TRACES trace('removed $counter assets'); #end
+		//trace('removed $counter assets');
 		// run the garbage collector for good measure lmfao
 		System.gc();
 	}
@@ -150,20 +150,20 @@ class Paths
 					bitmap.dispose();
 					bitmap.disposeImage();
 					bitmap = null;
-					#if DEBUG_TRACES trace('new texture $key, bitmap is $bitmap'); #end
+					//trace('new texture $key, bitmap is $bitmap');
 					newGraphic = FlxGraphic.fromBitmapData(BitmapData.fromTexture(texture), false, key, false);
 				}
 				else
 				{
 					newGraphic = FlxGraphic.fromBitmapData(bitmap, false, key, false);
-					#if DEBUG_TRACES trace('new bitmap $key, not textured'); #end
+					//trace('new bitmap $key, not textured');
 				}
 				currentTrackedAssets.set(key, newGraphic);
 			}
 			localTrackedAssets.push(key);
 			return currentTrackedAssets.get(key);
 		}
-		#if DEBUG_TRACES trace('graphic is returning null at $key with gpu rendering ${Init.getSetting('GPU Rendering')}'); #end
+		trace('graphic is returning null at $key with gpu rendering ${Init.getSetting('GPU Rendering')}');
 		return FlxGraphic.fromRectangle(0, 0, 0);
 	}
 

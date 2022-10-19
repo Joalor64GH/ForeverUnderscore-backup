@@ -195,7 +195,6 @@ class Console extends TextField
 		if (FlxG.keys.pressed.SHIFT && FlxG.keys.pressed.CONTROL && FlxG.keys.justPressed.F10)
 		{
 			lines = [];
-			trace("Cleared log");
 		}
 		else if (FlxG.keys != null && FlxG.keys.justPressed.F10 && FlxG.save.data != null)
 		{

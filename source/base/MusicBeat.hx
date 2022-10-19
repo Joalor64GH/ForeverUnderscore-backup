@@ -44,11 +44,6 @@ class MusicBeatState extends FNFUIState
 		if ((!Std.isOfType(this, states.PlayState)) && (!Std.isOfType(this, states.editors.OriginalChartEditor)))
 			Paths.clearUnusedMemory();
 
-		#if debug
-		if (transIn != null)
-			trace('reg ' + transIn.region);
-		#end
-
 		camBeat = FlxG.camera;
 
 		super.create();
@@ -87,10 +82,7 @@ class MusicBeatState extends FNFUIState
 			}
 		}
 		if (skippedSteps.length > 0)
-		{
-			#if DEBUG_TRACES trace('skipped steps $skippedSteps'); #end
 			skippedSteps = [];
-		}
 		curStep = trueStep;
 
 		if (oldStep != curStep && curStep > 0 && !storedSteps.contains(curStep))
@@ -132,10 +124,6 @@ class MusicBeatState extends FNFUIState
 
 		if (!storedSteps.contains(curStep))
 			storedSteps.push(curStep);
-		#if debug
-		else
-			trace('SOMETHING WENT WRONG??? STEP REPEATED $curStep');
-		#end
 	}
 
 	public function beatHit():Void
