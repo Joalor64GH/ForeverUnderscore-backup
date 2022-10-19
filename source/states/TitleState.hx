@@ -357,7 +357,7 @@ class TitleState extends MusicBeatState
 				case 56:
 					addMoreText('Night');
 				case 60:
-					addMoreText("Funkin");
+					addMoreText("Funkin'");
 			}
 		}
 	}

@@ -294,7 +294,7 @@ class Init extends FlxState
 			['none', 'Deuteranopia', 'Protanopia', 'Tritanopia']
 		],
 		'Menu Song' => [
-			'freakyMenu',
+			#if FOREVER_ENGINE_WATERMARKS 'foreverMenu', #else 'freakyMenu', #end
 			Selector,
 			'Which song should we use for the Main Menu?',
 			NOT_FORCED,
@@ -562,7 +562,7 @@ class Init extends FlxState
 
 		gameSettings.get("Menu Song")[4] = CoolUtil.returnAssetsLibrary('menus/main', 'music');
 		if (!gameSettings.get("Menu Song")[4].contains(trueSettings.get("Menu Song")))
-			trueSettings.set("Menu Song", 'freakyMenu');
+			trueSettings.set("Menu Song", #if FOREVER_ENGINE_WATERMARKS 'foreverMenu' #else 'freakyMenu' #end);
 
 		gameSettings.get("Pause Song")[4] = CoolUtil.returnAssetsLibrary('menus/pause', 'music');
 		if (!gameSettings.get("Pause Song")[4].contains(trueSettings.get("Pause Song")))
