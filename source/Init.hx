@@ -116,6 +116,13 @@ class Init extends FlxState
 			NOT_FORCED,
 			['never', 'freeplay only', 'always']
 		],
+		'Center Display' => [
+			'Song Name',
+			Selector,
+			'What should we display on the Center Mark Text?',
+			NOT_FORCED,
+			['Song Name', 'Song Time', 'Nothing']
+		],
 		// META;
 		'Auto Pause' => [
 			true,

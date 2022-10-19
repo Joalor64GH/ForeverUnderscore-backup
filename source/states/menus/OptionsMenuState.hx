@@ -53,33 +53,11 @@ class OptionsMenuState extends MusicBeatState
 			'main' => [
 				[
 					['preferences', callNewGroup],
-					['appearance', callNewGroup],
-					['controls', openDesktopControls],
 					['accessibility', callNewGroup],
+					['appearance', callNewGroup],
+					['metadata', callNewGroup],
+					['controls', openControls],
 					#if unstableBuild ['note colors', openNotemenu], #end
-					['exit', exitMenu]
-				]
-			],
-			'accessibility' => [
-				[
-					['Graphic Settings', null],
-
-					['Disable Antialiasing', getFromOption],
-					['Disable Flashing Lights', getFromOption],
-					['Disable Shaders', getFromOption],
-					['', null],
-					['Screen Settings', null],
-					['Filter', getFromOption],
-					["Darkness Opacity", getFromOption],
-					["Opacity Type", getFromOption],
-					['Reduced Movements', getFromOption],
-					['No Camera Note Movement', getFromOption],
-					['', null],
-					['Miscellaneous Settings', null],
-
-					['Menu Song', getFromOption],
-					['Pause Song', getFromOption],
-					['Discord Rich Presence', getFromOption],
 				]
 			],
 			'preferences' => [
@@ -90,22 +68,39 @@ class OptionsMenuState extends MusicBeatState
 					['Centered Receptors', getFromOption],
 					['Hide Opponent Receptors', getFromOption],
 					['Ghost Tapping', getFromOption],
-					['Hitsound Type', getFromOption],
-					['Hitsound Volume', getFromOption],
+					['', null],
+
+					['Note Settings', null],
+
 					['Use Custom Note Speed', getFromOption],
 					['Scroll Speed', getFromOption],
 					['', null],
+
+					['Sound Settings', null],
+
+					['Hitsound Type', getFromOption],
+					['Hitsound Volume', getFromOption]
+				]
+			],
+			'metadata' => [
+				[
 					['Text Settings', null],
 
 					['Display Accuracy', getFromOption],
+					['Center Display', getFromOption],
 					['Skip Text', getFromOption],
 					['', null],
+
 					['Meta Settings', null],
 
 					['Auto Pause', getFromOption],
 					['Allow Console Window', getFromOption],
 					#if GAME_UPDATER ['Check for Updates', getFromOption], #end
 					['GPU Rendering', getFromOption],
+					['', null],
+
+					['Debug Settings', null],
+
 					#if !neko ["Framerate Cap", getFromOption], #end
 					['FPS Counter', getFromOption],
 					['Memory Counter', getFromOption],
@@ -122,6 +117,7 @@ class OptionsMenuState extends MusicBeatState
 					['Language', getFromOption],
 					['Hide User Interface', getFromOption],
 					['', null],
+
 					["Judgements and Combo", null],
 
 					['Judgement Stacking', getFromOption],
@@ -129,12 +125,35 @@ class OptionsMenuState extends MusicBeatState
 					['Adjust Judgements', openJudgeState],
 					['Counter', getFromOption],
 					['', null],
-					['Notes and Holds', null],
 
+					['Notes and Holds', null],
 					["Note Skin", getFromOption],
 					['Arrow Opacity', getFromOption],
 					['Splash Opacity', getFromOption],
 					['Hold Opacity', getFromOption],
+				]
+			],
+			'accessibility' => [
+				[
+					['Graphic Settings', null],
+
+					['Disable Antialiasing', getFromOption],
+					['Disable Flashing Lights', getFromOption],
+					['Disable Shaders', getFromOption],
+					['', null],
+
+					['Screen Settings', null],
+					['Filter', getFromOption],
+					["Darkness Opacity", getFromOption],
+					["Opacity Type", getFromOption],
+					['Reduced Movements', getFromOption],
+					['No Camera Note Movement', getFromOption],
+					['', null],
+
+					['Miscellaneous Settings', null],
+					['Menu Song', getFromOption],
+					['Pause Song', getFromOption],
+					['Discord Rich Presence', getFromOption],
 				]
 			]
 		];
@@ -270,7 +289,7 @@ class OptionsMenuState extends MusicBeatState
 						divideVal = 40;
 				}
 
-				sepMem.alpha = 1;
+				sepMem.alpha = 0.3;
 				sepMem.xTo = Std.int((FlxG.width / 2) - ((sepMem.text.length / 2) * divideVal)) - decreaseVal;
 			}
 		}
@@ -440,9 +459,9 @@ class OptionsMenuState extends MusicBeatState
 			{
 				var thisOption:Alphabet = new Alphabet(0, 0, categoryMap.get(groupName)[0][i][0], true, false);
 				thisOption.screenCenter();
-				thisOption.y += (80 * (i - Math.floor(categoryMap.get(groupName)[0].length / 2)));
+				thisOption.y += (90 * (i - Math.floor(categoryMap.get(groupName)[0].length / 2)));
 				#if unstableBuild
-				thisOption.y += 50;
+				thisOption.y += 60;
 				#else
 				thisOption.y += 10;
 				#end
@@ -660,7 +679,7 @@ class OptionsMenuState extends MusicBeatState
 		}
 	}
 
-	public function openDesktopControls()
+	public function openControls()
 	{
 		if (controls.ACCEPT || FlxG.mouse.justPressed)
 			openSubState(new states.substates.ControlsSubstate());
@@ -672,23 +691,6 @@ class OptionsMenuState extends MusicBeatState
 		{
 			playSound('scrollMenu');
 			Main.switchState(this, new states.JudgementOffsetState());
-		}
-	}
-
-	public function exitMenu()
-	{
-		if (controls.ACCEPT || FlxG.mouse.justPressed)
-		{
-			playSound('cancelMenu');
-			if (states.substates.PauseSubstate.toOptions)
-			{
-				Conductor.stopMusic();
-				Main.switchState(this, new PlayState());
-			}
-			else
-			{
-				Main.switchState(this, new MainMenuState());
-			}
 		}
 	}
 

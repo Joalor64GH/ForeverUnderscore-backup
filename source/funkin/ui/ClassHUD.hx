@@ -91,13 +91,20 @@ class ClassHUD extends FlxTypedGroup<FlxBasic>
 		cornerMark.visible = (Init.getSetting('Engine Mark') && !PlayState.bfStrums.autoplay);
 		add(cornerMark);
 
-		centerMark = new FlxText(0, (Init.getSetting('Downscroll') ? FlxG.height - 45 : 20), 0, '- $infoDisplay [$diffDisplay] -');
+		centerMark = new FlxText(0, (Init.getSetting('Downscroll') ? FlxG.height - 45 : 20), 0, '', 24);
 		centerMark.setFormat(Paths.font('vcr'), 24, FlxColor.WHITE);
 		centerMark.setBorderStyle(OUTLINE, FlxColor.BLACK, 2);
 		centerMark.antialiasing = !Init.getSetting('Disable Antialiasing');
 		centerMark.screenCenter(X);
+		if (Init.trueSettings.get('Center Display') != 'Nothing')
+			add(centerMark);
+
+		if (Init.trueSettings.get('Center Display') == 'Song Name')
+			centerMark.text = '- $infoDisplay [$diffDisplay] -';
+		else if (Init.trueSettings.get('Center Display') == 'Song Time')
+			centerMark.alpha = 0;
+
 		centerMark.x = Math.floor((FlxG.width / 2) - (centerMark.width / 2));
-		add(centerMark);
 
 		autoplayMark = new FlxText(-5, (Init.getSetting('Downscroll') ? centerMark.y - 60 : centerMark.y + 60), FlxG.width - 800, '${language.botTxt}\n', 32);
 		autoplayMark.setFormat(Paths.font("vcr"), 32, FlxColor.WHITE, CENTER);
@@ -172,6 +179,9 @@ class ClassHUD extends FlxTypedGroup<FlxBasic>
 			autoplaySine += 30 * elapsed;
 			autoplayMark.alpha = 1 - Math.sin((Math.PI * autoplaySine) / 80);
 		}
+
+		if (Init.trueSettings.get('Center Display') == 'Song Time')
+			updateTime();
 	}
 
 	private final divider:String = " • ";
@@ -222,6 +232,16 @@ class ClassHUD extends FlxTypedGroup<FlxBasic>
 			healthBar.createFilledBar(0xFFFF0000, 0xFF66FF33);
 		healthBar.scrollFactor.set();
 		healthBar.updateBar();
+	}
+
+	public function updateTime()
+	{
+		var currentTime = flixel.util.FlxStringUtil.formatTime(Math.floor(Conductor.songPosition / 1000), false);
+		var songLength = flixel.util.FlxStringUtil.formatTime(Math.floor((PlayState.songLength) / 1000), false);
+		centerMark.text = '- [$currentTime / $songLength] -';
+
+		// *center* the thing, will you?
+		centerMark.x = Math.floor((FlxG.width / 2) - (centerMark.width / 2));
 	}
 
 	public function beatHit(curBeat:Int)
