@@ -1235,20 +1235,15 @@ class OriginalChartEditor extends MusicBeatState
 
 	function generateHeads()
 	{
-		var eventIcon:FlxSprite = new FlxSprite(-GRID_SIZE - 5, -90);
-		eventIcon.loadGraphic(Paths.image(ForeverTools.returnSkin('eventNote', PlayState.assetModifier, PlayState.uiModifier, 'UI')));
 		leftIcon = new HealthIcon(getCharacter('bf').icon, true);
 		rightIcon = new HealthIcon(getCharacter('dad').icon, false);
 
-		eventIcon.scrollFactor.set(1, 1);
 		leftIcon.scrollFactor.set(1, 1);
 		rightIcon.scrollFactor.set(1, 1);
 
-		eventIcon.setGraphicSize(30, 30);
 		leftIcon.setGraphicSize(0, 45);
 		rightIcon.setGraphicSize(0, 45);
 
-		add(eventIcon);
 		add(leftIcon);
 		add(rightIcon);
 	}

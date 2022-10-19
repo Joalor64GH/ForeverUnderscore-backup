@@ -1,24 +1,24 @@
 package states.editors.data;
 
 import flash.geom.Rectangle;
-import flixel.FlxG;
-import flixel.FlxSprite;
-import flixel.addons.ui.FlxUI9SliceSprite;
-import flixel.addons.ui.FlxUI;
-import flixel.addons.ui.FlxUIAssets;
-import flixel.addons.ui.FlxUIButton;
-import flixel.addons.ui.FlxUIGroup;
-import flixel.addons.ui.FlxUISpriteButton;
-import flixel.addons.ui.FlxUIText;
-import flixel.addons.ui.StrNameLabel;
 import flixel.addons.ui.interfaces.IFlxUIClickable;
 import flixel.addons.ui.interfaces.IFlxUIWidget;
 import flixel.addons.ui.interfaces.IHasParams;
+import flixel.FlxG;
+import flixel.FlxSprite;
 import flixel.math.FlxMath;
 import flixel.ui.FlxButton;
 import flixel.util.FlxColor;
 import flixel.util.FlxDestroyUtil;
 import flixel.util.FlxStringUtil;
+import flixel.addons.ui.FlxUIGroup;
+import flixel.addons.ui.FlxUIText;
+import flixel.addons.ui.FlxUIButton;
+import flixel.addons.ui.FlxUISpriteButton;
+import flixel.addons.ui.FlxUI9SliceSprite;
+import flixel.addons.ui.FlxUIAssets;
+import flixel.addons.ui.StrNameLabel;
+import flixel.addons.ui.FlxUI;
 
 /*
 
@@ -38,7 +38,7 @@ class PsychDropDown extends FlxUIGroup implements IFlxUIWidget implements IFlxUI
 {
 	public var skipButtonUpdate(default, set):Bool;
 
-	function set_skipButtonUpdate(b:Bool):Bool
+	private function set_skipButtonUpdate(b:Bool):Bool
 	{
 		skipButtonUpdate = b;
 		header.button.skipButtonUpdate = b;
@@ -48,19 +48,19 @@ class PsychDropDown extends FlxUIGroup implements IFlxUIWidget implements IFlxUI
 	public var selectedId(get, set):String;
 	public var selectedLabel(get, set):String;
 
-	var _selectedId:String;
-	var _selectedLabel:String;
+	private var _selectedId:String;
+	private var _selectedLabel:String;
 
-	var currentScroll:Int = 0; // Handles the scrolling
+	private var currentScroll:Int = 0; // Handles the scrolling
 
 	public var canScroll:Bool = true;
 
-	function get_selectedId():String
+	private function get_selectedId():String
 	{
 		return _selectedId;
 	}
 
-	function set_selectedId(str:String):String
+	private function set_selectedId(str:String):String
 	{
 		if (_selectedId == str)
 			return str;
@@ -89,12 +89,12 @@ class PsychDropDown extends FlxUIGroup implements IFlxUIWidget implements IFlxUI
 		return str;
 	}
 
-	function get_selectedLabel():String
+	private function get_selectedLabel():String
 	{
 		return _selectedLabel;
 	}
 
-	function set_selectedLabel(str:String):String
+	private function set_selectedLabel(str:String):String
 	{
 		if (_selectedLabel == str)
 			return str;
@@ -132,14 +132,14 @@ class PsychDropDown extends FlxUIGroup implements IFlxUIWidget implements IFlxUI
 
 	public var params(default, set):Array<Dynamic>;
 
-	function set_params(p:Array<Dynamic>):Array<Dynamic>
+	private function set_params(p:Array<Dynamic>):Array<Dynamic>
 	{
 		return params = p;
 	}
 
 	public var dropDirection(default, set):FlxUIDropDownMenuDropDirection = Down;
 
-	function set_dropDirection(dropDirection):FlxUIDropDownMenuDropDirection
+	private function set_dropDirection(dropDirection):FlxUIDropDownMenuDropDirection
 	{
 		this.dropDirection = dropDirection;
 		updateButtonPositions();
@@ -150,7 +150,7 @@ class PsychDropDown extends FlxUIGroup implements IFlxUIWidget implements IFlxUI
 
 	public var callback:String->Void;
 
-	// var _ui_control_callback:Bool->PsychDropDown->Void;
+	// private var _ui_control_callback:Bool->PsychDropDown->Void;
 
 	/**
 	 * This creates a new dropdown menu.
@@ -216,7 +216,7 @@ class PsychDropDown extends FlxUIGroup implements IFlxUIWidget implements IFlxUI
 		add(header);
 	}
 
-	function updateButtonPositions():Void
+	private function updateButtonPositions():Void
 	{
 		var buttonHeight = header.background.height;
 		dropPanel.y = header.background.y;
@@ -272,17 +272,17 @@ class PsychDropDown extends FlxUIGroup implements IFlxUIWidget implements IFlxUI
 		return Value;
 	}
 
-	function dropsUp():Bool
+	private function dropsUp():Bool
 	{
 		return dropDirection == Up || (dropDirection == Automatic && exceedsHeight());
 	}
 
-	function exceedsHeight():Bool
+	private function exceedsHeight():Bool
 	{
 		return y + getPanelHeight() + header.background.height > FlxG.height;
 	}
 
-	function getPanelHeight():Float
+	private function getPanelHeight():Float
 	{
 		return list.length * header.background.height;
 	}
@@ -348,14 +348,14 @@ class PsychDropDown extends FlxUIGroup implements IFlxUIWidget implements IFlxUI
 		updateButtonPositions();
 	}
 
-	function selectSomething(name:String, label:String):Void
+	private function selectSomething(name:String, label:String):Void
 	{
 		header.text.text = label;
 		selectedId = name;
 		selectedLabel = label;
 	}
 
-	function makeListButton(i:Int, Label:String, Name:String):FlxUIButton
+	private function makeListButton(i:Int, Label:String, Name:String):FlxUIButton
 	{
 		var t:FlxUIButton = new FlxUIButton(0, 0, Label);
 		t.broadcastToFlxUI = false;
@@ -454,12 +454,26 @@ class PsychDropDown extends FlxUIGroup implements IFlxUIWidget implements IFlxUI
 				}
 			}
 
-			if (FlxG.mouse.justPressed && !FlxG.mouse.overlaps(this))
+			if (FlxG.mouse.justPressed && !mouseOverlapping())
 			{
 				showList(false);
 			}
 		}
 		#end
+	}
+
+	function mouseOverlapping()
+	{
+		var mousePoint = FlxG.mouse.getScreenPosition(camera);
+		var objPoint = this.getScreenPosition(null, camera);
+		if (mousePoint.x >= objPoint.x
+			&& mousePoint.y >= objPoint.y
+			&& mousePoint.x < objPoint.x + this.width
+			&& mousePoint.y < objPoint.y + this.height)
+		{
+			return true;
+		}
+		return false;
 	}
 
 	override public function destroy():Void
@@ -473,7 +487,7 @@ class PsychDropDown extends FlxUIGroup implements IFlxUIWidget implements IFlxUI
 		callback = null;
 	}
 
-	function showList(b:Bool):Void
+	private function showList(b:Bool):Void
 	{
 		for (button in list)
 		{
@@ -491,12 +505,12 @@ class PsychDropDown extends FlxUIGroup implements IFlxUIWidget implements IFlxUI
 		FlxUI.forceFocus(b, this); // avoid overlaps
 	}
 
-	function onDropdown():Void
+	private function onDropdown():Void
 	{
 		(dropPanel.visible) ? showList(false) : showList(true);
 	}
 
-	function onClickItem(i:Int):Void
+	private function onClickItem(i:Int):Void
 	{
 		var item:FlxUIButton = list[i];
 		selectSomething(item.name, item.label.text);

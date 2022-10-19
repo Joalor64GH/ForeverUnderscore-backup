@@ -4,10 +4,7 @@ import haxe.Json;
 import haxe.io.Bytes;
 import base.Conductor;
 import base.MusicBeat.MusicBeatState;
-import base.SongLoader.LegacySection;
-import base.SongLoader.LegacySong;
-import base.SongLoader.Section;
-import base.SongLoader.Song;
+import base.SongLoader;
 import dependency.AbsoluteText.EventText;
 import dependency.AbsoluteText;
 import dependency.BaseButton.ChartingButton;
@@ -126,10 +123,6 @@ class ChartEditor extends MusicBeatState
 	{
 		super.create();
 
-		// moving fps to the right;
-		Main.overlay.x = FlxG.width - 245;
-		Main.overlay.autoSize = RIGHT;
-
 		generateBackground();
 
 		if (PlayState.SONG != null)
@@ -245,7 +238,7 @@ class ChartEditor extends MusicBeatState
 
 		FlxG.camera.follow(strumLineCam);
 
-		generateHUD();
+		generateUI();
 
 		var cursorAsset = ForeverTools.returnSkin('cursor', 'base', Init.trueSettings.get('UI Skin'), 'UI');
 		var cursor:FlxSprite = new FlxSprite().loadGraphic(Paths.image(cursorAsset));
@@ -259,7 +252,7 @@ class ChartEditor extends MusicBeatState
 	var prefTxt:FlxText;
 	var infoTextChart:FlxText;
 
-	function generateHUD()
+	function generateUI()
 	{
 		songText = new FlxText(0, 20, 0, "", 16);
 		songText.setFormat(Paths.font("vcr"), 20, FlxColor.WHITE, LEFT);
@@ -547,6 +540,11 @@ class ChartEditor extends MusicBeatState
 			loadAutosave();
 		}
 
+		#if debug
+		if (FlxG.keys.justPressed.LEFT && FlxG.keys.pressed.A)
+			Main.switchState(this, new TestState());
+		#end
+
 		if (FlxG.keys.justPressed.ESCAPE)
 		{
 			autosaveSong();
@@ -558,9 +556,6 @@ class ChartEditor extends MusicBeatState
 
 			Paths.clearUnusedMemory();
 
-			Main.overlay.x = 0;
-			Main.overlay.autoSize = LEFT;
-
 			Main.switchState(this, new PlayState());
 		}
 
@@ -571,9 +566,6 @@ class ChartEditor extends MusicBeatState
 			ForeverTools.killMusic([songMusic, vocals]);
 
 			Paths.clearUnusedMemory();
-
-			Main.overlay.x = 0;
-			Main.overlay.autoSize = LEFT;
 
 			// CoolUtil.difficulties = CoolUtil.baseDifficulties;
 

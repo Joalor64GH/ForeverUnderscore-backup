@@ -74,6 +74,14 @@ class TestState extends MusicBeatState
 		// tab_group_section.name = 'Section';
 	}
 
+	override public function update(elapsed:Float)
+	{
+		super.update(elapsed);
+
+		if (FlxG.keys.justPressed.ESCAPE)
+			Main.switchState(this, new ChartEditor());
+	}
+
 	function generateBackground()
 	{
 		var coolGrid = new FlxBackdrop(null, 1, 1, true, true, 1, 1);

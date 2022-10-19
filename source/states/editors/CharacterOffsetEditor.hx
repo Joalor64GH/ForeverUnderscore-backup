@@ -116,8 +116,8 @@ class CharacterOffsetEditor extends MusicBeatState
 		stageBuild = new Stage(curStage, true);
 		add(stageBuild);
 
-		generateGhost(!curCharacter.startsWith('bf'));
-		generateCharacter(!curCharacter.startsWith('bf'));
+		generateGhost(!curCharacter.startsWith('bf') || !curCharacter.endsWith('-player'));
+		generateCharacter(!curCharacter.startsWith('bf') || !curCharacter.endsWith('-player'));
 
 		// add texts
 		dumbTexts = new FlxTypedGroup<FlxText>();
@@ -655,13 +655,13 @@ class CharacterSelectorSubstate extends MusicBeatSubstate
 			if (!isGhost)
 			{
 				editorInstance.curCharacter = daSelected;
-				editorInstance.generateCharacter(!daSelected.startsWith('bf'));
+				editorInstance.generateCharacter(!daSelected.startsWith('bf') || !daSelected.endsWith('-player'));
 				editorInstance.genCharOffsets(true, false);
 			}
 			else
 			{
 				editorInstance.curGhost = daSelected;
-				editorInstance.generateGhost(!daSelected.startsWith('bf'));
+				editorInstance.generateGhost(!daSelected.startsWith('bf') || !daSelected.endsWith('-player'));
 				editorInstance.genCharOffsets(false, true);
 			}
 
