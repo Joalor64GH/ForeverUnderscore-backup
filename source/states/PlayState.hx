@@ -184,12 +184,12 @@ class PlayState extends MusicBeatState
 
 	var curSection:Int = 0;
 
-	public var ratingsGroup:FlxTypedGroup<FNFSprite>;
+	public var judgementsGroup:FlxTypedGroup<FNFSprite>;
 	public var comboGroup:FlxTypedGroup<FNFSprite>;
 	public var charGroup:FlxSpriteGroup;
 
 	// stores the last judgement sprite object
-	public static var lastJudgement:FNFSprite;
+	public static var lastJudge:FNFSprite;
 	// stores the last combo sprite objects in an array
 	public static var lastCombo:Array<FNFSprite> = [];
 
@@ -544,9 +544,9 @@ class PlayState extends MusicBeatState
 		uiHUD.visible = !Init.getSetting('Hide User Interface');
 		uiHUD.cameras = [camHUD];
 
-		ratingsGroup = new FlxTypedGroup<FNFSprite>();
+		judgementsGroup = new FlxTypedGroup<FNFSprite>();
 		comboGroup = new FlxTypedGroup<FNFSprite>();
-		add(ratingsGroup);
+		add(judgementsGroup);
 		add(comboGroup);
 
 		comboHUD = new FlxCamera();
@@ -1604,16 +1604,16 @@ class PlayState extends MusicBeatState
 			"oh but if the rating isn't sick why not just reset it"
 			because miss judgements can pop, and they dont mess with your sick combo
 		 */
-		var rating = ForeverAssets.generateRating('$newRating', perfect, lateHit, ratingsGroup, assetModifier, uiModifier, 'UI');
+		var rating = ForeverAssets.generateRating('$newRating', perfect, lateHit, judgementsGroup, assetModifier, uiModifier, 'UI');
 
 		if (!cached)
 		{
 			if (!Init.getSetting('Judgement Stacking'))
 			{
-				if (lastJudgement != null)
-					lastJudgement.kill();
-				for (i in 0...ratingsGroup.members.length)
-					lastJudgement = ratingsGroup.members[i];
+				if (lastJudge != null)
+					lastJudge.kill();
+				if (rating != null && rating.alive)
+					lastJudge = rating;
 
 				FlxTween.tween(rating, {y: rating.y + 20}, 0.2, {type: FlxTweenType.BACKWARD, ease: FlxEase.circOut});
 				FlxTween.tween(rating, {"scale.x": 0, "scale.y": 0}, (Conductor.stepCrochet) / 1000, {
@@ -1682,7 +1682,7 @@ class PlayState extends MusicBeatState
 				comboNum.alpha = 0.000001;
 		}
 
-		ratingsGroup.sort(FNFSprite.depthSorting, FlxSort.DESCENDING);
+		judgementsGroup.sort(FNFSprite.depthSorting, FlxSort.DESCENDING);
 		comboGroup.sort(FNFSprite.depthSorting, FlxSort.DESCENDING);
 	}
 
