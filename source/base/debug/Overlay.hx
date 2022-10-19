@@ -90,9 +90,11 @@ class Overlay extends TextField
 			text = '' // set up the text itself
 				+ (displayFps ? times.length + ' FPS' + fpsMs + '\n' : '') // Current Framerate (and Milliseconds)
 				+ (displayMemory ? memTxt + '${getInterval(mem)} / ' + peakTxt + '${getInterval(memPeak)}\n' : '') // Current and Total Memory Usage
+				// Extra Info, shown by pressing F3
 				+ (displayExtra ? 'State: ${Main.mainClassState}\n' : '') // Current Game State
-				+ (displayExtra ? 'Objects: ${FlxG.state.members.length}\n' : '') // Current Game State Object Count
-				+ (displayExtra ? 'Cameras: ${FlxG.cameras.list.length}\n' : ''); // Current Game State Camera Count
+				+ (displayExtra ? 'Objects: ${FlxG.state.members.length} ' : '') // Current Game State Object Count
+				+ (displayExtra ? '(Cameras: ${FlxG.cameras.list.length})\n' : '') // Current Game State Camera Count
+				+ (displayExtra ? 'System: ${lime.system.System.platformLabel}' : ''); // System Name
 		}
 	}
 
