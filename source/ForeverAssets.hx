@@ -161,7 +161,20 @@ class ForeverAssets
 				FlxTween.tween(rating, {alpha: 0}, (Conductor.stepCrochet) / 1000, {
 					onComplete: function(tween:FlxTween)
 					{
-						rating.kill();
+						if (rating.alive)
+							rating.kill();
+					},
+					startDelay: ((Conductor.crochet + Conductor.stepCrochet * 2) / 1000 / Conductor.playbackRate)
+				});
+			}
+			else if (!debug)
+			{
+				FlxTween.tween(rating, {y: rating.y + 20}, 0.2, {type: FlxTweenType.BACKWARD, ease: FlxEase.circOut});
+				FlxTween.tween(rating, {"scale.x": 0, "scale.y": 0}, (Conductor.stepCrochet) / 1000, {
+					onComplete: function(tween:FlxTween)
+					{
+						if (rating.alive)
+							rating.kill();
 					},
 					startDelay: ((Conductor.crochet + Conductor.stepCrochet * 2) / 1000 / Conductor.playbackRate)
 				});
