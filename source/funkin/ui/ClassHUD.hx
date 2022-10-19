@@ -96,12 +96,12 @@ class ClassHUD extends FlxTypedGroup<FlxBasic>
 		centerMark.setBorderStyle(OUTLINE, FlxColor.BLACK, 2);
 		centerMark.antialiasing = !Init.getSetting('Disable Antialiasing');
 		centerMark.screenCenter(X);
-		if (Init.trueSettings.get('Center Display') != 'Nothing')
+		if (Init.getSetting('Center Display') != 'Nothing')
 			add(centerMark);
 
-		if (Init.trueSettings.get('Center Display') == 'Song Name')
+		if (Init.getSetting('Center Display') == 'Song Name')
 			centerMark.text = '- $infoDisplay [$diffDisplay] -';
-		else if (Init.trueSettings.get('Center Display') == 'Song Time')
+		else if (Init.getSetting('Center Display') == 'Song Time')
 			centerMark.alpha = 0;
 
 		centerMark.x = Math.floor((FlxG.width / 2) - (centerMark.width / 2));
@@ -180,7 +180,7 @@ class ClassHUD extends FlxTypedGroup<FlxBasic>
 			autoplayMark.alpha = 1 - Math.sin((Math.PI * autoplaySine) / 80);
 		}
 
-		if (Init.trueSettings.get('Center Display') == 'Song Time')
+		if (Init.getSetting('Center Display') == 'Song Time')
 			updateTime();
 	}
 
