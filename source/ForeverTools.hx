@@ -24,7 +24,7 @@ class ForeverTools
 	public static var updateVersion:String = '';
 
 	// set up maps and stuffs
-	public static function resetMenuMusic(resetVolume:Bool = false)
+	public static function resetMenuMusic(resetVolume:Bool = false, bpm:Int = 102)
 	{
 		// make sure the music is playing
 		if (((FlxG.sound.music != null) && (!FlxG.sound.music.playing)) || (FlxG.sound.music == null))
@@ -39,7 +39,7 @@ class ForeverTools
 
 			if (FlxG.sound.music.pitch != 1)
 				FlxG.sound.music.pitch = 1;
-			Conductor.changeBPM(102);
+			Conductor.changeBPM(bpm);
 		}
 	}
 

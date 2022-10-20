@@ -23,6 +23,15 @@ import states.menus.*;
 
 using StringTools;
 
+typedef TitleDataDef =
+{
+	var songBpm:Null<Int>;
+	var bgSprite:String;
+	var bgAntialiasing:Bool;
+	var gfPosition:Array<Int>;
+	var logoPosition:Array<Int>;
+}
+
 class TitleState extends MusicBeatState
 {
 	public static var initialized:Bool = false;
@@ -38,6 +47,8 @@ class TitleState extends MusicBeatState
 	var bg:FlxSprite;
 	var swagShader:ColorSwap = null;
 
+	var titleData:TitleDataDef;
+
 	override public function create():Void
 	{
 		controls.loadKeyboardScheme();
@@ -46,6 +57,7 @@ class TitleState extends MusicBeatState
 
 		super.create();
 
+		titleData = haxe.Json.parse(Paths.getTextFromFile('images/menus/data/titleScreen.json'));
 		swagShader = new ColorSwap();
 
 		startIntro();
@@ -73,27 +85,29 @@ class TitleState extends MusicBeatState
 			ForeverTools.checkUpdates();
 			#end
 
-			ForeverTools.resetMenuMusic(true);
+			ForeverTools.resetMenuMusic(true, (titleData.songBpm != null ? titleData.songBpm : 102));
 		}
 
 		persistentUpdate = true;
 
-		bg = new FlxSprite().makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
-		/*
-			bg.antialiasing = !Init.getSetting('Disable Antialiasing');
-			bg.setGraphicSize(Std.int(bg.width * 0.6));
+		if (titleData.bgSprite != null || titleData.bgSprite.length > 0)
+		{
+			bg = new FlxSprite().loadGraphic(Paths.image(titleData.bgSprite));
+			bg.antialiasing = !titleData.bgAntialiasing;
 			bg.updateHitbox();
-		 */
+		}
+		else
+			bg = new FlxSprite().makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
 		add(bg);
 
-		gfDance = new FlxSprite(FlxG.width * 0.4, FlxG.height * 0.07);
+		gfDance = new FlxSprite(titleData.gfPosition[0], titleData.gfPosition[1]);
 		gfDance.frames = Paths.getSparrowAtlas('menus/base/title/gfDanceTitle');
 		gfDance.animation.addByIndices('danceLeft', 'gfDance', [30, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14], "", 24, false);
 		gfDance.animation.addByIndices('danceRight', 'gfDance', [15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29], "", 24, false);
 		gfDance.antialiasing = !Init.getSetting('Disable Antialiasing');
 		add(gfDance);
 
-		gameLogo = new FlxSprite(0, 50);
+		gameLogo = new FlxSprite(titleData.logoPosition[0], titleData.logoPosition[1]);
 		gameLogo.loadGraphic(Paths.image('menus/base/title/logo'));
 		gameLogo.antialiasing = !Init.getSetting('Disable Antialiasing');
 		initLogowidth = gameLogo.width;
@@ -154,7 +168,7 @@ class TitleState extends MusicBeatState
 
 	function getIntroTextShit():Array<Array<String>>
 	{
-		var swagGoodArray:Array<Array<String>> = [['no idea what\npsych engine is', 'vine boom sfx']];
+		var swagGoodArray:Array<Array<String>> = [];
 		if (Assets.exists(Paths.txt('introText')))
 		{
 			var fullText:String = Assets.getText(Paths.txt('introText'));
@@ -220,7 +234,7 @@ class TitleState extends MusicBeatState
 			if (FlxG.keys.justPressed.ESCAPE && !pressedEnter)
 			{
 				FlxG.sound.music.fadeOut(0.3);
-				FlxG.camera.fade(FlxColor.BLACK, 0.5, false, FlxG.resetGame, false);
+				FlxG.camera.fade(FlxColor.BLACK, 0.5, false, null, false);
 				Sys.exit(0);
 			}
 
@@ -235,6 +249,8 @@ class TitleState extends MusicBeatState
 				FlxG.sound.play(Paths.sound('confirmMenu'), 0.7);
 
 				transitioning = true;
+				if (logoTween != null)
+					logoTween.cancel();
 
 				gameLogo.setGraphicSize(Std.int(initLogowidth * 1.15));
 
@@ -288,14 +304,17 @@ class TitleState extends MusicBeatState
 		}
 	}
 
+	var logoTween:FlxTween;
 	override function beatHit()
 	{
 		super.beatHit();
 
 		if (gameLogo != null && !transitioning)
 		{
-			gameLogo.scale.set(1.05, 1.05);
-			FlxTween.tween(gameLogo, {'scale.x': 0.90, 'scale.y': 0.90}, 0.5, {ease: FlxEase.bounceIn});
+			if (logoTween != null)
+				logoTween.cancel();
+			gameLogo.scale.set(1, 1);
+			logoTween = FlxTween.tween(gameLogo, {'scale.x': 0.9, 'scale.y': 0.9}, 60 / Conductor.bpm, {ease: FlxEase.expoOut});
 		}
 
 		if (gfDance != null)

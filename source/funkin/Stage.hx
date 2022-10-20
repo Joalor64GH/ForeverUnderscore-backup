@@ -95,7 +95,8 @@ class Stage extends FlxTypedGroup<FlxBasic>
 		}
 		catch (e)
 		{
-			lime.app.Application.current.window.alert('Uncaught Error: $e', "Stage Error!");
+			trace('Uncaught Error: $e');
+			flixel.FlxG.sound.play(Paths.sound('cancelMenu'));
 		}
 	}
 

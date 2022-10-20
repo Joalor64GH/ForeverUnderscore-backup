@@ -459,7 +459,8 @@ class PlayState extends MusicBeatState
 		}
 		catch (e)
 		{
-			lime.app.Application.current.window.alert('Uncaught Error: $e', "PlayState Error!");
+			trace('Uncaught Error: $e');
+			FlxG.sound.play(Paths.sound('cancelMenu'));
 		}
 
 		// set the camera position to the center of the stage

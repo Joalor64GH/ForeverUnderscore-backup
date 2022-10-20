@@ -252,7 +252,7 @@ class Init extends FlxState
 		'Disable Antialiasing' => [
 			false,
 			Checkmark,
-			'Whether to disable Anti-aliasing. Helps improve performance in FPS.',
+			'Whether to disable Anti-aliasing. can improve performance in Framerate.',
 			NOT_FORCED
 		],
 		'Disable Flashing Lights' => [
