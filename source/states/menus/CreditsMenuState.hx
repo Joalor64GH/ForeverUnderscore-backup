@@ -12,7 +12,9 @@ import flixel.system.FlxSound;
 import flixel.text.FlxText;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
+import flixel.util.FlxGradient;
 import flixel.util.FlxColor;
+import openfl.display.BlendMode;
 import funkin.Alphabet;
 import funkin.ui.CreditsIcon;
 
@@ -32,7 +34,7 @@ typedef CreditsPrefDef =
 {
 	var ?menuBG:Null<String>;
 	var ?menuBGColor:Null<Array<Int>>;
-	var ?tweenColor:Null<Bool>;
+	var ?bgTween:Null<Bool>;
 	var users:Array<CreditsUserDef>;
 }
 
@@ -58,8 +60,9 @@ class CreditsMenuState extends MusicBeatState
 
 	var mediaAnimsArray:Array<String> = ['NG', 'Twitter', 'Twitch', 'YT', 'GitHub'];
 
-	var bgTween:FlxTween;
 	var bg:FlxSprite;
+	var bgTween:FlxTween;
+	var bDrop:FlxBackdrop;
 
 	var socialIcon:FlxSprite;
 	var leftArrow:FlxSprite;
@@ -80,9 +83,17 @@ class CreditsMenuState extends MusicBeatState
 		Discord.changePresence('READING THE CREDITS', 'Credits Menu');
 		#end
 
-		bg = new FlxSprite().loadGraphic(Paths.image('menus/base/menuDesat'));
-		bg.blend = openfl.display.BlendMode.MULTIPLY;
+		var file:String = 'menus/base/menuDesat';
+		if (credData.menuBG != null || credData.menuBG.length > 0)
+			file = credData.menuBG;
+		bg = new FlxSprite().loadGraphic(Paths.image(file));
 		add(bg);
+
+		bDrop = new FlxBackdrop(Paths.image('menus/base/grid'), 8, 8, true, true, 1, 1);
+		bDrop.velocity.x = 10;
+		bDrop.screenCenter();
+		bDrop.alpha = 0.5;
+		add(bDrop);
 
 		var ui_tex = Paths.getSparrowAtlas('menus/base/storymenu/campaign_menu_UI_assets');
 
@@ -215,9 +226,16 @@ class CreditsMenuState extends MusicBeatState
 		var newColor:FlxColor = FlxColor.fromRGB(credData.users[curSelected].colors[0], credData.users[curSelected].colors[1],
 			credData.users[curSelected].colors[2]);
 
-		if (bgTween != null)
-			bgTween.cancel();
-		bgTween = FlxTween.color(bg, 0.35, bg.color, newColor);
+		if (credData.bgTween)
+		{
+			if (bgTween != null)
+				bgTween.cancel();
+			bgTween = FlxTween.color(bg, 0.35, bg.color, newColor);
+		}
+		else
+		{
+			bg.color = FlxColor.fromRGB(credData.menuBGColor[0], credData.menuBGColor[1], credData.menuBGColor[2]);
+		}
 
 		var bullShit:Int = 0;
 

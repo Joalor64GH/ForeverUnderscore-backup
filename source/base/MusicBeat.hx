@@ -143,15 +143,17 @@ class MusicBeatState extends FNFUIState
 		if (textField != null)
 		{
 			var oldField:FlxText = cast textField;
-			FlxTween.tween(oldField, {alpha: 0}, 0.2, {onComplete: function(twn:FlxTween)
-			{
-				remove(oldField);
-				oldField.destroy();
-			}});
+			FlxTween.tween(oldField, {alpha: 0}, 0.2, {
+				onComplete: function(twn:FlxTween)
+				{
+					remove(oldField);
+					oldField.destroy();
+				}
+			});
 			textField = null;
 		}
 
-		if(fieldTween != null)
+		if (fieldTween != null)
 		{
 			fieldTween.cancel();
 			fieldTween = null;
@@ -167,17 +169,22 @@ class MusicBeatState extends FNFUIState
 			textField.cameras = [cam];
 			add(textField);
 
-			fieldTween = FlxTween.tween(textField, {alpha: 1}, 0.2, {onComplete: function(twn:FlxTween)
-			{
-				fieldTween = FlxTween.tween(textField, {alpha: 0}, 0.2, {startDelay: duration, onComplete: function(twn:FlxTween)
+			fieldTween = FlxTween.tween(textField, {alpha: 1}, 0.2, {
+				onComplete: function(twn:FlxTween)
 				{
-					remove(textField);
-					textField.destroy();
-					textField = null;
-					if(fieldTween == twn)
-						fieldTween = null;
-				}});
-			}});
+					fieldTween = FlxTween.tween(textField, {alpha: 0}, 0.2, {
+						startDelay: duration,
+						onComplete: function(twn:FlxTween)
+						{
+							remove(textField);
+							textField.destroy();
+							textField = null;
+							if (fieldTween == twn)
+								fieldTween = null;
+						}
+					});
+				}
+			});
 		}
 		FlxG.sound.play(Paths.sound('cancelMenu'));
 	}
