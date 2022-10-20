@@ -234,8 +234,10 @@ class TitleState extends MusicBeatState
 			if (FlxG.keys.justPressed.ESCAPE && !pressedEnter)
 			{
 				FlxG.sound.music.fadeOut(0.3);
-				FlxG.camera.fade(FlxColor.BLACK, 0.5, false, null, false);
-				Sys.exit(0);
+				FlxG.camera.fade(FlxColor.BLACK, 0.5, false, function()
+				{
+					Sys.exit(0);
+				}, false);
 			}
 
 			if (pressedEnter)
@@ -305,6 +307,7 @@ class TitleState extends MusicBeatState
 	}
 
 	var logoTween:FlxTween;
+
 	override function beatHit()
 	{
 		super.beatHit();
