@@ -2,6 +2,7 @@ package states.menus;
 
 import base.MusicBeat.MusicBeatState;
 import dependency.Discord;
+import dependency.FNFSprite;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.addons.display.FlxBackdrop;
@@ -20,6 +21,13 @@ import funkin.ui.CreditsIcon;
 
 using StringTools;
 
+typedef CreditsPrefDef =
+{
+	var bgSprite:String;
+	var bgAntialiasing:Bool;
+	var users:Array<CreditsUserDef>;
+}
+
 typedef CreditsUserDef =
 {
 	var name:String;
@@ -27,15 +35,7 @@ typedef CreditsUserDef =
 	var textData:Array<String>;
 	var colors:Array<Int>;
 	var urlData:Array<Array<String>>;
-	var ?sectionName:String;
-}
-
-typedef CreditsPrefDef =
-{
-	var ?menuBG:Null<String>;
-	var ?menuBGColor:Null<Array<Int>>;
-	var ?bgTween:Null<Bool>;
-	var users:Array<CreditsUserDef>;
+	var sectionName:String;
 }
 
 /*
@@ -60,13 +60,13 @@ class CreditsMenuState extends MusicBeatState
 
 	var mediaAnimsArray:Array<String> = ['NG', 'Twitter', 'Twitch', 'YT', 'GitHub'];
 
-	var bg:FlxSprite;
-	var bgTween:FlxTween;
+	var menuBack:FlxSprite;
+	var backTween:FlxTween;
 	var bDrop:FlxBackdrop;
 
 	var socialIcon:FlxSprite;
-	var leftArrow:FlxSprite;
-	var rightArrow:FlxSprite;
+	var leftArrow:FNFSprite;
+	var rightArrow:FNFSprite;
 
 	var grpCreditSocials:FlxGroup;
 
@@ -83,19 +83,7 @@ class CreditsMenuState extends MusicBeatState
 		Discord.changePresence('READING THE CREDITS', 'Credits Menu');
 		#end
 
-		var file:String = 'menus/base/menuDesat';
-		if (credData.menuBG != null || credData.menuBG.length > 0)
-			file = credData.menuBG;
-		bg = new FlxSprite().loadGraphic(Paths.image(file));
-		add(bg);
-
-		bDrop = new FlxBackdrop(Paths.image('menus/base/grid'), 8, 8, true, true, 1, 1);
-		bDrop.velocity.x = 10;
-		bDrop.screenCenter();
-		bDrop.alpha = 0.5;
-		add(bDrop);
-
-		var ui_tex = Paths.getSparrowAtlas('menus/base/storymenu/campaign_menu_UI_assets');
+		generateBackground();
 
 		grpCharacters = new FlxTypedGroup<Alphabet>();
 		add(grpCharacters);
@@ -132,7 +120,7 @@ class CreditsMenuState extends MusicBeatState
 		desc.setFormat(Paths.font("vcr"), 32, FlxColor.WHITE, CENTER);
 		desc.setBorderStyle(OUTLINE, FlxColor.BLACK, 1.5);
 		desc.scrollFactor.set();
-		desc.antialiasing = true;
+		desc.antialiasing = !Init.getSetting('Disable Antialiasing');
 		add(desc);
 
 		groupText = new FlxText(0, 40, 1180, "Group", 36);
@@ -140,7 +128,7 @@ class CreditsMenuState extends MusicBeatState
 		groupText.setBorderStyle(OUTLINE, FlxColor.BLACK, 3);
 		groupText.bold = true;
 		groupText.scrollFactor.set();
-		groupText.antialiasing = true;
+		groupText.antialiasing = !Init.getSetting('Disable Antialiasing');
 		add(groupText);
 
 		socialIcon = new FlxSprite(0, 0);
@@ -151,18 +139,10 @@ class CreditsMenuState extends MusicBeatState
 		socialIcon.updateHitbox();
 		grpCreditSocials.add(socialIcon);
 
-		leftArrow = new FlxSprite(0, 0);
-		leftArrow.frames = ui_tex;
-		leftArrow.animation.addByPrefix('idle', "arrow left");
-		leftArrow.animation.addByPrefix('press', "arrow push left");
-		leftArrow.animation.play('idle');
+		leftArrow = generateUIArrows('left');
 		grpCreditSocials.add(leftArrow);
 
-		rightArrow = new FlxSprite(0, 0);
-		rightArrow.frames = ui_tex;
-		rightArrow.animation.addByPrefix('idle', 'arrow right');
-		rightArrow.animation.addByPrefix('press', "arrow push right", 24, false);
-		rightArrow.animation.play('idle');
+		rightArrow = generateUIArrows('right');
 		grpCreditSocials.add(rightArrow);
 
 		curSelected = 0;
@@ -171,9 +151,50 @@ class CreditsMenuState extends MusicBeatState
 		updateSocial();
 	}
 
+	function generateBackground()
+	{
+		if (credData.bgSprite != null || credData.bgSprite.length > 0)
+		{
+			menuBack = new FlxSprite().loadGraphic(Paths.image(credData.bgSprite));
+			menuBack.antialiasing = !credData.bgAntialiasing;
+			menuBack.updateHitbox();
+		}
+		else
+		{
+			menuBack = new FlxSprite().loadGraphic(Paths.image('menus/base/menuDesat'));
+			menuBack.antialiasing = !Init.getSetting('Disable Antialiasing');
+		}
+		add(menuBack);
+
+		bDrop = new FlxBackdrop(Paths.image('menus/base/grid'), 8, 8, true, true, 1, 1);
+		bDrop.velocity.x = 10;
+		bDrop.screenCenter();
+		bDrop.alpha = 0.5;
+		add(bDrop);
+	}
+
+	function generateUIArrows(dir:String):FNFSprite
+	{
+		var selector = new FNFSprite();
+		selector.frames = Paths.getSparrowAtlas('menus/base/storymenu/campaign_menu_UI_assets');
+
+		selector.animation.addByPrefix('idle', 'arrow $dir', 24, false);
+		selector.animation.addByPrefix('press', 'arrow push $dir', 24, false);
+		selector.addOffset('press', 0, -10);
+		selector.playAnim('idle');
+
+		return selector;
+	}
+
 	override function update(elapsed:Float)
 	{
 		super.update(elapsed);
+
+		if (backTween != null)
+			backTween.cancel();
+		backTween = FlxTween.color(menuBack, 0.35, menuBack.color, mainColor);
+
+		// MESSY CONTROLS SECTION
 
 		if (controls.UI_UP_P || (!FlxG.keys.pressed.SHIFT && FlxG.mouse.wheel == 1))
 			changeSelection(-1);
@@ -212,6 +233,7 @@ class CreditsMenuState extends MusicBeatState
 		}
 	}
 
+	var mainColor:FlxColor = FlxColor.WHITE;
 	function changeSelection(change:Int = 0)
 	{
 		FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
@@ -223,19 +245,7 @@ class CreditsMenuState extends MusicBeatState
 		if (curSelected >= credData.users.length)
 			curSelected = 0;
 
-		var newColor:FlxColor = FlxColor.fromRGB(credData.users[curSelected].colors[0], credData.users[curSelected].colors[1],
-			credData.users[curSelected].colors[2]);
-
-		if (credData.bgTween)
-		{
-			if (bgTween != null)
-				bgTween.cancel();
-			bgTween = FlxTween.color(bg, 0.35, bg.color, newColor);
-		}
-		else
-		{
-			bg.color = FlxColor.fromRGB(credData.menuBGColor[0], credData.menuBGColor[1], credData.menuBGColor[2]);
-		}
+		mainColor = FlxColor.fromRGB(credData.users[curSelected].colors[0], credData.users[curSelected].colors[1], credData.users[curSelected].colors[2]);
 
 		var bullShit:Int = 0;
 

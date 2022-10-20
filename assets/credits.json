@@ -1,11 +1,6 @@
 {
-	"menuBG": "",
-	"menuBGColor": [
-		255,
-		255,
-		255
-	],
-	"bgTween": true,
+	"bgSprite": null,
+	"bgAntialiasing": true,
 	"users": [
 		{
 			"sectionName": "FOREVER ENGINE: UNDERSCORE",
