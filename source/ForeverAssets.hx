@@ -204,8 +204,6 @@ class ForeverAssets
 		var path = Paths.getPreloadPath('images/$baseLibrary/$changeableSkin/$assetModifier/splashData.json');
 
 		var rawJson = null;
-		rawJson = sys.io.File.getContent(path);
-
 		if (!FileSystem.exists(path))
 		{
 			splashJson = cast haxe.Json.parse('{
@@ -226,7 +224,10 @@ class ForeverAssets
 			}');
 		}
 		else
+		{
+			rawJson = sys.io.File.getContent(path);
 			splashJson = cast haxe.Json.parse(rawJson);
+		}
 
 		if (splashJson.file != null)
 			asset = splashJson.file;
