@@ -376,7 +376,7 @@
 		{
 			"sectionName": "FOREVER ENGINE LEGACY",
 			"name": "Yoshubs",
-			"icon": "",
+			"icon": "yoshubs",
 			"textData": [
 				"Forever Engine's Lead Programmer, also made some fixes for Underscore such as Dynamic Sizes for Hold Note Trails"
 			],
@@ -394,7 +394,7 @@
 		},
 		{
 			"name": "Pixloen",
-			"icon": "",
+			"icon": "pixloen",
 			"textData": [
 				"Forever Engine's Artist, Made a lot of the Custom Assets that the engine uses"
 			],
@@ -412,7 +412,7 @@
 		},
 		{
 			"name": "Gedehari",
-			"icon": "",
+			"icon": "gedehari",
 			"textData": [
 				"Great Programmer, made the freeplay loading thread to avoid lag issues in freeplay, along with waveform rendering code, (legacy) external shader support, and so many other things like the Crash Logger"
 			],
@@ -430,7 +430,7 @@
 		},
 		{
 			"name": "ImCodist",
-			"icon": "",
+			"icon": "imcodist",
 			"textData": [
 				"Made the Base Dialogue System and a couple of issue fixes"
 			],
@@ -448,7 +448,7 @@
 		},
 		{
 			"name": "Scarlett",
-			"icon": "",
+			"icon": "scarlett",
 			"textData": [
 				"Programmer, Wrote the Finalized Math Formula for Note Quants"
 			],
