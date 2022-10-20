@@ -816,34 +816,36 @@ class ChartEditor extends MusicBeatState
 
 	private function generateSustain(daStrumTime:Float = 0, daNoteInfo:Int = 0, daSus:Float = 0, daNoteAlt:Float = 0, daNoteType:Int = 0, prevNote:Note)
 	{
-		// this is genuinely driving me insane and I don't know how should I do it
 		if (daSus > 0 && prevNote != null)
 		{
-			var constSize = Std.int(gridSize / 2);
+			// just old code from legacy
+			var constSize = Std.int(gridSize / 3);
 
-			var note = ForeverAssets.generateArrow(_song.assetModifier, daStrumTime, daNoteInfo % 8, daNoteAlt, true, prevNote, daNoteType);
+			var hold:Note = ForeverAssets.generateArrow(_song.assetModifier, daStrumTime + (Conductor.stepCrochet * daSus) + Conductor.stepCrochet,
+				daNoteInfo % 4, daNoteAlt, true, prevNote, daNoteType);
 
-			var hold:FlxTiledSprite = new FlxTiledSprite(FlxGraphic.fromFrame(note.frame), note.frame.frame.width, gridSize * daSus, false, true);
-			hold.x = prevNote.x - prevNote.width * 0.5;
-			hold.y = prevNote.y + prevNote.height - hold.height * 0.5;
-			hold.scale.x = 0.5;
+			hold.setGraphicSize(constSize, getNoteVert(daSus / 2));
 			hold.updateHitbox();
-			// holdsGroup.add(hold);
-			note.destroy();
+			hold.x = prevNote.x + constSize;
+			hold.y = prevNote.y + (gridSize / 2);
 
-			/*
-				if (prevNote != null && prevNote.isSustain)
-				{
-					var end:Note = ForeverAssets.generateArrow(_song.assetModifier, daStrumTime + Conductor.stepCrochet, daNoteInfo % 4, daNoteAlt, true,
-						hold, daNoteType);
-					end.setGraphicSize(constSize, Math.floor(FlxMath.remapToRange(daSus, 0, Conductor.stepCrochet * 16, 0, gridSize * constSize)));
-					end.updateHitbox();
-					end.x = hold.x - 15;
-					end.y = hold.y + (hold.height) + (gridSize / 2);
-					holdsGroup.add(end);
-				}
-			 */
+			var holdEnd:Note = ForeverAssets.generateArrow(_song.assetModifier, daStrumTime + (Conductor.stepCrochet * daSus) + Conductor.stepCrochet,
+				daNoteInfo % 4, daNoteAlt, true, hold, daNoteType);
+			holdEnd.setGraphicSize(constSize, constSize);
+			holdEnd.updateHitbox();
+			holdEnd.x = hold.x;
+			holdEnd.y = prevNote.y + (hold.height) + (gridSize / 2);
+
+			holdsGroup.add(hold);
+			holdsGroup.add(holdEnd);
+			//
 		}
+	}
+
+	function getNoteVert(newHoldLength:Float)
+	{
+		var constSize = Std.int(gridSize / 3);
+		return Math.floor(FlxMath.remapToRange(newHoldLength, 0, Conductor.stepCrochet * songMusic.length, 0, gridSize * songMusic.length) - constSize);
 	}
 
 	var coolGrid:FlxBackdrop;
@@ -869,9 +871,9 @@ class ChartEditor extends MusicBeatState
 		// function that will be called when pressed (optional)
 
 		buttonArray = [
-			[FlxG.width - 350, 280, "SAVE SONG", 20, null, "medium", null],
-			[FlxG.width - 350, 330, "RELOAD SONG", 20, null, "medium", null],
-			[FlxG.width - 350, 380, "LOAD AUTOSAVE", 20, null, "medium", null]
+			[FlxG.width - 350, 320, "CHANGE CREDITS", 20, null, "medium", null],
+			[FlxG.width - 350, 430, "CHANGE SONG NAME", 20, null, "medium", null],
+			[FlxG.width - 350, 580, "SAVE CHART", 20, null, "small", null]
 		];
 
 		buttonGroup.clear();

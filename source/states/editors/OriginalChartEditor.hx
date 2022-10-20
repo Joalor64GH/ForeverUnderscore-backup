@@ -293,6 +293,7 @@ class OriginalChartEditor extends MusicBeatState
 		blockPressWhileTypingOnStepper.push(stepperOffset);
 
 		sliderRate = new FlxUISlider(this, 'playbackSpeed', 50, 280, 0.5, 3, 150, null, 5, FlxColor.WHITE, FlxColor.BLACK);
+		sliderRate.nameLabel.text = 'Playback Rate';
 
 		var baseChars:Array<String> = CoolUtil.returnAssetsLibrary('characters', '');
 		var baseStages:Array<String> = CoolUtil.returnAssetsLibrary('stages', '');
