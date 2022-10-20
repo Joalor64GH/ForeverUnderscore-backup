@@ -32,6 +32,25 @@
 			]
 		},
 		{
+			"name": "Satoru",
+			"icon": "satoru",
+			"textData": [
+				"Lead Artist, made most the icons used on the credits menu (I owe you honey -Ghost)",
+				"se a vaca bebe água e come mato, pq ela dá leite e não chá?"
+			],
+			"urlData": [
+				[
+					"Twitter",
+					"https://twitter.com/kajizyoficial"
+				]
+			],
+			"colors": [
+				237,
+				215,
+				255
+			]
+		},
+		{
 			"name": "NxtVithor",
 			"icon": "vito",
 			"textData": [
@@ -51,25 +70,6 @@
 			"colors": [
 				245,
 				108,
-				255
-			]
-		},
-				{
-			"name": "Satoru",
-			"icon": "satoru",
-			"textData": [
-				"Artist.",
-				"se a vaca bebe água e come mato, pq ela dá leite e não chá?"
-			],
-			"urlData": [
-				[
-					"Twitter",
-					"https://twitter.com/kajizyoficial"
-				]
-			],
-			"colors": [
-				237,
-				215,
 				255
 			]
 		},
@@ -119,7 +119,7 @@
 		},
 		{
 			"name": "Teles",
-			"icon": "",
+			"icon": "teles",
 			"textData": [
 				"Additional Coder"
 			],
@@ -130,15 +130,15 @@
 				]
 			],
 			"colors": [
-				255,
-				129,
-				60
+				253,
+				131,
+				58
 			]
 		},
 		{
 			"sectionName": "FOREVER ENGINE: UNDERSCORE",
 			"name": "Luisinho01",
-			"icon": "",
+			"icon": "luis",
 			"textData": [
 				"Additional Coder"
 			],
@@ -149,18 +149,18 @@
 				]
 			],
 			"colors": [
-				182,
-				84,
-				82
+				241,
+				212,
+				120
 			]
 		},
 		{
 			"sectionName": "SPECIAL THANKS",
 			"name": "ShadowMario",
-			"icon": "",
+			"icon": "shadowmario",
 			"textData": [
 				"Coding Help, some advices and overall good friend, we urge you to check Psych Engine if you haven't (which is kinda unlikely buuut yeah!)",
-				"WikiHow: How to handle fame."
+				"Dr Perky."
 			],
 			"urlData": [
 				[
@@ -169,14 +169,14 @@
 				]
 			],
 			"colors": [
-				68,
-				68,
-				68
+				0,
+				0,
+				0
 			]
 		},
 		{
 			"name": "PolybiusProxy",
-			"icon": "",
+			"icon": "polybius",
 			"textData": [
 				"Made the Library for Loading Video Cutscenes (hxCodec)"
 			],
@@ -187,14 +187,14 @@
 				]
 			],
 			"colors": [
-				255,
-				234,
-				166
+				175,
+				217,
+				255
 			]
 		},
 		{
 			"name": "MasterEric",
-			"icon": "",
+			"icon": "mastereric",
 			"textData": [
 				"Made the Runtime Shader Support class for fragment and vertex shaders"
 			],
@@ -205,14 +205,14 @@
 				]
 			],
 			"colors": [
-				255,
-				255,
-				255
+				10,
+				22,
+				30
 			]
 		},
 		{
 			"name": "DiogoTTV",
-			"icon": "",
+			"icon": "diogo",
 			"textData": [
 				"BANGER coder which deserves more recognition, made the current credits menu"
 			],
@@ -223,9 +223,9 @@
 				]
 			],
 			"colors": [
-				225,
-				228,
-				240
+				100,
+				100,
+				100
 			]
 		},
 		{
@@ -249,7 +249,7 @@
 		},
 		{
 			"name": "Suok",
-			"icon": "",
+			"icon": "suok",
 			"textData": [
 				"Cool Friend and great artist, made the custom assets used in-game (such as the prepare sprite for the countdown)",
 				"não faça sexo."
@@ -261,14 +261,14 @@
 				]
 			],
 			"colors": [
-				255,
-				255,
-				255
+				84,
+				12,
+				0
 			]
 		},
 		{
 			"name": "ImNotSonic",
-			"icon": "",
+			"icon": "imnotsonic",
 			"textData": [
 				"Epic Pixel Artist lady, made the pixel variant for the prepare sprite used on the countdown"
 			],
@@ -279,14 +279,14 @@
 				]
 			],
 			"colors": [
-				255,
-				255,
-				255
+				232,
+				16,
+				37
 			]
 		},
 		{
 			"name": "superpowers04",
-			"icon": "",
+			"icon": "super",
 			"textData": [
 				"Sick Programmer and Cool Friend, Made the Code for the Console which displays debug information on screen by pressing F10",
 				"Insert funny quote here (play super engine)"
@@ -298,15 +298,15 @@
 				]
 			],
 			"colors": [
-				255,
-				255,
-				255
+				92,
+				0,
+				138
 			]
 		},
 		{
 			"sectionName": "SPECIAL THANKS",
 			"name": "doggo",
-			"icon": "",
+			"icon": "doggo",
 			"textData": [
 				"Helped a lot to make the GitHub Page more apealling for visitors, along with some other engine fixes, haha we owe you one"
 			],
@@ -317,9 +317,9 @@
 				]
 			],
 			"colors": [
-				255,
-				234,
-				166
+				156,
+				198,
+				255
 			]
 		},
 		{
@@ -345,7 +345,7 @@
 		{
 			"sectionName": "SHOUTOUTS",
 			"name": "yoisabo",
-			"icon": "",
+			"icon": "yoisabo",
 			"textData": [
 				"Being such a homie in general, she made the Arrow Funk mod which we definitely recommend playing"
 			],
@@ -364,9 +364,9 @@
 				]
 			],
 			"colors": [
-				90,
-				49,
-				187
+				85,
+				29,
+				180
 			]
 		},
 		{

@@ -38,7 +38,8 @@ typedef CreditsPrefDef =
 
 /*
 	New Credits Menu
-	Written by: @DiogoTVV and @iamteles
+	@author DiogoTVV and iamteles
+	@origin VS Yung Lixo Rework
  */
 class CreditsMenuState extends MusicBeatState
 {
@@ -86,17 +87,10 @@ class CreditsMenuState extends MusicBeatState
 		bDrop = new FlxBackdrop(Paths.image('menus/base/grid'), 8, 8, true, true, 1, 1);
 		bDrop.velocity.x = 10;
 		bDrop.screenCenter();
-		bDrop.alpha = 0.8;
+		bDrop.alpha = 0.5;
 		add(bDrop);
 
 		var ui_tex = Paths.getSparrowAtlas('menus/base/storymenu/campaign_menu_UI_assets');
-
-		var white:FlxSprite = new FlxSprite().makeGraphic(FlxG.width * 2, FlxG.height * 2, FlxColor.WHITE);
-		white.scrollFactor.set();
-		white.screenCenter();
-		white.antialiasing = true;
-		white.alpha = 0.25;
-		add(white);
 
 		grpCharacters = new FlxTypedGroup<Alphabet>();
 		add(grpCharacters);

@@ -163,6 +163,10 @@ class Paths
 			localTrackedAssets.push(key);
 			return currentTrackedAssets.get(key);
 		}
+		var errorSnd:flixel.system.FlxSound = new flixel.system.FlxSound();
+		errorSnd.loadEmbedded(Paths.sound('cancelMenu'));
+		if (errorSnd != null && !errorSnd.playing)
+			errorSnd.play();
 		trace('graphic is returning null at $key with gpu rendering ${Init.getSetting('GPU Rendering')}');
 		return FlxGraphic.fromRectangle(0, 0, 0);
 	}

@@ -12,7 +12,7 @@ using StringTools;
 class ModsMenuState extends MusicBeatState
 {
 	var alphaGroup:FlxTypedGroup<Alphabet>;
-	var alphabetModlist:Array<String> = [];
+	var modList:Array<String> = [];
 
 	var bg:FlxSprite;
 
@@ -21,7 +21,7 @@ class ModsMenuState extends MusicBeatState
 		super.create();
 
 		// make sure there's nothing on the mod list
-		alphabetModlist = [];
+		modList = [];
 
 		// make sure the music is playing
 		ForeverTools.resetMenuMusic();
@@ -41,7 +41,7 @@ class ModsMenuState extends MusicBeatState
 		try
 		{
 			for (mod in ModManager.getModFolders())
-				alphabetModlist.push(mod);
+				modList.push(mod);
 		}
 		catch (e)
 		{
@@ -51,11 +51,11 @@ class ModsMenuState extends MusicBeatState
 		alphaGroup = new FlxTypedGroup<Alphabet>();
 		add(alphaGroup);
 
-		for (i in 0...alphabetModlist.length)
+		for (i in 0...modList.length)
 		{
-			var blah:Alphabet = new Alphabet(0, 0, alphabetModlist[i], true, false);
+			var blah:Alphabet = new Alphabet(0, 0, modList[i], true, false);
 			blah.screenCenter();
-			blah.y += (80 * (i - Math.floor(alphabetModlist[i].length / 2)));
+			blah.y += (80 * (i - Math.floor(modList[i].length / 2)));
 			blah.y += 10;
 			blah.targetY = i;
 			blah.disableX = true;

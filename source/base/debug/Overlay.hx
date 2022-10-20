@@ -82,14 +82,12 @@ class Overlay extends TextField
 			displayExtra = !displayExtra;
 
 		var fpsMs = (displayExtra ? ' (${FlxMath.roundDecimal(_ms, 2)}ms)' : '');
-		var memTxt = (displayExtra ? 'Memory: ' : '');
-		var peakTxt = (displayExtra ? 'Peak: ' : '');
 
 		if (visible)
 		{
 			text = '' // set up the text itself
 				+ (displayFps ? times.length + ' FPS' + fpsMs + '\n' : '') // Current Framerate (and Milliseconds)
-				+ (displayMemory ? memTxt + '${getInterval(mem)} / ' + peakTxt + '${getInterval(memPeak)}\n' : '') // Current and Total Memory Usage
+				+ (displayMemory ? '${getInterval(mem)} / ${getInterval(memPeak)}\n' : '') // Current and Total Memory Usage
 				// Extra Info, shown by pressing F3
 				+ (displayExtra ? 'State: ${Main.mainClassState}\n' : '') // Current Game State
 				+ (displayExtra ? 'Objects: ${FlxG.state.members.length} ' : '') // Current Game State Object Count

@@ -25,13 +25,13 @@ class Alphabet extends FlxTypedSpriteGroup<AlphaCharacter>
 	public var yAdd:Float = 0;
 	public var yOffset:Float = 0;
 	public var targetY:Float = 0;
-	public var disableX:Bool = false;
 
 	var textInit:String;
 
 	public var xTo = 100;
 
 	public var isMenuItem:Bool = false;
+	public var disableX:Bool = false;
 
 	public var text:String = "";
 	public var _finalText:String = "";

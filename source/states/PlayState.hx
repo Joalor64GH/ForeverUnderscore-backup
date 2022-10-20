@@ -1064,7 +1064,7 @@ class PlayState extends MusicBeatState
 		}
 
 		// set the notes x and y
-		var downscrollMultiplier = (Init.getSetting('Downscroll') ? -1 : 1) * FlxMath.signOf(songSpeed);
+		var downscrollMult = (Init.getSetting('Downscroll') ? -1 : 1) * FlxMath.signOf(songSpeed);
 		if (generatedSong && startedCountdown)
 		{
 			for (strumline in strumLines)
@@ -1079,7 +1079,7 @@ class PlayState extends MusicBeatState
 
 					var receptorX:Float = strumline.receptors.members[Math.floor(strumNote.noteData)].x;
 					var receptorY:Float = strumline.receptors.members[Math.floor(strumNote.noteData)].y;
-					var psuedoY:Float = (downscrollMultiplier * -((Conductor.songPosition - strumNote.strumTime) * (0.45 * strumNote.noteSpeed)));
+					var psuedoY:Float = (downscrollMult * -((Conductor.songPosition - strumNote.strumTime) * (0.45 * strumNote.noteSpeed)));
 					var psuedoX = 25 + strumNote.noteVisualOffset;
 
 					strumNote.y = receptorY
@@ -1098,12 +1098,13 @@ class PlayState extends MusicBeatState
 					var center:Float = receptorY + Receptor.swagWidth / (1.85 * (assetModifier == 'pixel' ? 3 : 1));
 					if (strumNote.isSustain)
 					{
-						strumNote.y -= ((strumNote.height / 2) * downscrollMultiplier);
+						strumNote.y -= ((strumNote.height / 2) * downscrollMult);
+
 						if ((strumNote.animation.curAnim.name.endsWith('holdend') || strumNote.animation.curAnim.name.endsWith('rollend'))
 							&& (strumNote.prevNote != null))
 						{
-							strumNote.y -= ((strumNote.prevNote.height / 2) * downscrollMultiplier);
-							if (downscrollMultiplier < 0) // downscroll;
+							strumNote.y -= ((strumNote.prevNote.height / 2) * downscrollMult);
+							if (downscrollMult < 0) // downscroll;
 							{
 								strumNote.y += (strumNote.height * 2);
 								if (strumNote.endHoldOffset == Math.NEGATIVE_INFINITY)
@@ -1111,12 +1112,12 @@ class PlayState extends MusicBeatState
 								else
 									strumNote.y += strumNote.endHoldOffset;
 							}
-							else if (downscrollMultiplier > 0) // upscroll;
-								strumNote.y += ((strumNote.height / 2) * downscrollMultiplier);
+							else if (downscrollMult > 0) // upscroll;
+								strumNote.y += ((strumNote.height / 2) * downscrollMult);
 							// this system is funny like that
 						}
 
-						if (downscrollMultiplier < 0)
+						if (downscrollMult < 0)
 						{
 							strumNote.flipY = true;
 							if (strumNote.y - strumNote.offset.y * strumNote.scale.y + strumNote.height >= center
@@ -1129,7 +1130,7 @@ class PlayState extends MusicBeatState
 								strumNote.clipRect = swagRect;
 							}
 						}
-						else if (downscrollMultiplier > 0)
+						else if (downscrollMult > 0)
 						{
 							if (strumNote.y + strumNote.offset.y * strumNote.scale.y <= center
 								&& (strumline.autoplay
@@ -2391,7 +2392,6 @@ class PlayState extends MusicBeatState
 
 	function callScripts()
 	{
-		var extensions = ['hx', 'hxs', 'hscript', 'hxc'];
 		var dirs:Array<Array<String>> = [
 			CoolUtil.absoluteDirectory('scripts'),
 			CoolUtil.absoluteDirectory('songs/${CoolUtil.swapSpaceDash(PlayState.SONG.song.toLowerCase())}')
@@ -2403,6 +2403,7 @@ class PlayState extends MusicBeatState
 			{
 				if (dir != null && dir.length > 0)
 				{
+					var extensions = ['hx', 'hxs', 'hscript', 'hxc'];
 					for (ext in extensions)
 					{
 						if (ext != null)
