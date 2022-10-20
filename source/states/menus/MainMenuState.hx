@@ -184,7 +184,8 @@ class MainMenuState extends MusicBeatState
 							else if (i == 3 || i == 5)
 								curSelected++;
 
-							FlxG.sound.play(Paths.sound('scrollMenu'));
+							if (i == 2 || i == 3)
+								FlxG.sound.play(Paths.sound('scrollMenu'));
 						}
 						if (curSelected < 0)
 							curSelected = optionShit.length - 1;

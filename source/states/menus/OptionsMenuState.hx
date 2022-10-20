@@ -438,9 +438,9 @@ class OptionsMenuState extends MusicBeatState
 					if (i > 1)
 					{
 						if (i == 2 || i == 4)
-							selectOption(curSelection - 1);
+							selectOption(curSelection - 1, (i == 4 ? false : true));
 						else if (i == 3 || i == 5)
-							selectOption(curSelection + 1);
+							selectOption(curSelection + 1, (i == 5 ? false : true));
 					}
 				}
 			}

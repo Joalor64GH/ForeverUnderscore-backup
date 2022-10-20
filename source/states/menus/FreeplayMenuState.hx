@@ -104,7 +104,7 @@ class FreeplayMenuState extends MusicBeatState
 		}
 
 		loadUI();
-		changeSelection();
+		changeSelection(0, false);
 	}
 
 	function loadUI()
@@ -301,7 +301,7 @@ class FreeplayMenuState extends MusicBeatState
 
 				if (FlxG.mouse.wheel != 0)
 				{
-					changeSelection(-shiftMult * FlxG.mouse.wheel);
+					changeSelection(-shiftMult * FlxG.mouse.wheel, false);
 					changeDiff();
 				}
 			}
@@ -461,9 +461,10 @@ class FreeplayMenuState extends MusicBeatState
 		lastDifficulty = existingDifficulties[curSelected][curDifficulty];
 	}
 
-	function changeSelection(change:Int = 0)
+	function changeSelection(change:Int = 0, playSound:Bool = true)
 	{
-		FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
+		if (playSound)
+			FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
 
 		curSelected += change;
 

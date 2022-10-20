@@ -15,6 +15,12 @@ import states.menus.CreditsMenuState;
 
 using StringTools;
 
+/*
+	NOTE to Devs: need to rewrite this
+	for it to be more modular, easier to manage,
+	and match week 7's Controls Substate
+	-gabi
+*/
 class ControlsSubstate extends MusicBeatSubstate
 {
 	var curSelection = -1;

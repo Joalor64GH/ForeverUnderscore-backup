@@ -164,7 +164,7 @@ class PauseSubstate extends MusicBeatSubstate
 		}
 
 		curSelected = 0;
-		changeSelection();
+		changeSelection(0, false);
 	}
 
 	override function update(elapsed:Float)
@@ -175,17 +175,17 @@ class PauseSubstate extends MusicBeatSubstate
 			pauseMusic.volume += 0.01 * elapsed;
 
 		if (controls.UI_UP_P)
-		{
 			changeSelection(-1);
-			FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
-		}
-		if (controls.UI_DOWN_P)
-		{
+		else if (controls.UI_DOWN_P)
 			changeSelection(1);
-			FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
-		}
 
-		if (controls.ACCEPT)
+		if (FlxG.mouse.wheel != 0)
+			changeSelection(-1 * FlxG.mouse.wheel, false);
+
+		if (controls.BACK || FlxG.mouse.justPressedRight)
+			close();
+
+		if (controls.ACCEPT || FlxG.mouse.justPressed)
 		{
 			var daSelected:String = menuItems[curSelected];
 
@@ -286,9 +286,11 @@ class PauseSubstate extends MusicBeatSubstate
 		levelPractice.visible = false;
 	}
 
-	function changeSelection(change:Int = 0):Void
+	function changeSelection(change:Int = 0, playSound:Bool = true):Void
 	{
 		curSelected += change;
+		if (playSound)
+			FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
 
 		if (curSelected < 0)
 			curSelected = menuItems.length - 1;
