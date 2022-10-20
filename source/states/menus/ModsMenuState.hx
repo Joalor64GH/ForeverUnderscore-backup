@@ -26,9 +26,6 @@ class ModsMenuState extends MusicBeatState
 		// make sure the music is playing
 		ForeverTools.resetMenuMusic();
 
-		// reload locales
-		ForeverLocales.getLocale(Init.trueSettings.get('Language'));
-
 		bg = new FlxSprite(-80).loadGraphic(Paths.image('menus/base/menuDesat'));
 		bg.scrollFactor.set(0, 0.18);
 		bg.setGraphicSize(Std.int(bg.width * 1.175));

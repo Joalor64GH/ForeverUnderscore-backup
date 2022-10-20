@@ -170,6 +170,9 @@ class OptionsMenuState extends MusicBeatState
 		// reload locales
 		ForeverLocales.getLocale(Init.trueSettings.get('Language'));
 
+		// reload custom skins
+		Init.reloadCustomSkins();
+
 		// call the options menu
 		var bg = new FlxSprite(-85).loadGraphic(Paths.image('menus/base/menuDesat'));
 		bg.scrollFactor.set(0, 0.18);
@@ -381,6 +384,10 @@ class OptionsMenuState extends MusicBeatState
 		{
 			// reload locales
 			ForeverLocales.getLocale(Init.trueSettings.get('Language'));
+
+			// reload custom skins
+			Init.reloadCustomSkins();
+
 			playSound('cancelMenu');
 
 			switch (lastChanged)

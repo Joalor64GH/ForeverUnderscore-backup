@@ -50,9 +50,6 @@ class MainMenuState extends MusicBeatState
 		// make sure the music is playing
 		ForeverTools.resetMenuMusic();
 
-		// reload locales
-		ForeverLocales.getLocale(Init.trueSettings.get('Language'));
-
 		#if DISCORD_RPC
 		Discord.changePresence('MENU SCREEN', 'Main Menu');
 		#end
