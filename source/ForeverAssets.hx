@@ -109,6 +109,14 @@ class ForeverAssets
 			else if (!debug)
 			{
 				FlxTween.tween(combo, {y: combo.y + 20}, 0.1, {type: FlxTweenType.BACKWARD, ease: FlxEase.circOut});
+				FlxTween.tween(combo, {alpha: 0}, (Conductor.stepCrochet) / 1000, {
+					onComplete: function(tween:FlxTween)
+					{
+						if (combo.alive)
+							combo.kill();
+					},
+					startDelay: ((Conductor.crochet + Conductor.stepCrochet * 2) / 1000 / Conductor.playbackRate)
+				});
 			}
 		}
 

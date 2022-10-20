@@ -60,7 +60,6 @@ class CreditsMenuState extends MusicBeatState
 
 	var bgTween:FlxTween;
 	var bg:FlxSprite;
-	var bDrop:FlxBackdrop;
 
 	var socialIcon:FlxSprite;
 	var leftArrow:FlxSprite;
@@ -82,13 +81,8 @@ class CreditsMenuState extends MusicBeatState
 		#end
 
 		bg = new FlxSprite().loadGraphic(Paths.image('menus/base/menuDesat'));
+		bg.blend = openfl.display.BlendMode.MULTIPLY;
 		add(bg);
-
-		bDrop = new FlxBackdrop(Paths.image('menus/base/grid'), 8, 8, true, true, 1, 1);
-		bDrop.velocity.x = 10;
-		bDrop.screenCenter();
-		bDrop.alpha = 0.5;
-		add(bDrop);
 
 		var ui_tex = Paths.getSparrowAtlas('menus/base/storymenu/campaign_menu_UI_assets');
 

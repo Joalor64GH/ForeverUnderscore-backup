@@ -61,6 +61,7 @@ class PlayState extends MusicBeatState
 
 	// for scripts
 	public static var contents:PlayState;
+	public static var scriptArray:Array<ScriptHandler>;
 
 	// story things
 	public static var storyWeek:Int = 0;
@@ -120,9 +121,6 @@ class PlayState extends MusicBeatState
 	public var startedCountdown:Bool = false;
 	public var skipCountdown:Bool = false;
 	public var inCutscene:Bool = false;
-
-	// for scripts later
-	public var scriptArray:Array<ScriptHandler>;
 
 	// cameras
 	public static var camHUD:FlxCamera;
@@ -191,7 +189,7 @@ class PlayState extends MusicBeatState
 	// stores the last judgement sprite object
 	public static var lastJudge:FNFSprite;
 	// stores the last combo sprite objects in an array
-	public static var lastCombo:Array<FNFSprite> = [];
+	public static var lastCombo:Array<FNFSprite>;
 
 	function resetVariables()
 	{
@@ -208,6 +206,9 @@ class PlayState extends MusicBeatState
 		defaultCamZoom = 1.05;
 		cameraSpeed = 1 * Conductor.playbackRate;
 		forceZoom = [0, 0, 0, 0];
+
+		scriptArray = [];
+		lastCombo = [];
 
 		assetModifier = 'base';
 		uiModifier = 'default';
@@ -335,6 +336,15 @@ class PlayState extends MusicBeatState
 		else
 			curStage = 'unknown';
 
+		try
+		{
+			callScripts();
+		}
+		catch (e)
+		{
+			logTrace('Uncaught Error: $e', 3, camAlt);
+		}
+
 		stageBuild = new Stage(PlayState.curStage);
 		add(stageBuild);
 
@@ -452,16 +462,6 @@ class PlayState extends MusicBeatState
 
 		// generate the song
 		generateSong();
-
-		try
-		{
-			callScripts();
-		}
-		catch (e)
-		{
-			trace('Uncaught Error: $e');
-			FlxG.sound.play(Paths.sound('cancelMenu'));
-		}
 
 		// set the camera position to the center of the stage
 		camPos.set(gf.x + (gf.frameWidth / 2), gf.y + (gf.frameHeight / 2));
@@ -2398,6 +2398,7 @@ class PlayState extends MusicBeatState
 
 	function callScripts()
 	{
+		var extensions = ['hx', 'hxs', 'hscript', 'hxc'];
 		var dirs:Array<Array<String>> = [
 			CoolUtil.absoluteDirectory('scripts'),
 			CoolUtil.absoluteDirectory('songs/${CoolUtil.swapSpaceDash(PlayState.SONG.song.toLowerCase())}')
@@ -2409,13 +2410,17 @@ class PlayState extends MusicBeatState
 			{
 				if (dir != null && dir.length > 0)
 				{
-					var extensions = ['hx', 'hxs', 'hscript', 'hxc'];
 					for (ext in extensions)
 					{
-						if (ext != null)
+						if (script != null && script.length > 0)
 						{
-							if (script != null && script.length > 0 && script.endsWith('.$ext'))
+							if (script.endsWith('.$ext'))
 								scriptArray.push(new ScriptHandler(script));
+						}
+						else
+						{
+							Main.switchState(this, new MainMenuState());
+							return logTrace('Script is returning null', 3, camAlt);
 						}
 					}
 				}
@@ -2431,7 +2436,8 @@ class PlayState extends MusicBeatState
 		{
 			for (i in scriptArray)
 				i.call(key, args);
-			setLocalVars();
+			if (generatedSong)
+				setLocalVars();
 		}
 	}
 
@@ -2460,6 +2466,10 @@ class PlayState extends MusicBeatState
 		// GENERAL
 		setVar('game', PlayState.contents);
 		setVar('ui', PlayState.uiHUD);
+		setVar('logTrace', function(f:String, t:Float, c:FlxCamera)
+		{
+			logTrace(f, t, c);
+		});
 
 		setVar('add', add);
 		setVar('remove', remove);
@@ -2472,30 +2482,27 @@ class PlayState extends MusicBeatState
 		setVar('scriptDebugMode', PlayState.scriptDebugMode);
 
 		// CHARACTERS
-		if (generatedSong)
+		setVar('songName', PlayState.SONG.song.toLowerCase());
+
+		if (boyfriend != null)
 		{
-			setVar('songName', PlayState.SONG.song.toLowerCase());
+			setVar('bf', boyfriend);
+			setVar('boyfriend', boyfriend);
+			setVar('bfName', PlayState.boyfriend.curCharacter);
+		}
 
-			if (boyfriend != null)
-			{
-				setVar('bf', boyfriend);
-				setVar('boyfriend', boyfriend);
-				setVar('bfName', PlayState.boyfriend.curCharacter);
-			}
+		if (dad != null)
+		{
+			setVar('dad', dad);
+			setVar('dadOpponent', dad);
+			setVar('dadName', PlayState.dad.curCharacter);
+		}
 
-			if (dad != null)
-			{
-				setVar('dad', dad);
-				setVar('dadOpponent', dad);
-				setVar('dadName', PlayState.dad.curCharacter);
-			}
-
-			if (gf != null)
-			{
-				setVar('gf', gf);
-				setVar('girlfriend', gf);
-				setVar('gfName', PlayState.gf.curCharacter);
-			}
+		if (gf != null)
+		{
+			setVar('gf', gf);
+			setVar('girlfriend', gf);
+			setVar('gfName', PlayState.gf.curCharacter);
 		}
 
 		setVar('setProperty', function(key:String, value:Dynamic)

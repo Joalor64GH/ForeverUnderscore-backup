@@ -23,7 +23,7 @@ class WarningState extends MusicBeatState
 	var warningText:FlxText;
 	var warningType:String = 'flashing';
 
-	var textField:String = 'beep bop bo skdkdkdbebedeoop brrapadop';
+	var warningField:String = 'beep bop bo skdkdkdbebedeoop brrapadop';
 	var fieldOffset:Float = 0;
 
 	public function new(warningType:String = 'flashing')
@@ -45,7 +45,7 @@ class WarningState extends MusicBeatState
 		switch (warningType)
 		{
 			case 'update':
-				textField = "Hey, You're running an outdated version of"
+				warningField = "Hey, You're running an outdated version of"
 					+ "\nForever Engine Underscore"
 					+ "\n\nPress ENTER to Update from "
 					+ openfl.Lib.application.meta["version"]
@@ -54,7 +54,7 @@ class WarningState extends MusicBeatState
 					+ '\nPress ESCAPE to ignore this message.'
 					+ "\n\nif you wish to disable this\nUncheck \"Check for Updates\" on the Options Menu";
 			case 'flashing':
-				textField = "Hey, quick notice that this mod contains Flashing Lights"
+				warningField = "Hey, quick notice that this mod contains Flashing Lights"
 					+ "\nYou can Press ENTER to disable them now or ESCAPE to ignore"
 					+ "\nyou can later manage flashing lights and other\naccessibility settings by going to the Options Menu"
 					+ "\n\nYou've been warned\n";
@@ -63,7 +63,7 @@ class WarningState extends MusicBeatState
 
 		generateBackground();
 
-		warningText = new FlxText(0, 0, FlxG.width - fieldOffset, textField, 32);
+		warningText = new FlxText(0, 0, FlxG.width - fieldOffset, warningField, 32);
 		warningText.setFormat(Paths.font("vcr"), 32, FlxColor.WHITE, CENTER);
 		warningText.screenCenter();
 		warningText.alpha = 0;
