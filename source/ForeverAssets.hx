@@ -25,6 +25,7 @@ typedef SplashDataDef =
 	var file:Null<String>;
 	var type:Null<String>;
 	var hasTwoAnims:Null<Bool>;
+	var impactPrefix:Array<String>;
 	var overrideSettings:Null<Bool>;
 	var splashAlpha:Null<Float>;
 	var splashScale:Null<Float>;
@@ -203,13 +204,29 @@ class ForeverAssets
 		var path = Paths.getPreloadPath('images/$baseLibrary/$changeableSkin/$assetModifier/splashData.json');
 
 		var rawJson = null;
-		if (!FileSystem.exists(path))
-		{
-			path = Paths.getPreloadPath('images/$baseLibrary/default/$assetModifier/splashData.json');
-		}
 		rawJson = sys.io.File.getContent(path);
 
-		splashJson = cast haxe.Json.parse(rawJson);
+		if (!FileSystem.exists(path))
+		{
+			splashJson = cast haxe.Json.parse('{
+			    "file": "noteSplashes",
+			    "type": "graphic",
+			    "hasTwoAnims": true,
+			    "overrideSettings": false,
+			    "splashAlpha": 1,
+			    "splashScale": null,
+			    "width": 210,
+			    "height": 210,
+			    "offsets": [
+			        -20,
+			        -10,
+			        -20,
+			        -10
+			    ]
+			}');
+		}
+		else
+			splashJson = cast haxe.Json.parse(rawJson);
 
 		if (splashJson.file != null)
 			asset = splashJson.file;
@@ -233,8 +250,11 @@ class ForeverAssets
 					case "sparrow":
 						tempSplash.frames = Paths.getSparrowAtlas(ForeverTools.returnSkin(asset, assetModifier, changeableSkin, baseLibrary));
 
-						// andromeda engine format
-						tempSplash.animation.addByPrefix('anim1', 'splash ' + Receptor.arrowDir[noteData], 24, false);
+						// custom format
+						if (splashJson.impactPrefix[0] != null || splashJson.impactPrefix[0].length > 0)
+							tempSplash.animation.addByPrefix('anim1', '${splashJson.impactPrefix[0]} ' + Receptor.arrowDir[noteData], 24, false);
+						if (splashJson.impactPrefix[1] != null || splashJson.impactPrefix[1].length > 0)
+							tempSplash.animation.addByPrefix('anim2', '${splashJson.impactPrefix[1]} ' + Receptor.arrowDir[noteData], 24, false);
 
 						if (splashJson.overrideSettings)
 							tempSplash.alpha = splashJson.splashAlpha;
@@ -277,8 +297,11 @@ class ForeverAssets
 					case "sparrow":
 						tempSplash.frames = Paths.getSparrowAtlas(ForeverTools.returnSkin(asset, assetModifier, changeableSkin, baseLibrary));
 
-						// andromeda engine format
-						tempSplash.animation.addByPrefix('anim1', 'splash ' + Receptor.arrowDir[noteData], 24, false);
+						// custom format
+						if (splashJson.impactPrefix[0] != null || splashJson.impactPrefix[0].length > 0)
+							tempSplash.animation.addByPrefix('anim1', '${splashJson.impactPrefix[0]} ' + Receptor.arrowDir[noteData], 24, false);
+						if (splashJson.impactPrefix[1] != null || splashJson.impactPrefix[1].length > 0)
+							tempSplash.animation.addByPrefix('anim1', '${splashJson.impactPrefix[1]} ' + Receptor.arrowDir[noteData], 24, false);
 
 						if (splashJson.overrideSettings)
 							tempSplash.alpha = splashJson.splashAlpha;
