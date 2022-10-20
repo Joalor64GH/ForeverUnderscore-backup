@@ -258,12 +258,16 @@
 				[
 					"Twitter",
 					"https://twitter.com/SuokArts3"
+				],
+				[
+					"NG",
+					"https://osuoktree.newgrounds.com/"
 				]
 			],
 			"colors": [
-				84,
-				12,
-				0
+				208,
+				0,
+				80
 			]
 		},
 		{
