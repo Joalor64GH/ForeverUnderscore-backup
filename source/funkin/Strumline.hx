@@ -65,10 +65,15 @@ class Strumline extends FlxSpriteGroup
 			receptor.y -= 10;
 			receptor.playAnim('static');
 
-			if (receptor.doReceptorTween || !PlayState.contents.skipCountdown)
+			if (!PlayState.isStoryMode || !PlayState.contents.skipCountdown)
 			{
 				receptor.alpha = 0;
 				FlxTween.tween(receptor, {y: receptor.initialY, alpha: receptor.setAlpha}, 1, {ease: FlxEase.circOut, startDelay: 0.5 + (0.2 * i)});
+			}
+			else
+			{
+				receptor.y = receptor.initialY;
+				receptor.alpha = receptor.setAlpha;
 			}
 
 			if (displayJudgements)
@@ -124,7 +129,6 @@ class Receptor extends FlxSprite
 
 	public var setAlpha:Float = (Init.getSetting('Arrow Opacity') * 0.01);
 
-	public var doReceptorTween:Bool = true;
 	public var lightConfirms:Bool = true;
 
 	public var resetAnim:Float = 0;

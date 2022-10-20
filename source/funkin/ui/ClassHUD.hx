@@ -263,23 +263,24 @@ class ClassHUD extends FlxTypedGroup<FlxBasic>
 			if (scoreColorTween != null)
 				scoreColorTween.cancel();
 
-			var rankColor = FlxColor.CYAN;
+			var judgeColors:Map<String, FlxColor> = [
+				'sick' => FlxColor.CYAN,
+				'good' => FlxColor.LIME,
+				'bad' => FlxColor.ORANGE,
+				'shit' => FlxColor.PURPLE,
+				'miss' => FlxColor.RED,
+			];
 
-			switch (rating)
+			var color:FlxColor = FlxColor.WHITE;
+			for (judge => judgeColor in judgeColors)
 			{
-				case 'good':
-					rankColor = FlxColor.LIME;
-				case 'bad':
-					rankColor = FlxColor.ORANGE;
-				case 'shit':
-					rankColor = FlxColor.PURPLE;
-				case 'miss':
-					rankColor = FlxColor.RED;
-				default:
-					rankColor = perfect ? FlxColor.fromString('#F8D482') : FlxColor.CYAN;
+				if (judge == 'sick' && perfect)
+					judgeColor = FlxColor.fromString('#F8D482'); // golden sicks;
+				if (rating == judge)
+					color = judgeColor;
 			}
 
-			scoreColorTween = FlxTween.color(scoreBar, 0.1, scoreBar.color, rankColor, {
+			scoreColorTween = FlxTween.color(scoreBar, 0.1, scoreBar.color, color, {
 				onComplete: function(twn:FlxTween)
 				{
 					FlxTween.color(scoreBar, 0.75, scoreBar.color, FlxColor.WHITE);
