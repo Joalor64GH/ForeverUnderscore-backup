@@ -1593,8 +1593,13 @@ class PlayState extends MusicBeatState
 	{
 		// play animation in existing notesplashes
 		var noteSplashRandom:String = (Std.string((FlxG.random.int(0, 1) + 1)));
-		if (strumline.splashNotes != null)
-			strumline.splashNotes.members[coolNote.noteData].playAnim('anim' + noteSplashRandom, true);
+		if (strumline.splashNotes != null) 
+		{
+			if (ForeverAssets.splashJson != null && ForeverAssets.splashJson.hasTwoAnims)
+				strumline.splashNotes.members[coolNote.noteData].playAnim('anim' + noteSplashRandom, true);
+			else
+				strumline.splashNotes.members[coolNote.noteData].playAnim('anim1', true);
+		}
 	}
 
 	var createdColor = FlxColor.fromRGB(204, 66, 66);

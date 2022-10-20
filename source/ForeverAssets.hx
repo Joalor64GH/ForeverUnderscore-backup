@@ -24,6 +24,10 @@ typedef SplashDataDef =
 {
 	var file:Null<String>;
 	var type:Null<String>;
+	var hasTwoAnims:Null<Bool>;
+	var overrideSettings:Null<Bool>;
+	var splashAlpha:Null<Float>;
+	var splashScale:Null<Float>;
 	var width:Null<Int>;
 	var height:Null<Int>;
 	var offsets:Null<Array<Int>>;
@@ -184,6 +188,8 @@ class ForeverAssets
 		return rating;
 	}
 
+	public static var splashJson:SplashDataDef;
+
 	public static function generateNoteSplashes(asset:String, group:FlxTypedSpriteGroup<NoteSplash>, assetModifier:String = 'base', baseLibrary:String,
 			noteData:Int):NoteSplash
 	{
@@ -203,7 +209,7 @@ class ForeverAssets
 		}
 		rawJson = sys.io.File.getContent(path);
 
-		var splashJson:SplashDataDef = cast haxe.Json.parse(rawJson);
+		splashJson = cast haxe.Json.parse(rawJson);
 
 		if (splashJson.file != null)
 			asset = splashJson.file;
@@ -226,6 +232,14 @@ class ForeverAssets
 				{
 					case "sparrow":
 						tempSplash.frames = Paths.getSparrowAtlas(ForeverTools.returnSkin(asset, assetModifier, changeableSkin, baseLibrary));
+
+						// andromeda engine format
+						tempSplash.animation.addByPrefix('anim1', 'splash ' + Receptor.arrowDir[noteData], 24, false);
+
+						if (splashJson.overrideSettings)
+							tempSplash.alpha = splashJson.splashAlpha;
+						if (splashJson.splashScale != null)
+							tempSplash.setGraphicSize(Std.int(tempSplash.width * splashJson.splashScale));
 
 						// week 7 format
 						tempSplash.animation.addByPrefix('anim1', 'note impact 1 ' + Receptor.arrowCol[noteData], 24, false);
@@ -262,6 +276,14 @@ class ForeverAssets
 				{
 					case "sparrow":
 						tempSplash.frames = Paths.getSparrowAtlas(ForeverTools.returnSkin(asset, assetModifier, changeableSkin, baseLibrary));
+
+						// andromeda engine format
+						tempSplash.animation.addByPrefix('anim1', 'splash ' + Receptor.arrowDir[noteData], 24, false);
+
+						if (splashJson.overrideSettings)
+							tempSplash.alpha = splashJson.splashAlpha;
+						if (splashJson.splashScale != null)
+							tempSplash.setGraphicSize(Std.int(tempSplash.width * splashJson.splashScale));
 
 						// week 7 format
 						tempSplash.animation.addByPrefix('anim1', 'note impact 1 ' + Receptor.arrowCol[noteData], 24, false);

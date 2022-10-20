@@ -94,7 +94,10 @@ class Strumline extends FlxSpriteGroup
 	{
 		// play animation in existing notesplashes
 		var noteSplashRandom:String = (Std.string((FlxG.random.int(0, 1) + 1)));
-		splashNotes.members[coolNote.noteData].playAnim('anim' + noteSplashRandom);
+		if (ForeverAssets.splashJson != null && ForeverAssets.splashJson.hasTwoAnims)
+			splashNotes.members[coolNote.noteData].playAnim('anim' + noteSplashRandom);
+		else
+			splashNotes.members[coolNote.noteData].playAnim('anim1');
 	}
 
 	public function push(newNote:Note)
