@@ -351,12 +351,12 @@ class Paths
 
 	inline static public function getPackerAtlas(key:String, folder:String = 'images', ?library:String)
 	{
-		return (FlxAtlasFrames.fromSpriteSheetPacker(image(key, library, folder), file('$folder/$key.txt', library)));
+		return (FlxAtlasFrames.fromSpriteSheetPacker(image(key, folder, library), file('$folder/$key.txt', library)));
 	}
 
 	inline static public function getJsonAtlas(key:String, folder:String = 'images', ?library:String)
 	{
-		return FlxAtlasFrames.fromTexturePackerJson(image(key, library), file('$folder/$key.json', library));
+		return FlxAtlasFrames.fromTexturePackerJson(image(key, folder, library), file('$folder/$key.json', library));
 	}
 
 	inline static public function video(key:String)

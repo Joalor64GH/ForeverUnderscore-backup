@@ -1,7 +1,7 @@
 var phillyTrain:FNFSprite;
 var trainSound:FlxSound;
 var windowLight:FNFSprite;
-var phillyCityLightColors:Array<Int>;
+var phillyCityLightColors = [0xFF31A2FD, 0xFF31FD8C, 0xFFFB33F5, 0xFFFD4531, 0xFFFBA633];
 
 function generateStage()
 {
@@ -17,8 +17,6 @@ function generateStage()
 	city.setGraphicSize(Std.int(city.width * 0.85));
 	city.updateHitbox();
 	add(city);
-
-	phillyCityLightColors = [0xFF31A2FD, 0xFF31FD8C, 0xFFFB33F5, 0xFFFD4531, 0xFFFBA633];
 
 	windowLight = new FNFSprite(city.x).loadGraphic(Paths.image('win', stageDir));
 	windowLight.scrollFactor.set(0.3, 0.3);
