@@ -109,14 +109,6 @@ class ForeverAssets
 			else if (!debug)
 			{
 				FlxTween.tween(combo, {y: combo.y + 20}, 0.1, {type: FlxTweenType.BACKWARD, ease: FlxEase.circOut});
-				FlxTween.tween(combo, {alpha: 0}, (Conductor.stepCrochet) / 1000, {
-					onComplete: function(tween:FlxTween)
-					{
-						if (combo.alive)
-							combo.kill();
-					},
-					startDelay: ((Conductor.crochet + Conductor.stepCrochet * 2) / 1000 / Conductor.playbackRate)
-				});
 			}
 		}
 
@@ -182,8 +174,11 @@ class ForeverAssets
 			}
 			else if (!debug)
 			{
+				var ratingTween:FlxTween = null;
+				if (ratingTween != null)
+					ratingTween.cancel();
 				FlxTween.tween(rating, {y: rating.y + 20}, 0.2, {type: FlxTweenType.BACKWARD, ease: FlxEase.circOut});
-				FlxTween.tween(rating, {"scale.x": 0, "scale.y": 0}, (Conductor.stepCrochet) / 1000, {
+				ratingTween = FlxTween.tween(rating, {"scale.x": 0, "scale.y": 0}, (Conductor.stepCrochet) / 1000, {
 					onComplete: function(tween:FlxTween)
 					{
 						if (rating.alive)
