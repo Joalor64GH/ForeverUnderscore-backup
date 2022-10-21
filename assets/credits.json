@@ -5,7 +5,7 @@
 		{
 			"sectionName": "FOREVER ENGINE: UNDERSCORE",
 			"name": "BeastlyGhost",
-			"icon": "ghost",
+			"icon": "underscore/ghost",
 			"textData": [
 				"Underscore's Lead Programmer",
 				"Boo."
@@ -28,7 +28,7 @@
 		},
 		{
 			"name": "Satoru",
-			"icon": "satoru",
+			"icon": "underscore/satoru",
 			"textData": [
 				"Lead Artist, made most the icons used on the credits menu (I owe you honey -Ghost)",
 				"se a vaca bebe água e come mato, pq ela dá leite e não chá?"
@@ -47,7 +47,7 @@
 		},
 		{
 			"name": "NxtVithor",
-			"icon": "vito",
+			"icon": "underscore/vito",
 			"textData": [
 				"Lead Designer",
 				"I open the fucking door, and I piss on the floor."
@@ -70,7 +70,7 @@
 		},
 		{
 			"name": "TheWorldMachine",
-			"icon": "macxp",
+			"icon": "underscore/macxp",
 			"textData": [
 				"Additional Coder, made the Script Backend along with helping with a couple of fixes"
 			],
@@ -92,7 +92,7 @@
 		},
 		{
 			"name": "Jigsaw",
-			"icon": "jigsaw",
+			"icon": "underscore/jigsaw",
 			"textData": [
 				"Programmer, Engine Misc Fixes"
 			],
@@ -114,7 +114,7 @@
 		},
 		{
 			"name": "Teles",
-			"icon": "teles",
+			"icon": "underscore/teles",
 			"textData": [
 				"Additional Coder"
 			],
@@ -133,7 +133,7 @@
 		{
 			"sectionName": "FOREVER ENGINE: UNDERSCORE",
 			"name": "Luisinho01",
-			"icon": "luis",
+			"icon": "underscore/luis",
 			"textData": [
 				"Additional Coder"
 			],
@@ -152,7 +152,7 @@
 		{
 			"sectionName": "SPECIAL THANKS",
 			"name": "ShadowMario",
-			"icon": "shadowmario",
+			"icon": "special/shadowmario",
 			"textData": [
 				"Coding Help, some advices and overall good friend, we urge you to check Psych Engine if you haven't (which is kinda unlikely buuut yeah!)",
 				"Dr Perky."
@@ -171,7 +171,7 @@
 		},
 		{
 			"name": "PolybiusProxy",
-			"icon": "polybius",
+			"icon": "special/polybius",
 			"textData": [
 				"Made the Library for Loading Video Cutscenes (hxCodec)"
 			],
@@ -189,7 +189,7 @@
 		},
 		{
 			"name": "MasterEric",
-			"icon": "mastereric",
+			"icon": "special/mastereric",
 			"textData": [
 				"Made the Runtime Shader Support class for fragment and vertex shaders"
 			],
@@ -207,7 +207,7 @@
 		},
 		{
 			"name": "DiogoTTV",
-			"icon": "diogo",
+			"icon": "special/diogo",
 			"textData": [
 				"BANGER coder which deserves more recognition, made the current credits menu"
 			],
@@ -225,7 +225,7 @@
 		},
 		{
 			"name": "NooBZiiTo",
-			"icon": "noobziito",
+			"icon": "special/noobziito",
 			"textData": [
 				"Sick Artist, made the custom menu assets",
 				"i injected uranium in my veins."
@@ -244,7 +244,7 @@
 		},
 		{
 			"name": "Suok",
-			"icon": "suok",
+			"icon": "special/suok",
 			"textData": [
 				"Cool Friend and great artist, made the custom assets used in-game (such as the prepare sprite for the countdown)",
 				"não faça sexo."
@@ -267,7 +267,7 @@
 		},
 		{
 			"name": "ImNotSonic",
-			"icon": "imnotsonic",
+			"icon": "special/imnotsonic",
 			"textData": [
 				"Epic Pixel Artist lady, made the pixel variant for the prepare sprite used on the countdown"
 			],
@@ -285,7 +285,7 @@
 		},
 		{
 			"name": "superpowers04",
-			"icon": "super",
+			"icon": "special/super",
 			"textData": [
 				"Sick Programmer and Cool Friend, Made the Code for the Console which displays debug information on screen by pressing F10",
 				"Insert funny quote here (play super engine)"
@@ -305,7 +305,7 @@
 		{
 			"sectionName": "SPECIAL THANKS",
 			"name": "doggo",
-			"icon": "doggo",
+			"icon": "special/doggo",
 			"textData": [
 				"Helped a lot to make the GitHub Page more apealling for visitors, along with some other engine fixes, haha we owe you one"
 			],
@@ -324,7 +324,7 @@
 		{
 			"sectionName": "SHOUTOUTS",
 			"name": "BoloVEVO",
-			"icon": "bolo",
+			"icon": "shoutouts/bolo",
 			"textData": [
 				"Cool Newbie Programmer, Made a Kade Engine custom fork with lots of performance improvements",
 				"Big Black Male Chicken"
@@ -344,7 +344,7 @@
 		{
 			"sectionName": "SHOUTOUTS",
 			"name": "yoisabo",
-			"icon": "yoisabo",
+			"icon": "shoutouts/yoisabo",
 			"textData": [
 				"Being such a homie in general, she made the Arrow Funk mod which we definitely recommend playing"
 			],
@@ -371,7 +371,7 @@
 		{
 			"sectionName": "FOREVER ENGINE LEGACY",
 			"name": "Yoshubs",
-			"icon": "yoshubs",
+			"icon": "legacy/yoshubs",
 			"textData": [
 				"Forever Engine's Lead Programmer, also made some fixes for Underscore such as Dynamic Sizes for Hold Note Trails"
 			],
@@ -389,7 +389,7 @@
 		},
 		{
 			"name": "Pixloen",
-			"icon": "pixloen",
+			"icon": "legacy/pixloen",
 			"textData": [
 				"Forever Engine's Artist, Made a lot of the Custom Assets that the engine uses"
 			],
@@ -407,7 +407,7 @@
 		},
 		{
 			"name": "Gedehari",
-			"icon": "gedehari",
+			"icon": "legacy/gedehari",
 			"textData": [
 				"Great Programmer, made the freeplay loading thread to avoid lag issues in freeplay, along with waveform rendering code, (legacy) external shader support, and so many other things like the Crash Logger"
 			],
@@ -425,7 +425,7 @@
 		},
 		{
 			"name": "ImCodist",
-			"icon": "imcodist",
+			"icon": "legacy/imcodist",
 			"textData": [
 				"Made the Base Dialogue System and a couple of issue fixes"
 			],
@@ -443,7 +443,7 @@
 		},
 		{
 			"name": "Scarlett",
-			"icon": "scarlett",
+			"icon": "legacy/scarlett",
 			"textData": [
 				"Programmer, Wrote the Finalized Math Formula for Note Quants"
 			],
@@ -461,7 +461,7 @@
 		},
 		{
 			"name": "Oneilr",
-			"icon": "",
+			"icon": "legacy/oneilr",
 			"textData": [
 				"Made Forever Engine's Custom Assets, mainly the animated ones like Note Splashes and Option Checkmarks"
 			],
@@ -480,7 +480,7 @@
 		{
 			"sectionName": "FOREVER ENGINE LEGACY",
 			"name": "HelloSammu",
-			"icon": "",
+			"icon": "legacy/hellosammu",
 			"textData": [
 				"Made Scaleable Text for Dialogues and some Engine Fixes"
 			],
@@ -499,7 +499,7 @@
 		{
 			"sectionName": "FUNKIN' CREW",
 			"name": "ninjamuffin99",
-			"icon": "",
+			"icon": "funkin/ninjamuffin99",
 			"textData": [
 				"Lead Programmer of Friday Night Funkin'",
 				"uninstall Twitter."
@@ -522,7 +522,7 @@
 		},
 		{
 			"name": "PhantomArcade",
-			"icon": "",
+			"icon": "funkin/phantomarcade",
 			"textData": [
 				"Animator of Friday Night Funkin'",
 				"I hope you die."
@@ -545,7 +545,7 @@
 		},
 		{
 			"name": "evilsk8r",
-			"icon": "",
+			"icon": "funkin/evilsk8r",
 			"textData": [
 				"Artist of Friday Night Funkin'",
 				"its not an alien"
@@ -569,7 +569,7 @@
 		{
 			"sectionName": "FUNKIN' CREW",
 			"name": "kawaisprite",
-			"icon": "",
+			"icon": "funkin/kawaisprite",
 			"textData": [
 				"Composer of Friday Night Funkin'",
 				"I'm shutting down, got my feet back on the ground"
