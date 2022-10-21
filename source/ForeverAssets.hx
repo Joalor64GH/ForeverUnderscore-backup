@@ -255,12 +255,14 @@ class ForeverAssets
 						tempSplash.frames = Paths.getSparrowAtlas(ForeverTools.returnSkin(asset, assetModifier, changeableSkin, baseLibrary));
 
 						// custom format
-						if (splashJson.impactPrefix[0] != null || splashJson.impactPrefix[0].length > 0)
+						var validImpact1 = (splashJson.impactPrefix != null && splashJson.impactPrefix[0] != null && splashJson.impactPrefix[0].length > 0);
+						var validImpact2 = (splashJson.impactPrefix != null && splashJson.impactPrefix[1] != null && splashJson.impactPrefix[1].length > 0);
+						if (validImpact1)
 							tempSplash.animation.addByPrefix('anim1', '${splashJson.impactPrefix[0]} ' + Receptor.arrowDir[noteData], 24, false);
-						if (splashJson.impactPrefix[1] != null || splashJson.impactPrefix[1].length > 0)
-							tempSplash.animation.addByPrefix('anim2', '${splashJson.impactPrefix[1]} ' + Receptor.arrowDir[noteData], 24, false);
+						if (validImpact2)
+							tempSplash.animation.addByPrefix('anim1', '${splashJson.impactPrefix[1]} ' + Receptor.arrowDir[noteData], 24, false);
 
-						if (splashJson.overrideSettings)
+						if (splashJson.overrideSettings && splashJson.splashAlpha != null)
 							tempSplash.alpha = splashJson.splashAlpha;
 						if (splashJson.splashScale != null)
 							tempSplash.setGraphicSize(Std.int(tempSplash.width * splashJson.splashScale));
@@ -302,12 +304,14 @@ class ForeverAssets
 						tempSplash.frames = Paths.getSparrowAtlas(ForeverTools.returnSkin(asset, assetModifier, changeableSkin, baseLibrary));
 
 						// custom format
-						if (splashJson.impactPrefix[0] != null || splashJson.impactPrefix[0].length > 0)
+						var validImpact1 = (splashJson.impactPrefix != null && splashJson.impactPrefix[0] != null && splashJson.impactPrefix[0].length > 0);
+						var validImpact2 = (splashJson.impactPrefix != null && splashJson.impactPrefix[1] != null && splashJson.impactPrefix[1].length > 0);
+						if (validImpact1)
 							tempSplash.animation.addByPrefix('anim1', '${splashJson.impactPrefix[0]} ' + Receptor.arrowDir[noteData], 24, false);
-						if (splashJson.impactPrefix[1] != null || splashJson.impactPrefix[1].length > 0)
+						if (validImpact2)
 							tempSplash.animation.addByPrefix('anim1', '${splashJson.impactPrefix[1]} ' + Receptor.arrowDir[noteData], 24, false);
 
-						if (splashJson.overrideSettings)
+						if (splashJson.overrideSettings && splashJson.splashAlpha != null)
 							tempSplash.alpha = splashJson.splashAlpha;
 						if (splashJson.splashScale != null)
 							tempSplash.setGraphicSize(Std.int(tempSplash.width * splashJson.splashScale));

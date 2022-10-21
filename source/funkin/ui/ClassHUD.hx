@@ -41,7 +41,7 @@ class ClassHUD extends FlxTypedGroup<FlxBasic>
 	var timingsMap:Map<String, FlxText> = [];
 
 	private var barFillDir = RIGHT_TO_LEFT;
-	private var language = ForeverLocales.curLang;
+	private final language = ForeverLocales.curLang;
 
 	private var bfBar = FlxColor.fromRGB(PlayState.boyfriend.barColor[0], PlayState.boyfriend.barColor[1], PlayState.boyfriend.barColor[2]);
 	private var dadBar = FlxColor.fromRGB(PlayState.dad.barColor[0], PlayState.dad.barColor[1], PlayState.dad.barColor[2]);
@@ -184,7 +184,7 @@ class ClassHUD extends FlxTypedGroup<FlxBasic>
 			updateTime();
 	}
 
-	private final divider:String = " • ";
+	private var divider:String = " • ";
 
 	public function updateScoreText()
 	{
