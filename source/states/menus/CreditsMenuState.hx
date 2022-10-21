@@ -234,6 +234,7 @@ class CreditsMenuState extends MusicBeatState
 	}
 
 	var mainColor:FlxColor = FlxColor.WHITE;
+
 	function changeSelection(change:Int = 0)
 	{
 		FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);

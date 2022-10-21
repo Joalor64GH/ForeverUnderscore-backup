@@ -337,7 +337,7 @@ class Paths
 				/*
 					clear any dots, means that something like "vcr.tff" would become "vcr";
 					we are doing this because we already added an extension earlier;
-				*/
+				 */
 				if (key.contains('.'))
 					key.substring(0, key.indexOf('.'));
 				return newPath;

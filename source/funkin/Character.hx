@@ -58,7 +58,7 @@ class Character extends FNFSprite
 	public var heyTimer:Float = 0;
 	public var psychChar:Bool = false;
 
-	public function new(?x:Float = 0, ?y:Float = 0, ?isPlayer:Bool = false, ?character:String = 'bf')
+	public function new(x:Float = 0, y:Float = 0, ?isPlayer:Bool = false, ?character:String = 'bf')
 	{
 		super(x, y);
 		this.isPlayer = isPlayer;

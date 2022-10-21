@@ -31,11 +31,8 @@ import states.editors.data.PsychDropDown;
 
 using StringTools;
 
-/**
-	character offset editor
-	this is just code from the base game
-	with some tweaking here and there to make it work on forever engine
-	and some other additional features
+/*
+	Character Offset Editor, exports Characters and converts them to the Underscore Format, WORK IN PROGRESS;
  */
 class CharacterOffsetEditor extends MusicBeatState
 {
@@ -131,10 +128,6 @@ class CharacterOffsetEditor extends MusicBeatState
 		add(textAnim);
 
 		genCharOffsets();
-
-		#if DISCORD_RPC
-		Discord.changePresence('OFFSET EDITOR', 'Editing: ' + curCharacter);
-		#end
 
 		// add menu tabs
 		var tabs = [
@@ -428,6 +421,10 @@ class CharacterOffsetEditor extends MusicBeatState
 		char = new Character(genOffset[0], genOffset[1], !isDad, curCharacter);
 		char.debugMode = true;
 		add(char);
+
+		#if DISCORD_RPC
+		Discord.changePresence('OFFSET EDITOR', 'Editing: ' + curCharacter);
+		#end
 	}
 
 	public function generateGhost(isDad:Bool = true)
@@ -509,21 +506,34 @@ class CharacterOffsetEditor extends MusicBeatState
 
 	function saveCharOffsets():Void
 	{
-		var result = "";
+		var result = "function loadAnimations() {\n";
+		var defaultAnimation = 'idle';
+		var animXml = 'idle';
+
+		/*
+			result +=
+			'
+			   	addByPrefix("$anim", "$animXml");
+			  	addOffset("$anim", ${offsets.join(", ")});
+			';
+		 */
 
 		for (anim => offsets in char.animOffsets)
 		{
-			var text = 'addOffset("' + anim + '", ' + offsets.join(", ") + ');';
-			result += text + "\n";
+			result += 'addOffset("$anim", ${offsets.join(", ")});\n';
+			if (anim == 'danceRight' || anim == 'idle' || anim == 'firstDeath')
+				defaultAnimation = anim;
 		}
+		result += 'playAnim("$defaultAnimation");';
+		result += "\n}";
 
-		if ((result != null) && (result.length > 0))
+		if ((result != null) && (result != "function loadAnimations(){}"))
 		{
 			_file = new FileReference();
 			_file.addEventListener(Event.COMPLETE, onSaveComplete);
 			_file.addEventListener(Event.CANCEL, onSaveCancel);
 			_file.addEventListener(IOErrorEvent.IO_ERROR, onSaveError);
-			_file.save(result.trim(), curCharacter + "Offsets.hx");
+			_file.save(result.trim(), curCharacter + ".hx");
 		}
 	}
 
