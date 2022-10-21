@@ -54,16 +54,14 @@ import vlc.MP4Handler;
 
 class PlayState extends MusicBeatState
 {
-	public static var startTimer:FlxTimer;
-
-	// checks if stored memory should be cleared when leaving this state
+	// checks if stored memory should be cleared when leaving this state;
 	public static var clearStored:Bool = true;
 
-	// for scripts
+	// for scripts;
 	public static var contents:PlayState;
 	public static var scriptArray:Array<ScriptHandler>;
 
-	// story things
+	// story mode stuffs, such as current week, difficulty, and song playlist;
 	public static var storyWeek:Int = 0;
 	public static var storyDifficulty:Int = 1;
 	public static var isStoryMode:Bool = false;
@@ -71,47 +69,47 @@ class PlayState extends MusicBeatState
 	public static var campaignScore:Int = 0;
 	public static var campaignMisses:Int = 0;
 
+	// current stage name;
 	public static var curStage:String = '';
 
-	// song loading
+	// stage variable so we can create stages later;
+	public var stageBuild:Stage;
+
+	// song loading;
 	public static var SONG:LegacySong;
 	public static var generatedSong:Bool = false;
 	public static var unspawnNotes:Array<Note>;
 
-	// custom assets
+	// custom assets;
 	public static var assetModifier:String = 'base';
 	public static var uiModifier:String = 'default';
 	public static var noteModifier:String = 'NOTE_assets';
 
-	// characters
+	// characters;
 	public static var dad:Character;
 	public static var gf:Character;
 	public static var boyfriend:Character;
 
-	// camera values
+	// camera values;
 	var camFollow:FlxObject;
 	var camFollowPos:FlxObject;
 
 	static var prevCamFollow:FlxObject;
 
-	// Discord RPC variables
+	// Discord RPC variables;
 	public static var songDetails:String = "";
 	public static var detailsSub:String = "";
 	public static var detailsPausedText:String = "";
+	public static var iconRPC:String = "";
+	public static var songLength:Float = 0;
 
-	// player status
-	public static var health:Float = 1; // mario
-
-	public static var combo:Int = 0;
-	public static var hits:Int = 0;
-
-	public static var misses:Int = 0;
-
-	public static var deaths:Int = 0; // luigi
-
+	// girlfriend's headbop speed;
 	public var gfSpeed:Int = 1;
 
-	// other gameplay values
+	// timer for countdown ticks;
+	public static var startTimer:FlxTimer;
+
+	// other gameplay values;
 	public var startingSong:Bool = false;
 	public var endingSong:Bool = false;
 
@@ -122,7 +120,7 @@ class PlayState extends MusicBeatState
 	public var skipCountdown:Bool = false;
 	public var inCutscene:Bool = false;
 
-	// cameras
+	// cameras;
 	public static var camHUD:FlxCamera;
 	public static var camGame:FlxCamera;
 	public static var camAlt:FlxCamera;
@@ -138,57 +136,69 @@ class PlayState extends MusicBeatState
 	public static var forceZoom:Array<Float>;
 	public static var camZooming:Bool = true;
 
+	// player status;
 	public static var songScore:Int = 0;
+	public static var health:Float = 1; // mario
+	public static var combo:Int = 0;
+	public static var hits:Int = 0;
+	public static var misses:Int = 0;
+	public static var deaths:Int = 0; // luigi
+
+	// stores your accuracy and ranking so we can save it later to the Highscores;
 	public static var accuracy:Float = 0.00;
 	public static var rank:String = 'N/A';
 
-	var storyDifficultyText:String = "";
-
-	public static var iconRPC:String = "";
-	public static var songLength:Float = 0;
-
-	// darkness background for stages / notes
+	// darkness background for stages / notes;
 	public var darknessBG:FlxSprite;
-
 	public var darknessLine1:FlxSprite;
 	public var darknessLine2:FlxSprite;
 
-	// i hate that i have to do this shit twice for the opponent strumlines but eh
+	// i hate that i have to do this shit twice for the opponent strumlines but eh;
 	public var darknessOpponent:FlxSprite;
-
 	public var darknessLine3:FlxSprite;
 	public var darknessLine4:FlxSprite;
 
-	public var stageBuild:Stage;
-
+	// game hud, which will be set up later;
 	public static var uiHUD:ClassHUD;
+
+	// fuck you ninjamuffin;
 	public static var daPixelZoom:Float = 6;
 
-	// strumlines
+	// strumlines;
 	public static var dadStrums:Strumline;
 	public static var bfStrums:Strumline;
-
 	public static var strumLines:FlxTypedGroup<Strumline>;
 
+	// stores all UI cameras in an array;
 	public var allUIs:Array<FlxCamera> = [];
 
+	// prevents your score, accuracy and ranking from saving;
 	public static var preventScoring:Bool = false;
+
+	// prevents you from going back to menus, also adds useful tools on the pause menu;
 	public static var chartingMode:Bool = false;
+
+	// prevents you from dying;
 	public static var practiceMode:Bool = false;
+
+	// allows time skipping and song ending via keybinds;
 	public static var scriptDebugMode:Bool = false;
 
-	// set only once
+	// set only once;
 	public static var lastEditor:Int = 0;
 
 	var curSection:Int = 0;
 
+	// groups so we can recycle judgements and combo with ease;
 	public var judgementsGroup:FlxTypedGroup<FNFSprite>;
 	public var comboGroup:FlxTypedGroup<FNFSprite>;
+
+	// a character group, for change character events;
 	public var charGroup:FlxSpriteGroup;
 
-	// stores the last judgement sprite object
+	// stores the last judgement sprite object;
 	public static var lastJudge:FNFSprite;
-	// stores the last combo sprite objects in an array
+	// stores the last combo sprite objects in an array;
 	public static var lastCombo:Array<FNFSprite>;
 
 	function resetVariables()
