@@ -27,6 +27,7 @@ typedef SplashDataDef =
 	var hasTwoAnims:Null<Bool>;
 	var impactPrefix:Array<String>;
 	var overrideSettings:Null<Bool>;
+	var useDirectionInPrefix:Null<Bool>;
 	var splashAlpha:Null<Float>;
 	var splashScale:Null<Float>;
 	var width:Null<Int>;
@@ -214,6 +215,7 @@ class ForeverAssets
 			    "type": "graphic",
 			    "hasTwoAnims": true,
 			    "overrideSettings": false,
+			    "useDirectionInPrefix": false,
 			    "splashAlpha": 1,
 			    "splashScale": null,
 			    "width": 210,
@@ -255,12 +257,13 @@ class ForeverAssets
 						tempSplash.frames = Paths.getSparrowAtlas(ForeverTools.returnSkin(asset, assetModifier, changeableSkin, baseLibrary));
 
 						// custom format
+						var receptorPrefix = splashJson.useDirectionInPrefix ? Receptor.arrowDir[noteData] : Receptor.arrowCol[noteData];
 						var validImpact1 = (splashJson.impactPrefix != null && splashJson.impactPrefix[0] != null && splashJson.impactPrefix[0].length > 0);
 						var validImpact2 = (splashJson.impactPrefix != null && splashJson.impactPrefix[1] != null && splashJson.impactPrefix[1].length > 0);
 						if (validImpact1)
-							tempSplash.animation.addByPrefix('anim1', '${splashJson.impactPrefix[0]} ' + Receptor.arrowDir[noteData], 24, false);
+							tempSplash.animation.addByPrefix('anim1', '${splashJson.impactPrefix[0]} ' + receptorPrefix, 24, false);
 						if (validImpact2)
-							tempSplash.animation.addByPrefix('anim1', '${splashJson.impactPrefix[1]} ' + Receptor.arrowDir[noteData], 24, false);
+							tempSplash.animation.addByPrefix('anim1', '${splashJson.impactPrefix[1]} ' + receptorPrefix, 24, false);
 
 						if (splashJson.overrideSettings && splashJson.splashAlpha != null)
 							tempSplash.alpha = splashJson.splashAlpha;
@@ -304,12 +307,13 @@ class ForeverAssets
 						tempSplash.frames = Paths.getSparrowAtlas(ForeverTools.returnSkin(asset, assetModifier, changeableSkin, baseLibrary));
 
 						// custom format
+						var receptorPrefix = splashJson.useDirectionInPrefix ? Receptor.arrowDir[noteData] : Receptor.arrowCol[noteData];
 						var validImpact1 = (splashJson.impactPrefix != null && splashJson.impactPrefix[0] != null && splashJson.impactPrefix[0].length > 0);
 						var validImpact2 = (splashJson.impactPrefix != null && splashJson.impactPrefix[1] != null && splashJson.impactPrefix[1].length > 0);
 						if (validImpact1)
-							tempSplash.animation.addByPrefix('anim1', '${splashJson.impactPrefix[0]} ' + Receptor.arrowDir[noteData], 24, false);
+							tempSplash.animation.addByPrefix('anim1', '${splashJson.impactPrefix[0]} ' + receptorPrefix, 24, false);
 						if (validImpact2)
-							tempSplash.animation.addByPrefix('anim1', '${splashJson.impactPrefix[1]} ' + Receptor.arrowDir[noteData], 24, false);
+							tempSplash.animation.addByPrefix('anim1', '${splashJson.impactPrefix[1]} ' + receptorPrefix, 24, false);
 
 						if (splashJson.overrideSettings && splashJson.splashAlpha != null)
 							tempSplash.alpha = splashJson.splashAlpha;

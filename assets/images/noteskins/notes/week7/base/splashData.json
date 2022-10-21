@@ -3,6 +3,7 @@
     "type": "sparrow",
     "hasTwoAnims": true,
     "overrideSettings": false,
+    "useDirectionInPrefix": false,
     "splashAlpha": 1,
     "splashScale": null,
     "offsets": [
