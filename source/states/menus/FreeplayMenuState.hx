@@ -21,7 +21,7 @@ import flixel.util.FlxColor;
 import flixel.util.FlxTimer;
 import funkin.*;
 import funkin.Alphabet;
-import funkin.ui.HealthIcon;
+import funkin.userInterface.HealthIcon;
 import openfl.media.Sound;
 
 using StringTools;
@@ -176,14 +176,14 @@ class FreeplayMenuState extends MusicBeatState
 			{
 				if (!existingSongs.contains(i.toLowerCase()))
 				{
-					var icon:String = 'gf';
+					var icon:String = 'placeholder';
 					var color:FlxColor = FlxColor.WHITE;
 					var colorArray:Array<Int> = [255, 255, 255];
 					var chartExists:Bool = FileSystem.exists(Paths.songJson(i, i));
 					if (chartExists)
 					{
 						var castSong:LegacySong = Song.loadSong(i, i);
-						icon = (castSong != null) ? castSong.player2 : 'gf';
+						icon = (castSong != null) ? castSong.player2 : 'placeholder';
 
 						colorArray = castSong.color;
 

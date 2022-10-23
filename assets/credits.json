@@ -10,16 +10,10 @@
 				"Underscore's Lead Programmer",
 				"Boo."
 			],
-			"urlData": [
-				[
-					"Twitter",
-					"https://twitter.com/BeastlyGabi"
-				],
-				[
-					"Discord",
-					"https://discord.com/users/597124141530742805"
-				]
-			],
+			"urlData": {
+				"Twitter": "https://twitter.com/BeastlyGabi",
+				"Discord": "https://discord.com/users/597124141530742805"
+			},
 			"colors": [
 				197,
 				222,
@@ -30,15 +24,12 @@
 			"name": "Satoru",
 			"icon": "underscore/satoru",
 			"textData": [
-				"Lead Artist, made most the icons used on the credits menu (I owe you honey -Ghost)",
-				"se a vaca bebe água e come mato, pq ela dá leite e não chá?"
+				"Lead Artist, made most the icons\nused on the credits menu (I owe you honey -Ghost)",
+				"se a vaca bebe água e come mato,\npq ela dá leite e não chá?"
 			],
-			"urlData": [
-				[
-					"Twitter",
-					"https://twitter.com/kajizyoficial"
-				]
-			],
+			"urlData": {
+				"Twitter": "https://twitter.com/kajizyoficial"
+			},
 			"colors": [
 				237,
 				215,
@@ -50,18 +41,12 @@
 			"icon": "underscore/vito",
 			"textData": [
 				"Lead Designer",
-				"I open the fucking door, and I piss on the floor."
+				"I open the fucking door,\nand I piss on the floor."
 			],
-			"urlData": [
-				[
-					"Twitter",
-					"https://twitter.com/NxtVithor"
-				],
-				[
-					"Twitch",
-					"https://www.twitch.tv/nxtvithor"
-				]
-			],
+			"urlData": {
+				"Twitter": "https://twitter.com/NxtVithor",
+				"Twitch": "https://www.twitch.tv/nxtvithor"
+			},
 			"colors": [
 				245,
 				108,
@@ -72,22 +57,16 @@
 			"name": "TheWorldMachine",
 			"icon": "underscore/macxp",
 			"textData": [
-				"Additional Coder, made the Script Backend along with helping with a couple of fixes"
+				"Additional Coder, made the Script Backend\nalong with helping with a couple of fixes"
 			],
-			"urlData": [
-				[
-					"Twitter",
-					"https://twitter.com/DaWordMachinima"
-				],
-				[
-					"Discord",
-					"https://discord.com/users/891724604387774534"
-				]
-			],
+			"urlData": {
+				"Twitter": "https://twitter.com/DaWordMachinima",
+				"Discord": "https://discord.com/users/891724604387774534"
+			},
 			"colors": [
+				255,
 				182,
-				84,
-				82
+				0
 			]
 		},
 		{
@@ -96,16 +75,10 @@
 			"textData": [
 				"Programmer, Engine Misc Fixes"
 			],
-			"urlData": [
-				[
-					"Twitter",
-					"https://twitter.com/jigsaw1_ma"
-				],
-				[
-					"GitHub",
-					"https://github.com/MAJigsaw77"
-				]
-			],
+			"urlData": {
+				"Twitter": "https://twitter.com/jigsaw1_ma",
+				"GitHub": "https://github.com/MAJigsaw77"
+			},
 			"colors": [
 				212,
 				212,
@@ -118,12 +91,9 @@
 			"textData": [
 				"Additional Coder"
 			],
-			"urlData": [
-				[
-					"Twitter",
-					"https://twitter.com/itzteles_aa"
-				]
-			],
+			"urlData": {
+				"Twitter": "https://twitter.com/itzteles_aa"
+			},
 			"colors": [
 				253,
 				131,
@@ -137,12 +107,9 @@
 			"textData": [
 				"Additional Coder"
 			],
-			"urlData": [
-				[
-					"GitHub",
-					"https://github.com/Luisinhi010"
-				]
-			],
+			"urlData": {
+				"GitHub": "https://github.com/Luisinhi010"
+			},
 			"colors": [
 				241,
 				212,
@@ -150,19 +117,129 @@
 			]
 		},
 		{
+			"sectionName": "CONTRIBUTORS",
+			"name": "Cherri",
+			"icon": "contributors/cherri",
+			"textData": [
+				"LITERALLY REMADE THE ENTIRETY\nOF THE CREDITS MENU AND JSON CODE,\nI OWE YOU SO MUCH -ghost"
+			],
+			"urlData": {
+				"Twitter": "https://twitter.com/CherryDozStuff",
+				"YT": "https://www.youtube.com/channel/UCUmLM_3CWrU2HltOeoyrbIA",
+				"GitHub": "https://github.com/Cherif107/"
+			},
+			"colors": [
+				184,
+				160,
+				246
+			]
+		},
+		{
+			"name": "DiogoTTV",
+			"icon": "contributors/diogo",
+			"textData": [
+				"BANGER coder which deserves more recognition,\nmade the old credits menu"
+			],
+			"urlData": {
+				"Twitter": "https://twitter.com/DiogoTVV"
+			},
+			"colors": [
+				100,
+				100,
+				100
+			]
+		},
+		{
+			"name": "ImNotSonic",
+			"icon": "contributors/imnotsonic",
+			"textData": [
+				"Epic Pixel Artist lady,\nmade the pixel variant for the\nprepare sprite used on the countdown"
+			],
+			"urlData": {
+				"Twitter": "https://twitter.com/Imnotsonic1"
+			},
+			"colors": [
+				232,
+				16,
+				37
+			]
+		},
+		{
+			"name": "superpowers04",
+			"icon": "contributors/super",
+			"textData": [
+				"Sick Programmer and Cool Friend,\nMade the Code for the Console\nwhich displays debug information on screen by pressing F10",
+				"Insert funny quote here\n(play super engine)"
+			],
+			"urlData": {
+				"GitHub": "https://github.com/superpowers04"
+			},
+			"colors": [
+				92,
+				0,
+				138
+			]
+		},
+		{
+			"name": "NooBZiiTo",
+			"icon": "contributors/noobziito",
+			"textData": [
+				"Sick Artist, made the custom menu assets",
+				"i injected uranium in my veins."
+			],
+			"urlData": {
+				"Twitter": "https://twitter.com/NooBZiiTo1"
+			},
+			"colors": [
+				113,
+				255,
+				0
+			]
+		},
+		{
+			"name": "Suok",
+			"icon": "contributors/suok",
+			"textData": [
+				"Cool Friend and great artist,\nmade the custom assets used in-game\nsuch as the prepare sprite for the countdown\nand the placeholder character",
+				"não faça sexo."
+			],
+			"urlData": {
+				"Twitter": "https://twitter.com/SuokArts3",
+				"NG": "https://osuoktree.newgrounds.com/"
+			},
+			"colors": [
+				208,
+				0,
+				80
+			]
+		},
+		{
+			"sectionName": "CONTRIBUTORS",
+			"name": "doggo",
+			"icon": "contributors/doggo",
+			"textData": [
+				"Helped a lot to make the GitHub Page\nmore apealling for visitors,\nalong with some other engine fixes, haha we owe you one"
+			],
+			"urlData": {
+				"GitHub": "https://github.com/doggogit"
+			},
+			"colors": [
+				156,
+				198,
+				255
+			]
+		},
+		{
 			"sectionName": "SPECIAL THANKS",
 			"name": "ShadowMario",
 			"icon": "special/shadowmario",
 			"textData": [
-				"Coding Help, some advices and overall good friend, we urge you to check Psych Engine if you haven't (which is kinda unlikely buuut yeah!)",
-				"Dr Perky."
+				"Coding Help, some advices and overall good friend,\nwe urge you to check Psych Engine\nif you haven't (which is kinda unlikely buuut yeah!)",
+				"WikiHow: How to handle fame"
 			],
-			"urlData": [
-				[
-					"Twitter",
-					"https://twitter.com/Shadow_Mario_"
-				]
-			],
+			"urlData": {
+				"Twitter": "https://twitter.com/Shadow_Mario_"
+			},
 			"colors": [
 				0,
 				0,
@@ -175,12 +252,9 @@
 			"textData": [
 				"Made the Library for Loading Video Cutscenes (hxCodec)"
 			],
-			"urlData": [
-				[
-					"Twitter",
-					"https://twitter.com/polybiusproxy"
-				]
-			],
+			"urlData": {
+				"Twitter": "https://twitter.com/polybiusproxy"
+			},
 			"colors": [
 				175,
 				217,
@@ -188,17 +262,15 @@
 			]
 		},
 		{
+			"sectionName": "SPECIAL THANKS",
 			"name": "MasterEric",
 			"icon": "special/mastereric",
 			"textData": [
-				"Made the Runtime Shader Support class for fragment and vertex shaders"
+				"Made the Runtime Shader Support class\nfor fragment and vertex shaders"
 			],
-			"urlData": [
-				[
-					"Twitter",
-					"https://twitter.com/EliteMasterEric"
-				]
-			],
+			"urlData": {
+				"Twitter": "https://twitter.com/EliteMasterEric"
+			},
 			"colors": [
 				26,
 				57,
@@ -206,135 +278,16 @@
 			]
 		},
 		{
-			"name": "DiogoTTV",
-			"icon": "special/diogo",
-			"textData": [
-				"BANGER coder which deserves more recognition, made the current credits menu"
-			],
-			"urlData": [
-				[
-					"Twitter",
-					"https://twitter.com/DiogoTVV"
-				]
-			],
-			"colors": [
-				100,
-				100,
-				100
-			]
-		},
-		{
-			"name": "NooBZiiTo",
-			"icon": "special/noobziito",
-			"textData": [
-				"Sick Artist, made the custom menu assets",
-				"i injected uranium in my veins."
-			],
-			"urlData": [
-				[
-					"Twitter",
-					"https://twitter.com/NooBZiiTo1"
-				]
-			],
-			"colors": [
-				113,
-				255,
-				0
-			]
-		},
-		{
-			"name": "Suok",
-			"icon": "special/suok",
-			"textData": [
-				"Cool Friend and great artist, made the custom assets used in-game (such as the prepare sprite for the countdown)",
-				"não faça sexo."
-			],
-			"urlData": [
-				[
-					"Twitter",
-					"https://twitter.com/SuokArts3"
-				],
-				[
-					"NG",
-					"https://osuoktree.newgrounds.com/"
-				]
-			],
-			"colors": [
-				208,
-				0,
-				80
-			]
-		},
-		{
-			"name": "ImNotSonic",
-			"icon": "special/imnotsonic",
-			"textData": [
-				"Epic Pixel Artist lady, made the pixel variant for the prepare sprite used on the countdown"
-			],
-			"urlData": [
-				[
-					"Twitter",
-					"https://twitter.com/Imnotsonic1"
-				]
-			],
-			"colors": [
-				232,
-				16,
-				37
-			]
-		},
-		{
-			"name": "superpowers04",
-			"icon": "special/super",
-			"textData": [
-				"Sick Programmer and Cool Friend, Made the Code for the Console which displays debug information on screen by pressing F10",
-				"Insert funny quote here (play super engine)"
-			],
-			"urlData": [
-				[
-					"GitHub",
-					"https://github.com/superpowers04"
-				]
-			],
-			"colors": [
-				92,
-				0,
-				138
-			]
-		},
-		{
-			"sectionName": "SPECIAL THANKS",
-			"name": "doggo",
-			"icon": "special/doggo",
-			"textData": [
-				"Helped a lot to make the GitHub Page more apealling for visitors, along with some other engine fixes, haha we owe you one"
-			],
-			"urlData": [
-				[
-					"GitHub",
-					"https://github.com/doggogit"
-				]
-			],
-			"colors": [
-				156,
-				198,
-				255
-			]
-		},
-		{
 			"sectionName": "SHOUTOUTS",
 			"name": "BoloVEVO",
 			"icon": "shoutouts/bolo",
 			"textData": [
-				"Cool Newbie Programmer, Made a Kade Engine custom fork with lots of performance improvements",
+				"Cool Newbie Programmer,\nMade a Kade Engine custom fork\nwith lots of performance improvements",
 				"Big Black Male Chicken"
 			],
-			"urlData": [
-				[
-					"GitHub",
-					"https://github.com/BoloVEVO/Kade-Engine-Public"
-				]
-			],
+			"urlData": {
+				"GitHub": "https://github.com/BoloVEVO/Kade-Engine-Public"
+			},
 			"colors": [
 				255,
 				0,
@@ -346,22 +299,13 @@
 			"name": "yoisabo",
 			"icon": "shoutouts/yoisabo",
 			"textData": [
-				"Being such a homie in general, she made the Arrow Funk mod which we definitely recommend playing"
+				"Being such a homie in general,\nshe made the Arrow Funk mod\nwhich we definitely recommend playing"
 			],
-			"urlData": [
-				[
-					"Twitch",
-					"https://www.twitch.tv/abo_bora"
-				],
-				[
-					"Twitter",
-					"https://twitter.com/abo_bora"
-				],
-				[
-					"YT",
-					"https://www.youtube.com/channel/UC4i6dpPE_6porNTxdzEiPXQ"
-				]
-			],
+			"urlData": {
+				"Twitch": "https://www.twitch.tv/abo_bora",
+				"Twitter": "https://twitter.com/abo_bora",
+				"YT": "https://www.youtube.com/channel/UC4i6dpPE_6porNTxdzEiPXQ"
+			},
 			"colors": [
 				85,
 				29,
@@ -373,14 +317,11 @@
 			"name": "Yoshubs",
 			"icon": "legacy/yoshubs",
 			"textData": [
-				"Forever Engine's Lead Programmer, also made some fixes for Underscore such as Dynamic Sizes for Hold Note Trails"
+				"Forever Engine's Lead Programmer,\nalso made some fixes for Underscore\nsuch as Dynamic Sizes for Hold Note Trails"
 			],
-			"urlData": [
-				[
-					"Twitter",
-					"https://twitter.com/yoshubs"
-				]
-			],
+			"urlData": {
+				"GitHub": "https://github.com/Yoshubs"
+			},
 			"colors": [
 				94,
 				153,
@@ -391,14 +332,11 @@
 			"name": "Pixloen",
 			"icon": "legacy/pixloen",
 			"textData": [
-				"Forever Engine's Artist, Made a lot of the Custom Assets that the engine uses"
+				"Forever Engine's Artist,\nMade a lot of the Custom Assets\nthat the engine uses"
 			],
-			"urlData": [
-				[
-					"GitHub",
-					"https://github.com/PixlJacket"
-				]
-			],
+			"urlData": {
+				"GitHub": "https://github.com/PixlJacket"
+			},
 			"colors": [
 				172,
 				117,
@@ -409,14 +347,11 @@
 			"name": "Gedehari",
 			"icon": "legacy/gedehari",
 			"textData": [
-				"Great Programmer, made the freeplay loading thread to avoid lag issues in freeplay, along with waveform rendering code, (legacy) external shader support, and so many other things like the Crash Logger"
+				"Great Programmer,\nmade the freeplay loading thread\nto avoid lag issues in freeplay,\nalong with waveform rendering code,\n(legacy) external shader support,\nand so many other things like the Crash Logger"
 			],
-			"urlData": [
-				[
-					"GitHub",
-					"https://github.com/gedehari"
-				]
-			],
+			"urlData": {
+				"GitHub": "https://github.com/gedehari"
+			},
 			"colors": [
 				254,
 				219,
@@ -427,14 +362,12 @@
 			"name": "ImCodist",
 			"icon": "legacy/imcodist",
 			"textData": [
-				"Made the Base Dialogue System and a couple of issue fixes"
+				"Made the Base Dialogue System\nand a couple of issue fixes",
+				"UH UH\nmy balls\n\nDamn  it I fucked it up"
 			],
-			"urlData": [
-				[
-					"GitHub",
-					"https://github.com/ImCodist"
-				]
-			],
+			"urlData": {
+				"GitHub": "https://github.com/ImCodist"
+			},
 			"colors": [
 				175,
 				68,
@@ -445,14 +378,11 @@
 			"name": "Scarlett",
 			"icon": "legacy/scarlett",
 			"textData": [
-				"Programmer, Wrote the Finalized Math Formula for Note Quants"
+				"Programmer,\nWrote the Finalized Math Formula for Note Quants"
 			],
-			"urlData": [
-				[
-					"GitHub",
-					"https://github.com/SomeKitten"
-				]
-			],
+			"urlData": {
+				"GitHub": "https://github.com/SomeKitten"
+			},
 			"colors": [
 				247,
 				147,
@@ -463,14 +393,11 @@
 			"name": "Oneilr",
 			"icon": "legacy/oneilr",
 			"textData": [
-				"Made Forever Engine's Custom Assets, mainly the animated ones like Note Splashes and Option Checkmarks"
+				"Made Forever Engine's Custom Assets,\nmainly the animated ones like\nNote Splashes and Option Checkmarks"
 			],
-			"urlData": [
-				[
-					"NG",
-					"https://oneilr.newgrounds.com"
-				]
-			],
+			"urlData": {
+				"NG": "https://oneilr.newgrounds.com"
+			},
 			"colors": [
 				204,
 				177,
@@ -484,12 +411,9 @@
 			"textData": [
 				"Made Scaleable Text for Dialogues and some Engine Fixes"
 			],
-			"urlData": [
-				[
-					"GitHub",
-					"https://github.com/hellosammu"
-				]
-			],
+			"urlData": {
+				"GitHub": "https://github.com/hellosammu"
+			},
 			"colors": [
 				204,
 				177,
@@ -504,20 +428,14 @@
 				"Lead Programmer of Friday Night Funkin'",
 				"uninstall Twitter."
 			],
-			"urlData": [
-				[
-					"NG",
-					"https://ninjamuffin99.newgrounds.com/"
-				],
-				[
-					"Twitter",
-					"https://twitter.com/ninja_muffin99"
-				]
-			],
+			"urlData": {
+				"NG": "https://ninjamuffin99.newgrounds.com/",
+				"Twitter": "https://twitter.com/ninja_muffin99"
+			},
 			"colors": [
-				207,
-				45,
-				45
+				231,
+				49,
+				36
 			]
 		},
 		{
@@ -525,22 +443,16 @@
 			"icon": "funkin/phantomarcade",
 			"textData": [
 				"Animator of Friday Night Funkin'",
-				"I hope you die."
+				"Just for you bro."
 			],
-			"urlData": [
-				[
-					"NG",
-					"https://phantomarcade.newgrounds.com/"
-				],
-				[
-					"Twitter",
-					"https://twitter.com/PhantomArcade3K"
-				]
-			],
+			"urlData": {
+				"NG": "https://phantomarcade.newgrounds.com/",
+				"Twitter": "https://twitter.com/PhantomArcade3K"
+			},
 			"colors": [
-				250,
-				220,
-				69
+				255,
+				226,
+				42
 			]
 		},
 		{
@@ -550,20 +462,14 @@
 				"Artist of Friday Night Funkin'",
 				"its not an alien"
 			],
-			"urlData": [
-				[
-					"NG",
-					"https://evilsk8r.newgrounds.com/"
-				],
-				[
-					"Twitter",
-					"https://twitter.com/evilsk8r"
-				]
-			],
+			"urlData": {
+				"NG": "https://evilsk8r.newgrounds.com/",
+				"Twitter": "https://twitter.com/evilsk8r"
+			},
 			"colors": [
-				90,
-				189,
-				75
+				31,
+				35,
+				160
 			]
 		},
 		{
@@ -572,22 +478,16 @@
 			"icon": "funkin/kawaisprite",
 			"textData": [
 				"Composer of Friday Night Funkin'",
-				"I'm shutting down, got my feet back on the ground"
+				"I'm shutting down,\ngot my feet back on the ground"
 			],
-			"urlData": [
-				[
-					"NG",
-					"https://kawaisprite.newgrounds.com/"
-				],
-				[
-					"Twitter",
-					"https://twitter.com/kawaisprite"
-				]
-			],
+			"urlData": {
+				"NG": "https://kawaisprite.newgrounds.com/",
+				"Twitter": "https://twitter.com/kawaisprite"
+			},
 			"colors": [
-				25,
-				143,
-				199
+				0,
+				0,
+				0
 			]
 		}
 	]

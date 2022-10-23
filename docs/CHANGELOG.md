@@ -4,6 +4,27 @@ All notable changes will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.3]
+
+### Added
+- on-Screen Log Traces;
+- More Customization with Notesplashes;
+- Custom Titlescreen values (BPM, BG Sprite, etc);
+- New Placeholder Character (thanks @SuokArts3);
+- Flashing Lights warning;
+- Event Lines on the Chart Editor;
+
+
+### Fixed
+- Packer Atlas files (means that Spirit-like Characters now work);
+- Majority of Crashes with Scripts;
+
+
+### Adjusted
+- Changed the Engine save data path;
+- Reworked the Credits Menu (thanks @Cherif107);
+
+
 ## [0.2.3]
 
 ### Added
@@ -13,6 +34,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Automatic Gamepad Detection (by: Stilic);
 - Newer Runtime Shader Support (by: MasterEric);
 * this basically means psych engine shaders now work
+
 
 ### Fixed
 - Note Hold Offsets;
@@ -27,9 +49,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Characters now have a `noteHit` function on their scripts, it is executed everytime they hit a note;
 - Menus should now be overall faster;
 
+
 ### Removed
 - Menu Scripts;
-
 
 
 ## [0.2.2]
@@ -74,7 +96,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## DOWN BELOW THERE ARE VERY OUTDATED CHANGES THAT ARE NO LONGER TRUE / WERE CHANGED WITH TIME;
 
-
 ## [0.2.1.1]
 
 ### Added
@@ -110,6 +131,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * there's also the formatted counterparts for making custom score texts, `formattedAccuracy` and `formattedRanking`;
 - `Hits` variable for Scripts, returns all your hits on the current song;
 
+
 ## [0.2.1]
 
 ### Added
@@ -140,3 +162,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Improved Notetype Handling, Notetypes can now be fully set up on `Note.hx`;
 - The Codebase has been entirely formatted (thanks @otallynotdoggogit);
 - The `README.md` file has been entirely rewritten (thanks @otallynotdoggogit);
+
+----------------------------------------------

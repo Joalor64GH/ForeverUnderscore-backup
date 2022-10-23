@@ -29,8 +29,8 @@ function loadAnimations()
 	set('antialiasing', true);
 	set('flipX', true);
 
-	var charX = 0;
-	var opponentX = 250;
+	var charX:Float = 0;
+	var opponentX:Float = 250;
 
 	if (PlayState.curStage == 'mallEvil')
 	{

@@ -29,14 +29,31 @@ class Strumline extends FlxSpriteGroup
 
 	public var autoplay:Bool = true;
 	public var displayJudgements:Bool = false;
-	public var receptorTexture:String = 'NOTE_assets';
+	public var doTween:Bool = false;
 
 	public var keyAmount:Int = 4;
+	public var xPos:Float = 0;
+	public var yPos:Float = 0;
+
+	public var receptorTexture:String = 'NOTE_assets';
 
 	public function new(xPos:Float = 0, yPos:Float = 0, ?character:Character, ?receptorTexture:String, ?autoplay:Bool = true, ?displayJudgements:Bool = false,
-			?keyAmount:Int = 4)
+			doTween:Bool = false, ?keyAmount:Int = 4)
 	{
 		super();
+
+		// initialize all groups;
+		receptors = new FlxTypedSpriteGroup<Receptor>();
+		splashNotes = new FlxTypedSpriteGroup<NoteSplash>();
+		notesGroup = new FlxTypedSpriteGroup<Note>();
+		holdsGroup = new FlxTypedSpriteGroup<Note>();
+		allNotes = new FlxTypedSpriteGroup<Note>();
+
+		// set the x and y positions;
+		this.xPos = xPos;
+		this.yPos = yPos;
+
+		this.doTween = doTween;
 
 		this.autoplay = autoplay;
 		this.character = character;
@@ -44,11 +61,23 @@ class Strumline extends FlxSpriteGroup
 		this.keyAmount = keyAmount;
 		this.receptorTexture = receptorTexture;
 
-		receptors = new FlxTypedSpriteGroup<Receptor>();
-		splashNotes = new FlxTypedSpriteGroup<NoteSplash>();
-		notesGroup = new FlxTypedSpriteGroup<Note>();
-		holdsGroup = new FlxTypedSpriteGroup<Note>();
-		allNotes = new FlxTypedSpriteGroup<Note>();
+		// regenerate the strumline;
+		regenStrumline();
+	}
+
+	public function regenStrumline()
+	{
+		receptors.forEachAlive(function(receptor:Receptor)
+		{
+			receptor.destroy();
+		});
+		receptors.clear();
+
+		splashNotes.forEachAlive(function(noteSplash:NoteSplash)
+		{
+			noteSplash.destroy();
+		});
+		splashNotes.clear();
 
 		for (i in 0...keyAmount)
 		{
@@ -65,7 +94,7 @@ class Strumline extends FlxSpriteGroup
 			receptor.y -= 10;
 			receptor.playAnim('static');
 
-			if (!PlayState.isStoryMode || !PlayState.contents.skipCountdown)
+			if (doTween)
 			{
 				receptor.alpha = 0;
 				FlxTween.tween(receptor, {y: receptor.initialY, alpha: receptor.setAlpha}, 1, {ease: FlxEase.circOut, startDelay: 0.5 + (0.2 * i)});
@@ -119,7 +148,7 @@ class Receptor extends FlxSprite
 		uh hey you're cute ;)
 	 */
 	public var animOffsets:Map<String, Array<Dynamic>>;
-	public var babyArrowType:Int = 0;
+	public var noteData:Int = 0;
 
 	public static var swagWidth:Float = 160 * 0.7;
 
@@ -132,20 +161,20 @@ class Receptor extends FlxSprite
 
 	public var setAlpha:Float = (Init.getSetting('Arrow Opacity') * 0.01);
 
-	public var lightConfirms:Bool = true;
+	public var overrideAlpha:Bool = false;
 
 	public var resetAnim:Float = 0;
 
-	public static var arrowDir:Array<String> = ['left', 'down', 'up', 'right'];
-	public static var arrowCol:Array<String> = ['purple', 'blue', 'green', 'red'];
+	public static var actions:Array<String> = ['left', 'down', 'up', 'right'];
+	public static var colors:Array<String> = ['purple', 'blue', 'green', 'red'];
 
-	public function new(x:Float, y:Float, ?babyArrowType:Int = 0)
+	public function new(x:Float, y:Float, ?noteData:Int = 0)
 	{
 		// this extension is just going to rely a lot on preexisting code as I wanna try to write an extension before I do options and stuff
 		super(x, y);
 		animOffsets = new Map<String, Array<Dynamic>>();
 
-		this.babyArrowType = babyArrowType;
+		this.noteData = noteData;
 
 		updateHitbox();
 		scrollFactor.set();
@@ -170,9 +199,7 @@ class Receptor extends FlxSprite
 	// literally just character code
 	public function playAnim(AnimName:String, Force:Bool = false, Reversed:Bool = false, Frame:Int = 0):Void
 	{
-		if (AnimName == 'confirm' && lightConfirms)
-			alpha = 1;
-		else
+		if (!overrideAlpha)
 			alpha = setAlpha;
 
 		animation.play(AnimName, Force, Reversed, Frame);

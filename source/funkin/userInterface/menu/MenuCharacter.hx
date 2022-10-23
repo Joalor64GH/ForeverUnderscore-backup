@@ -1,4 +1,4 @@
-package funkin.ui.menu;
+package funkin.userInterface.menu;
 
 import haxe.Json;
 import sys.FileSystem;

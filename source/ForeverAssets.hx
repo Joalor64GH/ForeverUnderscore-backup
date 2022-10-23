@@ -15,7 +15,7 @@ import flixel.util.FlxSort;
 import funkin.*;
 import funkin.Strumline.Receptor;
 import funkin.Timings;
-import funkin.ui.menu.*;
+import funkin.userInterface.menu.*;
 import states.PlayState;
 
 using StringTools;
@@ -257,7 +257,7 @@ class ForeverAssets
 						tempSplash.frames = Paths.getSparrowAtlas(ForeverTools.returnSkin(asset, assetModifier, changeableSkin, baseLibrary));
 
 						// custom format
-						var receptorPrefix = splashJson.useDirectionInPrefix ? Receptor.arrowDir[noteData] : Receptor.arrowCol[noteData];
+						var receptorPrefix = splashJson.useDirectionInPrefix ? Receptor.actions[noteData] : Receptor.colors[noteData];
 						var validImpact1 = (splashJson.impactPrefix != null && splashJson.impactPrefix[0] != null && splashJson.impactPrefix[0].length > 0);
 						var validImpact2 = (splashJson.impactPrefix != null && splashJson.impactPrefix[1] != null && splashJson.impactPrefix[1].length > 0);
 						if (validImpact1)
@@ -271,14 +271,14 @@ class ForeverAssets
 							tempSplash.setGraphicSize(Std.int(tempSplash.width * splashJson.splashScale));
 
 						// week 7 format
-						tempSplash.animation.addByPrefix('anim1', 'note impact 1 ' + Receptor.arrowCol[noteData], 24, false);
-						tempSplash.animation.addByPrefix('anim2', 'note impact 2 ' + Receptor.arrowCol[noteData], 24, false);
+						tempSplash.animation.addByPrefix('anim1', 'note impact 1 ' + Receptor.colors[noteData], 24, false);
+						tempSplash.animation.addByPrefix('anim2', 'note impact 2 ' + Receptor.colors[noteData], 24, false);
 
 						tempSplash.animation.addByPrefix('anim1', 'note impact 1  blue', 24, false); // HE DID IT AGAIN MY BOYS;
 
 						// psych format
-						tempSplash.animation.addByPrefix('anim1', 'note splash ' + Receptor.arrowCol[noteData] + ' 1', 24, false);
-						tempSplash.animation.addByPrefix('anim2', 'note splash ' + Receptor.arrowCol[noteData] + ' 2', 24, false);
+						tempSplash.animation.addByPrefix('anim1', 'note splash ' + Receptor.colors[noteData] + ' 1', 24, false);
+						tempSplash.animation.addByPrefix('anim2', 'note splash ' + Receptor.colors[noteData] + ' 2', 24, false);
 						tempSplash.updateHitbox();
 
 					default:
@@ -307,7 +307,7 @@ class ForeverAssets
 						tempSplash.frames = Paths.getSparrowAtlas(ForeverTools.returnSkin(asset, assetModifier, changeableSkin, baseLibrary));
 
 						// custom format
-						var receptorPrefix = splashJson.useDirectionInPrefix ? Receptor.arrowDir[noteData] : Receptor.arrowCol[noteData];
+						var receptorPrefix = splashJson.useDirectionInPrefix ? Receptor.actions[noteData] : Receptor.colors[noteData];
 						var validImpact1 = (splashJson.impactPrefix != null && splashJson.impactPrefix[0] != null && splashJson.impactPrefix[0].length > 0);
 						var validImpact2 = (splashJson.impactPrefix != null && splashJson.impactPrefix[1] != null && splashJson.impactPrefix[1].length > 0);
 						if (validImpact1)
@@ -321,14 +321,14 @@ class ForeverAssets
 							tempSplash.setGraphicSize(Std.int(tempSplash.width * splashJson.splashScale));
 
 						// week 7 format
-						tempSplash.animation.addByPrefix('anim1', 'note impact 1 ' + Receptor.arrowCol[noteData], 24, false);
-						tempSplash.animation.addByPrefix('anim2', 'note impact 2 ' + Receptor.arrowCol[noteData], 24, false);
+						tempSplash.animation.addByPrefix('anim1', 'note impact 1 ' + Receptor.colors[noteData], 24, false);
+						tempSplash.animation.addByPrefix('anim2', 'note impact 2 ' + Receptor.colors[noteData], 24, false);
 
 						tempSplash.animation.addByPrefix('anim1', 'note impact 1  blue', 24, false); // HE DID IT AGAIN MY BOYS;
 
 						// psych format
-						tempSplash.animation.addByPrefix('anim1', 'note splash ' + Receptor.arrowCol[noteData] + ' 1', 24, false);
-						tempSplash.animation.addByPrefix('anim2', 'note splash ' + Receptor.arrowCol[noteData] + ' 2', 24, false);
+						tempSplash.animation.addByPrefix('anim1', 'note splash ' + Receptor.colors[noteData] + ' 1', 24, false);
+						tempSplash.animation.addByPrefix('anim2', 'note splash ' + Receptor.colors[noteData] + ' 2', 24, false);
 						tempSplash.updateHitbox();
 
 					default:
@@ -402,7 +402,7 @@ class ForeverAssets
 				// probably gonna revise this and make it possible to add other arrow types but for now it's just pixel and normal
 				var stringSect:String = '';
 				// call arrow type I think
-				stringSect = Receptor.arrowDir[staticArrowType];
+				stringSect = Receptor.actions[staticArrowType];
 
 				newStaticArrow.frames = Paths.getSparrowAtlas(ForeverTools.returnSkin('$framesArgument', assetModifier, Init.getSetting("Note Skin"),
 					'noteskins/notes'));

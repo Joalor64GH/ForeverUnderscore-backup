@@ -9,8 +9,9 @@
 	],
 
 	"scoreTxt": "Счёт:",
-	"missTxt": "Пропуски:",
 	"accTxt": "Точность:",
+	"missTxt": "Пропуски:",
+	"rankTxt": "Rank:",
 	"botTxt": "[АВТОИГРА]",
 
 	"skipText": "НАЖМИТЕ SHIFT ДЛЯ ПРОПУСКА",

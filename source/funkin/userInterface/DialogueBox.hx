@@ -1,4 +1,4 @@
-package funkin.ui;
+package funkin.userInterface;
 
 import dependency.FNFSprite;
 import flixel.FlxBasic;

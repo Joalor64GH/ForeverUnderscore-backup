@@ -9,7 +9,7 @@ import sys.io.File;
 import base.*;
 import base.SongLoader.LegacySection;
 import base.SongLoader.Song;
-import funkin.compat.PsychChar;
+import funkin.compatibility.PsychChar;
 import dependency.FNFSprite;
 import flixel.FlxG;
 import flixel.graphics.frames.FlxFramesCollection;
@@ -63,18 +63,17 @@ class Character extends FNFSprite
 		super(x, y);
 		this.isPlayer = isPlayer;
 
-		cameraOffset = new FlxPoint(0, 0);
-		characterOffset = new FlxPoint(0, 0);
-
 		setCharacter(x, y, character);
 	}
 
 	public function setCharacter(x:Float, y:Float, character:String):Character
 	{
 		curCharacter = character;
-
 		if (icon == null)
 			icon = character;
+
+		characterOffset = new FlxPoint(0, 0);
+		cameraOffset = new FlxPoint(0, 0);
 
 		switch (character)
 		{
@@ -99,7 +98,7 @@ class Character extends FNFSprite
 				catch (e)
 				{
 					trace('$character is invalid!');
-					generateBoyfriend();
+					generatePlaceholder();
 				}
 		}
 
@@ -109,12 +108,13 @@ class Character extends FNFSprite
 		if (isPlayer) // reverse player flip
 			flipX = !flipX;
 
-		if (Init.getSetting('Disable Antialiasing'))
-			antialiasing = false;
+		antialiasing = !(curCharacter.endsWith('-pixel'));
 
-		setPosition(x, y);
-		this.x += characterOffset.x;
-		this.y += (characterOffset.y - (frameHeight * scale.y));
+		x += characterOffset.x;
+		y += (characterOffset.y - (frameHeight * scale.y));
+
+		this.x = x;
+		this.y = y;
 
 		return this;
 	}
@@ -234,6 +234,7 @@ class Character extends FNFSprite
 
 		super.update(elapsed);
 
+		// does this even work?
 		var isSinging:Bool = (animation.curAnim.name.startsWith('sing') && !animation.curAnim.name.endsWith('miss'));
 		if (!debugMode && isSinging && isHolding && animation.curAnim.numFrames > 1 && animation.curAnim.curFrame > 1 && !animation.curAnim.finished)
 			animation.curAnim.curFrame = 0;
@@ -366,8 +367,6 @@ class Character extends FNFSprite
 
 		if (ForeverTools.fileExists('characters/$char/$char.txt', TEXT))
 			spriteType = "PackerAtlas";
-		else if (ForeverTools.fileExists('characters/$char/$char.json', TEXT))
-			spriteType = "JsonAtlas";
 		else
 			spriteType = "SparrowAtlas";
 
@@ -375,8 +374,6 @@ class Character extends FNFSprite
 		{
 			case "PackerAtlas":
 				tex = Paths.getPackerAtlas(char, 'characters/$char');
-			case "JsonAtlas":
-				tex = Paths.getJsonAtlas(char, 'characters/$char');
 			default:
 				tex = Paths.getSparrowAtlas(char, 'characters/$char');
 		}
@@ -411,12 +408,12 @@ class Character extends FNFSprite
 			singDuration = amount;
 		});
 
-		setVar('setOffsets', function(?x:Float = 0, ?y:Float = 0)
+		setVar('setOffsets', function(x:Float = 0, y:Float = 0)
 		{
 			characterOffset.set(x, y);
 		});
 
-		setVar('setCamOffsets', function(?x:Float = 0, ?y:Float = 0)
+		setVar('setCamOffsets', function(x:Float = 0, y:Float = 0)
 		{
 			cameraOffset.set(x, y);
 		});
@@ -480,6 +477,9 @@ class Character extends FNFSprite
 			playAnim('danceLeft');
 		else
 			playAnim('idle');
+
+		x += characterOffset.x;
+		y += (characterOffset.y - (frameHeight * scale.y));
 	}
 
 	public function setVar(key:String, value:Dynamic)
@@ -533,17 +533,11 @@ class Character extends FNFSprite
 			spriteType = "PackerAtlas";
 		else
 			spriteType = "SparrowAtlas";
-		/*
-			else if (ForeverTools.fileExists('$characterPath.json', TEXT))
-				spriteType = "JsonAtlas";
-		 */
 
 		switch (spriteType)
 		{
 			case "PackerAtlas":
 				tex = Paths.getPackerAtlas(json.image.replace('characters/', ''), 'characters/$char');
-			case "JsonAtlas":
-				tex = Paths.getJsonAtlas(json.image.replace('characters/', ''), 'characters/$char');
 			default:
 				tex = Paths.getSparrowAtlas(json.image.replace('characters/', ''), 'characters/$char');
 		}
@@ -568,13 +562,11 @@ class Character extends FNFSprite
 		}
 		flipX = json.flip_x;
 		antialiasing = !json.no_antialiasing;
-		characterOffset.set(json.position[0], json.position[1]);
 		cameraOffset.set(json.camera_position[0], json.camera_position[1]);
 
 		// icon = json.healthicon;
 		barColor = json.healthbar_colors;
 		singDuration = json.sing_duration;
-		characterOffset.set(json.position[0], json.position[1]);
 		cameraOffset.set(json.camera_position[0], json.camera_position[1]);
 		if (json.scale != 1)
 		{
@@ -586,29 +578,42 @@ class Character extends FNFSprite
 			playAnim('danceLeft');
 		else
 			playAnim('idle');
+
+		setPosition(json.position[0], json.position[1]);
 	}
 
-	function generateBoyfriend()
+	function generatePlaceholder()
 	{
-		frames = Paths.getSparrowAtlas('bf', 'characters/bf');
+		frames = Paths.getSparrowAtlas('placeholder', 'characters/placeholder');
 
-		animation.addByPrefix('idle', 'BF idle dance', 24, false);
-		animation.addByPrefix('singUP', 'BF NOTE UP0', 24, false);
-		animation.addByPrefix('singLEFT', 'BF NOTE LEFT0', 24, false);
-		animation.addByPrefix('singRIGHT', 'BF NOTE RIGHT0', 24, false);
-		animation.addByPrefix('singDOWN', 'BF NOTE DOWN0', 24, false);
-		animation.addByPrefix('singUPmiss', 'BF NOTE UP MISS', 24, false);
-		animation.addByPrefix('singLEFTmiss', 'BF NOTE LEFT MISS', 24, false);
-		animation.addByPrefix('singRIGHTmiss', 'BF NOTE RIGHT MISS', 24, false);
-		animation.addByPrefix('singDOWNmiss', 'BF NOTE DOWN MISS', 24, false);
-		animation.addByPrefix('hey', 'BF HEY', 24, false);
-		animation.addByPrefix('scared', 'BF idle shaking', 24);
+		animation.addByPrefix('idle', 'Idle', 24, false);
+		animation.addByPrefix('singUP', 'Up', 24, false);
+		animation.addByPrefix('singRIGHT', 'Right', 24, false);
+		animation.addByPrefix('singDOWN', 'Down', 24, false);
+		animation.addByPrefix('singLEFT', 'Left', 24, false);
+
+		if (!isPlayer)
+		{
+			addOffset("idle", 0, -350);
+			addOffset("singLEFT", 22, -353);
+			addOffset("singDOWN", 17, -375);
+			addOffset("singUP", 8, -334);
+			addOffset("singRIGHT", 50, -348);
+			cameraOffset.set(30, 330);
+		}
+		else
+		{
+			addOffset("idle", 0, -10);
+			addOffset("singRIGHT", -61, -14);
+			addOffset("singDOWN", -48, -31);
+			addOffset("singUP", -45, 11);
+			addOffset("singLEFT", 33, -6);
+			cameraOffset.set(0, -5);
+			flipLeftRight();
+		}
 
 		playAnim('idle');
-
-		flipX = true;
-
-		characterOffset.x = 70;
+		barColor = [161, 161, 161];
 		curCharacter = 'placeholder';
 	}
 }

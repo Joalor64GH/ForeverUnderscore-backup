@@ -36,7 +36,7 @@ import flixel.util.FlxColor;
 import flixel.util.FlxGradient;
 import funkin.Note;
 import funkin.Strumline.Receptor;
-import funkin.ui.HealthIcon;
+import funkin.userInterface.HealthIcon;
 import lime.media.AudioBuffer;
 import openfl.events.Event;
 import openfl.events.IOErrorEvent;

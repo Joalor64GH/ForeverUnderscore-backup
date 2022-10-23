@@ -6,8 +6,9 @@
 	],
 
 	"scoreTxt": "Score:",
-	"missTxt": "Combo Breaks:",
 	"accTxt": "Accuracy:",
+	"missTxt": "Combo Breaks:",
+	"rankTxt": "Rank:",
 	"botTxt": "[AUTOPLAY]",
 
 	"skipText": "PRESS SHIFT TO SKIP",

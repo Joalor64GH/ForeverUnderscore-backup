@@ -132,7 +132,10 @@ class Conductor
 		songMusic.pause();
 
 		for (vocals in vocalArray)
-			vocals.pause();
+		{
+			if (vocals.playing)
+				vocals.pause();
+		}
 	}
 
 	public static function stopMusic()

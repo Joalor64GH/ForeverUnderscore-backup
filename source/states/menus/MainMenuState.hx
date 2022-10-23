@@ -43,6 +43,17 @@ class MainMenuState extends MusicBeatState
 
 	public var menuItemScale:Int = 1;
 
+	function setCameras()
+	{
+		camGame = new FlxCamera();
+		camHUD = new FlxCamera();
+		camHUD.bgColor.alpha = 0;
+
+		FlxG.cameras.reset(camGame);
+		FlxG.cameras.add(camHUD, false);
+		FlxG.cameras.setDefaultDrawTarget(camGame, true);
+	}
+
 	override function create()
 	{
 		super.create();
@@ -60,16 +71,7 @@ class MainMenuState extends MusicBeatState
 		// uh
 		persistentUpdate = persistentDraw = true;
 
-		// create the game camera
-		camGame = new FlxCamera();
-
-		// create the hud camera (separate so the hud stays on screen)
-		camHUD = new FlxCamera();
-		camHUD.bgColor.alpha = 0;
-
-		FlxG.cameras.reset(camGame);
-		FlxG.cameras.add(camHUD, false);
-		FlxG.cameras.setDefaultDrawTarget(camGame, true);
+		setCameras();
 
 		bg = new FlxSprite().loadGraphic(Paths.image('menus/base/menuBG'));
 		bg.scrollFactor.set(0, 0.17);
@@ -135,7 +137,9 @@ class MainMenuState extends MusicBeatState
 			+ "\nForever Engine Legacy v"
 			+ Main.foreverVersion
 			+ " - Underscore v"
-			+ openfl.Lib.application.meta["version"], 12);
+			+ openfl.Lib.application.meta["version"]
+			+ (Main.nightly ? '-nightly' : ''),
+			12);
 		versionShit.scrollFactor.set();
 		versionShit.setFormat(Paths.font('vcr'), 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		add(versionShit);

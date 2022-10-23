@@ -90,7 +90,7 @@ class ForeverTools
 	public static function checkUpdates()
 	{
 		// check for updates
-		if (Init.getSetting('Check for Updates'))
+		if (Init.getSetting('Check for Updates') && !Main.nightly)
 		{
 			trace('checking for update');
 			var http = new haxe.Http("https://raw.githubusercontent.com/BeastlyGhost/Forever-Engine-Underscore/master/gameVersion.txt");
@@ -100,7 +100,7 @@ class ForeverTools
 				var curVersion:String = openfl.Lib.application.meta["version"].trim();
 				trace('Your Version: ' + curVersion + ' - Latest Version: ' + updateVersion);
 
-				if (updateVersion != curVersion && !Main.nightly)
+				if (updateVersion != curVersion)
 				{
 					trace('version mismatch!');
 					mustUpdate = true;

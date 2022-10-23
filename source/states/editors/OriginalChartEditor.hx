@@ -36,7 +36,7 @@ import flixel.ui.FlxSpriteButton;
 import flixel.util.FlxColor;
 import funkin.*;
 import funkin.Strumline.Receptor;
-import funkin.ui.*;
+import funkin.userInterface.*;
 import lime.utils.Assets;
 import openfl.events.Event;
 import openfl.events.IOErrorEvent;

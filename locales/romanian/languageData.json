@@ -6,8 +6,9 @@
 	],
 
 	"scoreTxt": "Scor:",
-	"missTxt": "Combouri Distruse:",
 	"accTxt": "Acuratețe:",
+	"missTxt": "Combouri Distruse:",
+	"rankTxt": "Rank:",
 	"botTxt": "[AUTOPLAY]",
 
 	"skipText": "PRESS SHIFT TO SKIP",

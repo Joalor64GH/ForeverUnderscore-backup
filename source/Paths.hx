@@ -313,14 +313,14 @@ class Paths
 		return returnAsset;
 	}
 
-	public static function font(key:String, ignoreLang:Bool = false)
+	public static function font(key:String, ignoreLang:Bool = false, ?library:String)
 	{
-		var fontPath:String = 'assets/fonts/$key.ttf';
+		var font:String = getPath('fonts/$key.ttf', TEXT, library);
 		var extensions:Array<String> = ['.ttf', '.otf'];
 
 		for (extension in extensions)
 		{
-			var newPath:String = 'assets/fonts/$key$extension';
+			var newPath:String = getPath('fonts/$key$extension', TEXT, library);
 			if (!ignoreLang && ForeverLocales.curLang.useCustomFont)
 			{
 				if (ForeverLocales.curLang.fontPath != null)
@@ -344,7 +344,7 @@ class Paths
 			}
 		}
 
-		return fontPath + '.ttf'; // fallback in case the font or path doesn't exist;
+		return font; // fallback in case the font or path doesn't exist;
 	}
 
 	inline static public function getSparrowAtlas(key:String, folder:String = 'images', ?library:String)
@@ -358,23 +358,11 @@ class Paths
 		return (FlxAtlasFrames.fromSpriteSheetPacker(image(key, folder, library), file('$folder/$key.txt', library)));
 	}
 
-	inline static public function getJsonAtlas(key:String, folder:String = 'images', ?library:String)
-	{
-		return FlxAtlasFrames.fromTexturePackerJson(image(key, folder, library), file('$folder/$key.json', library));
-	}
-
-	inline static public function video(key:String)
+	inline static public function video(key:String, ?library:String)
 	{
 		var modFile:String = ModManager.getModFile('videos/$key.$VIDEO_EXT');
 		if (FileSystem.exists(modFile))
-		{
 			return modFile;
-		}
-		return 'assets/videos/$key.$VIDEO_EXT';
-	}
-
-	inline static public function shader(key:String)
-	{
-		return 'assets/shaders/$key';
+		return getPath('videos/$key.$VIDEO_EXT', TEXT, library);
 	}
 }

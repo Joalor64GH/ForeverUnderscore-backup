@@ -207,7 +207,7 @@ class Note extends FNFSprite
 					{
 						case 3: // pixel mines;
 							newNote.loadGraphic(Paths.image(ForeverTools.returnSkin('mines', assetModifier, '', 'noteskins/mines')), true, 17, 17);
-							newNote.animation.add(Receptor.arrowCol[noteData] + 'Scroll', [0, 1, 2, 3, 4, 5, 6, 7], 12);
+							newNote.animation.add(Receptor.colors[noteData] + 'Scroll', [0, 1, 2, 3, 4, 5, 6, 7], 12);
 
 						default: // pixel notes default
 							reloadPrefixes('arrows-pixels', 'noteskins/notes', Init.getSetting("Note Skin"), assetModifier, newNote);
@@ -222,7 +222,7 @@ class Note extends FNFSprite
 				{
 					case 3: // mines
 						newNote.loadGraphic(Paths.image(ForeverTools.returnSkin('mines', assetModifier, '', 'noteskins/mines')), true, 133, 128);
-						newNote.animation.add(Receptor.arrowCol[noteData] + 'Scroll', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]);
+						newNote.animation.add(Receptor.colors[noteData] + 'Scroll', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]);
 
 						if (isSustain)
 							newNote.kill();
@@ -236,19 +236,19 @@ class Note extends FNFSprite
 		}
 		//
 		if (!isSustain)
-			newNote.animation.play(Receptor.arrowCol[noteData] + 'Scroll');
+			newNote.animation.play(Receptor.colors[noteData] + 'Scroll');
 
 		if (isSustain && prevNote != null)
 		{
 			newNote.noteSpeed = prevNote.noteSpeed;
 			newNote.alpha = Init.getSetting('Hold Opacity') * 0.01;
 
-			newNote.animation.play(Receptor.arrowCol[noteData] + 'holdend');
+			newNote.animation.play(Receptor.colors[noteData] + 'holdend');
 			newNote.updateHitbox();
 
 			if (prevNote != null && prevNote.isSustain)
 			{
-				prevNote.animation.play(Receptor.arrowCol[prevNote.noteData] + 'hold');
+				prevNote.animation.play(Receptor.colors[prevNote.noteData] + 'hold');
 				prevNote.updateHitbox();
 			}
 		}
@@ -281,12 +281,12 @@ class Note extends FNFSprite
 							if (assetModifier == 'pixel')
 							{
 								newNote.loadGraphic(Paths.image(ForeverTools.returnSkin('mines', assetModifier, '', 'noteskins/mines')), true, 17, 17);
-								newNote.animation.add(Receptor.arrowDir[noteData] + 'Scroll', [0, 1, 2, 3, 4, 5, 6, 7], 12);
+								newNote.animation.add(Receptor.actions[noteData] + 'Scroll', [0, 1, 2, 3, 4, 5, 6, 7], 12);
 							}
 							else
 							{
 								newNote.loadGraphic(Paths.image(ForeverTools.returnSkin('mines', assetModifier, '', 'noteskins/mines')), true, 133, 128);
-								newNote.animation.add(Receptor.arrowDir[noteData] + 'Scroll', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9], 12);
+								newNote.animation.add(Receptor.actions[noteData] + 'Scroll', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9], 12);
 							}
 
 						default:
@@ -340,7 +340,7 @@ class Note extends FNFSprite
 		}
 
 		if (!isSustain)
-			newNote.animation.play(Receptor.arrowDir[noteData] + 'Scroll');
+			newNote.animation.play(Receptor.actions[noteData] + 'Scroll');
 
 		if (isSustain && prevNote != null)
 		{
@@ -368,9 +368,9 @@ class Note extends FNFSprite
 		{
 			newNote.frames = Paths.getSparrowAtlas(ForeverTools.returnSkin(texture, assetModifier, changeable, texturePath));
 
-			newNote.animation.addByPrefix(Receptor.arrowCol[newNote.noteData] + 'Scroll', Receptor.arrowCol[newNote.noteData] + '0');
-			newNote.animation.addByPrefix(Receptor.arrowCol[newNote.noteData] + 'holdend', Receptor.arrowCol[newNote.noteData] + ' hold end');
-			newNote.animation.addByPrefix(Receptor.arrowCol[newNote.noteData] + 'hold', Receptor.arrowCol[newNote.noteData] + ' hold piece');
+			newNote.animation.addByPrefix(Receptor.colors[newNote.noteData] + 'Scroll', Receptor.colors[newNote.noteData] + '0');
+			newNote.animation.addByPrefix(Receptor.colors[newNote.noteData] + 'holdend', Receptor.colors[newNote.noteData] + ' hold end');
+			newNote.animation.addByPrefix(Receptor.colors[newNote.noteData] + 'hold', Receptor.colors[newNote.noteData] + ' hold piece');
 
 			newNote.animation.addByPrefix('purpleholdend', 'pruple end hold'); // PA god dammit.
 
@@ -383,13 +383,13 @@ class Note extends FNFSprite
 			if (newNote.isSustain)
 			{
 				newNote.loadGraphic(Paths.image(ForeverTools.returnSkin(texture, assetModifier, changeable, texturePath)), true, 7, 6);
-				newNote.animation.add(Receptor.arrowCol[newNote.noteData] + 'holdend', [pixelNoteID[newNote.noteData]]);
-				newNote.animation.add(Receptor.arrowCol[newNote.noteData] + 'hold', [pixelNoteID[newNote.noteData] - 4]);
+				newNote.animation.add(Receptor.colors[newNote.noteData] + 'holdend', [pixelNoteID[newNote.noteData]]);
+				newNote.animation.add(Receptor.colors[newNote.noteData] + 'hold', [pixelNoteID[newNote.noteData] - 4]);
 			}
 			else
 			{
 				newNote.loadGraphic(Paths.image(ForeverTools.returnSkin(texture, assetModifier, changeable, texturePath)), true, 17, 17);
-				newNote.animation.add(Receptor.arrowCol[newNote.noteData] + 'Scroll', [pixelNoteID[newNote.noteData]], 12);
+				newNote.animation.add(Receptor.colors[newNote.noteData] + 'Scroll', [pixelNoteID[newNote.noteData]], 12);
 			}
 		}
 	}

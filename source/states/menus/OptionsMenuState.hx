@@ -13,8 +13,8 @@ import flixel.text.FlxText;
 import flixel.util.FlxColor;
 import flixel.util.FlxTimer;
 import funkin.Alphabet;
-import funkin.ui.menu.Checkmark;
-import funkin.ui.menu.Selector;
+import funkin.userInterface.menu.Checkmark;
+import funkin.userInterface.menu.Selector;
 
 /**
 	Options menu rewrite because I'm unhappy with how it was done previously

@@ -1,4 +1,4 @@
-package funkin.ui;
+package funkin.userInterface;
 
 import base.Conductor;
 import base.CoolUtil;
@@ -33,7 +33,7 @@ class ClassHUD extends FlxTypedGroup<FlxBasic>
 	public var infoDisplay:String = CoolUtil.dashToSpace(PlayState.SONG.song);
 	// public var diffDisplay:String = CoolUtil.difficultyFromString();
 	public var diffDisplay:String = ForeverLocales.curLang.difficultyNames[PlayState.storyDifficulty];
-	public var engineDisplay:String = "UNDERSCORE v" + openfl.Lib.application.meta["version"];
+	public var engineDisplay:String = "F.E. UNDERSCORE v" + openfl.Lib.application.meta["version"] + (Main.nightly ? '-NIGHTLY' : '');
 
 	public var autoplayMark:FlxText;
 	public var autoplaySine:Float = 0;
@@ -91,7 +91,7 @@ class ClassHUD extends FlxTypedGroup<FlxBasic>
 		cornerMark.visible = (Init.getSetting('Engine Mark') && !PlayState.bfStrums.autoplay);
 		add(cornerMark);
 
-		centerMark = new FlxText(0, (Init.getSetting('Downscroll') ? FlxG.height - 45 : 20), 0, '', 24);
+		centerMark = new FlxText(0, (Init.getSetting('Downscroll') ? FlxG.height - 40 : 10), 0, '', 24);
 		centerMark.setFormat(Paths.font('vcr'), 24, FlxColor.WHITE);
 		centerMark.setBorderStyle(OUTLINE, FlxColor.BLACK, 2);
 		centerMark.antialiasing = !Init.getSetting('Disable Antialiasing');
@@ -116,9 +116,9 @@ class ClassHUD extends FlxTypedGroup<FlxBasic>
 		if (Init.getSetting('Centered Receptors'))
 		{
 			if (Init.getSetting('Downscroll'))
-				autoplayMark.y = autoplayMark.y - 105;
+				autoplayMark.y = autoplayMark.y - 125;
 			else
-				autoplayMark.y = autoplayMark.y + 105;
+				autoplayMark.y = autoplayMark.y + 125;
 		}
 
 		add(autoplayMark);
@@ -176,7 +176,7 @@ class ClassHUD extends FlxTypedGroup<FlxBasic>
 
 		if (autoplayMark.visible)
 		{
-			autoplaySine += 30 * elapsed;
+			autoplaySine += 180 * (elapsed / 4);
 			autoplayMark.alpha = 1 - Math.sin((Math.PI * autoplaySine) / 80);
 		}
 
@@ -193,18 +193,18 @@ class ClassHUD extends FlxTypedGroup<FlxBasic>
 
 		var unrated = (Timings.comboDisplay == null || Timings.comboDisplay == '');
 
-		var comboDisplay:String = Timings.comboDisplay;
-		var rankingDisplay:String = Timings.returnScoreRating().toUpperCase();
-		var rankString:String = (!unrated ? ' [$comboDisplay | $rankingDisplay]' : ' [$rankingDisplay]');
-
 		// testing purposes
 		var displayAccuracy:Bool = Init.getSetting('Display Accuracy');
 
 		scoreBar.text = '${language.scoreTxt} $importSongScore';
-		scoreBar.text += divider + '${language.missTxt} $importMisses';
-
 		if (displayAccuracy)
-			scoreBar.text += divider + '${language.accTxt} ${(Math.floor(Timings.getAccuracy() * 100) / 100)}%' + rankString;
+		{
+			scoreBar.text += divider
+				+ '${language.accTxt} ${(Math.floor(Timings.getAccuracy() * 100) / 100)}%'
+				+ (!unrated ? ' [' + Timings.comboDisplay + ']' : '');
+			scoreBar.text += divider + '${language.missTxt} $importMisses';
+			scoreBar.text += divider + '${language.rankTxt} ${Timings.returnScoreRating().toUpperCase()}';
+		}
 
 		scoreBar.text += '\n';
 		scoreBar.x = Math.floor((FlxG.width / 2) - (scoreBar.width / 2));

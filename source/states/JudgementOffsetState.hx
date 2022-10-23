@@ -58,8 +58,8 @@ class JudgementOffsetState extends MusicBeatState
 
 		var strumVertPos:Int = (Init.getSetting('Downscroll') ? FlxG.height - 200 : 0);
 
-		dadStrums = new Strumline(dadPlacement, strumVertPos, true, false, 4);
-		bfStrums = new Strumline(bfPlacement, strumVertPos, false, true, 4);
+		dadStrums = new Strumline(dadPlacement, strumVertPos, true, false, false, 4);
+		bfStrums = new Strumline(bfPlacement, strumVertPos, false, true, false, 4);
 		bfStrums.cameras = [_camUI];
 		dadStrums.cameras = [_camUI];
 
@@ -74,8 +74,7 @@ class JudgementOffsetState extends MusicBeatState
 				}
 
 				dadStrums.members[i].alpha = 0.35;
-				dadStrums.receptors.members[i].setAlpha = 0.35;
-				dadStrums.receptors.members[i].lightConfirms = false;
+				dadStrums.receptors.members[i].overrideAlpha = true;
 			}
 		}
 		dadStrums.visible = !Init.getSetting('Hide Opponent Receptors');

@@ -12,8 +12,8 @@ import flixel.math.FlxMath;
 import flixel.text.FlxText;
 import flixel.util.FlxColor;
 import funkin.Alphabet;
-import funkin.ui.menu.Checkmark;
-import funkin.ui.menu.Selector;
+import funkin.userInterface.menu.Checkmark;
+import funkin.userInterface.menu.Selector;
 
 enum SettingTypes
 {

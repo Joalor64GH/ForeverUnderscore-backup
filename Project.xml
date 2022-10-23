@@ -3,7 +3,7 @@
 
 	<!-- _________________________ Application Settings _________________________ -->
 
-	<app title="Forever Engine Underscore" file="Forever Engine Underscore" packageName="com.beastlyghost.foreverengineunderscore" package="com.beastlyghost.foreverengineunderscore" main="Main" version="0.2.3.1" company="BeastlyGhost" />
+	<app title="Forever Engine Underscore" file="Forever Engine Underscore" packageName="com.beastlyghost.foreverengineunderscore" package="com.beastlyghost.foreverengineunderscore" main="Main" version="0.3" company="BeastlyGhost" />
 
 	<!--The flixel preloader is not accurate in Chrome. You can use it regularly if you embed the swf into a html file
 		or you can set the actual size of your file manually at "FlxPreloaderBase-onUpdate-bytesTotal"-->

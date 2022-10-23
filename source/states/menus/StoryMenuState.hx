@@ -20,7 +20,7 @@ import flixel.util.FlxColor;
 import flixel.util.FlxTimer;
 import funkin.Alphabet;
 import funkin.Highscore;
-import funkin.ui.menu.*;
+import funkin.userInterface.menu.*;
 
 using StringTools;
 

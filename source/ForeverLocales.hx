@@ -13,6 +13,7 @@ typedef LangDataDef =
 	var scoreTxt:String;
 	var missTxt:String;
 	var accTxt:String;
+	var rankTxt:String;
 	var botTxt:String;
 	// DIALOGUE
 	var skipText:String;
@@ -66,8 +67,9 @@ class ForeverLocales
 				],
 
 				"scoreTxt": "Score:",
-				"missTxt": "Combo Breaks:",
 				"accTxt": "Accuracy:",
+				"missTxt": "Combo Breaks:",
+				"rankTxt": "Rank:",
 				"botTxt": "[AUTOPLAY]",
 
 				"skipText": "PRESS SHIFT TO SKIP",

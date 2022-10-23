@@ -6,8 +6,9 @@
 	],
 
 	"scoreTxt": "Puntuación:",
-	"missTxt": "Fallos:",
 	"accTxt": "Precisión:",
+	"missTxt": "Fallos:",
+	"rankTxt": "Clasificación:",
 	"botTxt": "[AUTOPLAY]",
 
 	"skipText": "PRESIONA SHIFT PARA OMITIR",

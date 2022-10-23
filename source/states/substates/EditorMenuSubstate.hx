@@ -27,7 +27,6 @@ class EditorMenuSubstate extends MusicBeatSubstate
 	var playState:Bool = false;
 
 	var player:String = 'bf';
-	var stage:String = 'stage';
 
 	public function new(playMusic:Bool = true, playState:Bool = false)
 	{
@@ -38,7 +37,6 @@ class EditorMenuSubstate extends MusicBeatSubstate
 		cameras = [FlxG.cameras.list[FlxG.cameras.list.length - 1]];
 
 		player = (PlayState.SONG.player2 != null ? PlayState.SONG.player2 : 'dad');
-		stage = (PlayState.curStage != null ? PlayState.curStage : 'stage');
 
 		if (playMusic)
 		{
@@ -110,7 +108,7 @@ class EditorMenuSubstate extends MusicBeatSubstate
 					Main.switchState(this, new states.editors.ChartEditor());
 
 				case 'Character Offset Editor':
-					Main.switchState(this, new states.editors.CharacterOffsetEditor(player, stage, false, playState));
+					Main.switchState(this, new states.editors.CharacterOffsetEditor(player, false, playState));
 			}
 		}
 

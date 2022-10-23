@@ -98,7 +98,7 @@ class ScriptHandler extends SScript
 		set('Note', Note);
 		set('Strumline', Strumline);
 		set('Receptor', Strumline.Receptor);
-		set('HealthIcon', funkin.ui.HealthIcon);
+		set('HealthIcon', funkin.userInterface.HealthIcon);
 		set('Paths', Paths);
 		set('Stage', Stage);
 		set('Timings', Timings);

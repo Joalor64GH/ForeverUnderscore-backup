@@ -1,4 +1,4 @@
-package funkin.ui.menu;
+package funkin.userInterface.menu;
 
 import flash.geom.Rectangle;
 import flixel.FlxG;

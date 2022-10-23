@@ -22,8 +22,7 @@ import flixel.util.FlxColor;
 import flixel.util.FlxGradient;
 import funkin.Alphabet;
 import funkin.Character;
-import funkin.ui.HealthIcon;
-import funkin.Stage;
+import funkin.userInterface.HealthIcon;
 import openfl.events.Event;
 import openfl.events.IOErrorEvent;
 import openfl.net.FileReference;
@@ -61,15 +60,12 @@ class CharacterOffsetEditor extends MusicBeatState
 
 	var camFollow:FlxObject;
 
-	var stageBuild:Stage;
-	var curStage:String = 'stage';
-
 	var camGame:FlxCamera;
 	var camHUD:FlxCamera;
 
 	var UI_box:FlxUITabMenu;
 
-	public function new(curCharacter:String = 'bf', curStage:String = 'stage', isPlayer:Bool = false, fromPlayState:Bool = false)
+	public function new(curCharacter:String = 'bf', isPlayer:Bool = false, fromPlayState:Bool = false)
 	{
 		super();
 
@@ -79,7 +75,6 @@ class CharacterOffsetEditor extends MusicBeatState
 		this.fromPlayState = fromPlayState;
 		this.curCharacter = curCharacter;
 		this.isPlayer = isPlayer;
-		this.curStage = curStage;
 	}
 
 	override public function create()
@@ -110,8 +105,9 @@ class CharacterOffsetEditor extends MusicBeatState
 		FlxG.camera.follow(camFollow);
 
 		// add stage
-		stageBuild = new Stage(curStage, true);
-		add(stageBuild);
+		var greyBG:FlxSprite = new FlxSprite(FlxG.width * -0.5, FlxG.height * -0.5);
+		greyBG.makeGraphic(FlxG.width * 2, FlxG.height * 2, FlxColor.GRAY);
+		add(greyBG);
 
 		generateGhost(!curCharacter.startsWith('bf') || !curCharacter.endsWith('-player'));
 		generateCharacter(!curCharacter.startsWith('bf') || !curCharacter.endsWith('-player'));
@@ -197,10 +193,9 @@ class CharacterOffsetEditor extends MusicBeatState
 
 		var resetBttn:FlxButton = new FlxButton(140, 30, "Reset Offsets", function()
 		{
-			var prevStage = curStage;
 			var prevCharacter = curCharacter;
 			var isPlayState = fromPlayState;
-			Main.switchState(this, new CharacterOffsetEditor(prevCharacter, curStage, !prevCharacter.startsWith('bf'), isPlayState));
+			Main.switchState(this, new CharacterOffsetEditor(prevCharacter, !prevCharacter.startsWith('bf'), isPlayState));
 		});
 
 		showGhostBttn = new FlxButton(140, 50, "Show Ghost", function()
@@ -348,11 +343,12 @@ class CharacterOffsetEditor extends MusicBeatState
 
 		if (check_offset.checked && char.animation.curAnim != null)
 		{
+			var holdingCtrl = FlxG.keys.pressed.CONTROL;
 			var controlArray:Array<Bool> = [
-				FlxG.keys.justPressed.LEFT,
-				FlxG.keys.justPressed.RIGHT,
-				FlxG.keys.justPressed.UP,
-				FlxG.keys.justPressed.DOWN
+				(holdingCtrl ? FlxG.keys.justPressed.LEFT : FlxG.keys.pressed.LEFT),
+				(holdingCtrl ? FlxG.keys.justPressed.RIGHT : FlxG.keys.pressed.RIGHT),
+				(holdingCtrl ? FlxG.keys.justPressed.UP : FlxG.keys.pressed.UP),
+				(holdingCtrl ? FlxG.keys.justPressed.DOWN : FlxG.keys.pressed.DOWN),
 			];
 
 			for (i in 0...controlArray.length)

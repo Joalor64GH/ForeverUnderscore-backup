@@ -1,4 +1,4 @@
-package funkin.ui;
+package funkin.userInterface;
 
 import sys.FileSystem;
 import flixel.FlxG;
@@ -63,10 +63,10 @@ class HealthIcon extends FlxSprite
 			if (iconPath != trimmedChar)
 				iconPath = trimmedChar;
 			else
-				iconPath = 'face';
+				iconPath = 'placeholder';
 		}
 
-		var iconGraphic:FlxGraphic = (iconPath != 'face' ? Paths.image('$iconPath/icon$suffix', 'characters') : Paths.image('$iconPath', 'characters'));
+		var iconGraphic:FlxGraphic = Paths.image('$iconPath/icon$suffix', 'characters');
 		var iconWidth = 1;
 
 		iconWidth = Std.int(iconGraphic.width / 150) - 1;
