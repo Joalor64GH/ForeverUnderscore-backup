@@ -227,17 +227,17 @@ class Character extends FNFSprite
 				if (animation.getByName('idlePost') != null)
 					animation.play('idlePost', true, false, 0);
 			}
+
+			// does this even work?
+			var isSinging:Bool = (animation.curAnim.name.startsWith('sing') && !animation.curAnim.name.endsWith('miss'));
+			if (isSinging && isHolding && animation.curAnim.numFrames > 1 && animation.curAnim.curFrame > 1 && !animation.curAnim.finished)
+				animation.curAnim.curFrame = 0;
 		}
 
 		for (i in characterScripts)
 			i.call('postUpdate', [elapsed]);
 
 		super.update(elapsed);
-
-		// does this even work?
-		var isSinging:Bool = (animation.curAnim.name.startsWith('sing') && !animation.curAnim.name.endsWith('miss'));
-		if (!debugMode && isSinging && isHolding && animation.curAnim.numFrames > 1 && animation.curAnim.curFrame > 1 && !animation.curAnim.finished)
-			animation.curAnim.curFrame = 0;
 	}
 
 	var danced:Bool = false;
