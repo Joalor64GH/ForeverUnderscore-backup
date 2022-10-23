@@ -1428,23 +1428,8 @@ class PlayState extends MusicBeatState
 				character.specialAnim = false;
 		}
 
-		var canHold:Bool = false;
-		if (!coolNote.isSustain)
-		{
-			canHold = false;
-			for (hold in coolNote.childrenNotes)
-			{
-				if (hold.wasGoodHit)
-				{
-					canHold = true;
-					break;
-				}
-			}
-		}
-
 		if (character != null)
 		{
-			character.isHolding = canHold;
 			character.playAnim(stringArrow, true);
 			character.holdTimer = 0;
 		}

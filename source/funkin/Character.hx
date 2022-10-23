@@ -46,8 +46,6 @@ class Character extends FNFSprite
 
 	public var stunned:Bool = false; // whether the Character is dead or not
 
-	public var isHolding:Bool = false;
-
 	public var bopSpeed:Int = 2;
 
 	// FOR PSYCH COMPATIBILITY
@@ -227,11 +225,6 @@ class Character extends FNFSprite
 				if (animation.getByName('idlePost') != null)
 					animation.play('idlePost', true, false, 0);
 			}
-
-			// does this even work?
-			var isSinging:Bool = (animation.curAnim.name.startsWith('sing') && !animation.curAnim.name.endsWith('miss'));
-			if (isSinging && isHolding && animation.curAnim.numFrames > 1 && animation.curAnim.curFrame > 1 && !animation.curAnim.finished)
-				animation.curAnim.curFrame = 0;
 		}
 
 		for (i in characterScripts)
@@ -249,7 +242,6 @@ class Character extends FNFSprite
 	{
 		if (!debugMode)
 		{
-			isHolding = false;
 			if (!skipDance && !specialAnim && animation.curAnim != null)
 			{
 				if (danceIdle)
