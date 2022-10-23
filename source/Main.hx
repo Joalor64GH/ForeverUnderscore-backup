@@ -22,7 +22,10 @@ import openfl.events.UncaughtErrorEvent;
 // at least that's how I think it works. I could be stupid!
 class Main extends Sprite
 {
-	public static var defaultFramerate = 120;
+	public static var gameWidth:Int = 1280; // Width of the game in pixels (might be less / more in actual pixels depending on your zoom).
+	public static var gameHeight:Int = 720; // Height of the game in pixels (might be less / more in actual pixels depending on your zoom).
+
+	var gameZoom:Float = -1; // If -1, zoom is automatically calculated to fit the window dimensions.
 
 	public static var mainClassState:Class<FlxState> = states.TitleState; // specify the state where the game should start at;
 
@@ -42,7 +45,21 @@ class Main extends Sprite
 		Lib.current.loaderInfo.uncaughtErrorEvents.addEventListener(UncaughtErrorEvent.UNCAUGHT_ERROR, onCrash);
 		FlxTransitionableState.skipNextTransIn = true;
 
-		addChild(new FlxGame(0, 0, Init, 1, 120, 120, true));
+		var stageWidth:Int = Lib.current.stage.stageWidth;
+		var stageHeight:Int = Lib.current.stage.stageHeight;
+
+		if (gameZoom == -1)
+		{
+			var ratioX:Float = stageWidth / gameWidth;
+			var ratioY:Float = stageHeight / gameHeight;
+			gameZoom = Math.min(ratioX, ratioY);
+			gameWidth = Math.ceil(stageWidth / gameZoom);
+			gameHeight = Math.ceil(stageHeight / gameZoom);
+			// this just kind of sets up the camera zoom in accordance to the surface width and camera zoom.
+			// if set to negative one, it is done so automatically, which is the default.
+		}
+
+		addChild(new FlxGame(0, 0, Init, gameZoom, 120, 120, true));
 
 		// begin the discord rich presence
 		#if DISCORD_RPC

@@ -233,16 +233,6 @@ class PlayState extends MusicBeatState
 	{
 		var soundArray:Array<String> = [];
 
-		var pauseSong = Init.trueSettings.get('Pause Song');
-
-		var pauseMusic:FlxSound = new FlxSound().loadEmbedded(Paths.music('menus/pause/$pauseSong/$pauseSong'), true, true);
-		pauseMusic.volume = 0.000001;
-		pauseMusic.play();
-
-		var editorMusic:FlxSound = new FlxSound().loadEmbedded(Paths.music('menus/main/prototype/prototype'), true, true);
-		editorMusic.volume = 0.000001;
-		editorMusic.play();
-
 		// push your sound paths to this array
 		if (Init.getSetting('Hitsound Volume') > 0)
 			soundArray.push('hitsounds/${Init.getSetting("Hitsound Type")}/hit');
@@ -259,15 +249,6 @@ class PlayState extends MusicBeatState
 			var missSounds:FlxSound = new FlxSound().loadEmbedded(Paths.sound('missnote' + i));
 			missSounds.volume = 0.000001;
 			missSounds.play();
-
-			// stopping the pause music once these are done;
-			missSounds.onComplete = function():Void
-			{
-				pauseMusic.stop();
-				pauseMusic.destroy();
-				editorMusic.stop();
-				editorMusic.destroy();
-			}
 		}
 	}
 

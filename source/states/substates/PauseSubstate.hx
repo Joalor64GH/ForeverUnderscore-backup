@@ -1,6 +1,8 @@
 package states.substates;
 
 import sys.FileSystem;
+import sys.thread.Mutex;
+import sys.thread.Thread;
 import base.*;
 import base.CoolUtil;
 import base.MusicBeat.MusicBeatSubstate;
@@ -35,6 +37,7 @@ class PauseSubstate extends MusicBeatSubstate
 
 	private var levelError:FlxText;
 	private var language = ForeverLocales.curLang;
+	private var mutex:Mutex;
 
 	public function new(x:Float, y:Float)
 	{
@@ -76,11 +79,15 @@ class PauseSubstate extends MusicBeatSubstate
 		// pause music, bg, and texts
 		var pauseSong = Init.trueSettings.get('Pause Song');
 
-		pauseMusic = new FlxSound().loadEmbedded(Paths.music('menus/pause/$pauseSong/$pauseSong'), true, true);
-		pauseMusic.volume = 0;
-		pauseMusic.play(false, FlxG.random.int(0, Std.int(pauseMusic.length / 2)));
-
-		FlxG.sound.list.add(pauseMusic);
+		mutex = new Mutex();
+		Thread.create(function(){
+			mutex.acquire();
+			pauseMusic = new FlxSound().loadEmbedded(Paths.music('menus/pause/$pauseSong/$pauseSong'), true, true);
+			pauseMusic.volume = 0;
+			pauseMusic.play(false, FlxG.random.int(0, Std.int(pauseMusic.length / 2)));
+			FlxG.sound.list.add(pauseMusic);
+			mutex.release();
+		});
 
 		var bg:FlxSprite = new FlxSprite().makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
 		bg.alpha = 0;
@@ -171,8 +178,10 @@ class PauseSubstate extends MusicBeatSubstate
 	{
 		super.update(elapsed);
 
-		if (pauseMusic.volume < 0.5)
-			pauseMusic.volume += 0.01 * elapsed;
+		if (pauseMusic != null && pauseMusic.playing) {
+			if (pauseMusic.volume < 0.5)
+				pauseMusic.volume += 0.01 * elapsed;
+		}
 
 		if (controls.UI_UP_P)
 			changeSelection(-1);

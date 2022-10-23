@@ -8,6 +8,8 @@ import flixel.system.FlxSound;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 import flixel.util.FlxTimer;
+import sys.thread.Mutex;
+import sys.thread.Thread;
 import funkin.Alphabet;
 
 /*
@@ -23,6 +25,7 @@ class EditorMenuSubstate extends MusicBeatSubstate
 	var music:FlxSound;
 
 	public static var fromPause:Bool = false;
+	private var mutex:Mutex;
 
 	var playState:Bool = false;
 
@@ -40,10 +43,15 @@ class EditorMenuSubstate extends MusicBeatSubstate
 
 		if (playMusic)
 		{
-			music = new FlxSound().loadEmbedded(Paths.music('menus/prototype/prototype'), true, true);
-			music.volume = 0;
-			music.play(false, FlxG.random.int(0, Std.int(music.length / 2)));
-			FlxG.sound.list.add(music);
+			mutex = new Mutex();
+			Thread.create(function(){
+				mutex.acquire();
+				music = new FlxSound().loadEmbedded(Paths.music('menus/prototype/prototype'), true, true);
+				music.volume = 0;
+				music.play(false, FlxG.random.int(0, Std.int(music.length / 2)));
+				FlxG.sound.list.add(music);
+				mutex.release();
+			});
 		}
 
 		var bg:FlxSprite = new FlxSprite().makeGraphic(FlxG.width, FlxG.height, 0xFF000000);
