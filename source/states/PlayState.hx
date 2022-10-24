@@ -784,11 +784,11 @@ class PlayState extends MusicBeatState
 
 	var lastSection:Int = 0;
 
-	@:isVar public static var songSpeed(get, default):Float = 0;
+	@:isVar public static var songSpeed(get, set):Float = 0;
 
 	static function get_songSpeed()
 		return songSpeed * Conductor.playbackRate;
-	/*
+
 	static function set_songSpeed(value:Float):Float
 	{
 		var offset = songSpeed / value;
@@ -805,7 +805,6 @@ class PlayState extends MusicBeatState
 
 		return cast songSpeed = value;
 	}
-	*/
 
 	override public function update(elapsed:Float)
 	{
@@ -1041,7 +1040,8 @@ class PlayState extends MusicBeatState
 			}
 		}
 
-		checkEvents();
+		if (events.length > 0)
+			checkEvents();
 		callFunc('postUpdate', [elapsed]);
 	}
 
@@ -1768,7 +1768,10 @@ class PlayState extends MusicBeatState
 		events = ChartParser.loadEvents(SONG.events);
 
 		for (i in events)
-			pushedEvent(i);
+		{
+			if (events.length > 0)
+				pushedEvent(i);
+		}
 
 		// song is done.
 		generatedSong = true;
