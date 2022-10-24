@@ -104,5 +104,10 @@ class ScriptHandler extends SScript
 		set('Paths', Paths);
 		set('Stage', Stage);
 		set('Timings', Timings);
+
+		set('getVarFromClass', function(instance:String, variable:String)
+		{
+			Reflect.field(Type.resolveClass(instance), variable);
+		});
 	}
 }

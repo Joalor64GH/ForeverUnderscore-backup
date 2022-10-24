@@ -690,7 +690,7 @@ class PlayState extends MusicBeatState
 
 						if (eligable)
 						{
-							goodNoteHit(coolNote, bfStrums); // then hit the note
+							goodNoteHit(coolNote, bfStrums.receptors.members[coolNote.noteData], bfStrums); // then hit the note
 							pressedNotes.push(coolNote);
 						}
 						// end of this little check
@@ -1304,7 +1304,7 @@ class PlayState extends MusicBeatState
 		daNote.destroy();
 	}
 
-	function goodNoteHit(coolNote:Note, strumline:Strumline)
+	function goodNoteHit(coolNote:Note, receptor:Receptor, strumline:Strumline)
 	{
 		if (!coolNote.wasGoodHit)
 		{
@@ -1314,9 +1314,7 @@ class PlayState extends MusicBeatState
 
 			coolNote.wasGoodHit = true;
 			Conductor.songVocals.volume = 1;
-
-			if (strumline.receptors.members[coolNote.noteData] != null)
-				strumline.receptors.members[coolNote.noteData].playAnim('confirm', true);
+			receptor.playAnim('confirm', true);
 
 			coolNote.goodNoteHit(coolNote, (coolNote.strumTime < Conductor.songPosition ? "late" : "early"));
 
@@ -1436,7 +1434,8 @@ class PlayState extends MusicBeatState
 		if (character != null)
 		{
 			character.playAnim(stringArrow, true);
-			character.holdTimer = 0;
+			if (character.holdTimer > 0)
+				character.holdTimer = 0;
 		}
 	}
 
@@ -1455,7 +1454,7 @@ class PlayState extends MusicBeatState
 					notesPressedAutoplay.push(daNote);
 
 				if (!daNote.canHurt)
-					goodNoteHit(daNote, strumline);
+					goodNoteHit(daNote, strumline.receptors.members[daNote.noteData], strumline);
 			}
 		}
 
@@ -1469,7 +1468,7 @@ class PlayState extends MusicBeatState
 					&& coolNote.mustPress
 					&& !coolNote.tooLate
 					&& holdingKeys[coolNote.noteData])
-					goodNoteHit(coolNote, strumline);
+					goodNoteHit(coolNote, strumline.receptors.members[coolNote.noteData], strumline);
 			});
 		}
 	}
