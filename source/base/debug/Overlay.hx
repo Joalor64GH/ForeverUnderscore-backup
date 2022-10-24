@@ -86,13 +86,10 @@ class Overlay extends TextField
 		if (visible)
 		{
 			text = '' // set up the text itself
-				+ (displayFps ? times.length + ' FPS' + fpsMs + '\n' : '') // Current Framerate (and Milliseconds)
+				+ (displayFps ? times.length + ' FPS' + fpsMs + '\n' : '') // Current Framerate and Milliseconds
 				+ (displayMemory ? '${getInterval(mem)} / ${getInterval(memPeak)}\n' : '') // Current and Total Memory Usage
-				// Extra Info, shown by pressing F3
-				+ (displayExtra ? 'State: ${Main.mainClassState}\n' : '') // Current Game State
-				+ (displayExtra ? 'Objects: ${FlxG.state.members.length} ' : '') // Current Game State Object Count
-				+ (displayExtra ? '(Cameras: ${FlxG.cameras.list.length})\n' : '') // Current Game State Camera Count
-				+ (displayExtra ? 'System: ${lime.system.System.platformLabel}' : ''); // System Name
+				+ (displayExtra ? '${Main.mainClassState} (Objects: ${FlxG.state.members.length})\n' : '') // Current Game State and Objects
+				+ (displayExtra ? '${Date.now()}' : ''); // Current Date and Time
 		}
 	}
 

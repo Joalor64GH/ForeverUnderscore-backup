@@ -108,8 +108,8 @@ class Character extends FNFSprite
 
 		antialiasing = !(curCharacter.endsWith('-pixel'));
 
-		x += characterOffset.x;
-		y += (characterOffset.y - (frameHeight * scale.y));
+		this.x += characterOffset.x;
+		this.y += (characterOffset.y - (frameHeight * scale.y));
 
 		this.x = x;
 		this.y = y;
