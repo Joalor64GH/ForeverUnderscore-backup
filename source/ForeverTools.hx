@@ -214,6 +214,17 @@ class ForeverTools
 		return FlxColor.TRANSPARENT;
 	}
 
+	public static function getPoint(point:String):flixel.util.FlxAxes
+	{
+		switch (point.toLowerCase())
+		{
+			case 'x': return flixel.util.FlxAxes.X;
+			case 'y': return flixel.util.FlxAxes.Y;
+			case 'xy': return flixel.util.FlxAxes.XY;
+		}
+		return flixel.util.FlxAxes.XY;
+	}
+
 	public static function fromHSB(hue:Float, sat:Float, brt:Float, alpha:Float):FlxColor
 	{
 		return FlxColor.fromHSB(hue, sat, brt, alpha);

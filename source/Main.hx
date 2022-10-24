@@ -59,7 +59,7 @@ class Main extends Sprite
 			// if set to negative one, it is done so automatically, which is the default.
 		}
 
-		addChild(new FlxGame(0, 0, Init, gameZoom, 120, 120, true));
+		addChild(new FlxGame(0, 0, Init, #if (flixel < "5.0.0") gameZoom, #end 120, 120, true));
 
 		// begin the discord rich presence
 		#if DISCORD_RPC

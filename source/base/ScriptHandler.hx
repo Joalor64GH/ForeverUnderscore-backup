@@ -57,7 +57,6 @@ class ScriptHandler extends SScript
 		set('FlxMath', FlxMath);
 		set('FlxSound', FlxSound);
 		set('FlxGroup', FlxGroup);
-		set('FlxPoint', FlxPoint);
 		set('FlxTypedGroup', FlxTypedGroup);
 		set('FlxSpriteGroup', FlxSpriteGroup);
 		set('FlxTypedSpriteGroup', FlxTypedSpriteGroup);
@@ -74,7 +73,10 @@ class ScriptHandler extends SScript
 		set('FlxBackdrop', FlxBackdrop);
 		set('StageSizeScaleMode', StageSizeScaleMode);
 		set('FlxBarFillDirection', FlxBarFillDirection);
+		#if (flixel < "5.0.0")
 		set('FlxAxes', FlxAxes);
+		set('FlxPoint', FlxPoint);
+		#end
 		set('GraphicsShader', GraphicsShader);
 		set('ShaderFilter', ShaderFilter);
 
