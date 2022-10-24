@@ -26,11 +26,15 @@ class PauseSubstate extends MusicBeatSubstate
 	var curSelected:Int = 0;
 	var pauseMusic:FlxSound;
 
-	var menuItems:Array<String> = [];
-	var gameDifficulties:Array<Array<String>> = [];
-	var difficultyArray:Array<String> = [];
+	var menuItems:Array<PauseItem> = [];
+	var difficultyArray:Array<PauseItem> = [];
 
-	var pauseItems:Array<String> = ['Resume', 'Restart Song', 'Exit to Options', 'Exit to menu'];
+	var pauseItems:Array<PauseItem> = [
+		new PauseItem('Resume', '${ForeverLocales.curLang.resumeSong}'),
+		new PauseItem('Restart Song', '${ForeverLocales.curLang.restartSong}'),
+		new PauseItem('Exit to Options', '${ForeverLocales.curLang.exitOptions}'),
+		new PauseItem('Exit to menu', '${ForeverLocales.curLang.exitMenu}')
+	];
 
 	public static var toOptions:Bool = false;
 	public static var levelPractice:FlxText;
@@ -52,16 +56,16 @@ class PauseSubstate extends MusicBeatSubstate
 		{
 			// check for existance of difficulty files, and then push said files to the difficulty array as an entry;
 			var songName = CoolUtil.spaceToDash(PlayState.SONG.song);
+			var diffString = Std.string(i);
 			if (FileSystem.exists(Paths.songJson(songName, songName + '-' + i))
 				|| (FileSystem.exists(Paths.songJson(songName, songName)) && i == "NORMAL"))
-				difficultyArray.push(i);
+				difficultyArray.push(new PauseItem(diffString, diffString));
 		}
 
 		if (difficultyArray.length > 1) // no need to show the button if there's only a single difficulty;
 		{
-			menuItems.insert(2, 'Change Difficulty');
-			gameDifficulties.push(difficultyArray);
-			difficultyArray.push('BACK');
+			menuItems.insert(2, new PauseItem('Change Difficulty', '${language.changeDiff}'));
+			difficultyArray.push(new PauseItem('BACK', '${language.backButton}'));
 		}
 
 		#if debug
@@ -71,9 +75,9 @@ class PauseSubstate extends MusicBeatSubstate
 
 		if (PlayState.chartingMode)
 		{
-			menuItems.insert(3, 'Leave Charting Mode');
-			menuItems.insert(4, 'Toggle Practice Mode');
-			menuItems.insert(5, 'Toggle Autoplay');
+			menuItems.insert(3, new PauseItem('Leave Charting Mode', '${language.leaveChartingMode}'));
+			menuItems.insert(4, new PauseItem('Toggle Practice Mode', '${language.togglePractice}'));
+			menuItems.insert(5, new PauseItem('Toggle Autoplay', '${language.toggleAutoplay}'));
 		}
 
 		// pause music, bg, and texts
@@ -164,7 +168,7 @@ class PauseSubstate extends MusicBeatSubstate
 		// generate the new menu items;
 		for (i in 0...menuItems.length)
 		{
-			var songText:Alphabet = new Alphabet(0, (70 * i) + 30, menuItems[i], true, false);
+			var songText:Alphabet = new Alphabet(0, (70 * i) + 30, menuItems[i].displayName, true, false);
 			songText.isMenuItem = true;
 			songText.targetY = i;
 			grpMenuShit.add(songText);
@@ -196,9 +200,9 @@ class PauseSubstate extends MusicBeatSubstate
 
 		if (controls.ACCEPT || FlxG.mouse.justPressed)
 		{
-			var daSelected:String = menuItems[curSelected];
+			var daSelected:String = menuItems[curSelected].name;
 
-			if (menuItems == difficultyArray && daSelected != 'BACK' && difficultyArray.contains(daSelected))
+			if (menuItems == difficultyArray && daSelected != 'BACK' && difficultyArray.contains(menuItems[curSelected]))
 			{
 				var leSongRaw = PlayState.SONG.song.toLowerCase();
 				var leSong = Highscore.formatSong(PlayState.SONG.song.toLowerCase(), curSelected);
@@ -223,24 +227,24 @@ class PauseSubstate extends MusicBeatSubstate
 				return;
 			}
 
-			switch (daSelected)
+			switch (daSelected.toLowerCase())
 			{
-				case "Resume":
+				case 'resume':
 					close();
-				case "Restart Song":
+				case 'restart song':
 					if (!PlayState.chartingMode)
 						disableCheats(false);
 					else
 						disableCheats(true);
 					Main.switchState(this, new PlayState());
-				case "Change Difficulty":
+				case "change difficulty":
 					menuItems = difficultyArray;
 					reloadOptions();
-				case "Exit to Options":
+				case 'exit to options':
 					toOptions = true;
 					disableCheats(true);
 					Main.switchState(this, new OptionsMenuState());
-				case "Exit to menu":
+				case 'exit to menu':
 					Conductor.stopMusic();
 					PlayState.deaths = 0;
 					disableCheats(true);
@@ -252,25 +256,25 @@ class PauseSubstate extends MusicBeatSubstate
 					else
 						Main.switchState(this, new FreeplayMenuState());
 
-				case 'Open Editors':
+				case 'open editors':
 					EditorMenuSubstate.fromPause = true;
 					openSubState(new EditorMenuSubstate(false, true));
 
-				case 'Leave Charting Mode':
+				case 'leave charting mode':
 					disableCheats(true);
 					PlayState.chartingMode = false;
 					Main.switchState(this, new PlayState());
-				case 'Toggle Practice Mode':
+				case 'toggle practice mode':
 					PlayState.preventScoring = true;
 					PlayState.practiceMode = !PlayState.practiceMode;
 					levelPractice.visible = PlayState.practiceMode;
-				case 'Toggle Autoplay':
+				case 'toggle autoplay':
 					PlayState.preventScoring = true;
 					PlayState.bfStrums.autoplay = !PlayState.bfStrums.autoplay;
 					PlayState.uiHUD.autoplayMark.visible = PlayState.bfStrums.autoplay;
 					PlayState.uiHUD.autoplayMark.alpha = 1;
 					PlayState.uiHUD.autoplaySine = 0;
-				case 'BACK':
+				case 'back':
 					menuItems = pauseItems;
 					reloadOptions();
 			}
@@ -321,5 +325,20 @@ class PauseSubstate extends MusicBeatSubstate
 				// item.setGraphicSize(Std.int(item.width));
 			}
 		}
+	}
+}
+
+/*
+	could be better but whatever
+*/
+class PauseItem
+{
+	public var name:String;
+	public var displayName:String;
+
+	public function new(name:String, displayName:String)
+	{
+		this.name = name;
+		this.displayName = displayName;
 	}
 }
