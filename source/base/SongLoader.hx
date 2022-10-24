@@ -27,8 +27,11 @@ typedef LegacySong =
 	var author:String;
 	var assetModifier:String;
 	var validScore:Bool;
+	var events:Array<Array<Dynamic>>;
 	var ?offset:Float;
 	var ?color:Array<Int>;
+
+	@:optional public dynamic function copy():LegacySong;
 }
 
 typedef LegacySection =
@@ -49,6 +52,15 @@ typedef SongInfo =
 	var assetModifier:String;
 	var ?offset:Float;
 	var ?color:Array<Int>;
+}
+
+typedef EventNote = {
+	public var strumTime:Float;
+	public var event:String;
+	public var val1:String;
+	public var val2:String;
+	public var val3:String;
+	@:optional public var color:Array<Int>;
 }
 
 class Song
@@ -115,6 +127,15 @@ class Song
 			}';
 		}
 
+		try
+		{
+			rawEvent = File.getContent(Paths.songJson(folder.toLowerCase(), 'events'.trim()).trim()).trim();
+		}
+		catch (e)
+		{
+			rawEvent = null;
+		}
+
 		return parseSong(rawJson, rawMeta, rawEvent);
 	}
 
@@ -122,7 +143,30 @@ class Song
 	{
 		var oldSong:LegacySong = cast Json.parse(rawJson).song;
 		oldSong.validScore = true;
-
+		oldSong.copy = function() 
+		{
+			return cast {
+				validScore: true,
+				stage: oldSong.stage,
+				splashSkin: oldSong.splashSkin,
+				speed: oldSong.speed,
+				song: oldSong.song,
+				player2: oldSong.player2,
+				player1: oldSong.player1,
+				notes: oldSong.notes,
+				noteSkin: oldSong.noteSkin,
+				needsVoices: oldSong.needsVoices,
+				gfVersion: oldSong.gfVersion,
+				events: [],
+				bpm: oldSong.bpm,
+				author: oldSong.author,
+				assetModifiler: oldSong.assetModifier
+			};
+		};
+		oldSong.events = parseEvent(rawEvent).copy();
+		if (oldSong.events == null) 
+			oldSong.events = [];
+		
 		if (rawMeta != null)
 		{
 			var songMeta:SongInfo = cast Json.parse(rawMeta);
@@ -159,6 +203,19 @@ class Song
 		}
 
 		return oldSong;
+	}
+
+	static function parseEvent(rawEvent:String) 
+	{
+		return try 
+		{
+			var array:Array<Dynamic> = cast haxe.Json.parse(rawEvent).events;
+			array.copy();
+		}
+		catch (e)
+		{
+			[];
+		}
 	}
 }
 

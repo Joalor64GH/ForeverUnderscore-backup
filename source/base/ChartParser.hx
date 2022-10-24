@@ -1,9 +1,9 @@
 package base;
 
+import base.SongLoader;
 import flixel.util.FlxSort;
 import funkin.Note;
 import states.PlayState;
-import base.SongLoader;
 
 using StringTools;
 
@@ -85,10 +85,27 @@ class ChartParser
 		return unspawnNotes;
 	}
 
-	public static function loadChartEvents(songData:LegacySong):Array<Note>
+	public static function loadEvents(events:Array<Array<Dynamic>>):Array<EventNote>
 	{
-		// placeholder;
-		var unspawnedEvents:Array<Note> = [];
-		return unspawnedEvents;
+		return try
+		{
+			var returnEvents:Array<EventNote> = [];
+			for (i in events)
+			{
+				var newEvent:EventNote = cast {
+					strumTime: i[0],
+					event: i[1][0][0],
+					val1: i[1][0][1],
+					val2: i[1][0][2],
+					val3: i[1][0][3]
+				};
+				returnEvents.push(newEvent);
+			}
+			returnEvents;
+		}
+		catch (e)
+		{
+			[];
+		}
 	}
 }
