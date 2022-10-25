@@ -140,6 +140,7 @@ class PlayState extends MusicBeatState
 	// player status;
 	public static var songScore:Int = 0;
 	public static var health:Float = 1; // mario
+	public static var maxHealth:Float = 2;
 	public static var combo:Int = 0;
 	public static var hits:Int = 0;
 	public static var misses:Int = 0;
@@ -816,8 +817,8 @@ class PlayState extends MusicBeatState
 
 		stageBuild.stageUpdateConstant(elapsed, boyfriend, gf, dad);
 
-		if (health > 2)
-			health = 2;
+		if (health > maxHealth)
+			health = maxHealth;
 
 		// dialogue checks
 		if (dialogueBox != null && dialogueBox.alive)
@@ -876,13 +877,13 @@ class PlayState extends MusicBeatState
 					openSubState(new EditorMenuSubstate(true, true));
 				}
 
-				if (FlxG.keys.pressed.SHIFT && FlxG.keys.justPressed.FIVE)
+				if (FlxG.keys.justPressed.FIVE)
 				{
 					preventScoring = true;
 					practiceMode = !practiceMode;
 				}
 
-				if (FlxG.keys.pressed.SHIFT && FlxG.keys.justPressed.SIX)
+				if (FlxG.keys.justPressed.SIX)
 				{
 					preventScoring = true;
 					bfStrums.autoplay = !bfStrums.autoplay;
