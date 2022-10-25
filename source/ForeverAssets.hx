@@ -210,23 +210,44 @@ class ForeverAssets
 		var rawJson = null;
 		if (!FileSystem.exists(path))
 		{
-			splashJson = cast haxe.Json.parse('{
-			    "file": "noteSplashes",
-			    "type": "graphic",
-			    "hasTwoAnims": true,
-			    "overrideSettings": false,
-			    "useDirectionInPrefix": false,
-			    "splashAlpha": 1,
-			    "splashScale": null,
-			    "width": 210,
-			    "height": 210,
-			    "offsets": [
-			        -20,
-			        -10,
-			        -20,
-			        -10
-			    ]
-			}');
+			splashJson = cast haxe.Json.parse(
+			assetModifier == 'pixel' ?
+				'{
+				    "file": "splash-pixel",
+				    "type": "graphic",
+				    "hasTwoAnims": true,
+				    "overrideSettings": false,
+				    "useDirectionInPrefix": false,
+				    "splashAlpha": 1,
+				    "splashScale": null,
+				    "width": 34,
+				    "height": 34,
+				    "offsets": [
+				        -120,
+				        -90,	
+				        -120,
+				        -90
+				    ]
+				}'
+			:
+				'{
+				    "file": "noteSplashes",
+				    "type": "graphic",
+				    "hasTwoAnims": true,
+				    "overrideSettings": false,
+				    "useDirectionInPrefix": false,
+				    "splashAlpha": 1,
+				    "splashScale": null,
+				    "width": 210,
+				    "height": 210,
+				    "offsets": [
+				        -20,
+				        -10,
+				        -20,
+				        -10
+				    ]
+				}'
+			);
 		}
 		else
 		{

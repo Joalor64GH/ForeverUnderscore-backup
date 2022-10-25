@@ -7,7 +7,7 @@ function loadAnimations()
 	addOffset('danceRight', 0, 0);
 
 	setGraphicSize(get('width') * 6);
-	set('antialiasing', false);
+	characterData.antialiasing = false;
 
 	playAnim('danceRight');
 

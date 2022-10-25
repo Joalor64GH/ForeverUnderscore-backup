@@ -23,7 +23,7 @@ function loadAnimations()
 	playAnim('idle');
 
 	setGraphicSize(get('width') * 6);
-	set('antialiasing', false);
+	characterData.antialiasing = false;
 
 	setBarColor([123, 214, 246]);
 
@@ -49,8 +49,6 @@ function loadAnimations()
 	}
 	else
 	{
-		flipLeftRight();
-
 		if (PlayState.curStage == 'school')
 		{
 			setOffsets(-135, 400);

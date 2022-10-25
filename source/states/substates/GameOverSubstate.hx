@@ -68,7 +68,8 @@ class GameOverSubstate extends MusicBeatSubstate
 		confirmNoise = new FlxSound().loadEmbedded(Paths.music(deathConfirm), false, true);
 		FlxG.sound.list.add(confirmNoise);
 
-		bf = new Character(x, y, character);
+		bf = new Character();
+		bf.setCharacter(x, y, character);
 		add(bf);
 
 		PlayState.boyfriend.destroy();
@@ -80,8 +81,7 @@ class GameOverSubstate extends MusicBeatSubstate
 		FlxG.camera.target = null;
 
 		Conductor.changeBPM(deathBPM);
-		if (!bf.debugMode)
-			bf.playAnim('firstDeath');
+		bf.playAnim('firstDeath');
 	}
 
 	override function update(elapsed:Float)
@@ -152,8 +152,7 @@ class GameOverSubstate extends MusicBeatSubstate
 			if (!leaving)
 			{
 				isEnding = true;
-				if (!bf.debugMode)
-					bf.playAnim('deathConfirm', true);
+				bf.playAnim('deathConfirm', true);
 				confirmNoise.play(false);
 				new FlxTimer().start(0.9, function(tmr:FlxTimer)
 				{

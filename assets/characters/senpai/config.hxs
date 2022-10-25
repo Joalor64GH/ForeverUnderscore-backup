@@ -6,7 +6,7 @@ function loadAnimations()
 		setupAnims();
 
 	setGraphicSize(get('width') * 6);
-	set('antialiasing', false);
+	characterData.antialiasing = false;
 
 	playAnim('idle');
 

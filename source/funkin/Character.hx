@@ -26,22 +26,32 @@ enum abstract CharacterOrigin(String) to String
 	var UNDERSCORE;
 	var PSYCH_ENGINE;
 	var SUPER_ENGINE;
+	var FUNKIN_COCOA;
+}
+
+typedef CharacterData =
+{
+	var offsetX:Float;
+	var offsetY:Float;
+	var camOffsetX:Float;
+	var camOffsetY:Float;
+	var icon:String;
+	var singDuration:Float;
+	var antialiasing:Bool;
+	var quickDancer:Bool;
+	var barColor:Array<Float>;
 }
 
 class Character extends FNFSprite
 {
 	public var curCharacter:String = 'bf';
 
-	public var icon:String = null;
-
 	public var holdTimer:Float = 0;
 
-	public var barColor:Array<Float> = [];
 	public var animationNotes:Array<Dynamic> = [];
 	public var idlePos:Array<Float> = [0, 0];
 
-	public var cameraOffset:FlxPoint;
-	public var characterOffset:FlxPoint;
+	public var characterData:CharacterData;
 
 	public var debugMode:Bool = false;
 	public var isPlayer:Bool = false;
@@ -59,34 +69,32 @@ class Character extends FNFSprite
 	public var danceIdle:Bool = false; // Character use "danceLeft" and "danceRight" instead of "idle"
 	public var skipDance:Bool = false;
 	public var specialAnim:Bool = false;
-	public var singDuration:Float = 4; // Multiplier of how long a character holds the sing pose
 	public var heyTimer:Float = 0;
 
 	public var characterType:String = UNDERSCORE;
 	public var originInstance:CharacterOrigin;
 
-	public function new(x:Float = 0, y:Float = 0, ?isPlayer:Bool = false, ?character:String = 'bf')
+	public function new(?isPlayer:Bool = false)
 	{
 		super(x, y);
 		this.isPlayer = isPlayer;
-
-		if (ForeverTools.fileExists('characters/$character/' + character + '.json'))
-			characterType = PSYCH_ENGINE;
-
-		setCharacter(x, y, character);
-
-		x += characterOffset.x;
-		y += (characterOffset.y - (frameHeight * scale.y));
 	}
 
 	public function setCharacter(x:Float, y:Float, character:String):Character
 	{
 		curCharacter = character;
-		if (icon == null)
-			icon = character;
 
-		characterOffset = new FlxPoint(0, 0);
-		cameraOffset = new FlxPoint(0, 0);
+		characterData = {
+			offsetY: 0,
+			offsetX: 0,
+			camOffsetY: 0,
+			camOffsetX: 0,
+			singDuration: 4,
+			icon: null,
+			quickDancer: false,
+			antialiasing: !character.endsWith('-pixel'),
+			barColor: [161, 161, 161]
+		};
 
 		switch (character)
 		{
@@ -95,6 +103,9 @@ class Character extends FNFSprite
 				loadMappedAnims();
 				playAnim("shoot1");
 		}
+
+		if (ForeverTools.fileExists('characters/$character/' + character + '.json'))
+			characterType = PSYCH_ENGINE;
 
 		switch (character)
 		{
@@ -113,13 +124,33 @@ class Character extends FNFSprite
 				}
 		}
 
-		recalcDance();
-		dance();
+		if (characterData.icon == null)
+			characterData.icon = character;
 
 		if (isPlayer) // reverse player flip
+		{
 			flipX = !flipX;
 
-		antialiasing = !(curCharacter.endsWith('-pixel'));
+			// Doesn't flip for BF, since his are already in the right place???
+			if (!curCharacter.startsWith('bf') && (!curCharacter.endsWith('-dead')))
+				flipLeftRight();
+			//
+		}
+		else if (curCharacter.startsWith('bf') &&  (!curCharacter.endsWith('-dead')))
+			flipLeftRight();
+
+		antialiasing = characterData.antialiasing;
+
+		trace('character ${curCharacter} scale ${scale.y} dataOffsetX ${characterData.offsetX} dataOffsetY ${characterData.offsetY}');
+
+		this.x += characterData.offsetX;
+		this.y += (characterData.offsetY - (frameHeight * scale.y));
+
+		this.x = x;
+		this.y = y;
+
+		recalcDance();
+		dance();
 
 		return this;
 	}
@@ -199,7 +230,7 @@ class Character extends FNFSprite
 				{
 					if (animation.curAnim.name.startsWith('sing'))
 						holdTimer += elapsed;
-					if (holdTimer >= Conductor.stepCrochet * (0.0011 / (FlxG.sound.music != null ? FlxG.sound.music.pitch : 1)) * singDuration)
+					if (holdTimer >= Conductor.stepCrochet * (0.0011 / (FlxG.sound.music != null ? FlxG.sound.music.pitch : 1)) * characterData.singDuration)
 					{
 						holdTimer = 0;
 						dance();
@@ -404,17 +435,19 @@ class Character extends FNFSprite
 
 		setVar('setSingDuration', function(amount:Int)
 		{
-			singDuration = amount;
+			characterData.singDuration = amount;
 		});
 
 		setVar('setOffsets', function(x:Float = 0, y:Float = 0)
 		{
-			characterOffset.set(x, y);
+			characterData.offsetX = x;
+			characterData.offsetY = y;
 		});
 
 		setVar('setCamOffsets', function(x:Float = 0, y:Float = 0)
 		{
-			cameraOffset.set(x, y);
+			characterData.camOffsetX = x;
+			characterData.camOffsetY = y;
 		});
 
 		setVar('setScale', function(?x:Float = 1, ?y:Float = 1)
@@ -422,19 +455,19 @@ class Character extends FNFSprite
 			scale.set(x, y);
 		});
 
-		setVar('setIcon', function(swag:String = 'face') icon = swag);
+		setVar('setIcon', function(swag:String = 'face') characterData.icon = swag);
 
 		setVar('quickDancer', function(quick:Bool = false)
 		{
-			quickDancer = quick;
+			characterData.quickDancer = quick;
 		});
 
 		setVar('setBarColor', function(rgb:Array<Float>)
 		{
-			if (barColor != null)
-				barColor = rgb;
+			if (characterData.barColor != null)
+				characterData.barColor = rgb;
 			else
-				barColor = [161, 161, 161];
+				characterData.barColor = [161, 161, 161];
 			return true;
 		});
 
@@ -465,6 +498,7 @@ class Character extends FNFSprite
 		});
 
 		setVar('isPlayer', isPlayer);
+		setVar('characterData', characterData);
 		if (PlayState.SONG != null)
 			setVar('songName', PlayState.SONG.song.toLowerCase());
 		setVar('flipLeftRight', flipLeftRight);
@@ -476,9 +510,6 @@ class Character extends FNFSprite
 			playAnim('danceLeft');
 		else
 			playAnim('idle');
-
-		x += characterOffset.x;
-		y += (characterOffset.y - (frameHeight * scale.y));
 	}
 
 	public function setVar(key:String, value:Dynamic)
@@ -560,13 +591,14 @@ class Character extends FNFSprite
 				addOffset(anim.anim, anim.offsets[0], anim.offsets[1]);
 		}
 		flipX = json.flip_x;
-		antialiasing = !json.no_antialiasing;
-		cameraOffset.set(json.camera_position[0], json.camera_position[1]);
 
-		// icon = json.healthicon;
-		barColor = json.healthbar_colors;
-		singDuration = json.sing_duration;
-		cameraOffset.set(json.camera_position[0], json.camera_position[1]);
+		// characterData.icon = json.healthicon;
+		characterData.antialiasing = !json.no_antialiasing;
+		characterData.barColor = json.healthbar_colors;
+		characterData.singDuration = json.sing_duration;
+		characterData.camOffsetX = json.camera_position[0];
+		characterData.camOffsetY = json.camera_position[1];
+
 		if (json.scale != 1)
 		{
 			setGraphicSize(Std.int(width * json.scale));
@@ -578,7 +610,8 @@ class Character extends FNFSprite
 		else
 			playAnim('idle');
 
-		setPosition(json.position[0], json.position[1]);
+		characterData.offsetX = json.position[0];
+		characterData.offsetY = json.position[1];
 	}
 
 	function generatePlaceholder()
@@ -598,7 +631,8 @@ class Character extends FNFSprite
 			addOffset("singDOWN", 17, -375);
 			addOffset("singUP", 8, -334);
 			addOffset("singRIGHT", 50, -348);
-			cameraOffset.set(30, 330);
+			characterData.camOffsetX = 30;
+			characterData.camOffsetY = 330;
 		}
 		else
 		{
@@ -607,12 +641,12 @@ class Character extends FNFSprite
 			addOffset("singDOWN", -48, -31);
 			addOffset("singUP", -45, 11);
 			addOffset("singLEFT", 33, -6);
-			cameraOffset.set(0, -5);
+			characterData.camOffsetY = -5;
 			flipLeftRight();
 		}
 
 		playAnim('idle');
-		barColor = [161, 161, 161];
+		characterData.barColor = [161, 161, 161];
 		curCharacter = 'placeholder';
 	}
 }

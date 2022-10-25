@@ -9,7 +9,7 @@ function loadAnimations()
 	addOffset("deathLoop", 10, 24);
 
 	setGraphicSize(get('width') * 6);
-	set('antialiasing', false);
+	characterData.antialiasing = false;
 
 	if (PlayState.curStage == 'stage')
 	{

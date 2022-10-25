@@ -47,7 +47,6 @@ function loadAnimations()
 	else
 	{
 		setOffsets(opponentX, 750);
-		flipLeftRight();
 
 		if (PlayState.curStage == 'mall')
 			setCamOffsets(15, -95);

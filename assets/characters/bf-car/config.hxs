@@ -29,14 +29,9 @@ function loadAnimations()
 
 	setBarColor([49, 176, 209]);
 	if (isPlayer)
-	{
 		setOffsets(80, 410);
-	}
 	else
-	{
 		setOffsets(80, 810);
-		flipLeftRight();
-	}
 }
 
 var isOld:Bool = false;

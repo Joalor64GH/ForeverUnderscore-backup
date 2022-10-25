@@ -414,7 +414,8 @@ class CharacterOffsetEditor extends MusicBeatState
 
 		if (char != null)
 			remove(char);
-		char = new Character(genOffset[0], genOffset[1], !isDad, curCharacter);
+		char = new Character(!isDad);
+		char.setCharacter(genOffset[0], genOffset[1], curCharacter);
 		char.debugMode = true;
 		add(char);
 
@@ -435,7 +436,8 @@ class CharacterOffsetEditor extends MusicBeatState
 
 		if (ghost != null)
 			remove(ghost);
-		ghost = new Character(genOffset[0], genOffset[1], !isDad, curGhost);
+		ghost = new Character(!isDad);
+		ghost.setCharacter(genOffset[0], genOffset[1], curGhost);
 		ghost.debugMode = true;
 		ghost.visible = false;
 		ghost.color = 0xFF666688;
@@ -492,7 +494,7 @@ class CharacterOffsetEditor extends MusicBeatState
 					'ERROR! No animations found on Script
 					\nmake sure the offsets exist on said script
 					\nTry: addOffset(\'animationName\', xPosition, yPosition);';
-				case PSYCH_ENGINE | SUPER_ENGINE:
+				case PSYCH_ENGINE | SUPER_ENGINE | FUNKIN_COCOA:
 					characterErrorFormat = 'ERROR! No animations found';
 			}
 

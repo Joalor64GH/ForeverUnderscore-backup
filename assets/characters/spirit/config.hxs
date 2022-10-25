@@ -13,7 +13,7 @@ function loadAnimations()
 	addOffset("singLEFT", -200, -280);
 
 	setGraphicSize(get('width') * 6);
-	set('antialiasing', false);
+	characterData.antialiasing = false;
 
 	playAnim('idle');
 

@@ -356,18 +356,22 @@ class PlayState extends MusicBeatState
 
 		// set up characters
 
+		dad = new Character(false);
+		boyfriend = new Character(true);
+		gf = new Character(false);
+
 		if (SONG.gfVersion.length < 1 || SONG.gfVersion == null)
-			gf = new Character(300, 100, false, stageBuild.returnGFtype(curStage));
+			gf.setCharacter(300, 100, stageBuild.returnGFtype(curStage))
 		else
-			gf = new Character(300, 100, false, SONG.gfVersion);
+			gf.setCharacter(300, 100, SONG.gfVersion);
+
+		dad.setCharacter(100, 100, SONG.player2);
+		boyfriend.setCharacter(770, 450, SONG.player1);
 		gf.scrollFactor.set(0.95, 0.95);
-		gf.dance(true);
 
-		dad = new Character(100, 100, false, SONG.player2);
 		dad.dance(true);
-
-		boyfriend = new Character(770, 450, true, SONG.player1);
 		boyfriend.dance(true);
+		gf.dance(true);
 
 		charGroup = new FlxSpriteGroup();
 		charGroup.alpha = 0.00001;
@@ -411,7 +415,7 @@ class PlayState extends MusicBeatState
 			var lineColorP1 = 0xFF66FF33;
 
 			if (Init.getSetting('Colored Health Bar'))
-				lineColorP1 = FlxColor.fromRGB(boyfriend.barColor[0], boyfriend.barColor[1], boyfriend.barColor[2]);
+				lineColorP1 = FlxColor.fromRGB(boyfriend.characterData.barColor[0], boyfriend.characterData.barColor[1], boyfriend.characterData.barColor[2]);
 
 			darknessLine1 = new FlxSprite(0, 0).makeGraphic(5, FlxG.height, lineColorP1);
 			darknessLine2 = new FlxSprite(0, 0).loadGraphicFromSprite(darknessLine1);
@@ -434,7 +438,7 @@ class PlayState extends MusicBeatState
 				var lineColorP2 = 0xFFFF0000;
 
 				if (Init.getSetting('Colored Health Bar'))
-					lineColorP2 = FlxColor.fromRGB(dad.barColor[0], dad.barColor[1], dad.barColor[2]);
+					lineColorP2 = FlxColor.fromRGB(dad.characterData.barColor[0], dad.characterData.barColor[1], dad.characterData.barColor[2]);
 
 				darknessOpponent = new FlxSprite(0, 0).loadGraphicFromSprite(darknessBG);
 				darknessLine3 = new FlxSprite(0, 0).makeGraphic(5, FlxG.height, lineColorP2);
@@ -925,7 +929,7 @@ class PlayState extends MusicBeatState
 					var getCenterX = char.getMidpoint().x + 100;
 					var getCenterY = char.getMidpoint().y - 100;
 
-					camFollow.setPosition(getCenterX + camDisplaceX + char.cameraOffset.x, getCenterY + camDisplaceY + char.cameraOffset.y);
+					camFollow.setPosition(getCenterX + camDisplaceX + char.characterData.camOffsetX, getCenterY + camDisplaceY + char.characterData.camOffsetY);
 
 					if (char.curCharacter == 'mom')
 						Conductor.songVocals.volume = 1;
@@ -950,7 +954,7 @@ class PlayState extends MusicBeatState
 							getCenterY = char.getMidpoint().y - 200;
 					}
 
-					camFollow.setPosition(getCenterX + camDisplaceX - char.cameraOffset.x, getCenterY + camDisplaceY + char.cameraOffset.y);
+					camFollow.setPosition(getCenterX + camDisplaceX - char.characterData.camOffsetX, getCenterY + camDisplaceY + char.characterData.camOffsetY);
 				}
 				else if (gfSection && !mustHit || gfSection && mustHit)
 				{
@@ -959,7 +963,7 @@ class PlayState extends MusicBeatState
 					var getCenterX = char.getMidpoint().x + 100;
 					var getCenterY = char.getMidpoint().y - 100;
 
-					camFollow.setPosition(getCenterX + camDisplaceX + char.cameraOffset.x, getCenterY + camDisplaceY + char.cameraOffset.y);
+					camFollow.setPosition(getCenterX + camDisplaceX + char.characterData.camOffsetX, getCenterY + camDisplaceY + char.characterData.camOffsetY);
 				}
 			}
 
@@ -1241,7 +1245,7 @@ class PlayState extends MusicBeatState
 
 		// reset boyfriend's animation
 		if ((boyfriend != null && boyfriend.animation != null)
-			&& (boyfriend.holdTimer > Conductor.stepCrochet * (0.0011 / FlxG.sound.music.pitch) * boyfriend.singDuration)
+			&& (boyfriend.holdTimer > Conductor.stepCrochet * (0.0011 / FlxG.sound.music.pitch) * boyfriend.characterData.singDuration)
 			&& (!holdingKeys.contains(true) || bfStrums.autoplay))
 		{
 			if (boyfriend.animation.curAnim.name.startsWith('sing') && !boyfriend.animation.curAnim.name.endsWith('miss'))
@@ -1251,7 +1255,8 @@ class PlayState extends MusicBeatState
 
 	public function addCharacter(newCharacter:String)
 	{
-		var char:Character = new Character(0, 0, newCharacter);
+		var char:Character = new Character(false);
+		char.setCharacter(0, 0, newCharacter);
 		charGroup.add(char);
 	}
 
@@ -1894,11 +1899,7 @@ class PlayState extends MusicBeatState
 		callFunc('beatHit', [curBeat]);
 	}
 
-	//
-	//
-	/// substate stuffs
-	//
-	//
+	/* ===== substate stuffs ===== */
 
 	override function openSubState(SubState:FlxSubState)
 	{
@@ -1970,7 +1971,8 @@ class PlayState extends MusicBeatState
 					case 'dad' | 'opponent' | _: [100, 100];
 				}
 
-				var newCharacter:Character = new Character(xy[0], xy[1], ['bf', 'boyfriend'].contains(event.val1.toLowerCase()), event.val2);
+				var newCharacter:Character = new Character(['bf', 'boyfriend'].contains(event.val1.toLowerCase()));
+				newCharacter.setCharacter(xy[0], xy[1], event.val2);
 				newCharacter.alpha = .0;
 				switch (event.val1.toLowerCase().trim())
 				{
@@ -2002,8 +2004,8 @@ class PlayState extends MusicBeatState
 						dad = opponents.get(value2);
 						dad.alpha = 1;
 				}
-				/*@:privateAccess uiHUD.bfBar = FlxColor.fromRGB(boyfriend.barColor[0], boyfriend.barColor[1], boyfriend.barColor[2]);
-					@:privateAccess uiHUD.dadBar = FlxColor.fromRGB(dad.barColor[0], dad.barColor[1], dad.barColor[2]);
+				/*@:privateAccess uiHUD.bfBar = FlxColor.fromRGB(boyfriend.characterData.barColor[0], boyfriend.characterData.barColor[1], boyfriend.characterData.barColor[2]);
+					@:privateAccess uiHUD.dadBar = FlxColor.fromRGB(dad.characterData.barColor[0], dad.characterData.barColor[1], dad.characterData.barColor[2]);
 					uiHUD.updateBar(); */
 		}
 

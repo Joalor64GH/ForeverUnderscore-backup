@@ -1415,9 +1415,13 @@ class OriginalChartEditor extends MusicBeatState
 
 	function getCharacter(string:String):Character
 	{
-		var bf:Character = new Character(0, 0, (_song.player1 == null ? 'bf' : _song.player1));
-		var dad:Character = new Character(0, 0, (_song.player2 == null ? 'dad' : _song.player2));
-		var gf:Character = new Character(0, 0, (_song.gfVersion == null ? 'gf' : _song.gfVersion));
+		var bf:Character = new Character(true);
+		var gf:Character = new Character(false);
+		var dad:Character = new Character(false);
+
+		bf.setCharacter(0, 0, (_song.player1 == null ? 'bf' : _song.player1));
+		dad.setCharacter(0, 0, (_song.player2 == null ? 'dad' : _song.player2));
+		gf.setCharacter(0, 0, (_song.gfVersion == null ? 'gf' : _song.gfVersion));
 
 		switch (string)
 		{
@@ -1433,8 +1437,8 @@ class OriginalChartEditor extends MusicBeatState
 
 	function generateHeads()
 	{
-		leftIcon = new HealthIcon(getCharacter('bf').icon, true);
-		rightIcon = new HealthIcon(getCharacter('dad').icon, false);
+		leftIcon = new HealthIcon(getCharacter('bf').characterData.icon, true);
+		rightIcon = new HealthIcon(getCharacter('dad').characterData.icon, false);
 
 		leftIcon.scrollFactor.set(1, 1);
 		rightIcon.scrollFactor.set(1, 1);
