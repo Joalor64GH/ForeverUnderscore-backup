@@ -211,8 +211,6 @@ class CreditsMenuState extends MusicBeatState
 	{
 		FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
 
-		var selectedUser = credData.users[curSelected];
-
 		curSelected += change;
 
 		if (curSelected < 0)
@@ -222,12 +220,12 @@ class CreditsMenuState extends MusicBeatState
 
 		var pastColor = ((credData.users[curSelected - 1] != null) ? FlxColor.fromRGB(credData.users[curSelected - 1].colors[0],
 			credData.users[curSelected - 1].colors[1], credData.users[curSelected - 1].colors[2]) : 0xFFffffff);
-		mainColor = FlxColor.fromRGB(selectedUser.colors[0], selectedUser.colors[1], selectedUser.colors[2]);
+		mainColor = FlxColor.fromRGB(credData.users[curSelected].colors[0], credData.users[curSelected].colors[1], credData.users[curSelected].colors[2]);
 
 		gradBG.flxColorTween([pastColor, mainColor]);
 		FlxTween.color(bDrop, 0.35, bDrop.color, mainColor);
 
-		iconSprite.loadGraphic(Paths.image('credits/' + selectedUser.icon));
+		iconSprite.loadGraphic(Paths.image('credits/' + credData.users[curSelected].icon));
 		iconSprite.y = iconHolder.y + 2;
 		iconSprite.x = iconHolder.x + iconHolder.width / 2 - iconSprite.width / 2;
 		FlxTween.tween(iconSprite, {y: iconHolder.y + iconHolder.height - iconSprite.height}, 0.2, {type: BACKWARD, ease: FlxEase.elasticOut});
@@ -240,7 +238,7 @@ class CreditsMenuState extends MusicBeatState
 		userText.x = iconHolder.x + iconHolder.width / 2 - userText.width / 2;
 		FlxTween.tween(userText, {y: (iconHolder.y + iconHolder.height - userText.height)}, 0.2, {type: BACKWARD, ease: FlxEase.elasticOut});
 
-		quoteText.text = selectedUser.textData[1];
+		quoteText.text = credData.users[curSelected].textData[1];
 		if (quoteText.width > iconHolder.width - 2)
 			quoteText.setGraphicSize(Std.int(iconHolder.width - 2), 0);
 		quoteText.updateHitbox();
@@ -248,7 +246,7 @@ class CreditsMenuState extends MusicBeatState
 		quoteText.x = iconHolder.x + iconHolder.width / 2 - quoteText.width / 2;
 		FlxTween.tween(quoteText, {y: (iconHolder.y + iconHolder.height - quoteText.height)}, 0.2, {type: BACKWARD, ease: FlxEase.elasticOut});
 
-		descText.text = selectedUser.textData[0] + '\n';
+		descText.text = credData.users[curSelected].textData[0] + '\n';
 		if (descText.width > socialsHolder.width - 2)
 			descText.setGraphicSize(Std.int(socialsHolder.width - 2), 0);
 		descText.updateHitbox();
@@ -256,9 +254,9 @@ class CreditsMenuState extends MusicBeatState
 		descText.x = socialsHolder.x + socialsHolder.width / 2 - descText.width / 2;
 		FlxTween.tween(descText, {y: (socialsHolder.y + socialsHolder.height - descText.height)}, 0.2, {type: BACKWARD, ease: FlxEase.elasticOut});
 
-		var validLabel = (selectedUser.sectionName != null && selectedUser.sectionName.length > 0);
+		var validLabel = (credData.users[curSelected].sectionName != null && credData.users[curSelected].sectionName.length > 0);
 		if (validLabel)
-			labelText.text = selectedUser.sectionName;
+			labelText.text = credData.users[curSelected].sectionName;
 
 		if (labelText.width > iconHolder.width - 2)
 			labelText.setGraphicSize(Std.int(iconHolder.width - 2), 0);
@@ -266,7 +264,7 @@ class CreditsMenuState extends MusicBeatState
 
 		labelText.y = iconHolder.y + iconHolder.height - labelText.height - 9;
 		labelText.x = iconHolder.x + 2;
-		if (labelText.text == selectedUser.sectionName) // lol
+		if (labelText.text == credData.users[curSelected].sectionName) // lol
 			FlxTween.tween(labelText, {x: (iconHolder.x - labelText.width)}, 0.2, {type: BACKWARD, ease: FlxEase.elasticOut});
 
 		curSocial = 0;
