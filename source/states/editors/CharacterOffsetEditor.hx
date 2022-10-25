@@ -469,10 +469,10 @@ class CharacterOffsetEditor extends MusicBeatState
 			text.cameras = [camHUD];
 			dumbTexts.add(text);
 
-			if (pushList)
+			if (!animList.contains(anim) && pushList)
 				animList.push(anim);
 
-			if (pushGhostList)
+			if (!ghostAnimList.contains(anim) && pushGhostList)
 				ghostAnimList.push(anim);
 
 			daLoop++;
@@ -483,12 +483,20 @@ class CharacterOffsetEditor extends MusicBeatState
 		{
 			animList = ['[ERROR]'];
 
-			var text:FlxText = new FlxText(10, 38, 0, '
-				No animations found
-				\nplease make sure your ${curCharacter}.hx script
-				has the offsets properly set up
-				\n\nTry: addOffset(\'animationName\', xPosition, yPosition);
-				', 15);
+			var characterErrorFormat:String = '';
+
+			switch (char.originInstance)
+			{
+				case UNDERSCORE:
+					characterErrorFormat =
+					'ERROR! No animations found on Script
+					\nmake sure the offsets exist on said script
+					\nTry: addOffset(\'animationName\', xPosition, yPosition);';
+				case PSYCH_ENGINE | SUPER_ENGINE:
+					characterErrorFormat = 'ERROR! No animations found';
+			}
+
+			var text:FlxText = new FlxText(10, 38, 0, characterErrorFormat, 15);
 			text.setFormat(Paths.font('vcr'), 18, FlxColor.WHITE);
 			text.setBorderStyle(OUTLINE, FlxColor.BLACK, 1.5);
 			text.scrollFactor.set();

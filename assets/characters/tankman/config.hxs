@@ -11,10 +11,10 @@ function loadAnimations()
 	addByPrefix('singRIGHT', 'Tankman Note Left 1', 24, false);
 
 	//
-	addByPrefix('singUPmiss', 'Tankman UP note MISS 1', 24, false);
-	addByPrefix('singRIGHTmiss', 'Tankman Note Left MISS 1', 24, false);
-	addByPrefix('singLEFTmiss', 'Tankman Right Note MISS 1', 24, false);
-	addByPrefix('singDOWNmiss', 'Tankman DOWN note MISS 1', 24, false);
+	addByPrefix('singUPmiss', 'Tankman UP note MISS', 24, false);
+	addByPrefix('singRIGHTmiss', 'Tankman Note Left MISS', 24, false);
+	addByPrefix('singLEFTmiss', 'Tankman Right Note MISS', 24, false);
+	addByPrefix('singDOWNmiss', 'Tankman DOWN note MISS', 24, false);
 
 	//
 	addByPrefix('singUP-alt', 'TANKMAN UGH', 24, false);
@@ -22,23 +22,49 @@ function loadAnimations()
 
 	/* ===== OFFSETS ===== */
 
-	addOffset("idle", 0, -100);
+	if (!isPlayer)
+	{
+		addOffset("idle", 0, -100);
 
-	//
-	addOffset("singLEFT", 70, -114);
-	addOffset("singDOWN", 58, -200);
-	addOffset("singUP", 44, -42);
-	addOffset("singRIGHT", -21, -127);
+		//
+		addOffset("singLEFT", 70, -114);
+		addOffset("singDOWN", 58, -200);
+		addOffset("singUP", 44, -42);
+		addOffset("singRIGHT", -21, -127);
 
-	//
-	addOffset("singLEFTmiss", 70, -114);
-	addOffset("singDOWNmiss", 58, -200);
-	addOffset("singUPmiss", 44, -42);
-	addOffset("singRIGHTmiss", -21, -127);
+		//
+		addOffset("singLEFTmiss", 70, -114);
+		addOffset("singDOWNmiss", 58, -200);
+		addOffset("singUPmiss", 44, -42);
+		addOffset("singRIGHTmiss", -21, -127);
 
-	//
-	addOffset("singUP-alt", -16, -106); // ugh
-	addOffset("singDOWN-alt", -2, -84); // pretty good
+		//
+		addOffset("singUP-alt", -16, -106); // ugh
+		addOffset("singDOWN-alt", -2, -84); // pretty good
+		setCamOffsets(0, 140);
+	}
+	else
+	{
+		addOffset("idle", 0, 140);
+
+		//
+		addOffset("singLEFT", 95, 111);
+		addOffset("singDOWN", 85, 50);
+		addOffset("singUP", 24, 189);
+		addOffset("singRIGHT", -20, 131);
+
+		//
+		addOffset("singLEFTmiss", 98, 114);
+		addOffset("singDOWNmiss", 56, 51);
+		addOffset("singUPmiss", 15, 186);
+		addOffset("singRIGHTmiss", -10, 127);
+
+		//
+		addOffset("singDOWN-alt", 98, 156);
+		addOffset("singUP-alt", -16, 132);
+		setCamOffsets(0, -80);
+		flipLeftRight();
+	}
 
 	playAnim('idle');
 
@@ -47,6 +73,5 @@ function loadAnimations()
 	set('flipX', true);
 	set('antialiasing', true);
 	setBarColor([255, 255, 255]);
-	setCamOffsets(0, 150);
 	setOffsets(0, 490);
 }
