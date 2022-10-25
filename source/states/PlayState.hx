@@ -263,7 +263,7 @@ class PlayState extends MusicBeatState
 	function precacheImages()
 	{
 		Paths.image('UI/default/base/alphabet');
-		if (!boyfriend.psychChar)
+		if (boyfriend.characterType == boyfriend.originInstance.UNDERSCORE)
 			Paths.getSparrowAtlas(GameOverSubstate.character, 'characters/' + GameOverSubstate.character);
 	}
 
@@ -2537,9 +2537,9 @@ class PlayState extends MusicBeatState
 		// GENERAL
 		setVar('game', PlayState.contents);
 		setVar('ui', PlayState.uiHUD);
-		setVar('logTrace', function(f:String, t:Float, c:FlxCamera)
+		setVar('logTrace', function(text:String, time:Float)
 		{
-			logTrace(f, t, c);
+			logTrace(text, time, PlayState.dialogueHUD);
 		});
 
 		setVar('add', add);

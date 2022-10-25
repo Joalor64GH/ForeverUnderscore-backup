@@ -187,7 +187,7 @@ class StoryMenuState extends MusicBeatState
 
 		// very unprofessional yoshubs!
 
-		changeWeek();
+		changeWeek(0, false);
 		changeDifficulty();
 		updateText();
 	}
@@ -212,6 +212,8 @@ class StoryMenuState extends MusicBeatState
 					changeWeek(-1);
 				else if (controls.UI_DOWN_P)
 					changeWeek(1);
+				if (FlxG.mouse.wheel != 0 && !FlxG.keys.pressed.SHIFT)
+					changeWeek(-1 * FlxG.mouse.wheel, false);
 
 				if (controls.UI_RIGHT)
 					rightArrow.animation.play('press')
@@ -227,19 +229,15 @@ class StoryMenuState extends MusicBeatState
 					changeDifficulty(1);
 				if (controls.UI_LEFT_P)
 					changeDifficulty(-1);
-
-				if (FlxG.mouse.wheel != 0)
-				{
-					changeWeek(-FlxG.mouse.wheel);
-					changeDifficulty();
-				}
+				if (FlxG.mouse.wheel != 0 && FlxG.keys.pressed.SHIFT)
+					changeDifficulty(-1 * FlxG.mouse.wheel);
 			}
 
-			if (controls.ACCEPT || FlxG.mouse.justPressed)
+			if (controls.ACCEPT)
 				selectWeek();
 		}
 
-		if (controls.BACK || FlxG.mouse.justPressedRight && !movedBack && !selectedWeek)
+		if (controls.BACK && !movedBack && !selectedWeek)
 		{
 			FlxG.sound.play(Paths.sound('cancelMenu'));
 			movedBack = true;
@@ -344,7 +342,7 @@ class StoryMenuState extends MusicBeatState
 	var lerpScore:Int = 0;
 	var intendedScore:Int = 0;
 
-	function changeWeek(change:Int = 0):Void
+	function changeWeek(change:Int = 0, playSound:Bool = true):Void
 	{
 		curWeek += change;
 
@@ -373,7 +371,8 @@ class StoryMenuState extends MusicBeatState
 			bullShit++;
 		}
 
-		FlxG.sound.play(Paths.sound('scrollMenu'));
+		if (playSound)
+			FlxG.sound.play(Paths.sound('scrollMenu'));
 
 		updateText();
 	}

@@ -196,7 +196,7 @@ class MainMenuState extends MusicBeatState
 				}
 			}
 
-			if ((controls.ACCEPT || FlxG.mouse.justPressed))
+			if (controls.ACCEPT)
 			{
 				//
 				selectedSomethin = true;

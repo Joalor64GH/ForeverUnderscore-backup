@@ -380,7 +380,7 @@ class OptionsMenuState extends MusicBeatState
 			}
 		}
 
-		if (controls.BACK || FlxG.mouse.justPressedRight)
+		if (controls.BACK)
 		{
 			// reload locales
 			ForeverLocales.getLocale(Init.trueSettings.get('Language'));
@@ -432,8 +432,6 @@ class OptionsMenuState extends MusicBeatState
 			controls.UI_DOWN,
 			controls.UI_UP_P,
 			controls.UI_DOWN_P,
-			FlxG.mouse.wheel == 1,
-			FlxG.mouse.wheel == -1
 		];
 		if (controlArray.contains(true))
 		{
@@ -444,10 +442,10 @@ class OptionsMenuState extends MusicBeatState
 					// up = 2, down = 3
 					if (i > 1)
 					{
-						if (i == 2 || i == 4)
-							selectOption(curSelection - 1, (i == 4 ? false : true));
-						else if (i == 3 || i == 5)
-							selectOption(curSelection + 1, (i == 5 ? false : true));
+						if (i == 2)
+							selectOption(curSelection - 1, true);
+						else if (i == 3)
+							selectOption(curSelection + 1, true);
 					}
 				}
 			}
@@ -524,7 +522,7 @@ class OptionsMenuState extends MusicBeatState
 			{
 				case Init.SettingTypes.Checkmark:
 					// checkmark basics lol
-					if (controls.ACCEPT || FlxG.mouse.justPressed)
+					if (controls.ACCEPT)
 					{
 						playSound('scrollMenu');
 						lockedMovement = true;
@@ -678,7 +676,7 @@ class OptionsMenuState extends MusicBeatState
 
 	public function callNewGroup()
 	{
-		if (controls.ACCEPT || FlxG.mouse.justPressed)
+		if (controls.ACCEPT)
 		{
 			playSound('scrollMenu');
 			lockedMovement = true;
@@ -688,7 +686,7 @@ class OptionsMenuState extends MusicBeatState
 
 	public function openControls()
 	{
-		if (controls.ACCEPT || FlxG.mouse.justPressed)
+		if (controls.ACCEPT)
 			openSubState(new states.substates.ControlsSubstate());
 	}
 

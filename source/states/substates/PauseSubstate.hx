@@ -195,10 +195,10 @@ class PauseSubstate extends MusicBeatSubstate
 		if (FlxG.mouse.wheel != 0)
 			changeSelection(-1 * FlxG.mouse.wheel, false);
 
-		if (controls.BACK || FlxG.mouse.justPressedRight)
+		if (controls.BACK)
 			close();
 
-		if (controls.ACCEPT || FlxG.mouse.justPressed)
+		if (controls.ACCEPT)
 		{
 			var daSelected:String = menuItems[curSelected].name;
 

@@ -21,6 +21,12 @@ import funkin.background.TankmenBG;
 
 using StringTools;
 
+enum abstract CharacterOrigin(String) to String {
+	var UNDERSCORE;
+	var PSYCH_ENGINE;
+	var SUPER_ENGINE;
+}
+
 class Character extends FNFSprite
 {
 	public var curCharacter:String = 'bf';
@@ -54,14 +60,22 @@ class Character extends FNFSprite
 	public var specialAnim:Bool = false;
 	public var singDuration:Float = 4; // Multiplier of how long a character holds the sing pose
 	public var heyTimer:Float = 0;
-	public var psychChar:Bool = false;
+
+	public var characterType:String = UNDERSCORE;
+	public var originInstance:CharacterOrigin;
 
 	public function new(x:Float = 0, y:Float = 0, ?isPlayer:Bool = false, ?character:String = 'bf')
 	{
 		super(x, y);
 		this.isPlayer = isPlayer;
 
+		if (ForeverTools.fileExists('characters/$character/' + character + '.json'))
+			characterType = PSYCH_ENGINE;
+
 		setCharacter(x, y, character);
+
+		x += characterOffset.x;
+		y += (characterOffset.y - (frameHeight * scale.y));
 	}
 
 	public function setCharacter(x:Float, y:Float, character:String):Character
@@ -81,21 +95,19 @@ class Character extends FNFSprite
 				playAnim("shoot1");
 		}
 
-		psychChar = ForeverTools.fileExists('characters/$character/' + character + '.json');
-
 		switch (character)
 		{
 			default:
 				try
 				{
-					if (psychChar)
+					if (characterType == PSYCH_ENGINE)
 						generatePsychChar(character);
 					else
 						generateBaseChar(character);
 				}
 				catch (e)
 				{
-					trace('$character is invalid!');
+					trace('Character Error: $character is invalid!', 3);
 					generatePlaceholder();
 				}
 		}
@@ -107,12 +119,6 @@ class Character extends FNFSprite
 			flipX = !flipX;
 
 		antialiasing = !(curCharacter.endsWith('-pixel'));
-
-		this.x += characterOffset.x;
-		this.y += (characterOffset.y - (frameHeight * scale.y));
-
-		this.x = x;
-		this.y = y;
 
 		return this;
 	}

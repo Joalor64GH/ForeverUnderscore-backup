@@ -186,7 +186,6 @@ class MusicBeatState extends FNFUIState
 				}
 			});
 		}
-		FlxG.sound.play(Paths.sound('cancelMenu'));
 	}
 }
 

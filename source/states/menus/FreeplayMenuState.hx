@@ -306,7 +306,7 @@ class FreeplayMenuState extends MusicBeatState
 				}
 			}
 
-			if (controls.BACK || FlxG.mouse.justPressedRight)
+			if (controls.BACK)
 			{
 				if (!isResetting)
 				{
@@ -327,7 +327,7 @@ class FreeplayMenuState extends MusicBeatState
 				}
 			}
 
-			if (accepted || FlxG.mouse.justPressed)
+			if (accepted)
 				loadSong(true, true);
 			else if (seven)
 			{
