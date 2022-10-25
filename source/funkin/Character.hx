@@ -21,7 +21,8 @@ import funkin.background.TankmenBG;
 
 using StringTools;
 
-enum abstract CharacterOrigin(String) to String {
+enum abstract CharacterOrigin(String) to String
+{
 	var UNDERSCORE;
 	var PSYCH_ENGINE;
 	var SUPER_ENGINE;

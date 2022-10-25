@@ -84,7 +84,8 @@ class PauseSubstate extends MusicBeatSubstate
 		var pauseSong = Init.trueSettings.get('Pause Song');
 
 		mutex = new Mutex();
-		Thread.create(function(){
+		Thread.create(function()
+		{
 			mutex.acquire();
 			pauseMusic = new FlxSound().loadEmbedded(Paths.music('menus/pause/$pauseSong/$pauseSong'), true, true);
 			pauseMusic.volume = 0;
@@ -182,7 +183,8 @@ class PauseSubstate extends MusicBeatSubstate
 	{
 		super.update(elapsed);
 
-		if (pauseMusic != null && pauseMusic.playing) {
+		if (pauseMusic != null && pauseMusic.playing)
+		{
 			if (pauseMusic.volume < 0.5)
 				pauseMusic.volume += 0.01 * elapsed;
 		}
@@ -330,7 +332,7 @@ class PauseSubstate extends MusicBeatSubstate
 
 /*
 	could be better but whatever
-*/
+ */
 class PauseItem
 {
 	public var name:String;

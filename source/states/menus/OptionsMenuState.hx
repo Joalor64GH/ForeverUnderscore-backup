@@ -427,12 +427,7 @@ class OptionsMenuState extends MusicBeatState
 
 	function updateSelections()
 	{
-		var controlArray:Array<Bool> = [
-			controls.UI_UP,
-			controls.UI_DOWN,
-			controls.UI_UP_P,
-			controls.UI_DOWN_P,
-		];
+		var controlArray:Array<Bool> = [controls.UI_UP, controls.UI_DOWN, controls.UI_UP_P, controls.UI_DOWN_P,];
 		if (controlArray.contains(true))
 		{
 			for (i in 0...controlArray.length)

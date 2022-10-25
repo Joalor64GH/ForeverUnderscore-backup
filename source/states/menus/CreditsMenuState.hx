@@ -199,8 +199,7 @@ class CreditsMenuState extends MusicBeatState
 		if (controls.BACK || FlxG.mouse.justPressedRight)
 			Main.switchState(this, new MainMenuState());
 
-		if (controls.ACCEPT
-			&& Reflect.field(credData.users[curSelected].urlData, mediaAnimsArray[curSocial]) != null)
+		if (controls.ACCEPT && Reflect.field(credData.users[curSelected].urlData, mediaAnimsArray[curSocial]) != null)
 			CoolUtil.browserLoad(Reflect.field(credData.users[curSelected].urlData, mediaAnimsArray[curSocial]));
 	}
 

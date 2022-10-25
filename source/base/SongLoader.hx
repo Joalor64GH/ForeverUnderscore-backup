@@ -54,7 +54,8 @@ typedef SongInfo =
 	var ?color:Array<Int>;
 }
 
-typedef EventNote = {
+typedef EventNote =
+{
 	public var strumTime:Float;
 	public var event:String;
 	public var val1:String;
@@ -143,7 +144,7 @@ class Song
 	{
 		var oldSong:LegacySong = cast Json.parse(rawJson).song;
 		oldSong.validScore = true;
-		oldSong.copy = function() 
+		oldSong.copy = function()
 		{
 			return cast {
 				validScore: true,
@@ -164,9 +165,9 @@ class Song
 			};
 		};
 		oldSong.events = parseEvent(rawEvent).copy();
-		if (oldSong.events == null) 
+		if (oldSong.events == null)
 			oldSong.events = [];
-		
+
 		if (rawMeta != null)
 		{
 			var songMeta:SongInfo = cast Json.parse(rawMeta);
@@ -205,9 +206,9 @@ class Song
 		return oldSong;
 	}
 
-	static function parseEvent(rawEvent:String) 
+	static function parseEvent(rawEvent:String)
 	{
-		return try 
+		return try
 		{
 			var array:Array<Dynamic> = cast haxe.Json.parse(rawEvent).events;
 			array.copy();

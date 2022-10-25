@@ -218,9 +218,12 @@ class ForeverTools
 	{
 		switch (point.toLowerCase())
 		{
-			case 'x': return flixel.util.FlxAxes.X;
-			case 'y': return flixel.util.FlxAxes.Y;
-			case 'xy': return flixel.util.FlxAxes.XY;
+			case 'x':
+				return flixel.util.FlxAxes.X;
+			case 'y':
+				return flixel.util.FlxAxes.Y;
+			case 'xy':
+				return flixel.util.FlxAxes.XY;
 		}
 		return flixel.util.FlxAxes.XY;
 	}

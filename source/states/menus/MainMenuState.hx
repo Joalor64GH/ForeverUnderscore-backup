@@ -133,10 +133,9 @@ class MainMenuState extends MusicBeatState
 
 		var versionShit:FlxText = new FlxText(5, FlxG.height
 			- 38, 0,
-			"Funkin' v0.2.8"
-			+ "\nForever Engine Legacy v"
+			"Forever Engine Legacy v"
 			+ Main.foreverVersion
-			+ " - Underscore v"
+			+ "\nForever Engine Underscore v"
 			+ openfl.Lib.application.meta["version"]
 			+ (Main.nightly ? '-nightly' : ''),
 			12);

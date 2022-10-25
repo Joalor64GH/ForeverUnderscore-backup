@@ -791,24 +791,23 @@ class PlayState extends MusicBeatState
 		return songSpeed * Conductor.playbackRate;
 
 	/*
-	static function set_songSpeed(value:Float):Float
-	{
-		var offset = songSpeed / value;
-		for (note in bfStrums.allNotes)
+		static function set_songSpeed(value:Float):Float
 		{
-			note.scale.y *= offset;
-			note.updateHitbox();
-		}
-		for (note in dadStrums.allNotes)
-		{
-			note.scale.y *= offset;
-			note.updateHitbox();
-		}
+			var offset = songSpeed / value;
+			for (note in bfStrums.allNotes)
+			{
+				note.scale.y *= offset;
+				note.updateHitbox();
+			}
+			for (note in dadStrums.allNotes)
+			{
+				note.scale.y *= offset;
+				note.updateHitbox();
+			}
 
-		return cast songSpeed = value;
-	}
-	*/
-
+			return cast songSpeed = value;
+		}
+	 */
 	override public function update(elapsed:Float)
 	{
 		super.update(elapsed);
@@ -1957,7 +1956,7 @@ class PlayState extends MusicBeatState
 			}
 		}
 	}
-	
+
 	function pushedEvent(event:EventNote)
 	{
 		switch (event.event)
@@ -1970,7 +1969,7 @@ class PlayState extends MusicBeatState
 					case 'gf' | 'girlfriend': [300, 100];
 					case 'dad' | 'opponent' | _: [100, 100];
 				}
-		
+
 				var newCharacter:Character = new Character(xy[0], xy[1], ['bf', 'boyfriend'].contains(event.val1.toLowerCase()), event.val2);
 				newCharacter.alpha = .0;
 				switch (event.val1.toLowerCase().trim())
@@ -1985,23 +1984,27 @@ class PlayState extends MusicBeatState
 	public var boys:Map<String, Character> = new Map();
 	public var girls:Map<String, Character> = new Map();
 	public var opponents:Map<String, Character> = new Map();
+
 	public function eventNoteHit(event:String, value1:String, value2:String, value3:String)
 	{
-		switch (event) 
+		switch (event)
 		{
 			case 'Change Character':
 				switch (value1.toLowerCase().trim())
 				{
-					case 'bf' | 'boyfriend': boyfriend = boys.get(value2);
-					boyfriend.alpha = 1;
-					case 'gf' | 'girlfriend': gf = girls.get(value2);
-					gf.alpha = 1;
-					case 'dad' | 'opponent' | _: dad = opponents.get(value2);
-					dad.alpha = 1;
+					case 'bf' | 'boyfriend':
+						boyfriend = boys.get(value2);
+						boyfriend.alpha = 1;
+					case 'gf' | 'girlfriend':
+						gf = girls.get(value2);
+						gf.alpha = 1;
+					case 'dad' | 'opponent' | _:
+						dad = opponents.get(value2);
+						dad.alpha = 1;
 				}
 				/*@:privateAccess uiHUD.bfBar = FlxColor.fromRGB(boyfriend.barColor[0], boyfriend.barColor[1], boyfriend.barColor[2]);
-				@:privateAccess uiHUD.dadBar = FlxColor.fromRGB(dad.barColor[0], dad.barColor[1], dad.barColor[2]);
-				uiHUD.updateBar();*/
+					@:privateAccess uiHUD.dadBar = FlxColor.fromRGB(dad.barColor[0], dad.barColor[1], dad.barColor[2]);
+					uiHUD.updateBar(); */
 		}
 
 		callFunc('eventNoteHit', [event, value1, value2, value3]);

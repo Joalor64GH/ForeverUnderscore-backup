@@ -25,6 +25,7 @@ class EditorMenuSubstate extends MusicBeatSubstate
 	var music:FlxSound;
 
 	public static var fromPause:Bool = false;
+
 	private var mutex:Mutex;
 
 	var playState:Bool = false;
@@ -44,7 +45,8 @@ class EditorMenuSubstate extends MusicBeatSubstate
 		if (playMusic)
 		{
 			mutex = new Mutex();
-			Thread.create(function(){
+			Thread.create(function()
+			{
 				mutex.acquire();
 				music = new FlxSound().loadEmbedded(Paths.music('menus/prototype/prototype'), true, true);
 				music.volume = 0;
