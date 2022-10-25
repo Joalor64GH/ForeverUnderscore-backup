@@ -137,9 +137,10 @@ class MusicBeatState extends FNFUIState
 	var textField:FlxText;
 	var fieldTween:FlxTween;
 
-	public function logTrace(input:String, duration:Float, cam:FlxCamera)
+	public function logTrace(input:String, duration:Float, traceOnConsole:Bool = true, cam:FlxCamera)
 	{
-		trace(input);
+		if (traceOnConsole)
+			trace(input);
 		if (textField != null)
 		{
 			var oldField:FlxText = cast textField;

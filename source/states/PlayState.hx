@@ -707,7 +707,10 @@ class PlayState extends MusicBeatState
 					if (!Init.getSetting('Ghost Tapping'))
 					{
 						if (startingSong) // mash warning
+						{
+							logTrace('Stop Spamming!', 1, false, PlayState.dialogueHUD);
 							uiHUD.tweenScoreColor('miss', false);
+						}
 						else if (!inCutscene || !endingSong)
 							missNoteCheck(true, key, bfStrums, true);
 					}
@@ -2542,9 +2545,9 @@ class PlayState extends MusicBeatState
 		// GENERAL
 		setVar('game', PlayState.contents);
 		setVar('ui', PlayState.uiHUD);
-		setVar('logTrace', function(text:String, time:Float)
+		setVar('logTrace', function(text:String, time:Float, onConsole:Bool = false)
 		{
-			logTrace(text, time, PlayState.dialogueHUD);
+			logTrace(text, time, onConsole, PlayState.dialogueHUD);
 		});
 
 		setVar('add', add);
