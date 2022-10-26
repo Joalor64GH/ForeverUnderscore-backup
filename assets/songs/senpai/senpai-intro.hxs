@@ -1,6 +1,5 @@
 function songIntroCutscene()
 {
-	preventCalling = true;
 	for (hud in PlayState.contents.allUIs)
 		hud.visible = false;
 
