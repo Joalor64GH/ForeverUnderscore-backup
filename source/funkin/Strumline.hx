@@ -1,19 +1,12 @@
 package funkin;
 
-import base.Conductor;
-import flixel.FlxBasic;
 import flixel.FlxG;
 import flixel.FlxSprite;
-import flixel.FlxState;
-import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.group.FlxSpriteGroup;
-import flixel.math.FlxMath;
-import flixel.math.FlxRect;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 import flixel.util.FlxSort;
 import states.PlayState;
-import funkin.Timings;
 
 using StringTools;
 
@@ -112,8 +105,8 @@ class Strumline extends FlxSpriteGroup
 			}
 		}
 
-		add(holdsGroup);
 		add(receptors);
+		add(holdsGroup);
 		add(notesGroup);
 		if (splashNotes != null)
 			add(splashNotes);

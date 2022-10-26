@@ -18,12 +18,8 @@ class ChartParser
 	public static function loadChart(songData:LegacySong):Array<Note>
 	{
 		var unspawnNotes:Array<Note> = [];
-		var noteData:Array<LegacySection>;
 
-		noteData = songData.notes;
-		var daBeats:Int = 0;
-
-		for (section in noteData)
+		for (section in songData.notes)
 		{
 			for (songNotes in section.sectionNotes)
 			{
@@ -47,33 +43,39 @@ class ChartParser
 
 				var swagNote:Note = ForeverAssets.generateArrow(PlayState.assetModifier, daStrumTime, daNoteData, daNoteAlt, daNoteType);
 				swagNote.noteSpeed = songData.speed;
-
+				swagNote.mustPress = gottaHitNote;
 				swagNote.sustainLength = songNotes[2];
+				if (swagNote.sustainLength > 0)
+					swagNote.sustainLength = Math.round(swagNote.sustainLength / Conductor.stepCrochet) * Conductor.stepCrochet;
 				swagNote.noteType = songNotes[3];
 				swagNote.scrollFactor.set(0, 0);
 
-				var susLength:Float = swagNote.sustainLength;
-				susLength = susLength / Conductor.stepCrochet;
-
 				if (swagNote.noteData > -1) // don't push notes if they are an event??
+				{
 					unspawnNotes.push(swagNote);
 
-				for (susNote in 0...Math.floor(susLength))
-				{
-					oldNote = unspawnNotes[Std.int(unspawnNotes.length - 1)];
-					var sustainNote:Note = ForeverAssets.generateArrow(PlayState.assetModifier,
-						daStrumTime + (Conductor.stepCrochet * susNote) + Conductor.stepCrochet, daNoteData, daNoteAlt, true, oldNote, daNoteType);
-					sustainNote.scrollFactor.set();
+					if (swagNote.sustainLength > 0)
+					{
+						var floorSus:Int = Math.round(swagNote.sustainLength / Conductor.stepCrochet);
+						if (floorSus > 0)
+						{
+							if (floorSus == 1)
+								floorSus++;
+							for (susNote in 0...floorSus)
+							{
+								oldNote = unspawnNotes[Std.int(unspawnNotes.length - 1)];
 
-					if (sustainNote.noteData > -1)
-						unspawnNotes.push(sustainNote);
-					sustainNote.mustPress = gottaHitNote;
+								var sustainNote:Note = ForeverAssets.generateArrow(PlayState.assetModifier,
+									daStrumTime + Conductor.stepCrochet * (susNote + 1), daNoteData, daNoteAlt, true, oldNote, daNoteType);
+								sustainNote.mustPress = gottaHitNote;
+								sustainNote.scrollFactor.set();
+
+								unspawnNotes.push(sustainNote);
+							}
+						}
+					}
 				}
-
-				swagNote.mustPress = gottaHitNote;
 			}
-
-			daBeats += 1;
 		}
 
 		// sort notes before returning them;

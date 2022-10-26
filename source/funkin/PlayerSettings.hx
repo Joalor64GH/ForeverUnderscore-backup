@@ -96,9 +96,9 @@ class PlayerSettings
 				throw "Cannot remove avatar that is not for a player";
 
 			settings.avatar = null;
-			while (settings.controls.gamepadsAdded.length > 0)
+			while (settings.controls.gamepads.length > 0)
 			{
-				final id = settings.controls.gamepadsAdded.shift();
+				final id = settings.controls.gamepads.shift();
 				settings.controls.removeGamepad(id);
 				DeviceManager.releaseGamepad(FlxG.gamepads.getByID(id));
 			}
@@ -144,19 +144,13 @@ class PlayerSettings
 		// 	player2.controls.addDefaultGamepad(1);
 		// }
 
-		FlxG.gamepads.deviceConnected.add(onGamepadConnection);
-	}
-
-	static function onGamepadConnection(pad:FlxGamepad)
-	{
-		player1.controls.addDefaultGamepad(pad.id);
-	}
-
-	static public function reset()
-	{
-		player1 = null;
-		// player2 = null;
-		// numPlayers = 0;
-		FlxG.gamepads.deviceConnected.remove(onGamepadConnection);
+		FlxG.gamepads.deviceConnected.add(function(pad:FlxGamepad)
+		{
+			player1.controls.addDefaultGamepad(pad.id);
+		});
+		FlxG.gamepads.deviceDisconnected.add(function(pad:FlxGamepad)
+		{
+			player1.controls.removeGamepad(pad.id);
+		});
 	}
 }

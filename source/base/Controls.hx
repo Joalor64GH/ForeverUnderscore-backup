@@ -114,7 +114,7 @@ class Controls extends FlxActionSet
 	var byName:Map<String, FlxActionDigital> = new Map<String, FlxActionDigital>();
 	#end
 
-	public var gamepadsAdded:Array<Int> = [];
+	public var gamepads(default, null):Array<Int> = [];
 
 	public var UI_UP(get, never):Bool;
 
@@ -505,8 +505,9 @@ class Controls extends FlxActionSet
 
 	public function addGamepad(id:Int, ?buttonMap:Map<Control, Array<FlxGamepadInputID>>):Void
 	{
-		if (!gamepadsAdded.contains(id))
-			gamepadsAdded.push(id);
+		if (gamepads.contains(id))
+			removeGamepad(id);
+		gamepads.push(id);
 
 		if (buttonMap != null)
 		{
@@ -547,7 +548,7 @@ class Controls extends FlxActionSet
 			}
 		}
 
-		gamepadsAdded.remove(deviceID);
+		gamepads.remove(deviceID);
 	}
 
 	public function addDefaultGamepad(id):Void

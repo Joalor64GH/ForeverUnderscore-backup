@@ -671,11 +671,11 @@ class PlayState extends MusicBeatState
 	public var keysArray:Array<Array<FlxKey>>;
 	public var holdingKeys:Array<Bool> = [];
 
-	public function handleInput(key:Int, down:Bool)
+	public function handleInput(key:Int, pressed:Bool)
 	{
-		holdingKeys[key] = down;
+		holdingKeys[key] = pressed;
 
-		if (down)
+		if (pressed)
 		{
 			if (generatedSong)
 			{
@@ -744,9 +744,7 @@ class PlayState extends MusicBeatState
 	{
 		if (!bfStrums.autoplay && FlxG.keys.enabled && !paused && (FlxG.state.active || FlxG.state.persistentUpdate))
 		{
-			var eventKey:FlxKey = event.keyCode;
-			var key:Int = getKeyFromEvent(eventKey);
-
+			var key:Int = getKeyFromEvent(event.keyCode);
 			if (key >= 0 && !holdingKeys[key])
 				handleInput(key, true);
 		}
@@ -756,9 +754,7 @@ class PlayState extends MusicBeatState
 	{
 		if (!bfStrums.autoplay && FlxG.keys.enabled && !paused && (FlxG.state.active || FlxG.state.persistentUpdate))
 		{
-			var eventKey:FlxKey = event.keyCode;
-			var key:Int = getKeyFromEvent(eventKey);
-
+			var key:Int = getKeyFromEvent(event.keyCode);
 			if (key >= 0)
 				handleInput(key, false);
 		}
@@ -785,18 +781,18 @@ class PlayState extends MusicBeatState
 
 	function controllerInput()
 	{
-		if (controls.gamepadsAdded.length > 0)
+		if (controls.gamepads.length > 0)
 		{
-			var gamepad:FlxGamepad = FlxG.gamepads.getByID(controls.gamepadsAdded[0]);
+			var gamepad:FlxGamepad = FlxG.gamepads.getByID(controls.gamepads[0]);
 			if (gamepad != null)
 			{
 				for (i in 0...noteControls.length)
 				{
 					var bind:Array<Int> = bindsArray[i];
 					if (gamepad.anyJustPressed(bind))
-						onKeyPress(new KeyboardEvent(KeyboardEvent.KEY_DOWN, true, true, -1, keysArray[i][0]));
+						handleInput(i, true);
 					if (gamepad.anyJustReleased(bind))
-						onKeyRelease(new KeyboardEvent(KeyboardEvent.KEY_DOWN, true, true, -1, keysArray[i][0]));
+						handleInput(i, false);
 				}
 			}
 		}
@@ -1022,12 +1018,7 @@ class PlayState extends MusicBeatState
 				// push note to its correct strumline
 				strumLines.members[Math.floor((dunceNote.noteData + (dunceNote.mustPress ? 4 : 0)) / keyAmount)].push(dunceNote);
 
-				callFunc('noteSpawn', [
-					dunceNote,
-					dunceNote.noteData,
-					dunceNote.noteType,
-					dunceNote.isSustain
-				]);
+				callFunc('noteSpawn', [dunceNote, dunceNote.noteData, dunceNote.noteType, dunceNote.isSustain]);
 				unspawnNotes.splice(unspawnNotes.indexOf(dunceNote), 1);
 			}
 
@@ -1088,6 +1079,9 @@ class PlayState extends MusicBeatState
 
 	function noteCalls()
 	{
+		if (!bfStrums.autoplay)
+			controllerInput();
+
 		for (strumline in strumLines)
 		{
 			for (receptor in strumline.receptors)
@@ -1123,7 +1117,7 @@ class PlayState extends MusicBeatState
 					var receptorX:Float = strumline.receptors.members[Math.floor(strumNote.noteData)].x;
 					var receptorY:Float = strumline.receptors.members[Math.floor(strumNote.noteData)].y;
 					var psuedoY:Float = (downscrollMult * -((Conductor.songPosition - strumNote.strumTime) * (0.45 * strumNote.noteSpeed)));
-					var psuedoX = 25 + strumNote.noteVisualOffset;
+					var psuedoX:Float = 25 + strumNote.noteVisualOffset;
 
 					strumNote.y = receptorY
 						+ strumNote.offsetY
@@ -1138,7 +1132,6 @@ class PlayState extends MusicBeatState
 					strumNote.angle = -strumNote.noteDirection;
 
 					// shitty note hack I hate it so much
-					var center:Float = receptorY + Receptor.swagWidth / (1.85 * (assetModifier == 'pixel' ? 3 : 1));
 					if (strumNote.isSustain)
 					{
 						strumNote.y -= ((strumNote.height / 2) * downscrollMult);
@@ -1147,7 +1140,7 @@ class PlayState extends MusicBeatState
 							&& (strumNote.prevNote != null))
 						{
 							strumNote.y -= ((strumNote.prevNote.height / 2) * downscrollMult);
-							if (downscrollMult < 0) // downscroll;
+							if (Init.getSetting('Downscroll'))
 							{
 								strumNote.y += (strumNote.height * 2);
 								if (strumNote.endHoldOffset == Math.NEGATIVE_INFINITY)
@@ -1155,12 +1148,12 @@ class PlayState extends MusicBeatState
 								else
 									strumNote.y += strumNote.endHoldOffset;
 							}
-							else if (downscrollMult > 0) // upscroll;
+							else
 								strumNote.y += ((strumNote.height / 2) * downscrollMult);
 							// this system is funny like that
 						}
-
-						if (downscrollMult < 0)
+						var center:Float = receptorY + Receptor.swagWidth / (1.4 * (assetModifier == 'pixel' ? 2 : 1));
+						if (Init.getSetting('Downscroll'))
 						{
 							strumNote.flipY = true;
 							if (strumNote.y - strumNote.offset.y * strumNote.scale.y + strumNote.height >= center
@@ -1173,7 +1166,7 @@ class PlayState extends MusicBeatState
 								strumNote.clipRect = swagRect;
 							}
 						}
-						else if (downscrollMult > 0)
+						else
 						{
 							if (strumNote.y + strumNote.offset.y * strumNote.scale.y <= center
 								&& (strumline.autoplay
@@ -1189,8 +1182,6 @@ class PlayState extends MusicBeatState
 
 					// hell breaks loose here, we're using nested scripts!
 					mainControls(strumNote, strumline);
-					if (!strumline.autoplay)
-						controllerInput();
 
 					// check where the note is and make sure it is either active or inactive
 					if (strumNote.y > FlxG.height)
