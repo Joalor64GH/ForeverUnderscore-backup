@@ -43,8 +43,10 @@ class ClassHUD extends FlxTypedGroup<FlxBasic>
 	private var barFillDir = RIGHT_TO_LEFT;
 	private final language = ForeverLocales.curLang;
 
-	private var bfBar = FlxColor.fromRGB(PlayState.boyfriend.characterData.barColor[0], PlayState.boyfriend.characterData.barColor[1], PlayState.boyfriend.characterData.barColor[2]);
-	private var dadBar = FlxColor.fromRGB(PlayState.dad.characterData.barColor[0], PlayState.dad.characterData.barColor[1], PlayState.dad.characterData.barColor[2]);
+	private var bfBar = FlxColor.fromRGB(PlayState.boyfriend.characterData.barColor[0], PlayState.boyfriend.characterData.barColor[1],
+		PlayState.boyfriend.characterData.barColor[2]);
+	private var dadBar = FlxColor.fromRGB(PlayState.dad.characterData.barColor[0], PlayState.dad.characterData.barColor[1],
+		PlayState.dad.characterData.barColor[2]);
 
 	public function new()
 	{

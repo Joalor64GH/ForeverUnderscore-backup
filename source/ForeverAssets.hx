@@ -210,9 +210,7 @@ class ForeverAssets
 		var rawJson = null;
 		if (!FileSystem.exists(path))
 		{
-			splashJson = cast haxe.Json.parse(
-			assetModifier == 'pixel' ?
-				'{
+			splashJson = cast haxe.Json.parse(assetModifier == 'pixel' ? '{
 				    "file": "splash-pixel",
 				    "type": "graphic",
 				    "hasTwoAnims": true,
@@ -228,9 +226,7 @@ class ForeverAssets
 				        -120,
 				        -90
 				    ]
-				}'
-			:
-				'{
+				}' : '{
 				    "file": "noteSplashes",
 				    "type": "graphic",
 				    "hasTwoAnims": true,
@@ -246,8 +242,7 @@ class ForeverAssets
 				        -20,
 				        -10
 				    ]
-				}'
-			);
+				}');
 		}
 		else
 		{
@@ -466,7 +461,7 @@ class ForeverAssets
 	/**
 		Notes!
 	**/
-	public static function generateArrow(assetModifier, strumTime, noteData, noteAlt, ?isSustain:Bool = false, ?prevNote:Note = null, noteType:Int = 0):Note
+	public static function generateArrow(assetModifier, strumTime, noteData, noteAlt, ?isSustain:Bool = false, ?prevNote:Note = null, ?noteType:Int = 0):Note
 	{
 		var newNote:Note;
 		var changeableSkin:String = Init.getSetting("Note Skin");

@@ -487,11 +487,10 @@ class CharacterOffsetEditor extends MusicBeatState
 
 			var characterErrorFormat:String = '';
 
-			switch (char.originInstance)
+			switch (char.characterOrigin)
 			{
 				case UNDERSCORE:
-					characterErrorFormat =
-					'ERROR! No animations found on Script
+					characterErrorFormat = 'ERROR! No animations found on Script
 					\nmake sure the offsets exist on said script
 					\nTry: addOffset(\'animationName\', xPosition, yPosition);';
 				case PSYCH_ENGINE | SUPER_ENGINE | FUNKIN_COCOA:

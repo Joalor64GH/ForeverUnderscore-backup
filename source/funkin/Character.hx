@@ -36,6 +36,7 @@ typedef CharacterData =
 	var camOffsetX:Float;
 	var camOffsetY:Float;
 	var icon:String;
+	var noteSkin:String;
 	var singDuration:Float;
 	var antialiasing:Bool;
 	var quickDancer:Bool;
@@ -72,7 +73,7 @@ class Character extends FNFSprite
 	public var heyTimer:Float = 0;
 
 	public var characterType:String = UNDERSCORE;
-	public var originInstance:CharacterOrigin;
+	public var characterOrigin:CharacterOrigin;
 
 	public function new(?isPlayer:Bool = false)
 	{
@@ -92,6 +93,7 @@ class Character extends FNFSprite
 			singDuration: 4,
 			icon: null,
 			quickDancer: false,
+			noteSkin: "NOTE_assets",
 			antialiasing: !character.endsWith('-pixel'),
 			barColor: [161, 161, 161]
 		};
@@ -136,21 +138,23 @@ class Character extends FNFSprite
 				flipLeftRight();
 			//
 		}
-		else if (curCharacter.startsWith('bf') &&  (!curCharacter.endsWith('-dead')))
+		else if (curCharacter.startsWith('bf') && (!curCharacter.endsWith('-dead')))
 			flipLeftRight();
 
 		antialiasing = characterData.antialiasing;
 
-		trace('character ${curCharacter} scale ${scale.y} dataOffsetX ${characterData.offsetX} dataOffsetY ${characterData.offsetY}');
+		recalcDance();
+		dance();
 
-		this.x += characterData.offsetX;
-		this.y += (characterData.offsetY - (frameHeight * scale.y));
+		if (characterType == UNDERSCORE)
+		{
+			x += characterData.offsetX;
+			y += (characterData.offsetY - (frameHeight * scale.y));
+			trace('character ${curCharacter} scale ${scale.y} dataOffsetX ${characterData.offsetX} dataOffsetY ${characterData.offsetY}');
+		}
 
 		this.x = x;
 		this.y = y;
-
-		recalcDance();
-		dance();
 
 		return this;
 	}

@@ -84,7 +84,6 @@ class PlayState extends MusicBeatState
 	// custom assets;
 	public static var assetModifier:String = 'base';
 	public static var uiModifier:String = 'default';
-	public static var noteModifier:String = 'NOTE_assets';
 
 	// characters;
 	public static var dad:Character;
@@ -226,7 +225,6 @@ class PlayState extends MusicBeatState
 
 		assetModifier = 'base';
 		uiModifier = 'default';
-		noteModifier = 'NOTE_assets';
 	}
 
 	/**
@@ -263,7 +261,7 @@ class PlayState extends MusicBeatState
 	function precacheImages()
 	{
 		Paths.image('UI/default/base/alphabet');
-		if (boyfriend.characterType == boyfriend.originInstance.UNDERSCORE)
+		if (boyfriend.characterType == boyfriend.characterOrigin.UNDERSCORE)
 			Paths.getSparrowAtlas(GameOverSubstate.character, 'characters/' + GameOverSubstate.character);
 	}
 
@@ -504,8 +502,8 @@ class PlayState extends MusicBeatState
 		var dadPlacement:Float = (FlxG.width / 2) - FlxG.width / 4;
 		var strumYPos:Int = (Init.getSetting('Downscroll') ? FlxG.height - 200 : 0);
 
-		dadStrums = new Strumline(dadPlacement, strumYPos, dad, noteModifier, true, false, doTweenCheck(true), 4);
-		bfStrums = new Strumline(bfPlacement, strumYPos, boyfriend, noteModifier, false, true, doTweenCheck(false), 4);
+		dadStrums = new Strumline(dadPlacement, strumYPos, dad, dad.characterData.noteSkin, true, false, doTweenCheck(true), 4);
+		bfStrums = new Strumline(bfPlacement, strumYPos, boyfriend, boyfriend.characterData.noteSkin, false, true, doTweenCheck(false), 4);
 
 		dadStrums.visible = !Init.getSetting('Hide Opponent Receptors');
 
@@ -932,7 +930,8 @@ class PlayState extends MusicBeatState
 					var getCenterX = char.getMidpoint().x + 100;
 					var getCenterY = char.getMidpoint().y - 100;
 
-					camFollow.setPosition(getCenterX + camDisplaceX + char.characterData.camOffsetX, getCenterY + camDisplaceY + char.characterData.camOffsetY);
+					camFollow.setPosition(getCenterX + camDisplaceX + char.characterData.camOffsetX,
+						getCenterY + camDisplaceY + char.characterData.camOffsetY);
 
 					if (char.curCharacter == 'mom')
 						Conductor.songVocals.volume = 1;
@@ -957,7 +956,8 @@ class PlayState extends MusicBeatState
 							getCenterY = char.getMidpoint().y - 200;
 					}
 
-					camFollow.setPosition(getCenterX + camDisplaceX - char.characterData.camOffsetX, getCenterY + camDisplaceY + char.characterData.camOffsetY);
+					camFollow.setPosition(getCenterX + camDisplaceX - char.characterData.camOffsetX,
+						getCenterY + camDisplaceY + char.characterData.camOffsetY);
 				}
 				else if (gfSection && !mustHit || gfSection && mustHit)
 				{
@@ -966,7 +966,8 @@ class PlayState extends MusicBeatState
 					var getCenterX = char.getMidpoint().x + 100;
 					var getCenterY = char.getMidpoint().y - 100;
 
-					camFollow.setPosition(getCenterX + camDisplaceX + char.characterData.camOffsetX, getCenterY + camDisplaceY + char.characterData.camOffsetY);
+					camFollow.setPosition(getCenterX + camDisplaceX + char.characterData.camOffsetX,
+						getCenterY + camDisplaceY + char.characterData.camOffsetY);
 				}
 			}
 
@@ -1903,7 +1904,6 @@ class PlayState extends MusicBeatState
 	}
 
 	/* ===== substate stuffs ===== */
-
 	override function openSubState(SubState:FlxSubState)
 	{
 		// trace('open substate');
