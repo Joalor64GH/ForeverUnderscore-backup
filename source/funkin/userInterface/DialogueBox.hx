@@ -4,6 +4,7 @@ import dependency.FNFSprite;
 import flixel.FlxBasic;
 import flixel.FlxG;
 import flixel.FlxSprite;
+import flixel.system.FlxSound;
 import flixel.addons.text.FlxTypeText;
 import flixel.group.FlxSpriteGroup;
 import flixel.math.FlxPoint;
@@ -109,6 +110,8 @@ class DialogueBox extends FlxSpriteGroup
 	public var whenDaFinish:Void->Void;
 	public var textStarted:Bool = false;
 
+	public var dialogueSong:FlxSound;
+
 	public static function createDialogue(thisDialogue:String):DialogueBox
 	{
 		return new DialogueBox(false, thisDialogue);
@@ -140,8 +143,9 @@ class DialogueBox extends FlxSpriteGroup
 		// dialogue song;
 		if (dialogueData.song != null)
 		{
-			FlxG.sound.playMusic(Paths.music(dialogueData.song), 0);
-			FlxG.sound.music.fadeIn((fadeIn != null ? fadeIn : 1), 0, 0.8);
+			dialogueSong = new FlxSound().loadEmbedded(Paths.music(dialogueData.song), false, true);
+			FlxG.sound.list.add(dialogueSong);
+			dialogueSong.fadeIn((fadeIn != null ? fadeIn : 1), 0, 0.8);
 		}
 
 		// background fade
@@ -584,7 +588,8 @@ class DialogueBox extends FlxSpriteGroup
 		whenDaFinish();
 
 		var fadeOut = dialogueData.songFadeOut;
-		FlxG.sound.music.fadeOut((fadeOut != null ? fadeOut : 2.2), 0);
+		if (dialogueSong != null)
+			dialogueSong.fadeOut((fadeOut != null ? fadeOut : 2.2), 0);
 
 		alphabetText.playSounds = false;
 		kill();

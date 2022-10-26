@@ -34,7 +34,7 @@ function loadAnimations()
 
 	if (PlayState.curStage == 'mallEvil')
 	{
-		charX = 50;
+		charX = -130;
 		opponentX = -155;
 		setCamOffsets(15, -15);
 	}
