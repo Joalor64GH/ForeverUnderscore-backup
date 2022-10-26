@@ -287,6 +287,17 @@ class PlayState extends MusicBeatState
 		return true;
 	}
 
+	public function new(songPosition:Float = null):Void
+	{
+		// set song position before beginning
+		if (songPosition == null)
+			Conductor.songPosition = -(Conductor.crochet * 4);
+		else if (songPosition > -(Conductor.crochet * 4))
+			skipCountdown = true;
+
+		super();
+	}
+
 	// at the beginning of the playstate
 	override public function create()
 	{
@@ -359,13 +370,17 @@ class PlayState extends MusicBeatState
 		gf = new Character(false);
 
 		if (SONG.gfVersion.length < 1 || SONG.gfVersion == null)
-			gf.setCharacter(300, 100, stageBuild.returnGFtype(curStage))
+			gf.setCharacter(0, 0, stageBuild.returnGFtype(curStage))
 		else
-			gf.setCharacter(300, 100, SONG.gfVersion);
+			gf.setCharacter(0, 0, SONG.gfVersion);
 
-		dad.setCharacter(100, 100, SONG.player2);
-		boyfriend.setCharacter(770, 450, SONG.player1);
+		dad.setCharacter(0, 0, SONG.player2);
+		boyfriend.setCharacter(0, 0, SONG.player1);
 		gf.scrollFactor.set(0.95, 0.95);
+
+		boyfriend.setPosition(770, 450);
+		dad.setPosition(100, 100);
+		gf.setPosition(300, 100);
 
 		charGroup = new FlxSpriteGroup();
 		charGroup.alpha = 0.00001;
@@ -1846,13 +1861,19 @@ class PlayState extends MusicBeatState
 		if (!practiceMode && health <= 0 && !isDead)
 		{
 			paused = true;
-			boyfriend.stunned = true;
 			persistentUpdate = false;
 			persistentDraw = false;
 
 			Conductor.stopMusic();
 
 			deaths += 1;
+
+			for (hud in allUIs)
+				hud.visible = false;
+			dialogueHUD.visible = false;
+			camAlt.visible = false;
+
+			boyfriend.stunned = true;
 
 			openSubState(new GameOverSubstate(boyfriend.getScreenPosition().x, boyfriend.getScreenPosition().y));
 
@@ -1903,9 +1924,7 @@ class PlayState extends MusicBeatState
 	/* ===== substate stuffs ===== */
 	override function openSubState(SubState:FlxSubState)
 	{
-		// trace('open substate');
 		super.openSubState(SubState);
-		// trace('open substate end ');
 	}
 
 	override function closeSubState()
@@ -1915,8 +1934,6 @@ class PlayState extends MusicBeatState
 			if (Conductor.songMusic != null && !startingSong)
 				Conductor.startMusic();
 
-			// if ((startTimer != null) && (!startTimer.finished))
-			//	startTimer.active = true;
 			FlxTimer.globalManager.forEach(function(tmr:FlxTimer)
 			{
 				if (!tmr.finished)
@@ -1930,9 +1947,7 @@ class PlayState extends MusicBeatState
 			});
 			paused = false;
 
-			///*
 			updateRPC(false);
-			// */
 		}
 
 		Paths.clearUnusedMemory();

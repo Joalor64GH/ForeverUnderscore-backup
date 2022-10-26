@@ -265,10 +265,9 @@ class Character extends FNFSprite
 			}
 		}
 
+		super.update(elapsed);
 		for (i in characterScripts)
 			i.call('postUpdate', [elapsed]);
-
-		super.update(elapsed);
 	}
 
 	var danced:Bool = false;
