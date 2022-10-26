@@ -105,8 +105,11 @@ class Strumline extends FlxSpriteGroup
 			}
 		}
 
+		if (Init.trueSettings.get("Clip Style").toLowerCase() == 'stepmania')
+			add(holdsGroup);
 		add(receptors);
-		add(holdsGroup);
+		if (Init.trueSettings.get("Clip Style").toLowerCase() == 'fnf')
+			add(holdsGroup);
 		add(notesGroup);
 		if (splashNotes != null)
 			add(splashNotes);

@@ -224,6 +224,13 @@ class Init extends FlxState
 			NOT_FORCED,
 			''
 		],
+		"Clip Style" => [
+			'stepmania',
+			Selector,
+			"Chooses a style for hold note clippings; StepMania: Holds under Receptors; FNF: Holds over receptors",
+			NOT_FORCED,
+			['StepMania', 'FNF']
+		],
 		'Arrow Opacity' => [
 			80,
 			Selector,

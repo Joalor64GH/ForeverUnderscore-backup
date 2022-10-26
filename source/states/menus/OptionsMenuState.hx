@@ -128,6 +128,7 @@ class OptionsMenuState extends MusicBeatState
 
 					['Notes and Holds', null],
 					["Note Skin", getFromOption],
+					["Clip Style", getFromOption],
 					['Arrow Opacity', getFromOption],
 					['Splash Opacity', getFromOption],
 					['Hold Opacity', getFromOption],
