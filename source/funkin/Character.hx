@@ -121,7 +121,7 @@ class Character extends FNFSprite
 				}
 				catch (e)
 				{
-					trace('Character Error: $character is invalid!', 3);
+					trace('Character Error: $character is invalid!');
 					generatePlaceholder();
 				}
 		}
@@ -646,6 +646,7 @@ class Character extends FNFSprite
 
 		playAnim('idle');
 		characterData.barColor = [161, 161, 161];
+		characterData.offsetY = 350;
 		curCharacter = 'placeholder';
 	}
 }

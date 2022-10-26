@@ -2066,8 +2066,11 @@ class PlayState extends MusicBeatState
 				clearStored = true;
 				Main.switchState(this, new FreeplayMenuState());
 			}
-			else if (!skipCutscenes())
-				songCutscene();
+			else
+			{
+				if (!skipCutscenes())
+					songCutscene();
+			}
 		}
 		else
 		{
@@ -2103,10 +2106,12 @@ class PlayState extends MusicBeatState
 				// flush the save
 				FlxG.save.flush();
 			}
-			else if (!skipCutscenes())
-				songCutscene();
+			else
+			{
+				if (!skipCutscenes())
+					songCutscene();
+			}
 		}
-		//
 	}
 
 	public function callDefaultSongEnd()

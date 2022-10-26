@@ -105,12 +105,13 @@ class ChartEditor extends MusicBeatState
 
 	final markerColors:Array<FlxColor> = [
 		FlxColor.RED, FlxColor.BLUE, FlxColor.PURPLE, FlxColor.YELLOW, FlxColor.GRAY, FlxColor.PINK, FlxColor.ORANGE, FlxColor.CYAN, FlxColor.GREEN,
-		FlxColor.LIME, FlxColor.MAGENTA
+		FlxColor.LIME
 	];
 	var markerLevel:Int = 0;
 	var scrollSpeed:Float = 0.75;
 
-	final scrollArray:Array<Float> = [0.5, 0.75, 1, 1.05, 1.5, 2, 2.05, 2.5, 3, 3.05, 3.5];
+	final snapScrollArray:Array<Float> = [0.5, 0.75, 1, 1.05, 1.5, 2, 2.05, 2.5, 3, 3.05];
+	final snapNameArray:Array<String> = ['4th', '8th', '12th', '16th', '20th', '24th', '32nd', '48th', '64th', '192th'];
 
 	var arrowGroup:FlxTypedSpriteGroup<Receptor>;
 
@@ -251,6 +252,7 @@ class ChartEditor extends MusicBeatState
 	var helpTxt:FlxText;
 	var prefTxt:FlxText;
 	var infoTextChart:FlxText;
+	var infoStringSnap:String = '4th';
 
 	function generateUI()
 	{
@@ -296,10 +298,11 @@ class ChartEditor extends MusicBeatState
 	{
 		// update info text;
 		infoTextChart.text = 'BEAT: ${FlxMath.roundDecimal(decBeat, 2)}'
-			+ '\nSTEP: ${FlxMath.roundDecimal(decStep, 2)}'
+			+ ' - STEP: ${FlxMath.roundDecimal(decStep, 2)}'
 			+ '\nTIME: ${FlxMath.roundDecimal(Conductor.songPosition / 1000, 2)} / ${FlxMath.roundDecimal(songMusic.length / 1000, 2)}'
-			+ '\nBPM: ${_song.bpm}'
-			+ '\n\nRate: ${songMusic.pitch}';
+			+ '\nSNAP: ${infoStringSnap}'
+			+ ' - BPM: ${_song.bpm}'
+			+ '\n\nRATE: ${songMusic.pitch}';
 
 		// update markers if needed;
 		markerL.color = markerColors[markerLevel];
@@ -579,11 +582,11 @@ class ChartEditor extends MusicBeatState
 	{
 		markerLevel += newSpd;
 		if (markerLevel < 0)
-			markerLevel = scrollArray.length - 1;
-		if (markerLevel > scrollArray.length - 1)
+			markerLevel = snapScrollArray.length - 1;
+		if (markerLevel > snapScrollArray.length - 1)
 			markerLevel = 0;
-
-		scrollSpeed = scrollArray[markerLevel];
+		scrollSpeed = snapScrollArray[markerLevel];
+		infoStringSnap = snapNameArray[markerLevel];
 	}
 
 	override public function stepHit()
@@ -798,7 +801,7 @@ class ChartEditor extends MusicBeatState
 		generateSustain(daStrumTime, daNoteInfo, daSus, daNoteAlt, daNoteType, note);
 
 		// attach a text to their respective notetype;
-		if (daNoteType != 0)
+		if (daNoteType != null && daNoteType != 0)
 		{
 			var noteTypeNum:EventText = new EventText(0, 0, 100, Std.string(daNoteType), 24);
 			noteTypeNum.setFormat(Paths.font("vcr"), 24, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
