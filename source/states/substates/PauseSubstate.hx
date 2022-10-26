@@ -70,7 +70,7 @@ class PauseSubstate extends MusicBeatSubstate
 
 		#if debug
 		if (!PlayState.isStoryMode)
-			menuItems.insert(2, 'Open Editors');
+			menuItems.insert(2, new PauseItem('Open Editors', '${language.editors}'));
 		#end
 
 		if (PlayState.chartingMode)
