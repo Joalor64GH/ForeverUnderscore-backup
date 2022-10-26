@@ -367,10 +367,6 @@ class PlayState extends MusicBeatState
 		boyfriend.setCharacter(770, 450, SONG.player1);
 		gf.scrollFactor.set(0.95, 0.95);
 
-		dad.dance(true);
-		boyfriend.dance(true);
-		gf.dance(true);
-
 		charGroup = new FlxSpriteGroup();
 		charGroup.alpha = 0.00001;
 
@@ -399,6 +395,9 @@ class PlayState extends MusicBeatState
 
 		stageBuild.repositionPlayers(curStage, boyfriend, gf, dad);
 		stageBuild.dadPosition(curStage, boyfriend, gf, dad, camPos);
+
+		boyfriend.adjustPosition();
+		dad.adjustPosition();
 
 		// set song position before beginning
 		Conductor.songPosition = -(Conductor.crochet * 4);
@@ -1003,7 +1002,6 @@ class PlayState extends MusicBeatState
 			if ((unspawnNotes[0] != null) && ((unspawnNotes[0].strumTime - Conductor.songPosition) < 3500))
 			{
 				var dunceNote:Note = unspawnNotes[0];
-				var dunceIndex = unspawnNotes.indexOf(dunceNote);
 				var keyAmount = (dunceNote.mustPress ? bfStrums.keyAmount : dadStrums.keyAmount);
 
 				// push note to its correct strumline
@@ -1011,12 +1009,11 @@ class PlayState extends MusicBeatState
 
 				callFunc('noteSpawn', [
 					dunceNote,
-					dunceIndex,
 					dunceNote.noteData,
 					dunceNote.noteType,
 					dunceNote.isSustain
 				]);
-				unspawnNotes.splice(dunceIndex, 1);
+				unspawnNotes.splice(unspawnNotes.indexOf(dunceNote), 1);
 			}
 
 			noteCalls();

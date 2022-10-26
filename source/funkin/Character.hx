@@ -81,7 +81,7 @@ class Character extends FNFSprite
 		this.isPlayer = isPlayer;
 	}
 
-	public function setCharacter(x:Float, y:Float, character:String):Character
+	public function setCharacter(xPos:Float, yPos:Float, character:String):Character
 	{
 		curCharacter = character;
 
@@ -146,17 +146,13 @@ class Character extends FNFSprite
 		recalcDance();
 		dance();
 
-		if (characterType == UNDERSCORE)
-		{
-			x += characterData.offsetX;
-			y += (characterData.offsetY - (frameHeight * scale.y));
-			trace('character ${curCharacter} scale ${scale.y} dataOffsetX ${characterData.offsetX} dataOffsetY ${characterData.offsetY}');
-		}
-
-		this.x = x;
-		this.y = y;
-
 		return this;
+	}
+
+	public function adjustPosition()
+	{
+		x += characterData.offsetX;
+		y += (characterData.offsetY - (frameHeight * scale.y));
 	}
 
 	function flipLeftRight()
@@ -600,8 +596,6 @@ class Character extends FNFSprite
 		characterData.antialiasing = !json.no_antialiasing;
 		characterData.barColor = json.healthbar_colors;
 		characterData.singDuration = json.sing_duration;
-		characterData.camOffsetX = json.camera_position[0];
-		characterData.camOffsetY = json.camera_position[1];
 
 		if (json.scale != 1)
 		{
@@ -616,6 +610,8 @@ class Character extends FNFSprite
 
 		characterData.offsetX = json.position[0];
 		characterData.offsetY = json.position[1];
+		characterData.camOffsetX = json.camera_position[0];
+		characterData.camOffsetY = json.camera_position[1];
 	}
 
 	function generatePlaceholder()
