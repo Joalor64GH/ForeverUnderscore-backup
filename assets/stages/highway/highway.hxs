@@ -1,6 +1,7 @@
 var limo:FNFSprite;
 var dancer:FNFSprite;
 var fastCar:FNFSprite;
+var limoOverlay:FNFSprite;
 var grpLimoDancers:FlxSpriteGroup;
 
 function generateStage()
@@ -33,6 +34,11 @@ function generateStage()
 	limo.animation.play('drive');
 	limo.antialiasing = !Init.getSetting('Disable Antialiasing');
 	layers.add(limo);
+
+	limoOverlay = new FNFSprite(-500, -600).loadGraphic(Paths.image('limoOverlay', stageDir));
+	limoOverlay.alpha = 0.3;
+	limoOverlay.blend = ForeverTools.returnBlendMode('overlay');
+	foreground.add(limoOverlay);
 
 	fastCar = new FNFSprite(-300, 160).loadGraphic(Paths.image('fastCarLol', stageDir));
 	fastCar.active = true;
