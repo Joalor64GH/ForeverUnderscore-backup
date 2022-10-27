@@ -3,6 +3,7 @@ package funkin;
 import base.*;
 import flixel.FlxBasic;
 import flixel.FlxSprite;
+import dependency.FNFSprite;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.math.FlxPoint;
 import states.PlayState;
@@ -12,12 +13,28 @@ using StringTools;
 
 typedef StageDataDef =
 {
+	var objects:Array<StageObject>;
+
 	var spawnGirlfriend:Bool;
 	var defaultZoom:Float;
 	var camSpeed:Float;
 	var dadPos:Array<Int>;
 	var gfPos:Array<Int>;
 	var bfPos:Array<Int>;
+}
+
+typedef StageObject =
+{
+	var name:Null<String>; // for getting the name of `this` object on a script;
+	var image:Null<String>; // the image file name for `this` object;
+	var position:Null<Array<Float>>; // the position of `this` object;
+	var scrollFactor:Null<Array<Float>>; // the scroll factor for `this` object;
+	var animations:Null<Array<Dynamic>>; // the animations available on `this` object;
+	var defaultAnimation:Null<String>; // the object's default animation;
+	var flipX:Null<Bool>; // whether `this` object is flipped horizontally;
+	var flipY:Null<Bool>; // whether `this` object is flipped vertically;
+	var size:Null<Float>; // the size for `this` object;
+	var layer:String; // where should `this` object be spawned;
 }
 
 /**
@@ -39,6 +56,7 @@ class Stage extends FlxTypedGroup<FlxBasic>
 
 	public var spawnGirlfriend:Bool = true;
 
+	public var objectMap:Map<String, FNFSprite> = new Map<String, FNFSprite>();
 	public var stageScript:ScriptHandler;
 	public var stageJson:StageDataDef;
 
@@ -59,7 +77,14 @@ class Stage extends FlxTypedGroup<FlxBasic>
 			    "camSpeed": 1,
 			    "dadPos": [100, 100],
 			    "gfPos": [300, 100],
-			    "bfPos": [770, 450]
+			    "bfPos": [770, 450],
+
+			    "objects": [
+		        	{
+		            	"name": "blank",
+		            	"image": null,
+		        	},
+		        ]
 			}');
 		}
 
@@ -67,6 +92,44 @@ class Stage extends FlxTypedGroup<FlxBasic>
 		{
 			spawnGirlfriend = stageJson.spawnGirlfriend;
 			PlayState.cameraSpeed = stageJson.camSpeed;
+
+			if (stageJson.objects != null)
+			{
+				for (object in stageJson.objects)
+				{
+					var createdSprite:FNFSprite = new FNFSprite(object.position[0], object.position[1]);
+
+					if (object.animations != null)
+					{
+						createdSprite.frames = Paths.getSparrowAtlas(object.image, 'stages/$curStage/images');
+						for (anim in object.animations)
+							createdSprite.animation.addByPrefix(anim[0], anim[1], anim[2], anim[3]);
+						if (object.defaultAnimation == null)
+							createdSprite.playAnim(object.defaultAnimation);
+					}
+					else
+						createdSprite.loadGraphic(Paths.image(object.image, 'stages/$curStage/images'));
+
+					if (object.scrollFactor != null)
+						createdSprite.scrollFactor.set(object.scrollFactor[0], object.scrollFactor[1]);
+					if (object.size != null)
+						createdSprite.setGraphicSize(Std.int(createdSprite.width * object.size));
+
+					createdSprite.flipX = object.flipX;
+					createdSprite.flipY = object.flipY;
+					if (object.name != null && createdSprite != null)
+						objectMap.set(object.name, createdSprite);
+					switch(object.layer)
+					{
+						case 'layers' | 'on layers' | 'gf' | 'above gf':
+							layers.add(createdSprite);
+						case 'foreground' | 'on foreground' | 'chars' | 'above chars':
+							foreground.add(createdSprite);
+						default:
+							add(createdSprite);
+					}
+				}
+			}
 		}
 
 		if (!stageDebug)
@@ -171,6 +234,8 @@ class Stage extends FlxTypedGroup<FlxBasic>
 			}
 		}
 
+		/* ===== OLD STAGE SYSTEM ===== */
+
 		setVar('add', add);
 		setVar('remove', remove);
 		setVar('foreground', foreground);
@@ -184,6 +249,14 @@ class Stage extends FlxTypedGroup<FlxBasic>
 		if (PlayState.SONG != null)
 			setVar('songName', PlayState.SONG.song.toLowerCase());
 		setVar('TankmenBG', TankmenBG);
+
+		/* ===== NEW STAGE SYSTEM ===== */
+
+		setVar('getObject', function(object:String)
+		{
+			var gottenObject:FNFSprite = objectMap.get(object);
+			return gottenObject;
+		});
 
 		callFunc('generateStage', []);
 	}

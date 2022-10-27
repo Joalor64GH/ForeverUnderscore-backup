@@ -42,7 +42,7 @@ class Overlay extends TextField
 		addEventListener(Event.ENTER_FRAME, update);
 	}
 
-	static final intervalArray:Array<String> = ['B', 'KB', 'MB', 'GB', 'HOW']; // tb support for the myth engine modders :)
+	static final intervalArray:Array<String> = ['B', 'KB', 'MB', 'GB', 'TB']; // tb support for the myth engine modders :)
 
 	public static function getInterval(size:Float):String
 	{
