@@ -16,6 +16,20 @@ function generateStage()
 	stageFront.active = false;
 	add(stageFront);
 
+	var stageLightLeft:FNFSprite = new FNFSprite(-115, -100).loadGraphic(Paths.image('stage_light', stageDir));
+	add(stageLightLeft);
+
+	var stageLightRight:FNFSprite = new FNFSprite(1125, -100).loadGraphic(Paths.image('stage_light', stageDir));
+	stageLightRight.flipX = true;
+	add(stageLightRight);
+
+	for (light in [stageLightLeft, stageLightRight])
+	{
+		light.scrollFactor.set(0.9, 0.9);
+		light.setGraphicSize(Std.int(light.width * 1.1));
+		light.updateHitbox();
+	}
+
 	var stageCurtains:FNFSprite = new FNFSprite(-500, -300).loadGraphic(Paths.image('stagecurtains', stageDir));
 	stageCurtains.setGraphicSize(Std.int(stageCurtains.width * 0.9));
 	stageCurtains.updateHitbox();
