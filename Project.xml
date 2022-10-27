@@ -36,8 +36,8 @@
 
 	<source path="source" />
 	<assets path="assets" />
+
 	<assets path="mods" if="desktop unstableBuild" />
-	<assets path="locales" rename="assets/locales" if="includeLocales" /> <!-- will improve this system eventually -->
 
 	<assets path="FE-CrashDialog.exe" type="template" if="windows release" />
 
@@ -74,6 +74,21 @@
 	<haxedef name="HXCPP_CHECK_POINTER" unless="debug" />
 
 	<haxedef name="HXC_DEBUG_TRACE" if="debug" />
+
+	<!-- _____________________________ Localizations ____________________________ -->
+
+	<!--
+		uncomment the line of the langauge you want to include
+		you can also add more paths according to your needs
+		will improve upon this system later
+	-->
+
+	<!-- <assets path="i18n/portuguese" rename="assets/locales/portuguese" /> -->
+	<!-- <assets path="i18n/spanish" rename="assets/locales/spanish"/> -->
+	<!-- <assets path="i18n/russian" rename="assets/locales/russian" /> -->
+	<!-- <assets path="i18n/romanian" rename="assets/locales/romanian" /> -->
+	<!-- <assets path="i18n/turkish"  rename="assets/locales/turkish" /> -->
+	<!-- <assets path="i18n/french" rename="assets/locales/french" /> -->
 
 	<!-- _________________________________ Custom _______________________________ -->
 
