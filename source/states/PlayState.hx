@@ -1944,7 +1944,7 @@ class PlayState extends MusicBeatState
 			case 'Set GF Speed':
 				var speed:Int = Std.parseInt(value1);
 				if (Math.isNaN(speed) || speed <= 0)
-					speed = 0.6;
+					speed = 1;
 				gfSpeed = speed;
 			case 'Change Character':
 				switch (value1.toLowerCase().trim())
