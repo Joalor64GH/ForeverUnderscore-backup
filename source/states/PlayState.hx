@@ -202,7 +202,7 @@ class PlayState extends MusicBeatState
 	// stores the last combo sprite objects in an array;
 	public static var lastCombo:Array<FNFSprite>;
 
-	var events:Array<EventNote> = [];
+	var events:Array<TimedEvent> = [];
 
 	function resetVariables()
 	{
@@ -805,24 +805,23 @@ class PlayState extends MusicBeatState
 	static function get_songSpeed()
 		return songSpeed * Conductor.playbackRate;
 
-	/*
-		static function set_songSpeed(value:Float):Float
+	static function set_songSpeed(value:Float):Float
+	{
+		var offset = songSpeed / value;
+		for (note in bfStrums.allNotes)
 		{
-			var offset = songSpeed / value;
-			for (note in bfStrums.allNotes)
-			{
-				note.scale.y *= offset;
-				note.updateHitbox();
-			}
-			for (note in dadStrums.allNotes)
-			{
-				note.scale.y *= offset;
-				note.updateHitbox();
-			}
-
-			return cast songSpeed = value;
+			note.scale.y *= offset;
+			note.updateHitbox();
 		}
-	 */
+		for (note in dadStrums.allNotes)
+		{
+			note.scale.y *= offset;
+			note.updateHitbox();
+		}
+
+		return cast songSpeed = value;
+	}
+
 	override public function update(elapsed:Float)
 	{
 		super.update(elapsed);
@@ -1257,47 +1256,6 @@ class PlayState extends MusicBeatState
 		{
 			if (boyfriend.animation.curAnim.name.startsWith('sing') && !boyfriend.animation.curAnim.name.endsWith('miss'))
 				boyfriend.dance();
-		}
-	}
-
-	public function addCharacter(newCharacter:String)
-	{
-		var char:Character = new Character(false);
-		char.setCharacter(0, 0, newCharacter);
-		charGroup.add(char);
-	}
-
-	public function changeCharacter(newCharacter:String, targetCharacter:String, x:Float, y:Float)
-	{
-		var charType:Int = 0;
-		switch (targetCharacter)
-		{
-			case 'dad' | 'opponent' | 'dadOpponent':
-				charType = 1;
-			case 'gf' | 'girlfriend' | 'player3':
-				charType = 2;
-			case 'boyfriend' | 'bf' | 'player':
-				charType = Std.parseInt(targetCharacter);
-				if (Math.isNaN(charType))
-					charType = 0;
-			default:
-				charType = Std.parseInt(targetCharacter);
-				if (Math.isNaN(charType))
-					charType = 0;
-		}
-
-		switch (charType)
-		{
-			case 0:
-				boyfriend.setCharacter(x, y, newCharacter);
-				uiHUD.iconP1.updateIcon(newCharacter, true);
-				uiHUD.updateBar();
-			case 1:
-				dad.setCharacter(x, y, newCharacter);
-				uiHUD.iconP2.updateIcon(newCharacter, false);
-				uiHUD.updateBar();
-			case 2:
-				gf.setCharacter(x, y, newCharacter);
 		}
 	}
 
@@ -1950,69 +1908,109 @@ class PlayState extends MusicBeatState
 
 	function checkEvents()
 	{
-		while (true)
+		while (events.length > 0)
 		{
-			var eventNote:EventNote = events[0];
-			if (eventNote != null)
+			var line:TimedEvent = events[0];
+			if (line != null)
 			{
-				if (Conductor.songPosition < eventNote.strumTime)
+				if (Conductor.songPosition < line.strumTime)
 					break;
 
-				eventNoteHit(eventNote.event, eventNote.val1, eventNote.val2, eventNote.val3);
-				events.remove(eventNote);
+				eventNoteHit(line.event, line.val1, line.val2, line.val3);
+				events.remove(line);
+				events.shift();
 			}
 		}
 	}
 
-	function pushedEvent(event:EventNote)
+	function pushedEvent(event:TimedEvent)
 	{
+		trace('Event Name: ${event.event}, Event V1: ${event.val1}, Event V2: ${event.val2}, Event V3: ${event.val3}');
+
 		switch (event.event)
 		{
 			case 'Change Character':
-				trace(event.val1, event.val2, event.val2);
-				var xy:Array<Float> = switch (event.val1.toLowerCase().trim())
-				{
-					case 'bf' | 'boyfriend': [770, 450];
-					case 'gf' | 'girlfriend': [300, 100];
-					case 'dad' | 'opponent' | _: [100, 100];
-				}
-
-				var newCharacter:Character = new Character(['bf', 'boyfriend'].contains(event.val1.toLowerCase()));
-				newCharacter.setCharacter(xy[0], xy[1], event.val2);
-				newCharacter.alpha = .0;
-				switch (event.val1.toLowerCase().trim())
-				{
-					case 'bf' | 'boyfriend': boys.set(event.val2, newCharacter);
-					case 'gf' | 'girlfriend': girls.set(event.val2, newCharacter);
-					case 'dad' | 'opponent' | _: opponents.set(event.val2, newCharacter);
-				};
+				var char:Character = new Character(false);
+				char.setCharacter(0, 0, event.val2);
+				charGroup.add(char);
 		}
 	}
 
-	public var boys:Map<String, Character> = new Map();
-	public var girls:Map<String, Character> = new Map();
-	public var opponents:Map<String, Character> = new Map();
-
 	public function eventNoteHit(event:String, value1:String, value2:String, value3:String)
 	{
+		/* NOTE: unhardcode this later */
 		switch (event)
 		{
 			case 'Change Character':
 				switch (value1.toLowerCase().trim())
 				{
 					case 'bf' | 'boyfriend':
-						boyfriend = boys.get(value2);
-						boyfriend.alpha = 1;
+						boyfriend.setCharacter(770, 450, value2);
+						uiHUD.iconP1.updateIcon(value2, true);
 					case 'gf' | 'girlfriend':
-						gf = girls.get(value2);
-						gf.alpha = 1;
+						gf.setCharacter(300, 100, value2);
 					case 'dad' | 'opponent' | _:
-						dad = opponents.get(value2);
-						dad.alpha = 1;
+						dad.setCharacter(100, 100, value2);
+						uiHUD.iconP2.updateIcon(value2, false);
 				}
-				/*@:privateAccess uiHUD.bfBar = FlxColor.fromRGB(boyfriend.characterData.barColor[0], boyfriend.characterData.barColor[1], boyfriend.characterData.barColor[2]);
-					@:privateAccess uiHUD.dadBar = FlxColor.fromRGB(dad.characterData.barColor[0], dad.characterData.barColor[1], dad.characterData.barColor[2]);
-					uiHUD.updateBar(); */
+				uiHUD.updateBar();
+
+			case 'Hey!':
+				var timer:Float = Std.parseFloat(value2);
+				if (Math.isNaN(timer) || timer <= 0)
+					timer = 0.6;
+				switch (value1.toLowerCase().trim())
+				{
+					case 'bf' | 'boyfriend':
+						if (boyfriend.animOffsets.exists('hey'))
+						{
+							boyfriend.playAnim('hey', true);
+							boyfriend.specialAnim = true;
+							boyfriend.heyTimer = timer;
+						}
+					case 'gf' | 'girlfriend':
+						if (gf.animOffsets.exists('hey'))
+						{
+							gf.playAnim('hey', true);
+							gf.specialAnim = true;
+							gf.heyTimer = timer;
+						}
+					case 'dad' | 'opponent' | _:
+						if (dad.animOffsets.exists('hey'))
+						{
+							dad.playAnim('hey', true);
+							dad.specialAnim = true;
+							dad.heyTimer = timer;
+						}
+				}
+			case 'Play Animation':
+				var timer:Float = Std.parseFloat(value3);
+				if (Math.isNaN(timer) || timer <= 0)
+					timer = 0.6;
+				switch (value2.toLowerCase().trim())
+				{
+					case 'bf' | 'boyfriend':
+						if (boyfriend.animOffsets.exists(value1))
+						{
+							boyfriend.playAnim(value1, true);
+							boyfriend.specialAnim = true;
+							boyfriend.heyTimer = timer;
+						}
+					case 'gf' | 'girlfriend':
+						if (gf.animOffsets.exists(value1))
+						{
+							gf.playAnim(value1, true);
+							gf.specialAnim = true;
+							gf.heyTimer = timer;
+						}
+					case 'dad' | 'opponent' | _:
+						if (dad.animOffsets.exists(value1))
+						{
+							dad.playAnim(value1, true);
+							dad.specialAnim = true;
+							dad.heyTimer = timer;
+						}
+				}
 		}
 
 		callFunc('eventNoteHit', [event, value1, value2, value3]);

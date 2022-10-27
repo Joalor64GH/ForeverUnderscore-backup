@@ -54,7 +54,7 @@ typedef SongInfo =
 	var ?color:Array<Int>;
 }
 
-typedef EventNote =
+typedef TimedEvent =
 {
 	public var strumTime:Float;
 	public var event:String;
@@ -68,9 +68,11 @@ class Song
 {
 	public var song:String;
 	public var notes:Array<LegacySection>;
+
 	public var bpm:Float;
 	public var needsVoices:Bool = true;
 	public var speed:Float = 1;
+
 	public var player1:String = 'bf';
 	public var player2:String = 'dad';
 	public var gfVersion:String = 'gf';
@@ -84,39 +86,17 @@ class Song
 
 	public static function loadSong(jsonInput:String, ?folder:String):LegacySong
 	{
-		var rawJson = '';
-		var rawMeta = '';
+		var rawJson:String = null;
+		var rawMeta:String = null;
 		var rawEvent:String = null;
 
-		try
-		{
-			rawJson = File.getContent(Paths.songJson(folder.toLowerCase(), jsonInput.toLowerCase())).trim();
-		}
-		catch (e)
-		{
-			rawJson = null;
-		}
+		rawJson = getData(rawJson, folder, jsonInput);
+		rawEvent = getData(rawJson, folder, 'events');
+		rawMeta = getData(rawJson, folder, 'meta');
 
-		if (rawJson != null)
-		{
-			while (!rawJson.endsWith("}"))
-				rawJson = rawJson.substr(0, rawJson.length - 1);
-		}
-
-		try
-		{
-			rawMeta = File.getContent(Paths.songJson(folder.toLowerCase(), 'meta')).trim();
-		}
-		catch (e)
-		{
-			rawMeta = null;
-		}
-
-		if (rawMeta != null)
-		{
-			while (!rawMeta.endsWith("}"))
-				rawMeta = rawMeta.substr(0, rawMeta.length - 1);
-		}
+		dataCleanup(rawJson);
+		dataCleanup(rawEvent);
+		dataCleanup(rawMeta);
 
 		if (rawMeta == null)
 		{
@@ -126,15 +106,6 @@ class Song
 				"offset": 0,
 				"color": [255, 255, 255]
 			}';
-		}
-
-		try
-		{
-			rawEvent = File.getContent(Paths.songJson(folder.toLowerCase(), 'events'.trim()).trim()).trim();
-		}
-		catch (e)
-		{
-			rawEvent = null;
 		}
 
 		return parseSong(rawJson, rawMeta, rawEvent);
@@ -147,7 +118,7 @@ class Song
 		oldSong.copy = function()
 		{
 			return cast {
-				validScore: true,
+				validScore: oldSong.validScore,
 				stage: oldSong.stage,
 				splashSkin: oldSong.splashSkin,
 				speed: oldSong.speed,
@@ -204,6 +175,27 @@ class Song
 		}
 
 		return oldSong;
+	}
+
+	static function getData(data:String, path:String, secondPath:String)
+	{
+		return try
+		{
+			data = File.getContent(Paths.songJson(path.toLowerCase(), secondPath.toLowerCase())).trim();
+		}
+		catch (e)
+		{
+			return data = null;
+		}
+	}
+
+	static function dataCleanup(raw:String)
+	{
+		if (raw != null)
+		{
+			while (!raw.endsWith("}"))
+				raw = raw.substr(0, raw.length - 1);
+		}
 	}
 
 	static function parseEvent(rawEvent:String)

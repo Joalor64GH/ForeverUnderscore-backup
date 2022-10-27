@@ -98,7 +98,7 @@ class OriginalChartEditor extends MusicBeatState
 		],
 		[
 			"Play Animation",
-			"Plays an animation on a Character,\nonce the animation is completed,\nthe animation changes to Idle\n\nValue 1: Animation to play.\nValue 2: Character (Dad, BF, GF)"
+			"Plays an animation on a Character,\n\nValue 1: Animation to play.\nValue 2: Character (Dad, BF, GF)\nValue 3: time it takes to finish the animation"
 		],
 		[
 			"Multiply Scroll Speed",
@@ -106,7 +106,7 @@ class OriginalChartEditor extends MusicBeatState
 		],
 	];
 	var events:Map<FlxSprite, Array<Dynamic>> = new Map();
-	var needsValue3:Array<String> = ["Multiply Scroll Speed",].copy();
+	var needsValue3:Array<String> = ["Multiply Scroll Speed", "Play Animation"].copy();
 
 	public static var lastSection:Int = 0;
 

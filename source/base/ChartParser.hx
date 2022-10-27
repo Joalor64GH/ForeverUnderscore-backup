@@ -87,23 +87,30 @@ class ChartParser
 		return unspawnNotes;
 	}
 
-	public static function loadEvents(events:Array<Array<Dynamic>>):Array<EventNote>
+	public static function loadEvents(events:Array<Array<Dynamic>>):Array<TimedEvent>
 	{
 		return try
 		{
-			var returnEvents:Array<EventNote> = [];
+			var timedEvents:Array<TimedEvent> = [];
 			for (i in events)
 			{
-				var newEvent:EventNote = cast {
+				var newEvent:TimedEvent = cast {
 					strumTime: i[0],
 					event: i[1][0][0],
 					val1: i[1][0][1],
 					val2: i[1][0][2],
 					val3: i[1][0][3]
 				};
-				returnEvents.push(newEvent);
+				timedEvents.push(newEvent);
 			}
-			returnEvents;
+			if (timedEvents.length > 1)
+			{
+				timedEvents.sort(function(Obj1:TimedEvent, Obj2:TimedEvent):Int
+				{
+					return FlxSort.byValues(FlxSort.ASCENDING, Obj1.strumTime, Obj2.strumTime);
+				});
+			}
+			timedEvents;
 		}
 		catch (e)
 		{
