@@ -1917,7 +1917,6 @@ class PlayState extends MusicBeatState
 					break;
 
 				eventNoteHit(line.event, line.val1, line.val2, line.val3);
-				events.remove(line);
 				events.shift();
 			}
 		}
