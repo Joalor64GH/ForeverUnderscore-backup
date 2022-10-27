@@ -14,16 +14,15 @@ function loadAnimations()
 	if (isPlayer)
 	{
 		addOffset("idle", 0, 35);
-		addOffset("singLEFT", 86, 14);
+		addOffset("singLEFT", -48, 35);
 		addOffset("singDOWN", 92, -50);
 		addOffset("singUP", 11, 55);
-		addOffset("singRIGHT", -48, 35);
-		addOffset("singLEFTmiss", 89, 46);
+		addOffset("singRIGHT", 86, 14);
+		addOffset("singLEFTmiss", -44, 83);
 		addOffset("singDOWNmiss", 100, -2);
 		addOffset("singUPmiss", 21, 90);
-		addOffset("singRIGHTmiss", -44, 83);
+		addOffset("singRIGHTmiss", 89, 46);
 		setCamOffsets(30, 30);
-		flipLeftRight();
 	}
 	else
 	{

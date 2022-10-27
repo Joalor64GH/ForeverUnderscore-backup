@@ -48,22 +48,21 @@ function loadAnimations()
 		addOffset("idle", 0, 140);
 
 		//
-		addOffset("singLEFT", 95, 111);
+		addOffset("singLEFT", -20, 131);
 		addOffset("singDOWN", 85, 50);
 		addOffset("singUP", 24, 189);
-		addOffset("singRIGHT", -20, 131);
+		addOffset("singRIGHT", 95, 111);
 
 		//
-		addOffset("singLEFTmiss", 98, 114);
+		addOffset("singLEFTmiss", -10, 127);
 		addOffset("singDOWNmiss", 56, 51);
 		addOffset("singUPmiss", 15, 186);
-		addOffset("singRIGHTmiss", -10, 127);
+		addOffset("singRIGHTmiss", 98, 114);
 
 		//
 		addOffset("singDOWN-alt", 98, 156);
 		addOffset("singUP-alt", -16, 132);
 		setCamOffsets(0, -80);
-		flipLeftRight();
 	}
 
 	playAnim('idle');

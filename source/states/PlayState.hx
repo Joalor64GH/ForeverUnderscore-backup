@@ -1953,7 +1953,7 @@ class PlayState extends MusicBeatState
 						uiHUD.iconP1.updateIcon(value2, true);
 					case 'gf' | 'girlfriend':
 						gf.setCharacter(300, 100, value2);
-					case 'dad' | 'opponent' | _:
+					default:
 						dad.setCharacter(100, 100, value2);
 						uiHUD.iconP2.updateIcon(value2, false);
 				}
@@ -1965,7 +1965,7 @@ class PlayState extends MusicBeatState
 					timer = 0.6;
 				switch (value1.toLowerCase().trim())
 				{
-					case 'bf' | 'boyfriend' | _:
+					default:
 						if (boyfriend.animOffsets.exists('hey'))
 						{
 							boyfriend.playAnim('hey', true);
@@ -2007,7 +2007,7 @@ class PlayState extends MusicBeatState
 							gf.specialAnim = true;
 							gf.heyTimer = timer;
 						}
-					case 'dad' | 'opponent' | _:
+					default:
 						if (dad.animOffsets.exists(value1))
 						{
 							dad.playAnim(value1, true);
