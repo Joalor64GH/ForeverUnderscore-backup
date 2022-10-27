@@ -27,6 +27,7 @@ typedef StageObject =
 {
 	var name:Null<String>; // for getting the name of `this` object on a script;
 	var image:Null<String>; // the image file name for `this` object;
+	var imageDirectory:Null<String>; // the image file path for `this` object;
 	var position:Null<Array<Float>>; // the position of `this` object;
 	var scrollFactor:Null<Array<Float>>; // the scroll factor for `this` object;
 	var animations:Null<Array<Dynamic>>; // the animations available on `this` object;
@@ -77,14 +78,7 @@ class Stage extends FlxTypedGroup<FlxBasic>
 			    "camSpeed": 1,
 			    "dadPos": [100, 100],
 			    "gfPos": [300, 100],
-			    "bfPos": [770, 450],
-
-			    "objects": [
-		        	{
-		            	"name": "blank",
-		            	"image": null,
-		        	},
-		        ]
+			    "bfPos": [770, 450]
 			}');
 		}
 
@@ -99,16 +93,20 @@ class Stage extends FlxTypedGroup<FlxBasic>
 				{
 					var createdSprite:FNFSprite = new FNFSprite(object.position[0], object.position[1]);
 
+					var directory:String = 'stages/$curStage/images';
+					if (object.imageDirectory != null)
+						directory = object.imageDirectory;
+
 					if (object.animations != null)
 					{
-						createdSprite.frames = Paths.getSparrowAtlas(object.image, 'stages/$curStage/images');
+						createdSprite.frames = Paths.getSparrowAtlas(object.image, directory);
 						for (anim in object.animations)
 							createdSprite.animation.addByPrefix(anim[0], anim[1], anim[2], anim[3]);
 						if (object.defaultAnimation == null)
 							createdSprite.playAnim(object.defaultAnimation);
 					}
 					else
-						createdSprite.loadGraphic(Paths.image(object.image, 'stages/$curStage/images'));
+						createdSprite.loadGraphic(Paths.image(object.image, directory));
 
 					if (object.scrollFactor != null)
 						createdSprite.scrollFactor.set(object.scrollFactor[0], object.scrollFactor[1]);
