@@ -66,6 +66,10 @@ class Stage extends FlxTypedGroup<FlxBasic>
 		super();
 		this.curStage = curStage;
 
+		// to apply to foreground use foreground.add(); instead of add();
+		foreground = new FlxTypedGroup<FlxBasic>();
+		layers = new FlxTypedGroup<FlxBasic>();
+
 		try
 		{
 			stageJson = haxe.Json.parse(Paths.getTextFromFile('stages/$curStage/$curStage.json'));
@@ -93,9 +97,7 @@ class Stage extends FlxTypedGroup<FlxBasic>
 				{
 					var createdSprite:FNFSprite = new FNFSprite(object.position[0], object.position[1]);
 
-					var directory:String = 'stages/$curStage/images';
-					if (object.imageDirectory != null)
-						directory = object.imageDirectory;
+					var directory:String = object.imageDirectory != null ? object.imageDirectory : 'stages/$curStage/images';
 
 					if (object.animations != null)
 					{
@@ -115,6 +117,7 @@ class Stage extends FlxTypedGroup<FlxBasic>
 
 					createdSprite.flipX = object.flipX;
 					createdSprite.flipY = object.flipY;
+
 					if (object.name != null && createdSprite != null)
 						objectMap.set(object.name, createdSprite);
 					switch (object.layer)
@@ -137,10 +140,6 @@ class Stage extends FlxTypedGroup<FlxBasic>
 			else
 				curStage = PlayState.SONG.stage;
 		}
-
-		// to apply to foreground use foreground.add(); instead of add();
-		foreground = new FlxTypedGroup<FlxBasic>();
-		layers = new FlxTypedGroup<FlxBasic>();
 
 		//
 		switch (curStage)
