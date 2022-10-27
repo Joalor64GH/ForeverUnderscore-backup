@@ -618,10 +618,10 @@ class Character extends FNFSprite
 		frames = Paths.getSparrowAtlas('placeholder', 'characters/placeholder');
 
 		animation.addByPrefix('idle', 'Idle', 24, false);
+		animation.addByPrefix('singLEFT', 'Left', 24, false);
+		animation.addByPrefix('singDOWN', 'Down', 24, false);
 		animation.addByPrefix('singUP', 'Up', 24, false);
 		animation.addByPrefix('singRIGHT', 'Right', 24, false);
-		animation.addByPrefix('singDOWN', 'Down', 24, false);
-		animation.addByPrefix('singLEFT', 'Left', 24, false);
 
 		if (!isPlayer)
 		{
@@ -636,12 +636,13 @@ class Character extends FNFSprite
 		else
 		{
 			addOffset("idle", 0, -10);
-			addOffset("singRIGHT", -61, -14);
+			addOffset("singLEFT", -61, -14);
 			addOffset("singDOWN", -48, -31);
 			addOffset("singUP", -45, 11);
-			addOffset("singLEFT", 33, -6);
+			addOffset("singRIGHT", 33, -6);
 			characterData.camOffsetY = -5;
 			flipLeftRight();
+			flipX = true;
 		}
 
 		playAnim('idle');
