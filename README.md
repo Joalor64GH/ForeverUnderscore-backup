@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://cdn.discordapp.com/attachments/930661629505466448/1031418430760427530/feULogo.png" width="600"/></a>
+  <img src="https://cdn.discordapp.com/attachments/930661629505466448/1031418430760427530/feULogo.png" width="500"/></a>
 </p>
 
 <p align="center">
@@ -34,7 +34,7 @@ and much more to come in the future!
 
 ----------------------------------------------
 
-if you have *any* questions, feel free to [message me on Discord (@BeastlyGhost#9035)](https://discord.com/users/597124141530742805) or [forward them on Twitter](https://twitter.com/Fan_de_RPG).
+if you have *any* questions, feel free to [message me on Discord, at @BeastlyGhost#9035](https://discord.com/users/597124141530742805) or [forward them on Twitter](https://twitter.com/Fan_de_RPG).
 
 
 <h1 align="center">Thank you for all the support on this little fork!</h1>
