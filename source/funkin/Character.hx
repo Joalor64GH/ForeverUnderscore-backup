@@ -642,7 +642,6 @@ class Character extends FNFSprite
 			addOffset("singRIGHT", 33, -6);
 			characterData.camOffsetY = -5;
 			flipLeftRight();
-			flipX = true;
 		}
 
 		playAnim('idle');
