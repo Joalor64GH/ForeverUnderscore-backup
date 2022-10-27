@@ -1942,7 +1942,7 @@ class PlayState extends MusicBeatState
 		switch (event)
 		{
 			case 'Set GF Speed':
-				var speed:Float = Std.parseFloat(value1);
+				var speed:Float = Std.parseInt(value1);
 				if (Math.isNaN(speed) || speed <= 0)
 					speed = 0.6;
 				gfSpeed = speed;
