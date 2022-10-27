@@ -68,7 +68,7 @@ class GameOverSubstate extends MusicBeatSubstate
 		confirmNoise = new FlxSound().loadEmbedded(Paths.music(deathConfirm), false, true);
 		FlxG.sound.list.add(confirmNoise);
 
-		bf = new Character();
+		bf = new Character(true);
 		bf.setCharacter(x, y, character);
 		add(bf);
 
@@ -132,13 +132,6 @@ class GameOverSubstate extends MusicBeatSubstate
 		}
 	}
 
-	override function beatHit()
-	{
-		super.beatHit();
-
-		FlxG.log.add('beat');
-	}
-
 	var isEnding:Bool = false;
 
 	function endBullshit(leaving:Bool):Void
@@ -164,10 +157,13 @@ class GameOverSubstate extends MusicBeatSubstate
 			}
 			else
 			{
-				if (PlayState.isStoryMode)
-					Main.switchState(this, new StoryMenuState());
-				else
-					Main.switchState(this, new FreeplayMenuState());
+				FlxG.camera.fade(FlxColor.BLACK, 0.4, false, function()
+				{
+					if (PlayState.isStoryMode)
+						Main.switchState(this, new StoryMenuState());
+					else
+						Main.switchState(this, new FreeplayMenuState());
+				});
 			}
 		}
 	}

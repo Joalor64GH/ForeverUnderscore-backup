@@ -1,13 +1,7 @@
-## FNF Specific
-source/states/menus/AchievementsMenuState.hx
-source/states/charting/OriginalWIP.hx
+## Source Specific
 art/crash-dialog/
-
-## FNF Setup Files
-art/gameBuildFiles/testRelease.bat
-art/gameBuildFiles/testDebug.bat
-art/gameBuildFiles/buildRelease.bat
-art/gameBuildFiles/buildDebug.bat
+source/states/substates/EditorMenuSubstate.hx
+source/states/editors/StageEditor.hx
 
 ## VSCode
 export/

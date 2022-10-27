@@ -1924,7 +1924,7 @@ class PlayState extends MusicBeatState
 
 	function pushedEvent(event:TimedEvent)
 	{
-		//trace('Event Name: ${event.event}, Event V1: ${event.val1}, Event V2: ${event.val2}, Event V3: ${event.val3}');
+		// trace('Event Name: ${event.event}, Event V1: ${event.val1}, Event V2: ${event.val2}, Event V3: ${event.val3}');
 
 		switch (event.event)
 		{

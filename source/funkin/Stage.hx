@@ -117,7 +117,7 @@ class Stage extends FlxTypedGroup<FlxBasic>
 					createdSprite.flipY = object.flipY;
 					if (object.name != null && createdSprite != null)
 						objectMap.set(object.name, createdSprite);
-					switch(object.layer)
+					switch (object.layer)
 					{
 						case 'layers' | 'on layers' | 'gf' | 'above gf':
 							layers.add(createdSprite);
