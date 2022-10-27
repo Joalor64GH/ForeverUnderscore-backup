@@ -9,9 +9,7 @@
 <h1 align="center">Forever Engine Underscore</h1>
 <h2 align="center">A custom-made Forever Engine build which aims to unofficially maintain Forever Engine Legacy.</h2>
 
-***For engine compiling and script documentation, please visit our [Wiki page](https://github.com/BeastlyGhost/Forever-Engine-Underscore/wiki)***.
-
-***For more information and support, please visit our [Discord Server](https://discord.gg/kCDrFzpkAZ)***.
+***For engine compiling, script documentation, Discord Server invite, please visit our [Wiki page](https://github.com/BeastlyGhost/Forever-Engine-Underscore/wiki)***.
 
 ----------------------------------------------
 Forever Engine Underscore attempts to take on the challenge of maintaining Forever Engine Legacy while adding more features to it along the way, making a lot easier for coders to work with it.
