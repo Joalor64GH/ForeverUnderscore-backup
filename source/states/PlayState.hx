@@ -1941,6 +1941,11 @@ class PlayState extends MusicBeatState
 		/* NOTE: unhardcode this later */
 		switch (event)
 		{
+			case 'Set GF Speed':
+				var speed:Float = Std.parseFloat(value1);
+				if (Math.isNaN(speed) || speed <= 0)
+					speed = 0.6;
+				gfSpeed = speed;
 			case 'Change Character':
 				switch (value1.toLowerCase().trim())
 				{
@@ -1961,7 +1966,7 @@ class PlayState extends MusicBeatState
 					timer = 0.6;
 				switch (value1.toLowerCase().trim())
 				{
-					case 'bf' | 'boyfriend':
+					case 'bf' | 'boyfriend' | _:
 						if (boyfriend.animOffsets.exists('hey'))
 						{
 							boyfriend.playAnim('hey', true);
@@ -1975,7 +1980,7 @@ class PlayState extends MusicBeatState
 							gf.specialAnim = true;
 							gf.heyTimer = timer;
 						}
-					case 'dad' | 'opponent' | _:
+					case 'dad' | 'opponent':
 						if (dad.animOffsets.exists('hey'))
 						{
 							dad.playAnim('hey', true);

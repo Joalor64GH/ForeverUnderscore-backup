@@ -86,23 +86,23 @@ class OriginalChartEditor extends MusicBeatState
 		["", ""],
 		[
 			"Hey!",
-			"Plays the \"Hey!\" animation from Bopeebo,\nValue 1: BF = Only Boyfriend, GF = Only Girlfriend,\nSomething else = Both.\nValue 2: Custom animation duration,\nleave it blank for 0.6s"
+			"Plays the \"Hey!\" animation from Bopeebo,\nValue 1: Character (bf, gf, dad, defaults to bf).\nValue 2: Custom animation duration,\nleave it blank for 0.6s"
 		],
 		[
 			"Set GF Speed",
-			"Sets GF head bopping speed,\nValue 1: 1 = Normal speed,\n2 = 1/2 speed, 4 = 1/4 speed etc.\nUsed on Fresh during the beatbox parts.\n\nWarning: Value must be integer!"
+			"Sets GF head bopping speed,\nValue 1: 1 = Normal speed,\n2 = 1/2 speed, 4 = 1/4 speed etc.\nValue 2: unused.\nUsed on Fresh during the beatbox parts.\n\nWarning: Value must be integer!"
 		],
 		[
 			"Change Character",
-			"Sets the current Character to a new one\nValue 1: Character to change (dad, bf, gf)\nValue 2: New character's name"
+			"Sets the current Character to a new one\nValue 1: Character to change (dad, bf, gf, defaults to dad)\nValue 2: New character's name"
 		],
 		[
 			"Play Animation",
-			"Plays an animation on a Character,\n\nValue 1: Animation to play.\nValue 2: Character (Dad, BF, GF)\nValue 3: time it takes to finish the animation"
+			"Plays an animation on a Character,\nValue 1: Animation to play.\nValue 2: Character (bf, gf, dad, defaults to dad)\nValue 3: time it takes to finish the animation,\nleave it blank for 0.6s"
 		],
 		[
 			"Multiply Scroll Speed",
-			"Multiplies the scroll speed with specified value.\nValue 1: Number to multiply.\nValue 2: Duration of the multiplication.\nOptional Value 3: Ease name to apply to tween.",
+			"Multiplies the scroll speed with specified value.\nValue 1: Number to multiply.\nValue 2: Duration of the multiplication.\nValue 3: Ease name to apply to tween,\nleave it blank for \"linear\"",
 		],
 	];
 	var events:Map<FlxSprite, Array<Dynamic>> = new Map();
