@@ -9,7 +9,7 @@ import funkin.Alphabet;
 
 using StringTools;
 
-class ModsMenuState extends MusicBeatState
+class ModsMenu extends MusicBeatState
 {
 	var alphaGroup:FlxTypedGroup<Alphabet>;
 	var modList:Array<String> = [];
@@ -67,6 +67,6 @@ class ModsMenuState extends MusicBeatState
 		super.update(elapsed);
 
 		if (controls.BACK)
-			Main.switchState(this, new states.menus.MainMenuState());
+			Main.switchState(this, new states.menus.MainMenu());
 	}
 }

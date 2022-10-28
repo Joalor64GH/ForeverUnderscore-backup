@@ -10,7 +10,7 @@ import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
 import flixel.util.FlxGradient;
 import openfl.display.BlendMode;
-import states.menus.MainMenuState;
+import states.menus.MainMenu;
 
 /**
 	a state for general warnings
@@ -131,7 +131,7 @@ class WarningState extends MusicBeatState
 						for (i in bgSprites)
 							i.alpha = 0;
 						CoolUtil.browserLoad('https://github.com/BeastlyGhost/Forever-Engine-Underscore');
-						Main.switchState(this, new MainMenuState());
+						Main.switchState(this, new MainMenu());
 					});
 				}
 				else
@@ -143,7 +143,7 @@ class WarningState extends MusicBeatState
 						onComplete: function(twn:FlxTween)
 						{
 							leftState = true;
-							Main.switchState(this, new MainMenuState());
+							Main.switchState(this, new MainMenu());
 						}
 					});
 				}
@@ -184,7 +184,7 @@ class WarningState extends MusicBeatState
 			case 'flashing':
 				Main.switchState(this, new TitleState());
 			case 'update':
-				Main.switchState(this, new MainMenuState());
+				Main.switchState(this, new MainMenu());
 		}
 	}
 }

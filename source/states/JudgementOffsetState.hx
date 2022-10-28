@@ -185,7 +185,7 @@ class JudgementOffsetState extends MusicBeatState
 		{
 			Init.saveSettings();
 			FlxG.mouse.visible = false;
-			Main.switchState(this, new states.menus.OptionsMenuState());
+			Main.switchState(this, new states.menus.OptionsMenu());
 		}
 	}
 }

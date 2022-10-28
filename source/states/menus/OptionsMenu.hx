@@ -19,7 +19,7 @@ import funkin.userInterface.menu.Selector;
 /**
 	Options menu rewrite because I'm unhappy with how it was done previously
 **/
-class OptionsMenuState extends MusicBeatState
+class OptionsMenu extends MusicBeatState
 {
 	var categoryMap:Map<String, Dynamic>;
 	var activeSubgroup:FlxTypedGroup<Alphabet>;
@@ -414,7 +414,7 @@ class OptionsMenuState extends MusicBeatState
 			}
 			else
 			{
-				Main.switchState(this, new MainMenuState());
+				Main.switchState(this, new MainMenu());
 			}
 		}
 	}

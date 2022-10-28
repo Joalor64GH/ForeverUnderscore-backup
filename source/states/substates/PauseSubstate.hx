@@ -245,7 +245,7 @@ class PauseSubstate extends MusicBeatSubstate
 				case 'exit to options':
 					toOptions = true;
 					disableCheats(true);
-					Main.switchState(this, new OptionsMenuState());
+					Main.switchState(this, new OptionsMenu());
 				case 'exit to menu':
 					Conductor.stopMusic();
 					PlayState.deaths = 0;
@@ -254,9 +254,9 @@ class PauseSubstate extends MusicBeatSubstate
 					// CoolUtil.difficulties = CoolUtil.baseDifficulties;
 
 					if (PlayState.isStoryMode)
-						Main.switchState(this, new StoryMenuState());
+						Main.switchState(this, new StoryMenu());
 					else
-						Main.switchState(this, new FreeplayMenuState());
+						Main.switchState(this, new FreeplayMenu());
 
 				case 'open editors':
 					EditorMenuSubstate.fromPause = true;

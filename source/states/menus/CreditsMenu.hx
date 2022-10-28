@@ -38,7 +38,7 @@ typedef CreditsUserDef =
 	var sectionName:String;
 }
 
-class CreditsMenuState extends MusicBeatState
+class CreditsMenu extends MusicBeatState
 {
 	var gradBG:GradSprite;
 	var groupText:FlxText;
@@ -197,7 +197,7 @@ class CreditsMenuState extends MusicBeatState
 			updateSocial(1);
 
 		if (controls.BACK || FlxG.mouse.justPressedRight)
-			Main.switchState(this, new MainMenuState());
+			Main.switchState(this, new MainMenu());
 
 		if (controls.ACCEPT && Reflect.field(credData.users[curSelected].urlData, mediaAnimsArray[curSocial]) != null)
 			CoolUtil.browserLoad(Reflect.field(credData.users[curSelected].urlData, mediaAnimsArray[curSocial]));

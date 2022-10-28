@@ -36,7 +36,7 @@ class PreferenceSubstate extends MusicBeatSubstate
 	var purpleBarColor:FlxColor;
 	var topTextString:String = '';
 
-	// ya i copied these from OptionsMenuState
+	// ya i copied these from OptionsMenu
 	var categoryMap:Map<String, Dynamic>;
 	var activeSubgroup:FlxTypedGroup<Alphabet>;
 	var attachments:FlxTypedGroup<FlxBasic>;

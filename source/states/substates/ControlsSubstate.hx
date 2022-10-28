@@ -11,7 +11,7 @@ import flixel.input.keyboard.FlxKey;
 import flixel.text.FlxText;
 import flixel.util.FlxColor;
 import funkin.Alphabet;
-import states.menus.CreditsMenuState;
+import states.menus.CreditsMenu;
 
 using StringTools;
 

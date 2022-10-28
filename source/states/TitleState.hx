@@ -261,7 +261,7 @@ class TitleState extends MusicBeatState
 					if (ForeverTools.mustUpdate && !WarningState.leftState && !Main.nightly)
 						Main.switchState(this, new WarningState('update'));
 					else
-						Main.switchState(this, new MainMenuState());
+						Main.switchState(this, new MainMenu());
 				});
 			}
 		}

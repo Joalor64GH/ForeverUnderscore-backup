@@ -45,7 +45,7 @@ import openfl.geom.Rectangle;
 import openfl.media.Sound;
 import openfl.net.FileReference;
 import openfl.utils.ByteArray;
-import states.menus.FreeplayMenuState;
+import states.menus.FreeplayMenu;
 
 using StringTools;
 
@@ -572,7 +572,7 @@ class ChartEditor extends MusicBeatState
 
 			// CoolUtil.difficulties = CoolUtil.baseDifficulties;
 
-			Main.switchState(this, new FreeplayMenuState());
+			Main.switchState(this, new FreeplayMenu());
 		}
 
 		updateHUD();

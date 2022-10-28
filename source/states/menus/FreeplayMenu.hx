@@ -26,7 +26,7 @@ import openfl.media.Sound;
 
 using StringTools;
 
-class FreeplayMenuState extends MusicBeatState
+class FreeplayMenu extends MusicBeatState
 {
 	static var curSelected:Int = 0;
 
@@ -315,7 +315,7 @@ class FreeplayMenuState extends MusicBeatState
 						FlxG.sound.music.stop();
 					// CoolUtil.difficulties = CoolUtil.baseDifficulties;
 					FlxG.sound.play(Paths.sound('cancelMenu'), 0.4);
-					Main.switchState(this, new MainMenuState());
+					Main.switchState(this, new MainMenu());
 				}
 				else
 				{

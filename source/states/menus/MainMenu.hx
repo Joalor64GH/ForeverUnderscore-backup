@@ -24,7 +24,7 @@ using StringTools;
 	This is the main menu state! Not a lot is going to change about it so it'll remain similar to the original, but I do want to condense some code and such.
 	Get as expressive as you can with this, create your own menu!
 **/
-class MainMenuState extends MusicBeatState
+class MainMenu extends MusicBeatState
 {
 	public var menuItems:FlxTypedGroup<FlxSprite>;
 
@@ -227,18 +227,18 @@ class MainMenuState extends MusicBeatState
 							switch (optionShit[Math.floor(curSelected)])
 							{
 								case 'story mode':
-									Main.switchState(this, new StoryMenuState());
+									Main.switchState(this, new StoryMenu());
 								case 'freeplay':
-									Main.switchState(this, new FreeplayMenuState());
+									Main.switchState(this, new FreeplayMenu());
 								case 'mods':
-									Main.switchState(this, new ModsMenuState());
+									Main.switchState(this, new ModsMenu());
 								case 'credits':
-									Main.switchState(this, new CreditsMenuState());
+									Main.switchState(this, new CreditsMenu());
 								case 'options':
 									PauseSubstate.toOptions = false;
 									transIn = FlxTransitionableState.defaultTransIn;
 									transOut = FlxTransitionableState.defaultTransOut;
-									Main.switchState(this, new OptionsMenuState());
+									Main.switchState(this, new OptionsMenu());
 							}
 						});
 					}

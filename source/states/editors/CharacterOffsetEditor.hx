@@ -280,13 +280,13 @@ class CharacterOffsetEditor extends MusicBeatState
 			if (fromPlayState)
 				Main.switchState(this, new states.PlayState());
 			else
-				Main.switchState(this, new states.menus.MainMenuState());
+				Main.switchState(this, new states.menus.MainMenu());
 		}
 
 		if (FlxG.keys.justPressed.BACKSPACE)
 		{
 			FlxG.mouse.visible = false;
-			Main.switchState(this, new states.menus.FreeplayMenuState());
+			Main.switchState(this, new states.menus.FreeplayMenu());
 		}
 
 		// camera controls
