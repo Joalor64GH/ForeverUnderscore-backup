@@ -194,36 +194,37 @@ class ClassHUD extends FlxTypedGroup<FlxBasic>
 	{
 		var importSongScore = PlayState.songScore;
 		var importMisses = PlayState.misses;
-
 		var importAccuracy:String = Std.string(Math.floor(Timings.getAccuracy() * 100) / 100);
 		var importRanking:String = Timings.returnScoreRating().toUpperCase();
 
 		var unrated = (Timings.comboDisplay == null || Timings.comboDisplay == '');
 
+		var comboBreakText = (language.comboBreakTxt != null ? language.comboBreakTxt : language.missTxt);
+
 		// testing purposes
 		var displayAccuracy:Bool = Init.getSetting('Display Accuracy');
 
-		var comboBreakText = (language.comboBreakTxt != null ? language.comboBreakTxt : language.missTxt);
-
-		scoreBar.text = '${language.scoreTxt} $importSongScore';
+		var tempScore:String = '${language.scoreTxt} $importSongScore';
 		if (displayAccuracy)
 		{
 			if (!Init.getSetting('Simplify Score Bar'))
 			{
-				scoreBar.text += divider + '${language.accTxt} $importAccuracy%' + (!unrated ? ' [' + Timings.comboDisplay + ']' : '');
-				scoreBar.text += divider + '${comboBreakText} $importMisses';
-				scoreBar.text += divider + '${language.rankTxt} $importRanking';
+				tempScore += divider + '${language.accTxt} $importAccuracy%' + (!unrated ? ' [' + Timings.comboDisplay + ']' : '');
+				tempScore += divider + '${comboBreakText} $importMisses';
+				tempScore += divider + '${language.rankTxt} $importRanking';
 			}
 			else
 			{
-				scoreBar.text += divider
+				tempScore += divider
 					+ '${language.accTxt} $importAccuracy%'
 					+ (!unrated ? ' [' + Timings.comboDisplay + divider + importRanking + ']' : ' [' + importRanking + ']');
-				scoreBar.text += divider + '${language.missTxt} $importMisses';
+				tempScore += divider + '${language.missTxt} $importMisses';
 			}
 		}
 
-		scoreBar.text += '\n';
+		tempScore += '\n';
+
+		scoreBar.text = tempScore;
 		scoreBar.x = Math.floor((FlxG.width / 2) - (scoreBar.width / 2));
 
 		// update counter
