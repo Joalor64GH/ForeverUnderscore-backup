@@ -7,7 +7,8 @@
 
 	"scoreTxt": "Scor:",
 	"accTxt": "Acuratețe:",
-	"missTxt": "Combouri Distruse:",
+	"missTxt": "Misses:",
+	"comboBreakText": "Combouri Distruse:",
 	"rankTxt": "Rank:",
 	"botTxt": "[AUTOPLAY]",
 

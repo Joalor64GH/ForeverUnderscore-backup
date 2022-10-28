@@ -11,6 +11,7 @@ typedef LangDataDef =
 	var difficultyNames:Array<String>;
 	// HUD INFO BAR
 	var scoreTxt:String;
+	var comboBreakTxt:String;
 	var missTxt:String;
 	var accTxt:String;
 	var rankTxt:String;

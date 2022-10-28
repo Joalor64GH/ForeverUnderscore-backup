@@ -14,6 +14,8 @@ import flixel.util.FlxColor;
 import flixel.util.FlxSort;
 import states.PlayState;
 
+using StringTools;
+
 class ClassHUD extends FlxTypedGroup<FlxBasic>
 {
 	// set up variables and stuff here
@@ -193,19 +195,34 @@ class ClassHUD extends FlxTypedGroup<FlxBasic>
 		var importSongScore = PlayState.songScore;
 		var importMisses = PlayState.misses;
 
+		var importAccuracy:String = Std.string(Math.floor(Timings.getAccuracy() * 100) / 100);
+		var importRanking:String = Timings.returnScoreRating().toUpperCase();
+
 		var unrated = (Timings.comboDisplay == null || Timings.comboDisplay == '');
 
 		// testing purposes
 		var displayAccuracy:Bool = Init.getSetting('Display Accuracy');
 
+		var comboBreakText = (language.comboBreakTxt != null ? language.comboBreakTxt : language.missTxt);
+
 		scoreBar.text = '${language.scoreTxt} $importSongScore';
 		if (displayAccuracy)
 		{
-			scoreBar.text += divider
-				+ '${language.accTxt} ${(Math.floor(Timings.getAccuracy() * 100) / 100)}%'
-				+ (!unrated ? ' [' + Timings.comboDisplay + ']' : '');
-			scoreBar.text += divider + '${language.missTxt} $importMisses';
-			scoreBar.text += divider + '${language.rankTxt} ${Timings.returnScoreRating().toUpperCase()}';
+			if (!Init.getSetting('Simplify Score Bar'))
+			{
+				scoreBar.text += divider
+					+ '${language.accTxt} $importAccuracy%'
+					+ (!unrated ? ' [' + Timings.comboDisplay + ']' : '');
+				scoreBar.text += divider + '${comboBreakText} $importMisses';
+				scoreBar.text += divider + '${language.rankTxt} $importRanking';
+			}
+			else
+			{
+				scoreBar.text += divider
+					+ '${language.accTxt} $importAccuracy%'
+					+ (!unrated ? ' [' + Timings.comboDisplay + divider + importRanking + ']' : ' [' + importRanking + ']');
+				scoreBar.text += divider + '${language.missTxt} $importMisses';
+			}
 		}
 
 		scoreBar.text += '\n';

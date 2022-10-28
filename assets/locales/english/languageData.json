@@ -7,7 +7,8 @@
 
 	"scoreTxt": "Score:",
 	"accTxt": "Accuracy:",
-	"missTxt": "Combo Breaks:",
+	"missTxt": "Misses:",
+	"comboBreakText": "Combo Breaks:",
 	"rankTxt": "Rank:",
 	"botTxt": "[AUTOPLAY]",
 
