@@ -282,7 +282,7 @@ class PlayState extends MusicBeatState
 	{
 		if (isDad && Init.getSetting('Centered Receptors'))
 			return false;
-		if (!isStoryMode || skipCountdown)
+		if (skipCountdown)
 			return false;
 		return true;
 	}
