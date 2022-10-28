@@ -94,7 +94,7 @@ class OriginalChartEditor extends MusicBeatState
 		],
 		[
 			"Change Character",
-			"Sets the current Character to a new one\nValue 1: Character to change (dad, bf, gf, defaults to dad)\nValue 2: New character's name"
+			"Sets the current Character to a new one\nValue 1: Character to change (dad, bf, gf, defaults to dad)\nValue 2: New character's name\nValue 3: Delay to Change Characters (in Milliseconds)"
 		],
 		[
 			"Play Animation",
@@ -106,7 +106,11 @@ class OriginalChartEditor extends MusicBeatState
 		],
 	];
 	var events:Map<FlxSprite, Array<Dynamic>> = new Map();
-	var needsValue3:Array<String> = ["Multiply Scroll Speed", "Play Animation"].copy();
+	var needsValue3:Array<String> = [
+		"Multiply Scroll Speed",
+		"Play Animation",
+		"Change Character"
+	].copy();
 
 	public static var lastSection:Int = 0;
 
