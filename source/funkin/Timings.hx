@@ -103,9 +103,8 @@ class Timings
 
 		if (gottenFC != null)
 			comboDisplay = gottenFC;
-		else
-			if (PlayState.misses < 10)
-				comboDisplay = 'SDCB';
+		else if (PlayState.misses < 10)
+			comboDisplay = 'SDCB';
 
 		// this updates the most so uh
 		PlayState.uiHUD.updateScoreText();

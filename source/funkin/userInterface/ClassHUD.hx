@@ -210,9 +210,7 @@ class ClassHUD extends FlxTypedGroup<FlxBasic>
 		{
 			if (!Init.getSetting('Simplify Score Bar'))
 			{
-				scoreBar.text += divider
-					+ '${language.accTxt} $importAccuracy%'
-					+ (!unrated ? ' [' + Timings.comboDisplay + ']' : '');
+				scoreBar.text += divider + '${language.accTxt} $importAccuracy%' + (!unrated ? ' [' + Timings.comboDisplay + ']' : '');
 				scoreBar.text += divider + '${comboBreakText} $importMisses';
 				scoreBar.text += divider + '${language.rankTxt} $importRanking';
 			}

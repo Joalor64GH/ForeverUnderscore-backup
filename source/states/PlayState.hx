@@ -1951,7 +1951,8 @@ class PlayState extends MusicBeatState
 				if (Math.isNaN(timer))
 					timer = 0;
 
-				changeTimer = new FlxTimer().start(timer, function(tmr:FlxTimer) {
+				changeTimer = new FlxTimer().start(timer, function(tmr:FlxTimer)
+				{
 					switch (value1.toLowerCase().trim())
 					{
 						case 'bf' | 'boyfriend':

@@ -106,11 +106,7 @@ class OriginalChartEditor extends MusicBeatState
 		],
 	];
 	var events:Map<FlxSprite, Array<Dynamic>> = new Map();
-	var needsValue3:Array<String> = [
-		"Multiply Scroll Speed",
-		"Play Animation",
-		"Change Character"
-	].copy();
+	var needsValue3:Array<String> = ["Multiply Scroll Speed", "Play Animation", "Change Character"].copy();
 
 	public static var lastSection:Int = 0;
 
