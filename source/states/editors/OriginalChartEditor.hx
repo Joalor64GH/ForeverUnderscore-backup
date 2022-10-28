@@ -206,7 +206,8 @@ class OriginalChartEditor extends MusicBeatState
 		Conductor.changeBPM(_song.bpm);
 		Conductor.mapBPMChanges(_song);
 
-		bpmTxt = new FlxText(1000, 50, 0, "", 16);
+		var constTextSize:Int = 24;
+		bpmTxt = new FlxText(5, FlxG.height - (constTextSize * 6) - 5, 0, '', constTextSize);
 		bpmTxt.scrollFactor.set();
 		add(bpmTxt);
 
@@ -1218,17 +1219,16 @@ class OriginalChartEditor extends MusicBeatState
 		songMusic.pitch = playbackSpeed;
 		vocals.pitch = playbackSpeed;
 
-		bpmTxt.text = 'Song: ${_song.song}'
-			+ '\nDiff: ${_diff.replace('-', '')}'
+		bpmTxt.text = '${_song.song} [${_diff.replace('-', '').toUpperCase()}]'
 			+ '\n'
 			+ Std.string(FlxMath.roundDecimal(Conductor.songPosition / 1000, 2))
 			+ " / "
 			+ Std.string(FlxMath.roundDecimal(songMusic.length / 1000, 2))
-			+ "\nSection: "
+			+ "\nMeasure: "
 			+ curSection
 			+ "\nBeat: "
 			+ curBeat
-			+ "\nStep: "
+			+ " - Step: "
 			+ curStep;
 		super.update(elapsed);
 
