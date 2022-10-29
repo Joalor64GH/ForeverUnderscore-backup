@@ -24,7 +24,6 @@ class Overlay extends TextField
 	static var displayFps:Bool = true;
 	static var displayMemory:Bool = true;
 	static var displayExtra:Bool = #if debug true #else false #end;
-	static var displayForever:Bool = true;
 
 	public function new(x:Float, y:Float)
 	{
@@ -78,26 +77,22 @@ class Overlay extends TextField
 		_ms = FlxMath.lerp(_ms, 1 / Math.round(times.length) * 1000,
 			CoolUtil.boundTo(FlxG.elapsed * 3.75 * ((Math.abs(_ms - 1 / Math.round(times.length) * 1000) < 0.45) ? 2.5 : 1.0), 0, 1));
 
-		if (FlxG.keys.justPressed.F3)
-			displayExtra = !displayExtra;
-
 		var fpsMs = (displayExtra ? ' (${FlxMath.roundDecimal(_ms, 2)}ms)' : '');
 
 		if (visible)
 		{
 			text = '' // set up the text itself
 				+ (displayFps ? times.length + ' FPS' + fpsMs + '\n' : '') // Current Framerate and Milliseconds
-				+ (displayMemory ? '${getInterval(mem)} / ${getInterval(memPeak)}\n' : '') // Current and Total Memory Usage
 				+ (displayExtra ? '${Main.mainClassState} (Objects: ${FlxG.state.members.length})\n' : '') // Current Game State and Objects
-				+ (displayExtra ? '${Date.now()}' : ''); // Current Date and Time
+				+ (displayMemory ? '${getInterval(mem)} / ${getInterval(memPeak)}\n' : ''); // Current and Total Memory Usage
 		}
 	}
 
-	public static function updateDisplayInfo(shouldDisplayFps:Bool, shouldDisplayMemory:Bool, shouldDisplayForever:Bool)
+	public static function updateDisplayInfo(shouldDisplayFps:Bool, shouldDisplayMemory:Bool, shouldDisplayExtra:Bool)
 	{
 		displayFps = shouldDisplayFps;
 		displayMemory = shouldDisplayMemory;
-		displayForever = shouldDisplayForever;
+		displayExtra = shouldDisplayExtra;
 	}
 }
 
@@ -201,12 +196,9 @@ class Console extends TextField
 			if (showConsole)
 			{
 				wasMouseDisabled = FlxG.mouse.visible;
-				var cursorAsset = ForeverTools.returnSkin('cursor', 'base', Init.trueSettings.get('UI Skin'), 'UI');
-				var cursor:flixel.FlxSprite = new flixel.FlxSprite().loadGraphic(Paths.image(cursorAsset));
 
-				FlxG.mouse.visible = true;
-				FlxG.mouse.load(cursor.pixels);
 				requestUpdate = true;
+				FlxG.mouse.visible = true;
 				scaleX = lime.app.Application.current.window.width / 1280;
 				scaleY = lime.app.Application.current.window.height / 720;
 			}

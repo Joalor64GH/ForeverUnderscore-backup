@@ -283,7 +283,7 @@ class StoryMenu extends MusicBeatState
 			PlayState.isStoryMode = true;
 			selectedWeek = true;
 
-			var diffic:String = CoolUtil.returnDifficultySuffix().toLowerCase();
+			var diffic:String = CoolUtil.returnDifficultySuffix(curDifficulty);
 			PlayState.storyDifficulty = curDifficulty;
 
 			PlayState.SONG = Song.loadSong(PlayState.storyPlaylist[0].toLowerCase() + diffic, PlayState.storyPlaylist[0].toLowerCase());

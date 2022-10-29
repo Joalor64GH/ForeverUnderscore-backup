@@ -42,7 +42,7 @@ class NoteSplash extends FNFSprite
 		else
 		{
 			if (Init.getSetting('Splash Opacity') >= 0)
-				alpha = (Init.getSetting('Splash Opacity') * 0.01);
+				alpha = Init.getSetting('Splash Opacity') * 0.01;
 		}
 
 		super.playAnim(AnimName, Force, Reversed, Frame);

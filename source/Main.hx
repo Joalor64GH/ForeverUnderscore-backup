@@ -72,7 +72,7 @@ class Main extends Sprite
 
 		#if desktop
 		overlay = new Overlay(0, 0);
-		overlay.alpha = 0.6;
+		overlay.alpha = Init.trueSettings.get('Overlay Opacity') * 0.01;
 		addChild(overlay);
 
 		console = new Console();
@@ -121,6 +121,12 @@ class Main extends Sprite
 			FlxG.drawFramerate = newFramerate;
 			FlxG.updateFramerate = newFramerate;
 		}
+	}
+
+	public static function updateOverlayAlpha(newAlpha:Float)
+	{
+		if (overlay != null)
+			overlay.alpha = newAlpha;
 	}
 
 	function onCrash(e:UncaughtErrorEvent):Void

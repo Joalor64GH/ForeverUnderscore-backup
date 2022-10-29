@@ -158,10 +158,16 @@ class Init extends FlxState
 			'Whether to display approximately how much memory is being used.',
 			NOT_FORCED
 		],
-		'Engine Mark' => [
+		'Debug Info' => [
 			true,
 			Checkmark,
-			'Whether to display the Engine Watermark during Gameplay',
+			'Whether to display additional information, such as your current game state or elapsed framerate.',
+			NOT_FORCED
+		],
+		'Overlay Opacity' => [
+			50,
+			Selector,
+			"Set the opacity for the FPS Counter overlay.",
 			NOT_FORCED
 		],
 		'Allow Console Window' => [
@@ -460,6 +466,7 @@ class Init extends FlxState
 			"Hitsound Volume",
 			"Arrow Opacity",
 			"Splash Opacity",
+			"Overlay Opacity",
 			"Hold Opacity"
 		];
 
@@ -474,7 +481,7 @@ class Init extends FlxState
 					defaultValue = 0;
 				case "Arrow Opacity":
 					defaultValue = 80;
-				case "Splash Opacity":
+				case "Splash Opacity" | "Overlay Opacity":
 					defaultValue = 50;
 				case "Hold Opacity":
 					defaultValue = 60;
@@ -537,13 +544,14 @@ class Init extends FlxState
 	{
 		FlxG.autoPause = trueSettings.get('Auto Pause');
 
-		Overlay.updateDisplayInfo(trueSettings.get('FPS Counter'), trueSettings.get('Memory Counter'), trueSettings.get('Forever Mark'));
+		Overlay.updateDisplayInfo(trueSettings.get('FPS Counter'), trueSettings.get('Memory Counter'), trueSettings.get('Debug Info'));
 
 		#if !html5
 		Main.updateFramerate(trueSettings.get("Framerate Cap"));
 		#end
 
-		///*
+		Main.updateOverlayAlpha(trueSettings.get('Overlay Opacity') * 0.01);
+
 		filters = [];
 		FlxG.game.setFilters(filters);
 
