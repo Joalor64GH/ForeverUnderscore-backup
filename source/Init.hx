@@ -159,7 +159,7 @@ class Init extends FlxState
 			NOT_FORCED
 		],
 		'Debug Info' => [
-			true,
+			false,
 			Checkmark,
 			'Whether to display additional information, such as your current game state or elapsed framerate.',
 			NOT_FORCED
