@@ -42,6 +42,7 @@ typedef PortraitDataDef =
 	var textBorderSize:Null<Int>;
 	var textColor:Null<Array<Int>>;
 	var textBorderColor:Null<Array<Int>>;
+	var textBorderOffset:Null<Float>;
 }
 
 typedef DialogueDataDef =
@@ -146,6 +147,8 @@ class DialogueBox extends FlxSpriteGroup
 			dialogueSong = new FlxSound().loadEmbedded(Paths.music(dialogueData.song), false, true);
 			FlxG.sound.list.add(dialogueSong);
 			dialogueSong.fadeIn((fadeIn != null ? fadeIn : 1), 0, 0.8);
+			dialogueSong.persist = true;
+			dialogueSong.looped = true;
 		}
 
 		// background fade
@@ -514,6 +517,11 @@ class DialogueBox extends FlxSpriteGroup
 				else
 					pixelText.borderColor = FlxColor.fromRGB(portraitData.textBorderColor[0], portraitData.textBorderColor[1],
 						portraitData.textBorderColor[2]);
+
+				if (portraitData.textBorderOffset == null)
+					pixelText.shadowOffset.set(2, 2);
+				else
+					pixelText.shadowOffset.set(portraitData.textBorderOffset, portraitData.textBorderOffset);
 
 				// this causes problems, and i know exactly what the problem is... i just cant fix it
 				// basically i need to get rid of the last tween before doing a new one, or else the portraits slide around all over the place
