@@ -13,7 +13,7 @@ import funkin.Strumline;
 
 using StringTools;
 
-class JudgementOffsetState extends MusicBeatState
+class JudgeAdjustState extends MusicBeatState
 {
 	var infoBar:FlxText;
 	var stageBuild:Stage;
@@ -55,11 +55,11 @@ class JudgementOffsetState extends MusicBeatState
 
 		var bfPlacement:Float = FlxG.width / 2 + (!Init.getSetting('Centered Receptors') ? FlxG.width / 4 : 0);
 		var dadPlacement:Float = (FlxG.width / 2) - FlxG.width / 4;
+		var strumYPos:Int = (Init.getSetting('Downscroll') ? FlxG.height - 200 : 0);
 
-		var strumVertPos:Int = (Init.getSetting('Downscroll') ? FlxG.height - 200 : 0);
+		dadStrums = new Strumline(dadPlacement, strumYPos);
+		bfStrums = new Strumline(bfPlacement, strumYPos);
 
-		dadStrums = new Strumline(dadPlacement, strumVertPos, true, false, false, 4);
-		bfStrums = new Strumline(bfPlacement, strumVertPos, false, true, false, 4);
 		bfStrums.cameras = [_camUI];
 		dadStrums.cameras = [_camUI];
 
@@ -124,7 +124,7 @@ class JudgementOffsetState extends MusicBeatState
 	{
 		super.update(elapsed);
 
-		infoBar.text = '[Rating Position: ' + judge.x + ' | ' + judge.y + ' • Combo Position: ' + combo.x + ' | ' + combo.y + ']';
+		infoBar.text = 'Rating Position: ' + judge.x + ' - ' + judge.y + ' • Combo Position: ' + combo.x + ' - ' + combo.y;
 		infoBar.x = Math.floor((FlxG.width / 2) - (infoBar.width / 2));
 
 		if (FlxG.mouse.justPressed)

@@ -1812,6 +1812,7 @@ class PlayState extends MusicBeatState
 			paused = true;
 			persistentUpdate = false;
 			persistentDraw = false;
+			boyfriend.stunned = true;
 
 			Conductor.stopMusic();
 
@@ -1821,8 +1822,6 @@ class PlayState extends MusicBeatState
 				hud.visible = false;
 			dialogueHUD.visible = false;
 			camAlt.visible = false;
-
-			boyfriend.stunned = true;
 
 			openSubState(new GameOverSubstate(boyfriend.getScreenPosition().x, boyfriend.getScreenPosition().y));
 

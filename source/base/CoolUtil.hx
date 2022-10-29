@@ -83,14 +83,20 @@ class CoolUtil
 	public static function returnAssetsLibrary(library:String, ?subDir:String = 'images'):Array<String>
 	{
 		var libraryArray:Array<String> = [];
-
 		var unfilteredLibrary = FileSystem.readDirectory('assets/$subDir/$library');
 
-		if (FileSystem.exists('assets/$subDir/$library'))
+		try
 		{
-			for (folder in unfilteredLibrary)
-				if (!folder.contains('.'))
-					libraryArray.push(folder);
+			if (FileSystem.exists('assets/$subDir/$library'))
+			{
+				for (folder in unfilteredLibrary)
+					if (!folder.contains('.'))
+						libraryArray.push(folder);
+			}
+		}
+		catch (e)
+		{
+			trace('$subDir/$library is returning null');
 		}
 
 		// mods, will change this later

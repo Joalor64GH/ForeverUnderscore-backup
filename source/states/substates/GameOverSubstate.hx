@@ -39,16 +39,16 @@ class GameOverSubstate extends MusicBeatSubstate
 
 	override function create()
 	{
-		super.create();
-
+		contents = this;
 		PlayState.contents.callFunc('gameOverBegins', []);
+		super.create();
 	}
 
 	public function new(x:Float, y:Float)
 	{
 		super();
 
-		contents = this;
+		PlayState.contents.callFunc('gameOverPost', []);
 
 		Conductor.songPosition = 0;
 
@@ -74,22 +74,20 @@ class GameOverSubstate extends MusicBeatSubstate
 
 		PlayState.boyfriend.destroy();
 
-		camFollow = new FlxObject(bf.getGraphicMidpoint().x + 20, bf.getGraphicMidpoint().y - 40, 1, 1);
+		camFollow = new FlxObject(bf.getGraphicMidpoint().x + 20, bf.getGraphicMidpoint().y - 20, 1, 1);
 		add(camFollow);
 
 		FlxG.camera.scroll.set();
 		FlxG.camera.target = null;
 
-		Conductor.changeBPM(deathBPM);
 		bf.playAnim('firstDeath');
 	}
 
 	override function update(elapsed:Float)
 	{
-		if (FlxG.sound.music != null)
-			Conductor.songPosition = FlxG.sound.music.time;
-
 		super.update(elapsed);
+
+		PlayState.contents.callFunc('update', [elapsed]);
 
 		if (controls.ACCEPT)
 			endBullshit(false);
@@ -108,11 +106,13 @@ class GameOverSubstate extends MusicBeatSubstate
 			{
 				FlxG.camera.follow(camFollow, LOCKON, 0.01);
 			}
-			else if (bf.animation.curAnim.finished)
+
+			if (bf.animation.curAnim.finished)
 			{
 				if (!bf.debugMode)
 					bf.playAnim('deathLoop');
 				deathSong.play(false);
+				Conductor.changeBPM(deathBPM);
 				deathSong.persist = true;
 				deathSong.looped = true;
 			}
@@ -130,6 +130,10 @@ class GameOverSubstate extends MusicBeatSubstate
 				}
 			}
 		}
+		PlayState.contents.callFunc('postUpdate', [elapsed]);
+
+		if (FlxG.sound.music != null)
+			Conductor.songPosition = FlxG.sound.music.time;
 	}
 
 	var isEnding:Bool = false;
@@ -154,6 +158,7 @@ class GameOverSubstate extends MusicBeatSubstate
 						Main.switchState(this, new PlayState());
 					});
 				});
+				PlayState.contents.callFunc('gameOverEnd', [true]);
 			}
 			else
 			{

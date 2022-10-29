@@ -1,13 +1,13 @@
 package funkin;
 
 import base.*;
+import dependency.FNFSprite;
 import flixel.FlxBasic;
 import flixel.FlxSprite;
-import dependency.FNFSprite;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.math.FlxPoint;
-import states.PlayState;
 import funkin.background.*;
+import states.PlayState;
 
 using StringTools;
 
@@ -36,6 +36,7 @@ typedef StageObject =
 	var flipY:Null<Bool>; // whether `this` object is flipped vertically;
 	var size:Null<Float>; // the size for `this` object;
 	var layer:String; // where should `this` object be spawned;
+	var blend:String; // the blend mode for `this` object;
 }
 
 /**
@@ -117,6 +118,9 @@ class Stage extends FlxTypedGroup<FlxBasic>
 
 					createdSprite.flipX = object.flipX;
 					createdSprite.flipY = object.flipY;
+
+					if (object.blend != null)
+						createdSprite.blend = ForeverTools.returnBlendMode(object.blend);
 
 					if (object.name != null && createdSprite != null)
 						objectMap.set(object.name, createdSprite);

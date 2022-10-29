@@ -692,7 +692,7 @@ class OptionsMenu extends MusicBeatState
 		if (controls.ACCEPT)
 		{
 			playSound('scrollMenu');
-			Main.switchState(this, new states.JudgementOffsetState());
+			Main.switchState(this, new states.JudgeAdjustState());
 		}
 	}
 

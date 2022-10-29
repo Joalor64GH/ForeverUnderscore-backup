@@ -178,8 +178,11 @@ class Character extends FNFSprite
 
 	override function update(elapsed:Float)
 	{
-		for (i in characterScripts)
-			i.call('update', [elapsed]);
+		if (characterScripts != null)
+		{
+			for (i in characterScripts)
+				i.call('update', [elapsed]);
+		}
 
 		/**
 		 * Special Animations Code.
@@ -266,8 +269,12 @@ class Character extends FNFSprite
 		}
 
 		super.update(elapsed);
-		for (i in characterScripts)
-			i.call('postUpdate', [elapsed]);
+
+		if (characterScripts != null)
+		{
+			for (i in characterScripts)
+				i.call('postUpdate', [elapsed]);
+		}
 	}
 
 	var danced:Bool = false;
@@ -502,8 +509,11 @@ class Character extends FNFSprite
 			setVar('songName', PlayState.SONG.song.toLowerCase());
 		setVar('flipLeftRight', flipLeftRight);
 
-		for (i in characterScripts)
-			i.call('loadAnimations', []);
+		if (characterScripts != null)
+		{
+			for (i in characterScripts)
+				i.call('loadAnimations', []);
+		}
 
 		if (animation.getByName('danceLeft') != null)
 			playAnim('danceLeft');
