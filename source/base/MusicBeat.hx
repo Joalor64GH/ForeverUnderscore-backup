@@ -129,7 +129,9 @@ class MusicBeatState extends FNFUIState
 			storedSteps.push(curStep);
 	}
 
-	public function beatHit():Void {}
+	public function beatHit():Void
+	{
+	}
 
 	var textField:FlxText;
 	var fieldTween:FlxTween;
@@ -248,5 +250,7 @@ class MusicBeatSubstate extends FlxSubState
 			beatHit();
 	}
 
-	public function beatHit():Void {}
+	public function beatHit():Void
+	{
+	}
 }

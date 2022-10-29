@@ -36,7 +36,7 @@ class MenuItem extends FlxSpriteGroup
 		so it runs basically every so many seconds, not dependant on framerate??
 		I'm still learning how math works thanks whoever is reading this lol
 		yo no problem man, totally understand!
-	*/
+	 */
 	var fakeFramerate:Int = Math.round((1 / FlxG.elapsed) / 10);
 
 	override function update(elapsed:Float)

@@ -164,12 +164,7 @@ class Init extends FlxState
 			'Whether to display additional information, such as your current game state or elapsed framerate.',
 			NOT_FORCED
 		],
-		'Overlay Opacity' => [
-			50,
-			Selector,
-			"Set the opacity for the FPS Counter overlay.",
-			NOT_FORCED
-		],
+		'Overlay Opacity' => [50, Selector, "Set the opacity for the FPS Counter overlay.", NOT_FORCED],
 		'Allow Console Window' => [
 			true,
 			Checkmark,
