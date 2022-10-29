@@ -92,7 +92,6 @@ class ClassHUD extends FlxTypedGroup<FlxBasic>
 		cornerMark.setBorderStyle(OUTLINE, FlxColor.BLACK, 2);
 		cornerMark.setPosition(FlxG.width - (cornerMark.width + 5), 5);
 		cornerMark.antialiasing = true;
-		cornerMark.visible = (Init.getSetting('Engine Mark') && !PlayState.bfStrums.autoplay);
 		add(cornerMark);
 
 		centerMark = new FlxText(0, (Init.getSetting('Downscroll') ? FlxG.height - 40 : 10), 0, '', 24);
