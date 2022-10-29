@@ -129,10 +129,7 @@ class MusicBeatState extends FNFUIState
 			storedSteps.push(curStep);
 	}
 
-	public function beatHit():Void
-	{
-		// used for updates when beats are hit in classes that extend this one
-	}
+	public function beatHit():Void {}
 
 	var textField:FlxText;
 	var fieldTween:FlxTween;
@@ -208,11 +205,6 @@ class MusicBeatSubstate extends FlxSubState
 	inline function get_controls():Controls
 		return PlayerSettings.player1.controls;
 
-	override function destroy()
-	{
-		super.destroy();
-	}
-
 	override function update(elapsed:Float)
 	{
 		// everyStep();
@@ -256,8 +248,5 @@ class MusicBeatSubstate extends FlxSubState
 			beatHit();
 	}
 
-	public function beatHit():Void
-	{
-		// do literally nothing dumbass
-	}
+	public function beatHit():Void {}
 }

@@ -185,6 +185,9 @@ class PlayState extends MusicBeatState
 	// allows time skipping and song ending via keybinds;
 	public static var scriptDebugMode:Bool = false;
 
+	// whether time was skipped, used to avoid misses when "traveling through time";
+	public var usedTimeTravel:Bool = false;
+
 	// set only once;
 	public static var lastEditor:Int = 0;
 
@@ -619,7 +622,10 @@ class PlayState extends MusicBeatState
 		#end
 		{
 			FlxG.log.warn('Couldnt find video file: ' + name);
-			startAndEnd();
+			if (endingSong)
+				endSong();
+			else
+				callTextbox();
 			return;
 		}
 
@@ -627,22 +633,20 @@ class PlayState extends MusicBeatState
 		video.playVideo(filepath);
 		video.finishCallback = function()
 		{
-			startAndEnd();
+			if (endingSong)
+				endSong();
+			else
+				callTextbox();
 			return;
 		}
 		#else
 		FlxG.log.warn('Platform not supported!');
-		startAndEnd();
-		return;
-		#end
-	}
-
-	function startAndEnd()
-	{
 		if (endingSong)
 			endSong();
 		else
 			callTextbox();
+		return;
+		#end
 	}
 
 	public static function copyKey(arrayToCopy:Array<FlxKey>):Array<FlxKey>
@@ -747,6 +751,7 @@ class PlayState extends MusicBeatState
 			var key:Int = getKeyFromEvent(event.keyCode);
 			if (key >= 0 && !holdingKeys[key])
 				handleInput(key, true);
+			callFunc('onKeyPress', [key]);
 		}
 	}
 
@@ -757,6 +762,7 @@ class PlayState extends MusicBeatState
 			var key:Int = getKeyFromEvent(event.keyCode);
 			if (key >= 0)
 				handleInput(key, false);
+			callFunc('onKeyRelease', [key]);
 		}
 	}
 
@@ -1033,10 +1039,10 @@ class PlayState extends MusicBeatState
 			}
 			if (FlxG.keys.justPressed.TWO)
 			{
-				// apparently this can kill you??? huh
-				if (Conductor.songPosition + 10000 < Conductor.songMusic.length)
+				if (!usedTimeTravel && Conductor.songPosition + 10000 < Conductor.songMusic.length)
 				{ // Go 10 seconds into the future, @author Shadow_Mario_
 					preventScoring = true;
+					usedTimeTravel = true;
 					Conductor.songMusic.pause();
 					Conductor.songVocals.pause();
 					Conductor.songPosition += 10000;
@@ -1048,6 +1054,11 @@ class PlayState extends MusicBeatState
 
 					Conductor.songMusic.play();
 					Conductor.songVocals.play();
+
+					new FlxTimer().start(0.5, function(tmr:FlxTimer)
+					{
+						usedTimeTravel = false;
+					});
 				}
 			}
 		}
@@ -1344,7 +1355,7 @@ class PlayState extends MusicBeatState
 
 	public function missNoteCheck(?includeAnimation:Bool = false, direction:Int = 0, strumline:Strumline, popMiss:Bool = false, lockMiss:Bool = false)
 	{
-		if (strumline.autoplay)
+		if (strumline.autoplay || usedTimeTravel)
 			return;
 
 		if (includeAnimation)
@@ -1801,7 +1812,7 @@ class PlayState extends MusicBeatState
 		}
 	}
 
-	public var isDead:Bool = false;
+	private var isDead:Bool = false;
 
 	function doGameOverCheck()
 	{
@@ -2022,6 +2033,18 @@ class PlayState extends MusicBeatState
 							dad.heyTimer = timer;
 						}
 				}
+			case 'Multiply Scroll Speed':
+				if (Init.getSetting('Use Custom Note Speed'))
+					return;
+
+				var mult:Float = Std.parseFloat(value1);
+				var timer:Float = Std.parseFloat(value2);
+				if (Math.isNaN(mult))
+					mult = 1;
+				if (Math.isNaN(timer))
+					timer = 0;
+
+				set_songSpeed(mult);
 		}
 
 		callFunc('eventNoteHit', [event, value1, value2, value3]);
