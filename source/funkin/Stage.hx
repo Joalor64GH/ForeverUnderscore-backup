@@ -249,6 +249,27 @@ class Stage extends FlxTypedGroup<FlxBasic>
 		});
 		if (PlayState.SONG != null)
 			setVar('songName', PlayState.SONG.song.toLowerCase());
+
+		if (PlayState.boyfriend != null)
+		{
+			setVar('bf', PlayState.boyfriend);
+			setVar('boyfriend', PlayState.boyfriend);
+			setVar('bfName', PlayState.boyfriend.curCharacter);
+		}
+
+		if (PlayState.dad != null)
+		{
+			setVar('dad', PlayState.dad);
+			setVar('dadOpponent', PlayState.dad);
+			setVar('dadName', PlayState.dad.curCharacter);
+		}
+
+		if (PlayState.gf != null)
+		{
+			setVar('gf', PlayState.gf);
+			setVar('girlfriend', PlayState.gf);
+			setVar('gfName', PlayState.gf.curCharacter);
+		}
 		setVar('TankmenBG', TankmenBG);
 
 		/* ===== NEW STAGE SYSTEM ===== */
