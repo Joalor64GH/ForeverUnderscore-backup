@@ -81,7 +81,7 @@ class ClassHUD extends FlxTypedGroup<FlxBasic>
 		iconP2.y = healthBar.y - (iconP2.height / 2);
 		add(iconP2);
 
-		scoreBar = new FlxText(FlxG.width / 2, Math.floor(healthBarBG.y + 40), 0, '');
+		scoreBar = new FlxText(FlxG.width / 2, Math.floor(healthBarBG.y + 30), 0, '');
 		scoreBar.setFormat(Paths.font('vcr'), 18, FlxColor.WHITE);
 		scoreBar.setBorderStyle(OUTLINE, FlxColor.BLACK, 1.5);
 		scoreBar.antialiasing = !Init.getSetting('Disable Antialiasing');

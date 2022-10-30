@@ -69,7 +69,8 @@ class GameOverSubstate extends MusicBeatSubstate
 		FlxG.sound.list.add(confirmNoise);
 
 		bf = new Character(true);
-		bf.setCharacter(x, y, character);
+		bf.setCharacter(0, 0, character);
+		bf.setPosition(x, y);
 		add(bf);
 
 		PlayState.boyfriend.destroy();
