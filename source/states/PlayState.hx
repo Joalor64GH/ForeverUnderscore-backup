@@ -376,10 +376,10 @@ class PlayState extends MusicBeatState
 			gf.setCharacter(0, 0, stageBuild.returnGFtype(curStage))
 		else
 			gf.setCharacter(0, 0, SONG.gfVersion);
+		gf.scrollFactor.set(0.95, 0.95);
 
 		dad.setCharacter(0, 0, SONG.player2);
 		boyfriend.setCharacter(0, 0, SONG.player1);
-		gf.scrollFactor.set(0.95, 0.95);
 
 		boyfriend.setPosition(stageBuild.stageJson.bfPos[0], stageBuild.stageJson.bfPos[1]);
 		dad.setPosition(stageBuild.stageJson.dadPos[0], stageBuild.stageJson.dadPos[1]);
@@ -391,7 +391,6 @@ class PlayState extends MusicBeatState
 		var camPos:FlxPoint = new FlxPoint(gf.getMidpoint().x - 100, boyfriend.getMidpoint().y - 100);
 
 		uiModifier = Init.getSetting("UI Skin");
-
 		assetModifier = SONG.assetModifier;
 
 		// add characters

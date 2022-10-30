@@ -77,7 +77,7 @@ class Character extends FNFSprite
 
 	public function new(?isPlayer:Bool = false)
 	{
-		super(x, y);
+		super();
 		this.isPlayer = isPlayer;
 	}
 
@@ -145,6 +145,8 @@ class Character extends FNFSprite
 
 		recalcDance();
 		dance();
+
+		setPosition(x, y);
 
 		return this;
 	}
