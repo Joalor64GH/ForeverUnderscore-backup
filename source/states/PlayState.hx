@@ -381,9 +381,9 @@ class PlayState extends MusicBeatState
 		boyfriend.setCharacter(0, 0, SONG.player1);
 		gf.scrollFactor.set(0.95, 0.95);
 
-		boyfriend.setPosition(770, 450);
-		dad.setPosition(100, 100);
-		gf.setPosition(300, 100);
+		boyfriend.setPosition(stageBuild.stageJson.bfPos[0], stageBuild.stageJson.bfPos[1]);
+		dad.setPosition(stageBuild.stageJson.dadPos[0], stageBuild.stageJson.dadPos[1]);
+		gf.setPosition(stageBuild.stageJson.gfPos[0], stageBuild.stageJson.gfPos[1]);
 
 		charGroup = new FlxSpriteGroup();
 		charGroup.alpha = 0.00001;

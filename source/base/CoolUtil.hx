@@ -65,21 +65,6 @@ class CoolUtil
 		return daList;
 	}
 
-	public static function getOffsetsFromTxt(path:String):Array<Array<String>>
-	{
-		var daList:Array<String> = [];
-
-		if (Assets.exists(path))
-			daList = Assets.getText(path).trim().split('\n');
-
-		var swagOffsets:Array<Array<String>> = [];
-
-		for (i in daList)
-			swagOffsets.push(i.split(' '));
-
-		return swagOffsets;
-	}
-
 	public static function returnAssetsLibrary(library:String, ?subDir:String = 'images'):Array<String>
 	{
 		var libraryArray:Array<String> = [];
