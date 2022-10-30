@@ -313,7 +313,7 @@ class Paths
 		return returnAsset;
 	}
 
-	public static function font(key:String, ignoreLang:Bool = false, ?library:String)
+	public static function font(key:String, ?library:String)
 	{
 		var font:String = getPath('fonts/$key.ttf', TEXT, library);
 		var extensions:Array<String> = ['.ttf', '.otf'];
@@ -321,22 +321,12 @@ class Paths
 		for (extension in extensions)
 		{
 			var newPath:String = getPath('fonts/$key$extension', TEXT, library);
-			if (!ignoreLang && ForeverLocales.curLang.useCustomFont)
-			{
-				if (ForeverLocales.curLang.fontPath != null)
-					newPath = 'assets/' + ForeverLocales.curLang.fontPath + '/$key$extension';
-				else
-					newPath = 'assets/locales/' + Init.getSetting('Language') + '/fonts/$key$extension';
-
-				if (ForeverLocales.curLang.fontKey != null)
-					key = ForeverLocales.curLang.fontKey;
-			}
-
 			if (FileSystem.exists(newPath))
 			{
 				/*
 					clear any dots, means that something like "vcr.tff" would become "vcr";
 					we are doing this because we already added an extension earlier;
+					EDIT: does this even work?;
 				 */
 				if (key.contains('.'))
 					key.substring(0, key.indexOf('.'));

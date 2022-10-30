@@ -322,7 +322,7 @@ class FreeplayMenu extends MusicBeatState
 					FlxG.sound.play(Paths.sound('confirmMenu'), 0.4);
 					isResetting = false;
 					lockedMovement = false;
-					diffText.text = '< ' + ForeverLocales.curLang.difficultyNames[curDifficulty] + ' - ' + intendedRank + ' >';
+					diffText.text = '< ' + existingDifficulties[curSelected][curDifficulty] + ' - ' + intendedRank + ' >';
 					diffText.color = FlxColor.WHITE;
 				}
 			}
@@ -355,13 +355,13 @@ class FreeplayMenu extends MusicBeatState
 				{
 					lockedMovement = true;
 					isResetting = true;
-					diffText.text = '${ForeverLocales.curLang.delScore}';
+					diffText.text = 'DELETE SCORE?';
 					diffText.color = FlxColor.RED;
-					rateText.text = 'R = ${ForeverLocales.curLang.delConfirm}';
+					rateText.text = 'R = CONFIRM';
 				}
 				else
 				{
-					diffText.text = '${ForeverLocales.curLang.dataCleared}';
+					diffText.text = 'DATA DESTROYED';
 					rateText.text = '';
 					Highscore.clearData(songs[curSelected].songName, curDifficulty);
 					FlxG.sound.play(Paths.sound('ANGRY'));
@@ -370,7 +370,7 @@ class FreeplayMenu extends MusicBeatState
 					new FlxTimer().start(1, function(tmr:FlxTimer)
 					{
 						lockedMovement = false;
-						diffText.text = '< ' + ForeverLocales.curLang.difficultyNames[curDifficulty] + ' - ' + intendedRank + ' >';
+						diffText.text = '< ' + existingDifficulties[curSelected][curDifficulty] + ' - ' + intendedRank + ' >';
 						diffText.color = FlxColor.WHITE;
 						iconArray[curSelected].animation.play('static');
 						changeSelection();
@@ -389,8 +389,8 @@ class FreeplayMenu extends MusicBeatState
 
 		if (!isResetting)
 		{
-			scoreText.text = '${ForeverLocales.curLang.personalBest}' + lerpScore;
-			rateText.text = '${Std.string(lerpAcc).substr(0, 4)}% [R] | ${ForeverLocales.curLang.rateText} ' + songRate + "x";
+			scoreText.text = 'PERSONAL BEST:' + lerpScore;
+			rateText.text = '${Std.string(lerpAcc).substr(0, 4)}% [R] | RATE: ' + songRate + "x";
 		}
 		rateText.x = FlxG.width - rateText.width;
 		repositionHighscore();
@@ -456,8 +456,7 @@ class FreeplayMenu extends MusicBeatState
 		intendedAcc = Highscore.getAccuracy(songs[curSelected].songName, curDifficulty);
 		intendedRank = Highscore.getRank(songs[curSelected].songName, curDifficulty);
 
-		// existingDifficulties[curSelected][curDifficulty]
-		diffText.text = '< ' + ForeverLocales.curLang.difficultyNames[curDifficulty] + ' - ' + intendedRank + ' >';
+		diffText.text = '< ' + existingDifficulties[curSelected][curDifficulty] + ' - ' + intendedRank + ' >';
 		lastDifficulty = existingDifficulties[curSelected][curDifficulty];
 	}
 

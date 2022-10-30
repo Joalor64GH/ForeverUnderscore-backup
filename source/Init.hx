@@ -215,7 +215,6 @@ class Init extends FlxState
 			"Whether the Game HUD should be hidden during gameplay.",
 			NOT_FORCED
 		],
-		"Language" => ['english', Selector, 'Choose a language for the Main UI.', NOT_FORCED, ''],
 		'Counter' => [
 			'None',
 			Selector,
@@ -422,8 +421,6 @@ class Init extends FlxState
 		FlxG.mouse.visible = false; // Hide mouse on start
 		FlxGraphic.defaultPersist = true; // make sure we control all of the memory
 
-		ForeverLocales.getLocale(trueSettings.get('Language'));
-
 		CoolUtil.difficulties = CoolUtil.baseDifficulties.copy();
 
 		Main.switchState(this, cast Type.createInstance(Main.mainClassState, []));
@@ -583,9 +580,5 @@ class Init extends FlxState
 		gameSettings.get("Pause Song")[4] = CoolUtil.returnAssetsLibrary('menus/pause', 'music');
 		if (!gameSettings.get("Pause Song")[4].contains(trueSettings.get("Pause Song")))
 			trueSettings.set("Pause Song", 'breakfast');
-
-		gameSettings.get("Language")[4] = CoolUtil.returnAssetsLibrary('locales', '');
-		if (!gameSettings.get("Language")[4].contains(trueSettings.get("Language")))
-			trueSettings.set("Language", 'english');
 	}
 }

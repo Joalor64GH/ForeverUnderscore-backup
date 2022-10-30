@@ -2200,7 +2200,7 @@ class PlayState extends MusicBeatState
 	function checkTextbox():Bool
 	{
 		var dialogueFileStr:String = 'dialogue';
-		dialogueFileStr = (endingSong ? '${ForeverLocales.curLang.dialogueFileEnd}' : '${ForeverLocales.curLang.dialogueFile}');
+		dialogueFileStr = (endingSong ? 'dialogueEnd' : 'dialogue');
 		var dialogPath = Paths.file('songs/' + SONG.song.toLowerCase() + '/$dialogueFileStr.json');
 
 		if (sys.FileSystem.exists(dialogPath))
@@ -2217,7 +2217,7 @@ class PlayState extends MusicBeatState
 				startedCountdown = false;
 
 			var dialogueFileStr:String = 'dialogue';
-			dialogueFileStr = (endingSong ? '${ForeverLocales.curLang.dialogueFileEnd}' : '${ForeverLocales.curLang.dialogueFile}');
+		dialogueFileStr = (endingSong ? 'dialogueEnd' : 'dialogue');
 
 			dialogueBox = DialogueBox.createDialogue(sys.io.File.getContent(Paths.file('songs/' + SONG.song.toLowerCase() + '/$dialogueFileStr.json')));
 			dialogueBox.cameras = [dialogueHUD];

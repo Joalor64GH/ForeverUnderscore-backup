@@ -116,7 +116,6 @@ class OptionsMenu extends MusicBeatState
 					["UI Skin", getFromOption],
 					['Colored Health Bar', getFromOption],
 					['Animated Score Color', getFromOption],
-					['Language', getFromOption],
 					['Hide User Interface', getFromOption],
 					['', null],
 
@@ -169,9 +168,6 @@ class OptionsMenu extends MusicBeatState
 
 		// make sure the music is playing
 		ForeverTools.resetMenuMusic();
-
-		// reload locales
-		ForeverLocales.getLocale(Init.trueSettings.get('Language'));
 
 		// reload custom skins
 		Init.reloadCustomSkins();
@@ -385,8 +381,6 @@ class OptionsMenu extends MusicBeatState
 
 		if (controls.BACK)
 		{
-			// reload locales
-			ForeverLocales.getLocale(Init.trueSettings.get('Language'));
 
 			// reload custom skins
 			Init.reloadCustomSkins();

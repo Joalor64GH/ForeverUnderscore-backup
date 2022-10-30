@@ -25,6 +25,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Reworked the Credits Menu (thanks @Cherif107);
 
 
+### Removed
+- Custom Language Support
+* this was really not needed (for an engine) and made my work harder.
+
+
 ## [0.2.3]
 
 ### Added

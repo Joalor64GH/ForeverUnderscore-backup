@@ -33,8 +33,7 @@ class ClassHUD extends FlxTypedGroup<FlxBasic>
 	public var iconP2:HealthIcon;
 
 	public var infoDisplay:String = CoolUtil.dashToSpace(PlayState.SONG.song);
-	// public var diffDisplay:String = CoolUtil.difficultyFromString();
-	public var diffDisplay:String = ForeverLocales.curLang.difficultyNames[PlayState.storyDifficulty];
+	public var diffDisplay:String = CoolUtil.difficultyFromString();
 	public var engineDisplay:String = "F.E. UNDERSCORE v" + openfl.Lib.application.meta["version"] + (Main.nightly ? '-NIGHTLY' : '');
 
 	public var autoplayMark:FlxText;
@@ -43,7 +42,6 @@ class ClassHUD extends FlxTypedGroup<FlxBasic>
 	var timingsMap:Map<String, FlxText> = [];
 
 	private var barFillDir = RIGHT_TO_LEFT;
-	private final language = ForeverLocales.curLang;
 
 	private final barPlayer = FlxColor.fromRGB(PlayState.boyfriend.characterData.barColor[0], PlayState.boyfriend.characterData.barColor[1],
 		PlayState.boyfriend.characterData.barColor[2]);
@@ -109,7 +107,7 @@ class ClassHUD extends FlxTypedGroup<FlxBasic>
 
 		centerMark.x = Math.floor((FlxG.width / 2) - (centerMark.width / 2));
 
-		autoplayMark = new FlxText(-5, (Init.getSetting('Downscroll') ? centerMark.y - 60 : centerMark.y + 60), FlxG.width - 800, '${language.botTxt}\n', 32);
+		autoplayMark = new FlxText(-5, (Init.getSetting('Downscroll') ? centerMark.y - 60 : centerMark.y + 60), FlxG.width - 800, '[AUTOPLAY]\n', 32);
 		autoplayMark.setFormat(Paths.font("vcr"), 32, FlxColor.WHITE, CENTER);
 		autoplayMark.setBorderStyle(OUTLINE, FlxColor.BLACK, 2);
 		autoplayMark.screenCenter(X);
@@ -198,26 +196,24 @@ class ClassHUD extends FlxTypedGroup<FlxBasic>
 
 		var unrated = (Timings.comboDisplay == null || Timings.comboDisplay == '');
 
-		var comboBreakText = (language.comboBreakTxt != null ? language.comboBreakTxt : language.missTxt);
-
 		// testing purposes
 		var displayAccuracy:Bool = Init.getSetting('Display Accuracy');
 
-		var tempScore:String = '${language.scoreTxt} $importSongScore';
+		var tempScore:String = 'Score: $importSongScore';
 		if (displayAccuracy)
 		{
 			if (!Init.getSetting('Simplify Score Bar'))
 			{
-				tempScore += divider + '${language.accTxt} $importAccuracy%' + (!unrated ? ' [' + Timings.comboDisplay + ']' : '');
-				tempScore += divider + '${comboBreakText} $importMisses';
-				tempScore += divider + '${language.rankTxt} $importRanking';
+				tempScore += divider + 'Accuracy: $importAccuracy%' + (!unrated ? ' [' + Timings.comboDisplay + ']' : '');
+				tempScore += divider + 'Combo Breaks: $importMisses';
+				tempScore += divider + 'Rank: $importRanking';
 			}
 			else
 			{
 				tempScore += divider
-					+ '${language.accTxt} $importAccuracy%'
+					+ 'Accuracy: $importAccuracy%'
 					+ (!unrated ? ' [' + Timings.comboDisplay + divider + importRanking + ']' : ' [' + importRanking + ']');
-				tempScore += divider + '${language.missTxt} $importMisses';
+				tempScore += divider + 'Combo Breaks: $importMisses';
 			}
 		}
 
