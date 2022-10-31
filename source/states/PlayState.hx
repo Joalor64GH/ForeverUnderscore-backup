@@ -519,8 +519,10 @@ class PlayState extends MusicBeatState
 
 		var downscroll = Init.getSetting('Downscroll');
 
-		dadStrums = new Strumline(dadPlacement, downscroll ? FlxG.height - 200 : 0, dad, dad.characterData.noteSkin, true, false, doTweenCheck(true), downscroll, 4);
-		bfStrums = new Strumline(bfPlacement, downscroll ? FlxG.height - 200 : 0, boyfriend, boyfriend.characterData.noteSkin, false, true, doTweenCheck(false), downscroll, 4);
+		dadStrums = new Strumline(dadPlacement, downscroll ? FlxG.height - 200 : 0, dad, dad.characterData.noteSkin, true, false, doTweenCheck(true),
+			downscroll, 4);
+		bfStrums = new Strumline(bfPlacement, downscroll ? FlxG.height - 200 : 0, boyfriend, boyfriend.characterData.noteSkin, false, true,
+			doTweenCheck(false), downscroll, 4);
 
 		dadStrums.visible = !Init.getSetting('Hide Opponent Receptors');
 
@@ -2229,7 +2231,7 @@ class PlayState extends MusicBeatState
 				startedCountdown = false;
 
 			var dialogueFileStr:String = 'dialogue';
-		dialogueFileStr = (endingSong ? 'dialogueEnd' : 'dialogue');
+			dialogueFileStr = (endingSong ? 'dialogueEnd' : 'dialogue');
 
 			dialogueBox = DialogueBox.createDialogue(sys.io.File.getContent(Paths.file('songs/' + SONG.song.toLowerCase() + '/$dialogueFileStr.json')));
 			dialogueBox.cameras = [dialogueHUD];
