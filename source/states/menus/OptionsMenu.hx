@@ -68,6 +68,7 @@ class OptionsMenu extends MusicBeatState
 					['Centered Receptors', getFromOption],
 					['Hide Opponent Receptors', getFromOption],
 					['Ghost Tapping', getFromOption],
+					['Ghost Miss Animations', getFromOption],
 					['', null],
 
 					['Note Settings', null],

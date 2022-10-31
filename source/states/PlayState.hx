@@ -729,6 +729,16 @@ class PlayState extends MusicBeatState
 						else if (!inCutscene || !endingSong)
 							missNoteCheck(true, key, bfStrums, true);
 					}
+					else
+					{
+						// thought it would look funny maybe;
+						if (Init.getSetting('Ghost Miss Animations'))
+						{
+							var stringSect:String = Receptor.actions[key].toUpperCase();
+							if (bfStrums.character != null)
+								bfStrums.character.playAnim('sing' + stringSect + 'miss');
+						}
+					}
 				}
 
 				Conductor.songPosition = previousTime;
@@ -812,16 +822,22 @@ class PlayState extends MusicBeatState
 
 	static function set_songSpeed(value:Float):Float
 	{
-		var offset = songSpeed / value;
+		var offset:Float = songSpeed / value;
 		for (note in bfStrums.allNotes)
 		{
-			note.scale.y *= offset;
-			note.updateHitbox();
+			if (note.isSustain && !note.animation.curAnim.name.endsWith('end'))
+			{
+				note.scale.y *= offset;
+				note.updateHitbox();
+			}
 		}
 		for (note in dadStrums.allNotes)
 		{
-			note.scale.y *= offset;
-			note.updateHitbox();
+			if (note.isSustain && !note.animation.curAnim.name.endsWith('end'))
+			{
+				note.scale.y *= offset;
+				note.updateHitbox();
+			}
 		}
 
 		return cast songSpeed = value;

@@ -88,6 +88,12 @@ class Init extends FlxState
 			"Enables Ghost Tapping, allowing you to press inputs without missing.",
 			NOT_FORCED
 		],
+		'Ghost Miss Animations' => [
+			true,
+			Checkmark,
+			"Enables Ghost Animations for pressing notes when pressing inputs, requires ghost tapping enabled",
+			NOT_FORCED
+		],
 		"Hitsound Type" => ['default', Selector, 'Choose the Note Hitsound you prefer.', NOT_FORCED, ''],
 		'Hitsound Volume' => [0, Selector, 'The volume for your Hitsounds.', NOT_FORCED],
 		'Use Custom Note Speed' => [
