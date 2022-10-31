@@ -132,7 +132,7 @@ class Paths
 		if (FileSystem.exists(ModManager.getModFile('$folder/$key.png', IMAGE)))
 			isMod = true;
 
-		var path = getPath('$folder/$key.png', IMAGE, library);
+		var path = SUtil.getPath() + getPath('$folder/$key.png', IMAGE, library);
 		var mod = ModManager.getModFile('$folder/$key.png', IMAGE);
 
 		if (FileSystem.exists(isMod ? mod : path))
@@ -176,16 +176,17 @@ class Paths
 		if (FileSystem.exists(ModManager.getModFile(key)))
 			return File.getContent(ModManager.getModFile(key));
 
-		if (FileSystem.exists(getPreloadPath(key)))
-			return File.getContent(getPreloadPath(key));
+		if (FileSystem.exists(SUtil.getPath() + getPreloadPath(key)))
+			return File.getContent(SUtil.getPath() + getPreloadPath(key));
 
 		if (currentLevel != null)
 		{
 			var levelPath:String = '';
-			levelPath = getLibraryPathForce(key, '');
+			levelPath = SUtil.getPath() + getLibraryPathForce(key, '');
 			if (FileSystem.exists(levelPath))
 				return File.getContent(levelPath);
 		}
+
 		return Assets.getText(getPath(key, type, library));
 	}
 
@@ -202,7 +203,7 @@ class Paths
 		}
 
 		// I hate this so god damn much
-		var gottenPath:String = getPath('$path/$key.$SOUND_EXT', SOUND, library);
+		var gottenPath:String = SUtil.getPath() + getPath('$path/$key.$SOUND_EXT', SOUND, library);
 		gottenPath = gottenPath.substring(gottenPath.indexOf(':') + 1, gottenPath.length);
 
 		if (!currentTrackedSounds.exists(gottenPath))
@@ -237,7 +238,7 @@ class Paths
 	public inline static function getPreloadPath(file:String)
 	{
 		var returnPath:String = 'assets/$file';
-		if (!FileSystem.exists(returnPath))
+		if (!FileSystem.exists(SUtil.getPath() + returnPath))
 		{
 			try
 			{
@@ -320,7 +321,7 @@ class Paths
 
 		for (extension in extensions)
 		{
-			var newPath:String = getPath('fonts/$key$extension', TEXT, library);
+			var newPath:String = SUtil.getPath() + getPath('fonts/$key$extension', TEXT, library);
 			if (FileSystem.exists(newPath))
 			{
 				/*
@@ -340,7 +341,7 @@ class Paths
 	inline static public function getSparrowAtlas(key:String, folder:String = 'images', ?library:String)
 	{
 		var graphic:FlxGraphic = returnGraphic(key, folder, library);
-		return (FlxAtlasFrames.fromSparrow(graphic, File.getContent(file('$folder/$key.xml', library))));
+		return (FlxAtlasFrames.fromSparrow(graphic, File.getContent(SUtil.getPath() + file('$folder/$key.xml', library))));
 	}
 
 	inline static public function getPackerAtlas(key:String, folder:String = 'images', ?library:String)
