@@ -516,10 +516,11 @@ class PlayState extends MusicBeatState
 		// initialize ui elements
 		var bfPlacement:Float = FlxG.width / 2 + (!Init.getSetting('Centered Receptors') ? FlxG.width / 4 : 0);
 		var dadPlacement:Float = (FlxG.width / 2) - FlxG.width / 4;
-		var strumYPos:Int = (Init.getSetting('Downscroll') ? FlxG.height - 200 : 0);
 
-		dadStrums = new Strumline(dadPlacement, strumYPos, dad, dad.characterData.noteSkin, true, false, doTweenCheck(true), 4);
-		bfStrums = new Strumline(bfPlacement, strumYPos, boyfriend, boyfriend.characterData.noteSkin, false, true, doTweenCheck(false), 4);
+		var downscroll = Init.getSetting('Downscroll');
+
+		dadStrums = new Strumline(dadPlacement, downscroll ? FlxG.height - 200 : 0, dad, dad.characterData.noteSkin, true, false, doTweenCheck(true), downscroll, 4);
+		bfStrums = new Strumline(bfPlacement, downscroll ? FlxG.height - 200 : 0, boyfriend, boyfriend.characterData.noteSkin, false, true, doTweenCheck(false), downscroll, 4);
 
 		dadStrums.visible = !Init.getSetting('Hide Opponent Receptors');
 
@@ -1129,11 +1130,11 @@ class PlayState extends MusicBeatState
 		}
 
 		// set the notes x and y
-		var downscrollMult = (Init.getSetting('Downscroll') ? -1 : 1) * FlxMath.signOf(songSpeed);
 		if (generatedSong && startedCountdown)
 		{
 			for (strumline in strumLines)
 			{
+				var downscrollMult = (strumline.downscroll ? -1 : 1) * FlxMath.signOf(songSpeed);
 				strumline.allNotes.forEachAlive(function(strumNote:Note)
 				{
 					// set custom note speeds and stuff;
@@ -1168,7 +1169,7 @@ class PlayState extends MusicBeatState
 							&& (strumNote.prevNote != null))
 						{
 							strumNote.y -= ((strumNote.prevNote.height / 2) * downscrollMult);
-							if (Init.getSetting('Downscroll'))
+							if (strumline.downscroll)
 							{
 								strumNote.y += (strumNote.height * 2);
 								if (strumNote.endHoldOffset == Math.NEGATIVE_INFINITY)
@@ -1181,7 +1182,7 @@ class PlayState extends MusicBeatState
 							// this system is funny like that
 						}
 						var center:Float = receptorY + Receptor.swagWidth / (1.4 * (assetModifier == 'pixel' ? 2 : 1));
-						if (Init.getSetting('Downscroll'))
+						if (strumline.downscroll)
 						{
 							strumNote.flipY = true;
 							if (strumNote.y - strumNote.offset.y * strumNote.scale.y + strumNote.height >= center
@@ -1267,8 +1268,8 @@ class PlayState extends MusicBeatState
 					}
 
 					// if the note is off screen (above)
-					if ((((!Init.getSetting('Downscroll')) && (strumNote.y < -strumNote.height))
-						|| ((Init.getSetting('Downscroll')) && (strumNote.y > (FlxG.height + strumNote.height))))
+					if ((((!strumline.downscroll) && (strumNote.y < -strumNote.height))
+						|| ((strumline.downscroll) && (strumNote.y > (FlxG.height + strumNote.height))))
 						&& (strumNote.tooLate || strumNote.wasGoodHit))
 						destroyNote(strumline, strumNote);
 				});
