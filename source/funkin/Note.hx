@@ -83,8 +83,7 @@ class Note extends FNFSprite
 		noteString = '';
 	}
 
-	public function new(strumTime:Float, noteData:Int, noteAlt:Float, ?prevNote:Note, ?isSustain:Bool = false,
-		?noteType:Int = 0, ?noteString:String)
+	public function new(strumTime:Float, noteData:Int, noteAlt:Float, ?prevNote:Note, ?isSustain:Bool = false, ?noteType:Int = 0, ?noteString:String)
 	{
 		super(x, y);
 
