@@ -687,7 +687,7 @@ class OriginalChartEditor extends MusicBeatState
 		tab_group_note.add(new FlxText(120, 10, 0, 'Metronome BPM:'));
 		tab_group_note.add(new FlxText(10, 50, 0, 'Strum time (in miliseconds):'));
 		tab_group_note.add(new FlxText(10, noteTypeDropDown.y - 15, 0, 'Note Type:'));
-		tab_group_note.add(new FlxText(10, noteStringInput.y - 15, 0, 'Note Animation Suffix:'));
+		tab_group_note.add(new FlxText(10, noteStringInput.y - 15, 0, 'Note Animation Suffix (e.g: -alt, miss):'));
 		tab_group_note.add(stepperSusLength);
 		tab_group_note.add(strumTimeInput);
 		tab_group_note.add(noteTypeDropDown);
