@@ -736,7 +736,10 @@ class PlayState extends MusicBeatState
 						{
 							var stringSect:String = Receptor.actions[key].toUpperCase();
 							if (bfStrums.character != null)
-								bfStrums.character.playAnim('sing' + stringSect + 'miss');
+							{
+								var stringSuffix:String = bfStrums.character.hasMissAnims ? 'miss' : '';
+								bfStrums.character.playAnim('sing' + stringSect + stringSuffix);
+							}
 						}
 					}
 				}
@@ -934,7 +937,7 @@ class PlayState extends MusicBeatState
 
 			if (generatedSong && PlayState.SONG.notes[Std.int(curStep / 16)] != null)
 			{
-				var curSection = Std.int(curStep / 16);
+				curSection = Std.int(curStep / 16);
 				if (curSection != lastSection)
 				{
 					// section reset stuff
@@ -1378,7 +1381,7 @@ class PlayState extends MusicBeatState
 			var stringDirection:String = Receptor.actions[direction];
 
 			FlxG.sound.play(Paths.soundRandom('missnote', 1, 3), FlxG.random.float(0.1, 0.2));
-			if (strumline.character != null)
+			if (strumline.character != null && strumline.character.hasMissAnims)
 				strumline.character.playAnim('sing' + stringDirection.toUpperCase() + 'miss', lockMiss);
 		}
 		decreaseCombo(popMiss);
@@ -1408,30 +1411,22 @@ class PlayState extends MusicBeatState
 
 		switch (coolNote.noteType)
 		{
-			case 2: // hey notes
-				stringArrow = 'hey'; // sets the animation string for this note;
-				character.specialAnim = true;
-				character.heyTimer = 0.6;
-			case 3: // mines
-				if (character.curCharacter == 'bf-psych')
+			case 2: // mines
+				if (character.animOffsets.exists('hurt'))
 					stringArrow = 'hurt';
-				else
-					stringArrow = baseString + 'miss';
 				character.specialAnim = true;
 				character.heyTimer = 0.6;
-			case 5: // no animation notes
-				stringArrow = '';
-				altString = '';
 			default: // anything else
-				stringArrow = baseString + altString;
+				var noteString:String = coolNote.noteString != null && coolNote.noteString != '' ? coolNote.noteString : '';
+				stringArrow = baseString + altString + noteString;
 				character.specialAnim = false;
 		}
 
 		if (character != null)
 		{
-			character.playAnim(stringArrow, true);
-			if (character.holdTimer > 0)
-				character.holdTimer = 0;
+			var finalString:String = stringArrow != null ? stringArrow : baseString;
+			character.playAnim(finalString, true);
+			character.holdTimer = 0;
 		}
 	}
 
@@ -1449,7 +1444,7 @@ class PlayState extends MusicBeatState
 				if (strumline.displayJudgements)
 					notesPressedAutoplay.push(daNote);
 
-				if (!daNote.canHurt)
+				if ((!daNote.canHurt && daNote.mustPress) || (!daNote.cpuIgnore && !daNote.mustPress))
 					goodNoteHit(daNote, strumline.receptors.members[daNote.noteData], strumline);
 			}
 		}

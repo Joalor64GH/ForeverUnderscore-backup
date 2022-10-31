@@ -620,6 +620,9 @@ class OriginalChartEditor extends MusicBeatState
 	var metronomeTick:FlxUICheckBox;
 	var key:Int = 0;
 
+	var noteSectInput:FlxUIInputText;
+	var noteStringInput:FlxUIInputText;
+
 	function addNoteUI():Void
 	{
 		var tab_group_note = new FlxUI(null, UI_box);
@@ -655,6 +658,22 @@ class OriginalChartEditor extends MusicBeatState
 
 		blockPressWhileScrolling.push(noteTypeDropDown);
 
+		/*
+		noteSectInput = new FlxUIInputText(10, noteTypeDropDown.y + 30, 180, "");
+		tab_group_note.add(noteSectInput);
+		blockPressWhileTypingOn.push(noteSectInput);
+		*/
+
+		noteStringInput = new FlxUIInputText(10, noteTypeDropDown.y + 50, 180, "");
+		tab_group_note.add(noteStringInput);
+		blockPressWhileTypingOn.push(noteStringInput);
+
+		if (curSelectedNote != null)
+		{
+			curSelectedNote[4] = noteStringInput.text;
+			//curSelectedNote[5] = noteSectInput.text;
+		}
+
 		metronomeTick = new FlxUICheckBox(10, 305, null, null, 'Enable Metronome', 100);
 		metronomeTick.checked = false;
 
@@ -667,7 +686,8 @@ class OriginalChartEditor extends MusicBeatState
 		tab_group_note.add(new FlxText(10, 10, 0, 'Sustain length:'));
 		tab_group_note.add(new FlxText(120, 10, 0, 'Metronome BPM:'));
 		tab_group_note.add(new FlxText(10, 50, 0, 'Strum time (in miliseconds):'));
-		tab_group_note.add(new FlxText(10, 90, 0, 'Note Type:'));
+		tab_group_note.add(new FlxText(10, noteTypeDropDown.y - 15, 0, 'Note Type:'));
+		tab_group_note.add(new FlxText(10, noteStringInput.y - 15, 0, 'Note Animation Suffix (e.g: -alt, miss):'));
 		tab_group_note.add(stepperSusLength);
 		tab_group_note.add(strumTimeInput);
 		tab_group_note.add(noteTypeDropDown);
@@ -1726,10 +1746,14 @@ class OriginalChartEditor extends MusicBeatState
 	{
 		var noteStrum = getStrumTime(dummyArrow.y) + sectionStartTime();
 		var noteData = Math.floor((FlxG.mouse.x - GRID_SIZE) / GRID_SIZE);
-		var noteType = curNoteType; // define notes as the current type
-		var noteSus = 0; // ninja you will NOT get away with this
 
-		_song.notes[curSection].sectionNotes.push([noteStrum, noteData, noteSus, noteType]);
+		var noteSus = 0; // ninja you will NOT get away with this
+		var noteType = curNoteType; // define notes as the current type
+		var noteSect = '' /*noteSectInput.text*/;
+		var noteString = noteStringInput.text;
+		var noteTimer = 0 /*noteTimer.value*/;
+
+		_song.notes[curSection].sectionNotes.push([noteStrum, noteData, noteSus, noteType, noteString /*noteSect, noteString, noteTimer*/]);
 
 		curSelectedNote = _song.notes[curSection].sectionNotes[_song.notes[curSection].sectionNotes.length - 1];
 

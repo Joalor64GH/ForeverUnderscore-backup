@@ -58,6 +58,8 @@ class Character extends FNFSprite
 	public var isPlayer:Bool = false;
 	public var quickDancer:Bool = false;
 
+	public var hasMissAnims:Bool = false;
+
 	public var characterScripts:Array<ScriptHandler> = [];
 
 	public var idleSuffix:String = '';
@@ -74,6 +76,8 @@ class Character extends FNFSprite
 
 	public var characterType:String = UNDERSCORE;
 	public var characterOrigin:CharacterOrigin;
+
+	public var missSect:Array<String> = ['singLEFTmiss', 'singDOWNmiss', 'singUPmiss', 'singRIGHTmiss'];
 
 	public function new(?isPlayer:Bool = false)
 	{
@@ -128,6 +132,12 @@ class Character extends FNFSprite
 
 		if (characterData.icon == null)
 			characterData.icon = character;
+
+		for (missAnim in missSect)
+		{
+			if(animOffsets.exists(missAnim))
+				hasMissAnims = true;
+		}
 
 		if (isPlayer) // reverse player flip
 		{

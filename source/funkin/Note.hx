@@ -17,6 +17,8 @@ class Note extends FNFSprite
 	public var noteAlt:Float = 0;
 	public var noteType:Int = 0;
 
+	public var noteString:String = '';
+
 	public var canBeHit:Bool = false;
 	public var tooLate:Bool = false;
 	public var wasGoodHit:Bool = false;
@@ -61,15 +63,28 @@ class Note extends FNFSprite
 
 	public var hitSounds:Bool = true;
 	public var canHurt:Bool = false;
+	public var cpuIgnore:Bool = false;
 	public var gfNote:Bool = false;
 	public var updateAccuracy:Bool = true;
 
 	public var hitsoundSuffix = '';
 
 	static var pixelNoteID:Array<Int> = [4, 5, 6, 7];
-	public static var noteTypeNames:Array<String> = ['Normal Note', 'Alt Animation', 'Hey!', 'Mine Note', 'GF Note', 'No Animation'];
+	public static var noteTypeNames:Array<String> = ['Normal Note', 'GF Note', 'Mine Note'];
 
-	public function new(strumTime:Float, noteData:Int, noteAlt:Float, ?prevNote:Note, ?sustainNote:Bool = false, ?noteType:Int = 0)
+	function resetNote(isGf:Bool = false)
+	{
+		hitSounds = true;
+		updateAccuracy = true;
+		cpuIgnore = false;
+		canHurt = false;
+		gfNote = isGf;
+		lowPriority = false;
+		noteString = '';
+	}
+
+	public function new(strumTime:Float, noteData:Int, noteAlt:Float, ?prevNote:Note, ?isSustain:Bool = false,
+		?noteType:Int = 0, ?noteString:String)
 	{
 		super(x, y);
 
@@ -78,39 +93,30 @@ class Note extends FNFSprite
 
 		this.prevNote = prevNote;
 		this.noteType = noteType;
-		isSustain = sustainNote;
+		this.noteString = noteString;
+		this.isSustain = isSustain;
 
 		if (noteType == null || noteType <= 0)
 			noteType = 0;
 
+		if (noteString == null)
+			noteString = '';
+
 		switch (noteType)
 		{
-			case 2: // hey notes
-				updateAccuracy = true;
-				hitSounds = true;
-				canHurt = false;
-				gfNote = false;
-			case 3: // mines
+			case 1: // gf notes
+				resetNote(true);
+			case 2: // mines
 				healthLoss = 0.065;
 				updateAccuracy = true;
 				hitSounds = false;
+				cpuIgnore = true;
 				canHurt = true;
+				gfNote = false;
 				lowPriority = true;
-				gfNote = false;
-			case 4: // gf notes
-				updateAccuracy = true;
-				gfNote = true;
-			case 5: // no animation notes
-				updateAccuracy = true;
-				hitSounds = false;
-				canHurt = false;
-				gfNote = false;
+				noteString = 'miss';
 			default: // anything else
-				hitSounds = true;
-				updateAccuracy = true;
-				canHurt = false;
-				gfNote = false;
-				lowPriority = false;
+				resetNote(false);
 		}
 
 		// oh okay I know why this exists now
@@ -124,6 +130,8 @@ class Note extends FNFSprite
 		if (isSustain && prevNote != null)
 		{
 			parentNote = prevNote;
+			if (parentNote.noteString != null)
+				this.noteString = parentNote.noteString;
 			while (parentNote.parentNote != null)
 				parentNote = parentNote.parentNote;
 			parentNote.childrenNotes.push(this);
@@ -182,7 +190,7 @@ class Note extends FNFSprite
 		for setting up custom note behavior when hit and such
 	**/
 	public static function returnDefaultNote(assetModifier:String, strumTime:Float, noteData:Int, noteAlt:Float, ?isSustain:Bool = false, ?prevNote:Note,
-			noteType:Int = 0):Note
+			?noteType:Int = 0):Note
 	{
 		var newNote:Note = new Note(strumTime, noteData, noteAlt, prevNote, isSustain, noteType);
 		newNote.holdHeight = 0.72;
@@ -195,7 +203,7 @@ class Note extends FNFSprite
 				{
 					switch (noteType)
 					{
-						case 3:
+						case 2:
 							newNote.kill();
 						default: // pixel holds default
 							reloadPrefixes('arrowEnds', 'noteskins/notes', Init.getSetting("Note Skin"), assetModifier, newNote);
@@ -205,7 +213,7 @@ class Note extends FNFSprite
 				{
 					switch (noteType)
 					{
-						case 3: // pixel mines;
+						case 2: // pixel mines;
 							newNote.loadGraphic(Paths.image(ForeverTools.returnSkin('mines', assetModifier, '', 'noteskins/mines')), true, 17, 17);
 							newNote.animation.add(Receptor.colors[noteData] + 'Scroll', [0, 1, 2, 3, 4, 5, 6, 7], 12);
 
@@ -220,7 +228,7 @@ class Note extends FNFSprite
 			default: // base game arrows for no reason whatsoever
 				switch (noteType)
 				{
-					case 3: // mines
+					case 2: // mines
 						newNote.loadGraphic(Paths.image(ForeverTools.returnSkin('mines', assetModifier, '', 'noteskins/mines')), true, 133, 128);
 						newNote.animation.add(Receptor.colors[noteData] + 'Scroll', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]);
 
@@ -257,7 +265,7 @@ class Note extends FNFSprite
 	}
 
 	public static function returnQuantNote(assetModifier:String, strumTime:Float, noteData:Int, noteAlt:Float, ?isSustain:Bool = false, ?prevNote:Note = null,
-			noteType:Int = 0):Note
+			?noteType:Int = 0):Note
 	{
 		var newNote:Note = new Note(strumTime, noteData, noteAlt, prevNote, isSustain, noteType);
 		newNote.holdHeight = 0.862;
@@ -277,7 +285,7 @@ class Note extends FNFSprite
 				{
 					switch (noteType)
 					{
-						case 3: // pixel mines
+						case 2: // pixel mines
 							if (assetModifier == 'pixel')
 							{
 								newNote.loadGraphic(Paths.image(ForeverTools.returnSkin('mines', assetModifier, '', 'noteskins/mines')), true, 17, 17);
@@ -307,7 +315,7 @@ class Note extends FNFSprite
 				{
 					switch (noteType)
 					{
-						case 3:
+						case 2:
 							newNote.kill();
 						default:
 							// quant holds
@@ -404,7 +412,7 @@ class Note extends FNFSprite
 		var hitsound = Init.getSetting('Hitsound Type');
 		switch (newNote.noteType)
 		{
-			case 3:
+			case 2:
 				PlayState.contents.decreaseCombo(true);
 				PlayState.health -= healthLoss;
 			default:

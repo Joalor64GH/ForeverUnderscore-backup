@@ -44,10 +44,14 @@ class ChartParser
 				var swagNote:Note = ForeverAssets.generateArrow(PlayState.assetModifier, daStrumTime, daNoteData, daNoteAlt, daNoteType);
 				swagNote.noteSpeed = songData.speed;
 				swagNote.mustPress = gottaHitNote;
+
+				// set note parameters;
 				swagNote.sustainLength = songNotes[2];
+				swagNote.noteType = songNotes[3];
+				swagNote.noteString = songNotes[4];
+
 				if (swagNote.sustainLength > 0)
 					swagNote.sustainLength = Math.round(swagNote.sustainLength / Conductor.stepCrochet) * Conductor.stepCrochet;
-				swagNote.noteType = songNotes[3];
 				swagNote.scrollFactor.set(0, 0);
 
 				if (swagNote.noteData > -1) // don't push notes if they are an event??
