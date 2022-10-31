@@ -53,7 +53,7 @@ class ModManager
 				// trace('$modFile is null, trying method 2');
 				try
 				{
-					if (OpenFlAssets.exists(modFile, type))
+					if (OpenFlAssets.exists('mods/$folder/$file', type))
 						return modFile;
 				}
 				catch (e)
