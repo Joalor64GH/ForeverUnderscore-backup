@@ -198,7 +198,7 @@ class Init extends FlxState
 			NOT_FORCED
 		],
 		'Judgement Recycling' => [
-			false,
+			true,
 			Checkmark,
 			"Rather than adding a new judgement on hit, objects are reused when possible, may cause layering issues.",
 			NOT_FORCED

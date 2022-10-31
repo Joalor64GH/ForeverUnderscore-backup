@@ -1672,8 +1672,7 @@ class PlayState extends MusicBeatState
 			{
 				if (!Init.getSetting('Judgement Recycling'))
 					insert(members.indexOf(strumLines), comboNum);
-				for (i in 0...comboGroup.members.length)
-					lastCombo.push(comboGroup.members[i]);
+				lastCombo.push(comboNum);
 			}
 
 			if (Init.getSetting('Fixed Judgements'))
