@@ -130,6 +130,8 @@ class Note extends FNFSprite
 		if (isSustain && prevNote != null)
 		{
 			parentNote = prevNote;
+			if (parentNote.noteString != null)
+				this.noteString = parentNote.noteString;
 			while (parentNote.parentNote != null)
 				parentNote = parentNote.parentNote;
 			parentNote.childrenNotes.push(this);
