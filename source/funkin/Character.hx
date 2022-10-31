@@ -135,7 +135,7 @@ class Character extends FNFSprite
 
 		for (missAnim in missSect)
 		{
-			if(animOffsets.exists(missAnim))
+			if (animOffsets.exists(missAnim))
 				hasMissAnims = true;
 		}
 
