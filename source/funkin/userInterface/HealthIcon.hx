@@ -48,6 +48,7 @@ class HealthIcon extends FlxSprite
 	{
 		var iconLerp = 1 - Main.framerateAdjust(0.15);
 		scale.set(FlxMath.lerp(1, scale.x, iconLerp), FlxMath.lerp(1, scale.y, iconLerp));
+		updateHitbox();
 	}
 
 	public function updateIcon(char:String = 'bf', isPlayer:Bool = false)
