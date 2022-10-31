@@ -736,7 +736,10 @@ class PlayState extends MusicBeatState
 						{
 							var stringSect:String = Receptor.actions[key].toUpperCase();
 							if (bfStrums.character != null)
-								bfStrums.character.playAnim('sing' + stringSect + 'miss');
+							{
+								var stringSuffix:String = bfStrums.character.hasMissAnims ? 'miss' : '';
+								bfStrums.character.playAnim('sing' + stringSect + stringSuffix);
+							}
 						}
 					}
 				}
@@ -1378,7 +1381,7 @@ class PlayState extends MusicBeatState
 			var stringDirection:String = Receptor.actions[direction];
 
 			FlxG.sound.play(Paths.soundRandom('missnote', 1, 3), FlxG.random.float(0.1, 0.2));
-			if (strumline.character != null)
+			if (strumline.character != null && strumline.character.hasMissAnims)
 				strumline.character.playAnim('sing' + stringDirection.toUpperCase() + 'miss', lockMiss);
 		}
 		decreaseCombo(popMiss);
