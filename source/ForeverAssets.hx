@@ -55,7 +55,7 @@ class ForeverAssets
 
 		var parsedNumber:Null<Int> = Std.parseInt(number);
 		var combo:FNFSprite;
-		if (group != null)
+		if (group != null && Init.getSetting('Judgement Recycling'))
 			combo = group.recycle(FNFSprite);
 		else
 			combo = new FNFSprite();
@@ -120,7 +120,7 @@ class ForeverAssets
 			changeableSkin:String = 'default', baseLibrary:String, ?debug:Bool = false):FNFSprite
 	{
 		var rating:FNFSprite;
-		if (group != null)
+		if (group != null && Init.getSetting('Judgement Recycling'))
 			rating = group.recycle(FNFSprite);
 		else
 			rating = new FNFSprite();

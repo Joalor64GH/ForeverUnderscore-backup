@@ -1612,11 +1612,15 @@ class PlayState extends MusicBeatState
 			because miss judgements can pop, and they dont mess with your sick combo
 		 */
 		var rating = ForeverAssets.generateRating('$newRating', perfect, lateHit, judgementsGroup, assetModifier, uiModifier, 'UI');
+		if (!Init.getSetting('Judgement Recycling'))
+			insert(members.indexOf(strumLines), rating);
 
 		if (!cached)
 		{
 			if (!Init.getSetting('Judgement Stacking'))
 			{
+				if (!Init.getSetting('Judgement Recycling'))
+					insert(members.indexOf(strumLines), rating);
 				if (lastJudge != null)
 					lastJudge.kill();
 				if (rating != null && rating.alive)
@@ -1661,9 +1665,13 @@ class PlayState extends MusicBeatState
 		{
 			var comboNum = ForeverAssets.generateCombo('combo_numbers', stringArray[scoreInt], (!negative ? perfect : false), comboGroup, assetModifier,
 				uiModifier, 'UI', negative, createdColor, scoreInt);
+			if (!Init.getSetting('Judgement Recycling'))
+				insert(members.indexOf(strumLines), comboNum);
 
 			if (!Init.getSetting('Judgement Stacking'))
 			{
+				if (!Init.getSetting('Judgement Recycling'))
+					insert(members.indexOf(strumLines), comboNum);
 				for (i in 0...comboGroup.members.length)
 					lastCombo.push(comboGroup.members[i]);
 			}
