@@ -659,10 +659,10 @@ class OriginalChartEditor extends MusicBeatState
 		blockPressWhileScrolling.push(noteTypeDropDown);
 
 		/*
-		noteSectInput = new FlxUIInputText(10, noteTypeDropDown.y + 30, 180, "");
-		tab_group_note.add(noteSectInput);
-		blockPressWhileTypingOn.push(noteSectInput);
-		*/
+			noteSectInput = new FlxUIInputText(10, noteTypeDropDown.y + 30, 180, "");
+			tab_group_note.add(noteSectInput);
+			blockPressWhileTypingOn.push(noteSectInput);
+		 */
 
 		noteStringInput = new FlxUIInputText(10, noteTypeDropDown.y + 50, 180, "");
 		tab_group_note.add(noteStringInput);
@@ -671,7 +671,7 @@ class OriginalChartEditor extends MusicBeatState
 		if (curSelectedNote != null)
 		{
 			curSelectedNote[4] = noteStringInput.text;
-			//curSelectedNote[5] = noteSectInput.text;
+			// curSelectedNote[5] = noteSectInput.text;
 		}
 
 		metronomeTick = new FlxUICheckBox(10, 305, null, null, 'Enable Metronome', 100);
@@ -1753,7 +1753,12 @@ class OriginalChartEditor extends MusicBeatState
 		var noteString = noteStringInput.text;
 		var noteTimer = 0 /*noteTimer.value*/;
 
-		_song.notes[curSection].sectionNotes.push([noteStrum, noteData, noteSus, noteType, noteString /*noteSect, noteString, noteTimer*/]);
+		_song.notes[curSection].sectionNotes.push([
+			noteStrum,
+			noteData,
+			noteSus,
+			noteType,
+			noteString /*noteSect, noteString, noteTimer*/]);
 
 		curSelectedNote = _song.notes[curSection].sectionNotes[_song.notes[curSection].sectionNotes.length - 1];
 

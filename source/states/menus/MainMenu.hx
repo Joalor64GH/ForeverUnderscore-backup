@@ -137,8 +137,7 @@ class MainMenu extends MusicBeatState
 			+ Main.foreverVersion
 			+ "\nForever Engine Underscore v"
 			+ Main.engineVersion
-			+ (Main.nightly ? '-nightly' : ''),
-			12);
+			+ (Main.nightly ? '-nightly' : ''), 12);
 		versionShit.scrollFactor.set();
 		versionShit.setFormat(Paths.font('vcr'), 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		add(versionShit);

@@ -382,7 +382,6 @@ class OptionsMenu extends MusicBeatState
 
 		if (controls.BACK)
 		{
-
 			// reload custom skins
 			Init.reloadCustomSkins();
 
