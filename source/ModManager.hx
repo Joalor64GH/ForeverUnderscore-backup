@@ -43,17 +43,19 @@ class ModManager
 		{
 			try
 			{
-				if (!sys.FileSystem.exists('${getModRoot(folder)}/$file'))
-					modFile = base.CoolUtil.swapSpaceDash('${getModRoot(folder)}/$file');
-				return modFile;
+				var returnFolder:String = '${getModRoot(folder)}/$file';
+				if (!sys.FileSystem.exists(returnFolder))
+					returnFolder = base.CoolUtil.swapSpaceDash(returnFolder);
+				return returnFolder;
 			}
 			catch (e)
 			{
 				// trace('$modFile is null, trying method 2');
 				try
 				{
-					if (OpenFlAssets.exists('${getModRoot(folder)}/$file', type))
-						return modFile;
+					var returnFolder:String = '${getModRoot(folder)}/$file';
+					if (OpenFlAssets.exists(returnFolder, type))
+						return returnFolder;
 				}
 				catch (e)
 				{
