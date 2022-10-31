@@ -43,7 +43,12 @@ class Main extends Sprite
 	{
 		super();
 
+		#if mobile
+		SUtil.uncaughtErrorHandler();
+		#else
 		Lib.current.loaderInfo.uncaughtErrorEvents.addEventListener(UncaughtErrorEvent.UNCAUGHT_ERROR, onCrash);
+		#end
+
 		FlxTransitionableState.skipNextTransIn = true;
 
 		var stageWidth:Int = Lib.current.stage.stageWidth;
@@ -59,6 +64,8 @@ class Main extends Sprite
 			// this just kind of sets up the camera zoom in accordance to the surface width and camera zoom.
 			// if set to negative one, it is done so automatically, which is the default.
 		}
+
+		SUtil.check();
 
 		addChild(new FlxGame(0, 0, Init, #if (flixel < "5.0.0") gameZoom, #end 120, 120, true));
 
