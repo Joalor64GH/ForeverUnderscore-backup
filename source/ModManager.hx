@@ -9,7 +9,7 @@ class ModManager
 {
 	inline public static function getModRoot(key:String = ''):String
 	{
-		return 'mods/$key';
+		return SUtil.getPath() + 'mods/$key';
 	}
 
 	public static function getModFolders():Array<String>
