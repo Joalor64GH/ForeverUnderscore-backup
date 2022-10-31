@@ -55,10 +55,12 @@ class JudgeAdjustState extends MusicBeatState
 
 		var bfPlacement:Float = FlxG.width / 2 + (!Init.getSetting('Centered Receptors') ? FlxG.width / 4 : 0);
 		var dadPlacement:Float = (FlxG.width / 2) - FlxG.width / 4;
-		var strumYPos:Int = (Init.getSetting('Downscroll') ? FlxG.height - 200 : 0);
 
-		dadStrums = new Strumline(dadPlacement, strumYPos);
-		bfStrums = new Strumline(bfPlacement, strumYPos);
+		dadStrums = new Strumline(dadPlacement, Init.getSetting('Downscroll') ? FlxG.height - 200 : 0);
+		bfStrums = new Strumline(bfPlacement, Init.getSetting('Downscroll') ? FlxG.height - 200 : 0);
+
+		bfStrums.downscroll = Init.getSetting('Downscroll');
+		dadStrums.downscroll = Init.getSetting('Downscroll');
 
 		bfStrums.cameras = [_camUI];
 		dadStrums.cameras = [_camUI];

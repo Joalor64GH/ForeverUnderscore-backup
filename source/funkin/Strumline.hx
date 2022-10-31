@@ -21,6 +21,7 @@ class Strumline extends FlxSpriteGroup
 	public var character:Character;
 
 	public var autoplay:Bool = true;
+	public var downscroll:Bool = false;
 	public var displayJudgements:Bool = false;
 	public var doTween:Bool = false;
 
@@ -31,7 +32,7 @@ class Strumline extends FlxSpriteGroup
 	public var receptorTexture:String = 'NOTE_assets';
 
 	public function new(xPos:Float = 0, yPos:Float = 0, ?character:Character, ?receptorTexture:String, ?autoplay:Bool = true, ?displayJudgements:Bool = false,
-			doTween:Bool = false, ?keyAmount:Int = 4)
+			doTween:Bool = false, downscroll:Bool = false, ?keyAmount:Int = 4)
 	{
 		super();
 
@@ -51,6 +52,7 @@ class Strumline extends FlxSpriteGroup
 		this.autoplay = autoplay;
 		this.character = character;
 		this.displayJudgements = displayJudgements;
+		this.downscroll = downscroll;
 		this.keyAmount = keyAmount;
 		this.receptorTexture = receptorTexture;
 
@@ -130,7 +132,7 @@ class Strumline extends FlxSpriteGroup
 		var chosenGroup = (newNote.isSustain ? holdsGroup : notesGroup);
 		chosenGroup.add(newNote);
 		allNotes.add(newNote);
-		chosenGroup.sort(FlxSort.byY, (!Init.getSetting('Downscroll')) ? FlxSort.DESCENDING : FlxSort.ASCENDING);
+		chosenGroup.sort(FlxSort.byY, (!downscroll) ? FlxSort.DESCENDING : FlxSort.ASCENDING);
 	}
 }
 
