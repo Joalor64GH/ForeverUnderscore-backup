@@ -29,8 +29,9 @@ class Main extends Sprite
 
 	public static var mainClassState:Class<FlxState> = states.TitleState; // specify the state where the game should start at;
 
-	public static final foreverVersion:String = '0.3.1'; // current forever engine version;
-	public static final nightly:Bool = true;
+	public static var engineVersion:String = '0.3'; // current forever engine underscore version;
+	public static var foreverVersion:String = '0.3.1'; // current forever engine version;
+	public static var nightly:Bool = true;
 
 	public static var overlay:Overlay; // info counter that usually appears at the top left corner;
 	public static var console:Console; // console that appears when you press F10 (if allowed);
@@ -158,7 +159,7 @@ class Main extends Sprite
 			+ "\nhttps://github.com/BeastlyGhost/Forever-Engine-Underscore"
 			+ "\n\nCrash Handler written by: sqirra-rng\n"
 			+ "\nForever Engine Underscore v"
-			+ openfl.Lib.application.meta["version"]
+			+ Main.engineVersion
 			+ "\n";
 
 		try // to make the game not crash if it can't save the crash file

@@ -136,7 +136,7 @@ class MainMenu extends MusicBeatState
 			"Forever Engine Legacy v"
 			+ Main.foreverVersion
 			+ "\nForever Engine Underscore v"
-			+ openfl.Lib.application.meta["version"]
+			+ Main.engineVersion
 			+ (Main.nightly ? '-nightly' : ''),
 			12);
 		versionShit.scrollFactor.set();

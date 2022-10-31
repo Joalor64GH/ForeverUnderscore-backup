@@ -97,7 +97,7 @@ class ForeverTools
 			http.onData = function(data:String)
 			{
 				updateVersion = data.split('\n')[0].trim();
-				var curVersion:String = openfl.Lib.application.meta["version"].trim();
+				var curVersion:String = Main.engineVersion.trim();
 				trace('Your Version: ' + curVersion + ' - Latest Version: ' + updateVersion);
 
 				if (updateVersion != curVersion)

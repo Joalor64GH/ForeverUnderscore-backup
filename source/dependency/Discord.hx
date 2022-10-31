@@ -33,7 +33,7 @@ class Discord
 			details: "",
 			state: null,
 			largeImageKey: 'feu-logo',
-			largeImageText: 'Engine Version: v${openfl.Lib.application.meta["version"]}',
+			largeImageText: 'Engine Version: v${Main.engineVersion}',
 		});
 	}
 
@@ -63,7 +63,7 @@ class Discord
 			// changed these so they can be changed by the user;
 			// scripted ones should also come along sooner or later;
 			largeImageKey: largeImageKey,
-			largeImageText: (largeImageText != null ? largeImageText : 'Engine Version: v${openfl.Lib.application.meta["version"]}'),
+			largeImageText: (largeImageText != null ? largeImageText : 'Engine Version: v${Main.engineVersion}'),
 			smallImageKey: smallImageKey,
 			// Obtained times are in milliseconds so they are divided so Discord can use it
 			startTimestamp: Std.int(startTimestamp / 1000),

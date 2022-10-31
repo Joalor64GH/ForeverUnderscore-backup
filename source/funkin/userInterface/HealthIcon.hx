@@ -46,9 +46,8 @@ class HealthIcon extends FlxSprite
 
 	public function bop()
 	{
-		var iconLerp = 0.85;
-		setGraphicSize(Std.int(FlxMath.lerp(initialWidth, width, iconLerp)));
-		updateHitbox();
+		var iconLerp = 1 - Main.framerateAdjust(0.15);
+		scale.set(FlxMath.lerp(1, scale.x, iconLerp), FlxMath.lerp(1, scale.y, iconLerp));
 	}
 
 	public function updateIcon(char:String = 'bf', isPlayer:Bool = false)
