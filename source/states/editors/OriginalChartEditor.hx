@@ -622,6 +622,7 @@ class OriginalChartEditor extends MusicBeatState
 
 	var noteSectInput:FlxUIInputText;
 	var noteStringInput:FlxUIInputText;
+	var stepperNoteTimer:FlxUINumericStepper;
 
 	function addNoteUI():Void
 	{
@@ -658,20 +659,23 @@ class OriginalChartEditor extends MusicBeatState
 
 		blockPressWhileScrolling.push(noteTypeDropDown);
 
-		/*
-			noteSectInput = new FlxUIInputText(10, noteTypeDropDown.y + 30, 180, "");
-			tab_group_note.add(noteSectInput);
-			blockPressWhileTypingOn.push(noteSectInput);
-		 */
+		noteSectInput = new FlxUIInputText(10, noteTypeDropDown.y + 35, 180, "");
+		tab_group_note.add(noteSectInput);
+		blockPressWhileTypingOn.push(noteSectInput);
 
-		noteStringInput = new FlxUIInputText(10, noteTypeDropDown.y + 50, 180, "");
+		stepperNoteTimer = new FlxUINumericStepper(200, noteSectInput.y, 0.1, 0, 0, 10, 1);
+		tab_group_note.add(stepperNoteTimer);
+		blockPressWhileTypingOnStepper.push(stepperNoteTimer);
+
+		noteStringInput = new FlxUIInputText(10, noteSectInput.y + 35, 180, "");
 		tab_group_note.add(noteStringInput);
 		blockPressWhileTypingOn.push(noteStringInput);
 
 		if (curSelectedNote != null)
 		{
 			curSelectedNote[4] = noteStringInput.text;
-			// curSelectedNote[5] = noteSectInput.text;
+			curSelectedNote[5] = noteSectInput.text;
+			curSelectedNote[6] = stepperNoteTimer.value;
 		}
 
 		metronomeTick = new FlxUICheckBox(10, 305, null, null, 'Enable Metronome', 100);
@@ -687,6 +691,7 @@ class OriginalChartEditor extends MusicBeatState
 		tab_group_note.add(new FlxText(120, 10, 0, 'Metronome BPM:'));
 		tab_group_note.add(new FlxText(10, 50, 0, 'Strum time (in miliseconds):'));
 		tab_group_note.add(new FlxText(10, noteTypeDropDown.y - 15, 0, 'Note Type:'));
+		tab_group_note.add(new FlxText(10, noteSectInput.y - 15, 0, 'Note Animation (replaces singing animations):'));
 		tab_group_note.add(new FlxText(10, noteStringInput.y - 15, 0, 'Note Animation Suffix (e.g: -alt, miss):'));
 		tab_group_note.add(stepperSusLength);
 		tab_group_note.add(strumTimeInput);
@@ -1749,16 +1754,11 @@ class OriginalChartEditor extends MusicBeatState
 
 		var noteSus = 0; // ninja you will NOT get away with this
 		var noteType = curNoteType; // define notes as the current type
-		var noteSect = '' /*noteSectInput.text*/;
+		var noteSect = noteSectInput.text;
 		var noteString = noteStringInput.text;
-		var noteTimer = 0 /*noteTimer.value*/;
+		var noteTimer = stepperNoteTimer.value;
 
-		_song.notes[curSection].sectionNotes.push([
-			noteStrum,
-			noteData,
-			noteSus,
-			noteType,
-			noteString /*noteSect, noteString, noteTimer*/]);
+		_song.notes[curSection].sectionNotes.push([noteStrum, noteData, noteSus, noteType, noteString, noteSect, noteTimer]);
 
 		curSelectedNote = _song.notes[curSection].sectionNotes[_song.notes[curSection].sectionNotes.length - 1];
 

@@ -1415,13 +1415,21 @@ class PlayState extends MusicBeatState
 		switch (coolNote.noteType)
 		{
 			case 2: // mines
-				if (character.animOffsets.exists('hurt'))
-					stringArrow = 'hurt';
+				if (stringArrow != coolNote.noteSect)
+				{
+					if (character.animOffsets.exists('hurt'))
+						stringArrow = 'hurt';
+					else
+						stringArrow = baseString + 'miss';
+				}
 				character.specialAnim = true;
 				character.heyTimer = 0.6;
 			default: // anything else
 				var noteString:String = coolNote.noteString != null && coolNote.noteString != '' ? coolNote.noteString : '';
-				stringArrow = baseString + altString + noteString;
+				if (coolNote.noteSect != null && coolNote.noteSect != '')
+					stringArrow = coolNote.noteSect;
+				else
+					stringArrow = baseString + altString + noteString;
 				character.specialAnim = false;
 		}
 
@@ -1429,6 +1437,11 @@ class PlayState extends MusicBeatState
 		{
 			var finalString:String = stringArrow != null ? stringArrow : baseString;
 			character.playAnim(finalString, true);
+			if (stringArrow == coolNote.noteSect && coolNote.noteTimer > 0)
+			{
+				character.specialAnim = true;
+				character.heyTimer = coolNote.noteTimer;
+			}
 			character.holdTimer = 0;
 		}
 	}

@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - New Placeholder Character (thanks @SuokArts3);
 - Flashing Lights warning;
 - Event Lines on the Chart Editor;
+- Special Animations per Note;
 
 
 ### Fixed

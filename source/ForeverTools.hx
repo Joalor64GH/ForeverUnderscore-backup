@@ -5,6 +5,7 @@ import base.*;
 import flixel.FlxG;
 import flixel.system.FlxSound;
 import flixel.text.FlxText;
+import flixel.util.FlxAxes;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween.FlxTweenType;
 import flixel.util.FlxColor;
@@ -214,18 +215,18 @@ class ForeverTools
 		return FlxColor.TRANSPARENT;
 	}
 
-	public static function getPoint(point:String):flixel.util.FlxAxes
+	public static function getPoint(point:String):FlxAxes
 	{
 		switch (point.toLowerCase())
 		{
 			case 'x':
-				return flixel.util.FlxAxes.X;
+				return FlxAxes.X;
 			case 'y':
-				return flixel.util.FlxAxes.Y;
+				return FlxAxes.Y;
 			case 'xy':
-				return flixel.util.FlxAxes.XY;
+				return FlxAxes.XY;
 		}
-		return flixel.util.FlxAxes.XY;
+		return FlxAxes.XY;
 	}
 
 	public static function fromHSB(hue:Float, sat:Float, brt:Float, alpha:Float):FlxColor
