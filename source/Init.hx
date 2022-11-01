@@ -197,6 +197,12 @@ class Init extends FlxState
 			"Fixes the judgements to the camera instead of to the world itself, making them easier to read.",
 			NOT_FORCED
 		],
+		'Judgement Recycling' => [
+			true,
+			Checkmark,
+			"Rather than adding a new judgement on hit, objects are reused when possible, may cause layering issues.",
+			NOT_FORCED
+		],
 		'Adjust Judgements' => [
 			'',
 			State,

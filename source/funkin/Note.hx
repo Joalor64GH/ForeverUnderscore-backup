@@ -18,6 +18,8 @@ class Note extends FNFSprite
 	public var noteType:Int = 0;
 
 	public var noteString:String = '';
+	public var noteSect:String = '';
+	public var noteTimer:Float = 0;
 
 	public var canBeHit:Bool = false;
 	public var tooLate:Bool = false;
@@ -83,7 +85,8 @@ class Note extends FNFSprite
 		noteString = '';
 	}
 
-	public function new(strumTime:Float, noteData:Int, noteAlt:Float, ?prevNote:Note, ?isSustain:Bool = false, ?noteType:Int = 0, ?noteString:String)
+	public function new(strumTime:Float, noteData:Int, noteAlt:Float, ?prevNote:Note, ?isSustain:Bool = false, ?noteType:Int = 0, ?noteString:String,
+			?noteSect:String, ?noteTimer:Float = 0)
 	{
 		super(x, y);
 
@@ -93,6 +96,8 @@ class Note extends FNFSprite
 		this.prevNote = prevNote;
 		this.noteType = noteType;
 		this.noteString = noteString;
+		this.noteSect = noteSect;
+		this.noteTimer = noteTimer;
 		this.isSustain = isSustain;
 
 		if (noteType == null || noteType <= 0)
@@ -100,6 +105,12 @@ class Note extends FNFSprite
 
 		if (noteString == null)
 			noteString = '';
+
+		if (noteSect == null)
+			noteSect = '';
+
+		if (noteTimer == null || noteTimer <= 0)
+			noteTimer = 0;
 
 		switch (noteType)
 		{
@@ -129,8 +140,12 @@ class Note extends FNFSprite
 		if (isSustain && prevNote != null)
 		{
 			parentNote = prevNote;
+			if (parentNote.noteSect != null)
+				this.noteSect = parentNote.noteSect;
 			if (parentNote.noteString != null)
 				this.noteString = parentNote.noteString;
+			if (parentNote.noteTimer != 0)
+				this.noteTimer = parentNote.noteTimer;
 			while (parentNote.parentNote != null)
 				parentNote = parentNote.parentNote;
 			parentNote.childrenNotes.push(this);

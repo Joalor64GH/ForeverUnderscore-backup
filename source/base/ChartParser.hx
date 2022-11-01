@@ -49,6 +49,8 @@ class ChartParser
 				swagNote.sustainLength = songNotes[2];
 				swagNote.noteType = songNotes[3];
 				swagNote.noteString = songNotes[4];
+				swagNote.noteSect = songNotes[5];
+				swagNote.noteTimer = songNotes[6];
 
 				if (swagNote.sustainLength > 0)
 					swagNote.sustainLength = Math.round(swagNote.sustainLength / Conductor.stepCrochet) * Conductor.stepCrochet;

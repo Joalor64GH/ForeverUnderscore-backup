@@ -1415,13 +1415,21 @@ class PlayState extends MusicBeatState
 		switch (coolNote.noteType)
 		{
 			case 2: // mines
-				if (character.animOffsets.exists('hurt'))
-					stringArrow = 'hurt';
+				if (stringArrow != coolNote.noteSect)
+				{
+					if (character.animOffsets.exists('hurt'))
+						stringArrow = 'hurt';
+					else
+						stringArrow = baseString + 'miss';
+				}
 				character.specialAnim = true;
 				character.heyTimer = 0.6;
 			default: // anything else
 				var noteString:String = coolNote.noteString != null && coolNote.noteString != '' ? coolNote.noteString : '';
-				stringArrow = baseString + altString + noteString;
+				if (coolNote.noteSect != null && coolNote.noteSect != '')
+					stringArrow = coolNote.noteSect;
+				else
+					stringArrow = baseString + altString + noteString;
 				character.specialAnim = false;
 		}
 
@@ -1429,6 +1437,11 @@ class PlayState extends MusicBeatState
 		{
 			var finalString:String = stringArrow != null ? stringArrow : baseString;
 			character.playAnim(finalString, true);
+			if (stringArrow == coolNote.noteSect && coolNote.noteTimer > 0)
+			{
+				character.specialAnim = true;
+				character.heyTimer = coolNote.noteTimer;
+			}
 			character.holdTimer = 0;
 		}
 	}
@@ -1612,11 +1625,15 @@ class PlayState extends MusicBeatState
 			because miss judgements can pop, and they dont mess with your sick combo
 		 */
 		var rating = ForeverAssets.generateRating('$newRating', perfect, lateHit, judgementsGroup, assetModifier, uiModifier, 'UI');
+		if (!Init.getSetting('Judgement Recycling'))
+			insert(members.indexOf(strumLines), rating);
 
 		if (!cached)
 		{
 			if (!Init.getSetting('Judgement Stacking'))
 			{
+				if (!Init.getSetting('Judgement Recycling'))
+					insert(members.indexOf(strumLines), rating);
 				if (lastJudge != null)
 					lastJudge.kill();
 				if (rating != null && rating.alive)
@@ -1661,11 +1678,14 @@ class PlayState extends MusicBeatState
 		{
 			var comboNum = ForeverAssets.generateCombo('combo_numbers', stringArray[scoreInt], (!negative ? perfect : false), comboGroup, assetModifier,
 				uiModifier, 'UI', negative, createdColor, scoreInt);
+			if (!Init.getSetting('Judgement Recycling'))
+				insert(members.indexOf(strumLines), comboNum);
 
 			if (!Init.getSetting('Judgement Stacking'))
 			{
-				for (i in 0...comboGroup.members.length)
-					lastCombo.push(comboGroup.members[i]);
+				if (!Init.getSetting('Judgement Recycling'))
+					insert(members.indexOf(strumLines), comboNum);
+				lastCombo.push(comboNum);
 			}
 
 			if (Init.getSetting('Fixed Judgements'))

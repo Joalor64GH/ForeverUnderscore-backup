@@ -123,6 +123,7 @@ class OptionsMenu extends MusicBeatState
 					["Judgements and Combo", null],
 
 					['Judgement Stacking', getFromOption],
+					['Judgement Recycling', getFromOption],
 					['Fixed Judgements', getFromOption],
 					['Adjust Judgements', openJudgeState],
 					['Counter', getFromOption],
