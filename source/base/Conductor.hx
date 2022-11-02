@@ -1,9 +1,9 @@
 package base;
 
+import base.SongLoader.LegacySong;
 import flixel.FlxG;
 import flixel.system.FlxSound;
 import states.PlayState;
-import base.SongLoader.LegacySong;
 
 using StringTools;
 

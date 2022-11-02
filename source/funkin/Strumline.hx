@@ -157,7 +157,7 @@ class Receptor extends FlxSprite
 	public var yTo:Float;
 	public var angleTo:Float;
 
-	public var setAlpha:Float = (Init.getSetting('Arrow Opacity') * 0.01);
+	public var setAlpha:Float = Init.getSetting('Arrow Opacity') * 0.01;
 
 	public var overrideAlpha:Bool = false;
 

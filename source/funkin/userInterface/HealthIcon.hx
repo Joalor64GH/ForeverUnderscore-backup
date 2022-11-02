@@ -1,11 +1,11 @@
 package funkin.userInterface;
 
-import sys.FileSystem;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.graphics.FlxGraphic;
 import flixel.graphics.frames.FlxAtlasFrames;
 import flixel.math.FlxMath;
+import sys.FileSystem;
 
 using StringTools;
 

@@ -821,12 +821,12 @@ class PlayState extends MusicBeatState
 
 	var lastSection:Int = 0;
 
-	@:isVar public static var songSpeed(get, default):Float = 0;
+	@:isVar public var songSpeed(get, default):Float = 0;
 
-	static function get_songSpeed()
+	function get_songSpeed()
 		return songSpeed * Conductor.playbackRate;
 
-	static function set_songSpeed(value:Float):Float
+	function set_songSpeed(value:Float):Float
 	{
 		var offset:Float = songSpeed / value;
 		for (note in bfStrums.allNotes)
@@ -1145,8 +1145,10 @@ class PlayState extends MusicBeatState
 					else
 						strumNote.noteSpeed = Math.abs(songSpeed);
 
-					var receptorX:Float = strumline.receptors.members[Math.floor(strumNote.noteData)].x;
-					var receptorY:Float = strumline.receptors.members[Math.floor(strumNote.noteData)].y;
+					var strumData = Math.floor(strumNote.noteData);
+
+					var receptorX:Float = strumline.receptors.members[strumData].x;
+					var receptorY:Float = strumline.receptors.members[strumData].y;
 					var psuedoY:Float = (downscrollMult * -((Conductor.songPosition - strumNote.strumTime) * (0.45 * strumNote.noteSpeed)));
 					var psuedoX:Float = 25 + strumNote.noteVisualOffset;
 
@@ -1978,6 +1980,8 @@ class PlayState extends MusicBeatState
 		}
 	}
 
+	public var songSpeedTween:FlxTween;
+
 	public function eventNoteHit(event:String, value1:String, value2:String, value3:String)
 	{
 		/* NOTE: unhardcode this later */
@@ -2077,7 +2081,24 @@ class PlayState extends MusicBeatState
 				if (Math.isNaN(timer))
 					timer = 0;
 
-				set_songSpeed(mult);
+				var speed = SONG.speed * mult;
+
+				if (mult <= 0)
+				{
+					songSpeed = speed;
+				}
+				else
+				{
+					if (songSpeedTween != null)
+						songSpeedTween.cancel();
+					songSpeedTween = FlxTween.tween(this, {songSpeed: speed}, timer / Conductor.playbackRate, {
+						ease: ForeverTools.returnTweenEase(value3),
+						onComplete: function(twn:FlxTween)
+						{
+							songSpeedTween = null;
+						}
+					});
+				}
 		}
 
 		callFunc('eventNoteHit', [event, value1, value2, value3]);
@@ -2526,7 +2547,10 @@ class PlayState extends MusicBeatState
 	{
 		// GENERAL
 		setVar('game', PlayState.contents);
-		setVar('ui', PlayState.uiHUD);
+
+		if (uiHUD != null)
+			setVar('ui', uiHUD);
+
 		setVar('logTrace', function(text:String, time:Float, onConsole:Bool = false)
 		{
 			logTrace(text, time, onConsole, PlayState.dialogueHUD);
@@ -2565,6 +2589,15 @@ class PlayState extends MusicBeatState
 			setVar('girlfriend', gf);
 			setVar('gfName', PlayState.gf.curCharacter);
 		}
+
+		if (bfStrums != null)
+			setVar('bfStrums', bfStrums);
+
+		if (dadStrums != null)
+			setVar('dadStrums', dadStrums);
+
+		setVar('score', songScore);
+		setVar('misses', misses);
 
 		setVar('setProperty', function(key:String, value:Dynamic)
 		{

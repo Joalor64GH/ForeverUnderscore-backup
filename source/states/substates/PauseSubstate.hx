@@ -1,8 +1,5 @@
 package states.substates;
 
-import sys.FileSystem;
-import sys.thread.Mutex;
-import sys.thread.Thread;
 import base.*;
 import base.CoolUtil;
 import base.MusicBeat.MusicBeatSubstate;
@@ -19,6 +16,9 @@ import funkin.Alphabet;
 import funkin.Highscore;
 import states.*;
 import states.menus.*;
+import sys.FileSystem;
+import sys.thread.Mutex;
+import sys.thread.Thread;
 
 class PauseSubstate extends MusicBeatSubstate
 {

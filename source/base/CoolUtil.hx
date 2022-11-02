@@ -1,9 +1,9 @@
 package base;
 
-import sys.FileSystem;
 import flixel.FlxG;
 import openfl.Assets;
 import states.PlayState;
+import sys.FileSystem;
 
 using StringTools;
 

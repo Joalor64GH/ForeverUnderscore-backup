@@ -1,6 +1,5 @@
 package states.menus;
 
-import sys.FileSystem;
 import base.MusicBeat.MusicBeatState;
 import dependency.Discord;
 import flixel.FlxCamera;
@@ -17,6 +16,7 @@ import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
 import lime.app.Application;
 import states.substates.PauseSubstate;
+import sys.FileSystem;
 
 using StringTools;
 

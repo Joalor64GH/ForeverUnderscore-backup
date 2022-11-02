@@ -1,6 +1,5 @@
 package states.editors;
 
-import haxe.io.Bytes;
 import base.MusicBeat.MusicBeatState;
 import flixel.FlxBasic;
 import flixel.FlxG;
@@ -21,6 +20,7 @@ import flixel.util.FlxGradient;
 import funkin.Note;
 import funkin.userInterface.menu.DebugUI.UIBox;
 import funkin.userInterface.menu.DebugUI;
+import haxe.io.Bytes;
 import lime.media.AudioBuffer;
 import lime.media.vorbis.VorbisFile;
 import openfl.display.BitmapData;

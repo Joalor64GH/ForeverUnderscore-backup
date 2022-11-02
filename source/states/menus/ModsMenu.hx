@@ -1,11 +1,11 @@
 package states.menus;
 
-import sys.FileSystem;
 import base.MusicBeat.MusicBeatState;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import funkin.Alphabet;
+import sys.FileSystem;
 
 using StringTools;
 

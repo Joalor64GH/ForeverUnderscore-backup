@@ -8,9 +8,9 @@ import flixel.system.FlxSound;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 import flixel.util.FlxTimer;
+import funkin.Alphabet;
 import sys.thread.Mutex;
 import sys.thread.Thread;
-import funkin.Alphabet;
 
 /*
 	Substate used to load engine editors

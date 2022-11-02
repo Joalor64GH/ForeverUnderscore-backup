@@ -1,6 +1,6 @@
 package base;
 
-import sys.io.File;
+import base.*;
 import dependency.*;
 import flixel.*;
 import flixel.addons.display.FlxBackdrop;
@@ -24,7 +24,7 @@ import openfl.display.GraphicsShader;
 import openfl.filters.ShaderFilter;
 import states.PlayState;
 import states.substates.ScriptedSubstate;
-import base.*;
+import sys.io.File;
 
 using StringTools;
 
@@ -79,6 +79,8 @@ class ScriptHandler extends SScript
 		#end
 		set('GraphicsShader', GraphicsShader);
 		set('ShaderFilter', ShaderFilter);
+
+		set('AtlasFrameMaker', dependency.textureatlas.AtlasFrameMaker);
 
 		// CLASSES (FOREVER);
 		set('Init', Init);

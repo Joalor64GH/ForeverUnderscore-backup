@@ -2,6 +2,7 @@ package states.menus;
 
 import base.MusicBeat.MusicBeatState;
 import dependency.Discord;
+import flash.display.BitmapData;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.addons.display.FlxBackdrop;
@@ -12,12 +13,11 @@ import flixel.system.FlxSound;
 import flixel.text.FlxText;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
-import flixel.util.FlxGradient;
 import flixel.util.FlxColor;
-import openfl.display.BlendMode;
+import flixel.util.FlxGradient;
 import flixel.util.FlxSpriteUtil;
-import flash.display.BitmapData;
 import funkin.userInterface.AttachedSprite;
+import openfl.display.BlendMode;
 
 using StringTools;
 
