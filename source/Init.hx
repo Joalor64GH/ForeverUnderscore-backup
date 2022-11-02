@@ -122,12 +122,6 @@ class Init extends FlxState
 			NOT_FORCED,
 			['never', 'freeplay only', 'always']
 		],
-		'Simplify Score Bar' => [
-			true,
-			Checkmark,
-			'Whether the text showing your Score Info should be simplified',
-			NOT_FORCED,
-		],
 		'Center Display' => [
 			'Song Name',
 			Selector,

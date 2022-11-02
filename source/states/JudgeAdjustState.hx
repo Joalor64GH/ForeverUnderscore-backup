@@ -65,21 +65,7 @@ class JudgeAdjustState extends MusicBeatState
 		bfStrums.cameras = [_camUI];
 		dadStrums.cameras = [_camUI];
 
-		if (Init.getSetting('Centered Receptors'))
-		{
-			// psych-like Opponent Strumlines;
-			for (i in 0...dadStrums.receptors.members.length)
-			{
-				if (i > 1)
-				{
-					dadStrums.receptors.members[i].x += FlxG.width / 2 + 25;
-				}
-
-				dadStrums.members[i].alpha = 0.35;
-				dadStrums.receptors.members[i].overrideAlpha = true;
-			}
-		}
-		dadStrums.visible = !Init.getSetting('Hide Opponent Receptors');
+		dadStrums.visible = (!Init.getSetting('Hide Opponent Receptors') || Init.getSetting('Centered Receptors'));
 
 		infoBar = new FlxText((Init.getSetting('Downscroll') ? FlxG.height - 45 : 20), 0, '');
 		infoBar.setFormat(Paths.font('vcr'), 32, FlxColor.WHITE);

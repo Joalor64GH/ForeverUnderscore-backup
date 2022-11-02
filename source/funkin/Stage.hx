@@ -224,9 +224,7 @@ class Stage extends FlxTypedGroup<FlxBasic>
 
 	function callStageScript()
 	{
-		var extensions = ['hx', 'hxs', 'hscript', 'hxc'];
-
-		for (ext in extensions)
+		for (ext in Paths.scriptExts)
 		{
 			if (ext != null)
 			{
