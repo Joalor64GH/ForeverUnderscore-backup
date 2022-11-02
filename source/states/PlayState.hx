@@ -954,10 +954,13 @@ class PlayState extends MusicBeatState
 				}
 
 				var mustHit = PlayState.SONG.notes[Std.int(curStep / 16)].mustHitSection;
+				var altSection = PlayState.SONG.notes[Std.int(curStep / 16)].altAnim;
 				var gfSection = PlayState.SONG.notes[Std.int(curStep / 16)].gfSection;
 
 				setVar('mustHit', mustHit);
 				setVar('gfSection', gfSection);
+				setVar('altSection', altSection);
+				setVar('curSection', curSection);
 
 				if (!mustHit && !gfSection)
 				{
@@ -1406,7 +1409,7 @@ class PlayState extends MusicBeatState
 			altString = '-alt';
 
 		var altSection = (SONG.notes[Math.floor(curStep / 16)] != null) && (SONG.notes[Math.floor(curStep / 16)].altAnim);
-		if ((altSection) && (character.animOffsets.exists(baseString + '-alt')) || (coolNote.noteType == 1))
+		if ((altSection) && (character.animOffsets.exists(baseString + '-alt')))
 		{
 			if (altString != '-alt')
 				altString = '-alt';
@@ -1820,7 +1823,12 @@ class PlayState extends MusicBeatState
 	{
 		super.stepHit();
 
-		Conductor.resyncBySteps();
+		if (Math.abs(Conductor.songMusic.time - (Conductor.songPosition - Conductor.safeZoneOffset)) > (20 * Conductor.playbackRate)
+			|| (PlayState.SONG.needsVoices
+				&& Math.abs(Conductor.songVocals.time - (Conductor.songPosition - Conductor.safeZoneOffset)) > (20 * Conductor.playbackRate)))
+		{
+			Conductor.resyncVocals();
+		}
 
 		stageBuild.stageUpdateSteps(curStep, boyfriend, gf, dad);
 
@@ -1831,18 +1839,19 @@ class PlayState extends MusicBeatState
 	{
 		for (i in strumLines)
 		{
-			if (curBeat % i.character.bopSpeed == 0)
+			if (i.character != null
+				&& (!i.character.danceIdle && curBeat % i.character.bopSpeed == 0)
+				|| (i.character.danceIdle && curBeat % Math.round(gfSpeed * i.character.bopSpeed) == 0))
 			{
-				if (i.character != null && i.character.animation.curAnim.name.startsWith("idle") // check if the idle exists before dancing
+				if (i.character.animation.curAnim.name.startsWith("idle") // check if the idle exists before dancing
 					|| i.character.animation.curAnim.name.startsWith("dance"))
 					i.character.dance();
 			}
 		}
 
-		if (curBeat % Math.round(gfSpeed * gf.bopSpeed) == 0)
+		if (gf != null && curBeat % Math.round(gfSpeed * gf.bopSpeed) == 0)
 		{
-			if (gf != null && gf.animation.curAnim.name.startsWith("idle") // check the if the idle exists before dancing
-				|| gf.animation.curAnim.name.startsWith("dance"))
+			if (gf.animation.curAnim.name.startsWith("idle") || gf.animation.curAnim.name.startsWith("dance"))
 				gf.dance();
 		}
 	}
@@ -2573,31 +2582,54 @@ class PlayState extends MusicBeatState
 		{
 			setVar('bf', boyfriend);
 			setVar('boyfriend', boyfriend);
-			setVar('bfName', PlayState.boyfriend.curCharacter);
+			setVar('bfName', boyfriend.curCharacter);
 		}
 
 		if (dad != null)
 		{
 			setVar('dad', dad);
 			setVar('dadOpponent', dad);
-			setVar('dadName', PlayState.dad.curCharacter);
+			setVar('dadName', dad.curCharacter);
 		}
 
 		if (gf != null)
 		{
 			setVar('gf', gf);
 			setVar('girlfriend', gf);
-			setVar('gfName', PlayState.gf.curCharacter);
+			setVar('gfName', gf.curCharacter);
 		}
 
 		if (bfStrums != null)
 			setVar('bfStrums', bfStrums);
-
 		if (dadStrums != null)
 			setVar('dadStrums', dadStrums);
+		if (strumLines != null)
+			setVar('strumLines', strumLines);
+		if (allUIs != null)
+			setVar('allUIs', allUIs);
+		if (camGame != null)
+			setVar('camGame', camGame);
+		if (camHUD != null)
+			setVar('camHUD', camHUD);
+		if (camAlt != null)
+			setVar('camAlt', camAlt);
+		if (dialogueHUD != null)
+			setVar('dialogueHUD', dialogueHUD);
+		if (comboHUD != null)
+			setVar('comboHUD', comboHUD);
+		if (strumHUD != null)
+			setVar('strumHUD', strumHUD);
 
 		setVar('score', songScore);
+		setVar('combo', combo);
+		setVar('health', health);
+		setVar('maxHealth', maxHealth);
+		setVar('hits', hits);
 		setVar('misses', misses);
+		setVar('deaths', deaths);
+
+		setVar('curBeat', curBeat);
+		setVar('curStep', curStep);
 
 		setVar('setProperty', function(key:String, value:Dynamic)
 		{
