@@ -192,31 +192,16 @@ class ClassHUD extends FlxTypedGroup<FlxBasic>
 		var importSongScore = PlayState.songScore;
 		var importMisses = PlayState.misses;
 		var importAccuracy:String = Std.string(Math.floor(Timings.getAccuracy() * 100) / 100);
-		var importRanking:String = Timings.returnScoreRating().toUpperCase();
 
 		var unrated = (Timings.comboDisplay == null || Timings.comboDisplay == '');
-
-		// testing purposes
-		var displayAccuracy:Bool = Init.getSetting('Display Accuracy');
-
 		var tempScore:String = 'Score: $importSongScore';
-		if (displayAccuracy)
-		{
-			if (!Init.getSetting('Simplify Score Bar'))
-			{
-				tempScore += divider + 'Accuracy: $importAccuracy%' + (!unrated ? ' [' + Timings.comboDisplay + ']' : '');
-				tempScore += divider + 'Combo Breaks: $importMisses';
-				tempScore += divider + 'Rank: $importRanking';
-			}
-			else
-			{
-				tempScore += divider
-					+ 'Accuracy: $importAccuracy%'
-					+ (!unrated ? ' [' + Timings.comboDisplay + divider + importRanking + ']' : ' [' + importRanking + ']');
-				tempScore += divider + 'Combo Breaks: $importMisses';
-			}
-		}
 
+		if (Init.getSetting('Display Accuracy'))
+		{
+			tempScore += divider + 'Accuracy: $importAccuracy%';
+			tempScore += !unrated ? ' [' + Timings.comboDisplay + divider + Timings.returnScoreRating() + ']' : ' [' + Timings.returnScoreRating() + ']';
+			tempScore += divider + 'Combo Breaks: $importMisses';
+		}
 		tempScore += '\n';
 
 		scoreBar.text = tempScore;

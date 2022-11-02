@@ -80,7 +80,7 @@ class Main extends Sprite
 
 		#if desktop
 		overlay = new Overlay(0, 0);
-		overlay.alpha = Init.trueSettings.get('Overlay Opacity') * 0.01;
+		updateOverlayAlpha(Init.trueSettings.get('Overlay Opacity') * 0.01);
 		addChild(overlay);
 
 		console = new Console();

@@ -383,12 +383,11 @@ class Character extends FNFSprite
 	function generateBaseChar(char:String = 'bf')
 	{
 		var pushedScripts:Array<String> = [];
-		var extensions = ['hx', 'hxs', 'hscript', 'hxc'];
 		var paths:Array<String> = ['characters/$char/config', 'characters/$char/config'];
 
 		for (i in paths)
 		{
-			for (j in extensions)
+			for (j in Paths.scriptExts)
 			{
 				if (j != null)
 				{

@@ -33,6 +33,8 @@ class Paths
 	// mod level
 	public static var currentMod:String = 'default';
 
+	public static var scriptExts:Array<String> = ['hx', 'hxs', 'hscript', 'hxc'];
+
 	// set the current level top the condition of this function if called
 	static public function setCurrentLevel(name:String)
 	{

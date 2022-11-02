@@ -548,16 +548,16 @@ class PlayState extends MusicBeatState
 
 		if (Init.getSetting('Centered Receptors'))
 		{
-			// psych-like Opponent Strumlines;
-			for (i in 0...dadStrums.receptors.members.length)
+			for (i in 0...PlayState.dadStrums.members.length)
 			{
-				if (i > 1)
-				{
-					dadStrums.receptors.members[i].x += FlxG.width / 2 + 25;
-				}
+				PlayState.dadStrums.members[i].x += 320;
+				PlayState.dadStrums.members[i].alpha = 0.25;
+			}
 
-				dadStrums.members[i].alpha = 0.35;
-				dadStrums.receptors.members[i].overrideAlpha = true;
+			for (i in 0...PlayState.dadStrums.receptors.members.length)
+			{
+				PlayState.dadStrums.receptors.members[i].alpha = 0;
+				PlayState.dadStrums.receptors.members[i].overrideAlpha = true;
 			}
 		}
 
@@ -2468,7 +2468,6 @@ class PlayState extends MusicBeatState
 
 	function callScripts()
 	{
-		var extensions = ['hx', 'hxs', 'hscript', 'hxc'];
 		var dirs:Array<Array<String>> = [
 			CoolUtil.absoluteDirectory('scripts'),
 			CoolUtil.absoluteDirectory('songs/${CoolUtil.swapSpaceDash(PlayState.SONG.song.toLowerCase())}')
@@ -2480,7 +2479,7 @@ class PlayState extends MusicBeatState
 			{
 				if (dir != null && dir.length > 0)
 				{
-					for (ext in extensions)
+					for (ext in Paths.scriptExts)
 					{
 						if (script != null && script.length > 0 && script.endsWith('.$ext'))
 							scriptArray.push(new ScriptHandler(script));
