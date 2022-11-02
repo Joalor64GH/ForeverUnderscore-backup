@@ -10,6 +10,8 @@ import flixel.FlxSprite;
 import flixel.effects.FlxFlicker;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.text.FlxText;
+import flixel.tweens.FlxEase;
+import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
 import flixel.util.FlxTimer;
 import funkin.Alphabet;
@@ -30,6 +32,8 @@ class OptionsMenu extends MusicBeatState
 	var curCategory:String;
 
 	var lockedMovement:Bool = false;
+
+	var bg:FlxSprite;
 
 	override public function create():Void
 	{
@@ -174,7 +178,7 @@ class OptionsMenu extends MusicBeatState
 		Init.reloadCustomSkins();
 
 		// call the options menu
-		var bg = new FlxSprite(-85).loadGraphic(Paths.image('menus/base/menuDesat'));
+		bg = new FlxSprite(-85).loadGraphic(Paths.image('menus/base/menuDesat'));
 		bg.scrollFactor.set(0, 0.18);
 		bg.setGraphicSize(Std.int(bg.width * 1.1));
 		bg.updateHitbox();
@@ -190,6 +194,17 @@ class OptionsMenu extends MusicBeatState
 		add(infoText);
 
 		loadSubgroup('main');
+	}
+
+	var mainColor:FlxColor;
+
+	function changeBackColor()
+	{
+		if (curCategory != 'main')
+			mainColor = FlxColor.fromRGB(FlxG.random.int(55, 255), FlxG.random.int(55, 255), FlxG.random.int(55, 255));
+		else
+			mainColor = FlxColor.fromString('#CE64DF');
+		FlxTween.color(bg, 0.35, bg.color, mainColor);
 	}
 
 	var currentAttachmentMap:Map<Alphabet, Dynamic>;
@@ -239,6 +254,7 @@ class OptionsMenu extends MusicBeatState
 		// reset the selection
 		curSelection = 0;
 		selectOption(curSelection);
+		changeBackColor();
 	}
 
 	function selectOption(newSelection:Int, shouldPlaySound:Bool = true)
@@ -280,10 +296,6 @@ class OptionsMenu extends MusicBeatState
 				{
 					case 'Meta Settings' | 'Text Settings':
 						decreaseVal = 300;
-					case 'Judgements':
-						decreaseVal = 360;
-					case 'Notes':
-						decreaseVal = 450;
 					case 'Miscellaneous Settings' | 'Judgements and Combo':
 						decreaseVal = 55;
 						divideVal = 50;

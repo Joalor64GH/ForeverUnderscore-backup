@@ -34,7 +34,7 @@ class Conductor
 	public static var lastSongPos:Float;
 
 	public static var songPosition:Float;
-	public static var offset:Float = 0; // song chart offset;
+	public static var safeZoneOffset:Float = 0; // song chart offset;
 
 	public static var songMusic:FlxSound;
 	public static var songVocals:FlxSound;
@@ -121,7 +121,10 @@ class Conductor
 	{
 		songMusic.play();
 		for (vocals in vocalArray)
-			vocals.play();
+		{
+			if (vocals != null && !vocals.playing)
+				vocals.play();
+		}
 		resyncVocals();
 	}
 
@@ -133,7 +136,7 @@ class Conductor
 
 		for (vocals in vocalArray)
 		{
-			if (vocals.playing)
+			if (vocals != null && vocals.playing)
 				vocals.pause();
 		}
 	}
@@ -163,22 +166,11 @@ class Conductor
 
 		songPosition = songMusic.time;
 
-		if (songPosition <= songVocals.length)
+		if (vocalArray != null)
 		{
-			allVocals().time = songPosition;
-			allVocals().pitch = playbackRate;
+			if (songPosition <= songVocals.length)
+				allVocals().time = songPosition;
 			allVocals().play();
-		}
-	}
-
-	public static function resyncBySteps()
-	{
-		var setOffset = Init.trueSettings['Offset'];
-
-		if (Math.abs(songMusic.time - (songPosition - offset - setOffset)) > (20 * playbackRate)
-			|| (PlayState.SONG.needsVoices && Math.abs(songVocals.time - (songPosition - offset - setOffset)) > (20 * playbackRate)))
-		{
-			resyncVocals();
 		}
 	}
 
