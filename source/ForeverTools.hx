@@ -1,17 +1,17 @@
 package;
 
-import sys.FileSystem;
 import base.*;
 import flixel.FlxG;
 import flixel.system.FlxSound;
 import flixel.text.FlxText;
-import flixel.util.FlxAxes;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween.FlxTweenType;
+import flixel.util.FlxAxes;
 import flixel.util.FlxColor;
 import openfl.display.BlendMode;
 import openfl.utils.AssetType;
 import states.PlayState;
+import sys.FileSystem;
 
 using StringTools;
 

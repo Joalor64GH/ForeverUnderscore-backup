@@ -1,7 +1,7 @@
 package funkin;
 
-import states.PlayState;
 import funkin.*;
+import states.PlayState;
 
 /**
 	Here's a class that calculates timings and judgements for the songs and such

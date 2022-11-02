@@ -29,6 +29,8 @@ class FNFSprite extends FlxSprite
 		super(x, y);
 
 		animOffsets = new Map<String, Array<Float>>();
+
+		antialiasing = !Init.trueSettings.get('Disable Antialiasing');
 	}
 
 	public function playAnim(AnimName:String, Force:Bool = false, Reversed:Bool = false, Frame:Int = 0):Void

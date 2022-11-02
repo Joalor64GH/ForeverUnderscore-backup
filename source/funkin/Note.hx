@@ -3,8 +3,8 @@ package funkin;
 import base.*;
 import dependency.FNFSprite;
 import flixel.FlxG;
-import states.PlayState;
 import funkin.Strumline.Receptor;
+import states.PlayState;
 
 using StringTools;
 

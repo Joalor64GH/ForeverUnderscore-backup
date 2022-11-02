@@ -1,8 +1,8 @@
 package base.debug;
 
-import haxe.Timer;
 import flixel.FlxG;
 import flixel.math.FlxMath;
+import haxe.Timer;
 import openfl.Lib;
 import openfl.events.Event;
 import openfl.system.System;

@@ -1,14 +1,14 @@
 package base;
 
+import base.Conductor.BPMChangeEvent;
 import dependency.FNFUIState;
 import flixel.FlxCamera;
 import flixel.FlxG;
 import flixel.FlxSubState;
-import funkin.PlayerSettings;
-import flixel.tweens.FlxTween;
-import flixel.tweens.FlxEase;
 import flixel.text.FlxText;
-import base.Conductor.BPMChangeEvent;
+import flixel.tweens.FlxEase;
+import flixel.tweens.FlxTween;
+import funkin.PlayerSettings;
 
 /* 
 	Music beat state happens to be the first thing on my list of things to add, it just so happens to be the backbone of

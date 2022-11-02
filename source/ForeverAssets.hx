@@ -1,6 +1,5 @@
 package;
 
-import sys.FileSystem;
 import base.Conductor;
 import base.SongLoader.LegacySection;
 import dependency.FNFSprite;
@@ -17,6 +16,7 @@ import funkin.Strumline.Receptor;
 import funkin.Timings;
 import funkin.userInterface.menu.*;
 import states.PlayState;
+import sys.FileSystem;
 
 using StringTools;
 

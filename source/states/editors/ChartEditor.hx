@@ -1,7 +1,5 @@
 package states.editors;
 
-import haxe.Json;
-import haxe.io.Bytes;
 import base.Conductor;
 import base.MusicBeat.MusicBeatState;
 import base.SongLoader;
@@ -37,6 +35,8 @@ import flixel.util.FlxGradient;
 import funkin.Note;
 import funkin.Strumline.Receptor;
 import funkin.userInterface.HealthIcon;
+import haxe.Json;
+import haxe.io.Bytes;
 import lime.media.AudioBuffer;
 import openfl.events.Event;
 import openfl.events.IOErrorEvent;

@@ -4,20 +4,20 @@ package funkin;
 	The character class initialises any and all characters that exist within gameplay. For now, the character class will
 	stay the same as it was in the original source of the game. I'll most likely make some changes afterwards though!
 **/
-import haxe.Json;
-import sys.io.File;
 import base.*;
 import base.SongLoader.LegacySection;
 import base.SongLoader.Song;
-import funkin.compatibility.PsychChar;
 import dependency.FNFSprite;
 import flixel.FlxG;
 import flixel.graphics.frames.FlxFramesCollection;
 import flixel.math.FlxPoint;
 import flixel.util.FlxSort;
+import funkin.background.TankmenBG;
+import funkin.compatibility.PsychChar;
+import haxe.Json;
 import states.PlayState;
 import states.substates.GameOverSubstate;
-import funkin.background.TankmenBG;
+import sys.io.File;
 
 using StringTools;
 

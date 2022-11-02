@@ -1,8 +1,5 @@
 package states.menus;
 
-import sys.FileSystem;
-import sys.thread.Mutex;
-import sys.thread.Thread;
 import base.Conductor;
 import base.CoolUtil;
 import base.MusicBeat.MusicBeatState;
@@ -23,6 +20,9 @@ import funkin.*;
 import funkin.Alphabet;
 import funkin.userInterface.HealthIcon;
 import openfl.media.Sound;
+import sys.FileSystem;
+import sys.thread.Mutex;
+import sys.thread.Thread;
 
 using StringTools;
 
