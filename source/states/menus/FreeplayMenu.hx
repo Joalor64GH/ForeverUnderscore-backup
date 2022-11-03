@@ -266,7 +266,7 @@ class FreeplayMenu extends MusicBeatState
 		if (shiftP)
 			shiftMult = 3;
 
-		if (songs.length > 1)
+		if (songs.length > 0)
 		{
 			if (!lockedMovement)
 			{
