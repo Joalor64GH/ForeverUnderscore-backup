@@ -54,17 +54,20 @@ class ForeverAssets
 		}
 
 		var parsedNumber:Null<Int> = Std.parseInt(number);
+		var fullNumber:Int = (parsedNumber != null ? parsedNumber + 1 : 0);
+
 		var combo:FNFSprite;
 		if (group != null && Init.getSetting('Judgement Recycling'))
 			combo = group.recycle(FNFSprite);
 		else
 			combo = new FNFSprite();
 		combo.loadGraphic(Paths.image(ForeverTools.returnSkin(asset, assetModifier, changeableSkin, baseLibrary)), true, width, height);
-		combo.animation.add('combo', [(parsedNumber != null ? parsedNumber + 1 : 0) + (!allSicks ? 0 : 11)], 0, false);
+
+		combo.animation.add('combo', [fullNumber], 0, false);
+		combo.animation.add('combo-perfect', [fullNumber + 11], 0, false);
 
 		combo.alpha = 1;
 		combo.zDepth = -Conductor.songPosition;
-		combo.animation.play('combo');
 		combo.screenCenter();
 		combo.x += (43 * scoreInt) + 20;
 		combo.y += 60;
