@@ -615,7 +615,6 @@ class OriginalChartEditor extends MusicBeatState
 	var stepperSoundTest:FlxUINumericStepper;
 	var stepperType:FlxUINumericStepper;
 	var strumTimeInput:FlxUIInputText;
-	var noteTypeDropDown:PsychDropDown;
 	var playTicksBf:FlxUICheckBox;
 	var playTicksDad:FlxUICheckBox;
 	var metronomeTick:FlxUICheckBox;
