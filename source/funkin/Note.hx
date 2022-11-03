@@ -72,7 +72,6 @@ class Note extends FNFSprite
 	public var hitsoundSuffix = '';
 
 	static var pixelNoteID:Array<Int> = [4, 5, 6, 7];
-	public static var noteTypeNames:Array<String> = ['Normal Note', 'GF Note', 'Mine Note'];
 
 	function resetNote(isGf:Bool = false)
 	{

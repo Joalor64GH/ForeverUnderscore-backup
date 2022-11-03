@@ -613,6 +613,7 @@ class OriginalChartEditor extends MusicBeatState
 
 	var stepperSusLength:FlxUINumericStepper;
 	var stepperSoundTest:FlxUINumericStepper;
+	var stepperType:FlxUINumericStepper;
 	var strumTimeInput:FlxUIInputText;
 	var noteTypeDropDown:PsychDropDown;
 	var playTicksBf:FlxUICheckBox;
@@ -634,32 +635,20 @@ class OriginalChartEditor extends MusicBeatState
 		stepperSusLength.name = 'note_susLength';
 		blockPressWhileTypingOnStepper.push(stepperSusLength);
 
-		strumTimeInput = new FlxUIInputText(10, 65, 180, "0");
+		// note types
+		stepperType = new FlxUINumericStepper(10, stepperSusLength.y + 30, Conductor.stepCrochet / 125, 0, 0, (Conductor.stepCrochet / 125) + 10); // 10 is placeholder
+		stepperType.value = 0;
+		stepperType.name = 'note_type';
+		blockPressWhileTypingOnStepper.push(stepperType);
+
+		stepperSoundTest = new FlxUINumericStepper(130, 25, 1, _song.bpm, 1, 350, 0);
+		blockPressWhileTypingOnStepper.push(stepperSoundTest);
+
+		strumTimeInput = new FlxUIInputText(10, 85, 180, "0");
 		tab_group_note.add(strumTimeInput);
 		blockPressWhileTypingOn.push(strumTimeInput);
 
-		stepperSoundTest = new FlxUINumericStepper(120, 25, 1, _song.bpm, 1, 350, 0);
-		blockPressWhileTypingOnStepper.push(stepperSoundTest);
-
-		// note types
-		for (i in 0...Note.noteTypeNames.length)
-		{
-			if (!Note.noteTypeNames[i].contains('. '))
-				Note.noteTypeNames[i] = i + '. ' + Note.noteTypeNames[i];
-		}
-		noteTypeDropDown = new PsychDropDown(10, 105, PsychDropDown.makeStrIdLabelArray(Note.noteTypeNames, false), function(type:String)
-		{
-			curNoteType = Std.parseInt(type);
-			if (curSelectedNote != null && curSelectedNote[1] > -1)
-			{
-				curSelectedNote[3] = curNoteType;
-				updateGrid();
-			}
-		});
-
-		blockPressWhileScrolling.push(noteTypeDropDown);
-
-		noteSectInput = new FlxUIInputText(10, noteTypeDropDown.y + 35, 180, "");
+		noteSectInput = new FlxUIInputText(10, strumTimeInput.y + 35, 180, "");
 		tab_group_note.add(noteSectInput);
 		blockPressWhileTypingOn.push(noteSectInput);
 
@@ -688,14 +677,14 @@ class OriginalChartEditor extends MusicBeatState
 		playTicksDad.checked = false;
 
 		tab_group_note.add(new FlxText(10, 10, 0, 'Sustain length:'));
-		tab_group_note.add(new FlxText(120, 10, 0, 'Metronome BPM:'));
-		tab_group_note.add(new FlxText(10, 50, 0, 'Strum time (in miliseconds):'));
-		tab_group_note.add(new FlxText(10, noteTypeDropDown.y - 15, 0, 'Note Type:'));
+		tab_group_note.add(new FlxText(130, stepperSoundTest.y - 15, 0, 'Metronome BPM:'));
+		tab_group_note.add(new FlxText(10, strumTimeInput.y - 15, 0, 'Strum time (in miliseconds):'));
+		tab_group_note.add(new FlxText(10, stepperType.y - 15, 0, 'Note Type:'));
 		tab_group_note.add(new FlxText(10, noteSectInput.y - 15, 0, 'Note Animation (replaces singing animations):'));
 		tab_group_note.add(new FlxText(10, noteStringInput.y - 15, 0, 'Note Animation Suffix (e.g: -alt, miss):'));
 		tab_group_note.add(stepperSusLength);
 		tab_group_note.add(strumTimeInput);
-		tab_group_note.add(noteTypeDropDown);
+		tab_group_note.add(stepperType);
 		tab_group_note.add(playTicksBf);
 		tab_group_note.add(playTicksDad);
 		tab_group_note.add(stepperSoundTest);
@@ -826,7 +815,9 @@ class OriginalChartEditor extends MusicBeatState
 					curSelectedNote[2] = nums.value; // change the currently selected note's length
 					updateGrid(); // oh btw I know sus stands for sustain it just bothers me
 				case 'note_type':
-					curNoteType = Std.int(nums.value);
+					curSelectedNote[3] = Std.int(nums.value);
+					updateNoteUI();
+					updateGrid();
 				case 'section_bpm':
 					_song.notes[curSection].bpm = Std.int(nums.value); // redefine the section's bpm
 					updateGrid(); // update the note grid
@@ -1497,10 +1488,7 @@ class OriginalChartEditor extends MusicBeatState
 			{
 				stepperSusLength.value = curSelectedNote[2];
 				if (curSelectedNote[3] != null)
-				{
-					curNoteType = Std.parseInt(noteTypeDropDown.selectedLabel);
-					noteTypeDropDown.selectedLabel = (curNoteType <= 0 ? '' : curNoteType + '. ' + Note.noteTypeNames[curNoteType]);
-				}
+					curNoteType = Std.int(stepperType.value);
 				strumTimeInput.text = curSelectedNote[0];
 			}
 		}
