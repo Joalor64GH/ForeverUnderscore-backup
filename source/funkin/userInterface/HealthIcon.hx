@@ -4,7 +4,8 @@ import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.graphics.FlxGraphic;
 import flixel.graphics.frames.FlxAtlasFrames;
-import flixel.math.FlxMath;
+import flixel.tweens.FlxEase;
+import flixel.tweens.FlxTween;
 import sys.FileSystem;
 
 using StringTools;
@@ -18,6 +19,12 @@ class HealthIcon extends FlxSprite
 
 	public var icon:String = 'bf';
 	public var suffix:String = '';
+
+	// script values
+	public var canBounce:Bool = true;
+	public var scaleFactorX:Float = 1.2;
+	public var scaleFactorY:Float = 1.2;
+	public var easeValue:String = 'expoOut';
 
 	public function new(icon:String = 'bf', isPlayer:Bool = false)
 	{
@@ -44,11 +51,17 @@ class HealthIcon extends FlxSprite
 			animation.play('static');
 	}
 
-	public function bop()
+	var bounceTween:FlxTween;
+
+	public function bop(time:Float)
 	{
-		var iconLerp = 1 - Main.framerateAdjust(0.15);
-		scale.set(FlxMath.lerp(1, scale.x, iconLerp), FlxMath.lerp(1, scale.y, iconLerp));
-		updateHitbox();
+		if (!canBounce)
+			return;
+
+		scale.set(scaleFactorX, scaleFactorY);
+		if (bounceTween != null)
+			bounceTween.cancel();
+		bounceTween = FlxTween.tween(this.scale, {x: 1, y: 1}, time / base.Conductor.playbackRate, {ease: ForeverTools.returnTweenEase(easeValue)});
 	}
 
 	public function updateIcon(char:String = 'bf', isPlayer:Bool = false)

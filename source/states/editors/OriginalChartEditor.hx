@@ -102,7 +102,7 @@ class OriginalChartEditor extends MusicBeatState
 		],
 		[
 			"Multiply Scroll Speed",
-			"Multiplies the scroll speed with specified value.\nValue 1: Number to multiply.\nValue 2: Duration of the multiplication.\nValue 3: Ease name to apply to tween (all lowercase),\nleave it blank for \"linear\"",
+			"Multiplies the scroll speed with specified value.\nValue 1: Number to multiply.\nValue 2: Duration of the multiplication.\nValue 3: Ease name to apply to tween,\nleave it blank for \"linear\"",
 		],
 	];
 	var events:Map<FlxSprite, Array<Dynamic>> = new Map();
