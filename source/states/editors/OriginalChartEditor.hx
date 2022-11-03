@@ -635,7 +635,8 @@ class OriginalChartEditor extends MusicBeatState
 		blockPressWhileTypingOnStepper.push(stepperSusLength);
 
 		// note types
-		stepperType = new FlxUINumericStepper(10, stepperSusLength.y + 30, Conductor.stepCrochet / 125, 0, 0, (Conductor.stepCrochet / 125) + 10); // 10 is placeholder
+		stepperType = new FlxUINumericStepper(10, stepperSusLength.y + 30, Conductor.stepCrochet / 125, 0, 0,
+			(Conductor.stepCrochet / 125) + 10); // 10 is placeholder
 		stepperType.value = 0;
 		stepperType.name = 'note_type';
 		blockPressWhileTypingOnStepper.push(stepperType);

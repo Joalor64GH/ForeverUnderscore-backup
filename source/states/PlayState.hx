@@ -551,7 +551,7 @@ class PlayState extends MusicBeatState
 			for (i in 0...PlayState.dadStrums.members.length)
 			{
 				PlayState.dadStrums.members[i].x += 320;
-				PlayState.dadStrums.members[i].alpha = 0.25;
+				PlayState.dadStrums.members[i].alpha = 0.35;
 			}
 
 			for (i in 0...PlayState.dadStrums.receptors.members.length)

@@ -18,6 +18,8 @@ import funkin.Alphabet;
 import funkin.userInterface.menu.Checkmark;
 import funkin.userInterface.menu.Selector;
 
+using StringTools;
+
 /**
 	Options menu rewrite because I'm unhappy with how it was done previously
 **/
@@ -177,6 +179,8 @@ class OptionsMenu extends MusicBeatState
 		// reload custom skins
 		Init.reloadCustomSkins();
 
+		Alphabet.letterOffset = false;
+
 		// call the options menu
 		bg = new FlxSprite(-85).loadGraphic(Paths.image('menus/base/menuDesat'));
 		bg.scrollFactor.set(0, 0.18);
@@ -194,6 +198,12 @@ class OptionsMenu extends MusicBeatState
 		add(infoText);
 
 		loadSubgroup('main');
+	}
+
+	override function destroy()
+	{
+		Alphabet.letterOffset = false;
+		super.destroy();
 	}
 
 	var mainColor:FlxColor;
@@ -280,7 +290,7 @@ class OptionsMenu extends MusicBeatState
 			activeSubgroup.members[i].alpha = 0.6;
 			if (currentAttachmentMap != null)
 				setAttachmentAlpha(currentAttachmentMap.get(activeSubgroup.members[i]), 0.6);
-			activeSubgroup.members[i].targetY = (i - curSelection) / 1.8;
+			activeSubgroup.members[i].targetY = (i - curSelection) / 2;
 			// activeSubgroup.members[i].xTo = 200 + ((i - curSelection) * 25);
 
 			// check for null members and hardcode the dividers
@@ -503,7 +513,7 @@ class OptionsMenu extends MusicBeatState
 						extrasMap.set(letter, checkmark);
 					case Init.SettingTypes.Selector:
 						// selector
-						var selector:Selector = new Selector(10, letter.y, letter.text, Init.gameSettings.get(letter.text)[4]);
+						var selector:Selector = new Selector(0, letter.y + 8, letter.text, Init.gameSettings.get(letter.text)[4]);
 						extrasMap.set(letter, selector);
 					default:
 						// dont do ANYTHING
@@ -610,11 +620,11 @@ class OptionsMenu extends MusicBeatState
 				case 'Framerate Cap':
 					generateSelector(updateBy, selector, 30, 360, 15);
 				case 'Darkness Opacity' | 'Hitsound Volume':
-					generateSelector(updateBy, selector, 0, 100, 5);
+					generateSelector(updateBy, selector, 0, 100, 5, '%');
 				case 'Scroll Speed':
 					generateSelector(updateBy, selector, 1, 6, 0.1);
-				case 'Arrow Opacity':
-					generateSelector(updateBy, selector, 0, 100, 10);
+				case 'Arrow Opacity', 'Splash Opacity', 'Hold Opacity':
+					generateSelector(updateBy, selector, 0, 100, 10, '%');
 				default:
 					generateSelector(updateBy, selector);
 			}
@@ -646,14 +656,16 @@ class OptionsMenu extends MusicBeatState
 
 			playSound('scrollMenu');
 
-			selector.chosenOptionString = selector.options[newSelection];
+			var stringFormat:String = (selector.isNumber && selector.stringFormat != null ? selector.stringFormat : '');
 
-			Init.setSetting(selector.name, selector.chosenOptionString);
+			selector.chosenOptionString = selector.options[newSelection] + stringFormat;
+
+			Init.setSetting(selector.name, selector.chosenOptionString.replace('${stringFormat}', ''));
 			Init.saveSettings();
 		}
 	}
 
-	function generateSelector(updateBy:Int, selector:Selector, min:Float = 0, max:Float = 100, inc:Float = 5)
+	function generateSelector(updateBy:Int, selector:Selector, min:Float = 0, max:Float = 100, inc:Float = 5, format:String = '')
 	{
 		// lazily hardcoded selector generator.
 		var originalValue = Init.getSetting(selector.name);
@@ -672,8 +684,12 @@ class OptionsMenu extends MusicBeatState
 
 		playSound('scrollMenu');
 
+		selector.stringFormat = format;
+
+		var stringFormat:String = (selector.isNumber && selector.stringFormat != null ? selector.stringFormat : '');
+
 		originalValue += increase;
-		selector.chosenOptionString = Std.string(originalValue);
+		selector.chosenOptionString = Std.string(originalValue) + stringFormat;
 		Init.setSetting(selector.name, originalValue);
 		Init.saveSettings();
 	}

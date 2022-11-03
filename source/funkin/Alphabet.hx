@@ -58,6 +58,8 @@ class Alphabet extends FlxTypedSpriteGroup<AlphaCharacter>
 	public var playSounds:Bool = true;
 	public var lastPlayed:Int = 0;
 
+	public static var letterOffset:Bool = false; // alphabet offset workaround idk;
+
 	public function new(x:Float = 0, y:Float = 0, text:String = "", ?bold:Bool = false, typed:Bool = false, ?textSize:Float = 1)
 	{
 		super(x, y);
@@ -436,8 +438,6 @@ class AlphaCharacter extends FlxSprite
 
 	public function createNumber(letter:String):Void
 	{
-		if (Main.letterOffset)
-			y += 58;
 		animation.addByPrefix(letter, letter, 24);
 		animation.play(letter);
 
@@ -485,7 +485,8 @@ class AlphaCharacter extends FlxSprite
 			default:
 				animation.addByPrefix(letter, letter, 24);
 				animation.play(letter);
-				y += 58;
+				if (Alphabet.letterOffset)
+					y += 58;
 		}
 		updateHitbox();
 	}
