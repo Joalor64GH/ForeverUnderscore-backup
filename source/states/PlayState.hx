@@ -1686,6 +1686,9 @@ class PlayState extends MusicBeatState
 			if (!Init.getSetting('Judgement Recycling'))
 				insert(members.indexOf(strumLines), comboNum);
 
+			if (comboNum != null)
+				comboNum.animation.play('combo' + (Timings.perfectCombo ? '-perfect' : ''));
+
 			if (!Init.getSetting('Judgement Stacking'))
 			{
 				if (!Init.getSetting('Judgement Recycling'))
