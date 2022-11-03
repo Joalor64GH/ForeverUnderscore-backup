@@ -1547,6 +1547,7 @@ class PlayState extends MusicBeatState
 	{
 		if (!paused)
 			updateRPC(false);
+		callFunc('onFocus', []);
 		super.onFocus();
 	}
 
@@ -1561,6 +1562,7 @@ class PlayState extends MusicBeatState
 			// open pause substate
 			openSubState(new PauseSubstate(boyfriend.getScreenPosition().x, boyfriend.getScreenPosition().y));
 		}
+		callFunc('onFocusLost', []);
 		super.onFocusLost();
 	}
 
@@ -2565,7 +2567,7 @@ class PlayState extends MusicBeatState
 
 		setVar('logTrace', function(text:String, time:Float, onConsole:Bool = false)
 		{
-			logTrace(text, time, onConsole, PlayState.dialogueHUD);
+			logTrace(text, time, onConsole, dialogueHUD);
 		});
 
 		setVar('add', add);
