@@ -519,9 +519,12 @@ class PlayState extends MusicBeatState
 
 		var downscroll = Init.getSetting('Downscroll');
 
-		dadStrums = new Strumline(dadPlacement, downscroll ? FlxG.height - 200 : 0, dad, dad.characterData.noteSkin, true, false, doTweenCheck(true),
+		var bfData = boyfriend.characterData;
+		var dadData = dad.characterData;
+
+		dadStrums = new Strumline(dadPlacement, downscroll ? FlxG.height - 200 : 0, dad, dadData.noteSkin, true, false, doTweenCheck(true),
 			downscroll, 4);
-		bfStrums = new Strumline(bfPlacement, downscroll ? FlxG.height - 200 : 0, boyfriend, boyfriend.characterData.noteSkin, false, true,
+		bfStrums = new Strumline(bfPlacement, downscroll ? FlxG.height - 200 : 0, boyfriend, bfData.noteSkin, false, true,
 			doTweenCheck(false), downscroll, 4);
 
 		dadStrums.visible = !Init.getSetting('Hide Opponent Receptors');
@@ -1042,10 +1045,10 @@ class PlayState extends MusicBeatState
 			if ((unspawnNotes[0] != null) && ((unspawnNotes[0].strumTime - Conductor.songPosition) < 3500))
 			{
 				var dunceNote:Note = unspawnNotes[0];
-				var keyAmount = (dunceNote.mustPress ? bfStrums.keyAmount : dadStrums.keyAmount);
+				var strumline = (dunceNote.mustPress ? bfStrums : dadStrums);
 
 				// push note to its correct strumline
-				strumLines.members[Math.floor((dunceNote.noteData + (dunceNote.mustPress ? 4 : 0)) / keyAmount)].push(dunceNote);
+				strumLines.members[Math.floor((dunceNote.noteData + (dunceNote.mustPress ? 4 : 0)) / strumline.keyAmount)].push(dunceNote);
 
 				callFunc('noteSpawn', [dunceNote, dunceNote.noteData, dunceNote.noteType, dunceNote.isSustain]);
 				unspawnNotes.splice(unspawnNotes.indexOf(dunceNote), 1);

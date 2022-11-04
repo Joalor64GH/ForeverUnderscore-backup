@@ -35,13 +35,19 @@ class ChartParser
 				if (songNotes[1] > 3)
 					gottaHitNote = !section.mustHitSection;
 
+				var daNoteSkin:String = 'NOTE_assets';
+				var daCharacter = (gottaHitNote ? PlayState.boyfriend : PlayState.dad);
+
+				if (daCharacter != null)
+					daNoteSkin = daCharacter.characterData.noteSkin;
+
 				var oldNote:Note;
 				if (unspawnNotes.length > 0)
 					oldNote = unspawnNotes[Std.int(unspawnNotes.length - 1)];
 				else
 					oldNote = null;
 
-				var swagNote:Note = ForeverAssets.generateArrow(PlayState.assetModifier, daStrumTime, daNoteData, daNoteAlt, daNoteType);
+				var swagNote:Note = ForeverAssets.generateArrow(PlayState.assetModifier, daStrumTime, daNoteData, daNoteAlt, daNoteType, daNoteSkin);
 				swagNote.noteSpeed = songData.speed;
 				swagNote.mustPress = gottaHitNote;
 
@@ -72,7 +78,7 @@ class ChartParser
 								oldNote = unspawnNotes[Std.int(unspawnNotes.length - 1)];
 
 								var sustainNote:Note = ForeverAssets.generateArrow(PlayState.assetModifier,
-									daStrumTime + Conductor.stepCrochet * (susNote + 1), daNoteData, daNoteAlt, true, oldNote, daNoteType);
+									daStrumTime + Conductor.stepCrochet * (susNote + 1), daNoteData, daNoteAlt, true, oldNote, daNoteType, daNoteSkin);
 								sustainNote.mustPress = gottaHitNote;
 								sustainNote.scrollFactor.set();
 
