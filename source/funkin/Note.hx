@@ -313,7 +313,7 @@ class Note extends FNFSprite
 				if (newNote.isSustain)
 					texture = 'arrowEnds';
 				else
-					texture = 'arrow-pixels';
+					texture = 'arrows-pixels';
 			}
 			else
 				texture = 'NOTE_assets';
