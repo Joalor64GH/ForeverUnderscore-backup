@@ -224,9 +224,9 @@ class ForeverAssets
 				    "height": 34,
 				    "offsets": [
 				        -120,
-				        -90,	
+				        -75,
 				        -120,
-				        -90
+				        -75
 				    ]
 				}' : '{
 				    "file": "noteSplashes",
@@ -304,8 +304,8 @@ class ForeverAssets
 
 					default:
 						tempSplash.loadGraphic(Paths.image(ForeverTools.returnSkin(asset, assetModifier, changeableSkin, baseLibrary)), true, width, height);
-						tempSplash.animation.add('anim1', [noteData, 4 + noteData, 8 + noteData, 12 + noteData], 24, false);
-						tempSplash.animation.add('anim2', [16 + noteData, 20 + noteData, 24 + noteData, 28 + noteData], 24, false);
+						tempSplash.animation.add('anim1', [noteData, 4 + noteData, 8 + noteData, 12 + noteData], 12, false);
+						tempSplash.animation.add('anim2', [16 + noteData, 20 + noteData, 24 + noteData, 28 + noteData], 12, false);
 						tempSplash.animation.play('anim1');
 						tempSplash.setGraphicSize(Std.int(tempSplash.width * PlayState.daPixelZoom));
 				}
@@ -385,6 +385,8 @@ class ForeverAssets
 			tempSplash.addOffset('anim2', splashJson.offsets[2], splashJson.offsets[3]);
 		}
 
+		tempSplash.antialiasing = !asset.endsWith('-pixel');
+
 		tempSplash.animation.play('anim1', true);
 
 		group.sort(FNFSprite.depthSorting, FlxSort.DESCENDING);
@@ -402,7 +404,7 @@ class ForeverAssets
 					'noteskins/notes')), true, 17, 17);
 				newStaticArrow.animation.add('static', [strumData]);
 				newStaticArrow.animation.add('pressed', [4 + strumData, 8 + strumData], 12, false);
-				newStaticArrow.animation.add('confirm', [12 + strumData, 16 + strumData], 24, false);
+				newStaticArrow.animation.add('confirm', [12 + strumData, 16 + strumData], 12, false);
 
 				newStaticArrow.setGraphicSize(Std.int(newStaticArrow.width * PlayState.daPixelZoom));
 				newStaticArrow.updateHitbox();
