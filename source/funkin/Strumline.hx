@@ -60,7 +60,7 @@ class Strumline extends FlxSpriteGroup
 		regenStrumline();
 	}
 
-	public function regenStrumline()
+	public function regenStrumline(?xNew:Float, ?yNew:Float, skipTween:Bool = false)
 	{
 		receptors.forEachAlive(function(receptor:Receptor)
 		{
@@ -74,9 +74,11 @@ class Strumline extends FlxSpriteGroup
 		});
 		splashNotes.clear();
 
+		doTween = !skipTween;
+
 		for (i in 0...keyAmount)
 		{
-			var receptor:Receptor = ForeverAssets.generateUIArrows(-20 + xPos, 25 + yPos, i, receptorTexture, PlayState.assetModifier);
+			var receptor:Receptor = ForeverAssets.generateUIArrows(-20 + (xNew == null ? xPos : xNew), 25 + (yNew == null ? yPos : yNew), i, receptorTexture, PlayState.assetModifier);
 			receptor.ID = i;
 
 			receptor.x -= ((keyAmount / 2) * Receptor.swagWidth);
