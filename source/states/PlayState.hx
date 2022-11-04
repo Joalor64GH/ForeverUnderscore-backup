@@ -706,9 +706,9 @@ class PlayState extends MusicBeatState
 					// loop through the possible notes
 					for (coolNote in possibleNoteList)
 					{
-						for (noteDouble in pressedNotes)
+						for (jumpNote in pressedNotes)
 						{
-							if (Math.abs(noteDouble.strumTime - coolNote.strumTime) >= 10)
+							if (Math.abs(jumpNote.strumTime - coolNote.strumTime) >= 10)
 								eligable = false;
 						}
 

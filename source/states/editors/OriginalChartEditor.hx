@@ -812,10 +812,12 @@ class OriginalChartEditor extends MusicBeatState
 				case 'song_offset':
 					_song.offset = nums.value;
 				case 'note_susLength': // STOP POSTING ABOUT AMONG US
-					curSelectedNote[2] = nums.value; // change the currently selected note's length
+					if (curSelectedNote != null)
+						curSelectedNote[2] = nums.value; // change the currently selected note's length
 					updateGrid(); // oh btw I know sus stands for sustain it just bothers me
 				case 'note_type':
-					curSelectedNote[3] = Std.int(nums.value);
+					if (curSelectedNote != null)
+						curSelectedNote[3] = Std.int(nums.value);
 					updateNoteUI();
 					updateGrid();
 				case 'section_bpm':
