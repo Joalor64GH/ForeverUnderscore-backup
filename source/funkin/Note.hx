@@ -15,7 +15,7 @@ class Note extends FNFSprite
 	public var mustPress:Bool = false;
 	public var noteData:Int = 0;
 	public var noteAlt:Float = 0;
-	public var noteType:Int = 0;
+	public var noteType(default, set):Int = 0;
 
 	public var noteString:String = '';
 	public var noteSect:String = '';
@@ -71,8 +71,6 @@ class Note extends FNFSprite
 
 	public var hitsoundSuffix = '';
 
-	static var pixelNoteID:Array<Int> = [4, 5, 6, 7];
-
 	function resetNote(isGf:Bool = false)
 	{
 		hitSounds = true;
@@ -82,6 +80,27 @@ class Note extends FNFSprite
 		gfNote = isGf;
 		lowPriority = false;
 		noteString = '';
+	}
+
+	function set_noteType(type:Int):Int
+	{
+		switch (type)
+		{
+			case 1: // gf notes
+				resetNote(true);
+			case 2: // mines
+				healthLoss = 0.065;
+				updateAccuracy = true;
+				hitSounds = false;
+				cpuIgnore = true;
+				canHurt = true;
+				gfNote = false;
+				lowPriority = true;
+				noteString = 'miss';
+			default: // anything else
+				resetNote(false);
+		}
+		return type;
 	}
 
 	public function new(strumTime:Float, noteData:Int, noteAlt:Float, ?prevNote:Note, ?isSustain:Bool = false, ?noteType:Int = 0, ?noteString:String,
@@ -110,23 +129,6 @@ class Note extends FNFSprite
 
 		if (noteTimer == null || noteTimer <= 0)
 			noteTimer = 0;
-
-		switch (noteType)
-		{
-			case 1: // gf notes
-				resetNote(true);
-			case 2: // mines
-				healthLoss = 0.065;
-				updateAccuracy = true;
-				hitSounds = false;
-				cpuIgnore = true;
-				canHurt = true;
-				gfNote = false;
-				lowPriority = true;
-				noteString = 'miss';
-			default: // anything else
-				resetNote(false);
-		}
 
 		// oh okay I know why this exists now
 		y -= 2000;
@@ -192,89 +194,6 @@ class Note extends FNFSprite
 					offsetX = ((prevNote.width / 2) - (width / 2));
 			}
 		}
-	}
-
-	/**
-		Note creation scripts
-
-		these are for all your custom note needs
-
-		at the very bottom of this file you can find the function
-		for setting up custom note behavior when hit and such
-	**/
-	public static function returnDefaultNote(assetModifier:String, strumTime:Float, noteData:Int, noteAlt:Float, ?isSustain:Bool = false, ?prevNote:Note,
-			?noteType:Int = 0):Note
-	{
-		var newNote:Note = new Note(strumTime, noteData, noteAlt, prevNote, isSustain, noteType);
-		newNote.holdHeight = 0.72;
-
-		// frames originally go here
-		switch (assetModifier)
-		{
-			case 'pixel':
-				if (isSustain)
-				{
-					switch (noteType)
-					{
-						case 2:
-							newNote.kill();
-						default: // pixel holds default
-							reloadPrefixes('arrowEnds', 'noteskins/notes', Init.getSetting("Note Skin"), assetModifier, newNote);
-					}
-				}
-				else
-				{
-					switch (noteType)
-					{
-						case 2: // pixel mines;
-							newNote.loadGraphic(Paths.image(ForeverTools.returnSkin('mines', assetModifier, '', 'noteskins/mines')), true, 17, 17);
-							newNote.animation.add(Receptor.colors[noteData] + 'Scroll', [0, 1, 2, 3, 4, 5, 6, 7], 12);
-
-						default: // pixel notes default
-							reloadPrefixes('arrows-pixels', 'noteskins/notes', Init.getSetting("Note Skin"), assetModifier, newNote);
-					}
-				}
-				newNote.antialiasing = false;
-				newNote.setGraphicSize(Std.int(newNote.width * PlayState.daPixelZoom));
-				newNote.updateHitbox();
-
-			default: // base game arrows for no reason whatsoever
-				switch (noteType)
-				{
-					case 2: // mines
-						newNote.loadGraphic(Paths.image(ForeverTools.returnSkin('mines', assetModifier, '', 'noteskins/mines')), true, 133, 128);
-						newNote.animation.add(Receptor.colors[noteData] + 'Scroll', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]);
-
-						if (isSustain)
-							newNote.kill();
-
-						newNote.setGraphicSize(Std.int(newNote.width * 0.8));
-						newNote.updateHitbox();
-						newNote.antialiasing = !Init.getSetting('Disable Antialiasing');
-					default: // anything else
-						reloadPrefixes("NOTE_assets", 'noteskins/notes', Init.getSetting("Note Skin"), assetModifier, newNote);
-				}
-		}
-		//
-		if (!isSustain)
-			newNote.animation.play(Receptor.colors[noteData] + 'Scroll');
-
-		if (isSustain && prevNote != null)
-		{
-			newNote.noteSpeed = prevNote.noteSpeed;
-			newNote.alpha = Init.getSetting('Hold Opacity') * 0.01;
-
-			newNote.animation.play(Receptor.colors[noteData] + 'holdend');
-			newNote.updateHitbox();
-
-			if (prevNote != null && prevNote.isSustain)
-			{
-				prevNote.animation.play(Receptor.colors[prevNote.noteData] + 'hold');
-				prevNote.updateHitbox();
-			}
-		}
-
-		return newNote;
 	}
 
 	public static function returnQuantNote(assetModifier:String, strumTime:Float, noteData:Int, noteAlt:Float, ?isSustain:Bool = false, ?prevNote:Note = null,
@@ -383,39 +302,48 @@ class Note extends FNFSprite
 		return newNote;
 	}
 
-	static function reloadPrefixes(texture:String, texturePath:String, changeable:String = '', assetModifier:String, newNote:Note)
+	public static function reloadNote(texture:String, changeable:String = '', assetModifier:String, newNote:Note)
 	{
+		var pixelNoteID:Array<Int> = [4, 5, 6, 7];
+
+		if (texture.length < 2 || texture == null)
+		{
+			if (assetModifier == 'pixel')
+			{
+				if (newNote.isSustain)
+					texture = 'arrowEnds';
+				else
+					texture = 'arrow-pixels';
+			}
+			else
+				texture = 'NOTE_assets';
+		}
+
 		if (assetModifier != 'pixel')
 		{
-			newNote.frames = Paths.getSparrowAtlas(ForeverTools.returnSkin(texture, assetModifier, changeable, texturePath));
+			newNote.frames = Paths.getSparrowAtlas(ForeverTools.returnSkin(texture, assetModifier, changeable, 'noteskins/notes'));
 
 			newNote.animation.addByPrefix(Receptor.colors[newNote.noteData] + 'Scroll', Receptor.colors[newNote.noteData] + '0');
 			newNote.animation.addByPrefix(Receptor.colors[newNote.noteData] + 'holdend', Receptor.colors[newNote.noteData] + ' hold end');
 			newNote.animation.addByPrefix(Receptor.colors[newNote.noteData] + 'hold', Receptor.colors[newNote.noteData] + ' hold piece');
 
 			newNote.animation.addByPrefix('purpleholdend', 'pruple end hold'); // PA god dammit.
-
-			newNote.antialiasing = !Init.getSetting('Disable Antialiasing');
-			newNote.setGraphicSize(Std.int(newNote.width * 0.7));
-			newNote.updateHitbox();
 		}
 		else
 		{
 			if (newNote.isSustain)
 			{
-				newNote.loadGraphic(Paths.image(ForeverTools.returnSkin(texture, assetModifier, changeable, texturePath)), true, 7, 6);
+				newNote.loadGraphic(Paths.image(ForeverTools.returnSkin(texture, assetModifier, changeable, 'noteskins/notes')), true, 7, 6);
 				newNote.animation.add(Receptor.colors[newNote.noteData] + 'holdend', [pixelNoteID[newNote.noteData]]);
 				newNote.animation.add(Receptor.colors[newNote.noteData] + 'hold', [pixelNoteID[newNote.noteData] - 4]);
 			}
 			else
 			{
-				newNote.loadGraphic(Paths.image(ForeverTools.returnSkin(texture, assetModifier, changeable, texturePath)), true, 17, 17);
+				newNote.loadGraphic(Paths.image(ForeverTools.returnSkin(texture, assetModifier, changeable, 'noteskins/notes')), true, 17, 17);
 				newNote.animation.add(Receptor.colors[newNote.noteData] + 'Scroll', [pixelNoteID[newNote.noteData]], 12);
 			}
 		}
 	}
-
-	// will be later replacing this function in favor of an actual scripted notetype system;
 
 	/**
 	 * Custom Note Functions (for when you hit a note), this should execute in PlayState;

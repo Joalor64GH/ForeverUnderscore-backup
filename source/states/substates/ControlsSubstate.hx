@@ -45,8 +45,6 @@ class ControlsSubstate extends MusicBeatSubstate
 		bg.antialiasing = !Init.getSetting('Disable Antialiasing');
 		add(bg);
 
-		Main.letterOffset = true;
-
 		new FlxTimer().start(0.6, function(timer:FlxTimer)
 		{
 			lockAccept = false;
@@ -314,7 +312,6 @@ class ControlsSubstate extends MusicBeatSubstate
 
 	override public function close()
 	{
-		Main.letterOffset = false;
 		Init.saveControls(); // for controls
 		Init.saveSettings(); // for offset
 		super.close();

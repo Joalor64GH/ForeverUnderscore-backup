@@ -36,8 +36,6 @@ class Main extends Sprite
 	public static var overlay:Overlay; // info counter that usually appears at the top left corner;
 	public static var console:Console; // console that appears when you press F10 (if allowed);
 
-	public static var letterOffset:Bool = false; // alphabet offset workaround idk;
-
 	// calls a function to set the game up
 	public function new()
 	{

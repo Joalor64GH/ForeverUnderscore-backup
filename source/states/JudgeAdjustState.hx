@@ -90,6 +90,8 @@ class JudgeAdjustState extends MusicBeatState
 		{
 			combo = ForeverAssets.generateCombo('combo_numbers', stringArray[scoreInt], true, null, assetModifier, Init.getSetting('UI Skin'), 'UI', false,
 				FlxColor.WHITE, scoreInt, true);
+			if (combo != null)
+				combo.animation.play('combo-perfect');
 			combo.cameras = [_camUI];
 			combo.y += 50;
 			combo.x += 100;

@@ -41,7 +41,7 @@ class MainMenu extends MusicBeatState
 
 	public var forceCenter:Bool = true;
 
-	public var menuItemScale:Int = 1;
+	public var menuItemScale:Float = 1;
 
 	function setCameras()
 	{

@@ -17,6 +17,8 @@ class Selector extends FlxTypedSpriteGroup<FlxSprite>
 	public var isNumber(default, null):Bool;
 	public var options:Array<String>;
 
+	public var stringFormat:String = ''; // shows up at the end of the selector name;
+
 	public function set_chosenOptionString(newOption:String)
 	{
 		chosenOptionString = newOption;
@@ -45,7 +47,7 @@ class Selector extends FlxTypedSpriteGroup<FlxSprite>
 		optionChosen = new Alphabet();
 		add(optionChosen);
 
-		chosenOptionString = Std.string(Init.getSetting(name));
+		chosenOptionString = Std.string(Init.getSetting(name) + stringFormat);
 	}
 
 	static function createSelector(dir:String):FNFSprite
@@ -55,6 +57,7 @@ class Selector extends FlxTypedSpriteGroup<FlxSprite>
 
 		returnSelector.animation.addByPrefix('idle', 'arrow $dir', 24, false);
 		returnSelector.animation.addByPrefix('press', 'arrow push $dir', 24, false);
+		returnSelector.setGraphicSize(Std.int(returnSelector.width * 0.8));
 		returnSelector.addOffset('press', 0, -10);
 		returnSelector.playAnim('idle');
 

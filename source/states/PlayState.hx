@@ -519,10 +519,11 @@ class PlayState extends MusicBeatState
 
 		var downscroll = Init.getSetting('Downscroll');
 
-		dadStrums = new Strumline(dadPlacement, downscroll ? FlxG.height - 200 : 0, dad, dad.characterData.noteSkin, true, false, doTweenCheck(true),
-			downscroll, 4);
-		bfStrums = new Strumline(bfPlacement, downscroll ? FlxG.height - 200 : 0, boyfriend, boyfriend.characterData.noteSkin, false, true,
-			doTweenCheck(false), downscroll, 4);
+		var bfData = boyfriend.characterData;
+		var dadData = dad.characterData;
+
+		dadStrums = new Strumline(dadPlacement, downscroll ? FlxG.height - 200 : 0, dad, dadData.noteSkin, true, false, doTweenCheck(true), downscroll, 4);
+		bfStrums = new Strumline(bfPlacement, downscroll ? FlxG.height - 200 : 0, boyfriend, bfData.noteSkin, false, true, doTweenCheck(false), downscroll, 4);
 
 		dadStrums.visible = !Init.getSetting('Hide Opponent Receptors');
 
@@ -551,7 +552,7 @@ class PlayState extends MusicBeatState
 			for (i in 0...PlayState.dadStrums.members.length)
 			{
 				PlayState.dadStrums.members[i].x += 320;
-				PlayState.dadStrums.members[i].alpha = 0.25;
+				PlayState.dadStrums.members[i].alpha = 0.35;
 			}
 
 			for (i in 0...PlayState.dadStrums.receptors.members.length)
@@ -1042,10 +1043,12 @@ class PlayState extends MusicBeatState
 			if ((unspawnNotes[0] != null) && ((unspawnNotes[0].strumTime - Conductor.songPosition) < 3500))
 			{
 				var dunceNote:Note = unspawnNotes[0];
-				var keyAmount = (dunceNote.mustPress ? bfStrums.keyAmount : dadStrums.keyAmount);
+				var strumline = (dunceNote.mustPress ? bfStrums : dadStrums);
 
 				// push note to its correct strumline
-				strumLines.members[Math.floor((dunceNote.noteData + (dunceNote.mustPress ? 4 : 0)) / keyAmount)].push(dunceNote);
+				strumLines.members[
+					Math.floor((dunceNote.noteData + (dunceNote.mustPress ? 4 : 0)) / strumline.keyAmount)
+				].push(dunceNote);
 
 				callFunc('noteSpawn', [dunceNote, dunceNote.noteData, dunceNote.noteType, dunceNote.isSustain]);
 				unspawnNotes.splice(unspawnNotes.indexOf(dunceNote), 1);
@@ -1547,6 +1550,7 @@ class PlayState extends MusicBeatState
 	{
 		if (!paused)
 			updateRPC(false);
+		callFunc('onFocus', []);
 		super.onFocus();
 	}
 
@@ -1561,6 +1565,7 @@ class PlayState extends MusicBeatState
 			// open pause substate
 			openSubState(new PauseSubstate(boyfriend.getScreenPosition().x, boyfriend.getScreenPosition().y));
 		}
+		callFunc('onFocusLost', []);
 		super.onFocusLost();
 	}
 
@@ -2009,17 +2014,19 @@ class PlayState extends MusicBeatState
 				var timer:Float = Std.parseFloat(value3);
 				if (Math.isNaN(timer))
 					timer = 0;
+				if (value1 == null || value1.length < 1)
+					value1 == 'dad';
 
 				changeTimer = new FlxTimer().start(timer, function(tmr:FlxTimer)
 				{
 					switch (value1.toLowerCase().trim())
 					{
-						case 'bf' | 'boyfriend':
+						case 'bf' | 'boyfriend' | 'player' | '0':
 							boyfriend.setCharacter(770, 450, value2);
 							uiHUD.iconP1.updateIcon(value2, true);
-						case 'gf' | 'girlfriend':
+						case 'gf' | 'girlfriend' | 'spectator' | '2':
 							gf.setCharacter(300, 100, value2);
-						case _:
+						case 'dad' | 'dadOpponent' | 'opponent' | '1':
 							dad.setCharacter(100, 100, value2);
 							uiHUD.iconP2.updateIcon(value2, false);
 					}
@@ -2030,23 +2037,26 @@ class PlayState extends MusicBeatState
 				var timer:Float = Std.parseFloat(value2);
 				if (Math.isNaN(timer) || timer <= 0)
 					timer = 0.6;
+				if (value1 == null || value1.length < 1)
+					value1 == 'bf';
+
 				switch (value1.toLowerCase().trim())
 				{
-					case _:
+					case 'bf' | 'boyfriend' | 'player' | '0':
 						if (boyfriend.animOffsets.exists('hey'))
 						{
 							boyfriend.playAnim('hey', true);
 							boyfriend.specialAnim = true;
 							boyfriend.heyTimer = timer;
 						}
-					case 'gf' | 'girlfriend':
+					case 'gf' | 'girlfriend' | 'spectator' | '2':
 						if (gf.animOffsets.exists('hey'))
-						{
 							gf.playAnim('hey', true);
-							gf.specialAnim = true;
-							gf.heyTimer = timer;
-						}
-					case 'dad' | 'opponent':
+						else if (gf.animOffsets.exists('cheer'))
+							gf.playAnim('cheer', true);
+						gf.specialAnim = true;
+						gf.heyTimer = timer;
+					case 'dad' | 'dadOpponent' | 'opponent' | '1':
 						if (dad.animOffsets.exists('hey'))
 						{
 							dad.playAnim('hey', true);
@@ -2058,23 +2068,26 @@ class PlayState extends MusicBeatState
 				var timer:Float = Std.parseFloat(value3);
 				if (Math.isNaN(timer) || timer <= 0)
 					timer = 0.6;
+				if (value1 == null || value1.length < 1)
+					value1 == 'dad';
+
 				switch (value2.toLowerCase().trim())
 				{
-					case 'bf' | 'boyfriend':
+					case 'bf' | 'boyfriend' | 'player' | '0':
 						if (boyfriend.animOffsets.exists(value1))
 						{
 							boyfriend.playAnim(value1, true);
 							boyfriend.specialAnim = true;
 							boyfriend.heyTimer = timer;
 						}
-					case 'gf' | 'girlfriend':
+					case 'gf' | 'girlfriend' | 'spectator' | '2':
 						if (gf.animOffsets.exists(value1))
 						{
 							gf.playAnim(value1, true);
 							gf.specialAnim = true;
 							gf.heyTimer = timer;
 						}
-					case _:
+					case 'dad' | 'dadOpponent' | 'opponent' | '1':
 						if (dad.animOffsets.exists(value1))
 						{
 							dad.playAnim(value1, true);
@@ -2565,7 +2578,7 @@ class PlayState extends MusicBeatState
 
 		setVar('logTrace', function(text:String, time:Float, onConsole:Bool = false)
 		{
-			logTrace(text, time, onConsole, PlayState.dialogueHUD);
+			logTrace(text, time, onConsole, dialogueHUD);
 		});
 
 		setVar('add', add);

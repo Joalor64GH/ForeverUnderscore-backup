@@ -201,7 +201,6 @@ class ForeverAssets
 	public static function generateNoteSplashes(asset:String, group:FlxTypedSpriteGroup<NoteSplash>, assetModifier:String = 'base', baseLibrary:String,
 			noteData:Int):NoteSplash
 	{
-		//
 		var tempSplash:NoteSplash = group.recycle(NoteSplash);
 		tempSplash.noteData = noteData;
 
@@ -273,32 +272,35 @@ class ForeverAssets
 				switch (splashJson.type)
 				{
 					case "sparrow":
-						tempSplash.frames = Paths.getSparrowAtlas(ForeverTools.returnSkin(asset, assetModifier, changeableSkin, baseLibrary));
+						try
+						{
+							tempSplash.frames = Paths.getSparrowAtlas(ForeverTools.returnSkin(asset, assetModifier, changeableSkin, baseLibrary));
 
-						// custom format
-						var receptorPrefix = splashJson.useDirectionInPrefix ? Receptor.actions[noteData] : Receptor.colors[noteData];
-						var validImpact1 = (splashJson.impactPrefix != null && splashJson.impactPrefix[0] != null && splashJson.impactPrefix[0].length > 0);
-						var validImpact2 = (splashJson.impactPrefix != null && splashJson.impactPrefix[1] != null && splashJson.impactPrefix[1].length > 0);
-						if (validImpact1)
-							tempSplash.animation.addByPrefix('anim1', '${splashJson.impactPrefix[0]} ' + receptorPrefix, 24, false);
-						if (validImpact2)
-							tempSplash.animation.addByPrefix('anim1', '${splashJson.impactPrefix[1]} ' + receptorPrefix, 24, false);
+							// custom format
+							var receptorPrefix = splashJson.useDirectionInPrefix ? Receptor.actions[noteData] : Receptor.colors[noteData];
+							var validImpact1 = (splashJson.impactPrefix != null && splashJson.impactPrefix[0] != null && splashJson.impactPrefix[0].length > 0);
+							var validImpact2 = (splashJson.impactPrefix != null && splashJson.impactPrefix[1] != null && splashJson.impactPrefix[1].length > 0);
+							if (validImpact1)
+								tempSplash.animation.addByPrefix('anim1', '${splashJson.impactPrefix[0]} ' + receptorPrefix, 24, false);
+							if (validImpact2)
+								tempSplash.animation.addByPrefix('anim1', '${splashJson.impactPrefix[1]} ' + receptorPrefix, 24, false);
 
-						if (splashJson.overrideSettings && splashJson.splashAlpha != null)
-							tempSplash.alpha = splashJson.splashAlpha;
-						if (splashJson.splashScale != null)
-							tempSplash.setGraphicSize(Std.int(tempSplash.width * splashJson.splashScale));
+							if (splashJson.overrideSettings && splashJson.splashAlpha != null)
+								tempSplash.alpha = splashJson.splashAlpha;
+							if (splashJson.splashScale != null)
+								tempSplash.setGraphicSize(Std.int(tempSplash.width * splashJson.splashScale));
 
-						// week 7 format
-						tempSplash.animation.addByPrefix('anim1', 'note impact 1 ' + Receptor.colors[noteData], 24, false);
-						tempSplash.animation.addByPrefix('anim2', 'note impact 2 ' + Receptor.colors[noteData], 24, false);
+							// week 7 format
+							tempSplash.animation.addByPrefix('anim1', 'note impact 1 ' + Receptor.colors[noteData], 24, false);
+							tempSplash.animation.addByPrefix('anim2', 'note impact 2 ' + Receptor.colors[noteData], 24, false);
 
-						tempSplash.animation.addByPrefix('anim1', 'note impact 1  blue', 24, false); // HE DID IT AGAIN MY BOYS;
+							tempSplash.animation.addByPrefix('anim1', 'note impact 1  blue', 24, false); // HE DID IT AGAIN MY BOYS;
 
-						// psych format
-						tempSplash.animation.addByPrefix('anim1', 'note splash ' + Receptor.colors[noteData] + ' 1', 24, false);
-						tempSplash.animation.addByPrefix('anim2', 'note splash ' + Receptor.colors[noteData] + ' 2', 24, false);
-						tempSplash.updateHitbox();
+							// psych format
+							tempSplash.animation.addByPrefix('anim1', 'note splash ' + Receptor.colors[noteData] + ' 1', 24, false);
+							tempSplash.animation.addByPrefix('anim2', 'note splash ' + Receptor.colors[noteData] + ' 2', 24, false);
+							tempSplash.updateHitbox();
+						}
 
 					default:
 						tempSplash.loadGraphic(Paths.image(ForeverTools.returnSkin(asset, assetModifier, changeableSkin, baseLibrary)), true, width, height);
@@ -323,32 +325,35 @@ class ForeverAssets
 				switch (splashJson.type)
 				{
 					case "sparrow":
-						tempSplash.frames = Paths.getSparrowAtlas(ForeverTools.returnSkin(asset, assetModifier, changeableSkin, baseLibrary));
+						try
+						{
+							tempSplash.frames = Paths.getSparrowAtlas(ForeverTools.returnSkin(asset, assetModifier, changeableSkin, baseLibrary));
 
-						// custom format
-						var receptorPrefix = splashJson.useDirectionInPrefix ? Receptor.actions[noteData] : Receptor.colors[noteData];
-						var validImpact1 = (splashJson.impactPrefix != null && splashJson.impactPrefix[0] != null && splashJson.impactPrefix[0].length > 0);
-						var validImpact2 = (splashJson.impactPrefix != null && splashJson.impactPrefix[1] != null && splashJson.impactPrefix[1].length > 0);
-						if (validImpact1)
-							tempSplash.animation.addByPrefix('anim1', '${splashJson.impactPrefix[0]} ' + receptorPrefix, 24, false);
-						if (validImpact2)
-							tempSplash.animation.addByPrefix('anim1', '${splashJson.impactPrefix[1]} ' + receptorPrefix, 24, false);
+							// custom format
+							var receptorPrefix = splashJson.useDirectionInPrefix ? Receptor.actions[noteData] : Receptor.colors[noteData];
+							var validImpact1 = (splashJson.impactPrefix != null && splashJson.impactPrefix[0] != null && splashJson.impactPrefix[0].length > 0);
+							var validImpact2 = (splashJson.impactPrefix != null && splashJson.impactPrefix[1] != null && splashJson.impactPrefix[1].length > 0);
+							if (validImpact1)
+								tempSplash.animation.addByPrefix('anim1', '${splashJson.impactPrefix[0]} ' + receptorPrefix, 24, false);
+							if (validImpact2)
+								tempSplash.animation.addByPrefix('anim1', '${splashJson.impactPrefix[1]} ' + receptorPrefix, 24, false);
 
-						if (splashJson.overrideSettings && splashJson.splashAlpha != null)
-							tempSplash.alpha = splashJson.splashAlpha;
-						if (splashJson.splashScale != null)
-							tempSplash.setGraphicSize(Std.int(tempSplash.width * splashJson.splashScale));
+							if (splashJson.overrideSettings && splashJson.splashAlpha != null)
+								tempSplash.alpha = splashJson.splashAlpha;
+							if (splashJson.splashScale != null)
+								tempSplash.setGraphicSize(Std.int(tempSplash.width * splashJson.splashScale));
 
-						// week 7 format
-						tempSplash.animation.addByPrefix('anim1', 'note impact 1 ' + Receptor.colors[noteData], 24, false);
-						tempSplash.animation.addByPrefix('anim2', 'note impact 2 ' + Receptor.colors[noteData], 24, false);
+							// week 7 format
+							tempSplash.animation.addByPrefix('anim1', 'note impact 1 ' + Receptor.colors[noteData], 24, false);
+							tempSplash.animation.addByPrefix('anim2', 'note impact 2 ' + Receptor.colors[noteData], 24, false);
 
-						tempSplash.animation.addByPrefix('anim1', 'note impact 1  blue', 24, false); // HE DID IT AGAIN MY BOYS;
+							tempSplash.animation.addByPrefix('anim1', 'note impact 1  blue', 24, false); // HE DID IT AGAIN MY BOYS;
 
-						// psych format
-						tempSplash.animation.addByPrefix('anim1', 'note splash ' + Receptor.colors[noteData] + ' 1', 24, false);
-						tempSplash.animation.addByPrefix('anim2', 'note splash ' + Receptor.colors[noteData] + ' 2', 24, false);
-						tempSplash.updateHitbox();
+							// psych format
+							tempSplash.animation.addByPrefix('anim1', 'note splash ' + Receptor.colors[noteData] + ' 1', 24, false);
+							tempSplash.animation.addByPrefix('anim2', 'note splash ' + Receptor.colors[noteData] + ' 2', 24, false);
+							tempSplash.updateHitbox();
+						}
 
 					default:
 						tempSplash.loadGraphic(Paths.image(ForeverTools.returnSkin(asset, assetModifier, changeableSkin, baseLibrary)), true, width, height);
@@ -387,17 +392,17 @@ class ForeverAssets
 		return tempSplash;
 	}
 
-	public static function generateUIArrows(x:Float, y:Float, ?staticArrowType:Int = 0, framesArgument:String = 'NOTE_assets', assetModifier:String):Receptor
+	public static function generateUIArrows(x:Float, y:Float, ?strumData:Int = 0, framesArg:String = 'NOTE_assets', assetModifier:String):Receptor
 	{
-		var newStaticArrow:Receptor = new Receptor(x, y, staticArrowType);
+		var newStaticArrow:Receptor = new Receptor(x, y, strumData);
 		switch (assetModifier)
 		{
 			case 'pixel':
 				newStaticArrow.loadGraphic(Paths.image(ForeverTools.returnSkin('arrows-pixels', assetModifier, Init.getSetting("Note Skin"),
 					'noteskins/notes')), true, 17, 17);
-				newStaticArrow.animation.add('static', [staticArrowType]);
-				newStaticArrow.animation.add('pressed', [4 + staticArrowType, 8 + staticArrowType], 12, false);
-				newStaticArrow.animation.add('confirm', [12 + staticArrowType, 16 + staticArrowType], 24, false);
+				newStaticArrow.animation.add('static', [strumData]);
+				newStaticArrow.animation.add('pressed', [4 + strumData, 8 + strumData], 12, false);
+				newStaticArrow.animation.add('confirm', [12 + strumData, 16 + strumData], 24, false);
 
 				newStaticArrow.setGraphicSize(Std.int(newStaticArrow.width * PlayState.daPixelZoom));
 				newStaticArrow.updateHitbox();
@@ -409,9 +414,9 @@ class ForeverAssets
 
 			case 'chart editor':
 				newStaticArrow.loadGraphic(Paths.image('menus/chart/note_array'), true, 157, 156);
-				newStaticArrow.animation.add('static', [staticArrowType]);
-				newStaticArrow.animation.add('pressed', [16 + staticArrowType], 12, false);
-				newStaticArrow.animation.add('confirm', [4 + staticArrowType, 8 + staticArrowType, 16 + staticArrowType], 24, false);
+				newStaticArrow.animation.add('static', [strumData]);
+				newStaticArrow.animation.add('pressed', [16 + strumData], 12, false);
+				newStaticArrow.animation.add('confirm', [4 + strumData, 8 + strumData, 16 + strumData], 24, false);
 
 				newStaticArrow.addOffset('static');
 				newStaticArrow.addOffset('pressed');
@@ -421,9 +426,9 @@ class ForeverAssets
 				// probably gonna revise this and make it possible to add other arrow types but for now it's just pixel and normal
 				var stringSect:String = '';
 				// call arrow type I think
-				stringSect = Receptor.actions[staticArrowType];
+				stringSect = Receptor.actions[strumData];
 
-				newStaticArrow.frames = Paths.getSparrowAtlas(ForeverTools.returnSkin('$framesArgument', assetModifier, Init.getSetting("Note Skin"),
+				newStaticArrow.frames = Paths.getSparrowAtlas(ForeverTools.returnSkin('$framesArg', assetModifier, Init.getSetting("Note Skin"),
 					'noteskins/notes'));
 
 				newStaticArrow.animation.addByPrefix('static', 'arrow' + stringSect.toUpperCase());
@@ -440,7 +445,7 @@ class ForeverAssets
 				var pressCenterOffsets:Array<Int> = [0, 0];
 				var centerOffsets:Array<Int> = [2, 2];
 
-				switch (staticArrowType)
+				switch (strumData)
 				{
 					case 0:
 						pressCenterOffsets = [-2, -2];
@@ -463,16 +468,95 @@ class ForeverAssets
 
 	/**
 		Notes!
+
+		this is a script used to generate a new note;
+		you can modify note behaviors from here;
 	**/
-	public static function generateArrow(assetModifier, strumTime, noteData, noteAlt, ?isSustain:Bool = false, ?prevNote:Note = null, ?noteType:Int = 0):Note
+	public static function generateArrow(assetModifier, strumTime, noteData, noteAlt, ?isSustain:Bool = false, ?prevNote:Note = null, ?noteType:Int = 0,
+			?framesArg:String):Note
 	{
-		var newNote:Note;
+		if (framesArg == null || framesArg.length < 1)
+			framesArg = 'NOTE_assets';
+
 		var changeableSkin:String = Init.getSetting("Note Skin");
+
+		var newNote:Note = new Note(strumTime, noteData, noteAlt, prevNote, isSustain, noteType);
+		newNote.holdHeight = 0.72;
+
 		// gonna improve the system eventually
 		if (changeableSkin.startsWith('quant'))
 			newNote = Note.returnQuantNote(assetModifier, strumTime, noteData, noteAlt, isSustain, prevNote, noteType);
 		else
-			newNote = Note.returnDefaultNote(assetModifier, strumTime, noteData, noteAlt, isSustain, prevNote, noteType);
+		{
+			// frames originally go here
+			switch (assetModifier)
+			{
+				case 'pixel':
+					if (isSustain)
+					{
+						switch (noteType)
+						{
+							case 2:
+								newNote.kill();
+							default: // pixel holds default
+								Note.reloadNote('arrowEnds', Init.getSetting("Note Skin"), assetModifier, newNote);
+						}
+					}
+					else
+					{
+						switch (noteType)
+						{
+							case 2: // pixel mines;
+								newNote.loadGraphic(Paths.image(ForeverTools.returnSkin('mines', assetModifier, '', 'noteskins/mines')), true, 17, 17);
+								newNote.animation.add(Receptor.colors[noteData] + 'Scroll', [0, 1, 2, 3, 4, 5, 6, 7], 12);
+
+							default: // pixel notes default
+								Note.reloadNote('arrow-pixels', changeableSkin, assetModifier, newNote);
+						}
+					}
+					newNote.antialiasing = false;
+					newNote.setGraphicSize(Std.int(newNote.width * PlayState.daPixelZoom));
+					newNote.updateHitbox();
+
+				default: // base game arrows for no reason whatsoever
+					switch (noteType)
+					{
+						case 2: // mines
+							newNote.loadGraphic(Paths.image(ForeverTools.returnSkin('mines', assetModifier, '', 'noteskins/mines')), true, 133, 128);
+							newNote.animation.add(Receptor.colors[noteData] + 'Scroll', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]);
+
+							if (isSustain)
+								newNote.kill();
+
+							newNote.setGraphicSize(Std.int(newNote.width * 0.8));
+							newNote.updateHitbox();
+							newNote.antialiasing = !Init.getSetting('Disable Antialiasing');
+						default: // anything else
+							Note.reloadNote(framesArg, changeableSkin, assetModifier, newNote);
+					}
+
+					newNote.antialiasing = !Init.getSetting('Disable Antialiasing');
+					newNote.setGraphicSize(Std.int(newNote.width * 0.7));
+					newNote.updateHitbox();
+			}
+		}
+
+		if (!isSustain)
+			newNote.animation.play(Receptor.colors[noteData] + 'Scroll');
+		else if (isSustain && prevNote != null)
+		{
+			newNote.noteSpeed = prevNote.noteSpeed;
+			newNote.alpha = Init.getSetting('Hold Opacity') * 0.01;
+
+			newNote.animation.play(Receptor.colors[noteData] + 'holdend');
+			newNote.updateHitbox();
+
+			if (prevNote != null && prevNote.isSustain)
+			{
+				prevNote.animation.play(Receptor.colors[prevNote.noteData] + 'hold');
+				prevNote.updateHitbox();
+			}
+		}
 
 		// hold note shit
 		if (isSustain && prevNote != null)
