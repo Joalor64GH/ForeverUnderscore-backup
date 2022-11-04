@@ -556,10 +556,7 @@ class PlayState extends MusicBeatState
 			}
 
 			for (i in 0...PlayState.dadStrums.receptors.members.length)
-			{
-				PlayState.dadStrums.receptors.members[i].alpha = 0;
-				PlayState.dadStrums.receptors.members[i].overrideAlpha = true;
-			}
+				PlayState.dadStrums.receptors.members[i].visible = false;
 		}
 
 		add(strumLines);
