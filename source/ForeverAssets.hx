@@ -533,11 +533,11 @@ class ForeverAssets
 							newNote.antialiasing = !Init.getSetting('Disable Antialiasing');
 						default: // anything else
 							Note.reloadNote(framesArg, changeableSkin, assetModifier, newNote);
-					}
 
-					newNote.antialiasing = !Init.getSetting('Disable Antialiasing');
-					newNote.setGraphicSize(Std.int(newNote.width * 0.7));
-					newNote.updateHitbox();
+							newNote.antialiasing = !Init.getSetting('Disable Antialiasing');
+							newNote.setGraphicSize(Std.int(newNote.width * 0.7));
+							newNote.updateHitbox();
+					}
 			}
 		}
 
