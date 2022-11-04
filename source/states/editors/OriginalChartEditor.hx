@@ -802,6 +802,7 @@ class OriginalChartEditor extends MusicBeatState
 			{
 				case 'section_beats':
 					_song.notes[curSection].sectionBeats = nums.value; // change length
+					_song.notes[curSection].lengthInSteps = Std.int(nums.value); // change length
 					updateGrid(); // vrrrrmmm
 				case 'song_speed':
 					_song.speed = nums.value; // change the song speed
@@ -1581,10 +1582,11 @@ class OriginalChartEditor extends MusicBeatState
 		updateEventGrid();
 	}
 
-	function addSection(sectionBeats:Float = 4):Void
+	function addSection(sectionBeats:Float = 4, lengthInSteps:Int = 16):Void
 	{
 		var sec:LegacySection = {
 			sectionBeats: sectionBeats,
+			lengthInSteps: lengthInSteps,
 			bpm: _song.bpm,
 			changeBPM: false,
 			mustHitSection: true,

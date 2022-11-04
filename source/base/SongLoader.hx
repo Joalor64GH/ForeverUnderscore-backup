@@ -37,6 +37,7 @@ typedef LegacySong =
 typedef LegacySection =
 {
 	var sectionNotes:Array<Dynamic>;
+	var lengthInSteps:Int; // for Legacy Charts;
 	var sectionBeats:Float; // for Psych Engine v0.6+ chart compatibility;
 	var typeOfSection:Int;
 	var mustHitSection:Bool;
@@ -216,6 +217,7 @@ class Section
 {
 	public var sectionNotes:Array<Dynamic> = [];
 
+	public var lengthInSteps:Int = 16;
 	public var sectionBeats:Float = 4;
 	public var typeOfSection:Int = 0;
 	public var gfSection:Bool = false;
@@ -226,8 +228,9 @@ class Section
 	 */
 	public static var COPYCAT:Int = 0;
 
-	public function new(sectionBeats:Float = 4)
+	public function new(sectionBeats:Float = 4, lengthInSteps:Int = 16)
 	{
 		this.sectionBeats = sectionBeats;
+		this.lengthInSteps = lengthInSteps;
 	}
 }
