@@ -522,10 +522,8 @@ class PlayState extends MusicBeatState
 		var bfData = boyfriend.characterData;
 		var dadData = dad.characterData;
 
-		dadStrums = new Strumline(dadPlacement, downscroll ? FlxG.height - 200 : 0, dad, dadData.noteSkin, true, false, doTweenCheck(true),
-			downscroll, 4);
-		bfStrums = new Strumline(bfPlacement, downscroll ? FlxG.height - 200 : 0, boyfriend, bfData.noteSkin, false, true,
-			doTweenCheck(false), downscroll, 4);
+		dadStrums = new Strumline(dadPlacement, downscroll ? FlxG.height - 200 : 0, dad, dadData.noteSkin, true, false, doTweenCheck(true), downscroll, 4);
+		bfStrums = new Strumline(bfPlacement, downscroll ? FlxG.height - 200 : 0, boyfriend, bfData.noteSkin, false, true, doTweenCheck(false), downscroll, 4);
 
 		dadStrums.visible = !Init.getSetting('Hide Opponent Receptors');
 
@@ -1048,7 +1046,9 @@ class PlayState extends MusicBeatState
 				var strumline = (dunceNote.mustPress ? bfStrums : dadStrums);
 
 				// push note to its correct strumline
-				strumLines.members[Math.floor((dunceNote.noteData + (dunceNote.mustPress ? 4 : 0)) / strumline.keyAmount)].push(dunceNote);
+				strumLines.members[
+					Math.floor((dunceNote.noteData + (dunceNote.mustPress ? 4 : 0)) / strumline.keyAmount)
+				].push(dunceNote);
 
 				callFunc('noteSpawn', [dunceNote, dunceNote.noteData, dunceNote.noteType, dunceNote.isSustain]);
 				unspawnNotes.splice(unspawnNotes.indexOf(dunceNote), 1);

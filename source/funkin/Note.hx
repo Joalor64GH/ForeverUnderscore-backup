@@ -103,8 +103,8 @@ class Note extends FNFSprite
 		return type;
 	}
 
-	public function new(strumTime:Float, noteData:Int, noteAlt:Float, ?prevNote:Note, ?isSustain:Bool = false, ?noteType:Int = 0,
-		?noteString:String, ?noteSect:String, ?noteTimer:Float = 0)
+	public function new(strumTime:Float, noteData:Int, noteAlt:Float, ?prevNote:Note, ?isSustain:Bool = false, ?noteType:Int = 0, ?noteString:String,
+			?noteSect:String, ?noteTimer:Float = 0)
 	{
 		super(x, y);
 
@@ -344,7 +344,6 @@ class Note extends FNFSprite
 			}
 		}
 	}
-
 
 	/**
 	 * Custom Note Functions (for when you hit a note), this should execute in PlayState;

@@ -472,7 +472,8 @@ class ForeverAssets
 		this is a script used to generate a new note;
 		you can modify note behaviors from here;
 	**/
-	public static function generateArrow(assetModifier, strumTime, noteData, noteAlt, ?isSustain:Bool = false, ?prevNote:Note = null, ?noteType:Int = 0, ?framesArg:String):Note
+	public static function generateArrow(assetModifier, strumTime, noteData, noteAlt, ?isSustain:Bool = false, ?prevNote:Note = null, ?noteType:Int = 0,
+			?framesArg:String):Note
 	{
 		if (framesArg == null || framesArg.length < 1)
 			framesArg = 'NOTE_assets';
