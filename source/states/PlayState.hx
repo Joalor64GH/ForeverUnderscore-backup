@@ -76,6 +76,9 @@ class PlayState extends MusicBeatState
 	// stage variable so we can create stages later;
 	public var stageBuild:Stage;
 
+	// a stage group, for change stage events;
+	public var stageGroup:FlxTypedGroup<Stage>;
+
 	// song loading;
 	public static var SONG:LegacySong;
 	public static var generatedSong:Bool = false;
@@ -301,73 +304,8 @@ class PlayState extends MusicBeatState
 		super();
 	}
 
-	// at the beginning of the playstate
-	override public function create()
+	function generateCharacters()
 	{
-		super.create();
-
-		// reset any values and variables that are static
-		resetVariables();
-
-		Timings.callAccuracy();
-
-		// stop any existing music tracks playing
-		Conductor.stopMusic();
-		if (FlxG.sound.music != null)
-			FlxG.sound.music.stop();
-
-		// create the game camera
-		camGame = new FlxCamera();
-
-		// create the hud camera (separate so the hud stays on screen)
-		camHUD = new FlxCamera();
-		camHUD.bgColor.alpha = 0;
-
-		// create an alternative camera, in case you need a third one for scripts
-		camAlt = new FlxCamera();
-		camAlt.bgColor.alpha = 0;
-
-		FlxG.cameras.reset(camGame);
-		FlxG.cameras.add(camHUD, false);
-		FlxG.cameras.add(camAlt, false);
-
-		allUIs.push(camHUD);
-
-		FlxG.cameras.setDefaultDrawTarget(camGame, true);
-
-		// default song
-		if (SONG == null)
-			SONG = Song.loadSong('test', 'test');
-
-		Conductor.mapBPMChanges(SONG);
-		Conductor.changeBPM(SONG.bpm);
-
-		GameOverSubstate.resetGameOver();
-
-		curStage = "";
-
-		// call the song's stage if it exists
-		if (SONG.stage != null)
-			curStage = SONG.stage;
-		else
-			curStage = 'unknown';
-
-		try
-		{
-			callScripts();
-		}
-		catch (e)
-		{
-			logTrace('Uncaught Error: $e', 3, camAlt);
-		}
-
-		stageBuild = new Stage(PlayState.curStage);
-		add(stageBuild);
-
-		defaultCamZoom = stageBuild.stageJson.defaultZoom;
-
-		// set up characters
-
 		dad = new Character(false);
 		boyfriend = new Character(true);
 		gf = new Character(false);
@@ -381,17 +319,29 @@ class PlayState extends MusicBeatState
 		dad.setCharacter(0, 0, SONG.player2);
 		boyfriend.setCharacter(0, 0, SONG.player1);
 
-		boyfriend.setPosition(stageBuild.stageJson.bfPos[0], stageBuild.stageJson.bfPos[1]);
-		dad.setPosition(stageBuild.stageJson.dadPos[0], stageBuild.stageJson.dadPos[1]);
-		gf.setPosition(stageBuild.stageJson.gfPos[0], stageBuild.stageJson.gfPos[1]);
+		// add characters
+		if (stageBuild.spawnGirlfriend)
+			add(gf);
 
-		charGroup = new FlxSpriteGroup();
-		charGroup.alpha = 0.00001;
+		add(stageBuild.layers);
 
-		var camPos:FlxPoint = new FlxPoint(gf.getMidpoint().x - 100, boyfriend.getMidpoint().y - 100);
+		add(dad);
+		add(boyfriend);
+		add(stageBuild.foreground);
 
-		uiModifier = Init.getSetting("UI Skin");
-		assetModifier = SONG.assetModifier;
+		// force them to dance
+		dad.dance();
+		gf.dance();
+		boyfriend.dance();
+
+		characterPostGeneration();
+	}
+
+	function regenerateCharacters()
+	{
+		remove(gf);
+		remove(dad);
+		remove(boyfriend);
 
 		// add characters
 		if (stageBuild.spawnGirlfriend)
@@ -403,24 +353,36 @@ class PlayState extends MusicBeatState
 		add(boyfriend);
 		add(stageBuild.foreground);
 
-		add(charGroup); // for changecharacter;
-
 		// force them to dance
 		dad.dance();
 		gf.dance();
 		boyfriend.dance();
 
-		stageBuild.repositionPlayers(curStage, boyfriend, gf, dad);
-		stageBuild.dadPosition(curStage, boyfriend, gf, dad, camPos);
+		characterPostGeneration();
+	}
+
+	function characterPostGeneration()
+	{
+		boyfriend.setPosition(stageBuild.stageJson.bfPos[0], stageBuild.stageJson.bfPos[1]);
+		dad.setPosition(stageBuild.stageJson.dadPos[0], stageBuild.stageJson.dadPos[1]);
+		gf.setPosition(stageBuild.stageJson.gfPos[0], stageBuild.stageJson.gfPos[1]);
 
 		boyfriend.adjustPosition();
 		dad.adjustPosition();
 
-		// set song position before beginning
-		Conductor.songPosition = -(Conductor.crochet * 4);
+		stageBuild.repositionPlayers(curStage, boyfriend, gf, dad);
+		stageBuild.dadPosition(curStage, boyfriend, gf, dad, new FlxPoint(gf.getMidpoint().x - 100, boyfriend.getMidpoint().y - 100));
+		defaultCamZoom = stageBuild.stageJson.defaultZoom;
+	}
 
-		// EVERYTHING SHOULD GO UNDER THIS, IF YOU PLAN ON SPAWNING SOMETHING LATER ADD IT TO STAGEBUILD OR FOREGROUND
-		// darkens the notes / stage according to the opacity type option
+	function loadUIDarken()
+	{
+		remove(darknessBG);
+		remove(darknessLine1);
+		remove(darknessLine2);
+		remove(darknessLine3);
+		remove(darknessLine4);
+
 		if (Init.getSetting('Opacity Type') == 'Notes')
 		{
 			// unoptimized darkness background for notes;
@@ -478,6 +440,95 @@ class PlayState extends MusicBeatState
 			darknessBG.scrollFactor.set(0, 0);
 			add(darknessBG);
 		}
+	}
+
+	// at the beginning of the playstate
+	override public function create()
+	{
+		super.create();
+
+		// reset any values and variables that are static
+		resetVariables();
+
+		Timings.callAccuracy();
+
+		// stop any existing music tracks playing
+		Conductor.stopMusic();
+		if (FlxG.sound.music != null)
+			FlxG.sound.music.stop();
+
+		// create the game camera
+		camGame = new FlxCamera();
+
+		// create the hud camera (separate so the hud stays on screen)
+		camHUD = new FlxCamera();
+		camHUD.bgColor.alpha = 0;
+
+		// create an alternative camera, in case you need a third one for scripts
+		camAlt = new FlxCamera();
+		camAlt.bgColor.alpha = 0;
+
+		FlxG.cameras.reset(camGame);
+		FlxG.cameras.add(camHUD, false);
+		FlxG.cameras.add(camAlt, false);
+
+		allUIs.push(camHUD);
+
+		FlxG.cameras.setDefaultDrawTarget(camGame, true);
+
+		// default song
+		if (SONG == null)
+			SONG = Song.loadSong('test', 'test');
+
+		Conductor.mapBPMChanges(SONG);
+		Conductor.changeBPM(SONG.bpm);
+
+		GameOverSubstate.resetGameOver();
+
+		curStage = "";
+
+		// call the song's stage if it exists
+		if (SONG.stage != null)
+			curStage = SONG.stage;
+		else
+			curStage = 'unknown';
+
+		try
+		{
+			setupScripts();
+		}
+		catch (e)
+		{
+			logTrace('Uncaught Error: $e', 3, camAlt);
+		}
+
+		stageBuild = new Stage(PlayState.curStage);
+		//add(stageBuild);
+
+		stageGroup = new FlxTypedGroup<Stage>();
+		add(stageGroup);
+
+		stageGroup.add(stageBuild);
+
+		// set up characters
+		generateCharacters();
+
+		charGroup = new FlxSpriteGroup();
+		charGroup.alpha = 0.00001;
+
+		var camPos:FlxPoint = new FlxPoint(gf.getMidpoint().x - 100, boyfriend.getMidpoint().y - 100);
+
+		uiModifier = Init.getSetting("UI Skin");
+		assetModifier = SONG.assetModifier;
+
+		add(charGroup); // for changecharacter;
+
+		// set song position before beginning
+		Conductor.songPosition = -(Conductor.crochet * 4);
+
+		// EVERYTHING SHOULD GO UNDER THIS, IF YOU PLAN ON SPAWNING SOMETHING LATER ADD IT TO STAGEBUILD OR FOREGROUND
+		// darkens the notes / stage according to the opacity type option
+		loadUIDarken();
 
 		// strum setup
 		strumLines = new FlxTypedGroup<Strumline>();
@@ -1056,6 +1107,9 @@ class PlayState extends MusicBeatState
 
 		if (!isStoryMode && !startingSong && !endingSong && scriptDebugMode)
 		{
+			if (FlxG.keys.justPressed.F5)
+				eventNoteHit('Change Stage', PlayState.curStage, '0');
+
 			if (FlxG.keys.justPressed.ONE)
 			{
 				preventScoring = true;
@@ -1991,12 +2045,19 @@ class PlayState extends MusicBeatState
 				var char:Character = new Character(false);
 				char.setCharacter(0, 0, event.val2);
 				charGroup.add(char);
+			case 'Change Stage':
+				var newStage:Stage = new Stage(event.val1);
+				stageGroup.add(newStage);
+				new FlxTimer().start(0.005, function(tmr:FlxTimer)
+				{
+					newStage.visible = false;
+				});
 		}
 	}
 
 	public var songSpeedTween:FlxTween;
 
-	public function eventNoteHit(event:String, value1:String, value2:String, value3:String)
+	public function eventNoteHit(event:String, value1:String, value2:String, ?value3:String)
 	{
 		/* NOTE: unhardcode this later */
 		switch (event)
@@ -2029,7 +2090,38 @@ class PlayState extends MusicBeatState
 					}
 					uiHUD.updateBar();
 				});
+			case 'Change Stage':
+				var changeTimer:FlxTimer;
+				var timer:Float = Std.parseFloat(value2);
+				if (Math.isNaN(timer))
+					timer = 0;
 
+				changeTimer = new FlxTimer().start(timer, function(tmr:FlxTimer)
+				{
+					remove(stageBuild.layers);
+					remove(stageBuild.foreground);
+
+					stageGroup.forEach(function(stage:Stage)
+					{
+						if (stage.curStage != value1)
+							stageGroup.remove(stageBuild);
+					});
+
+					stageBuild = new Stage(value1);
+					stageGroup.add(stageBuild);
+
+					curStage = value1;
+
+					regenerateCharacters();
+					loadUIDarken();
+				});
+			case 'Camera Flash':
+				var timer:Float = Std.parseFloat(value2);
+				if (Math.isNaN(timer) || timer <= 0)
+					timer = 0.6;
+				if (value1 == null)
+					value1 = 'white';
+				FlxG.camera.flash(ForeverTools.returnColor('$value1'), timer);
 			case 'Hey!':
 				var timer:Float = Std.parseFloat(value2);
 				if (Math.isNaN(timer) || timer <= 0)
@@ -2509,7 +2601,7 @@ class PlayState extends MusicBeatState
 		return super.add(Object);
 	}
 
-	function callScripts()
+	function setupScripts()
 	{
 		var dirs:Array<Array<String>> = [
 			CoolUtil.absoluteDirectory('scripts'),
@@ -2532,6 +2624,12 @@ class PlayState extends MusicBeatState
 		}
 
 		callFunc('create', []);
+	}
+
+	function reloadScripts()
+	{
+		scriptArray = [];
+		setupScripts();
 	}
 
 	public function callFunc(key:String, args:Array<Dynamic>)

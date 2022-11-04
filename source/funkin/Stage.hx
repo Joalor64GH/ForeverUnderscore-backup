@@ -71,6 +71,37 @@ class Stage extends FlxTypedGroup<FlxBasic>
 		foreground = new FlxTypedGroup<FlxBasic>();
 		layers = new FlxTypedGroup<FlxBasic>();
 
+		reloadJson();
+
+		if (!stageDebug)
+		{
+			if (PlayState.SONG.stage == null || PlayState.SONG.stage.length < 1)
+				curStage = 'unknown';
+			else
+				curStage = PlayState.SONG.stage;
+		}
+
+		//
+		switch (curStage)
+		{
+			default:
+				curStage = 'unknown';
+				PlayState.defaultCamZoom = 0.9;
+		}
+
+		try
+		{
+			callStageScript();
+		}
+		catch (e)
+		{
+			trace('Uncaught Error: $e');
+			flixel.FlxG.sound.play(Paths.sound('cancelMenu'));
+		}
+	}
+
+	public function reloadJson()
+	{
 		try
 		{
 			stageJson = haxe.Json.parse(Paths.getTextFromFile('stages/$curStage/$curStage.json'));
@@ -135,32 +166,6 @@ class Stage extends FlxTypedGroup<FlxBasic>
 					}
 				}
 			}
-		}
-
-		if (!stageDebug)
-		{
-			if (PlayState.SONG.stage == null || PlayState.SONG.stage.length < 1)
-				curStage = 'unknown';
-			else
-				curStage = PlayState.SONG.stage;
-		}
-
-		//
-		switch (curStage)
-		{
-			default:
-				curStage = 'unknown';
-				PlayState.defaultCamZoom = 0.9;
-		}
-
-		try
-		{
-			callStageScript();
-		}
-		catch (e)
-		{
-			trace('Uncaught Error: $e');
-			flixel.FlxG.sound.play(Paths.sound('cancelMenu'));
 		}
 	}
 

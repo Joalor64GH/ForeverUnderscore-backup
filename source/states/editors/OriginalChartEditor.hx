@@ -97,6 +97,14 @@ class OriginalChartEditor extends MusicBeatState
 			"Sets the current Character to a new one\nValue 1: Character to change (dad, bf, gf, defaults to dad)\nValue 2: New character's name\nValue 3: Delay to Change Characters (in Milliseconds)"
 		],
 		[
+			"Change Stage",
+			"Sets the current Stage to a new one\nValue 1: new Stage Name\nValue 2: delay to change stages (in Milliseconds)"
+		],
+		[
+			"Camera Flash",
+			"Flashes the game camera\nValue 1: Flash color\nValue 2: Flash duration"
+		],
+		[
 			"Play Animation",
 			"Plays an animation on a Character,\nValue 1: Animation to play.\nValue 2: Character (bf, gf, dad, defaults to dad)\nValue 3: time it takes to finish the animation,\nleave it blank for 0.6s"
 		],
