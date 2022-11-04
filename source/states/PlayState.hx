@@ -2051,11 +2051,11 @@ class PlayState extends MusicBeatState
 						}
 					case 'gf' | 'girlfriend' | 'spectator' | '2':
 						if (gf.animOffsets.exists('hey'))
-						{
 							gf.playAnim('hey', true);
-							gf.specialAnim = true;
-							gf.heyTimer = timer;
-						}
+						else if (gf.animOffsets.exists('cheer'))
+							gf.playAnim('cheer', true);
+						gf.specialAnim = true;
+						gf.heyTimer = timer;
 					case 'dad' | 'dadOpponent' | 'opponent' | '1':
 						if (dad.animOffsets.exists('hey'))
 						{
