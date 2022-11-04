@@ -479,7 +479,7 @@ class ForeverAssets
 
 		var changeableSkin:String = Init.getSetting("Note Skin");
 
-		var newNote:Note = new Note(strumTime, noteData, noteAlt, prevNote, isSustain, noteType, framesArg);
+		var newNote:Note = new Note(strumTime, noteData, noteAlt, prevNote, isSustain, noteType);
 		newNote.holdHeight = 0.72;
 
 		// gonna improve the system eventually

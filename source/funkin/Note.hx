@@ -56,8 +56,6 @@ class Note extends FNFSprite
 	public var parentNote:Note;
 	public var childrenNotes:Array<Note> = [];
 
-	public var noteTexture:String = '';
-
 	// it has come to this.
 	public var endHoldOffset:Float = Math.NEGATIVE_INFINITY;
 
@@ -105,7 +103,7 @@ class Note extends FNFSprite
 		return type;
 	}
 
-	public function new(strumTime:Float, noteData:Int, noteAlt:Float, ?prevNote:Note, ?isSustain:Bool = false, ?noteType:Int = 0, noteTexture:String = '',
+	public function new(strumTime:Float, noteData:Int, noteAlt:Float, ?prevNote:Note, ?isSustain:Bool = false, ?noteType:Int = 0,
 		?noteString:String, ?noteSect:String, ?noteTimer:Float = 0)
 	{
 		super(x, y);
@@ -119,7 +117,6 @@ class Note extends FNFSprite
 		this.noteSect = noteSect;
 		this.noteTimer = noteTimer;
 		this.isSustain = isSustain;
-		this.noteTexture = noteTexture;
 
 		if (noteType == null || noteType <= 0)
 			noteType = 0;
@@ -132,9 +129,6 @@ class Note extends FNFSprite
 
 		if (noteTimer == null || noteTimer <= 0)
 			noteTimer = 0;
-
-		if (noteTexture == null)
-			noteTexture = '';
 
 		// oh okay I know why this exists now
 		y -= 2000;
@@ -153,8 +147,6 @@ class Note extends FNFSprite
 				this.noteString = parentNote.noteString;
 			if (parentNote.noteTimer != 0)
 				this.noteTimer = parentNote.noteTimer;
-			if (parentNote.noteTexture != null)
-				this.noteTexture = noteTexture;
 			while (parentNote.parentNote != null)
 				parentNote = parentNote.parentNote;
 			parentNote.childrenNotes.push(this);

@@ -15,7 +15,7 @@ using StringTools;
 **/
 class ChartParser
 {
-	public static function loadChart(songData:LegacySong):Array<Note>
+	public static function loadChart(songData:LegacySong, ?forcedNoteSkin:String):Array<Note>
 	{
 		var unspawnNotes:Array<Note> = [];
 
@@ -39,7 +39,12 @@ class ChartParser
 				var daCharacter = (gottaHitNote ? PlayState.boyfriend : PlayState.dad);
 
 				if (daCharacter != null)
-					daNoteSkin = daCharacter.characterData.noteSkin;
+				{
+					if (forcedNoteSkin == null || forcedNoteSkin.length < 1)
+						daNoteSkin = daCharacter.characterData.noteSkin;
+					else
+						daNoteSkin = forcedNoteSkin;
+				}
 
 				var oldNote:Note;
 				if (unspawnNotes.length > 0)
