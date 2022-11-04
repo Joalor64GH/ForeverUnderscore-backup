@@ -511,7 +511,7 @@ class ForeverAssets
 								newNote.animation.add(Receptor.colors[noteData] + 'Scroll', [0, 1, 2, 3, 4, 5, 6, 7], 12);
 
 							default: // pixel notes default
-								Note.reloadNote('arrow-pixels', changeableSkin, assetModifier, newNote);
+								Note.reloadNote('arrows-pixels', changeableSkin, assetModifier, newNote);
 						}
 					}
 					newNote.antialiasing = false;
@@ -533,11 +533,11 @@ class ForeverAssets
 							newNote.antialiasing = !Init.getSetting('Disable Antialiasing');
 						default: // anything else
 							Note.reloadNote(framesArg, changeableSkin, assetModifier, newNote);
-					}
 
-					newNote.antialiasing = !Init.getSetting('Disable Antialiasing');
-					newNote.setGraphicSize(Std.int(newNote.width * 0.7));
-					newNote.updateHitbox();
+							newNote.antialiasing = !Init.getSetting('Disable Antialiasing');
+							newNote.setGraphicSize(Std.int(newNote.width * 0.7));
+							newNote.updateHitbox();
+					}
 			}
 		}
 
