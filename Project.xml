@@ -21,7 +21,7 @@
 	<!-- _____________________________ Custom Defines ____________________________ -->
 
 	<define name="DISCORD_RPC" if="desktop" unless="neko" />
-	<define name="VIDEO_PLUGIN" if="windows" unless="32bits || neko" />
+	<define name="VIDEO_PLUGIN" if="windows" unless="32bits || HXCPP_M32 || neko" />
 	<define name="GAME_UPDATER" if="desktop enableUpdater" /> <!-- thanks shadowmario -->
 	<define name="HAXE_EXTENSION" unless="web" />
 
@@ -33,6 +33,9 @@
 	<set name="BUILD_DIR" value="export" />
 	<set name="BUILD_DIR" value="export/debug" if="debug" />
 	<set name="BUILD_DIR" value="export/release" unless="debug" />
+
+	<set name="BUILD_DIR" value="export/debug-x86"  if="HXCPP_M32 debug" />
+	<set name="BUILD_DIR" value="export/release-x86"  if="HXCPP_M32 release" />
 
 	<source path="source" />
 	<assets path="assets" />
