@@ -1,6 +1,8 @@
 # DEPRECATION NOTICE
 Forever Engine Underscore is currently deprecated, please redirect all current and future issues / improvements to the [new repository](https://github.com/BeastlyGhost/Forever-Engine-Ghost)
 
+----------------------------------------------
+
 <p align="center">
   <img src="https://cdn.discordapp.com/attachments/930661629505466448/1031418430760427530/feULogo.png" width="500"/></a>
 </p>
