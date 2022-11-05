@@ -144,7 +144,6 @@ class PlayState extends MusicBeatState
 	public static var health:Float = 1; // mario
 	public static var maxHealth:Float = 2;
 	public static var combo:Int = 0;
-	public static var hits:Int = 0;
 	public static var misses:Int = 0;
 	public static var deaths:Int = 0; // luigi
 
@@ -219,7 +218,6 @@ class PlayState extends MusicBeatState
 		combo = 0;
 		health = 1;
 		misses = 0;
-		hits = 0;
 		scriptDebugMode = false;
 
 		defaultCamZoom = 1.05;
@@ -1422,8 +1420,6 @@ class PlayState extends MusicBeatState
 								Timings.updateAccuracy(100, true, coolNote.parentNote.childrenNotes.length);
 							healthCall(100 / coolNote.parentNote.childrenNotes.length);
 						}
-
-						hits++;
 					}
 				}
 			}
@@ -1651,7 +1647,8 @@ class PlayState extends MusicBeatState
 		if (!strumline.autoplay)
 			popJudgement(baseRating, timing, perfect);
 		else
-			popJudgement('sick', false, Timings.perfectCombo);
+			popJudgement('sick', false, perfect);
+
 		if (coolNote.updateAccuracy)
 			Timings.updateAccuracy(Timings.judgementsMap.get(baseRating)[3]);
 		score = Std.int(Timings.judgementsMap.get(baseRating)[2]);
@@ -2287,7 +2284,7 @@ class PlayState extends MusicBeatState
 				// play menu music
 				ForeverTools.resetMenuMusic();
 
-				// enable memory
+				// enable memory cleaning
 				clearStored = true;
 
 				// set up transitions
@@ -2328,8 +2325,7 @@ class PlayState extends MusicBeatState
 			FlxTransitionableState.skipNextTransOut = true;
 			clearStored = false;
 
-			// deliberately did not use the main.switchstate as to not unload the assets
-			FlxG.switchState(new PlayState());
+			Main.switchState(this, new PlayState());
 		}
 		else
 		{
@@ -2735,7 +2731,7 @@ class PlayState extends MusicBeatState
 		setVar('combo', combo);
 		setVar('health', health);
 		setVar('maxHealth', maxHealth);
-		setVar('hits', hits);
+		setVar('hits', Timings.notesHit);
 		setVar('misses', misses);
 		setVar('deaths', deaths);
 

@@ -184,22 +184,18 @@ class ClassHUD extends FlxTypedGroup<FlxBasic>
 
 	private var divider:String = " • ";
 
+	private var tempScore:String;
+
 	public function updateScoreText()
 	{
-		var importSongScore = PlayState.songScore;
-		var importMisses = PlayState.misses;
-		var importAccuracy:String = Std.string(Math.floor(Timings.getAccuracy() * 100) / 100);
-
+		var displayAccuracy = Init.getSetting('Display Accuracy');
 		var unrated = (Timings.comboDisplay == null || Timings.comboDisplay == '');
-		var tempScore:String = 'Score: $importSongScore';
 
-		if (Init.getSetting('Display Accuracy'))
-		{
-			tempScore += divider + 'Accuracy: $importAccuracy%';
-			tempScore += !unrated ? ' [' + Timings.comboDisplay + divider + Timings.returnScoreRating() + ']' : ' [' + Timings.returnScoreRating() + ']';
-			tempScore += divider + 'Combo Breaks: $importMisses';
-		}
-		tempScore += '\n';
+		tempScore = 'Score: ${PlayState.songScore}'
+			+ (displayAccuracy ? divider + 'Accuracy: ${Std.string(Math.floor(Timings.getAccuracy() * 100) / 100)}%' : '')
+			+ (displayAccuracy ? !unrated ? ' [' + Timings.comboDisplay + divider + Timings.returnScoreRating() + ']' : ' [' + Timings.returnScoreRating() + ']' : '')
+			+ (displayAccuracy ? divider + 'Combo Breaks: ${PlayState.misses}' : '')
+			+ '\n';
 
 		scoreBar.text = tempScore;
 		scoreBar.x = Math.floor((FlxG.width / 2) - (scoreBar.width / 2));
