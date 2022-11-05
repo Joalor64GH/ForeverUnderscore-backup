@@ -65,7 +65,11 @@ class Overlay extends TextField
 		while (times[0] < now - 1)
 			times.shift();
 
-		var mem:Float = Math.round(System.totalMemory);
+		#if cpp
+		var mem:Float = cpp.vm.Gc.memInfo64(3);
+		#else
+		var mem:Float = openfl.system.System.totalMemory.toFloat();
+		#end
 
 		if (mem > memPeak)
 			memPeak = mem;
