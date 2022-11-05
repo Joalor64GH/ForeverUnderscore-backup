@@ -1784,9 +1784,9 @@ class PlayState extends MusicBeatState
 
 		if (popMiss)
 		{
-			uiHUD.tweenScoreColor("miss", false);
 			popJudgement("miss", true, false);
 			healthCall(Timings.judgementsMap.get("miss")[3]);
+			uiHUD.tweenScoreColor("miss", false);
 		}
 
 		// gotta do it manually here lol
